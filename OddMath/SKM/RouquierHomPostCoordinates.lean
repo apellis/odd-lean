@@ -314,30 +314,5 @@ theorem homContentPostCrossing_app (q : ZMod 2)
   fin_cases q <;> rcases parity_eq_zero_or_one (D.parity i) with hp | hp <;>
     simp [homContentPostCrossing, SuperNatTrans.ofNatTrans, homPostTransform, hp, Category.assoc]
 
-/-- The two parity comparisons cancel on the specified factor crossing, for all content. -/
-theorem homContentPostFactorCrossing_shift (Z : homWeightSector T W.obj muP muM) :
-    let p := homContentShift D i betaP
-    let F := homPost (k := k) (a := T (-muP)) (W.E i h ≫ W.E i h₂)
-    (homParityShift (k := k) p).map
-      ((homParityShift (k := k) p).obj Z ◁ W.cross i i h h₂ h h₂) ≫
-      (homShiftConjugationIso F p Z).hom =
-    (homShiftConjugationIso F p Z).hom ≫ (Z ◁ W.cross i i h h₂ h h₂) := by
-  dsimp only
-  have ht := (homPostTransform (k := k) (a := T (-muP))
-    (W.cross i i h h₂ h h₂) (W.loc i h h₂).cross_mem).isSupernatural (D.parity i)
-  have hc := homShiftConjugationIso_supernatural
-    (homPost (k := k) (W.E i h ≫ W.E i h₂))
-    (homPost (k := k) (W.E i h ≫ W.E i h₂))
-    (homContentShift D i betaP) (D.parity i) _ ht Z
-  simpa only [homPostTransform, ite_eq_left] using hc
-
-/-- The prescribed BB crossing has the colour parity. -/
-theorem homContentPostCrossing_mem : homContentPostCrossing T W i betaP muP h h₂ ∈
-    parity (R := k) _ _ (D.parity i) := by
-  apply Superfunctor.mem_parity_iff_isHomogeneous.2
-  intro q hq
-  funext Z
-  simp [homContentPostCrossing_app, hq]
-
 end Hom
 end OddMath.SKM

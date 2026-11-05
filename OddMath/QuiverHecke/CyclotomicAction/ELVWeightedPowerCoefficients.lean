@@ -26,22 +26,6 @@ private theorem even_module_total_apply
   have h := ((Superfunctor.toSuperNatTrans f).isSupernatural 0).naturality_zero g
   simpa only [SVec.comp_apply] using congrArg (fun a : F.obj v ⟶ G.obj w => a b) h
 
-private theorem homogeneous_module_total_apply
-    {k C : Type u} [CommRing k] [Category.{u} C]
-    [Preadditive C] [Linear k C] [Supercategory k C]
-    {F G : Superfunctor k C (SVec k)} (f : F ⟶ G) {p : ZMod 2}
-    (hf : f ∈ parity (R := k) F G p) {v w : C} {q : ZMod 2}
-    (g : v ⟶ w) (hg : g ∈ parity (R := k) v w q) (b : F.obj v) :
-    f.total w (F.map g b) = koszulSign p q • G.map g (f.total v b) := by
-  have ht (t : C) : f.total t = f.app p t := by
-    rcases parity_eq_zero_or_one p with rfl | rfl
-    · rw [SuperNatTrans.total, Superfunctor.app_eq_zero_of_mem hf (by decide : (1 : ZMod 2) ≠ 0) t,
-        add_zero]
-    · rw [SuperNatTrans.total, Superfunctor.app_eq_zero_of_mem hf (by decide : (0 : ZMod 2) ≠ 1) t,
-        zero_add]
-  rw [ht v, ht w]
-  exact LinearMap.congr_fun (f.naturality p g hg) b
-
 namespace PowerVacuumCoefficient
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -94,52 +78,6 @@ theorem weightedEmptyEquiv_coefficient_action
   have ha := empty_coefficient_action D Sc cutoff L a x
   rw [weightedEmptyEquiv_apply, weightedEmptyEquiv_apply]
   exact hn.symm.trans (congrArg ((weightedRestrictionIso D Sc cutoff L).inv.total ⟨[]⟩) ha)
-
-private theorem weightedEmptyEquiv_coefficient_decode
-    (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff)
-    (x : (WM).obj ((Q).obj (⟨[]⟩ : OldCategory D Sc cutoff))) :
-    (weightedEmptyEquiv D Sc cutoff L).symm ((WM).map (weightedCoefficientEnd D Sc cutoff L a) x) =
-      coefficientClass D cutoff L a * (weightedEmptyEquiv D Sc cutoff L).symm x := by
-  let e := weightedEmptyEquiv D Sc cutoff L
-  have h := weightedEmptyEquiv_coefficient_action D Sc cutoff L a (e.symm x)
-  rw [e.apply_symm_apply] at h
-  exact (congrArg e.symm h).trans (e.symm_apply_apply _)
-
-/-- The weighted inverse cap has the full A/T-superlinearity of its
-prescribed degree, on the actual weighted F/E coefficient action and
-with coefficient multiplication in the original left order. -/
-theorem weightedFunctional_coefficient (i : I) (hN : 0 < cutoff i) {q : ZMod 2}
-    {a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff}
-    (ha : a ∈ SKM.SYM.elvCoefficientParity D cutoff q)
-    (z : (((restriction (truncatedAppend D Sc cutoff bound [i])).obj
-      ((induction (truncatedAppend D Sc cutoff bound [i])).obj WM)).obj
-        ((Q).obj (⟨[]⟩ : OldCategory D Sc cutoff)))) :
-    weightedFunctional D Sc cutoff L i hN
-      (((restriction (truncatedAppend D Sc cutoff bound [i])).obj
-        ((induction (truncatedAppend D Sc cutoff bound [i])).obj WM)).map
-          (weightedCoefficientEnd D Sc cutoff L a) z) =
-      koszulSign ((cutoff i - 1) • D.parity i) q •
-        (coefficientClass D cutoff L a * weightedFunctional D Sc cutoff L i hN z) := by
-  let s : ContentCategory D Sc cutoff bound 0 := ⟨⟨[]⟩, rfl⟩
-  let g : s ⟶ s := weightedCoefficientEnd D Sc cutoff L a
-  have hg : g ∈ parity (R := k) s s q :=
-    IsSuperfunctor.map_mem (F := Q) (coefficientEndomorphism_mem D Sc cutoff [] ha)
-  have hn := homogeneous_module_total_apply (weightedCoefficientCap D Sc cutoff i L hN)
-    (weightedCoefficientCap_mem D Sc cutoff i L hN) g hg z
-  have hd := weightedEmptyEquiv_coefficient_decode D Sc cutoff L a
-    ((weightedCoefficientCap D Sc cutoff i L hN).total s z)
-  rw [weightedFunctional_coefficientCap, weightedFunctional_coefficientCap]
-  calc
-    _ = (weightedEmptyEquiv D Sc cutoff L).symm
-        (koszulSign ((cutoff i - 1) • D.parity i) q •
-          (WM).map (weightedCoefficientEnd D Sc cutoff L a)
-            ((weightedCoefficientCap D Sc cutoff i L hN).total s z)) :=
-      congrArg (weightedEmptyEquiv D Sc cutoff L).symm hn
-    _ = koszulSign ((cutoff i - 1) • D.parity i) q •
-        (weightedEmptyEquiv D Sc cutoff L).symm
-          ((WM).map (weightedCoefficientEnd D Sc cutoff L a)
-            ((weightedCoefficientCap D Sc cutoff i L hN).total s z)) := by rw [map_zsmul]
-    _ = _ := congrArg (fun y : AQ => koszulSign ((cutoff i - 1) • D.parity i) q • y) hd
 
 end PowerVacuumCoefficient
 end OddMath.QuiverHecke.ELVOld

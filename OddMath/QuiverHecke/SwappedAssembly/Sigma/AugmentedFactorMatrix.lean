@@ -21,7 +21,6 @@ namespace ProbeReservoir
 variable (P : ProbeReservoir k B D Sc)
 variable {C : Type*} [Category C] [Preadditive C] [Limits.HasZeroObject C]
 
-
 /-- A native principal map, padded by zero at either absent pure corner. -/
 def centralPaddedSigma (c : P.CrossCoeff) (i : I) (t : Sector I) (Z : P.H t)
     (E : P.H t ⥤ C) (a b : Bool) :

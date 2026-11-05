@@ -46,20 +46,6 @@ private theorem scalarTensor_congr
       ELVOld.BalancedInduction.tensor J M.toFunctor v h b₁ :=
   congrArg₂ (fun a x => ELVOld.BalancedInduction.tensor J M.toFunctor v a x) hg hb
 
-private theorem scalarFiveIsoHom_mem
-    {E : Type*} [Category* E] [Preadditive E] [Linear k E] [Supercategory k E]
-    {F₀ F₁ F₂ F₃ F₄ F₅ : E}
-    (e₁ : F₀ ≅ F₁) (e₂ : F₁ ≅ F₂) (e₃ : F₂ ≅ F₃)
-    (e₄ : F₃ ≅ F₄) (e₅ : F₄ ≅ F₅)
-    (h₁ : e₁.hom ∈ parity (R := k) _ _ 0)
-    (h₂ : e₂.hom ∈ parity (R := k) _ _ 0)
-    (h₃ : e₃.hom ∈ parity (R := k) _ _ 0)
-    (h₄ : e₄.hom ∈ parity (R := k) _ _ 0)
-    (h₅ : e₅.hom ∈ parity (R := k) _ _ 0) :
-    (e₁ ≪≫ e₂ ≪≫ e₃ ≪≫ e₄ ≪≫ e₅).hom ∈ parity (R := k) _ _ 0 := by
-  simpa only [Iso.trans_hom, zero_add] using
-    comp_mem h₁ (comp_mem h₂ (comp_mem h₃ (comp_mem h₄ h₅)))
-
 private theorem scalarIso_total_hom_inv
     {F G : Superfunctor k C (SVec k)} (e : F ≅ G) (w : C) (b : G.obj w) :
     e.hom.total w (e.inv.total w b) = b := by
@@ -144,25 +130,6 @@ private theorem probeAppend_hom_square :
           (probeQuotientInducedModuleIso D Sc m ν N hN).hom := by
   rw [ELVOld.BalancedInduction.squareComparison_eq]
   rfl
-
-/-- The entire selected scalar append comparison has parity zero. -/
-theorem probeAppendOrdinaryModuleIso_hom_mem :
-    (probeAppendOrdinaryModuleIso D Sc m ν N hN i).hom ∈ parity (R := k) _ _ 0 := by
-  unfold probeAppendOrdinaryModuleIso
-  apply scalarFiveIsoHom_mem
-  · exact Supercategory.inv_mem (probeQuotientInducedModuleIso D Sc m (i :: ν) L hL)
-      (probeQuotientInducedModuleIso_hom_mem D Sc m (i :: ν) L hL)
-  · exact ELVOld.BalancedInduction.inductionComp_hom_mem _ _ _
-  · exact ELVOld.BalancedInduction.inducedIsoOfFunctorEq_hom_mem _ _ _ _
-  · exact ELVOld.BalancedInduction.inductionComp_inv_mem _ _ _
-  · exact IsSuperfunctor.map_mem (F := ELVOld.BalancedInduction.induction T)
-      (probeQuotientInducedModuleIso_hom_mem D Sc m ν N hN)
-
-/-- The inverse uses the same even coordinate convention. -/
-theorem probeAppendOrdinaryModuleIso_inv_mem :
-    (probeAppendOrdinaryModuleIso D Sc m ν N hN i).inv ∈ parity (R := k) _ _ 0 :=
-  Supercategory.inv_mem (probeAppendOrdinaryModuleIso D Sc m ν N hN i)
-    (probeAppendOrdinaryModuleIso_hom_mem D Sc m ν N hN i)
 
 /-- The chosen comparison expressed on the literal old and ordinary coends.
 This exposes identical module instances before computing generators. -/

@@ -34,17 +34,6 @@ private theorem chart_square {C : Type*} [Category* C] {A A' B B' S T : C}
   simp only [Iso.trans_hom, eqToIso.hom, Category.assoc]
   rw [← Category.assoc, transport_square hA hB f g h, Category.assoc, hg]
 
-private theorem mapped_entry_square {A C : Type*} [Category* A] [Category* C]
-    (F : A ⥤ C) {M N S T : A} {X Y G : C} (hX : X = F.obj M) (hY : Y = F.obj N)
-    (e : M ≅ S) (d : N ≅ T) (a : M ⟶ N) (b : S ⟶ T)
-    (h : a ≫ d.hom = e.hom ≫ b) (x : G ⟶ X) :
-    (x ≫ eqToHom hX ≫ F.map a ≫ eqToHom hY.symm) ≫
-        (eqToHom hY ≫ F.map d.hom) =
-      x ≫ (eqToHom hX ≫ F.map e.hom) ≫ F.map b := by
-  subst X Y
-  simp only [eqToHom_refl, Category.id_comp, Category.comp_id]
-  rw [Category.assoc, ← F.map_comp, h, F.map_comp]
-
 namespace ProbeReservoir
 variable (P : ProbeReservoir k B D Sc)
 
@@ -155,48 +144,6 @@ def reservoirLayerCrossTargetIso (ν : X) (u v : List (Letter I)) (i j : I)
   eqToIso (P.pathFunctor_append_append_obj pu (SPath.two (c₁ := ⟨up j, SKM.wt D (SKM.wt D ν v) [up i]⟩) (c₂ := ⟨up i,SKM.wt D ν v⟩) false false hw₁ hw₂ rfl) pv Z) ≪≫
     (P.pathFunctor pu).mapIso (P.reservoirCrossTargetIso (SKM.wt D ν v) i j c hw₁ hw₂ hs
       ((P.pathFunctor pv).obj Z))
-
-/-- The literal distinct-colour reservoir layer matrix, in both path
-contexts, becomes the given reservoir factor crossing. No generator
-comparison or inverse property for its mixed coefficient is assumed. -/
-theorem layerMap_reservoir_cross_ne (a : P.CrossCoeff) {Gs Ys : ∀ s, P.H s}
-    (ν : X) (u v : List (Letter I)) (i j : I) (hij : i ≠ j)
-    (hr : ∀ l ∈ (SKM.lay D ν u (.cross i j) v).right, l.l.1 = true)
-    (x : P.Mod Gs Ys (SKM.lay D ν u (.cross i j) v).dom)
-    {sl : Sector I} {c d : I →₀ ℕ}
-    (hv₁ : StepValid (true,i) false (0,c))
-    (hv₂ : StepValid (true,j) false (nextSector (true,i) false (0,c)))
-    (hw₁ : StepValid (true,j) false (0,c))
-    (hw₂ : StepValid (true,i) false (nextSector (true,j) false (0,c)))
-    (hs : nextSector (true,j) false (nextSector (true,i) false (0,c)) =
-      nextSector (true,i) false (nextSector (true,j) false (0,c)))
-    (pu : SPath (SKM.lay D ν u (.cross i j) v).left sl (0,c))
-    (pv : SPath (SKM.lay D ν u (.cross i j) v).right
-      (nextSector (true,i) false (nextSector (true,j) false (0,c))) (0,d))
-    (hq : P.wt (0,d) = (SKM.lay D ν u (.cross i j) v).cod.endR) :
-    P.layerMap (P.upwardGens a) (SKM.lay D ν u (.cross i j) v) x sl ⟨(0,d),hq⟩
-        ((pu.append (SPath.two false false hw₁ hw₂ rfl)).append pv) ≫
-        (P.reservoirLayerCrossTargetIso ν u v i j hw₁ hw₂ hs pu pv (Ys (0,d))).hom =
-      x sl ⟨(0,d),hq.trans (SKM.lay_valid D ν u (.cross i j) v).endR_eq⟩
-        ((pu.append (SPath.two false false hv₁ hv₂ hs)).append pv) ≫
-        (P.reservoirLayerCrossSourceIso ν u v i j hv₁ hv₂ hs pu pv (Ys (0,d))).hom ≫
-        (P.pathFunctor pu).map (sourceValue P i j c hs ((P.pathFunctor pv).obj (Ys (0,d))) ◁
-          P.W.cross i j (P.muM_postE j hv₂) (P.muM_postE i hv₁)
-            (edge P i j c hw₂ hs) (P.muM_postE j hw₁)) := by
-  let pg := SPath.two (c₁ := ⟨up i, SKM.wt D (SKM.wt D ν v) [up j]⟩)
-    (c₂ := ⟨up j,SKM.wt D ν v⟩) false false hv₁ hv₂ hs
-  let qg := SPath.two (c₁ := ⟨up j, SKM.wt D (SKM.wt D ν v) [up i]⟩)
-    (c₂ := ⟨up i,SKM.wt D ν v⟩) false false hw₁ hw₂ rfl
-  rw [P.layerMap_reservoir_append (P.upwardGens a) _ (SKM.lay_valid D ν u (.cross i j) v)
-    (by change ∀ l ∈ ([⟨up i,_⟩,⟨up j,_⟩] : List (Col I X)), l.l.1 = true; simp)
-    hr x pu pg qg pv hq rfl]
-  exact mapped_entry_square (P.pathFunctor pu)
-    (P.pathFunctor_append_append_obj pu pg pv (Ys (0,d)))
-    (P.pathFunctor_append_append_obj pu qg pv (Ys (0,d)))
-    (P.reservoirCrossSourceIso (SKM.wt D ν v) i j c hv₁ hv₂ hs ((P.pathFunctor pv).obj (Ys (0,d))))
-    (P.reservoirCrossTargetIso (SKM.wt D ν v) i j c hw₁ hw₂ hs ((P.pathFunctor pv).obj (Ys (0,d))))
-    _ _ (P.crossImage_reservoirVacuum a (SKM.wt D ν v) i j hij c hv₁ hv₂ hw₁ hw₂ hs
-      ((P.pathFunctor pv).obj (Ys (0,d)))) _
 
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

@@ -102,104 +102,6 @@ universe u v w
 variable {I : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
   {k : Type w} [CommRing k] (Sc : SKM.Scalars D k)
 
-/-- Span of positioned words whose dot-minus-crossing score is at least `s`. -/
-def ScoreFilt (t t' : List I) (s : ℤ) :
-    Submodule k ((pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D t')) :=
-  Submodule.span k {f | ∃ gs h, s ≤ positionedScore t.length gs ∧ cl D Sc t t' gs h = f}
-
-theorem cl_mem_scoreFilt {t t' : List I} {gs : List PG}
-    (h : SChain t (pl t gs) t') {s : ℤ} (hs : s ≤ positionedScore t.length gs) :
-    cl D Sc t t' gs h ∈ ScoreFilt D Sc t t' s :=
-  Submodule.subset_span ⟨gs, h, hs, rfl⟩
-
-theorem scoreFilt_antitone {t t' : List I} {s r : ℤ} (h : s ≤ r) :
-    ScoreFilt D Sc t t' r ≤ ScoreFilt D Sc t t' s :=
-  Submodule.span_mono fun _ ⟨gs, hg, hs, e⟩ => ⟨gs, hg, h.trans hs, e⟩
-
-/-- The existing local correction bounds retain enough information: zero crossings
-implies nonnegative score, even though general crossing bounds forget the dots. -/
-theorem filt_zero_le_scoreFilt_zero (t t' : List I) :
-    Filt D Sc t t' 0 ≤ ScoreFilt D Sc t t' 0 := by
-  apply Submodule.span_le.mpr
-  rintro _ ⟨gs, hg, hc, rfl⟩
-  apply cl_mem_scoreFilt D Sc hg
-  exact positionedScore_nonneg_of_crossCount_zero _ _ (by omega)
-
-/-- Lower scores add when a morphism is placed in a word context. -/
-theorem comp_scoreFilt_comp {t t₁ t₂ t' : List I} (Q R : List PG)
-    (h₁ : SChain t (pl t Q) t₁) (h₂ : SChain t₂ (pl t₂ R) t')
-    {s : ℤ} {f : (pres D Sc).obj (ob D t₁) ⟶ (pres D Sc).obj (ob D t₂)}
-    (hf : f ∈ ScoreFilt D Sc t₁ t₂ s) :
-    cl D Sc t t₁ Q h₁ ≫ f ≫ cl D Sc t₂ t' R h₂ ∈
-      ScoreFilt D Sc t t' (positionedScore t.length Q + s + positionedScore t₂.length R) := by
-  induction hf using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨gs, hg, hs, rfl⟩ := hx
-    rw [cl_comp, cl_comp]
-    have hlen₁ : t₁.length = t.length := length_of_sChain h₁
-    have hlen₂ : t₂.length = t₁.length := length_of_sChain hg
-    exact cl_mem_scoreFilt D Sc _ (by
-      simp only [positionedScore_append]
-      rw [hlen₁] at hs
-      rw [hlen₂, hlen₁]
-      omega)
-  | zero => simp
-  | add x y _ _ hx hy =>
-    rw [Preadditive.add_comp, Preadditive.comp_add]
-    exact Submodule.add_mem _ hx hy
-  | smul c x _ hx =>
-    rw [Linear.smul_comp, Linear.comp_smul]
-    exact Submodule.smul_mem _ c hx
-
-/-- Local score control survives arbitrary positioned contexts. -/
-theorem score_move_ctx {t t₁ t₂ t' : List I} (Q M M' R : List PG) (c : k)
-    {s : ℤ} (hQ : SChain t (pl t Q) t₁) (hR : SChain t₂ (pl t₂ R) t')
-    (hM : SChain t₁ (pl t₁ M) t₂) (hM' : SChain t₁ (pl t₁ M') t₂)
-    (hmove : cl D Sc t₁ t₂ M hM - c • cl D Sc t₁ t₂ M' hM' ∈
-      ScoreFilt D Sc t₁ t₂ s)
-    (h : SChain t (pl t (Q ++ M ++ R)) t')
-    (h' : SChain t (pl t (Q ++ M' ++ R)) t') :
-    cl D Sc t t' (Q ++ M ++ R) h - c • cl D Sc t t' (Q ++ M' ++ R) h' ∈
-      ScoreFilt D Sc t t' (positionedScore t.length Q + s + positionedScore t₂.length R) := by
-  have e₁ : cl D Sc t t' (Q ++ M ++ R) h =
-      cl D Sc t t₁ Q hQ ≫ cl D Sc t₁ t₂ M hM ≫ cl D Sc t₂ t' R hR := by
-    rw [cl_comp, cl_comp]; simp only [List.append_assoc]
-  have e₂ : cl D Sc t t' (Q ++ M' ++ R) h' =
-      cl D Sc t t₁ Q hQ ≫ cl D Sc t₁ t₂ M' hM' ≫ cl D Sc t₂ t' R hR := by
-    rw [cl_comp, cl_comp]; simp only [List.append_assoc]
-  rw [e₁, e₂]
-  convert comp_scoreFilt_comp D Sc Q R hQ hR hmove using 1
-  simp only [Preadditive.sub_comp, Preadditive.comp_sub, Linear.smul_comp, Linear.comp_smul]
-
-theorem cross_cross_score {t₁ t₂ : List I} {a : ℕ} (ha : a + 1 < t₁.length)
-    (h : SChain t₁ (pl t₁ [.cross a, .cross a]) t₂) :
-    cl D Sc t₁ t₂ [.cross a, .cross a] h ∈ ScoreFilt D Sc t₁ t₂ 0 :=
-  filt_zero_le_scoreFilt_zero D Sc _ _ (cross_cross_at D Sc ha h)
-
-theorem slide_left_score {t₁ t₂ : List I} {a : ℕ} (ha : a + 1 < t₁.length)
-    (h₁ : SChain t₁ (pl t₁ [.dot a, .cross a]) t₂)
-    (h₂ : SChain t₁ (pl t₁ [.cross a, .dot (a + 1)]) t₂) :
-    ∃ c : k, c * c = 1 ∧ cl D Sc t₁ t₂ [.dot a, .cross a] h₁ -
-      c • cl D Sc t₁ t₂ [.cross a, .dot (a + 1)] h₂ ∈ ScoreFilt D Sc t₁ t₂ 0 := by
-  obtain ⟨c, hc, hm⟩ := slide_left_at D Sc ha h₁ h₂
-  exact ⟨c, hc, filt_zero_le_scoreFilt_zero D Sc _ _ hm⟩
-
-theorem slide_right_score {t₁ t₂ : List I} {a : ℕ} (ha : a + 1 < t₁.length)
-    (h₁ : SChain t₁ (pl t₁ [.cross a, .dot a]) t₂)
-    (h₂ : SChain t₁ (pl t₁ [.dot (a + 1), .cross a]) t₂) :
-    ∃ c : k, c * c = 1 ∧ cl D Sc t₁ t₂ [.cross a, .dot a] h₁ -
-      c • cl D Sc t₁ t₂ [.dot (a + 1), .cross a] h₂ ∈ ScoreFilt D Sc t₁ t₂ 0 := by
-  obtain ⟨c, hc, hm⟩ := slide_right_at D Sc ha h₁ h₂
-  exact ⟨c, hc, filt_zero_le_scoreFilt_zero D Sc _ _ hm⟩
-
-theorem braid_score {t₁ t₂ : List I} {a : ℕ} (ha : a + 2 < t₁.length)
-    (h₁ : SChain t₁ (pl t₁ [.cross a, .cross (a + 1), .cross a]) t₂)
-    (h₂ : SChain t₁ (pl t₁ [.cross (a + 1), .cross a, .cross (a + 1)]) t₂) :
-    cl D Sc t₁ t₂ [.cross a, .cross (a + 1), .cross a] h₁ -
-      cl D Sc t₁ t₂ [.cross (a + 1), .cross a, .cross (a + 1)] h₂ ∈
-        ScoreFilt D Sc t₁ t₂ 0 :=
-  filt_zero_le_scoreFilt_zero D Sc _ _ (braid_at D Sc ha h₁ h₂)
-
 /-- Joint span, retaining crossing count and score on the same representatives.
 An intersection of the two separate spans would not justify joint induction. -/
 def BoundedScore (t t' : List I) (m : ℕ) (s : ℤ) :
@@ -218,14 +120,6 @@ theorem boundedScore_mono {t t' : List I} {m n : ℕ} {s r : ℤ}
     BoundedScore D Sc t t' m r ≤ BoundedScore D Sc t t' n s :=
   Submodule.span_mono fun _ ⟨gs, hg, hc, hd, e⟩ =>
     ⟨gs, hg, hc.trans hm, hs.trans hd, e⟩
-
-theorem boundedScore_le_filt (t t' : List I) (m : ℕ) (s : ℤ) :
-    BoundedScore D Sc t t' m s ≤ Filt D Sc t t' m :=
-  Submodule.span_mono fun _ ⟨gs, hg, hc, _, e⟩ => ⟨gs, hg, hc, e⟩
-
-theorem boundedScore_le_scoreFilt (t t' : List I) (m : ℕ) (s : ℤ) :
-    BoundedScore D Sc t t' m s ≤ ScoreFilt D Sc t t' s :=
-  Submodule.span_mono fun _ ⟨gs, hg, _, hs, e⟩ => ⟨gs, hg, hs, e⟩
 
 theorem filt_zero_le_boundedScore_zero (t t' : List I) :
     Filt D Sc t t' 0 ≤ BoundedScore D Sc t t' 0 0 := by
@@ -436,7 +330,6 @@ theorem weighted_approx_step {t t' : List I} (P : List PG) {n : ℕ} {σ σ' : L
         List.length_append, List.length_cons, List.length_nil, Nat.cast_add]
       omega
 
-
 theorem weighted_braid_move {t t' : List I} (P : List PG) {n : ℕ} (hn : t.length = n) {σ σ' : List ℕ}
     (hb : BraidEquiv σ σ') (hv : ValidWord n σ)
     (h : SChain t (pl t (P ++ cw σ)) t') (h' : SChain t (pl t (P ++ cw σ')) t') :
@@ -457,7 +350,6 @@ theorem weighted_braid_move {t t' : List I} (P : List PG) {n : ℕ} (hn : t.leng
     rw [← BraidEquiv.length_eq hb₁] at this
     exact WeightedApprox.trans D Sc (ih₁ hv h h'') this
 
-
 theorem weighted_approx_ctx {t t' : List I} (Q M M' R : List PG) (c : k) (hc : IsUnit c)
     (h : SChain t (pl t (Q ++ M ++ R)) t')
     (hM : SChain (tgt t Q) (pl (tgt t Q) M) (tgt (tgt t Q) M))
@@ -474,7 +366,6 @@ theorem weighted_approx_ctx {t t' : List I} (Q M M' R : List PG) (c : k) (hc : I
     sChain_append_of (sChain_append_of (sChain_pl t Q) hM') hR
   exact ⟨h', weightedApprox_of_bounded D Sc hN (by simpa using hs) c hc
     (bounded_correction_ctx D Sc Q M M' R c (sChain_pl t Q) hR hM hM' hmove h h')⟩
-
 
 theorem weighted_dot_down {t t' : List I} (P : List PG) {n : ℕ} (hn : t.length = n) (σ : List ℕ)
     (hv : ValidWord n σ) (p : ℕ) (hp : p < n) (R : List PG)
@@ -529,7 +420,6 @@ theorem weighted_dot_down {t t' : List I} (P : List PG) {n : ℕ} (hn : t.length
       List.length_cons, Nat.cast_add, Nat.cast_one]
     omega
 
-
 theorem cl_mem_boundedScore_of_hasRepeat {t t' : List I} (P R : List PG) {n : ℕ} (hn : t.length = n)
     {σ : List ℕ} (hv : ValidWord n σ) (hr : HasRepeat σ)
     (h : SChain t (pl t (P ++ cw σ ++ R)) t') :
@@ -558,7 +448,6 @@ theorem cl_mem_boundedScore_of_hasRepeat {t t' : List I} (P R : List PG) {n : �
       positionedScore_cw hvα, positionedScore_cw hvβ,
       List.length_append, List.length_cons, List.length_nil, Nat.cast_add]
     omega
-
 
 theorem WeightedApprox.mem {t t' : List I} {N : ℕ} {s : ℤ}
     {x y : (pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D t')}
@@ -634,7 +523,6 @@ theorem weighted_nf_comp_dot {t t₀ t' : List I} {m : ℕ} {s : ℤ} (hlow : Sc
     simp only [List.length_cons] at he
     omega
 
-
 theorem weighted_nf_comp_cross {t t₀ t' : List I} {m : ℕ} {s : ℤ}
     (hlow : ScoreLow D Sc t t' (m + 1) (s - 1) ≤ WeightedNF D Sc t t' (m + 1) (s - 1))
     {a : ℕ} (ha : a + 1 < t₀.length) (hg : SChain t₀ (pl t₀ [PG.cross a]) t')
@@ -684,7 +572,6 @@ theorem weighted_nf_comp_cross {t t₀ t' : List I} {m : ℕ} {s : ℤ}
       simp at this ⊢; omega
     · rw [hb.length_eq]
       simp [positionedScore]
-
 
 theorem nil_mem_weightedNF {t t' : List I} (h : SChain t (pl t []) t') (m : ℕ)
     {s : ℤ} (hs : s ≤ 0) : cl D Sc t t' [] h ∈ WeightedNF D Sc t t' m s := by

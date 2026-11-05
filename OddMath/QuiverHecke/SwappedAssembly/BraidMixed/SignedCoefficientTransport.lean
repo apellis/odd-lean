@@ -77,54 +77,5 @@ variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
 namespace ProbeReservoir
 variable (P : ProbeReservoir k B D Sc)
 
-/-- Signed single-edge coefficient transport between any two functor images of
-mixed pairs. The hypotheses concern only the two dots, not the coefficient or
-any braid. This includes whiskered and conjugated pairs through linear functors. -/
-theorem CrossCoeff.signed_transport (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossDenominatorUnits) (i : I) (s t : Sector I)
-    (hs : StepValid (true, i) false s) (ht : StepValid (true, i) false t)
-    (Z : P.H (nextSector (true, i) true (nextSector (true, i) false s)))
-    (W : P.H (nextSector (true, i) true (nextSector (true, i) false t)))
-    {C : Type*} [Category C] [Preadditive C] [Linear k C]
-    (F : P.H s ⥤ C) [F.Additive] [F.Linear k]
-    (G : P.H t ⥤ C) [G.Additive] [G.Linear k]
-    (f : F.obj (P.rpObj i i s hs Z) ⟶ G.obj (P.rpObj i i t ht W))
-    (ε : k) (hε : ε * ε = 1)
-    (hx : F.map (P.rpPreDot i s hs Z) ≫ f =
-      ε • (f ≫ G.map (P.rpPreDot i t ht W)))
-    (hy : F.map (P.rpPostDot i s hs Z) ≫ f =
-      ε • (f ≫ G.map (P.rpPostDot i t ht W))) :
-    F.map (c.a i s hs Z) ≫ f = ε • (f ≫ G.map (c.a i t ht W)) := by
-  by_cases hi : D.parity i = 0
-  · apply signed_inverse_difference_transport _ _ _ _ _ _ f ε hε hx hy
-    · have he := congrArg F.map (hc.even i hi s hs Z).1
-      rw [F.map_comp] at he
-      erw [F.map_sub, F.map_id] at he
-      exact he
-    · have he := congrArg G.map (hc.even i hi t ht W).2
-      rw [G.map_comp] at he
-      erw [G.map_sub, G.map_id] at he
-      exact he
-  · have hi' : D.parity i = 1 := (Supercategory.parity_eq_zero_or_one _).resolve_left hi
-    refine signed_odd_coefficient_transport _ _ _ _ _ _ f ε hε hx hy ?_ ?_
-      (Units.map (functorAlg (k := k) G _).toMonoidHom (P.crossDenom h i t ht W)) ?_
-    · have he := congrArg F.map (hc.odd i hi' s hs Z).1
-      rw [F.map_comp] at he
-      erw [F.map_sub, F.map_comp, F.map_comp, F.map_sub] at he
-      exact he
-    · have he := congrArg G.map (hc.odd i hi' t ht W).1
-      rw [G.map_comp] at he
-      erw [G.map_sub, G.map_comp, G.map_comp, G.map_sub] at he
-      exact he
-    · simp only [Units.coe_map]
-      change G.map (P.crossDenom h i t ht W : End (P.rpObj i i t ht W)) = _
-      have hd : (P.crossDenom h i t ht W : End (P.rpObj i i t ht W)) =
-          P.rpPreDot i t ht W ≫ P.rpPreDot i t ht W -
-            P.rpPostDot i t ht W ≫ P.rpPostDot i t ht W := by
-        simp [crossDenom, hi, sub_eq_add_neg, add_comm,
-        pow_two, End.mul_def]
-      rw [hd]
-      erw [G.map_sub, G.map_comp, G.map_comp]
-
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

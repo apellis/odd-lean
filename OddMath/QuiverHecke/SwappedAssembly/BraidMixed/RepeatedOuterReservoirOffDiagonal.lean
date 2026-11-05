@@ -260,8 +260,6 @@ by
       ((P.step (true, i) true _ trivial).obj Z))
 end ReservoirEdges
 
-
-
 private lemma reservoir_route {C : Type*} [Category C] [Preadditive C]
     {A B V T : C} (f : A ⟶ B) (f' : A ⟶ V) (g : B ⟶ B)
     (h : V ⟶ B) (j : B ⟶ V) (l : V ⟶ V) (r : B ⟶ T) (r' : V ⟶ T)

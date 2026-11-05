@@ -191,7 +191,6 @@ theorem dAlpha_generator_anticomm {N : ℕ} (α : Fin N → ℤ) (j : Fin N) (f 
     dAlpha α (generator j * f) + generator j * dAlpha α f = generator j * generator j * f := by
   rw [dAlpha_mul, d_generator, parityInv_generator, neg_mul, neg_add_cancel_right]
 
-
 /-! ## `(θ ∘ w₀)(OΛ_N)` is the twisted symmetric subring -/
 
 section Twisted

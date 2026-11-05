@@ -16,33 +16,6 @@ open scoped BigOperators
 
 variable {C : Type*} [Category C] [Preadditive C] {X Y : C}
 
-/-- Iterate the ordered affine recurrence without commuting any factors. -/
-theorem mate_series_with_tail (s : End X) (t : End Y) (b f : X ⟶ Y)
-    (h : f = b + s ≫ f ≫ t) (n : ℕ) :
-    f = (∑ j ∈ Finset.range n, (s ^ j) ≫ b ≫ (t ^ j)) +
-      (s ^ n) ≫ f ≫ (t ^ n) := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-    calc
-      f = (∑ j ∈ Finset.range n, (s ^ j) ≫ b ≫ (t ^ j)) +
-          (s ^ n) ≫ f ≫ (t ^ n) := ih
-      _ = (∑ j ∈ Finset.range n, (s ^ j) ≫ b ≫ (t ^ j)) +
-          (s ^ n) ≫ (b + s ≫ f ≫ t) ≫ (t ^ n) := by rw [← h]
-      _ = (∑ j ∈ Finset.range (n + 1), (s ^ j) ≫ b ≫ (t ^ j)) +
-          (s ^ (n + 1)) ≫ f ≫ (t ^ (n + 1)) := by
-        simp only [Finset.sum_range_succ, Preadditive.comp_add, Preadditive.add_comp,
-          pow_succ' s n, pow_succ t n, End.mul_def, Category.assoc, add_assoc]
-
-/-- A nilpotent side kills the tail; the other side need not be nilpotent. -/
-theorem mate_series (s : End X) (t : End Y) (b f : X ⟶ Y)
-    (h : f = b + s ≫ f ≫ t) (n : ℕ) (hn : s ^ n = 0 ∨ t ^ n = 0) :
-    f = ∑ j ∈ Finset.range n, (s ^ j) ≫ b ≫ (t ^ j) := by
-  have he := mate_series_with_tail s t b f h n
-  rcases hn with hs | ht
-  · simpa [hs] using he
-  · simpa [ht] using he
-
 /-- Signed recurrence with an explicit ordered tail. Integer coefficients act
 on the Hom group, not on the endomorphism-ring structure. -/
 theorem mate_signed_series_with_tail (s : End X) (t : End Y) (b f : X ⟶ Y)

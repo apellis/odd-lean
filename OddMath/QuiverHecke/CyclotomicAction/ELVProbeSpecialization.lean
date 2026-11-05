@@ -132,7 +132,6 @@ theorem elvProbeOldHom_rightContext (σ v w : List I) (f : ELVOld.Old D Sc cut v
   exact elvAffineScalarSpecialization_rightContext D Sc cut
     (probeScalarValues D m) (probeScalarValues_vanish D m) σ v w f
 
-
 variable [Fintype I]
 
 /-- The existing ordinary Hom quotient maps to its literal probe matrix entry. -/
@@ -165,49 +164,5 @@ def elvProbeWordEntry {n : ℕ} (s t : Word I (n+1)) :
     (f : ELVOld.hom D Sc cut s.val t.val) :
     elvProbeWordEntry D m Sc s t ((ELVOld.ideal D Sc cut s.val t.val).mkQ f) =
       cyclotomicWordEntry D Sc a s t ((F).map f) := rfl
-
-/-- Composition is retained in the actual rectangular probe entries. -/
-theorem elvProbeWordEntry_comp {n : ℕ} (s t z : Word I (n+1))
-    (f : ELVOld.Old D Sc cut s.val t.val) (g : ELVOld.Old D Sc cut t.val z.val) :
-    elvProbeWordEntry D m Sc s z (ELVOld.oldComp D Sc cut s.val t.val z.val f g) =
-      elvProbeWordEntry D m Sc t z g * elvProbeWordEntry D m Sc s t f := by
-  obtain ⟨f, rfl⟩ := (ELVOld.ideal D Sc cut s.val t.val).mkQ_surjective f
-  obtain ⟨g, rfl⟩ := (ELVOld.ideal D Sc cut t.val z.val).mkQ_surjective g
-  rw [ELVOld.oldComp_mk, elvProbeWordEntry_mk, elvProbeWordEntry_mk, elvProbeWordEntry_mk]
-  calc
-    cyclotomicWordEntry D Sc a s z ((F).map (f ≫ g)) =
-        cyclotomicWordEntry D Sc a s z ((F).map f ≫ (F).map g) :=
-      congrArg (fun h : wordObj D Sc s ⟶ wordObj D Sc z => cyclotomicWordEntry D Sc a s z h)
-        (elvProbeScalarHom_comp D m Sc f g)
-    _ = _ := cyclotomicWordEntry_comp D Sc a s t z _ _
-
-theorem elvProbeWordEntry_id {n : ℕ} (s : Word I (n+1)) :
-    elvProbeWordEntry D m Sc s s ((ELVOld.ideal D Sc cut s.val s.val).mkQ
-      (𝟙 (ELVOld.obj D Sc cut s.val))) = cyclotomicWordIdempotent D Sc a s := by
-  rw [elvProbeWordEntry_mk]
-  calc
-    cyclotomicWordEntry D Sc a s s ((F).map (𝟙 (ELVOld.obj D Sc cut s.val))) =
-        cyclotomicWordEntry D Sc a s s (𝟙 (wordObj D Sc s)) :=
-      congrArg (fun h : End (wordObj D Sc s) => cyclotomicWordEntry D Sc a s s h)
-        (elvProbeScalarHom_id D m Sc s.val)
-    _ = _ := cyclotomicWordEntry_id D Sc a s
-
-/-- The actual probe matrix entries commute with the existing cyclotomic append map. -/
-theorem elvProbeWordEntry_append {n : ℕ} (i : I) (s t : Word I (n+1))
-    (f : ELVOld.Old D Sc cut s.val t.val) :
-    cyclotomicAppend D Sc i a n (elvProbeWordEntry D m Sc s t f) =
-      elvProbeWordEntry D m Sc (appendWord i s) (appendWord i t)
-        (elvProbeOldRightContext D m Sc [i] s.val t.val f) := by
-  obtain ⟨f, rfl⟩ := (ELVOld.ideal D Sc cut s.val t.val).mkQ_surjective f
-  change cyclotomicAppendLinear D Sc i a n
-      (cyclotomicMk D Sc a n (FiniteHomMatrix.single t s ((F).map f))) =
-    cyclotomicMk D Sc a (n+1)
-      (FiniteHomMatrix.single (appendWord i t) (appendWord i s)
-        ((F).map (ELVOld.rightContext D Sc cut [i] s.val t.val f)))
-  rw [cyclotomicAppendLinear_mk]
-  change cyclotomicMk D Sc a (n+1)
-      (appendLinear D Sc i (n+1) (FiniteHomMatrix.single t s ((F).map f))) = _
-  rw [appendLinear_single, elvAffineScalarSpecialization_rightContext]
-  rfl
 
 end OddMath.QuiverHecke

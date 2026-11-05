@@ -13,29 +13,6 @@ open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
 namespace OddMath.QuiverHecke.ELVOld
 universe u
-private theorem tripleComparison_eq_mem
-    {k : Type u} [CommRing k] {C B : Type*} [Category* C] [Category* B]
-    [Preadditive B] [Linear k B] [Supercategory k B]
-    {F G : C ⥤ B} (e : F = G) (M : C) :
-    EvenComparisonAt (k := k) (eqToIso e) M := by
-  cases e
-  exact ⟨id_mem _, id_mem _⟩
-
-private theorem tripleComparison_trans_mem
-    {k : Type u} [CommRing k] {C B : Type*} [Category* C] [Category* B]
-    [Preadditive B] [Linear k B] [Supercategory k B]
-    {F G H : C ⥤ B} (e : F ≅ G) (f : G ≅ H) (M : C)
-    (he : EvenComparisonAt (k := k) e M) (hf : EvenComparisonAt (k := k) f M) :
-    EvenComparisonAt (k := k) (e ≪≫ f) M :=
-  ⟨comp_mem he.1 hf.1, comp_mem hf.2 he.2⟩
-
-private theorem tripleEvaluationComparison_mem
-    {k : Type u} [CommRing k] {C B E : Type*} [Category* C] [Category* B] [Category* E]
-    [Preadditive E] [Linear k E] [Supercategory k E]
-    (R : C ⥤ B) {F : C ⥤ E} {G H : B ⥤ E} (h : F = R ⋙ G) (e : G ≅ H)
-    (he : ∀ N, EvenComparisonAt (k := k) e N) (M : C) :
-    EvenComparisonAt (k := k) (eqToIso h ≪≫ Functor.isoWhiskerLeft R e) M :=
-  tripleComparison_trans_mem _ _ M (tripleComparison_eq_mem h M) (he (R.obj M))
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
@@ -60,9 +37,6 @@ variable (i j l : I) (Λ : X) {x₀ x₁ x₂ x₃ : X}
 /-- The actual block reached by the three indicated successive inductions. -/
 abbrev elvBlockSucc₃ (β : WeightBlocks D Λ x₀) : WeightBlocks D Λ x₃ :=
   blockSucc D Λ i h₃ (blockSucc₂ D j l Λ h₁ h₂ β)
-
-theorem elvBlockSucc₃_injective : Function.Injective (elvBlockSucc₃ D i j l Λ h₁ h₂ h₃) :=
-  fun _ _ h => blockSucc₂_injective D j l Λ h₁ h₂ (blockSucc_injective D Λ i h₃ h)
 
 /-- All three selected block inductions, retaining both true intermediate blocks. -/
 abbrev elvBlockTripleInd (β : WeightBlocks D Λ x₀) :=
@@ -136,19 +110,6 @@ def elvWeightTripleComparison (β : WeightBlocks D Λ x₀)
     Functor.isoWhiskerLeft (elvBlockEval D Sc cutoff bound Λ β).toFunctor
       (contentETripleComparison D Sc cutoff bound β.1 l j i ε.1
         (elvWeightTriple_content_eq D i j l Λ h₁ h₂ h₃ β ε hε))
-
-/-- Both directions of the selected weight triple comparison are even. -/
-theorem elvWeightTripleComparison_mem (β : WeightBlocks D Λ x₀)
-    (ε : WeightBlocks D Λ x₃) (hε : elvBlockSucc₃ D i j l Λ h₁ h₂ h₃ β = ε)
-    (M : ELVWeightProduct D Sc cutoff bound Λ x₀) :
-    EvenComparisonAt (k := k)
-      (elvWeightTripleComparison D Sc cutoff bound i j l Λ h₁ h₂ h₃ β ε hε) M :=
-  tripleEvaluationComparison_mem (elvBlockEval D Sc cutoff bound Λ β).toFunctor
-    (elvEFunctor_comp₃_contentTriple_eq D Sc cutoff bound i j l Λ h₁ h₂ h₃ β ε hε)
-    (contentETripleComparison D Sc cutoff bound β.1 l j i ε.1
-      (elvWeightTriple_content_eq D i j l Λ h₁ h₂ h₃ β ε hε))
-    (contentETripleComparison_mem D Sc cutoff bound β.1 l j i ε.1
-      (elvWeightTriple_content_eq D i j l Λ h₁ h₂ h₃ β ε hε)) M
 
 /-- No triple predecessor means the actual source coordinate is zero. -/
 theorem elvEFunctor_comp₃_isZero (ε : WeightBlocks D Λ x₃)

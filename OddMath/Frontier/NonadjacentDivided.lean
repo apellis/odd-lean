@@ -194,7 +194,6 @@ theorem divided_unique (u v : Fin (n+2)) (huv : u ≠ v)
       | add a b ha hb => rw [map_add, map_add, map_add, ha, hb]
       | mul a b ha hb => rw [map_mul, hmul, divided_mul, ha, hb]
 
-
 /-- Unitality is forced by the Leibniz rule, not an extra assumption. -/
 theorem unique (u v : Fin (n+2)) (huv : u ≠ v)
     (D : SkewPolynomial (n+2) →ₗ[ℤ] SkewPolynomial (n+2))

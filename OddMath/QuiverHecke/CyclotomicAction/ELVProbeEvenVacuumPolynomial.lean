@@ -75,7 +75,6 @@ theorem probeOrdinaryVacuumInductionDot_even (i : I) (hi : D.parity i = 0)
   have he : probeDotExponent D i = 1 := by simp [probeDotExponent, hi]
   simpa only [he, pow_one] using h
 
-
 private theorem iso_total_injective
     {k C : Type u} [CommRing k] [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
     {F G : Superfunctor k C (SVec k)} (e : F ≅ G) (w : C) :
@@ -97,7 +96,6 @@ private theorem intertwine_even_polynomial
   apply hC
   have hh := LinearMap.congr_fun hm z
   simpa only [LinearMap.comp_apply, hy, LinearMap.zero_apply, map_zero] using hh
-
 
 section Old
 variable (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) []) (SVec k))

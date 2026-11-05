@@ -116,16 +116,6 @@ structure ShiftedSuperAdjunction {a b : B} (F : b ⟶ a) (E : a ⟶ b) (σ : ZMo
   right_triangle : (rightUnitor E).inv ≫ E ◁ unit ≫ (associator E F E).inv ≫
     counit ▷ E ≫ (leftUnitor E).hom = koszulSign σ σ • 𝟙 E
 
-/-- An even adjunction is a shifted adjunction with `σ = 0`. -/
-def ShiftedSuperAdjunction.ofSuperAdjunction {a b : B} {F : b ⟶ a} {E : a ⟶ b}
-    (A : SuperAdjunction (k := k) F E) : ShiftedSuperAdjunction (k := k) F E 0 where
-  unit := A.unit
-  counit := A.counit
-  unit_mem := A.unit_mem
-  counit_mem := A.counit_mem
-  left_triangle := A.left_triangle
-  right_triangle := by rw [A.right_triangle, koszulSign_zero_left, one_smul]
-
 section Coherence
 variable {a b c : B}
 include k

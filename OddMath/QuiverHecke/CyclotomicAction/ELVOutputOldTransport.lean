@@ -450,47 +450,6 @@ theorem tmul_shortSpan (i : I) (v t : List I)
     rw [map_smul]
     exact Submodule.smul_mem _ c hf
 
-/-- The actual old crossing slides across the bare long chain with its
-specified super sign, modulo the exact chronological short span. Coefficients
-are arbitrary in the full ELV coefficient algebra. -/
-theorem bareLong_cross_chronologicalShort (i a b : I) (l r : List I)
-    (c : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff)
-    (h : SChain (i :: (l ++ a :: b :: r))
-      (pl (i :: (l ++ a :: b :: r))
-        (cw (leadingMoveWord [] (l ++ a :: b :: r)) ++ [.cross l.length]))
-      ((l ++ b :: a :: r) ++ [i]))
-    (h' : SChain (i :: (l ++ a :: b :: r))
-      (pl (i :: (l ++ a :: b :: r))
-        ([.cross (l.length+1)] ++ cw (leadingMoveWord [] (l ++ b :: a :: r))))
-      ((l ++ b :: a :: r) ++ [i])) :
-    projection D Sc cutoff i (l ++ a :: b :: r) ((l ++ b :: a :: r) ++ [i])
-      (c ⊗ₜ[k] (cl D Sc _ _
-        (cw (leadingMoveWord [] (l ++ a :: b :: r)) ++ [.cross l.length]) h -
-        SKM.zsign k (D.parity i * wordSumParity D (l ++ a :: b :: r) *
-          D.parity a * D.parity b) •
-        cl D Sc _ _
-          ([.cross (l.length+1)] ++ cw (leadingMoveWord [] (l ++ b :: a :: r))) h')) ∈
-      chronologicalShortSpan D Sc cutoff i (l ++ a :: b :: r) (l ++ b :: a :: r) := by
-  apply tmul_shortSpan D Sc cutoff
-  apply SmallerTailNormalization.low_le_shortSpan D Sc
-  have transport {s t t' : List I} (ht : t = t')
-      (Q R : List PG) (z : k) (n : ℕ)
-      (hQ : SChain s (pl s Q) t) (hR : SChain s (pl s R) t)
-      (hQ' : SChain s (pl s Q) t') (hR' : SChain s (pl s R) t')
-      (he : cl D Sc s t Q hQ - z • cl D Sc s t R hR ∈ Low D Sc s t n) :
-      cl D Sc s t' Q hQ' - z • cl D Sc s t' R hR' ∈ Low D Sc s t' n := by
-    subst t'; exact he
-  apply transport (t := l ++ b :: a :: (r ++ [i])) (by simp) _ _ _ _
-    (by simpa only [List.append_assoc, List.cons_append] using h)
-    (by simpa only [List.append_assoc, List.cons_append] using h')
-  have hh := OutputOldCrossTransport.all_length_slide D Sc i a b l r
-    (by simpa only [OutputOldCrossTransport.run_eq_leading, List.length_nil,
-      List.append_assoc, List.cons_append] using h)
-    (by simpa only [OutputOldCrossTransport.run_eq_leading, List.length_nil,
-      List.append_assoc, List.cons_append] using h')
-  simpa only [OutputOldCrossTransport.run_eq_leading, List.length_nil,
-    List.append_assoc, List.cons_append] using hh
-
 end OddMath.QuiverHecke.ELVOld
 
 noncomputable section
@@ -631,28 +590,6 @@ theorem bareLong_dot_low (i a : I) (l r : List I)
 open scoped TensorProduct
 namespace ELVOld
 variable (cutoff : I → ℕ)
-
-/-- The generator slide modulo the exact chronological short span, with arbitrary
-full exterior coefficients; no restriction on colours, parity, or old length. -/
-theorem bareLong_dot_chronologicalShort (i a : I) (l r : List I)
-    (c : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff)
-    (h : SChain (i :: (l ++ a :: r))
-      (pl (i :: (l ++ a :: r))
-        (cw (leadingMoveWord [] (l ++ a :: r)) ++ [.dot l.length]))
-      ((l ++ a :: r) ++ [i]))
-    (h' : SChain (i :: (l ++ a :: r))
-      (pl (i :: (l ++ a :: r))
-        ([.dot (l.length+1)] ++ cw (leadingMoveWord [] (l ++ a :: r))))
-      ((l ++ a :: r) ++ [i])) :
-    projection D Sc cutoff i (l ++ a :: r) ((l ++ a :: r) ++ [i])
-      (c ⊗ₜ[k] (cl D Sc _ _
-        (cw (leadingMoveWord [] (l ++ a :: r)) ++ [.dot l.length]) h -
-        SKM.zsign k (D.parity i * wordSumParity D (l ++ a :: r) * D.parity a) •
-        cl D Sc _ _ ([.dot (l.length+1)] ++ cw (leadingMoveWord [] (l ++ a :: r))) h')) ∈
-      chronologicalShortSpan D Sc cutoff i (l ++ a :: r) (l ++ a :: r) := by
-  apply tmul_shortSpan D Sc cutoff
-  apply SmallerTailNormalization.low_le_shortSpan D Sc
-  exact bareLong_dot_low D Sc i a l r h h'
 
 theorem bareLong_dot_chains (i a : I) (l r : List I) :
     SChain (i :: (l ++ a :: r))
@@ -999,19 +936,6 @@ theorem error_mem (i : I) {v w : List I} (g : O[v] ⟶ O[w]) :
   | add f h _ _ hf hh => rw [map_add]; exact Submodule.add_mem _ hf hh
   | smul a f _ hf => rw [map_smul]; exact Submodule.smul_mem _ a hf
 
-/-- Arbitrary scalar old arrows, with the total homogeneous super sign. -/
-theorem bareU_homogeneous_transport (i : I) {v w : List I} {q : ZMod 2}
-    (g : O[v] ⟶ O[w]) (hg : g ∈ Supercategory.parity (R := k) O[v] O[w] q) :
-    (bareU D Sc i v ≫ (g ▷ O[[i]]) : O[i :: v] ⟶ O[w ++ [i]]) -
-      SKM.zsign k (D.parity i * wordSumParity D v * q) •
-        ((O[[i]] ◁ g) ≫ bareU D Sc i w : O[i :: v] ⟶ O[w ++ [i]]) ∈
-      shortSpan D Sc i v (w ++ [i]) := by
-  have h := error_mem D Sc i g
-  dsimp only [error, LinearMap.coe_mk, AddHom.coe_mk] at h
-  erw [twist_of_mem _ hg, MonoidalSupercategory.whiskerLeft_smul (R := k),
-    Linear.smul_comp, sign_eq_zsign] at h
-  exact h
-
 end OddMath.QuiverHecke.OutputOldComposite
 
 noncomputable section
@@ -1142,33 +1066,5 @@ theorem bareUFull_transport (i : I) {v w : List I} (g : hom D Sc cutoff v w) :
       exact tmul_shortSpan D Sc cutoff i v w a (OutputOldComposite.error_mem D Sc i f)
   · rw [hom_zero_of_wordParity_ne D Sc cutoff hp g, map_zero, map_zero]
     exact Submodule.zero_mem _
-
-theorem bareUFull_ideal (i : I) {v w : List I} {g : hom D Sc cutoff v w}
-    (hg : g ∈ ideal D Sc cutoff v w) :
-    projection D Sc cutoff i v (w ++ [i])
-      (bareUFull D Sc cutoff i v ≫ appendInsert D Sc cutoff i v w g) ∈
-      chronologicalShortSpan D Sc cutoff i v w := by
-  have h := bareUFull_transport D Sc cutoff i g
-  rw [map_sub, projection_old_ideal D Sc cutoff i (twist_ideal D Sc cutoff _ hg),
-    sub_zero] at h
-  exact h
-
-/-- The bare-long row does not depend on a representative of the old quotient arrow. -/
-theorem bareUFull_old_representative_independent (i : I) {v w : List I}
-    (g h : hom D Sc cutoff v w)
-    (he : (ideal D Sc cutoff v w).mkQ g = (ideal D Sc cutoff v w).mkQ h) :
-    (chronologicalShortSpan D Sc cutoff i v w).mkQ
-      (projection D Sc cutoff i v (w ++ [i])
-        (bareUFull D Sc cutoff i v ≫ appendInsert D Sc cutoff i v w g)) =
-    (chronologicalShortSpan D Sc cutoff i v w).mkQ
-      (projection D Sc cutoff i v (w ++ [i])
-        (bareUFull D Sc cutoff i v ≫ appendInsert D Sc cutoff i v w h)) := by
-  apply sub_eq_zero.mp
-  rw [← map_sub, ← map_sub, ← Preadditive.comp_sub, ← map_sub]
-  apply (Submodule.Quotient.mk_eq_zero _).mpr
-  apply bareUFull_ideal D Sc cutoff i
-  apply (Submodule.Quotient.mk_eq_zero _).mp
-  change (ideal D Sc cutoff v w).mkQ (g - h) = 0
-  rw [map_sub, he, sub_self]
 
 end OddMath.QuiverHecke.ELVOld

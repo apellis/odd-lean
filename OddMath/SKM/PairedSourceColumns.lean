@@ -21,15 +21,6 @@ theorem sourceParityTwist_zero : SYM.parityTwist D k 0 = LinearMap.id := by
   intro a
   simp only [SYM.parityTwist_basis, zero_mul, zsign_zero, one_smul, LinearMap.id_apply]
 
-theorem sourceParityTwist_one (q : ZMod 2) : SYM.parityTwist D k q 1 = 1 := by
-  have H : SYM.coefficientBasis D k (0, ∅) = 1 := by
-    apply (SYM.polynomialExteriorEquiv D k).injective
-    rw [SYM.coefficientBasis_projection, SYM.oddExteriorBasis_empty]
-    change 1 = (SYM.polynomialExteriorProjection D k) 1
-    exact (map_one (SYM.polynomialExteriorProjection D k)).symm
-  rw [← H, SYM.parityTwist_basis]
-  simp [zsign_zero]
-
 /-- Native contextual cap rows of the swapped source family. -/
 def sourceCapRows (μ : X) (P Q : List (Letter I)) (i : I) (m : ℕ) :
     (pres D Sc).obj (ob D μ (P ++ up i :: dn i :: Q)) ⟶
@@ -90,12 +81,6 @@ theorem capResidualColumn_eval (m : ℕ) (v : F.residual.Labels →₀ SYM D k)
   rw [F.swappedPairedInclusion_eval]
   exact F.residual.preRowsExpansion_twistedColumn cs μ _ m _
     (sourceCapRows_mem_parity μ P Q i m) v q d
-
-/-- Formal zero-index lift has exactly one cap row and no residual correction. -/
-theorem capResidualColumn_single_one (m : ℕ) (r : F.residual.Labels) :
-    F.capResidualColumn (D := D) (k := k) m (Finsupp.single r 1) =
-      Finsupp.single (r, m) 1 := by
-  simp [capResidualColumn, labelParityTwist_single, sourceParityTwist_one]
 
 end SameColourSourceFrame
 end OddMath.SKM

@@ -42,22 +42,22 @@ def counitInputOutputEquiv (j : {j : I // D.parity j = 1}) (v t : List I) (m : �
 
 /-- Conjugation of every dot power by the induced coefficient comparison. -/
 theorem sourceInputDot_iterate_carrier (j : {j : I // D.parity j = 1})
-    (v t : List I) (n : ℕ) (z : actualShiftedCarrier D Sc cutoff j.1 v t) :
-    (actualSourceInputDot D Sc cutoff j v t)^[n]
+    (v t : List I) (n : ℕ) (z : shiftedCarrier D Sc cutoff j.1 v t) :
+    (sourceInputDot D Sc cutoff j v t)^[n]
         (coefficientOneSourceEquiv D Sc cutoff j v t z) =
       coefficientOneSourceEquiv D Sc cutoff j v t
-        ((actualShiftedInputDot D Sc cutoff j v t)^[n] z) := by
+        ((shiftedInputDot D Sc cutoff j v t)^[n] z) := by
   induction n with
   | zero => rfl
   | succ n ih =>
-    rw [Function.iterate_succ_apply', ih, actualSourceInputDot_carrier,
+    rw [Function.iterate_succ_apply', ih, sourceInputDot_carrier,
       Function.iterate_succ_apply']
 
 /-- Concrete inverse on the ordinary induction-restriction source. -/
 def counitInputMatrixEquiv (p : ZMod 2) (j : {j : I // D.parity j = 1})
     (v t : List I) (m : ℕ)
     (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m) :
-    (actualUnshiftedSourceModule D Sc cutoff j.1 v).obj
+    (unshiftedSourceModule D Sc cutoff j.1 v).obj
       (⟨t⟩ : OldCategory D Sc cutoff) ≃ₗ[k]
       (Old D Sc cutoff (v ++ [j.1]) (t ++ [j.1]) × (Fin m → Old D Sc cutoff v t)) :=
   ((shiftedSourceCanonicalEquiv D Sc cutoff j v t).trans
@@ -67,7 +67,7 @@ def counitInputMatrixEquiv (p : ZMod 2) (j : {j : I // D.parity j = 1})
 @[simp] theorem counitInputMatrixEquiv_fst (p : ZMod 2)
     (j : {j : I // D.parity j = 1}) (v t : List I) (m : ℕ)
     (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m)
-    (z : (actualUnshiftedSourceModule D Sc cutoff j.1 v).obj
+    (z : (unshiftedSourceModule D Sc cutoff j.1 v).obj
       (⟨t⟩ : OldCategory D Sc cutoff)) :
     (counitInputMatrixEquiv D Sc cutoff p j v t m hm z).1 =
       -toCyclotomic D Sc cutoff j.1 v t (shiftedSourceCanonicalEquiv D Sc cutoff j v t z) := rfl
@@ -76,23 +76,23 @@ def counitInputMatrixEquiv (p : ZMod 2) (j : {j : I // D.parity j = 1})
 theorem counitInputMatrixEquiv_cap (p : ZMod 2)
     (j : {j : I // D.parity j = 1}) (v t : List I) (m : ℕ)
     (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m)
-    (z : (actualUnshiftedSourceModule D Sc cutoff j.1 v).obj
+    (z : (unshiftedSourceModule D Sc cutoff j.1 v).obj
       (⟨t⟩ : OldCategory D Sc cutoff)) (r : Fin m) :
     (counitInputMatrixEquiv D Sc cutoff p j v t m hm z).2 r =
       ((BalancedInduction.adjunctionCounit (append D Sc cutoff j.1)).app
         (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).total
           (⟨t⟩ : OldCategory D Sc cutoff)
-          ((actualInductionDot D Sc cutoff j.1
+          ((inductionDot D Sc cutoff j.1
             ((BalancedInduction.restriction (append D Sc cutoff j.1)).obj
               (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)))
             (⟨t⟩ : OldCategory D Sc cutoff))^[r.val] z) := by
   change counitInputRowEquiv D Sc cutoff v t r.val
-    (actualSourceInputContraction D Sc cutoff j v t
-      (((actualSourceInputDot D Sc cutoff j v t) ^ r.val)
+    (sourceInputContraction D Sc cutoff j v t
+      (((sourceInputDot D Sc cutoff j v t) ^ r.val)
         (shiftedSourceCanonicalEquiv D Sc cutoff j v t z))) = _
   rw [counitInputRowEquiv_apply, Module.End.pow_apply,
     shiftedSourceCanonicalEquiv_apply, sourceInputDot_iterate_carrier,
-    actualSourceInputContraction_carrier]
+    sourceInputContraction_carrier]
   exact shiftedCapRow_normalization D Sc cutoff j v t r.val z
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

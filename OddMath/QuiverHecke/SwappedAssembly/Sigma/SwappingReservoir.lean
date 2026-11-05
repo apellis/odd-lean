@@ -115,7 +115,6 @@ variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
 namespace ProbeReservoir
 variable {P : ProbeReservoir k B D Sc}
 
-
 attribute [local irreducible] Finsupp.zipWith contentWeight
 
 /-- A reservoir `Fᵢ` followed by a reservoir `Eᵢ` returns to the sector. -/
@@ -171,7 +170,6 @@ theorem isIso_crossMate_reservoir_of_units (c : P.CrossCoeff) (hc : c.IsInverse)
       refine Eq.trans (congrArg (· ≫ _) ?_) (h₂.trans ?_)
       · rfl
       · rfl
-
 
 /-- The reservoir swapping entry is invertible from the precise mate norm inputs. -/
 theorem isIso_sigmaEntry_reservoir_of_units (c : P.CrossCoeff) (hc : c.IsInverse)
@@ -305,7 +303,6 @@ theorem isIso_crossMate_reservoir (c : P.CrossCoeff) (hc : c.IsInverse)
     ((CrossCoeffInputs.of_factor P hT hW).toDenominatorUnits)
     (CrossTransposeNormUnits.of_factor P hT hW) i t hR hR' hE h H
 
-
 /-- The swapping entry `W_B` of the same-colour sideways crossing, from the path `(P,R)` of
 `Eᵢ Fᵢ` to the path `(R,P)` of `Fᵢ Eᵢ`, is invertible: it is the reservoir mate of the
 crossing entry `-(a ; a ; J⁻¹)`, whose dotted mate is invertible by the inverse identities of
@@ -321,7 +318,6 @@ theorem isIso_sigmaEntry_reservoir (c : P.CrossCoeff) (hc : c.IsInverse)
     ((CrossCoeffInputs.of_factor P hT hW).toDenominatorUnits)
     (CrossTransposeNormUnits.of_factor P hT hW) i ν p q hp hq Z
 
-
 /-- The swapping entries `W_B` are invertible for a coefficient with the characterizing inverse
 identities, when every probe dot is invertible and every reservoir dot is nilpotent. -/
 theorem swappingReservoirInvertible (c : P.CrossCoeff) (hc : c.IsInverse)
@@ -332,7 +328,6 @@ theorem swappingReservoirInvertible (c : P.CrossCoeff) (hc : c.IsInverse)
   exact swappingReservoirInvertible_of_units c hc
     ((CrossCoeffInputs.of_factor P hT hW).toDenominatorUnits)
     (CrossTransposeNormUnits.of_factor P hT hW) 
-
 
 /-- All swapping entries of the same-colour sideways crossing are invertible, under the same
 hypotheses. -/
@@ -345,7 +340,6 @@ theorem swappingInvertible_of_factor (c : P.CrossCoeff) (hc : c.IsInverse)
     ((CrossCoeffInputs.of_factor P hT hW).toDenominatorUnits)
     (CrossTransposeNormUnits.of_factor P hT hW) 
 
-
 /-- The augmented blocks of the same-colour sideways crossing are invertible once the central
 entries are: the swapping entries need no further hypothesis. -/
 theorem augmentedInvertible_of_central (c : P.CrossCoeff) (hc : c.IsInverse)
@@ -356,7 +350,6 @@ theorem augmentedInvertible_of_central (c : P.CrossCoeff) (hc : c.IsInverse)
   exact augmentedInvertible_of_central_of_units c hc
     ((CrossCoeffInputs.of_factor P hT hW).toDenominatorUnits)
     (CrossTransposeNormUnits.of_factor P hT hW) hcentral
-
 
 end ProbeReservoir
 

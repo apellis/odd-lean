@@ -34,21 +34,5 @@ theorem layerMap_reservoir (gens : P.Generators) (L : Layer (SKM.sig D)) (hL : L
   rw [P.layerMap_apply gens L hL x sl sr q]
   exact SPath.sum_of_upward_probe_zero hw ht _ p
 
-/-- At a reservoir path the actual middle-generator sum is precisely the
-existing layerEntry, including both whiskers and its equality transports. -/
-theorem layerMap_reservoir_append (gens : P.Generators) (L : Layer (SKM.sig D)) (hL : L.Valid)
-    (hg : ∀ a ∈ (SKM.sig D).dom L.gen, a.l.1 = true)
-    (hr : ∀ a ∈ L.right, a.l.1 = true) (x : P.Mod Gs Ys L.dom)
-    {sl t s sr : Sector I} (pu : SPath L.left sl t)
-    (pg : SPath ((SKM.sig D).dom L.gen) t s) (pg' : SPath ((SKM.sig D).cod L.gen) t s)
-    (pv : SPath L.right s sr) (hq : P.wt sr = L.cod.endR) (ht : sr.1 = 0) :
-    P.layerMap gens L x sl ⟨sr,hq⟩ ((pu.append pg').append pv) =
-      P.layerEntry gens L hL x pu pg pg' pv hq := by
-  have hs : s.1 = 0 := le_antisymm (by
-    simpa only [ht] using SPath.probe_le_of_upward pv hr) (zero_le : 0 ≤ s.1)
-  rw [P.layerMap_apply_append gens L hL x pu pg' pv hq]
-  let := Fintype.ofFinite (SPath ((SKM.sig D).dom L.gen) t s)
-  exact SPath.sum_of_upward_probe_zero hg hs _ pg
-
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

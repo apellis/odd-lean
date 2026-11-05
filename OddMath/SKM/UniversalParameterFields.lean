@@ -51,16 +51,6 @@ theorem point_separate (a : ParameterRing D)
     UniversalCoefficientReduced.rationalParameters_separate D _ h
   simpa using hq
 
-/-- Every nonzero universal parameter survives in some characteristic-zero field. -/
-theorem exists_point_ne_zero {a : ParameterRing D} (ha : a ≠ 0) :
-    ∃ p : PrimeSpectrum (RationalParameters D), point D p a ≠ 0 := by
-  by_contra hn
-  apply ha
-  apply point_separate D a
-  intro p
-  by_contra hp
-  exact hn ⟨p, hp⟩
-
 @[simp] theorem point_C (p : PrimeSpectrum (RationalParameters D))
     (a : UniversalCoefficientRing.UnitRing D) :
     point D p (MvPolynomial.C a) =
@@ -85,18 +75,6 @@ theorem exists_point_ne_zero {a : ParameterRing D} (ha : a ≠ 0) :
       primeFractionMap (RationalParameters D) p
         (MvPolynomial.C (AddMonoidAlgebra.single (NormalizationParameterGroup.c D μ i) 1)) := by
   simp
-
-/-- An allowed coefficient maps to its exact slot variable. -/
-theorem point_coefficient_of_allowed (p : PrimeSpectrum (RationalParameters D))
-    (a : RawSlot I) (h : Allowed D a) :
-    point D p (coefficient D a) =
-      primeFractionMap (RationalParameters D) p (MvPolynomial.X (slot D a h)) := by
-  rw [coefficient_of_allowed D a h, point_X]
-
-/-- A forbidden coefficient remains zero at every field point. -/
-theorem point_coefficient_of_not_allowed (p : PrimeSpectrum (RationalParameters D))
-    (a : RawSlot I) (h : ¬ Allowed D a) : point D p (coefficient D a) = 0 := by
-  rw [coefficient_of_not_allowed D a h, map_zero]
 
 /-- The scalar system at a point; the datum and weight group are unchanged. -/
 def scalars (p : PrimeSpectrum (RationalParameters D)) : Scalars D (FieldAt D p) where

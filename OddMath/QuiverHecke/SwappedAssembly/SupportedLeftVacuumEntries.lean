@@ -28,7 +28,6 @@ arXiv:1701.04133v2, bubble generating functions of the super Kac–Moody 2-categ
   `dcupL i (h-1) ++ epsL i h` acts by `(-1)^(cutoff i + 1) δᵢ`, from the shift-`h` moment.
 -/
 
-
 noncomputable section
 set_option quotPrecheck false
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM

@@ -99,7 +99,7 @@ theorem vacuumPreInverseDot_source (hP : 0 < probeCutoff D m i)
 
 /-- Every actual normalized negative pre-cap has the native inverse-dot
 and cap coordinates. No moment or cap compatibility hypothesis is used. -/
-theorem vacuumPreNegativeCap_native (hP : 0 < probeCutoff D m i)
+theorem vacuumPreNegativeCap_eq (hP : 0 < probeCutoff D m i)
     (hi : D.parity i = 1) (n : ℕ) :
     (SKM.homPreNegativeCap T W i muM h n Z).total N₀ ≫
       H.map (eqToHom (emptyProbe_regular D Sc m Λ)) =
@@ -107,7 +107,7 @@ theorem vacuumPreNegativeCap_native (hP : 0 < probeCutoff D m i)
       (Ring.inverse (ProbeVacuumCap.shiftedPreDot D Sc m (W muM) i H) ^ n) ≫
         ProbeVacuumCap.shiftedPreCap D Sc m (W muM) i hP H := by
   rw [SKM.homPreNegativeCap, Superfunctor.comp_total, Category.assoc,
-    vacuumPreCounit_native D Sc m Λ hc W muM i h H hP,
+    vacuumPreCounit_eq D Sc m Λ hc W muM i h H hP,
     ← Category.assoc, vacuumPreInverseDot_source D Sc m Λ hc W muM i h H hP hi n,
     Category.assoc]
 
@@ -130,7 +130,7 @@ theorem vacuumPreInverseDot_source_even (hP : 0 < probeCutoff D m i)
 
 /-- Even colour: every actual normalized negative pre-cap has the native
 inverse-dot and cap coordinates. No moment or cap compatibility hypothesis is used. -/
-theorem vacuumPreNegativeCap_native_even (hP : 0 < probeCutoff D m i)
+theorem vacuumPreNegativeCap_even (hP : 0 < probeCutoff D m i)
     (hi : D.parity i = 0) (n : ℕ) :
     (SKM.homPreNegativeCap T W i muM h n Z).total N₀ ≫
       H.map (eqToHom (emptyProbe_regular D Sc m Λ)) =
@@ -138,7 +138,7 @@ theorem vacuumPreNegativeCap_native_even (hP : 0 < probeCutoff D m i)
       (Ring.inverse (ProbeVacuumCap.shiftedPreDot D Sc m (W muM) i H) ^ n) ≫
         ProbeVacuumCap.shiftedPreCap D Sc m (W muM) i hP H := by
   rw [SKM.homPreNegativeCap, Superfunctor.comp_total, Category.assoc,
-    vacuumPreCounit_native D Sc m Λ hc W muM i h H hP,
+    vacuumPreCounit_eq D Sc m Λ hc W muM i h H hP,
     ← Category.assoc, vacuumPreInverseDot_source_even D Sc m Λ hc W muM i h H hP hi n,
     Category.assoc]
 

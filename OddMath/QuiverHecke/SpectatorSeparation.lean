@@ -35,38 +35,6 @@ theorem cofinal_elv_quotients_with_spectators_detect {A : Type*}
   have h := hinj (a₁ := ⟨f, hd⟩) (a₂ := 0) (by simpa using hf a)
   exact congrArg Subtype.val h
 
-/-- A nonzero product of bubble and affine operators survives if the cutoff
-exceeds its extended degree plus the crossing loss for *all* strands. -/
-theorem spectator_quotientImage_ne_zero {μ : X} {t t' : List I}
-    (P : SpectatorImage D Sc μ t t')
-    (f : coefficientObj D Sc t ⟶ coefficientObj D Sc t') {d N : ℕ}
-    (hf : P.image f ≠ 0)
-    (hdeg : P.image f ∈ ExtendedAtMost D Sc (P.spectators ++ t) (P.spectators ++ t') d)
-    (hcutoff : ∀ i, N ≤ P.cutoff i)
-    (hbound : d + 2 * (P.spectators ++ t).length.choose 2 < N) :
-    P.quotientImage f ≠ 0 := by
-  intro hz
-  have hinj := elv_quotient_injective_on_extendedAtMost D Sc
-    (t := P.spectators ++ t) (t' := P.spectators ++ t') (d := d) hcutoff hbound
-  apply hf
-  exact congrArg Subtype.val (hinj (a₁ := ⟨P.image f, hdeg⟩) (a₂ := 0)
-    (by simpa [SpectatorImage.quotientImage] using hz))
-
-/-- Sufficient algebraic separation input for a family with moving spectators.
-Both nonvanishing of the joint image and a compatible cutoff bound must be
-proved. Neither is supplied by weight coverage alone. -/
-theorem spectator_images_detect_of_bounds {μ : X} {t t' : List I} {A : Type*}
-    (P : A → SpectatorImage D Sc μ t t')
-    (h : ∀ f : coefficientObj D Sc t ⟶ coefficientObj D Sc t', f ≠ 0 →
-      ∃ a d N, (P a).image f ≠ 0 ∧
-        (P a).image f ∈ ExtendedAtMost D Sc ((P a).spectators ++ t) ((P a).spectators ++ t') d ∧
-        (∀ i, N ≤ (P a).cutoff i) ∧ d + 2 * ((P a).spectators ++ t).length.choose 2 < N)
-    (f : coefficientObj D Sc t ⟶ coefficientObj D Sc t')
-    (hf : ∀ a, (P a).quotientImage f = 0) : f = 0 := by
-  by_contra hn
-  obtain ⟨a, d, N, ha, hd, hN, hb⟩ := h f hn
-  exact spectator_quotientImage_ne_zero D Sc (P a) f ha hd hN hb (hf a)
-
 /-- The quadratic crossing-loss estimate cannot certify detection when the
 cutoff is at most twice the total strand number and there are at least three
 strands. This is a limitation of that estimate, not vanishing in the quotient. -/

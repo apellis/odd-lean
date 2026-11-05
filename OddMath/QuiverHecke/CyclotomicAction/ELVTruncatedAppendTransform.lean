@@ -198,14 +198,4 @@ theorem truncatedAppendDot_degree (i : I) (v : TruncatedCategory D Sc cutoff N) 
     simp [pl, PG.ld, gdeg]
   · exact Submodule.zero_mem _
 
-theorem truncatedAppendCross_degree (i j : I) (v : TruncatedCategory D Sc cutoff N) :
-    (truncatedAppendCross D Sc cutoff N i j).app (D.parity i * D.parity j) v ∈
-      truncatedDegree D Sc cutoff sy hc N (v.word ++ [i, j]) (v.word ++ [j, i])
-        (sy.d i * D.d i j) := by
-  rw [truncatedAppendCross_app]
-  apply truncatedAppendComponent_mem_degree
-  apply Presentation.diag_mem_homDeg'
-  rw [degree_gdeg_mkD]
-  simp [pl, PG.ld, gdeg]
-
 end OddMath.QuiverHecke.ELVOld

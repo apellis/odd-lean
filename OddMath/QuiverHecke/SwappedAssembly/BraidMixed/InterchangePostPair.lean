@@ -77,8 +77,6 @@ theorem homMixedInterchange_postPair_shifts (E : a ⟶ b) (Z : b ⟶ c) (F₁ : 
     ?_
   rw [TwoSupercategory.pentagon_inv_assoc (R := k), Iso.inv_hom_id, Category.comp_id]
 
-
-
 /-- The paired interchanges expressed through the homogeneous removals. -/
 theorem homMixedInterchange_postPair_shifts_eq (E : a ⟶ b) (Z : b ⟶ c)
     (F₁ : c ⟶ d) (F₂ : d ⟶ e) (κ₁' κ₂' κ₁ κ₂ : ZMod 2) :
@@ -121,7 +119,6 @@ theorem homMixedInterchange_postPair_between {d' : B} (E : a ⟶ b) (Z : b ⟶ c
     TwoSupercategory.whiskerLeft_inv_hom_assoc (R := k), Iso.inv_hom_id_assoc,
     TwoSupercategory.associator_inv_naturality_right_assoc (R := k)]
 
-
 omit [TwoSupercategory k B] in
 /-- The shift-addition comparison followed by removal, including the odd square sign. -/
 theorem homParityShiftAdd_remove (p q : ZMod 2) (Y : a ⟶ b) :
@@ -148,7 +145,6 @@ theorem postPairIso_remove (F₁ : c ⟶ d) (F₂ : d ⟶ e) (p q : ZMod 2) (Y :
     Functor.map_comp]
   simp only [homPostPairRemoval, Iso.trans_hom, Functor.mapIso_hom, homPost, Category.assoc,
     ← Functor.map_comp_assoc, Iso.inv_hom_id, Category.comp_id]
-
 
 omit [TwoSupercategory k B] in
 /-- Equal shift indices give the same removal after the canonical transport. -/

@@ -57,45 +57,4 @@ theorem zeroModuleCell_id : (𝟙 (zeroModuleCell (k := k) C) : _ ⟶ _) = 0 := 
   · intro M
     rfl
 
-private theorem additive_map_zero_identity
-    {A B : Type*} [Category* A] [Category* B] [Preadditive A] [Preadditive B]
-    (F : A ⥤ B) [F.Additive] (a : A) (h : (𝟙 a : a ⟶ a) = 0) :
-    (𝟙 (F.obj a) : _ ⟶ _) = 0 := by
-  rw [← F.map_id, h, F.map_zero]
-
-/-- Postcomposition by any module-target cell preserves the zero lower
-composite. This uses additivity on the original zero module identity. -/
-theorem zeroModuleCell_comp_id (B : PiSCat.{u,u,u+1} k)
-    (H : inductionModulePiCategory (k := k) C ⟶ B) :
-    (𝟙 (zeroModuleCell (k := k) C ≫ H) : _ ⟶ _) = 0 := by
-  apply Superfunctor.hom_ext_parity
-  · intro M
-    exact additive_map_zero_identity H.toFunctor (zeroModule C) (zeroModule_id C)
-  · intro M
-    rfl
-
-/-- Every transformation whiskered after the zero lower cell vanishes;
-this is the zero slide used at the empty boundary. -/
-theorem zeroModuleCell_whiskerLeft (B : PiSCat.{u,u,u+1} k)
-    {H J : inductionModulePiCategory (k := k) C ⟶ B} (η : H ⟶ J) :
-    zeroModuleCell (k := k) C ◁ η = 0 := by
-  have h := Category.id_comp (zeroModuleCell (k := k) C ◁ η)
-  rw [zeroModuleCell_comp_id C B H, Limits.zero_comp] at h
-  exact h.symm
-
-/-- The zero lower cells carry the zero even unit and counit, satisfying
-the triangles in the same module parity target. -/
-def zeroModuleCellAdjunction :
-    SKM.SuperAdjunction (k := k) (zeroModuleCell (k := k) C) (zeroModuleCell (k := k) C) where
-  unit := 0
-  counit := 0
-  unit_mem := Submodule.zero_mem _
-  counit_mem := Submodule.zero_mem _
-  left_triangle := by
-    simp only [TwoSupercategory.zero_whiskerRight (R := k), Limits.comp_zero,
-      Limits.zero_comp, zeroModuleCell_id]
-  right_triangle := by
-    simp only [TwoSupercategory.whiskerLeft_zero (R := k), Limits.comp_zero,
-      Limits.zero_comp, zeroModuleCell_id]
-
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

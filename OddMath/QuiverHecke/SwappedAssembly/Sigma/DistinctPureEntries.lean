@@ -57,7 +57,6 @@ private theorem preDistinct_of_eq {a b b' c d d' : X} (eb : b = b') (ed : d = d'
   simp only [eqToHom_refl, Category.id_comp, Category.comp_id]
   with_unfolding_all exact hiso
 
-
 include hL hij in
 /-- Transport charts around the pre/pre mate, retained separately so comparisons of
 sector weights are supplied as equalities rather than unfolded during matching. -/

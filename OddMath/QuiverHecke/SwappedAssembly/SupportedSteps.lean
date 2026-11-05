@@ -39,7 +39,7 @@ def nativeStep : (l : Letter I) → (side : Bool) → (t : Sector I) → StepVal
       homPost (k := k) (elvF D Sc cutoff bound i ΛR (reservoirDown_edge D ΛR i t))⟩
 
 /-- All four native steps preserve the replete exact-content object property. -/
-theorem nativeStep_closed (l : Letter I) (side : Bool) (t : Sector I) (hv : StepValid l side t)
+theorem step_closed (l : Letter I) (side : Bool) (t : Sector I) (hv : StepValid l side t)
     (Z : Ambient D Sc m cutoff bound ΛP ΛR (nextSector l side t))
     (hZ : support D Sc m cutoff bound ΛP ΛR (nextSector l side t) Z) :
     support D Sc m cutoff bound ΛP ΛR t ((nativeStep D Sc m cutoff bound ΛP ΛR l side t hv).obj Z) := by
@@ -84,7 +84,7 @@ def step (l : Letter I) (side : Bool) (t : Sector I) (hv : StepValid l side t) :
     (support D Sc m cutoff bound ΛP ΛR (nextSector l side t))
     (support D Sc m cutoff bound ΛP ΛR t)
     (nativeStep D Sc m cutoff bound ΛP ΛR l side t hv)
-    (nativeStep_closed D Sc m cutoff bound ΛP ΛR l side t hv)
+    (step_closed D Sc m cutoff bound ΛP ΛR l side t hv)
 
 /-- The full inclusion recovers the literal native step on every supported object and map. -/
 theorem step_inclusion (l : Letter I) (side : Bool) (t : Sector I) (hv : StepValid l side t) :

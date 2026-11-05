@@ -28,18 +28,6 @@ structure WeakMatchingChoice {a b : List (Letter I)} (F : MatchingBasisChoice a 
   serialize : (R : F.members) → (MatchingStrand a (representative R) → ℕ) → List (DTMove I)
   decorates : ∀ R n, Decorates₂ a (representative R) (points R) (strandCounts n) (serialize R n)
 
-/-- A strict choice is in particular a weak realization of itself. -/
-def MatchingBasisChoice.toWeak {a b : List (Letter I)} (F : MatchingBasisChoice a b) :
-    WeakMatchingChoice F where
-  representative := Subtype.val
-  matching R := (F.matching R.val R.property).1
-  reduced R := (F.matching R.val R.property).2.1
-  pairing _ := Iso.refl _
-  points := F.points
-  onStrand := F.onStrand
-  serialize := F.serialize
-  decorates := F.decorates
-
 namespace WeakMatchingChoice
 variable {a b : List (Letter I)} {F : MatchingBasisChoice a b}
   (W : WeakMatchingChoice F) (cs : CScalars Sc) (μ : X)
@@ -106,7 +94,6 @@ theorem filtered_signRel (t : F.Labels) :
   refine ⟨pW + (p + pF), ?_⟩
   have h := Submodule.smul_mem _ (zsign k pW) hp
   simpa only [MatchingBasisChoice.openDots, pW, pF, smul_sub, smul_smul, zsign_mul_self', one_smul, ← zsign_add] using h
-
 
 def coefficientMap (t : F.Labels) :
     SYM D k →ₗ[k] ((pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ b)) where
@@ -177,7 +164,6 @@ theorem unitColumn_lower (i j : F.Labels) (hij : i ≠ j)
 def transition : (F.Labels →₀ SYM D k) →ₗ[k] (F.Labels →₀ SYM D k) :=
   MatchingTransition.transition (k := k) (W.unitColumn cs μ)
 
-
 theorem transition_injective : Function.Injective (W.transition cs μ) := by
   apply MatchingTransition.transition_injective (Equiv.refl F.Labels)
     (fun t => ncr₂ t.1.val) F.openDots (W.unitColumn cs μ) (W.unitColumn_lower cs μ)
@@ -208,15 +194,6 @@ theorem transition_evaluation (v : F.Labels →₀ SYM D k) :
       (Finsupp.single i p)) = _
     rw [MatchingTransition.transition_single, F.expansion_rightColumn,
       W.unitColumn_eval cs μ i, W.expansion_single]
-
-
-/-- A strict independent family also detects every complete weak realization. -/
-theorem expansion_injective_of_strict (hF : Function.Injective (F.expansion cs μ)) :
-    Function.Injective (W.expansion cs μ) := by
-  intro v w h
-  apply W.transition_injective cs μ
-  apply hF
-  simpa only [W.transition_evaluation cs μ] using h
 
 /-- Independence of a complete weak realization implies independence of the
 strict family. Surjectivity of the finite triangular transition is essential

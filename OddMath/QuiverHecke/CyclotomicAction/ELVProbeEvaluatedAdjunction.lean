@@ -68,19 +68,4 @@ def probeEvaluatedRightAdjunction :
     (probeEvaluatedAdjunction D Sc m ν i) (probeEvaluatedAdjunction_unit_mem D Sc m ν i)
     (probeEvaluatedAdjunction_counit_mem D Sc m ν i)
 
-/-- The chosen old-content dot is the exact underlying evaluated dot component. -/
-theorem probeEvaluatedInductionDot_native_total (N : ProbeEvaluatedModules D Sc m ν) :
-    ((probeEvaluatedInductionDot D Sc m ν i).total N).hom =
-      oldContentInductionDotComponent D Sc (probeCutoff D m) ν i N.obj := by
-  rw [probeEvaluatedInductionDot_total]
-  rfl
-
-/-- The inherited unit retains its physical balanced-induction component. -/
-theorem probeEvaluatedUnit_native (N : ProbeEvaluatedModules D Sc m ν) :
-    ((probeEvaluatedUnit D Sc m ν i).app N).hom = (adjunction J).unit.app N.obj := rfl
-
-/-- The inherited counit retains its physical multiplication component. -/
-theorem probeEvaluatedCounit_native (N : ProbeEvaluatedModules D Sc m (i :: ν)) :
-    ((probeEvaluatedCounit D Sc m ν i).app N).hom = (adjunction J).counit.app N.obj := rfl
-
 end OddMath.QuiverHecke

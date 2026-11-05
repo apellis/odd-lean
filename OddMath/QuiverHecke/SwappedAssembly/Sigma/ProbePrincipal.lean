@@ -250,7 +250,6 @@ private theorem sigmaTerm_probe_mate (c : P.CrossCoeff) (i : I) (ν : X) (t : Se
       (eq_of_heq hh)
     simpa only [q, SPath.two, pathFunctor_cons, pathFunctor_nil, step, Functor.comp_obj, Functor.id_obj, SPath.castTgt, tU, nextSector, muM] using he
 
-
 /-- The pure probe principal entry is the mate for the
 specified normalized precomposition adjunctions, in the computed path
 charts. There is no condition on the unused mixed coefficient. -/
@@ -279,32 +278,6 @@ theorem sigmaEntry_probe_mate (c : P.CrossCoeff) (i : I) (ν : X) (t : Sector I)
     (hm₂ := by simp [m₂, probePrincipalSecondPath, SPath.sides_append, SPath.sides,
       SPath.sides_castTgt])]
   exact sigmaTerm_probe_mate c i ν t hv Z
-
-/-- The principal probe entry in the factor coordinates retains the
-negative leftward crossing and the height-zero normalization coefficient. -/
-theorem sigmaEntry_probe_coordinates (c : P.CrossCoeff) (i : I) (ν : X) (t : Sector I)
-    (hv : StepValid (false, i) true t) (Z : P.H t) :
-    (probeCapFactorIso i ν (by simp [StepValid, nextSector]) (nextSector_dn_up t) Z ≪≫
-      homContentPreInverseSource P.T P.W.obj i (P.muM t) (P.muP_preE i t) Z).inv ≫
-      P.sigmaEntry c i i ν
-        (SPath.two true true (by trivial) (by simp [StepValid, nextSector]) (nextSector_dn_up t))
-        (SPath.two true true hv (by trivial) (nextSector_up_dn hv)) Z ≫
-      (probeCupFactorIso i ν hv (by trivial) (nextSector_up_dn hv) Z ≪≫
-        homContentPreInverseTarget P.T P.W.obj i (P.muM t) (P.muP_preF i hv) Z).hom =
-    homPreGamma (D.parity i) (D.h i (-P.muP t)) •
-      (-(P.T.loc i (P.muP_preF i hv) (P.muP_preE i t)).sigL) ▷ Z := by
-  rw [sigmaEntry_probe_mate]
-  have hm := homContentPreMate_coordinates P.T P.W.obj i (P.muM t)
-    (P.muP_preE i t) (P.muP_preF i hv) Z
-  change (rouquierMate
-    (homContentSuperAdjunction P.T P.W.obj i (P.muM t) (P.muP_preE i t))
-    (homContentSuperAdjunction P.T P.W.obj i (P.muM t) (P.muP_preF i hv))
-    (homContentCrossing P.T P.W.obj i (P.muM t)
-      (P.muP_preE i t) (P.muP_preF i hv))).app (D.parity i) Z = _ at hm
-  rw [hm]
-  simp only [Iso.trans_inv, Iso.trans_hom, Preadditive.comp_zsmul,
-    Preadditive.zsmul_comp, Category.assoc, Iso.inv_hom_id_assoc,
-    Iso.inv_hom_id, Category.comp_id]
 
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

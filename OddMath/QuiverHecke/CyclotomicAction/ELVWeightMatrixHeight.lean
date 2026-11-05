@@ -33,12 +33,6 @@ theorem contentCrossingHeight_weightBlock (i : I) (Λ x : X)
   unfold contentCrossingHeight SKM.Datum.h
   omega
 
-theorem contentCrossingHeight_eq_of_weightBlock (i : I) (Λ x : X)
-    (β γ : WeightBlocks D Λ x) :
-    contentCrossingHeight D cutoff i β.1 = contentCrossingHeight D cutoff i γ.1 := by
-  rw [contentCrossingHeight_weightBlock D cutoff i Λ x β,
-    contentCrossingHeight_weightBlock D cutoff i Λ x γ]
-
 /-- The source-required cutoff compatibility identifies the two height
 conventions; it is not asserted for arbitrary unrelated Λ and cutoff. -/
 theorem contentCrossingHeight_eq_neg_weight (i : I) (Λ x : X)

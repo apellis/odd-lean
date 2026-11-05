@@ -305,7 +305,6 @@ theorem exists_isCapInverse_shift (s : X ‚ü∂ Y) (x : Aut X) (y : Aut Y) (v : X ‚
   rw [hcap]
   infer_instance
 
-
 /-! ### Shifted cup windows, by duality -/
 
 section Cup

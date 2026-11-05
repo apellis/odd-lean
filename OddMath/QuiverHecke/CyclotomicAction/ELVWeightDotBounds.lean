@@ -68,5 +68,4 @@ theorem elvWeightDotComponent_pow_zero [Finite I]
       (elvInductionComponent_isZero D Sc cutoff bound i Λ h δ hδ M).eq_of_src
         (elvWeightDotComponent D Sc cutoff bound i Λ h (D.parity i) M δ) 0
 
-
 end OddMath.QuiverHecke.ELVOld

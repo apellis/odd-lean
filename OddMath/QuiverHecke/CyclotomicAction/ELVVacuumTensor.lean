@@ -91,14 +91,6 @@ def superfunctor (W : Superfunctor k C (SVec k)) (a : A) :
     Superfunctor k (Superfunctor k A (SVec k)) (Superfunctor k C (SVec k)) :=
   ⟨functor W a⟩
 
-theorem superfunctor_obj_obj (W : Superfunctor k C (SVec k)) (a : A)
-    (M : Superfunctor k A (SVec k)) (c : C) :
-    ((superfunctor W a).obj M).obj c = SVec.tensorObj (W.obj c) (M.obj a) := rfl
-
-theorem superfunctor_map_app (W : Superfunctor k C (SVec k)) (a : A)
-    {M N : Superfunctor k A (SVec k)} (f : M ⟶ N) (p : ZMod 2) (c : C) :
-    ((superfunctor W a).map f).app p c = SVec.whiskerLeft (W.obj c) (f.app p a) := rfl
-
 theorem superfunctor_map_total (W : Superfunctor k C (SVec k)) (a : A)
     {M N : Superfunctor k A (SVec k)} (f : M ⟶ N) (c : C) :
     ((superfunctor W a).map f).total c = SVec.whiskerLeft (W.obj c) (f.total a) := by

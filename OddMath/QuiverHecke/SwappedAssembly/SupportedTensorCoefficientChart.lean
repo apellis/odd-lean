@@ -37,7 +37,6 @@ local notation "Tw" => parameterTwist D Sc
 local notation "N" => PowerWordContent.powerBound D cutoff L
 local notation "R₀" => WeightTensorVacuum.regularProbe D Tw m ΛP
 
-
 /-- The unchanged signed coefficient arrow, with its whole-family target explicit. -/
 def tensorWordCoefficientArrow (x : X) (ν : List I) (a : SYM D k) :
     End (show elvWeightSpace D Tw cutoff N ΛR x from

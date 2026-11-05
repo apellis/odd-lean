@@ -88,19 +88,6 @@ section EvenCoordinates
 variable {k : Type r} [CommRing k] {C : Type*} [Category C]
   [Preadditive C] [Linear k C] [Supercategory k C] [PiSupercategory k C]
 
-private theorem shift_even_hom (p : ZMod 2) {A B : C} (e : A ⟶ B)
-    (he : e ∈ parity (R := k) _ _ 0) :
-    ((homParityShiftDatum (k := k) p).iso A).hom ≫ e =
-      (homParityShift (k := k) p).map e ≫ ((homParityShiftDatum (k := k) p).iso B).hom := by
-  simpa using ((homParityShiftDatum (k := k) p).hom_naturality he).symm
-
-private theorem shift_even_inv (p : ZMod 2) {A B : C} (e : A ⟶ B)
-    (he : e ∈ parity (R := k) _ _ 0) :
-    ((homParityShiftDatum (k := k) p).iso A).inv ≫ (homParityShift (k := k) p).map e =
-      e ≫ ((homParityShiftDatum (k := k) p).iso B).inv := by
-  apply (cancel_epi ((homParityShiftDatum (k := k) p).iso A).hom).mp
-  rw [← Category.assoc, Iso.hom_inv_id, Category.id_comp,
-    reassoc_of% (shift_even_hom p e he), Iso.hom_inv_id, Category.comp_id]
 end EvenCoordinates
 
 section Post
@@ -174,17 +161,6 @@ theorem homContentPostCup_factor (n : ℕ) (Z : homWeightSector T W.obj muP nuM)
     TwoSupercategory.whiskerLeft_comp (R := k), Category.assoc, Iso.inv_hom_id,
     Category.comp_id]
   rw [TwoSupercategory.associator_inv_naturality_middle (R := k)]
-/-- The zeroth cap is exactly the specified counit. -/
-theorem homContentPostCap_zero (Z : homWeightSector T W.obj muP nuM) :
-    homContentPostCap T W i betaP muP h 0 Z =
-      (homContentPostAdjunction T W i betaP muP h).counit.app Z := by
-  simp [homContentPostCap]
-
-/-- The zeroth cup is exactly the specified unit. -/
-theorem homContentPostCup_zero (Z : homWeightSector T W.obj muP muM) :
-    homContentPostCup T W i betaP muP h 0 Z =
-      (homContentPostAdjunction T W i betaP muP h).unit.app Z := by
-  simp [homContentPostCup]
 
 /-- The entire specified positive-height inverse after postcomposition and
 content shift. The forward entries are the mate and dotted counits. -/
@@ -216,16 +192,6 @@ def homContentPostInvNeg (hh : D.h i nuM ≤ 0) (Z : homWeightSector T W.obj muP
       _ _ (homContentPostMate_coordinates T W i betaP muP h h₂ Z)
       (funext fun n => homContentPostCup_factor T W i betaP muP h₂ n Z)
 
-/-- Both zero-height presentations have the same principal inverse. -/
-theorem homContentPostInv_zero (hh : D.h i nuM = 0)
-    (Z : homWeightSector T W.obj muP nuM) :
-    (homContentPostInvPos T W i betaP muP h h₂ (le_of_eq hh.symm) Z).f' =
-      (homContentPostInvNeg T W i betaP muP h h₂ (le_of_eq hh) Z).f' := by
-  let P := homContentPostInvPos T W i betaP muP h h₂ (le_of_eq hh.symm) Z
-  let N := homContentPostInvNeg T W i betaP muP h h₂ (le_of_eq hh) Z
-  have hn : homContentPostMate T W i betaP muP h h₂ Z ≫ N.f' = 𝟙 _ := N.ff
-  calc P.f' = P.f' ≫ (homContentPostMate T W i betaP muP h h₂ Z ≫ N.f') := by rw [hn, Category.comp_id]
-       _ = N.f' := by rw [← Category.assoc, P.ff, Category.id_comp]
 /-- The inverse principal entry is the target coordinate, the specified factor
 inverse, and the inverse source coordinate, in execution order. -/
 theorem homContentPostInvPos_principal (hh : 0 ≤ D.h i nuM)
@@ -253,193 +219,6 @@ theorem homContentPostInvNeg_row (hh : D.h i nuM ≤ 0)
     (homContentPostInvNeg T W i betaP muP h h₂ hh Z).g' n =
       (homContentPostInverseTarget T W i betaP muP h₂ Z).hom ≫
         Z ◁ ((W.loc i h h₂).invNeg hh).g' n ≫ (rightUnitor Z).hom := rfl
-/-- Literal parity-shifted components are even and satisfy every inverse
-product. The diagonal identity is on the shifted object itself. -/
-theorem homContentPostInvPos_even (hh : 0 ≤ D.h i nuM)
-    (Z : homWeightSector T W.obj muP nuM) :
-    let J := homContentPostInvPos T W i betaP muP h h₂ hh Z
-    let z := (homParityShiftDatum (k := k) (D.parity i)).iso ((homContentPostF T W i betaP muP h₂).obj ((homContentPostE T W i betaP muP h₂).obj Z))
-    let zs := fun n : ℕ => (homParityShiftDatum (k := k) (n * D.parity i)).iso Z
-    let f := homContentPostMate T W i betaP muP h h₂ Z ≫ z.inv
-    let g := fun n => homContentPostCap T W i betaP muP h n Z ≫ (zs n).inv
-    let j := z.hom ≫ J.f'
-    let a := fun n => (zs n).hom ≫ J.g' n
-    (f ∈ parity (R := k) _ _ 0) ∧
-    (∀ n, g n ∈ parity (R := k) _ _ 0) ∧
-    (j ∈ parity (R := k) _ _ 0) ∧
-    (∀ n, a n ∈ parity (R := k) _ _ 0) ∧
-    (f ≫ j + ∑ n ∈ Finset.range (D.h i nuM).toNat, g n ≫ a n = 𝟙 _) ∧
-    (j ≫ f = 𝟙 _) ∧
-    (∀ n, n < (D.h i nuM).toNat → j ≫ g n = 0) ∧
-    (∀ n, n < (D.h i nuM).toNat → a n ≫ f = 0) ∧
-    (∀ n, n < (D.h i nuM).toNat → a n ≫ g n = 𝟙 _) ∧
-    (∀ n m, n < (D.h i nuM).toNat → m < (D.h i nuM).toNat → n ≠ m → a n ≫ g m = 0) := by
-  let J := homContentPostInvPos T W i betaP muP h h₂ hh Z
-  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · simpa only [zmod2_add_self] using comp_mem J.f_mem ((homParityShiftDatum (k := k) (D.parity i)).inv_mem _)
-  · intro n
-    simpa only [zmod2_add_self] using comp_mem (J.g_mem n) ((homParityShiftDatum (k := k) (n * D.parity i)).inv_mem _)
-  · simpa only [zmod2_add_self] using comp_mem ((homParityShiftDatum (k := k) (D.parity i)).hom_mem _) J.f'_mem
-  · intro n
-    simpa only [zmod2_add_self] using comp_mem ((homParityShiftDatum (k := k) (n * D.parity i)).hom_mem _) (J.g'_mem n)
-  · simpa only [Category.assoc, Iso.inv_hom_id_assoc] using J.total
-  · simp only [Category.assoc]
-    rw [← Category.assoc J.f', J.ff]
-    simp
-  · intro n hn
-    simp only [Category.assoc]
-    rw [← Category.assoc J.f', J.fg n hn]
-    simp
-  · intro n hn
-    simp only [Category.assoc]
-    rw [← Category.assoc (J.g' n), J.gf n hn]
-    simp
-  · intro n hn
-    simp only [Category.assoc]
-    rw [← Category.assoc (J.g' n), J.gg n n hn hn]
-    simp
-  · intro n m hn hm hnm
-    simp only [Category.assoc]
-    rw [← Category.assoc (J.g' n), J.gg n m hn hm]
-    simp [hnm]
 
-/-- Literal parity-shifted components are even and satisfy every inverse
-product. The diagonal identity is on the shifted object itself. -/
-theorem homContentPostInvNeg_even (hh : D.h i nuM ≤ 0)
-    (Z : homWeightSector T W.obj muP nuM) :
-    let J := homContentPostInvNeg T W i betaP muP h h₂ hh Z
-    let z := (homParityShiftDatum (k := k) (D.parity i)).iso ((homContentPostE T W i betaP muP h).obj ((homContentPostF T W i betaP muP h).obj Z))
-    let zs := fun n : ℕ => (homParityShiftDatum (k := k) (n * D.parity i)).iso Z
-    let f := z.hom ≫ homContentPostMate T W i betaP muP h h₂ Z
-    let g := fun n => (zs n).hom ≫ homContentPostCup T W i betaP muP h₂ n Z
-    let j := J.f' ≫ z.inv
-    let a := fun n => J.g' n ≫ (zs n).inv
-    (f ∈ parity (R := k) _ _ 0) ∧
-    (∀ n, g n ∈ parity (R := k) _ _ 0) ∧
-    (j ∈ parity (R := k) _ _ 0) ∧
-    (∀ n, a n ∈ parity (R := k) _ _ 0) ∧
-    (j ≫ f + ∑ n ∈ Finset.range (-D.h i nuM).toNat, a n ≫ g n = 𝟙 _) ∧
-    (f ≫ j = 𝟙 _) ∧
-    (∀ n, n < (-D.h i nuM).toNat → f ≫ a n = 0) ∧
-    (∀ n, n < (-D.h i nuM).toNat → g n ≫ j = 0) ∧
-    (∀ n, n < (-D.h i nuM).toNat → g n ≫ a n = 𝟙 _) ∧
-    (∀ n m, n < (-D.h i nuM).toNat → m < (-D.h i nuM).toNat → n ≠ m → g n ≫ a m = 0) := by
-  let J := homContentPostInvNeg T W i betaP muP h h₂ hh Z
-  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · simpa only [zmod2_add_self] using comp_mem ((homParityShiftDatum (k := k) (D.parity i)).hom_mem _) J.f_mem
-  · intro n
-    simpa only [zmod2_add_self] using comp_mem ((homParityShiftDatum (k := k) (n * D.parity i)).hom_mem _) (J.g_mem n)
-  · simpa only [zmod2_add_self] using comp_mem J.f'_mem ((homParityShiftDatum (k := k) (D.parity i)).inv_mem _)
-  · intro n
-    simpa only [zmod2_add_self] using comp_mem (J.g'_mem n) ((homParityShiftDatum (k := k) (n * D.parity i)).inv_mem _)
-  · simpa only [Category.assoc, Iso.inv_hom_id_assoc] using J.total
-  · simp only [Category.assoc]
-    rw [← Category.assoc (homContentPostMate T W i betaP muP h h₂ Z), J.ff]
-    simp
-  · intro n hn
-    simp only [Category.assoc]
-    rw [← Category.assoc (homContentPostMate T W i betaP muP h h₂ Z), J.fg n hn]
-    simp
-  · intro n hn
-    simp only [Category.assoc]
-    rw [← Category.assoc (homContentPostCup T W i betaP muP h₂ n Z), J.gf n hn]
-    simp
-  · intro n hn
-    simp only [Category.assoc]
-    rw [← Category.assoc (homContentPostCup T W i betaP muP h₂ n Z), J.gg n n hn hn]
-    simp
-  · intro n m hn hm hnm
-    simp only [Category.assoc]
-    rw [← Category.assoc (homContentPostCup T W i betaP muP h₂ n Z), J.gg n m hn hm]
-    simp [hnm]
-/-- Even principal row comparison: naturality against the even target
-coordinate introduces no Koszul scalar. -/
-theorem homContentPostMate_even_to (Z : homWeightSector T W.obj muP nuM) :
-    let a := homContentPostInverseSource T W i betaP muP h Z
-    let b := homContentPostInverseTarget T W i betaP muP h₂ Z
-    let S := homParityShift (k := k) (D.parity i)
-    let z := homParityShiftDatum (k := k) (D.parity i)
-    homContentPostMate T W i betaP muP h h₂ Z ≫ (z.iso _).inv ≫ S.map b.hom =
-      a.hom ≫ Z ◁ (W.loc i h h₂).sig ≫ (z.iso _).inv := by
-  dsimp only
-  rw [shift_even_inv _ _ (homContentPostInverseTarget_mem T W i betaP muP h₂ Z),
-    homContentPostMate_coordinates]
-  simp only [Category.assoc, Iso.inv_hom_id_assoc]
-
-/-- Even inverse column comparison, with the same shifted target coordinate. -/
-theorem homContentPostInvPos_even_principal (hh : 0 ≤ D.h i nuM)
-    (Z : homWeightSector T W.obj muP nuM) :
-    let a := homContentPostInverseSource T W i betaP muP h Z
-    let b := homContentPostInverseTarget T W i betaP muP h₂ Z
-    let S := homParityShift (k := k) (D.parity i)
-    let z := homParityShiftDatum (k := k) (D.parity i)
-    (z.iso _).hom ≫ (homContentPostInvPos T W i betaP muP h h₂ hh Z).f' =
-      S.map b.hom ≫ (z.iso _).hom ≫ Z ◁ ((W.loc i h h₂).invPos hh).f' ≫ a.inv := by
-  dsimp only
-  rw [homContentPostInvPos_principal,
-    ← Category.assoc ((homParityShiftDatum (k := k) (D.parity i)).iso _).hom,
-    shift_even_hom _ _ (homContentPostInverseTarget_mem T W i betaP muP h₂ Z)]
-  simp only [Category.assoc]
-
-/-- Even principal column comparison uses the shifted source coordinate. -/
-theorem homContentPostMate_even_from (Z : homWeightSector T W.obj muP nuM) :
-    let a := homContentPostInverseSource T W i betaP muP h Z
-    let b := homContentPostInverseTarget T W i betaP muP h₂ Z
-    let S := homParityShift (k := k) (D.parity i)
-    let z := homParityShiftDatum (k := k) (D.parity i)
-    (z.iso _).hom ≫ homContentPostMate T W i betaP muP h h₂ Z =
-      S.map a.hom ≫ (z.iso _).hom ≫ Z ◁ (W.loc i h h₂).sig ≫ b.inv := by
-  dsimp only
-  rw [homContentPostMate_coordinates,
-    ← Category.assoc ((homParityShiftDatum (k := k) (D.parity i)).iso _).hom,
-    shift_even_hom _ _ (homContentPostInverseSource_mem T W i betaP muP h Z)]
-  simp only [Category.assoc]
-
-/-- Even inverse row comparison retains the literal source parity shift. -/
-theorem homContentPostInvNeg_even_principal (hh : D.h i nuM ≤ 0)
-    (Z : homWeightSector T W.obj muP nuM) :
-    let a := homContentPostInverseSource T W i betaP muP h Z
-    let b := homContentPostInverseTarget T W i betaP muP h₂ Z
-    let S := homParityShift (k := k) (D.parity i)
-    let z := homParityShiftDatum (k := k) (D.parity i)
-    (homContentPostInvNeg T W i betaP muP h h₂ hh Z).f' ≫ (z.iso _).inv ≫ S.map a.hom =
-      b.hom ≫ Z ◁ ((W.loc i h h₂).invNeg hh).f' ≫ (z.iso _).inv := by
-  dsimp only
-  rw [shift_even_inv _ _ (homContentPostInverseSource_mem T W i betaP muP h Z),
-    homContentPostInvNeg_principal]
-  simp only [Category.assoc, Iso.inv_hom_id_assoc]
-/-- Both even identity-summand components use the same literal shifted object;
-its coordinate is the identity, not a shift removal. -/
-theorem homContentPostInvPos_even_dotted (hh : 0 ≤ D.h i nuM)
-    (Z : homWeightSector T W.obj muP nuM) (n : ℕ) :
-    let a := homContentPostInverseSource T W i betaP muP h Z
-    let z := (homParityShiftDatum (k := k) (n * D.parity i)).iso Z
-    (homContentPostCap T W i betaP muP h n Z ≫ z.inv =
-      a.hom ≫ Z ◁ ((W.F i h) ◁ rouquierPower (W.dot i h) n ≫ (W.adj i h).counit) ≫
-        (rightUnitor Z).hom ≫ z.inv) ∧
-    (z.hom ≫ (homContentPostInvPos T W i betaP muP h h₂ hh Z).g' n =
-      z.hom ≫ (rightUnitor Z).inv ≫ Z ◁ ((W.loc i h h₂).invPos hh).g' n ≫ a.inv) := by
-  dsimp only
-  constructor
-  · rw [homContentPostCap_factor]
-    simp only [Category.assoc]
-  · rw [homContentPostInvPos_column]
-
-/-- The negative-height identity summands are shifted on the source side,
-with no unsigned identification of their objects. -/
-theorem homContentPostInvNeg_even_dotted (hh : D.h i nuM ≤ 0)
-    (Z : homWeightSector T W.obj muP nuM) (n : ℕ) :
-    let b := homContentPostInverseTarget T W i betaP muP h₂ Z
-    let z := (homParityShiftDatum (k := k) (n * D.parity i)).iso Z
-    (z.hom ≫ homContentPostCup T W i betaP muP h₂ n Z =
-      z.hom ≫ (rightUnitor Z).inv ≫
-        Z ◁ ((W.adj i h₂).unit ≫ rouquierPower (W.dot i h₂) n ▷ W.F i h₂) ≫ b.inv) ∧
-    ((homContentPostInvNeg T W i betaP muP h h₂ hh Z).g' n ≫ z.inv =
-      b.hom ≫ Z ◁ ((W.loc i h h₂).invNeg hh).g' n ≫ (rightUnitor Z).hom ≫ z.inv) := by
-  dsimp only
-  constructor
-  · rw [homContentPostCup_factor]
-  · rw [homContentPostInvNeg_row]
-    simp only [Category.assoc]
 end Post
 end OddMath.SKM

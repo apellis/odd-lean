@@ -78,12 +78,4 @@ theorem oldAppendReindexIso_dot
     transform_total hDotμ ((oldModuleReindex D Sc cut h).obj N) w]
   exact oldAppendReindexLinear_dot D Sc m h i hν hμ h' N w
 
-/-- The comparison retains the chosen dot in the full evaluated probe categories. -/
-theorem probeAppendReindexIso_dot (N : ProbeEvaluatedModules D Sc m ν) :
-    (probeEvaluatedReindex D Sc m h').map (probeAppendToDotComponent D Sc m ν i ν' hν N) ≫
-        (probeAppendReindexIso D Sc m h i hν hμ h').hom.app N =
-      (probeAppendReindexIso D Sc m h i hν hμ h').hom.app N ≫
-        probeAppendToDotComponent D Sc m μ i μ' hμ ((probeEvaluatedReindex D Sc m h).obj N) :=
-  InducedCategory.hom_ext (oldAppendReindexIso_dot D Sc m h i hν hμ h' N.obj)
-
 end OddMath.QuiverHecke

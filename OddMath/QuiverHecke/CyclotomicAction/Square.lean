@@ -74,25 +74,4 @@ variable (i : I) (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParit
 local notation "P" => compositionCorner D Sc i i a ha n
 local notation "f" => compositionSuperCrossing D Sc i i a ha n
 
-/-- The signed crossing squares to zero on homogeneous corner elements. -/
-theorem compositionSuperCrossing_square_apply {p : ZMod 2} (x : (P).toSVec)
-    (hx : x ∈ (P).toSVec.part p) : (f.1 (f.1 x)).val = 0 := by
-  have hf : f.1 x ∈ (P).toSVec.part (p + D.parity i * D.parity i) :=
-    SVec.apply_mem_part (compositionCrossingLinear_parity D Sc i i a ha n) hx
-  erw [compositionSuperCrossing_apply D Sc i i a ha n _ hf,
-    compositionSuperCrossing_apply D Sc i i a ha n x hx]
-  rw [smul_mul_assoc, mul_assoc, cyclotomicLastCrossing_square, mul_zero, smul_zero, smul_zero]
-
-/-- The actual homogeneous superbimodule crossing has square zero. -/
-theorem compositionSuperCrossing_square : f ≫ f = 0 := by
-  apply Subtype.ext
-  apply SVec.hom_ext
-  intro x
-  have h (p : ZMod 2) : f.1 (f.1 ((P).toSVec.proj p x)) = 0 := by
-    apply Subtype.ext
-    exact compositionSuperCrossing_square_apply D Sc i a ha n _
-      ((P).toSVec.proj_mem_part p x)
-  change f.1 (f.1 x) = 0
-  rw [← (P).toSVec.proj_apply_add x, map_add, map_add, h 0, h 1, add_zero]
-
 end OddMath.QuiverHecke

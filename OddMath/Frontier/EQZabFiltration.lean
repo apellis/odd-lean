@@ -329,7 +329,6 @@ theorem cor_4_8 (a b : ℕ) :
     rw [List.mem_toFinset]
     exact hnot j hj
 
-
 /-- The number of cells: `#Par(b,a) = binom(a+b, a)` (the graded rank of `Z_{a,b}` over
 `OΛ_{a+b}` is `Σ_{μ ∈ Par(b,a)} q^{|μ|} = BoxPartitionCount.gauss b a`, a Gaussian binomial). -/
 theorem card_cells (a b : ℕ) : (box b a).card = (a + b).choose a := by

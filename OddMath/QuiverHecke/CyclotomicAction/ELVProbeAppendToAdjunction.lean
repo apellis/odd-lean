@@ -63,12 +63,4 @@ def probeAppendToRightAdjunction :
     (probeAppendToAdjunction D Sc m ν i μ h) (probeAppendToAdjunction_unit_mem D Sc m ν i μ h)
     (probeAppendToAdjunction_counit_mem D Sc m ν i μ h)
 
-/-- The inherited unit retains its physical balanced-induction component. -/
-theorem probeAppendToUnit_native (N : ProbeEvaluatedModules D Sc m ν) :
-    ((probeAppendToUnit D Sc m ν i μ h).app N).hom = (adjunction J).unit.app N.obj := rfl
-
-/-- The inherited counit retains its physical multiplication component. -/
-theorem probeAppendToCounit_native (N : ProbeEvaluatedModules D Sc m μ) :
-    ((probeAppendToCounit D Sc m ν i μ h).app N).hom = (adjunction J).counit.app N.obj := rfl
-
 end OddMath.QuiverHecke

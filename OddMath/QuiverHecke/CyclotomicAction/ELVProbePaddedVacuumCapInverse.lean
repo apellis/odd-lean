@@ -16,7 +16,7 @@ matrix of the supported vacuum sector has a cap-window inverse
 entry by entry, to the native chart of the regular vacuum probe: its principal map
 becomes the evaluated A6 bend `evaluatedMixedBend` (odd colour, through
 `paddedVacuumDx_odd`) and its windows become the native rows `x ^ n ≫ v`
-(`paddedVacuumCap_native`). The result `vacuumCapInverse_native_odd` is a cap
+(`paddedVacuumCap_eq`). The result `vacuumCapInverse_odd` is a cap
 inverse of exactly the window used by `tensorVacuumCapInverse_odd_moments`.
 
 The transport uses only additive evaluation (`IsCapInverse.map`), the corner
@@ -147,7 +147,7 @@ include hdot hwin in
 supported vacuum input is the given tensor input, the actual positive factor
 matrix supplies an entrywise inverse of the native cap window
 `[bend; x ^ n ≫ v]_(n < h)` of the evaluated A6 bend, `h = h_i(wt)`. -/
-theorem vacuumCapInverse_native_odd
+theorem vacuumCapInverse_odd
     (Z : SupportedSectors.H D (parameterTwist D Sc) m cutoff bound ΛP ΛR ((0, 0) : Sector I))
     (hZ : Z.obj = vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1)
@@ -198,7 +198,7 @@ theorem vacuumCapInverse_native_odd
         ProbeVacuumCap.shiftedPreCap D (parameterTwist D Sc) m
           (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i hP
           (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) := fun n =>
-    (Iso.inv_comp_eq _).2 (paddedVacuumCap_native D Sc m cutoff bound ΛP ΛR hcP hcR H i hP n)
+    (Iso.inv_comp_eq _).2 (paddedVacuumCap_eq D Sc m cutoff bound ΛP ΛR hcP hcR H i hP n)
   simp only [Iso.symm_hom, Iso.symm_inv, Category.assoc, hs, hw] at h₃
   exact ⟨_, _, h₃⟩
 

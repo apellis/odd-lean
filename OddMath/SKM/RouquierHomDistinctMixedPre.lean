@@ -297,26 +297,5 @@ theorem homContentPreAdjunction_counit_app (L : RouquierLeftAdjoints (k := k) T)
     Category.id_comp]
   rw [koszulSign_smul (R := k)]
 
-/-- The coordinate formula (9) for the content-shifted precomposition adjunctions of a
-factor family, at an arbitrary post edge `E'` with shifts `t`, `u`. -/
-theorem homContentDistinctMixedPreMate_eq (L : RouquierLeftAdjoints (k := k) T)
-    {muM' : X} (E' : W muM ⟶ W muM') (t u : ZMod 2)
-    (H : homWeightSector T.obj W nuP muM) :
-    homDistinctMixedPreMate (T.E i h) E' t u (homContentPreAdjunction T W L i muM' h)
-        (homContentPreAdjunction T W L i muM h) H =
-      sign k (leftAdjParity D i (-nuP) * u) •
-        (((homParityShiftDatum (k := k) t).iso
-            ((homParityShift (k := k) (leftAdjParity D i (-nuP))).obj (T.F i h ≫ H) ≫
-              E')).hom ≫
-          ((homParityShiftDatum (k := k) (leftAdjParity D i (-nuP))).iso
-            (T.F i h ≫ H)).hom ▷ E' ≫
-          (associator (T.F i h) H E').hom ≫
-          T.F i h ◁ ((homParityShiftDatum (k := k) u).iso (H ≫ E')).inv ≫
-          ((homParityShiftDatum (k := k) (leftAdjParity D i (-nuP))).iso
-            (T.F i h ≫ (homParityShift (k := k) u).obj (H ≫ E'))).inv) :=
-  homDistinctMixedPreMate_eq (L.adjL i h)
-    (fun Y => homContentPreAdjunction_unit_app T W i muM' h L Y)
-    (fun Z => homContentPreAdjunction_counit_app T W i muM h L Z) H
-
 end Content
 end OddMath.SKM

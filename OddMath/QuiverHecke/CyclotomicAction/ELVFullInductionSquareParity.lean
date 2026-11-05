@@ -72,10 +72,6 @@ theorem fullSquareRestrictionIso_hom_mem :
     dsimp only [induction, Functor.comp_obj] at h0 ⊢
   simpa only [zero_add] using h0
 
-theorem fullSquareRestrictionIso_inv_mem :
-    (fullSquareRestrictionIso J U Q T h M).inv ∈ parity (R := k) _ _ 0 :=
-  inv_mem _ (fullSquareRestrictionIso_hom_mem J U Q T h M)
-
 /-- An even chosen input isomorphism retains evenness of the full source chart. -/
 theorem fullSquareSourceIso_hom_mem (P : Superfunctor k B (SVec k)) (e : induced Q M ≅ P)
     (he : e.hom ∈ parity (R := k) _ _ 0) :
@@ -87,23 +83,11 @@ theorem fullSquareSourceIso_hom_mem (P : Superfunctor k B (SVec k)) (e : induced
     dsimp only [induction, Functor.comp_obj] at h0 ⊢
   simpa only [zero_add] using h0
 
-theorem fullSquareSourceIso_inv_mem (P : Superfunctor k B (SVec k)) (e : induced Q M ≅ P)
-    (he : e.hom ∈ parity (R := k) _ _ 0) :
-    (fullSquareSourceIso J U Q T h M P e).inv ∈ parity (R := k) _ _ 0 :=
-  inv_mem _ (fullSquareSourceIso_hom_mem J U Q T h M P e he)
-
 /-- The complete chosen source chart, with its final target isomorphism bound before data. -/
 def fullSquareSourceRetargetIso (P : Superfunctor k B (SVec k)) (e : induced Q M ≅ P)
     (V : Superfunctor k E (SVec k)) (b : induced T P ≅ V) :
     induced J M ≅ (restriction U).obj V :=
   fullSquareSourceIso J U Q T h M P e ≪≫ (restriction U).mapIso b
-
-theorem fullSquareSourceRetargetIso_hom_mem (P : Superfunctor k B (SVec k)) (e : induced Q M ≅ P)
-    (V : Superfunctor k E (SVec k)) (b : induced T P ≅ V)
-    (he : e.hom ∈ parity (R := k) _ _ 0) (hb : b.hom ∈ parity (R := k) _ _ 0) :
-    (fullSquareSourceRetargetIso J U Q T h M P e V b).hom ∈ parity (R := k) _ _ 0 := by
-  simpa only [fullSquareSourceRetargetIso, Iso.trans_hom, Functor.mapIso_hom, zero_add] using
-    comp_mem (fullSquareSourceIso_hom_mem J U Q T h M P e he) (map_mem (restriction U) hb)
 
 /-- The complete chosen target chart keeps its strict restriction square and final target comparison. -/
 def fullSquareTargetRetargetIso (P V : Superfunctor k B (SVec k))
@@ -118,23 +102,6 @@ theorem fullSquareTargetRetargetIso_hom_mem (P V : Superfunctor k B (SVec k))
   have h0 := comp_mem (map_mem (restriction J) (fullSquareRestrictionIso_hom_mem J U Q T h M))
     (comp_mem ha (map_mem (restriction Q) hb))
   simpa only [fullSquareTargetRetargetIso, Iso.trans_hom, Functor.mapIso_hom, Category.assoc, zero_add] using h0
-
-/-- The source chart is the total component of the specified module isomorphism. -/
-theorem fullSquareSourceIso_total_apply (P : Superfunctor k B (SVec k)) (e : induced Q M ≅ P)
-    (w : A) (x : Obj J M.toFunctor w) :
-    (fullSquareSourceIso J U Q T h M P e).hom.total w x =
-      fullSquareSourceLinear J U Q T h M P e w x := rfl
-
-/-- The full source component evaluates by the specified final endpoint map. -/
-theorem fullSquareSourceRetargetIso_total_apply
-    (P : Superfunctor k B (SVec k)) (e : induced Q M ≅ P)
-    (V : Superfunctor k E (SVec k)) (b : induced T P ≅ V)
-    (w : A) (x : (induced J M).obj w) :
-    (fullSquareSourceRetargetIso J U Q T h M P e V b).hom.total w x =
-      b.hom.total (U.obj w) ((fullSquareSourceIso J U Q T h M P e).hom.total w x) := by
-  rw [fullSquareSourceRetargetIso, Iso.trans_hom, Functor.mapIso_hom,
-    Superfunctor.comp_total]
-  rfl
 
 /-- The full target component retains both specified endpoint maps. -/
 theorem fullSquareTargetRetargetIso_total_apply

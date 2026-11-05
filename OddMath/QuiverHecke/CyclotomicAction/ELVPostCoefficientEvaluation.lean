@@ -43,18 +43,4 @@ theorem elvPostEndEvaluation_dot_isNilpotent [Finite I]
     (elvPostDot_mem D Sc cutoff bound i Λ h F)]
   exact elvPostDot_component_isNilpotent D Sc cutoff bound hdot i Λ h F M δ
 
-/-- The even finite expansion uses an actual output bound, supplied here. -/
-theorem elvPostCoefficient_even_expansion [Finite I]
-    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound)
-    (X a : End G) (hx : IsUnit X) (hxy : Commute X Y) (ha : a * (Y - X) = 1)
-    (M : C) (δ : WeightBlocks D Λ y) :
-    let φ := elvPostEndEvaluation D Sc cutoff bound i Λ h F M δ
-    ∃ n : ℕ, φ Y ^ n = 0 ∧
-      φ a = -∑ r ∈ Finset.range n, Ring.inverse (φ X) ^ (r + 1) * φ Y ^ r := by
-  dsimp only
-  obtain ⟨n, hn⟩ := elvPostEndEvaluation_dot_isNilpotent D Sc cutoff bound i Λ h F hdot M δ
-  let φ := elvPostEndEvaluation D Sc cutoff bound i Λ h F M δ
-  exact ⟨n, hn, mixedCoefficient_even_map_expansion φ.toRingHom X Y a
-    (hx.map φ.toRingHom) hxy ha n hn⟩
-
 end OddMath.QuiverHecke.ELVOld

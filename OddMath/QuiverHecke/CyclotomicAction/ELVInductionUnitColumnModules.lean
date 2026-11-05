@@ -71,11 +71,4 @@ theorem unitColumnModuleIso_hom
     (unitColumnModuleIso J hα M m e he).hom = unitColumnModuleMap J hα M m :=
   OddMath.HomogeneousSuperfunctorIso.ofHom_hom _ _ _ _
 
-/-- The inverse preserves the same canonical parity grading. -/
-theorem unitColumnModuleIso_inv_mem
-    (e : ∀ w, unitColumnSourceSpace p M m w ≅ ((restriction J).obj ((induction J).obj M)).obj w)
-    (he : ∀ w, (e w).hom = unitColumnMatrix J hα M m w) :
-    (unitColumnModuleIso J hα M m e he).inv ∈ parity (R := k) _ _ 0 :=
-  OddMath.HomogeneousSuperfunctorIso.ofHom_inv_mem _ _ _ _
-
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

@@ -44,7 +44,6 @@ theorem elvAffineScalarSpecialization_elvCyclotomic
   exact elvAffineScalarSpecialization_dotPolynomial D Sc cutoff values hvalues
     (i.1 :: tail) 0 N (elvMonicCoefficient D k i N)
 
-
 /-- The same scalar polynomial formula for the original first-dot presentation. -/
 theorem elvAffineScalarSpecialization_deformedCyclotomic
     (w : List I) (N : ℕ) (c : Fin (N+1) → SKM.SYM D k) :

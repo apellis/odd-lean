@@ -36,7 +36,6 @@ namespace OddMath.Frontier.EQFunctor
 
 open DG MulOpposite
 
-
 variable (a b : ℕ)
 
 /-- **Ellis–Qi, Proposition 4.12 (2)** (spanning): every right `OΛ_{a+b}`-linear endomorphism `f`

@@ -75,7 +75,7 @@ theorem probeAppendUpperLoopSuperIso_hom_total (N : ProbeEvaluatedModules D Sc m
   rfl
 
 /-- The total evaluated column is the prescribed OLD unit/dot column. -/
-theorem probeAppendToUnitColumn_total_native (n : ℕ) (N : ProbeEvaluatedModules D Sc m γ) :
+theorem probeAppendToUnitColumn_total_eq (n : ℕ) (N : ProbeEvaluatedModules D Sc m γ) :
     ((probeAppendToUnitColumn D Sc m γ i h n).total N).hom =
       unitDotColumn K (probeAppendToDot_supernatural D Sc m γ i μ h) N.obj n := by
   change ((probeAppendToUnitColumn D Sc m γ i h n).app 0 N).hom +
@@ -96,7 +96,7 @@ theorem probeAppendUpperLoop_unitColumn (n : ℕ) :
   change ((probeAppendToUnitColumn D Sc m γ i (List.Perm.refl (i :: γ)) n).total N).hom ≫
     ((probeAppendUpperLoopSuperIso D Sc m γ i h).hom.total N).hom =
       ((probeAppendToUnitColumn D Sc m γ i h n).total N).hom
-  rw [probeAppendToUnitColumn_total_native, probeAppendToUnitColumn_total_native,
+  rw [probeAppendToUnitColumn_total_eq, probeAppendToUnitColumn_total_eq,
     probeAppendUpperLoopSuperIso_hom_total]
   exact oldAppendReindexIso_unitColumn D Sc m γ i (List.Perm.refl γ) h N.obj n
 

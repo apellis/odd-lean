@@ -44,7 +44,6 @@ private def productPiEndComponent {k J : Type u} [CommRing k]
           (e.hom ≫ twist k 1 g ≫ e.inv) ≫ (e.hom ≫ twist k 1 f ≫ e.inv)
         simp only [twist_comp, Category.assoc, Iso.inv_hom_id_assoc] }
 
-
 private theorem productPi_map_component {k J : Type u} [CommRing k]
     (C : J → Type (u + 1)) [∀ j, Category.{u} (C j)] [∀ j, Preadditive (C j)]
     [∀ j, Linear k (C j)] [∀ j, Supercategory k (C j)] [∀ j, PiSupercategory k (C j)]
@@ -114,55 +113,5 @@ theorem elvShiftedPostEndEvaluation_dot_isNilpotent [Finite I]
     exact (elvPostEndEvaluation_dot_isNilpotent D Sc cutoff bound i Λ h F hdot M δ).map
       (productPiEndComponent (k := k) (fun β : WeightBlocks D Λ y => ContentModules D Sc cutoff bound β.1)
         ((G).obj M) δ)
-
-/-- The actual prewhiskered probe unit remains a unit after the prescribed shift and evaluation. -/
-theorem elvShiftedPostEndEvaluation_probe_isUnit (α : End F) (hu : IsUnit α)
-    (κ : ZMod 2) (M : A) (δ : WeightBlocks D Λ y) :
-    IsUnit (elvShiftedPostEndEvaluation D Sc cutoff bound i Λ h F κ M δ
-      (elvShiftedPostEnd D Sc cutoff bound i Λ h F
-        (elvPostProbeDot D Sc cutoff bound i Λ h F α) κ)) := by
-  have hx := elvPostProbeDot_isUnit D Sc cutoff bound i Λ h F α hu
-  have hs := hx.map ((SKM.homParityShift (k := k)
-    (C := A ⟶ elvWeightSpace D Sc cutoff bound Λ y) κ).mapEnd G)
-  exact hs.map (elvShiftedPostEndEvaluation D Sc cutoff bound i Λ h F κ M δ)
-
-/-- An even prewhiskered map commutes with the actual shifted reservoir dot. -/
-theorem elvShiftedPostProbe_even_comm (α : End F)
-    (hα : α ∈ parity (R := k) _ _ 0) (κ : ZMod 2) :
-    Commute
-      (elvShiftedPostEnd D Sc cutoff bound i Λ h F
-        (elvPostProbeDot D Sc cutoff bound i Λ h F α) κ)
-      (Ys κ) := by
-  let S := SKM.homParityShift (k := k)
-    (C := A ⟶ elvWeightSpace D Sc cutoff bound Λ y) κ
-  have he := TwoSupercategory.super_interchange hα (elvActionDot_mem D Sc cutoff bound i Λ h)
-  simp only [koszulSign_zero_left, one_smul] at he
-  have hs := congrArg S.map he
-  rw [CategoryTheory.Functor.map_comp, CategoryTheory.Functor.map_comp] at hs
-  exact hs.symm
-
-/-- At an even colour the specified coefficient has the finite expansion at
-this shifted output block. Its inverse identity is an intermediate input,
-to be supplied by the chosen crossing coefficient's `IsInverse` proof. -/
-theorem elvShiftedPostCoefficient_even_expansion [Finite I]
-    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (hp : D.parity i = 0)
-    (α : End F) (hα : α ∈ parity (R := k) _ _ (D.parity i)) (hu : IsUnit α)
-    (κ : ZMod 2) (a : End (Gs κ))
-    (ha : a * ((Ys κ) - elvShiftedPostEnd D Sc cutoff bound i Λ h F
-      (elvPostProbeDot D Sc cutoff bound i Λ h F α) κ) = 1)
-    (M : A) (δ : WeightBlocks D Λ y) :
-    let φ := elvShiftedPostEndEvaluation D Sc cutoff bound i Λ h F κ M δ
-    let X := elvShiftedPostEnd D Sc cutoff bound i Λ h F
-      (elvPostProbeDot D Sc cutoff bound i Λ h F α) κ
-    ∃ n : ℕ, φ (Ys κ) ^ n = 0 ∧
-      φ a = -∑ r ∈ Finset.range n, Ring.inverse (φ X) ^ (r + 1) * φ (Ys κ) ^ r := by
-  dsimp only
-  let φ := elvShiftedPostEndEvaluation D Sc cutoff bound i Λ h F κ M δ
-  let X := elvShiftedPostEnd D Sc cutoff bound i Λ h F
-    (elvPostProbeDot D Sc cutoff bound i Λ h F α) κ
-  obtain ⟨n, hn⟩ := elvShiftedPostEndEvaluation_dot_isNilpotent D Sc cutoff bound i Λ h F hdot κ M δ
-  exact ⟨n, hn, SwappedAssembly.mixedCoefficient_even_map_expansion φ.toRingHom X (Ys κ) a
-    (elvShiftedPostEndEvaluation_probe_isUnit D Sc cutoff bound i Λ h F α hu κ M δ)
-    (elvShiftedPostProbe_even_comm D Sc cutoff bound i Λ h F α (hp ▸ hα) κ) ha n hn⟩
 
 end OddMath.QuiverHecke.ELVOld

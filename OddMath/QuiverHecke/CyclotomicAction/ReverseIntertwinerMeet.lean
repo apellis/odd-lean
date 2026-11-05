@@ -172,23 +172,4 @@ theorem reverseMeetLeft_eq_all (l v : List I) (i j c : I) :
       exact reverseMeetLeft_eq_jii D Sc l v hji
     · exact reverseMeetLeft_eq_ne D Sc l v hji hci
 
-/-- Reverse crossing naturality on a pair of old strands, without colour restrictions. -/
-theorem cross_comp_reverseMoveHom_pair_all (l : List I) (i j c : I) :
-    cl D Sc (l ++ [j, c] ++ [i]) (l ++ [c, j] ++ [i]) [.cross l.length]
-      (sChain_crossAt l [i] j c) ≫ reverseMoveHom D Sc i l [c, j] =
-    reverseMoveHom D Sc i l [j, c] ≫
-      cl D Sc (l ++ i :: [j, c]) (l ++ i :: [c, j]) [.cross (l.length + 1)]
-        (sChain_cross_succ l [] i j c) := by
-  have h := reverseMeetLeft_eq_all D Sc l [] i j c
-  unfold reverseMeetLeft reverseMeetRight g0 g1 p0 p1 at h
-  apply (cancel_epi (eqToHom (congrArg (fun s => (pres D Sc).obj (ob D s))
-    (show l ++ j :: c :: i :: [] = l ++ [j, c] ++ [i] by simp)))).1
-  simp only [reverseMoveHom, Category.assoc, eqToHom_trans_assoc]
-  simp only [Category.assoc, eqToHom_trans_assoc] at h
-  rw [eqToHom_comp_cl_assoc, cl_comp_eqToHom_assoc]
-  · rw [cl_comp_eqToHom_assoc] at h
-    · exact h
-    · simp
-  all_goals simp
-
 end OddMath.QuiverHecke

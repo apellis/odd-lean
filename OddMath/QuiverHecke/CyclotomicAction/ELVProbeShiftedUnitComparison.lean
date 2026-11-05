@@ -42,25 +42,6 @@ theorem shiftedUnitDotColumn_total (M : Superfunctor k C (SVec k)) (n : ℕ) (w 
   rw [shiftedUnitDotColumn, Superfunctor.comp_total, SVec.toLinearMap_comp, unitDotColumn_total]
   rfl
 
-/-- The same given column at a canonically identified output object. -/
-def endpointShiftedUnitDotLinear (M : Superfunctor k C (SVec k)) (n : ℕ)
-    (w : C) (v : A) (e : J.obj w = v) :
-    ((SKM.homParityShift (k := k) (n • p)).obj M).obj w →ₗ[k] Obj J M.toFunctor v :=
-  endpointUnitDotLinear J hα M n w v e ∘ₗ
-    SVec.toLinearMap (((SKM.homParityShiftDatum (k := k) (n • p)).iso M).hom.total w)
-
-theorem endpointShiftedUnitDotLinear_total (M : Superfunctor k C (SVec k)) (n : ℕ)
-    (w : C) (v : A) (e : J.obj w = v) :
-    postcompose J M.toFunctor (eqToHom e) ∘ₗ
-        SVec.toLinearMap ((shiftedUnitDotColumn J hα M n).total w) =
-      endpointShiftedUnitDotLinear J hα M n w v e := by
-  rw [shiftedUnitDotColumn_total]
-  unfold shiftedUnitDotLinear endpointShiftedUnitDotLinear
-  rw [← LinearMap.comp_assoc]
-  have h := endpointUnitDotLinear_total J hα M n w v e
-  rw [unitDotColumn_total] at h
-  rw [h]
-
 /-- Evaluate a given unit/dot column before specializing its coend. -/
 theorem unitDotLinear_apply (M : Superfunctor k C (SVec k)) (n : ℕ) (w : C) (b : M.obj w) :
     unitDotLinear J hα M n w b = ((transformLinear hα M (J.obj w)) ^ n) (unit J M.toFunctor w b) := rfl
@@ -102,34 +83,8 @@ variable {k C D : Type u} [CommRing k] [Category.{u} C] [Category.{u} D]
   (e : (restriction Q).obj M ≅ N)
 local instance shiftedUnitCoordinateSourcePi : PiSupercategory k (Superfunctor k C (SVec k)) := supermodulePiSupercategory
 local instance shiftedUnitCoordinateTargetPi : PiSupercategory k (Superfunctor k D (SVec k)) := supermodulePiSupercategory
-private theorem unitRestriction_total {L L' : Superfunctor k D (SVec k)}
-    (f : L ⟶ L') (w : C) : ((restriction Q).map f).total w = f.total (Q.obj w) := rfl
-
-/-- The actual source parity-coordinate square on module values. -/
-theorem parityRestrictionIso_hom_coordinate_total (q : ZMod 2)
-    (he : e.hom ∈ parity (R := k) _ _ 0) (w : C) :
-    SVec.toLinearMap (((SKM.homParityShiftDatum (k := k) q).iso N).hom.total w) ∘ₗ
-        SVec.toLinearMap ((parityRestrictionIso Q M N e q).hom.total w) =
-      SVec.toLinearMap (e.hom.total w) ∘ₗ
-        SVec.toLinearMap (((SKM.homParityShiftDatum (k := k) q).iso M).hom.total (Q.obj w)) := by
-  have h := congrArg (fun f => SVec.toLinearMap (f.total w))
-    (parityRestrictionIso_hom_coordinate Q M N e q he)
-  simpa only [Superfunctor.comp_total, SVec.toLinearMap_comp, unitRestriction_total] using h
 
 end Coordinates
-
-private theorem shiftedUnitTransport
-    {k V W X Y V' W' : Type u} [CommRing k]
-    [AddCommMonoid V] [Module k V] [AddCommMonoid W] [Module k W]
-    [AddCommMonoid X] [Module k X] [AddCommMonoid Y] [Module k Y]
-    [AddCommMonoid V'] [Module k V'] [AddCommMonoid W'] [Module k W']
-    (c : X →ₗ[k] Y) (a : V →ₗ[k] X) (b : W →ₗ[k] Y)
-    (v : W →ₗ[k] V) (zX : V' →ₗ[k] V) (zY : W' →ₗ[k] W) (S : W' →ₗ[k] V')
-    (hcol : c ∘ₗ a ∘ₗ v = b) (hz : zX ∘ₗ S = v ∘ₗ zY) :
-    c ∘ₗ (a ∘ₗ zX) ∘ₗ S = b ∘ₗ zY := by
-  ext x
-  exact (congrArg (fun z => c (a z)) (LinearMap.congr_fun hz x)).trans
-    (LinearMap.congr_fun hcol (zY x))
 
 section Comparison
 variable {k C A D B : Type u} [CommRing k]
@@ -146,23 +101,6 @@ variable {k C A D B : Type u} [CommRing k]
   (e : (restriction Q).obj M ≅ N)
 local instance shiftedUnitComparisonSourcePi : PiSupercategory k (Superfunctor k C (SVec k)) := supermodulePiSupercategory
 local instance shiftedUnitComparisonTargetPi : PiSupercategory k (Superfunctor k D (SVec k)) := supermodulePiSupercategory
-
-/-- Canonical source parity coordinates preserve an actual unit/dot column
-comparison, including its specified output-object transport. -/
-theorem shiftedUnitDotLinear_compare (he : e.hom ∈ parity (R := k) _ _ 0)
-    (n : ℕ) (w : C) (t : B) (et : T.obj (Q.obj w) = t)
-    (c : Obj J N.toFunctor (J.obj w) →ₗ[k] Obj T M.toFunctor t)
-    (hcol : c ∘ₗ unitDotLinear J hα N n w ∘ₗ SVec.toLinearMap (e.hom.total w) =
-      endpointUnitDotLinear T hβ M n (Q.obj w) t et) :
-    c ∘ₗ shiftedUnitDotLinear J hα N n w ∘ₗ
-        SVec.toLinearMap ((parityRestrictionIso Q M N e (n • p)).hom.total w) =
-      endpointShiftedUnitDotLinear T hβ M n (Q.obj w) t et :=
-  shiftedUnitTransport c (unitDotLinear J hα N n w)
-    (endpointUnitDotLinear T hβ M n (Q.obj w) t et) (SVec.toLinearMap (e.hom.total w))
-    (SVec.toLinearMap (((SKM.homParityShiftDatum (k := k) (n • p)).iso N).hom.total w))
-    (SVec.toLinearMap (((SKM.homParityShiftDatum (k := k) (n • p)).iso M).hom.total (Q.obj w)))
-    (SVec.toLinearMap ((parityRestrictionIso Q M N e (n • p)).hom.total w)) hcol
-    (parityRestrictionIso_hom_coordinate_total Q M N e (n • p) he w)
 
 end Comparison
 
@@ -201,21 +139,6 @@ private theorem unitTensorSource_congr
   cases hg
   cases hb
   rfl
-
-private theorem unitEqIso_mem
-    {k A : Type u} [CommRing k] [Category.{u} A] [Preadditive A] [Linear k A]
-    [Supercategory k A] {F G : Superfunctor k A (SVec k)} (h : F = G) :
-    (eqToIso h).hom ∈ parity (R := k) _ _ 0 := by
-  cases h
-  exact id_mem F
-
-private theorem unitValue_comp
-    {k V W Z : Type u} [CommRing k] [AddCommMonoid V] [Module k V]
-    [AddCommMonoid W] [Module k W] [AddCommMonoid Z] [Module k Z]
-    (c : W →ₗ[k] Z) (a : V →ₗ[k] W) (v : V →ₗ[k] V)
-    (hv : ∀ b, v b = b) : c ∘ₗ a ∘ₗ v = c ∘ₗ a := by
-  ext b
-  exact congrArg (fun z => c (a z)) (hv b)
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ) (ν : List I)
@@ -257,15 +180,6 @@ theorem probeAppendComparisonLinear_dot
     rfl _ aNew b b ha HEq.rfl
   exact hl.trans (he.trans hr.symm)
 
-/-- Every given signed dot power uses this same selected append map. -/
-theorem probeAppendComparisonLinear_dot_pow
-    (w : ELVOld.OldContentCategory D Sc (probeCutoff D m) (i :: ν)) (n : ℕ) :
-    probeAppendComparisonLinear D Sc m ν N hN i w ∘ₗ
-        ((probeOldContentInductionDot D Sc m ν i N w) ^ n) =
-      ((transformLinear (probeOrdinaryAppendDot_supernatural D Sc m ν i) O ((U).obj w)) ^ n) ∘ₗ
-        probeAppendComparisonLinear D Sc m ν N hN i w :=
-  intertwine_pow _ _ _ (probeAppendComparisonLinear_dot D Sc m ν N hN i w) n
-
 /-- The selected append chart transports every actual unit/dot column, with
 its canonical output-object identification. -/
 theorem probeAppendComparisonLinear_unitDotColumn
@@ -287,7 +201,6 @@ theorem probeAppendComparisonLinear_unitDotColumn
     O n ((Q).obj w)
   exact h.trans he.symm
 
-
 local notation "e" => eqToIso (probeOrdinaryModuleSuperfunctor_restrict D Sc m ν N hN)
 local instance scalarShiftedUnitOldPi : PiSupercategory k
     (Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k)) :=
@@ -297,44 +210,6 @@ local instance scalarShiftedUnitOrdinaryPi : PiSupercategory k
       (probePolynomial (k := k) (probeDotExponent D) m) ν) (SVec k)) :=
   supermodulePiSupercategory
 
-private theorem unitValue_apply
-    (w : ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (b : (O).obj ((Q).obj w)) :
-    SVec.toLinearMap ((e).hom.total w) b = b := by
-  simp only [SuperNatTrans.total, probeRestrictionEqToIso_hom_app,
-    ↓reduceIte, one_ne_zero, add_zero, SVec.toLinearMap]
-  rfl
-
-private theorem unitValue_mem : (e).hom ∈ parity (R := k) _ _ 0 := by
-  exact unitEqIso_mem (probeOrdinaryModuleSuperfunctor_restrict D Sc m ν N hN)
-
-/-- The actual unit/dot columns commute with their full canonical shifted
-source comparison and the originally selected append chart. -/
-theorem probeAppendComparisonLinear_shiftedUnitColumn
-    (w : ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (n : ℕ) :
-    probeAppendComparisonLinear D Sc m ν N hN i ((J).obj w) ∘ₗ
-        shiftedUnitDotLinear J (probeOldContentAppendDot_supernatural D Sc m ν i) N n w ∘ₗ
-        SVec.toLinearMap ((parityRestrictionIso Q O N e (n • D.parity i)).hom.total w) =
-      endpointShiftedUnitDotLinear T (probeOrdinaryAppendDot_supernatural D Sc m ν i) O n
-        ((Q).obj w) ((U).obj ((J).obj w)) rfl := by
-  have hcol : probeAppendComparisonLinear D Sc m ν N hN i ((J).obj w) ∘ₗ
-      unitDotLinear J (probeOldContentAppendDot_supernatural D Sc m ν i) N n w ∘ₗ
-      SVec.toLinearMap ((e).hom.total w) =
-      endpointUnitDotLinear T (probeOrdinaryAppendDot_supernatural D Sc m ν i) O n
-        ((Q).obj w) ((U).obj ((J).obj w)) rfl := by
-    have hleft := unitValue_comp
-      (probeAppendComparisonLinear D Sc m ν N hN i ((J).obj w))
-      (unitDotLinear J (probeOldContentAppendDot_supernatural D Sc m ν i) N n w)
-      (SVec.toLinearMap ((e).hom.total w)) (unitValue_apply D Sc m ν N hN w)
-    have hright := probeAppendComparisonLinear_unitDotColumn D Sc m ν N hN i w n
-    have hfinal := hleft.trans hright
-    exact hfinal
-
-  exact shiftedUnitDotLinear_compare J T Q
-    (probeOldContentAppendDot_supernatural D Sc m ν i)
-    (probeOrdinaryAppendDot_supernatural D Sc m ν i) O N e
-    (unitValue_mem D Sc m ν N hN) n w ((U).obj ((J).obj w)) rfl
-    (probeAppendComparisonLinear D Sc m ν N hN i ((J).obj w)) hcol
-
 end OddMath.QuiverHecke
 
 namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
@@ -343,13 +218,5 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
 local instance unitMatrixEntryComparisonPi : PiSupercategory k (Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :=
   supermodulePiSupercategory
-
-/-- The generic shifted column is literally the prescribed old unit-matrix
-field; no column rescaling is present. -/
-theorem unitMatrixEntry_some_eq_shiftedUnitDotColumn (i : I)
-    (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) (m : ℕ) (r : Fin m) :
-    unitMatrixEntry D Sc cutoff i M m (some r) =
-      BalancedInduction.shiftedUnitDotColumn (append D Sc cutoff i)
-        (oldAppendDot_supernatural D Sc cutoff i) M r.val := rfl
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

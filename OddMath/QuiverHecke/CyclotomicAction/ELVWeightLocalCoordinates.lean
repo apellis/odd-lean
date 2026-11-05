@@ -30,11 +30,6 @@ local notation "ResU" => elvBlockRes D Sc cutoff N i Λ h₂ (blockSucc D Λ i h
 local notation "hSource" => elvWeightMixedSource_obj D Sc cutoff N i i Λ h₁ h₁ β M
 local notation "hTarget" => elvWeightMixedTarget_obj D Sc cutoff N i i Λ h₁ h₂ h₁ h₂ β M
 
-/-- The selected principal-source equation is the lower induction equation. -/
-theorem elvWeightLocalSource_hom :
-    eqToHom hSource = eqToHom (elvInductionComponent_obj_blockSucc D Sc cutoff N i Λ h₁ β
-      ((elvF D Sc cutoff N i Λ h₁).obj M)) := rfl
-
 /-- The selected principal-target equation is the upper induction equation under restriction. -/
 theorem elvWeightLocalTarget_hom :
     eqToHom hTarget = (ResU).map (eqToHom

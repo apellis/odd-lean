@@ -192,59 +192,5 @@ theorem augNegSectorMatrix_square (c : P.CrossCoeff) (i : I) (ν : X) (t : Secto
       P.augNegSectorMatrix c i ν t Z E ≫ (P.augNegTargetIso i ν t Z E).hom :=
   matrixEmbeddingMap_square _ _ _
 
-/-- The charted positive matrix has precisely the two-sector block
-shape, with every actual pure and window entry retained. -/
-theorem augPosSectorMatrix_eq_posMap (c : P.CrossCoeff) (i : I) (ν : X) (t : Sector I)
-    (Z : P.H t) (E : P.H t ⥤ C) [Functor.Additive E] :
-    let F := P.augPosSectorMatrix c i ν t Z E
-    F = ProbeWindow.posMap (F none none) (F (some none) (some none))
-      (F none (some none)) (F (some none) none)
-      (fun n => if hn : n < (D.h i ν).toNat then F none (some (some ⟨n, hn⟩)) else 0)
-      (fun a => F (some none) (some (some a))) := by
-  dsimp only
-  apply Mat_.hom_ext
-  intro x y
-  cases x with
-  | none =>
-    cases y with
-    | none => rfl
-    | some y =>
-      cases y with
-      | none => rfl
-      | some n => simp only [ProbeWindow.posMap, ProbeWindow.tMap, Fin.is_lt, dite_eq_left, Fin.eta]
-  | some x =>
-    cases x with
-    | none => cases y with
-      | none => rfl
-      | some y => cases y <;> rfl
-    | some x => exact Empty.elim x
-
-/-- The charted negative matrix has exactly the two-sector block shape;
-the displayed principal blocks are its actual signed entries. -/
-theorem augNegSectorMatrix_eq_negMap (c : P.CrossCoeff) (i : I) (ν : X) (t : Sector I)
-    (Z : P.H t) (E : P.H t ⥤ C) [Functor.Additive E] :
-    let F := P.augNegSectorMatrix c i ν t Z E
-    F = ProbeWindow.negMap (F none none) (F (some none) (some none))
-      (F none (some none)) (F (some none) none)
-      (fun n => if hn : n < (-D.h i ν).toNat then F (some (some ⟨n, hn⟩)) none else 0)
-      (fun a => F (some (some a)) (some none)) := by
-  dsimp only
-  apply Mat_.hom_ext
-  intro x y
-  cases y with
-  | none =>
-    cases x with
-    | none => rfl
-    | some x =>
-      cases x with
-      | none => rfl
-      | some n => simp only [ProbeWindow.negMap, ProbeWindow.tMap, Fin.is_lt, dite_eq_left, Fin.eta]
-  | some y =>
-    cases y with
-    | none => cases x with
-      | none => rfl
-      | some x => cases x <;> rfl
-    | some y => exact Empty.elim y
-
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

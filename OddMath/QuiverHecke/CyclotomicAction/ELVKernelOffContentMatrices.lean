@@ -14,10 +14,10 @@ private theorem bijective_of_subsingleton {V W : Type u}
   ⟨fun _ _ _ => Subsingleton.elim _ _, fun _ => ⟨Classical.choice inferInstance, Subsingleton.elim _ _⟩⟩
 
 /-- With different contents every finite positive coefficient space vanishes. -/
-theorem actualPositiveKernelMap_bijective_of_content_ne (i : I) (m : ℕ)
+theorem positiveKernelMap_bijective_of_content_ne (i : I) (m : ℕ)
     (v t : OldCategory D Sc cutoff)
     (h : (v.word : Multiset I) ≠ (t.word : Multiset I)) :
-    Function.Bijective ((actualPositiveKernelMap D Sc cutoff i m t).app (op v)) := by
+    Function.Bijective ((positiveKernelMap D Sc cutoff i m t).app (op v)) := by
   have hnone : Subsingleton ((positiveKernelFamily D Sc cutoff i m t none).obj (op v)) := by
     change Subsingleton (IndResKernel.Component (k := k) (append D Sc cutoff i) v t)
     exact indResKernel_subsingleton_of_content_ne D Sc cutoff (append D Sc cutoff i) h
@@ -38,10 +38,10 @@ theorem actualPositiveKernelMap_bijective_of_content_ne (i : I) (m : ℕ)
   exact @bijective_of_subsingleton _ _ hs ht ⟨0⟩ _
 
 /-- With different contents every finite negative coefficient space vanishes. -/
-theorem actualNegativeKernelMap_bijective_of_content_ne (i : I) (m : ℕ)
+theorem negativeKernelMap_bijective_of_content_ne (i : I) (m : ℕ)
     (v t : OldCategory D Sc cutoff)
     (h : (v.word : Multiset I) ≠ (t.word : Multiset I)) :
-    Function.Bijective ((actualNegativeKernelMap D Sc cutoff i m t).app (op v)) := by
+    Function.Bijective ((negativeKernelMap D Sc cutoff i m t).app (op v)) := by
   have hnone : Subsingleton ((negativeKernelFamily D Sc cutoff i m t none).obj (op v)) := by
     change Subsingleton ((append D Sc cutoff i).obj v ⟶ (append D Sc cutoff i).obj t)
     exact append_hom_subsingleton_of_content_ne D Sc cutoff i h

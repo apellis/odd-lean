@@ -94,7 +94,6 @@ theorem oldAppendReindexIso_cap
     ((adjunction J).counit.app ((R₁).obj N))
     ((R₁).map ((adjunction J₀).counit.app N)) h
 
-
 /-- The selected upper comparison retains the literal unit. -/
 theorem oldAppendReindexIso_unit_row
     (N : Superfunctor k (OldContentCategory D Sc cut (i :: ν)) (SVec k)) :

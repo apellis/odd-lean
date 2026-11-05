@@ -136,23 +136,6 @@ theorem evaluate_proj (t : contentRepresentable D Sc cutoff N β v ⟶
     rw [map_add, proj_of_mem_ne (evaluate_part D Sc cutoff N β t 0) (by decide),
       proj_of_mem (evaluate_part D Sc cutoff N β t 1)]
 
-/-- The parity-r composition coordinate is the super-opposite convolution.
-In particular the odd-odd term has a minus sign, not the ordinary opposite law. -/
-theorem composition_component {z : ContentCategory D Sc cutoff N β}
-    (s : contentRepresentable D Sc cutoff N β v ⟶ contentRepresentable D Sc cutoff N β w)
-    (t : contentRepresentable D Sc cutoff N β w ⟶ contentRepresentable D Sc cutoff N β z)
-    (p : ZMod 2) :
-    componentMap D Sc cutoff N β (s ≫ t) p v (𝟙 v) =
-      componentMap D Sc cutoff N β t p w (𝟙 w) ≫ componentMap D Sc cutoff N β s 0 v (𝟙 v) +
-      sign k (p + 1) • (componentMap D Sc cutoff N β t (p + 1) w (𝟙 w) ≫
-        componentMap D Sc cutoff N β s 1 v (𝟙 v)) := by
-  change componentMap D Sc cutoff N β t p v (componentMap D Sc cutoff N β s 0 v (𝟙 v)) +
-    componentMap D Sc cutoff N β t (p + 1) v (componentMap D Sc cutoff N β s 1 v (𝟙 v)) = _
-  rw [app_formula D Sc cutoff N β t p v, app_formula D Sc cutoff N β t (p + 1) v,
-    twist_of_mem p (evaluate_part D Sc cutoff N β s 0),
-    twist_of_mem (p + 1) (evaluate_part D Sc cutoff N β s 1)]
-  simp only [mul_zero, mul_one, sign_zero, one_smul, Linear.comp_smul]
-
 /-- Transport the established Hom coordinates through supplied module isomorphisms. -/
 def homEquivOfIso {M P : ContentModules D Sc cutoff N β}
     (a : M ≅ contentRepresentable D Sc cutoff N β v)
@@ -176,27 +159,5 @@ namespace OddMath.QuiverHecke.ELVOld.VacuumRepresentable
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
-
-/-- Reindex the checked iterated vacuum module into a specified common content. -/
-def wordModuleAt (σ : List I) (β : Multiset I) (h : content σ = β) :
-    ContentModules D Sc cutoff N β := h ▸ wordModule D Sc cutoff N σ
-
-def wordObjectAt (σ : List I) (β : Multiset I) (h : content σ = β) :
-    ContentCategory D Sc cutoff N β := h ▸ wordObject D Sc cutoff N σ
-
-def wordIsoAt (σ : List I) (β : Multiset I) (h : content σ = β) :
-    wordModuleAt D Sc cutoff N σ β h ≅
-      contentRepresentable D Sc cutoff N β (wordObjectAt D Sc cutoff N σ β h) := by
-  subst β
-  exact wordIso D Sc cutoff N σ
-
-/-- Actual vacuum-word morphisms have reverse word-Hom coordinates, for any
-pair of operator words of the same content, not just one word's endomorphisms. -/
-def wordHomEquiv (σ τ : List I) (β : Multiset I)
-    (hσ : content σ = β) (hτ : content τ = β) :
-    (wordModuleAt D Sc cutoff N σ β hσ ⟶ wordModuleAt D Sc cutoff N τ β hτ) ≃ₗ[k]
-      (wordObjectAt D Sc cutoff N τ β hτ ⟶ wordObjectAt D Sc cutoff N σ β hσ) :=
-  ContentYoneda.homEquivOfIso D Sc cutoff N β
-    (wordIsoAt D Sc cutoff N σ β hσ) (wordIsoAt D Sc cutoff N τ β hτ)
 
 end OddMath.QuiverHecke.ELVOld.VacuumRepresentable

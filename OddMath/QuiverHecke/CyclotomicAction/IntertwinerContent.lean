@@ -177,56 +177,6 @@ theorem targetContent_project_tmul
   rw [targetRightCoefficient_tmul, ← qCoefficientInsert_mul,
     qCoefficientInsert_content, InductionAlong.Ind.op_smul_tmul]
 
-/-- Every cyclotomic coefficient preserves the source content summand. -/
-theorem sourceContent_coefficient (c : CyclotomicAlgebra D Sc a n)
-    (z) (hz : z ∈ qSourceContent D Sc i β a n) :
-    sourceRightCoefficient D Sc i a n c z ∈ qSourceContent D Sc i β a n := by
-  rw [mem_qSourceContent] at hz ⊢
-  have h := congrArg (fun f => f z) (sourceRightCoefficient_mul D Sc i a n c
-    (cyclotomicContentIdempotent D Sc a n β))
-  rw [← cyclotomicContentIdempotent_central, sourceRightCoefficient_mul] at h
-  simpa only [LinearMap.comp_apply, hz] using h.symm
-
-/-- Every cyclotomic coefficient preserves the shifted target content summand. -/
-theorem targetContent_coefficient (c : CyclotomicAlgebra D Sc a n)
-    (z) (hz : z ∈ qTargetContent D Sc i β a ha n) :
-    targetRightCoefficient D Sc i β a ha n c z ∈ qTargetContent D Sc i β a ha n := by
-  rw [mem_qTargetContent] at hz ⊢
-  have h := congrArg (fun f => f z) (targetRightCoefficient_mul D Sc i β a ha n c
-    (cyclotomicContentIdempotent D Sc a n β))
-  rw [← cyclotomicContentIdempotent_central, targetRightCoefficient_mul] at h
-  simpa only [LinearMap.comp_apply, hz] using h.symm
-
-/-- The right polynomial variable preserves fixed source content. -/
-theorem sourceContent_dot (z) (hz : z ∈ qSourceContent D Sc i β a n) :
-    sourceRightDot D Sc i a ha n z ∈ qSourceContent D Sc i β a n := by
-  rw [mem_qSourceContent] at hz ⊢
-  have h := LinearMap.congr_fun (sourceRightDot_coefficient D Sc i a ha n 0
-    (cyclotomicContentIdempotent D Sc a n β)
-    (cyclotomicContentIdempotent_parity D Sc a ha n β)) z
-  simp only [mul_zero, Supercategory.sign_zero, one_smul] at h
-  change sourceRightDot D Sc i a ha n
-    (sourceRightCoefficient D Sc i a n (cyclotomicContentIdempotent D Sc a n β) z) =
-    sourceRightCoefficient D Sc i a n (cyclotomicContentIdempotent D Sc a n β)
-      (sourceRightDot D Sc i a ha n z) at h
-  rw [hz] at h
-  exact h.symm
-
-/-- The signed first-dot action preserves fixed target content. -/
-theorem targetContent_dot (z) (hz : z ∈ qTargetContent D Sc i β a ha n) :
-    targetRightDot D Sc i β a ha n z ∈ qTargetContent D Sc i β a ha n := by
-  rw [mem_qTargetContent] at hz ⊢
-  have h := LinearMap.congr_fun (targetRightDot_coefficient D Sc i β a ha n 0
-    (cyclotomicContentIdempotent D Sc a n β)
-    (cyclotomicContentIdempotent_parity D Sc a ha n β)) z
-  simp only [mul_zero, Supercategory.sign_zero, one_smul] at h
-  change targetRightDot D Sc i β a ha n
-    (targetRightCoefficient D Sc i β a ha n (cyclotomicContentIdempotent D Sc a n β) z) =
-    targetRightCoefficient D Sc i β a ha n (cyclotomicContentIdempotent D Sc a n β)
-      (targetRightDot D Sc i β a ha n z) at h
-  rw [hz] at h
-  exact h.symm
-
 /-- A fixed-content source representative, with its first factor cut by `e(β,i)`. -/
 def sourceContentTensor
     (x : InductionAlong.Corner (appendAlgebra D Sc i (n + 1) :
@@ -253,47 +203,6 @@ Both the multiplication and the coefficient insertion are the previously constru
   change (x.1 * appendAlgebra D Sc i (n + 1) (contentIdempotent D Sc (n + 1) β)) *
       contentMove D Sc i (n + 1) β = x.1 * contentMove D Sc i (n + 1) β
   rw [mul_assoc, appendContent_mul_contentMove]
-
-/-- Right coefficient multiplication on the fixed source, inherited without transport. -/
-def sourceContentRightCoefficient (c : CyclotomicAlgebra D Sc a n) :
-    Module.End (Hn D Sc (n + 1 + 1)) (qSourceContent D Sc i β a n) :=
-  (sourceRightCoefficient D Sc i a n c).restrict (sourceContent_coefficient D Sc i β a n c)
-
-/-- Right coefficient multiplication on the shifted fixed target. -/
-def targetContentRightCoefficient (c : CyclotomicAlgebra D Sc a n) :
-    Module.End (Hn D Sc (n + 1 + 1)) (qTargetContent D Sc i β a ha n) :=
-  (targetRightCoefficient D Sc i β a ha n c).restrict (targetContent_coefficient D Sc i β a ha n c)
-
-/-- The source variable remains the existing right last-dot operator. -/
-def sourceContentRightDot :
-    Module.End (Hn D Sc (n + 1 + 1)) (qSourceContent D Sc i β a n) :=
-  (sourceRightDot D Sc i a ha n).restrict (sourceContent_dot D Sc i β a ha n)
-
-/-- The target variable remains the signed first-dot and coefficient involution. -/
-def targetContentRightDot :
-    Module.End (Hn D Sc (n + 1 + 1)) (qTargetContent D Sc i β a ha n) :=
-  (targetRightDot D Sc i β a ha n).restrict (targetContent_dot D Sc i β a ha n)
-
-/-- Q commutes with the right coefficient action on the fixed-content carriers. -/
-theorem contentCornerQ_rightCoefficient (c : CyclotomicAlgebra D Sc a n)
-    (z : qSourceContent D Sc i β a n) :
-    contentCornerQ D Sc i β a ha n (sourceContentRightCoefficient D Sc i β a n c z) =
-      targetContentRightCoefficient D Sc i β a ha n c (contentCornerQ D Sc i β a ha n z) := by
-  apply Subtype.ext
-  exact (LinearMap.congr_fun (rightCoefficient_Q D Sc i β a ha n c) z.1).symm
-
-/-- Q commutes with the right polynomial variable on the fixed-content carriers. -/
-theorem contentCornerQ_rightDot (z : qSourceContent D Sc i β a n) :
-    contentCornerQ D Sc i β a ha n (sourceContentRightDot D Sc i β a ha n z) =
-      targetContentRightDot D Sc i β a ha n (contentCornerQ D Sc i β a ha n z) := by
-  apply Subtype.ext
-  exact (LinearMap.congr_fun (targetRightDot_Q D Sc i β a ha n) z.1).symm
-
-/-- The left module action is also the existing one, with no parity sign inserted. -/
-theorem contentCornerQ_left (r : Hn D Sc (n + 1 + 1))
-    (z : qSourceContent D Sc i β a n) :
-    contentCornerQ D Sc i β a ha n (r • z) = r • contentCornerQ D Sc i β a ha n z :=
-  map_smul (contentCornerQ D Sc i β a ha n) r z
 
 /-- The canonical shift insertion is onto; no choice of carrier equivalence is used. -/
 theorem qCoefficientInsert_surjective :
@@ -356,18 +265,5 @@ def targetContentTensor
       Subtype.ext (targetContent_project_tmul D Sc i β a ha n x b)
     rw [he]
     exact htmul x b
-
-/-- The fixed target variable has the prescribed sign and coefficient involution. -/
-theorem targetContentRightDot_tmul
-    (x : InductionAlong.Corner (prependAlgebra D Sc i (n + 1) :
-      Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1)))
-    (b : CyclotomicAlgebra D Sc a n) :
-    (targetContentRightDot D Sc i β a ha n (targetContentTensor D Sc i β a ha n x b)).1 =
-      InductionAlong.Ind.tmul
-        (targetDotCorner D Sc i (n + 1) (op (contentIdempotent D Sc (n + 1) β) • x))
-        (Supercategory.sign k (D.parity i * contentSumParity D β) •
-          qCoefficientInsert D Sc i β a ha n (rightDotCoefficient D Sc i a ha n b)) := by
-  change targetRightDot D Sc i β a ha n (InductionAlong.Ind.tmul _ _) = _
-  rw [targetRightDot_tmul, targetDotCoefficient_insert]
 
 end OddMath.QuiverHecke

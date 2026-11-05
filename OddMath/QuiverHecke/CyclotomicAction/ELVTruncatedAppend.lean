@@ -161,12 +161,4 @@ theorem truncatedAppend_mem_degree (σ : List I)
   obtain ⟨a, ha, rfl⟩ := hf
   exact Submodule.mem_map_of_mem (rightContext_mem_degree D Sc cutoff sy hc σ ha)
 
-/-- The graded superfunctor appending an arbitrary word. -/
-def truncatedAppendGraded (σ : List I) :
-    letI := truncatedGradedSupercategory D Sc cutoff N sy hc
-    GradedSuperfunctor k (TruncatedCategory D Sc cutoff N) (TruncatedCategory D Sc cutoff N) := by
-  letI := truncatedGradedSupercategory D Sc cutoff N sy hc
-  exact { toFunctor := truncatedAppend D Sc cutoff N σ
-          isGraded := { map_mem_degree := truncatedAppend_mem_degree D Sc cutoff N sy hc σ } }
-
 end OddMath.QuiverHecke.ELVOld

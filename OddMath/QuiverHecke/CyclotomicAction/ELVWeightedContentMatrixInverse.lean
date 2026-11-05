@@ -144,36 +144,6 @@ theorem weightedContentCapMatrixIso_hom (β : Multiset I)
       weightedContentCapMatrixMap D Sc cutoff N i M β :=
   OddMath.HomogeneousSuperfunctorIso.ofBijectiveTotals_hom _ _ _
 
-theorem weightedContentUnitMatrixIso_inv_mem (β : Multiset I)
-    (hh : 0 ≤ contentCrossingHeight D cutoff i β) :
-    (weightedContentUnitMatrixIso D Sc cutoff N i M β hh).inv ∈ parity (R := k) _ _ 0 :=
-  OddMath.HomogeneousSuperfunctorIso.ofBijectiveTotals_inv_mem _ _ _
-theorem weightedContentCapMatrixIso_inv_mem (β : Multiset I)
-    (hh : contentCrossingHeight D cutoff i β ≤ 0) :
-    (weightedContentCapMatrixIso D Sc cutoff N i M β hh).inv ∈ parity (R := k) _ _ 0 :=
-  OddMath.HomogeneousSuperfunctorIso.ofBijectiveTotals_inv_mem _ _ _
-
-theorem weightedContentUnitMatrix_hom_inv_id (β : Multiset I)
-    (hh : 0 ≤ contentCrossingHeight D cutoff i β) :
-    weightedContentUnitMatrixMap D Sc cutoff N i M β ≫
-      (weightedContentUnitMatrixIso D Sc cutoff N i M β hh).inv = 𝟙 _ :=
-  OddMath.HomogeneousSuperfunctorIso.ofBijectiveTotals_hom_inv_id _ _ _
-theorem weightedContentUnitMatrix_inv_hom_id (β : Multiset I)
-    (hh : 0 ≤ contentCrossingHeight D cutoff i β) :
-    (weightedContentUnitMatrixIso D Sc cutoff N i M β hh).inv ≫
-      weightedContentUnitMatrixMap D Sc cutoff N i M β = 𝟙 _ :=
-  OddMath.HomogeneousSuperfunctorIso.ofBijectiveTotals_inv_hom_id _ _ _
-theorem weightedContentCapMatrix_hom_inv_id (β : Multiset I)
-    (hh : contentCrossingHeight D cutoff i β ≤ 0) :
-    weightedContentCapMatrixMap D Sc cutoff N i M β ≫
-      (weightedContentCapMatrixIso D Sc cutoff N i M β hh).inv = 𝟙 _ :=
-  OddMath.HomogeneousSuperfunctorIso.ofBijectiveTotals_hom_inv_id _ _ _
-theorem weightedContentCapMatrix_inv_hom_id (β : Multiset I)
-    (hh : contentCrossingHeight D cutoff i β ≤ 0) :
-    (weightedContentCapMatrixIso D Sc cutoff N i M β hh).inv ≫
-      weightedContentCapMatrixMap D Sc cutoff N i M β = 𝟙 _ :=
-  OddMath.HomogeneousSuperfunctorIso.ofBijectiveTotals_inv_hom_id _ _ _
-
 theorem weightedContentUnitMatrixIso_hom_total (β : Multiset I)
     (hh : 0 ≤ contentCrossingHeight D cutoff i β) (w : ContentCategory D Sc cutoff N β) :
     (weightedContentUnitMatrixIso D Sc cutoff N i M β hh).hom.total w =

@@ -93,10 +93,4 @@ theorem selectedVacuum_supported :
     (selectedVacuum_component D Sc m cutoff ΛP ΛR L)
     (fun M δ hδ => selectedVacuum_off_isZero D Sc m cutoff ΛP ΛR L M δ hδ)
 
-/-- The literal selected Hom as an initial supported action object. -/
-def supportedVacuum : SupportedHom D Sc m cutoff (PowerWordContent.powerBound D cutoff L)
-    (WeightTensorVacuum.emptyBlock D ΛP) (reservoirVacuumBlock D ΛR) :=
-  ⟨WeightTensorVacuum.selectedHom D Sc m cutoff ΛP ΛR L,
-    selectedVacuum_supported D Sc m cutoff ΛP ΛR L⟩
-
 end OddMath.QuiverHecke.ELVOld.ContentHomSupport

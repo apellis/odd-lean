@@ -107,7 +107,6 @@ private theorem matrixRow_decorate
   intro b
   exact (LinearMap.congr_fun hz (f b)).trans (congrArg z' (LinearMap.congr_fun h b))
 
-
 private theorem square_degree_reencode
     {k V W X Y : Type u} [CommRing k]
     [AddCommMonoid V] [Module k V] [AddCommMonoid W] [Module k W]

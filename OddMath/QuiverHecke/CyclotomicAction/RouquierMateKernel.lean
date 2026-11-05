@@ -222,10 +222,6 @@ def rouquierMateKernel : tensor P₁ Q₁ ⟶ tensor Q₂ P₂ :=
         -(φ₂ ((P₁).toSVec.sgn p x).val * τ * φ₂ y.val) * φ₂ b
       rw [map_mul, neg_mul, mul_assoc _ (φ₂ y.val)]⟩
 
-theorem rouquierMateKernel_parity :
-    rouquierMateKernel D Sc i a ha n ∈ Supercategory.parity (R := k) _ _ p :=
-  (mem_parity_iff).mpr (rouquierMateKernelLinear_mem D Sc i a ha n)
-
 /-- Evaluation of the mate kernel on a homogeneous elementary tensor:
 `x ⊗ y ↦ -(-1)^{|x||i|} φ₂(x) τ φ₂(y) ⊗ e₂`. -/
 theorem rouquierMateKernel_apply {q : ZMod 2} {x : (P₁).toSVec}

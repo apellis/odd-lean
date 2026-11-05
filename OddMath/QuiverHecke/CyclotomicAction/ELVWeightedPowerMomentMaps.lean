@@ -142,21 +142,6 @@ theorem weightedMomentMap_apply (i : I) (hN : 0 < cutoff i) (n : ℕ) (a : AQ) :
   rw [weightedMomentMap_eq_momentMap]
   exact momentMap_apply D Sc cutoff L i hN n a
 
-/-- The same all-vector conclusion as an operator identity. -/
-theorem weightedMomentMap_eq_mulLeft (i : I) (hN : 0 < cutoff i) (n : ℕ) :
-    weightedMomentMap D Sc cutoff L i hN n =
-      LinearMap.mulLeft k (signedMoment D Sc cutoff L i hN n) := by
-  rw [weightedMomentMap_eq_momentMap, momentMap_eq_mulLeft]
-
-/-- The actual weighted moment retains the degree of its given cap and
-dot/unit fields. -/
-theorem weightedMomentMap_mem (i : I) (hN : 0 < cutoff i) (n : ℕ) :
-    weightedMomentMap D Sc cutoff L i hN n ∈
-      parity (R := k) (coefficientPowerSpace D cutoff L) (coefficientPowerSpace D cutoff L)
-        ((n + (cutoff i - 1)) • D.parity i) := by
-  rw [weightedMomentMap_eq_momentMap]
-  exact momentMap_mem D Sc cutoff L i hN n
-
 /-- All even-index odd-colour moments of the actual weighted fields are
 the complete coefficients of the existing raw reservoir series. -/
 theorem weightedMomentMap_even (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i) (r : ℕ) :
@@ -174,15 +159,6 @@ theorem weightedMomentMap_odd (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i) 
           completeCoefficient D cutoff L i r)) := by
   rw [weightedMomentMap_eq_momentMap]
   exact momentMap_odd D Sc cutoff L i hi hN r
-
-/-- The first higher odd moment of the actual weighted cap is the original
-exterior operator, with opposite signs at the two cutoff parities. -/
-theorem weightedMomentMap_first_odd (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i) :
-    weightedMomentMap D Sc cutoff L i hN (cutoff i) =
-      LinearMap.mulLeft k ((-1 : k) ^ (cutoff i + 1) •
-        coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) := by
-  rw [weightedMomentMap_eq_momentMap]
-  exact momentMap_first_odd D Sc cutoff L i hi hN
 
 end PowerVacuumCoefficient
 end OddMath.QuiverHecke.ELVOld

@@ -39,19 +39,19 @@ abbrev representedKernelDegree (i : I) (v t : OldCategory D Sc cutoff) (n : ℤ)
   IndResKernel.integerDegree (k := k) (append D Sc cutoff i) v t n
 
 /-- The chosen signed mate has degree `-2 dᵢ` on represented kernels. -/
-theorem actualMateKernelComponent_degree (i : I) (v t : OldCategory D Sc cutoff)
+theorem mateKernelComponent_degree (i : I) (v t : OldCategory D Sc cutoff)
     {n : ℤ} {x : IndResKernel.Component (k := k) (append D Sc cutoff i) v t}
     (hx : x ∈ representedKernelDegree D Sc cutoff sy hc i v t n) :
-    actualMateKernelComponent D Sc cutoff i v t x ∈
+    mateKernelComponent D Sc cutoff i v t x ∈
       oldDegree D sy Sc hc cutoff (v.word ++ [i]) (t.word ++ [i]) (n - 2 * sy.d i) := by
   let := oldCategoryGradedSupercategory D Sc cutoff sy hc
   let : IsGradedSuperfunctor k (append D Sc cutoff i) := (oldAppendGraded D Sc cutoff sy hc i).isGraded
   refine ((IndResKernel.integerDegree_le_iff (append D Sc cutoff i) v t n
     ((oldDegree D sy Sc hc cutoff (v.word ++ [i]) (t.word ++ [i]) (n - 2 * sy.d i)).comap
-      (actualMateKernelComponent D Sc cutoff i v t))).2 ?_) hx
+      (mateKernelComponent D Sc cutoff i v t))).2 ?_) hx
   intro s q r hqr g hg b hb
   simp only [Submodule.mem_comap]
-  rw [IndResKernel.componentTensor, actualMateKernelComponent_tensor]
+  rw [IndResKernel.componentTensor, mateKernelComponent_tensor]
   change g ∈ oldDegree D sy Sc hc cutoff ((append D Sc cutoff i).obj s).word t.word q at hg
   change b ∈ oldDegree D sy Sc hc cutoff v.word ((append D Sc cutoff i).obj s).word r at hb
   have hd := oldComp_degree D Sc cutoff sy hc
@@ -68,19 +68,19 @@ theorem actualMateKernelComponent_degree (i : I) (v t : OldCategory D Sc cutoff)
 
 set_option backward.dsimp.instances true in
 /-- The chosen induction dot raises represented integer degree by `2 dᵢ`. -/
-theorem actualDotKernelComponent_degree (i : I) (v t : OldCategory D Sc cutoff)
+theorem dotKernelComponent_degree (i : I) (v t : OldCategory D Sc cutoff)
     {n : ℤ} {x : IndResKernel.Component (k := k) (append D Sc cutoff i) v t}
     (hx : x ∈ representedKernelDegree D Sc cutoff sy hc i v t n) :
-    actualDotKernelComponent D Sc cutoff i v t x ∈
+    dotKernelComponent D Sc cutoff i v t x ∈
       representedKernelDegree D Sc cutoff sy hc i v t (n + 2 * sy.d i) := by
   let := oldCategoryGradedSupercategory D Sc cutoff sy hc
   let : IsGradedSuperfunctor k (append D Sc cutoff i) := (oldAppendGraded D Sc cutoff sy hc i).isGraded
   refine ((IndResKernel.integerDegree_le_iff (append D Sc cutoff i) v t n
     ((representedKernelDegree D Sc cutoff sy hc i v t (n + 2 * sy.d i)).comap
-      (actualDotKernelComponent D Sc cutoff i v t))).2 ?_) hx
+      (dotKernelComponent D Sc cutoff i v t))).2 ?_) hx
   intro s q r hqr g hg b hb
   simp only [Submodule.mem_comap]
-  rw [IndResKernel.componentTensor, actualDotKernelComponent_tensor]
+  rw [IndResKernel.componentTensor, dotKernelComponent_tensor]
   change g ∈ oldDegree D sy Sc hc cutoff ((append D Sc cutoff i).obj s).word t.word q at hg
   have hnew : oldAppendDotComponent D Sc cutoff i s ≫ twist k (D.parity i) g ∈
       degree (R := k) ((append D Sc cutoff i).obj s) t (2 * sy.d i + q) := by
@@ -95,35 +95,35 @@ theorem actualDotKernelComponent_degree (i : I) (v t : OldCategory D Sc cutoff)
   simpa only [he] using hd
 
 /-- The actual dot powers have their prescribed multiple integer degree. -/
-theorem actualDotKernelComponent_power_degree (i : I) (v t : OldCategory D Sc cutoff)
+theorem dotKernelComponent_power_degree (i : I) (v t : OldCategory D Sc cutoff)
     (m : ℕ) {n : ℤ} {x : IndResKernel.Component (k := k) (append D Sc cutoff i) v t}
     (hx : x ∈ representedKernelDegree D Sc cutoff sy hc i v t n) :
-    (actualDotKernelComponent D Sc cutoff i v t ^ m) x ∈
+    (dotKernelComponent D Sc cutoff i v t ^ m) x ∈
       representedKernelDegree D Sc cutoff sy hc i v t (n + 2 * sy.d i * m) := by
   let := oldCategoryGradedSupercategory D Sc cutoff sy hc
   induction m with
   | zero => simpa only [pow_zero, Module.End.one_apply, Nat.cast_zero, mul_zero, add_zero] using hx
   | succ m ih =>
     rw [pow_succ', Module.End.mul_apply]
-    have h := actualDotKernelComponent_degree D Sc cutoff sy hc i v t ih
+    have h := dotKernelComponent_degree D Sc cutoff sy hc i v t ih
     have he : n + 2 * sy.d i * (m : ℤ) + 2 * sy.d i = n + 2 * sy.d i * (m + 1 : ℕ) := by
       push_cast
       ring
     simpa only [he] using h
 
 /-- The ordinary chosen counit has represented degree zero. -/
-theorem actualCounitKernelComponent_degree (i : I) (v t : OldCategory D Sc cutoff)
+theorem counitKernelComponent_degree (i : I) (v t : OldCategory D Sc cutoff)
     {n : ℤ} {x : IndResKernel.Component (k := k) (append D Sc cutoff i) v t}
     (hx : x ∈ representedKernelDegree D Sc cutoff sy hc i v t n) :
-    actualCounitKernelComponent D Sc cutoff i v t x ∈ oldDegree D sy Sc hc cutoff v.word t.word n := by
+    counitKernelComponent D Sc cutoff i v t x ∈ oldDegree D sy Sc hc cutoff v.word t.word n := by
   let := oldCategoryGradedSupercategory D Sc cutoff sy hc
   let : IsGradedSuperfunctor k (append D Sc cutoff i) := (oldAppendGraded D Sc cutoff sy hc i).isGraded
   refine ((IndResKernel.integerDegree_le_iff (append D Sc cutoff i) v t n
     ((oldDegree D sy Sc hc cutoff v.word t.word n).comap
-      (actualCounitKernelComponent D Sc cutoff i v t))).2 ?_) hx
+      (counitKernelComponent D Sc cutoff i v t))).2 ?_) hx
   intro s q r hqr g hg b hb
   simp only [Submodule.mem_comap]
-  rw [IndResKernel.componentTensor, actualCounitKernelComponent_tensor]
+  rw [IndResKernel.componentTensor, counitKernelComponent_tensor]
   change g ∈ oldDegree D sy Sc hc cutoff ((append D Sc cutoff i).obj s).word t.word q at hg
   change b ∈ oldDegree D sy Sc hc cutoff v.word ((append D Sc cutoff i).obj s).word r at hb
   have hd := oldComp_degree D Sc cutoff sy hc b g hb hg
@@ -131,20 +131,20 @@ theorem actualCounitKernelComponent_degree (i : I) (v t : OldCategory D Sc cutof
   simpa only [he] using hd
 
 /-- Every actual ordinary dot/cap row has degree `2 dᵢ m`. -/
-theorem actualCapKernelComponent_degree (i : I) (v t : OldCategory D Sc cutoff)
+theorem capKernelComponent_degree (i : I) (v t : OldCategory D Sc cutoff)
     (m : ℕ) {n : ℤ} {x : IndResKernel.Component (k := k) (append D Sc cutoff i) v t}
     (hx : x ∈ representedKernelDegree D Sc cutoff sy hc i v t n) :
-    actualCapKernelComponent D Sc cutoff i m v t x ∈
+    capKernelComponent D Sc cutoff i m v t x ∈
       oldDegree D sy Sc hc cutoff v.word t.word (n + 2 * sy.d i * m) :=
-  actualCounitKernelComponent_degree D Sc cutoff sy hc i v t
-    (actualDotKernelComponent_power_degree D Sc cutoff sy hc i v t m hx)
+  counitKernelComponent_degree D Sc cutoff sy hc i v t
+    (dotKernelComponent_power_degree D Sc cutoff sy hc i v t m hx)
 
 /-- Every actual unscaled unit/dot column has degree `2 dᵢ m`, including
 its prescribed scalar sign and exponent zero. -/
-theorem actualUnitKernelComponent_degree (i : I) (v t : OldCategory D Sc cutoff)
+theorem unitKernelComponent_degree (i : I) (v t : OldCategory D Sc cutoff)
     (m : ℕ) {n : ℤ} {b : v ⟶ t}
     (hb : b ∈ oldDegree D sy Sc hc cutoff v.word t.word n) :
-    actualUnitKernelComponent D Sc cutoff i m v t b ∈
+    unitKernelComponent D Sc cutoff i m v t b ∈
       oldDegree D sy Sc hc cutoff (v.word ++ [i]) (t.word ++ [i]) (n + 2 * sy.d i * m) := by
   let := oldCategoryGradedSupercategory D Sc cutoff sy hc
   cases v with

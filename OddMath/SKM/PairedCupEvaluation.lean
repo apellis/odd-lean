@@ -63,19 +63,6 @@ theorem dLay_cupDecoratedMoves_local {a P Q : List (Letter I)}
       (dotsL [] i [dn i] n).map ofL from dLay_upward_replicate [] [dn i] i n]
     simp [dotsL, List.map_replicate, xwhL, ofL]
 
-theorem xev_cupDecoratedMoves_split (cs : CScalars Sc) (μ : X)
-    {a P Q : List (Letter I)} {R : List (TMove (Letter I))}
-    (hR : IsMatching₂ a (P ++ Q) R) (ε : Bool) (i : I) (n : ℕ)
-    {ds : List (DTMove I)} (hd : DTMove.tmoves ds = R)
-    (hds : XChain a (dLay a ds) (P ++ Q)) :
-    xev cs μ a (P ++ (ε, i) :: (!ε, i) :: Q)
-        (dLay a (cupDecoratedMoves P ε i n ds)) =
-      xev cs μ a (P ++ Q) (dLay a ds) ≫
-        xev cs μ (P ++ Q) (P ++ (ε, i) :: (!ε, i) :: Q)
-          ((xCupL (ε, i) ++ dLay [(ε, i), (!ε, i)]
-            (List.replicate n (.dt (if ε then 0 else 1)))).map (xwhL P Q)) := by
-  rw [dLay_cupDecoratedMoves_local hR ε i n hd, xev_append cs _ hds]
-
 theorem paired_cup_dn_context (cs : CScalars Sc) (μ : X)
     (P Q : List (Letter I)) (i : I) (n : ℕ) :
     xev cs μ (P ++ Q) (P ++ dn i :: up i :: Q)

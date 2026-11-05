@@ -202,22 +202,6 @@ theorem norm_of_short {S F : ℕ →₀ B} {D : ℕ} (hS : DegLT S (D + 1)) (hS�
       lsmul c (tPow σ k F) :=
   M.toMackeyBoundary.norm hS hSσ hc (M.B₁_eq hz₁) hz₀ k
 
-/-- **Displays (2) and (4)** for the short-coset boundary, with `z₀ ≡ ℓ(S) mod L₁'`. -/
-theorem window_pos_of_short (hσ : Function.Injective σ) {S F : ℕ →₀ B} {D N : ℕ}
-    (hS : MonicDeg S D) (hF : MonicDeg F N) (hSσ : ∀ j, σ (S j) = S j) (c : Bˣ)
-    (hc : σ c = c) {z₀ : L₁} (hz₁ : z₀ - M.ℓ S ∈ M.short)
-    (hz₀ : M.P z₀ = M.j (lsmul (c : B) F)) (hDN : D ≤ N) (p : ℕ →₀ B) :
-    ∃! wr : (ℕ →₀ B) × (ℕ →₀ B), DegLT wr.2 (N - D) ∧ M.A wr.1 + wr.2 = p :=
-  M.toMackeyBoundary.window_pos hσ hS hF hSσ c hc (M.B₁_eq hz₁) hz₀ hDN p
-
-theorem window_neg_of_short (hσ : Function.Bijective σ) {S F : ℕ →₀ B} {D N : ℕ}
-    (hS : MonicDeg S D) (hF : MonicDeg F N) (hSσ : ∀ j, σ (S j) = S j) (c : Bˣ)
-    (hc : σ c = c) {z₀ : L₁} (hz₁ : z₀ - M.ℓ S ∈ M.short)
-    (hz₀ : M.P z₀ = M.j (lsmul (c : B) F)) (hND : N < D) (p : ℕ →₀ B) (x : ℕ → B) :
-    ∃! v : ℕ →₀ B, M.A v = p ∧
-      ∀ r < D - N, capRow σ M.toMackeyBoundary.φ r v = x r :=
-  M.toMackeyBoundary.window_neg hσ hS hF hSσ c hc (M.B₁_eq hz₁) hz₀ hND p x
-
 end MackeyCosets
 
 end OddMath.QuiverHecke.CyclotomicAction.BoundaryPolynomial

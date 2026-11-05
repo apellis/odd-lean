@@ -134,26 +134,8 @@ def truncatedGradedSupercategory :
     let _ := elvHomGrading D sy Sc hc cutoff
     exact Submodule.mem_map_of_mem (GradedSupercategory.comp_mem_degree ha hb)
 
-/-- Integer projections are the established quotient projections. -/
-theorem truncatedCategory_dproj (v w : TruncatedCategory D Sc cutoff N)
-    (n : ℤ) (f : v ⟶ w) :
-    letI := truncatedGradedSupercategory D Sc cutoff N sy hc
-    dproj k n f = truncatedDproj D Sc cutoff sy hc N v.word w.word n f := by
-  let _ := truncatedGradedSupercategory D Sc cutoff N sy hc
-  refine induction_on_degree (R := k) f (by simp) (fun m f hf => ?_)
-    (fun f g hf hg => by simp only [map_add, hf, hg])
-  rw [truncatedDproj_of_mem D Sc cutoff sy hc N hf n]
-  by_cases h : m = n
-  · subst m
-    rw [ite_eq_left rfl, dproj_of_mem hf]
-  · rw [ite_eq_right h, dproj_of_mem_ne hf h]
-
 /-- Ordinary endomorphisms: multiplication is reverse categorical composition. -/
 abbrev TruncatedEnd (v : List I) := End (⟨v⟩ : TruncatedCategory D Sc cutoff N)
-
-/-- Multiplication retains the ordinary endomorphism convention, with no extra sign. -/
-theorem truncatedEnd_mul (v : List I) (f g : TruncatedEnd D Sc cutoff N v) :
-    f * g = truncatedComp D Sc cutoff N v v v g f := rfl
 
 /-- Parity parts of the endomorphism ring. -/
 def truncatedEndParity (v : List I) : ZMod 2 → Submodule k (TruncatedEnd D Sc cutoff N v) :=
@@ -191,16 +173,5 @@ instance truncatedEndDegreeMonoid (v : List I) :
 instance truncatedEndDegreeGrading (v : List I) :
     GradedAlgebra (truncatedEndDegree D Sc cutoff N sy hc v) :=
   { (truncatedDegree_internal D Sc cutoff sy hc N v v).chooseDecomposition with }
-
-/-- The endomorphism graded superalgebra of a word in the truncated ELV category. -/
-def truncatedEndGSuperAlg (v : List I) : GSuperAlg k where
-  carrier := TruncatedEnd D Sc cutoff N v
-  grading := truncatedEndParity D Sc cutoff N v
-  degree := truncatedEndDegree D Sc cutoff N sy hc v
-  decompose_mem := by
-    intro n a p ha
-    let _ := truncatedGradedSupercategory D Sc cutoff N sy hc
-    exact GradedSupercategory.proj_mem_degree (R := k)
-      (X := (⟨v⟩ : TruncatedCategory D Sc cutoff N)) (Y := ⟨v⟩) p ha
 
 end OddMath.QuiverHecke.ELVOld

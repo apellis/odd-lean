@@ -75,11 +75,6 @@ theorem tensorOutputAt_empty :
 
 variable (ΛP : X)
 
-/-- Before changing weight presentations this is the literal selected Hom. -/
-theorem selectedHom_eq_tensorOutput : selectedHom D Sc m cutoff ΛP ΛR L =
-    (emptyProbe D Sc m ΛP).comp (tensorOutput D Sc m cutoff L ΛR) := by
-  rfl
-
 private theorem comp_cast_heq
     {x y : X} (h : x = y)
     (G : ProbeVacuumCap.modulePiCategory D Sc m ⟶ elvWeightSpace D Sc cutoff bound ΛR x) :

@@ -145,15 +145,6 @@ def weightedOldMateLinear (w : OldCategory D Sc cutoff) :
   ((CyclotomicCrossingTensor.oldModuleMate D Sc cutoff i).app
     (D.parity i * D.parity i) RM).total w
 
-theorem weightedOldMateLinear_tensor (s w : OldCategory D Sc cutoff)
-    (g : (J).obj s ⟶ w) (b : M.obj ((Q).obj ((J).obj s))) :
-    weightedOldMateLinear D Sc cutoff N i M w
-      (BalancedInduction.tensor J ((BalancedInduction.restriction J).obj RM).toFunctor s g b) =
-      -BalancedInduction.tensor J (RM).toFunctor ((J).obj s)
-        (CyclotomicCrossingTensor.equalCrossComponent D Sc cutoff i s ≫
-          twist k (D.parity i * D.parity i) ((J).map g)) b :=
-  CyclotomicCrossingTensor.oldModuleMate_total_tensor D Sc cutoff i RM s w g b
-
 private theorem oldModuleMate_signed_tensor
     (L : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
     (s w : OldCategory D Sc cutoff) (g : (J).obj s ⟶ w) (b : L.obj ((J).obj s)) :
@@ -199,21 +190,6 @@ def weightedOldMatePrecomposeLinear
     BalancedInduction.Obj J R.toFunctor w →ₗ[k]
       BalancedInduction.Obj J (RM).toFunctor ((J).obj w) :=
   weightedOldMateLinear D Sc cutoff N i M w ∘ₗ BalancedInduction.mapComponent J c 0 w
-
-theorem weightedOldMatePrecomposeLinear_tensor
-    (R : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
-    (c : R ⟶ (BalancedInduction.restriction J).obj RM)
-    (s w : OldCategory D Sc cutoff) (g : (J).obj s ⟶ w) (b : R.obj s) :
-    weightedOldMatePrecomposeLinear D Sc cutoff N i M R c w
-      (BalancedInduction.tensor J R.toFunctor s g b) =
-      -BalancedInduction.tensor J (RM).toFunctor ((J).obj s)
-        (CyclotomicCrossingTensor.equalCrossComponent D Sc cutoff i s ≫
-          twist k (D.parity i * D.parity i) ((J).map g)) (c.app 0 s b) := by
-  have hm := BalancedInduction.mapComponent_tensor J c 0 w s g b
-  have hx := hm.trans (congrArg (fun z => BalancedInduction.tensor J
-    ((BalancedInduction.restriction J).obj RM).toFunctor s z (c.app 0 s b)) (twist_zero g))
-  exact (congrArg (weightedOldMateLinear D Sc cutoff N i M w) hx).trans
-    (weightedOldMateLinear_tensor D Sc cutoff N i M s w g (c.app 0 s b))
 
 theorem weightedOldMatePrecomposeLinear_signed_tensor
     (R : Superfunctor k (OldCategory D Sc cutoff) (SVec k))

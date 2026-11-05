@@ -90,7 +90,7 @@ coefficient vector of literal A/T, for both moving parities. -/
 theorem functional_dot_window (i : I) (hN : 0 < cutoff i)
     (a : ℕ) (ha : a < cutoff i) (z : CoefficientPowerQuotient (k := k) D cutoff L) :
     functional D Sc cutoff L i hN
-      (((actualInductionDot D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L)
+      (((inductionDot D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L)
         ((append D Sc cutoff i).obj ⟨[]⟩)) ^ a) (unit D Sc cutoff L i z)) =
       if a + 1 = cutoff i then z else 0 := by
   let e := coefficientPowerVacuumEmptyEquiv D Sc cutoff L
@@ -98,7 +98,7 @@ theorem functional_dot_window (i : I) (hN : 0 < cutoff i)
     i ⟨[]⟩ (height D cutoff i) (topSlot D cutoff i hN)
   let dot : Module.End k (mateTargetSpace D Sc cutoff i
       (coefficientPowerVacuum D Sc cutoff L) ⟨[]⟩) :=
-    actualInductionDot D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L)
+    inductionDot D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L)
       ((append D Sc cutoff i).obj ⟨[]⟩)
   let u0 : (coefficientPowerVacuum D Sc cutoff L).obj (⟨[]⟩ : OldCategory D Sc cutoff) →ₗ[k]
       mateTargetSpace D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L) ⟨[]⟩ :=
@@ -117,22 +117,6 @@ theorem functional_dot_window (i : I) (hN : 0 < cutoff i)
   · have hv : c ((dot ^ a) (u0 (e z))) = 0 := by
       simpa only [ite_eq_right (fun hEq => hh (he.mp hEq))] using h
     simpa only [ite_eq_right hh] using (congrArg e.symm hv).trans (map_zero e.symm)
-
-/-- The entire first mate-source summand vanishes on the exact power
-vacuum, by its proved nonempty-word support and balanced generation. -/
-theorem indRes_eq_zero (i : I) (t : OldCategory D Sc cutoff)
-    (z : mateSourceSpace D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L) t) : z = 0 := by
-  let R := (BalancedInduction.restriction (append D Sc cutoff i)).obj
-    (coefficientPowerVacuum D Sc cutoff L)
-  have h : (LinearMap.id : BalancedInduction.Obj (append D Sc cutoff i) R.toFunctor t →ₗ[k]
-      BalancedInduction.Obj (append D Sc cutoff i) R.toFunctor t) = 0 := by
-    apply BalancedInduction.hom_ext
-    intro v f m
-    have hm : m = 0 := coefficientPowerVacuum_support D Sc cutoff L
-      ((append D Sc cutoff i).obj v) (by change v.word ++ [i] ≠ []; simp) m
-    rw [hm, BalancedInduction.tensor_zero_right]
-    rfl
-  exact LinearMap.congr_fun h z
 
 /-- The even empty-component unit retains the full coefficient action,
 with its original multiplication order, including odd coefficients. -/

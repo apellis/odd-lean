@@ -28,19 +28,6 @@ private theorem leftCap_field_total
         (oldContentFEChart D Sc cutoff γ i N w).toLinearMap := by
   exact contentCoefficientCap_total D Sc cutoff γ i N hh r w
 
-private theorem leftCap_square_surjective
-    {k V V' W W' : Type u} [CommRing k]
-    [AddCommMonoid V] [Module k V] [AddCommMonoid V'] [Module k V']
-    [AddCommMonoid W] [Module k W] [AddCommMonoid W'] [Module k W']
-    (d : V ≃ₗ[k] V') (f : W →ₗ[k] V) (g : W' →ₗ[k] V') (c : W →ₗ[k] W')
-    (h : d.toLinearMap ∘ₗ f = g ∘ₗ c) (hf : Function.Surjective f) :
-    Function.Surjective g := by
-  intro y
-  obtain ⟨x, hx⟩ := hf (d.symm y)
-  refine ⟨c x, ?_⟩
-  exact (LinearMap.congr_fun h x).symm.trans
-    ((congrArg d hx).trans (d.apply_symm_apply y))
-
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ) (γ : List I)
   (N : Superfunctor k (OldContentCategory D Sc (probeCutoff D m) γ) (SVec k))
@@ -62,20 +49,6 @@ theorem probeMissingColourUnitCoefficient_cap (r : Fin count) :
   have hField := leftCap_field_total D Sc cut γ i N
     (contentCrossingHeight_nonneg_of_not_mem D cut γ i hi) r w
   have h := linearSquare_reencode _ _ _ _ _ _ _ _ rfl hField rfl rfl hCompare
-  exact h
-/-- The actual ordinary inverse coefficient reaches every original module
-value, by the prescribed native cap and the same invertible value chart. -/
-theorem probeMissingColourUnitCoefficient_surjective (r : Fin count) :
-    Function.Surjective (probeMissingColourUnitCoefficient D Sc m γ N hN i hi w r) := by
-  have h := leftCap_square_surjective
-    (probeOutputValueLinearEquiv D Sc m γ N hN w)
-    (SVec.toLinearMap ((contentCoefficientCap D Sc cut γ i N
-      (contentCrossingHeight_nonneg_of_not_mem D cut γ i hi) r).total w))
-    (SVec.toLinearMap (probeMissingColourUnitCoefficient D Sc m γ N hN i hi w r))
-    (probeOutputFELinearEquiv D Sc m γ N hN i w).toLinearMap
-    (probeMissingColourUnitCoefficient_cap D Sc m γ N hN i hi w r)
-    (contentCoefficientCap_total_surjective D Sc cut γ i N
-      (contentCrossingHeight_nonneg_of_not_mem D cut γ i hi) r w)
   exact h
 
 end OddMath.QuiverHecke

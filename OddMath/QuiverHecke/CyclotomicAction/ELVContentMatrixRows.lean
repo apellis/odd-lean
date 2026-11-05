@@ -69,7 +69,7 @@ theorem oldContentFELinearEquiv_unitDot
     oldContentFELinearEquiv D Sc cutoff ν i N t (unitDotLinear J₁ d₁ N n t b) =
       unitDotLinear J d (induced Q₁ N) n t.obj
         (oldContentValueLinearEquiv D Sc cutoff ν i N t b) := by
-  let g := actualInductionDot D Sc cutoff i (induced Q₁ N) ((J₁).obj t).obj
+  let g := inductionDot D Sc cutoff i (induced Q₁ N) ((J₁).obj t).obj
   have hd := oldContentAppendRestrictionIso_dot D Sc cutoff (i :: ν) i N ((J₁).obj t)
   have hp := BalancedInduction.unitDotLinear_intertwine J₁ d₁ N t _ _ hd n b
   have hu := oldContentAppendRestrictionIso_unit D Sc cutoff (i :: ν) i N t b
@@ -82,7 +82,7 @@ theorem oldContentFELinearEquiv_unitDot
   have hraw := hp.trans (hunit.trans hvalue.symm)
   have ht := BalancedInduction.unitDotLinear_apply_power J d (induced Q₁ N) n t.obj
     (oldContentValueLinearEquiv D Sc cutoff ν i N t b)
-  dsimp only [g, actualInductionDot] at hraw
+  dsimp only [g, inductionDot] at hraw
   dsimp only [oldContentAppend] at he hraw ht ⊢
   have hr := hraw.trans ht.symm
   have hfinal := he.trans hr

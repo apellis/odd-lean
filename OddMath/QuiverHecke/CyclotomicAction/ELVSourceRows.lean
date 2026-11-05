@@ -143,65 +143,6 @@ def sourceRowsReconstruct (p : ZMod 2) (i : I) (ν : List I) :
       sourceTailRow D Sc cutoff p i ν q.1 q.2 b :=
   DirectSum.toModule_lof _ _ _
 
-/-- Moving a central power through a common tail works for every old source. -/
-theorem centralSource_pair (p : ZMod 2) (i : I) {v t w : List I}
-    (h : hom D Sc cutoff (i :: t) w) (b : Old D Sc cutoff v t) :
-    centralSource D Sc cutoff i v w (pair D Sc cutoff p i h b) =
-      pair D Sc cutoff p i (movingPower D Sc cutoff i t (centralDegree D i) ≫ h) b := by
-  obtain ⟨b, rfl⟩ := (ideal D Sc cutoff v t).mkQ_surjective b
-  change projection D Sc cutoff i v w
-    (movingPower D Sc cutoff i v (centralDegree D i) ≫
-      (insert D Sc cutoff i v t (twist k p b) ≫ h)) =
-    projection D Sc cutoff i v w
-      (insert D Sc cutoff i v t (twist k p b) ≫
-        (movingPower D Sc cutoff i t (centralDegree D i) ≫ h))
-  rw [← Category.assoc, movingPower_insert D Sc cutoff i _ (centralDegree_even D i),
-    Category.assoc]
-
-private theorem source_movingPower_tail {i : I} {v w : List I}
-    (x : PrependIdx i v w) (d : ℕ) :
-    movingPower D Sc cutoff i x.oldTarget d ≫
-      ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k] prependTail D Sc x :
-        hom D Sc cutoff (i :: x.oldTarget) w) =
-      ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k]
-        prependTail D Sc (x.shift d) : hom D Sc cutoff (i :: x.oldTarget) w) := by
-  change BoxProd.tmulHom (X := obj D Sc cutoff (i :: x.oldTarget))
-    (Y := obj D Sc cutoff (i :: x.oldTarget)) (1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) _ ≫
-      BoxProd.tmulHom (X := obj D Sc cutoff (i :: x.oldTarget))
-        (Y := obj D Sc cutoff w) (1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) _ = _
-  refine (BoxProd.tmulHom_comp_tmulHom
-    (X := obj D Sc cutoff (i :: x.oldTarget)) (Y := obj D Sc cutoff (i :: x.oldTarget))
-    (Z := obj D Sc cutoff w) (show (1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ∈
-      SKM.SYM.elvCoefficientParity D cutoff 0 from SetLike.GradedOne.one_mem)
-    (dotE D Sc (i :: x.oldTarget) 0 ^ d)
-    (1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) (prependTail_mem D Sc x)).trans ?_
-  simp only [koszulSign_zero_left, one_smul]
-  change (1 * 1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k] _ = _
-  rw [one_mul]
-  exact congrArg (fun f => (1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k] f)
-    (prependTail_shift D Sc x d)
-
-/-- The common tail family shifts without changing either its old target or its shuffle. -/
-theorem sourceTail_shift (i : I) {ν : List I} (q : SourceTailIndex ν) (m d : ℕ) :
-    movingPower D Sc cutoff i q.1.val d ≫ sourceTail D Sc cutoff i q m =
-      sourceTail D Sc cutoff i q (d + m) := by
-  have h := source_movingPower_tail D Sc cutoff (sourceTailPBW i q m) d
-  exact (show ∀ {t t' : List I} (e : t = t')
-      (f g : hom D Sc cutoff (i :: t) (sourceTailWord i q).val),
-      movingPower D Sc cutoff i t d ≫ f = g →
-      movingPower D Sc cutoff i t' d ≫ (e ▸ f) = (e ▸ g) from by
-        intro t t' e f g hh
-        subst t'
-        exact hh) (sourceTailPBW_oldTarget i q m) _ _ h
-
-/-- Central movement on every coefficient column is the same exponent shift. -/
-theorem centralSource_sourceTail (p : ZMod 2) (i : I) {ν : List I}
-    (q : SourceTailIndex ν) (m : ℕ) {v : List I} (b : Old D Sc cutoff v q.1.val) :
-    centralSource D Sc cutoff i v (sourceTailWord i q).val
-      (pair D Sc cutoff p i (sourceTail D Sc cutoff i q m) b) =
-    pair D Sc cutoff p i (sourceTail D Sc cutoff i q (centralDegree D i + m)) b := by
-  rw [centralSource_pair, sourceTail_shift]
-
 /-- Exponent translation on the finite-tail-index times natural-number direct sum. -/
 def sourceRowsShift (ν : List I) (d : ℕ) :
     SourceRows D Sc cutoff ν →ₗ[(ContentRing D Sc cutoff ν)ᵐᵒᵖ]
@@ -209,43 +150,5 @@ def sourceRowsShift (ν : List I) (d : ℕ) :
   DirectSum.toModule _ _ _ fun q =>
     DirectSum.lof (ContentRing D Sc cutoff ν)ᵐᵒᵖ (SourceTailIndex ν × ℕ)
       (fun r => OldContentRow D Sc cutoff ν r.1.1.val) (q.1, d + q.2)
-
-/-- Central movement on one full representable old row. -/
-theorem sourceContentCentral_tailRow (p : ZMod 2) (i : I) (ν : List I)
-    (q : SourceTailIndex ν) (m : ℕ) (b : OldContentRow D Sc cutoff ν q.1.val) :
-    sourceContentCentral D Sc cutoff p i ν (sourceTailRow D Sc cutoff p i ν q m b) =
-      sourceTailRow D Sc cutoff p i ν q (centralDegree D i + m) b := by
-  funext w
-  by_cases hw : w = sourceTailWord i q
-  · subst w
-    funext v
-    simp only [sourceContentCentral, sourceRowCentral, OddMath.FiniteHomMatrix.RightModule.map_apply,
-      sourceCentralNat, LinearMap.pi_apply, LinearMap.comp_apply, LinearMap.proj_apply,
-      sourceTailRow, LinearMap.single_apply, Pi.single_eq_same, sourcePairRow_apply]
-    exact centralSource_sourceTail D Sc cutoff p i q m (b v)
-  · have hzero (n : ℕ) : sourceTailRow D Sc cutoff p i ν q n b w = 0 := by
-      simp [sourceTailRow, hw]
-    change sourceRowCentral D Sc cutoff p i ν w.val
-      (sourceTailRow D Sc cutoff p i ν q m b w) = _
-    rw [hzero, map_zero, hzero]
-
-/-- Reconstruction intertwines the central moving power and exponent translation. -/
-theorem sourceRowsReconstruct_shift (p : ZMod 2) (i : I) (ν : List I)
-    (z : SourceRows D Sc cutoff ν) :
-    sourceRowsReconstruct D Sc cutoff p i ν
-      (sourceRowsShift D Sc cutoff ν (centralDegree D i) z) =
-    sourceContentCentral D Sc cutoff p i ν (sourceRowsReconstruct D Sc cutoff p i ν z) := by
-  induction z using DirectSum.induction_on with
-  | zero => simp only [map_zero]
-  | add a b ha hb => simp only [map_add, ha, hb]
-  | of q b =>
-    change sourceRowsReconstruct D Sc cutoff p i ν
-      (sourceRowsShift D Sc cutoff ν (centralDegree D i)
-        (DirectSum.lof (ContentRing D Sc cutoff ν)ᵐᵒᵖ _ _ q b)) =
-      sourceContentCentral D Sc cutoff p i ν (sourceRowsReconstruct D Sc cutoff p i ν
-        (DirectSum.lof (ContentRing D Sc cutoff ν)ᵐᵒᵖ _ _ q b))
-    rw [sourceRowsShift, DirectSum.toModule_lof, sourceRowsReconstruct_lof,
-      sourceRowsReconstruct_lof]
-    exact (sourceContentCentral_tailRow D Sc cutoff p i ν q.1 q.2 b).symm
 
 end OddMath.QuiverHecke.ELVOld

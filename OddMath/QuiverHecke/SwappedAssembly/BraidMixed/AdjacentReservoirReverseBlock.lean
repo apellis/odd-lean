@@ -35,7 +35,6 @@ private lemma route_right {C : Type*} [Category C] [Preadditive C]
   rw [hf, hg]
   simp only [Limits.comp_zero, Limits.zero_comp, add_zero]
 
-
 private lemma square_route {C : Type*} [Category C] [Preadditive C]
     {A B₀ B₁ C₀ C₁ T : C} (f₀ : A ⟶ B₀) (f₁ : A ⟶ B₁)
     (g₀₀ : B₀ ⟶ C₀) (g₁₀ : B₁ ⟶ C₀) (g₀₁ : B₀ ⟶ C₁) (g₁₁ : B₁ ⟶ C₁)
@@ -53,7 +52,6 @@ private lemma route_reverse {C : Type*} [Category C] [Preadditive C]
       (f₁ ≫ g₁₁) ≫ r₁ := by
   rw [hf, hg]
   simp only [Limits.comp_zero, Limits.zero_comp, add_zero, zero_add]
-
 
 private lemma remaining {C : Type*} [Category C] [Preadditive C]
     {M A V U : C} (E : A ≅ M) (K : U ≅ V) (X : V ⟶ M) (Y : U ⟶ A)

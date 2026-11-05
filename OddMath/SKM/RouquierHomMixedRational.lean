@@ -132,58 +132,5 @@ variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
   (hT : -nuP + D.α i = -muP) (hW : muM + D.α i = nuM)
   (Z : homWeightSector T.obj W.obj muP muM)
 
-/-- The shifted pre dot on the AB component, in functional multiplication order. -/
-abbrev homContentMixedPreDot :
-    End ((homContentPostE T.obj W i (β + Finsupp.single i 1) nuP hW).obj
-      ((homContentPreE T W.obj i muM hT).obj Z)) :=
-  (homContentPostE T.obj W i (β + Finsupp.single i 1) nuP hW).map (T.dot i hT ▷ Z)
-
-/-- The shifted reservoir dot on the same AB component. -/
-abbrev homContentMixedReservoirDot :
-    End ((homContentPostE T.obj W i (β + Finsupp.single i 1) nuP hW).obj
-      ((homContentPreE T W.obj i muM hT).obj Z)) :=
-  homContentPostDot T.obj W i (β + Finsupp.single i 1) nuP hW (T.E i hT ≫ Z)
-
-/-- Componentwise even expansion. Invertibility and the nilpotence exponent are
-required only on the specified AB object, not uniformly on a weight fibre. -/
-theorem homContentMixedRational_even (hp : D.parity i = 0)
-    (hx : IsUnit (homContentMixedPreDot T W i β hT hW Z))
-    (n : ℕ) (hn : homContentMixedReservoirDot T W i β hT hW Z ^ n = 0) :
-    let x := homContentMixedPreDot T W i β hT hW Z
-    let y := homContentMixedReservoirDot T W i β hT hW Z
-    IsUnit (x - y) ∧ Ring.inverse (x - y) =
-      ∑ r ∈ Finset.range n, Ring.inverse x ^ (r + 1) * y ^ r := by
-  dsimp only
-  have hc : Commute (homContentMixedPreDot T W i β hT hW Z)
-      (homContentMixedReservoirDot T W i β hT hW Z) := by
-    have ht := homContentMixedDot_exchange T W i β hT hW Z
-    simp only [hp, koszulSign_zero_left, one_smul] at ht
-    exact ht.symm
-  obtain ⟨x, hx⟩ := hx
-  rw [← hx] at hc ⊢
-  exact ⟨mixedEvenDenominator_isUnit x _ hc n hn,
-    by simpa only [Ring.inverse_unit] using mixedEvenInverse_expansion x _ hc n hn⟩
-
-/-- Componentwise odd expansion of the prescribed square-denominator expression.
-No locally nilpotent natural-transformation assembly is asserted. -/
-theorem homContentMixedRational_odd (hp : D.parity i = 1)
-    (hx : IsUnit (homContentMixedPreDot T W i β hT hW Z))
-    (n : ℕ) (hn : homContentMixedReservoirDot T W i β hT hW Z ^ n = 0) :
-    let x := homContentMixedPreDot T W i β hT hW Z
-    let y := homContentMixedReservoirDot T W i β hT hW Z
-    IsUnit (x ^ 2 - y ^ 2) ∧ (x - y) * Ring.inverse (x ^ 2 - y ^ 2) =
-      ∑ r ∈ Finset.range (2 * n), (-1) ^ r * Ring.inverse x ^ (r + 1) * y ^ r := by
-  dsimp only
-  have hc : homContentMixedPreDot T W i β hT hW Z *
-      homContentMixedReservoirDot T W i β hT hW Z =
-      -(homContentMixedReservoirDot T W i β hT hW Z *
-        homContentMixedPreDot T W i β hT hW Z) := by
-    have ht := homContentMixedDot_exchange T W i β hT hW Z
-    simp only [hp, koszulSign_one_one, neg_one_smul] at ht
-    exact (neg_eq_iff_eq_neg.mp ht.symm)
-  obtain ⟨x, hx⟩ := hx
-  rw [← hx] at hc ⊢
-  exact ⟨mixedOddDenominator_isUnit x _ hc n hn,
-    by simpa only [Ring.inverse_unit] using mixedOddInverse_expansion x _ hc n hn⟩
 end Components
 end OddMath.SKM

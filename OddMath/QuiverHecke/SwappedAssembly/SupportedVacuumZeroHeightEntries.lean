@@ -38,8 +38,8 @@ family.
   padded `σ` is invertible with inverse the padded `-lc` column, and the bubble entry is the
   unit row, the inverse and the cap row.
 * `WeightTensorVacuum.vacuumZeroHeight_bubbleEntries`: the same in the native charts of the
-  evaluated vacuum bend (`paddedVacuumDx_odd`/`_even`, `paddedVacuumUnit_native`,
-  `paddedVacuumCap_native`).
+  evaluated vacuum bend (`paddedVacuumDx_odd`/`_even`, `paddedVacuumUnit_eq`,
+  `paddedVacuumCap_eq`).
 * `SupportedSectors.vacuumEntry_zero_odd`, `vacuumEntry_zero_even`, `vacuumEntry_odd_zero`:
   the decoded entries are the moments of `tensorVacuumZeroHeightCap_*_moments`, the fields
   `zero_odd`, `zero_even` and `odd_zero` of `VacuumRightEntries`.
@@ -252,7 +252,7 @@ theorem vacuumZeroHeight_bubbleEntries (Z : (P).H ((0, 0) : Sector I))
   obtain ⟨J, hJ1, hJ2, hent⟩ := (P).centralPadded_zeroHeight_bubbleEntry cc i ν₀
     ((0, 0) : Sector I) _ Ev lc dc HN hu hd h0
   have hb := (Iso.inv_comp_eq _).2 hDx
-  have hC := paddedVacuumCap_native D Sc m cutoff bound ΛP ΛR hcP hcR H i hP 0
+  have hC := paddedVacuumCap_eq D Sc m cutoff bound ΛP ΛR hcP hcR H i hP 0
   rw [pow_zero, End.one_def, Category.id_comp] at hC
   refine ⟨paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H,
     (paddedVacuumTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).inv ≫ J ≫
@@ -263,7 +263,7 @@ theorem vacuumZeroHeight_bubbleEntries (Z : (P).H ((0, 0) : Sector I))
     simp [reassoc_of% hJ1]
   · rw [← hb]
     simp [reassoc_of% hJ2]
-  · rw [hent N, (Iso.eq_comp_inv _).2 (paddedVacuumUnit_native D Sc m cutoff bound ΛP ΛR hcP hcR
+  · rw [hent N, (Iso.eq_comp_inv _).2 (paddedVacuumUnit_eq D Sc m cutoff bound ΛP ΛR hcP hcR
       H i N)]
     simp only [Preadditive.neg_comp, Preadditive.comp_neg, Category.assoc,
       Iso.inv_hom_id_assoc, hC]

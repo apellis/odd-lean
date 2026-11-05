@@ -23,7 +23,7 @@ private theorem capDot_value
     (capDotRow J hα M n).total w x = capDotLinear J hα M n w x :=
   LinearMap.congr_fun (capDotRow_total J hα M n w) x
 
-private theorem capDot_native_compare
+private theorem capDot_compare
     {k C A B E : Type u} [CommRing k]
     [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
     [Category.{u} A] [Preadditive A] [Linear k A] [Supercategory k A]
@@ -82,7 +82,7 @@ theorem contentBlockCapDotRow_square (M : ContentModules D Sc cutoff N γ)
       (capDotRow T hGlobalDot (induced Q₁ M) n).total t.obj
         (fullSquareOrdinarySourceLinear J Q₁ Q₀ T sqJ ((restriction J).obj M) T (induced Q₁ M)
           (contentAppendToRestrictionExtensionIso D Sc cutoff N β i γ hJ M) t x) := by
-  exact capDot_native_compare J T hDot hGlobalDot M (induced Q₁ M) n t t.obj
+  exact capDot_compare J T hDot hGlobalDot M (induced Q₁ M) n t t.obj
     (fun b => unit Q₁ M.toFunctor t b)
     (fullSquareOrdinarySourceLinear J Q₁ Q₀ T sqJ ((restriction J).obj M) T (induced Q₁ M)
       (contentAppendToRestrictionExtensionIso D Sc cutoff N β i γ hJ M) t)

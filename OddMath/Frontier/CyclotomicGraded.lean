@@ -138,7 +138,6 @@ theorem firstDot_pow_mem (n N : ℕ) : firstDot n ^ N ∈ onhGrading n (2*(N : �
 
 end Homogeneity
 
-
 /-! ### Homogeneous decompositions -/
 
 section Decomposition

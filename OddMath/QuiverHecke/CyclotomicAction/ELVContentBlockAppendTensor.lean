@@ -39,12 +39,6 @@ def contentAppendToRestrictionLinear (M : ContentModules D Sc cutoff N β)
   BalancedInduction.fullSquareRestrictionLinear J Q P A
     (contentAppendTo_inclusion D Sc cutoff N β σ γ hσ) M t
 
-/-- The raw chart is literally the already chosen full-inclusion unit and extension comparison. -/
-theorem contentAppendToRestrictionLinear_eq_selected (M : ContentModules D Sc cutoff N β)
-    (t : ContentCategory D Sc cutoff N γ) :
-    contentAppendToRestrictionLinear D Sc cutoff N β σ γ hσ M t =
-      (contentAppendToRestrictionIso D Sc cutoff N β σ γ hσ M).hom.total t := rfl
-
 /-- Entire coefficient arrows remain unchanged and the actual input inclusion unit is inserted. -/
 theorem contentAppendToRestrictionLinear_tensor (M : ContentModules D Sc cutoff N β)
     (s : ContentCategory D Sc cutoff N β) (t : ContentCategory D Sc cutoff N γ)

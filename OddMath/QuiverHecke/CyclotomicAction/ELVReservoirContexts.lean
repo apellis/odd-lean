@@ -142,13 +142,4 @@ def wordAt {l : List (SKM.Col I X)} {c d : I →₀ ℕ}
         (ReservoirWord.weight D Λ d) ((l.map (fun a => a.l.2)).reverse)) :=
   atWeight D Sc cutoff L Λ (word_weight D Λ p hl) (ReservoirWord.word (W) Λ p hl)
 
-/-- Equality of the entire actual reservoir word with the chosen context
-functor, retaining every source object, morphism and content block. This
-does not assert support or boundary vanishing for those source objects. -/
-theorem wordAt_eq_context {l : List (SKM.Col I X)} {c d : I →₀ ℕ}
-    (p : SPath l (0,c) (0,d)) (hl : ∀ a ∈ l, a.l.1 = true) :
-    wordAt D Sc cutoff L Λ p hl = TensorHomContexts.context D Sc cutoff L Λ
-      (ReservoirWord.weight D Λ d) ((l.map (fun a => a.l.2)).reverse) :=
-  eq_of_heq ((atWeight_heq D Sc cutoff L Λ _ _).trans (word_heq D Sc cutoff L Λ p hl))
-
 end OddMath.QuiverHecke.ELVOld.ReservoirContexts

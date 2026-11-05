@@ -64,26 +64,6 @@ def reservoirRegularGenerator (t : List I) : ReservoirQuotient D Sc cutoff t t :
   unfold reservoirRegularGenerator
   rw [reservoirPostcomp_mk, Category.id_comp]
 
-/-- The quotient operators have the same diagrammatic order as composition. -/
-theorem reservoirPostcomp_comp {s t t' t'' : List I}
-    (f : coefficientObj D Sc t ⟶ coefficientObj D Sc t')
-    (g : coefficientObj D Sc t' ⟶ coefficientObj D Sc t'') :
-    reservoirPostcomp D Sc cutoff (s := s) (f ≫ g) =
-      (reservoirPostcomp D Sc cutoff g).comp (reservoirPostcomp D Sc cutoff f) := by
-  apply LinearMap.ext
-  intro x
-  obtain ⟨a, rfl⟩ := (ELVRelationSpan D Sc cutoff s t).mkQ_surjective x
-  simp only [LinearMap.comp_apply, reservoirPostcomp_mk, Category.assoc]
-
-/-- Coefficients and affine morphisms are evaluated jointly, in source order. -/
-theorem reservoirPostcomp_source {t t' : List I}
-    (a : SKM.SYM D k)
-    (f : (pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D t')) :
-    reservoirPostcomp D Sc cutoff (sourceCoefficientHom D Sc a f)
-      (reservoirRegularGenerator D Sc cutoff t) =
-      (ELVRelationSpan D Sc cutoff t t').mkQ (sourceCoefficientHom D Sc a f) :=
-  reservoirPostcomp_generator D Sc cutoff _
-
 /-- The regular cyclic action detects every bounded joint PBW window allowed
 by C0. This concerns the connected quotient, not a fused SKM action. -/
 theorem reservoirRegular_injective_on_window {t t' : List I} {d N : ℕ}

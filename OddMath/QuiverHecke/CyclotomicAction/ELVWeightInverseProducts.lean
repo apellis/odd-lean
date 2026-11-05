@@ -23,7 +23,6 @@ variable {k : Type w} [CommRing k] {ι : Type t} {C : ι → Type u}
   [∀ a, Linear k (C a)] [∀ a, Supercategory k (C a)]
   {A B Z : ∀ a, C a} {p : ZMod 2} {q : ℕ → ZMod 2} {n : ℕ}
 
-
 private theorem product_sum_apply {X Y : ∀ a, C a}
     (s : Finset ℕ) (h : ℕ → (X ⟶ Y)) (a : ι) :
     (∑ m ∈ s, h m) a = ∑ m ∈ s, h m a := by
@@ -81,23 +80,5 @@ def SuperSumInvTo.pi
     · rw [ite_eq_right hml]
       funext a
       simpa only [CategoryTheory.Pi.comp_apply, Categorification.TwoRep.pi_zero_apply, ite_eq_right hml] using (J a).gg m l hm hl
-
-/-- Equal component counts supply the common finite column-inverse window.
-For weight blocks use `contentUnitCount_weightBlock`. -/
-def SuperSumInvFrom.piOfCount
-    {f : ∀ a, B a ⟶ A a} {g : ℕ → ∀ a, Z a ⟶ A a}
-    (m : ι → ℕ) (hm : ∀ a, m a = n)
-    (J : ∀ a, SuperSumInvFrom (k := k) (f a) (fun r => g r a) p q (m a)) :
-    SuperSumInvFrom (k := k) (show B ⟶ A from f) (fun r => (show Z ⟶ A from g r)) p q n :=
-  SuperSumInvFrom.pi (fun a => by simpa only [hm a] using J a)
-
-/-- Equal component counts supply the common finite row-inverse window.
-For weight blocks use `contentCapCount_weightBlock`. -/
-def SuperSumInvTo.piOfCount
-    {f : ∀ a, A a ⟶ B a} {g : ℕ → ∀ a, A a ⟶ Z a}
-    (m : ι → ℕ) (hm : ∀ a, m a = n)
-    (J : ∀ a, SuperSumInvTo (k := k) (f a) (fun r => g r a) p q (m a)) :
-    SuperSumInvTo (k := k) (show A ⟶ B from f) (fun r => (show A ⟶ Z from g r)) p q n :=
-  SuperSumInvTo.pi (fun a => by simpa only [hm a] using J a)
 
 end OddMath.SKM

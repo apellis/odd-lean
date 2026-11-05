@@ -88,18 +88,6 @@ theorem probeEvaluatesCoefficients_parity
   exact comp_scalar_action N (PiSCat.piHom (PiSCat.of k (SVec k))) v
     (probeOldCoefficient D m Sc ν v c) _ (hN v c)
 
-/-- Arbitrary products preserve the coefficient evaluation, including the
-empty product and the finite products used for the augmented inverses. -/
-theorem probeEvaluatesCoefficients_product {ι : Type}
-    (N : ι → Superfunctor k (OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
-    (hN : ∀ a, ProbeEvaluatesCoefficients D m Sc ν (N a)) :
-    ProbeEvaluatesCoefficients D m Sc ν (FiniteSupermodule.product N) := by
-  intro v c
-  apply LinearMap.ext
-  intro x
-  funext a
-  exact LinearMap.congr_fun (hN a v c) (x a)
-
 /-- The actual scalar-evaluated probe category has its inherited parity completion. -/
 @[instance_reducible]
 def probeEvaluatedPiSupercategory : PiSupercategory k (ProbeEvaluatedModules D Sc m ν) :=

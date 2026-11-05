@@ -108,18 +108,4 @@ def exteriorProjection : SYM D k →ₐ[k] ExteriorAlgebra k (OddModule D k) :=
     rw [show Finsupp.single i a = a • Finsupp.single i 1 by simp]
     rw [map_smul]
 
-/-- The projection is a left inverse, so no exterior relation is introduced
-by adjoining the elementary coefficient generators. -/
-theorem exteriorProjection_comp_include :
-    (exteriorProjection D k).comp (exteriorInclude D k) = AlgHom.id k _ := by
-  apply ExteriorAlgebra.hom_ext
-  ext x
-  simp
-
-/-- The whole free exterior algebra embeds in the abstract coefficient algebra. -/
-theorem exteriorInclude_injective : Function.Injective (exteriorInclude D k) := by
-  apply Function.LeftInverse.injective (g := exteriorProjection D k)
-  intro x
-  exact DFunLike.congr_fun (exteriorProjection_comp_include D k) x
-
 end OddMath.SKM.SYM

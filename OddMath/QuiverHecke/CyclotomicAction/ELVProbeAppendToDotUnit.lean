@@ -129,8 +129,4 @@ theorem probeAppendToInductionDot_isUnit : IsUnit (End.of (probeAppendToInductio
   rw [← probeAppendToInductionDotIso_hom]
   infer_instance
 
-theorem probeAppendToInductionDotIso_inv_mem :
-    (probeAppendToInductionDotIso D Sc m ν i μ h).inv ∈ parity (R := k) _ _ (D.parity i) :=
-  OddMath.HomogeneousSuperfunctorIso.ofHom_inv_mem _ _ _ _
-
 end OddMath.QuiverHecke

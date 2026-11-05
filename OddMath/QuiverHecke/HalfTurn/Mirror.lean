@@ -601,10 +601,6 @@ def mirrorFunctor : (pres D Sc).Presented ⥤ (pres D Sc).Presented :=
   (mirrorSig D).lift (pres D Sc) (mirrorSig_odd D) (pres D Sc).wfDom_of_subsingleton
     (mirror_rel D Sc)
 
-theorem mirrorFunctor_obj (t : List I) :
-    (mirrorFunctor D Sc).obj ((pres D Sc).obj (ob D t)) = (pres D Sc).obj (ob D t.reverse) := by
-  exact congrArg (pres D Sc).obj (mirrorSig_obj D t)
-
 theorem mirrorFunctor_diag {a b : Obj (sig D)} (d : a ⟶ b) :
     (mirrorFunctor D Sc).map ((pres D Sc).diag d) =
       Diagram.weight (mirrorWeight (k := k) D) d •

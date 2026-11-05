@@ -155,36 +155,6 @@ variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
   (c : P.CrossCoeff) (i : I) (t : Sector I) (Z : P.H t)
   (E : P.H t ⥤ C) [E.Additive]
 
-/-- The occupied reservoir cap corner inherits the prescribed whole local inverse. -/
-theorem centralPaddedReservoir_capInverse (ha : StepValid (up i) false t)
-    (hh : 0 ≤ D.h i (P.muM t)) :
-    ∃ j A, ProbeWindow.IsCapInverse (P.centralPaddedSigma c i t Z E false false)
-      (fun a : Fin (D.h i (P.muM t)).toNat => P.centralPaddedCap i t Z E false a) j A := by
-  have hb : StepValid (dn i) false t := by trivial
-  let J := homContentPostInvPos P.T.obj P.W i t.1 (P.muP t)
-    (P.muM_postE i ha) (P.muM_postF i t) hh Z
-  have H := ((FactorWindowInverse.cap J).map E).coordinates
-    (P.centralSourceCornerIso i t Z E ⟨false, ha⟩)
-    (P.centralTargetCornerIso i t Z E ⟨false, hb⟩)
-  refine ⟨(P.centralTargetCornerIso i t Z E ⟨false, hb⟩).hom ≫ E.map J.f' ≫ (P.centralSourceCornerIso i t Z E ⟨false, ha⟩).inv, (fun r => E.map (J.g' r) ≫ (P.centralSourceCornerIso i t Z E ⟨false, ha⟩).inv), ?_⟩
-  simpa only [centralPaddedSigma, centralPaddedCap, dite_eq_left ha, dite_eq_left hb,
-    centralFactorSigma, centralFactorCap, homContentPostMate] using H
-
-/-- The occupied reservoir unit corner inherits every prescribed local inverse row. -/
-theorem centralPaddedReservoir_cupInverse (ha : StepValid (up i) false t)
-    (hh : D.h i (P.muM t) ≤ 0) :
-    ∃ j B, ProbeWindow.IsCupInverse (P.centralPaddedSigma c i t Z E false false)
-      (fun a : Fin (-D.h i (P.muM t)).toNat => P.centralPaddedUnit i t Z E false a) j B := by
-  have hb : StepValid (dn i) false t := by trivial
-  let J := homContentPostInvNeg P.T.obj P.W i t.1 (P.muP t)
-    (P.muM_postE i ha) (P.muM_postF i t) hh Z
-  have H := ((FactorWindowInverse.cup J).map E).coordinates
-    (P.centralSourceCornerIso i t Z E ⟨false, ha⟩)
-    (P.centralTargetCornerIso i t Z E ⟨false, hb⟩)
-  refine ⟨(P.centralTargetCornerIso i t Z E ⟨false, hb⟩).hom ≫ E.map J.f' ≫ (P.centralSourceCornerIso i t Z E ⟨false, ha⟩).inv, (fun r => (P.centralTargetCornerIso i t Z E ⟨false, hb⟩).hom ≫ E.map (J.g' r)), ?_⟩
-  simpa only [centralPaddedSigma, centralPaddedUnit, dite_eq_left ha, dite_eq_left hb,
-    centralFactorSigma, centralFactorUnit, homContentPostMate] using H
-
 /-- The occupied probe cap corner retains the normalized left-factor inverse and its signs. -/
 theorem centralPaddedProbe_capInverse (hb : StepValid (dn i) true t)
     (hh : D.h i (-P.muP t) ≤ 0) :
@@ -214,66 +184,6 @@ theorem centralPaddedProbe_cupInverse (hb : StepValid (dn i) true t)
   refine ⟨(P.centralTargetCornerIso i t Z E ⟨true, hb⟩).hom ≫ E.map J.f' ≫ (P.centralSourceCornerIso i t Z E ⟨true, ha⟩).inv, (fun r => (P.centralTargetCornerIso i t Z E ⟨true, hb⟩).hom ≫ E.map (J.g' r)), ?_⟩
   simpa only [centralPaddedSigma, centralPaddedUnit, dite_eq_left ha, dite_eq_left hb,
     centralFactorSigma, centralFactorUnit, homContentPreMate] using H
-
-/-- At an absent reservoir source the prescribed native cap inverse transfers
-through its proved zero object. The vanishing premise concerns only that native
-source, and is discharged for supported ELV objects by absent-content closure. -/
-theorem centralPaddedReservoir_capInverse_of_source_isZero
-    (ha : ¬StepValid (up i) false t) {μ : X} (h : μ + D.α i = P.muM t)
-    (hzero : Limits.IsZero ((homContentPostE P.T.obj P.W i t.1 (P.muP t) h).obj
-      ((homContentPostF P.T.obj P.W i t.1 (P.muP t) h).obj Z)))
-    (hh : 0 ≤ D.h i (P.muM t)) :
-    ∃ j A, ProbeWindow.IsCapInverse (P.centralPaddedSigma c i t Z E false false)
-      (fun a : Fin (D.h i (P.muM t)).toNat => P.centralPaddedCap i t Z E false a) j A := by
-  have hb : StepValid (dn i) false t := by trivial
-  let a := sectorFamilyZeroCornerIso (fun a => StepValid (up i) a t)
-    (fun a => E.obj (P.centralSourceFactor i t Z a)) false ha _ (E.map_isZero hzero)
-  let b := P.centralTargetCornerIso i t Z E ⟨false, hb⟩
-  let J := homContentPostInvPos P.T.obj P.W i t.1 (P.muP t) h (P.muM_postF i t) hh Z
-  have H := ((FactorWindowInverse.cap J).map E).coordinates a b
-  have hz : Limits.IsZero (sectorFamilyCorner (fun a => StepValid (up i) a t)
-      (fun a => E.obj (P.centralSourceFactor i t Z a)) false) := by
-    simpa only [sectorFamilyCorner, dite_eq_right ha] using Limits.isZero_zero C
-  have hs : a.hom ≫ E.map (homContentPostMate P.T.obj P.W i t.1 (P.muP t)
-      h (P.muM_postF i t) Z) ≫ b.inv = P.centralPaddedSigma c i t Z E false false :=
-    hz.eq_of_src _ _
-  have hv : (fun r : Fin (D.h i (P.muM t)).toNat =>
-      a.hom ≫ E.map (homContentPostCap P.T.obj P.W i t.1 (P.muP t) h r Z)) =
-      (fun r : Fin (D.h i (P.muM t)).toNat => P.centralPaddedCap i t Z E false r) := by
-    funext r
-    exact hz.eq_of_src _ _
-  rw [hs, hv] at H
-  exact ⟨_, _, H⟩
-
-/-- At an absent reservoir source the prescribed native cup inverse retains
-every unit column, with the native zero source replaced by the padded corner. -/
-theorem centralPaddedReservoir_cupInverse_of_source_isZero
-    (ha : ¬StepValid (up i) false t) {μ : X} (h : μ + D.α i = P.muM t)
-    (hzero : Limits.IsZero ((homContentPostE P.T.obj P.W i t.1 (P.muP t) h).obj
-      ((homContentPostF P.T.obj P.W i t.1 (P.muP t) h).obj Z)))
-    (hh : D.h i (P.muM t) ≤ 0) :
-    ∃ j B, ProbeWindow.IsCupInverse (P.centralPaddedSigma c i t Z E false false)
-      (fun a : Fin (-D.h i (P.muM t)).toNat => P.centralPaddedUnit i t Z E false a) j B := by
-  have hb : StepValid (dn i) false t := by trivial
-  let a := sectorFamilyZeroCornerIso (fun a => StepValid (up i) a t)
-    (fun a => E.obj (P.centralSourceFactor i t Z a)) false ha _ (E.map_isZero hzero)
-  let b := P.centralTargetCornerIso i t Z E ⟨false, hb⟩
-  let J := homContentPostInvNeg P.T.obj P.W i t.1 (P.muP t) h (P.muM_postF i t) hh Z
-  have H := ((FactorWindowInverse.cup J).map E).coordinates a b
-  have hz : Limits.IsZero (sectorFamilyCorner (fun a => StepValid (up i) a t)
-      (fun a => E.obj (P.centralSourceFactor i t Z a)) false) := by
-    simpa only [sectorFamilyCorner, dite_eq_right ha] using Limits.isZero_zero C
-  have hs : a.hom ≫ E.map (homContentPostMate P.T.obj P.W i t.1 (P.muP t)
-      h (P.muM_postF i t) Z) ≫ b.inv = P.centralPaddedSigma c i t Z E false false :=
-    hz.eq_of_src _ _
-  rw [hs] at H
-  have hu : (fun r : Fin (-D.h i (P.muM t)).toNat =>
-      E.map (homContentPostCup P.T.obj P.W i t.1 (P.muP t) (P.muM_postF i t) r Z) ≫ b.inv) =
-      (fun r : Fin (-D.h i (P.muM t)).toNat => P.centralPaddedUnit i t Z E false r) := by
-    funext r
-    simp only [centralPaddedUnit, dite_eq_left hb, centralFactorUnit, b]
-  rw [hu] at H
-  exact ⟨_, _, H⟩
 
 /-- An absent probe target transports the normalized native cap inverse
 through the native target's proved vanishing, retaining every dotted row. -/

@@ -102,13 +102,4 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (p : SPath a.word (0,tensorSourceContent D ΛP ΛR s) (0,0))
   (hup : ∀ c ∈ a.word, c.l.1 = true)
 
-/-- The actual constructed tensor matrix is its genuine fixed-source word-Hom row.
-Every zero-padding premise is proved from the specified families. -/
-def tensorMatrixRowEquiv :=
-  MatrixSourceRow.equiv D Sc m cutoff (PowerWordContent.powerBound D cutoff L) ΛP ΛR hP hR
-    (tensorSourceFamily D Sc m cutoff ΛP ΛR L s) (tensorTargetFamily D Sc m cutoff ΛP ΛR L)
-    (0,tensorSourceContent D ΛP ΛR s) hEnd p hup
-    (tensorSourceFamily_isZero D Sc m cutoff ΛP ΛR L s)
-    (tensorTargetFamily_isZero D Sc m cutoff ΛP ΛR L)
-
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

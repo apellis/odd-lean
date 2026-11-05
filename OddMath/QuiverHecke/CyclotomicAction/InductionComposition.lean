@@ -139,7 +139,6 @@ def compositionCorner : SuperBimodule GC GA where
     ((reg).ract_mem p (θ r) (compositionAppend_parity D Sc i j a ha n hr))
     (fun x _ => compositionCorner_right_mem D Sc i j a n r x)
 
-
 local notation "T" => compositionCorner D Sc i j a ha n
 
 /-- Parity in the composite corner is inherited from the quotient algebra. -/

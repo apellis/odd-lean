@@ -288,13 +288,6 @@ def labelEquiv {L Q b : List (Letter I)} {x y : Letter I}
     (j : MatchingStrand (L ++ y :: x :: Q) R) :
     (labelEquiv hR hn j).val = tau Q.length j.val := rfl
 
-def countsEquiv {L Q b : List (Letter I)} {x y : Letter I}
-    {R : List (TMove (Letter I))} (hR : IsMatching₂ (L ++ y :: x :: Q) b R)
-    (hn : ¬ Same (pairing₂ (L ++ y :: x :: Q) R) Q.length (Q.length + 1)) :
-    (MatchingStrand (L ++ y :: x :: Q) R → ℕ) ≃
-      (MatchingStrand (L ++ x :: y :: Q) (.mv (.cross L.length) :: R) → ℕ) :=
-  Equiv.arrowCongr (labelEquiv hR hn) (Equiv.refl ℕ)
-
 private theorem ends_perm {L Q b : List (Letter I)} {x y : Letter I}
     {R : List (TMove (Letter I))} (hR : IsMatching₂ (L ++ y :: x :: Q) b R)
     (hn : ¬ Same (pairing₂ (L ++ y :: x :: Q) R) Q.length (Q.length + 1)) :

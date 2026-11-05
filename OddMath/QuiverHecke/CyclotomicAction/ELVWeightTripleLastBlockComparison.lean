@@ -32,15 +32,6 @@ local notation "C₃" => elvWeightTripleComparison D Sc cutoff bound i j l Λ h�
 local notation "C₂" => elvWeightPairComparison D Sc cutoff bound i j Λ h₂ h₃ β₁ ε hε
 local notation "hv" => elvEFunctor_blockSucc_eval D Sc cutoff bound l Λ h₁ β
 
-/-- The given triple chart through the selected last pair at the common
-first predecessor and specified final output. -/
-theorem elvWeightTripleComparison_lastBlock :
-    C₃ = Functor.isoWhiskerLeft E₁ C₂ ≪≫
-      (Functor.associator E₁ R₁ Q).symm ≪≫ Functor.isoWhiskerRight (eqToIso hv) Q ≪≫
-        Functor.associator R J Q ≪≫ Functor.isoWhiskerLeft R L := by
-  cases hε
-  exact elvWeightTripleComparison_pairLast D Sc cutoff bound i j l Λ h₁ h₂ h₃ β
-
 /-- Native component, retaining the first-value dispatch under the chosen pair-word induction. -/
 theorem elvWeightTripleComparison_lastBlock_hom
     (M : ELVWeightProduct D Sc cutoff bound Λ x₀) :

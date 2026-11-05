@@ -43,7 +43,6 @@ private theorem upperDot_affine (i j : I) (s : OldCategory D Sc cutoff) :
   simpa only [append, List.length_append, List.length_singleton] using
     dot_affine D Sc cutoff i ((append D Sc cutoff j).obj s)
 
-
 /-- The source first dot exits on the second strand, retaining its sign. -/
 theorem crossComponent_slide_first {i j : I} (hij : i ≠ j)
     (s : OldCategory D Sc cutoff) :

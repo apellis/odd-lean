@@ -351,7 +351,6 @@ theorem flip_rel_quadEq (i : I) :
   generalize D.parity i = a
   fin_cases a <;> simp [zsign]
 
-
 theorem flip_rel_quadZero (i j : I) (hij : i ≠ j) (hd : D.d i j = 0) :
     (flipFree D Sc).map ((pres D Sc).rel (Rel.quadZero i j hij hd)) = 0 := by
   refine flip_rel_of D Sc (.quadZero i j hij hd) rfl rfl (zsign k (D.parity i * D.parity j)) ?_
@@ -452,8 +451,6 @@ theorem flip_rel_quadNe (i j : I) (hij : i ≠ j) (hd : D.d i j ≠ 0) :
   fin_cases a <;> fin_cases b <;> fin_cases c <;> fin_cases d <;> fin_cases e <;> fin_cases f <;>
     simp [zsign]
   exact (sChain_dotsL [i] j [] y).append (sChain_dotsL [] i [j] x)
-
-
 
 /-- Halving the two parts of `n - 1 = x + r` loses one, modulo `2`, when `n` is even. -/
 theorem parity_half_add {P : ZMod 2} {x r n : ℕ} (h : x + r + 1 = n) (hn : P * (n : ZMod 2) = 0) :
@@ -611,6 +608,5 @@ kept, dots are fixed and the crossing `Eᵢ Eⱼ → Eⱼ Eᵢ` goes to `flipWei
 def flipFunctor : (pres D Sc).Presented ⥤ SOp k (pres D (parameterTwist D Sc)).Presented :=
   SOpMap.liftGen (flipPar D (parameterTwist D Sc)) (flipMap D) (flipImg D (parameterTwist D Sc))
     (pres D Sc) (flipImg_mem D _) (flip_rel D Sc)
-
 
 end OddMath.QuiverHecke

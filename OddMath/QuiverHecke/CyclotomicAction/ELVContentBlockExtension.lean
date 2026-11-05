@@ -19,7 +19,6 @@ universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
 
-
 instance contentInclusion_additive (β : Multiset I) :
     (contentInclusion D Sc cutoff N β).Additive where
   map_add := by intros; rfl

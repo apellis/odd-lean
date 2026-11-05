@@ -90,8 +90,6 @@ by
       ((P.step (true, i) true _ trivial).obj Z))
 end ReservoirEdges
 
-
-
 private lemma adjacent_left_sum {C : Type*} [Category C] [Preadditive C]
     {A B V U W T : C} (f : A ⟶ B) (f' : A ⟶ V) (g : B ⟶ U)
     (h : V ⟶ U) (j : B ⟶ W) (l : V ⟶ W) (r : U ⟶ T) (r' : W ⟶ T)

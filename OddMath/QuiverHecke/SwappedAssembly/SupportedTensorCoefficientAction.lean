@@ -53,25 +53,6 @@ def tensorVacuumCoefficientAction : SYM D k →ₐ[k] End Z where
     apply InducedCategory.hom_ext
     exact (tensorAmbientCoefficientAction D Sc m cutoff L ΛP ΛR).commutes r
 
-private theorem reindexCoefficientAction_ne_zero {x y z : X} (h : x = y)
-    (F : probeOldWeightSpace D Tw m ΛP x ⟶ elvWeightSpace D Tw cutoff N ΛR z)
-    (φ : SYM D k →ₐ[k] End F) (a : SYM D k) (ha : φ a ≠ 0) :
-    reindexCoefficientAction D Sc m cutoff L ΛP ΛR h F φ a ≠ 0 := by
-  subst y
-  exact ha
-
-/-- Passing to the supported full Hom and its formal input-weight presentation
-retains every nonzero source coefficient endomorphism. -/
-theorem tensorVacuumCoefficientAction_ne_zero (a : SYM D k)
-    (ha : sourceCoefficientAction D Tw m cutoff L ΛP ΛR a ≠ 0) :
-    tensorVacuumCoefficientAction D Sc m cutoff L ΛP ΛR a ≠ 0 := by
-  intro hz
-  have h := congrArg (fun f => f.hom) hz
-  exact reindexCoefficientAction_ne_zero D Sc m cutoff L ΛP ΛR
-    (probeWeight_vacuum D ΛP).symm
-    (WeightTensorVacuum.selectedHom D Tw m cutoff ΛP ΛR L)
-    (sourceCoefficientAction D Tw m cutoff L ΛP ΛR) a ha h
-
 /-- A literal supported path carries its coefficient by that same path functor. -/
 def tensorPathCoefficientAction {l : List (Col I X)} {s : Sector I}
     (p : SPath l s (0,0)) : SYM D k →ₐ[k]
@@ -92,11 +73,6 @@ def tensorWordHomCoefficientAction {l : List (Col I X)} {s : Sector I}
     (a : SYM D k) (f : G ⟶ (pathFunctor D Tw m cutoff N ΛP ΛR p).obj Z) :
     tensorWordHomCoefficientAction D Sc m cutoff L ΛP ΛR p G a f =
       f ≫ tensorPathCoefficientAction D Sc m cutoff L ΛP ΛR p a := rfl
-
-/-- The source family uses exactly the coefficient action on its chosen whole path object. -/
-def tensorSourceCoefficientAction (s : List I) : SYM D k →ₐ[k]
-    End (tensorSourceObject D Sc m cutoff ΛP ΛR L s) :=
-  tensorPathCoefficientAction D Sc m cutoff L ΛP ΛR (tensorSourcePath D ΛP ΛR s)
 
 private def zeroObjectCoefficientAction {C : Type*} [Category* C] [Preadditive C] [Linear k C]
     (V : C) (hV : Limits.IsZero V) : SYM D k →ₐ[k] End V :=

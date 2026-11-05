@@ -53,36 +53,6 @@ theorem orderedMateComponent_mem (M : Superfunctor k C (SVec k)) :
     (IsSuperfunctor.map_mem (F := restriction A)
       (IsSuperfunctor.map_mem (F := induction A) (adjunctionCounit_mem A M)))
 
-/-- The ordered cup-crossing-cap family retains the prescribed crossing minus. -/
-theorem orderedMateComponent_supernatural :
-    IsSupernatural k p (F := restriction A ⋙ induction A) (G := induction A ⋙ restriction A)
-      (orderedMateComponent A hα) := by
-  change IsSupernatural k p (F := restriction A ⋙ induction A) (G := induction A ⋙ restriction A)
-    (fun M => (adjunctionUnit A).app (induced A ((restriction A).obj M)) ≫
-      (restriction A).map (-doubleCrossComponent A hα ((restriction A).obj M)) ≫
-      (restriction A).map ((induction A).map ((adjunctionCounit A).app M)))
-  have hU := (isSupernatural_of_natTrans (R := k) (adjunctionUnit A)
-    (adjunctionUnit_mem A)).whiskerLeft (restriction A ⋙ induction A)
-  have hd := doubleCrossComponent_supernatural A hα
-  have hn : IsSupernatural k p (F := induction A ⋙ induction A)
-      (G := induction A ⋙ induction A) (fun M => -doubleCrossComponent A hα M) := {
-    mem := fun M => neg_mem (hd.mem M)
-    naturality := fun hf => by
-      rw [Preadditive.comp_neg, hd.naturality hf, Preadditive.neg_comp, smul_neg] }
-  have hX := (hn.whiskerLeft (restriction A)).whiskerRight (restriction A)
-  have hC := ((isSupernatural_of_natTrans (R := k) (adjunctionCounit A)
-    (adjunctionCounit_mem A)).whiskerRight (induction A)).whiskerRight (restriction A)
-  have h := hU.comp (hX.comp hC)
-  set_option backward.dsimp.instances true in
-    dsimp only [induction] at h ⊢
-  simpa only [Functor.comp_id, Functor.id_comp, Functor.comp_obj, zero_add, add_zero,
-    Category.assoc] using h
-
-/-- Regrading the prescribed crossing family changes no matrix mate map. -/
-theorem orderedMateComponent_supernatural_of_degree (r : ZMod 2) (hp : p = r) :
-    IsSupernatural k r (F := restriction A ⋙ induction A) (G := induction A ⋙ restriction A)
-      (orderedMateComponent A hα) := hp ▸ orderedMateComponent_supernatural A hα
-
 private theorem regrade {F G : Superfunctor k C (SVec k)} {q r : ZMod 2}
     {f : F ⟶ G} (h : q = r) (hf : f ∈ parity (R := k) _ _ q) :
     f ∈ parity (R := k) _ _ r := by
@@ -110,22 +80,17 @@ private def homogeneousMate (M : Superfunctor k C (SVec k)) (q : ZMod 2) (hp : p
 private def unitColumnNative {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
     (hδ : IsSupernatural k q δ) (M : Superfunctor k C (SVec k)) (n : ℕ) :
     M ⟶ (restriction A).obj (induced A M) := unitDotColumn A hδ M n
-private theorem unitColumnNative_mem {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
+private theorem unitColumn_mem {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
     (hδ : IsSupernatural k q δ) (M : Superfunctor k C (SVec k)) (n : ℕ) :
     unitColumnNative A hδ M n ∈ parity (R := k) _ _ (n • q) :=
   unitDotColumn_mem A hδ M n
 private def capRowNative {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
     (hδ : IsSupernatural k q δ) (M : Superfunctor k C (SVec k)) (n : ℕ) :
     induced A ((restriction A).obj M) ⟶ M := capDotRow A hδ M n
-private theorem capRowNative_mem {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
+private theorem capRow_mem {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
     (hδ : IsSupernatural k q δ) (M : Superfunctor k C (SVec k)) (n : ℕ) :
     capRowNative A hδ M n ∈ parity (R := k) _ _ (n • q) :=
   capDotRow_mem A hδ M n
-
-private def moduleValue {F G : Superfunctor k C (SVec k)} (f : F ⟶ G) (w : C) (x : F.obj w) : G.obj w :=
-  f.total w x
-private theorem moduleValue_total {F G : Superfunctor k C (SVec k)} (f : F ⟶ G) (w : C) (x : F.obj w) :
-    moduleValue f w x = f.total w x := rfl
 
 /-- Endpoint objects are fixed before assembling their canonical parity coordinates. -/
 private structure MatrixDatum (q : ZMod 2) where
@@ -142,35 +107,14 @@ private def inductionMatrixDatum {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
   source := induced A ((restriction A).obj M)
   target := (restriction A).obj (induced A M)
   mate := homogeneousMate A hα M q hq
-  columns n := ⟨unitColumnNative A hδ M n, unitColumnNative_mem A hδ M n⟩
-  rows n := ⟨capRowNative A hδ M n, capRowNative_mem A hδ M n⟩
-
-/-- The chosen matrix datum mate retains input-module naturality before specialization. -/
-theorem inductionMatrixMate_supernatural {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
-    (hδ : IsSupernatural k q δ) (hq : p = q) :
-    IsSupernatural k q (F := restriction A ⋙ induction A) (G := induction A ⋙ restriction A)
-      (fun M => (inductionMatrixDatum A hα hδ hq M).mate.val) :=
-  orderedMateComponent_supernatural_of_degree A hα q hq
+  columns n := ⟨unitColumnNative A hδ M n, unitColumn_mem A hδ M n⟩
+  rows n := ⟨capRowNative A hδ M n, capRow_mem A hδ M n⟩
 
 /-- The given matrix datum retains the entire ordered mate before the
 functor and module parameters are specialized. -/
 theorem inductionMatrixMate_eq {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
     (hδ : IsSupernatural k q δ) (hq : p = q) (M : Superfunctor k C (SVec k)) :
     (inductionMatrixDatum A hα hδ hq M).mate.val = orderedMateComponent A hα M := rfl
-
-/-- The matrix mate is the given ordered mate on every coend vector. -/
-theorem inductionMatrixMate_apply {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
-    (hδ : IsSupernatural k q δ) (hq : p = q) (M : Superfunctor k C (SVec k))
-    (w : C) (x : Obj A ((restriction A).obj M).toFunctor w) :
-    ((inductionMatrixDatum A hα hδ hq M).mate.val).total w x =
-      orderedMateLinear A hα M w x := rfl
-
-/-- Native module-value evaluation of the same prescribed mate, before selecting a quotient functor. -/
-theorem inductionMatrixMate_value_apply {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
-    (hδ : IsSupernatural k q δ) (hq : p = q) (M : Superfunctor k C (SVec k))
-    (w : C) (x : ((inductionMatrixDatum A hα hδ hq M).source).obj w) :
-    moduleValue ((inductionMatrixDatum A hα hδ hq M).mate.val) w x =
-      orderedMateLinear A hα M w x := rfl
 
 local instance matrixDatumPi : PiSupercategory k (Superfunctor k C (SVec k)) :=
   supermodulePiSupercategory
@@ -289,15 +233,6 @@ theorem weightedMatrixMate_eq_ordered :
     (truncatedEqualCross_supernatural D Sc cutoff N i)
     (truncatedDot_supernatural D Sc cutoff N i) (parity_square (D.parity i)) M
 
-/-- Evaluation retains the exact source and target module values of the chosen matrix mate. -/
-def weightedMatrixMateValue (w : TruncatedCategory D Sc cutoff N) (x : ((B).source).obj w) : ((B).target).obj w :=
-  BalancedInduction.moduleValue (weightedMatrixMate D Sc cutoff N i M) w x
-
-/-- The value evaluator is precisely the total component of the given matrix mate. -/
-theorem weightedMatrixMateValue_eq_total (w : TruncatedCategory D Sc cutoff N) (x : ((B).source).obj w) :
-    weightedMatrixMateValue D Sc cutoff N i M w x = (weightedMatrixMate D Sc cutoff N i M).total w x :=
-  BalancedInduction.moduleValue_total (weightedMatrixMate D Sc cutoff N i M) w x
-
 /-- Canonical source parity coordinates, including every unscaled unit column. -/
 def weightedUnitMatrixFamily (m : ℕ) := BalancedInduction.datumUnitFamily (B) m
 /-- Canonical target parity coordinates, including every unscaled cap row. -/
@@ -317,17 +252,6 @@ theorem weightedCapMatrixEntry_mem (m : ℕ) (a : Option (Fin m)) :
 
 local instance weightedMatrixComponentPi : PiSupercategory k (Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k)) :=
   supermodulePiSupercategory
-
-/-- The first source coordinate is the prescribed shifted EF module. -/
-theorem weightedUnitMatrixFamily_none (m : ℕ) :
-    weightedUnitMatrixFamily D Sc cutoff N i M m none =
-      (SKM.homParityShift (k := k) (D.parity i)).obj
-        (BalancedInduction.induced T ((BalancedInduction.restriction T).obj M)) := rfl
-/-- The first target coordinate is the prescribed shifted FE module. -/
-theorem weightedCapMatrixFamily_none (m : ℕ) :
-    weightedCapMatrixFamily D Sc cutoff N i M m none =
-      (SKM.homParityShift (k := k) (D.parity i)).obj
-        ((BalancedInduction.restriction T).obj (BalancedInduction.induced T M)) := rfl
 
 /-- The first unit entry is exactly the given mate in its canonical source coordinate. -/
 theorem weightedUnitMatrixEntry_none (m : ℕ) :
@@ -378,17 +302,5 @@ private theorem total_even {C : Type u} [Category.{u} C] [Preadditive C]
     f.total w ∈ parity (R := k) _ _ 0 := by
   have hz := Superfunctor.app_eq_zero_of_mem h (by decide : (1 : ZMod 2) ≠ 0) w
   simpa only [SuperNatTrans.total, hz, add_zero] using f.app_mem 0 w
-
-theorem weightedUnitMatrixComponent_even (m : ℕ) (w : TruncatedCategory D Sc cutoff N) :
-    weightedUnitMatrixComponent D Sc cutoff N i M m w ∈ parity (R := k) _ _ 0 := by
-  apply OddMath.FiniteSuperspace.assembleColumns_even
-  intro a
-  exact total_even _ (weightedUnitMatrixEntry_mem D Sc cutoff N i M m a) w
-
-theorem weightedCapMatrixComponent_even (m : ℕ) (w : TruncatedCategory D Sc cutoff N) :
-    weightedCapMatrixComponent D Sc cutoff N i M m w ∈ parity (R := k) _ _ 0 := by
-  apply OddMath.FiniteSuperspace.assembleRows_even
-  intro a
-  exact total_even _ (weightedCapMatrixEntry_mem D Sc cutoff N i M m a) w
 
 end OddMath.QuiverHecke.ELVOld

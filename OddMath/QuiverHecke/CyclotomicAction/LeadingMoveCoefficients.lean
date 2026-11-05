@@ -66,44 +66,4 @@ theorem prependWordCoefficients_moveHom_long (i : I) {n : ℕ} (s : Word I n) (m
   exact prependBasis_long_repr_eq_zero_of_low D Sc i s (s ++ [i]) _
     (moveHom_sub_endpointPolynomial_mem_low D Sc i [] s) x hx
 
-/-- Longest prepend coefficients of the prescribed content moving chain
-are exactly those of the assembled finite endpoint-polynomial matrix. -/
-theorem contentMove_long_prependCoefficients (i : I) (n : ℕ) (β : Multiset I) (m : ℕ) :
-    prependCoefficients D Sc i n (contentMove D Sc i n β) (longPrependShuffle n, m) =
-      prependCoefficients D Sc i n (collectedContentMove D Sc i n β)
-        (longPrependShuffle n, m) := by
-  simp only [contentMove, collectedContentMove, map_sum, Finsupp.coe_finsetSum,
-    Finset.sum_apply]
-  apply Finset.sum_congr rfl
-  intro s hs
-  erw [prependCoefficients_single, prependCoefficients_single]
-  exact prependWordCoefficients_moveHom_long D Sc i s m
-
-/-- Explicit finite wordwise coefficient formula. The endpoint polynomial
-inside each summand is the finite signed sum over `MoveChoices`; the
-remaining evaluation is precisely the existing scalar PBW regrouping. -/
-theorem contentMove_long_prependCoefficients_sum (i : I) (n : ℕ)
-    (β : Multiset I) (m : ℕ) :
-    prependCoefficients D Sc i n (contentMove D Sc i n β) (longPrependShuffle n, m) =
-      ∑ s ∈ Finset.univ.filter (fun s : Word I n => wordContent s = β),
-        prependWordCoefficients D Sc i s (appendWord i s)
-          (leadingMoveEndpointPolynomial D Sc i [] s.1 ≫
-            cl D Sc _ _ (cw (leadingMoveWord [] s.1)) (leadingMoveWord_sChain i [] s.1))
-          (longPrependShuffle n, m) := by
-  rw [contentMove_long_prependCoefficients]
-  simp only [collectedContentMove, map_sum, prependCoefficients_single,
-    Finsupp.coe_finsetSum, Finset.sum_apply]
-
-/-- Extraction retains the old parity twist and the corrected degree sign
-when the concrete collected matrix replaces the moving chain. -/
-theorem appendContentMoveLift_extract_collected (a : I → _root_.Polynomial k)
-    (n : ℕ) (β : Multiset I) (i : I)
-    (b : CyclotomicContentCorner D Sc a n β) (m : ℕ) :
-    appendContentRhoExtract D Sc a n β i (appendContentMoveLift D Sc a n β i b) m =
-      (SKM.zsign ℤ (D.parity i * Multiset.sum (Multiset.map D.parity β))) ^ m •
-        (homMatrixTwist D Sc (n + 1) (appendContentParity D a β i)
-          (prependCoefficients D Sc i (n + 1) (collectedContentMove D Sc i (n + 1) β)
-            (longPrependShuffle (n + 1), m)) • b) := by
-  rw [appendContentMoveLift_extract, contentMove_long_prependCoefficients]
-
 end OddMath.QuiverHecke

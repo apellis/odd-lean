@@ -74,16 +74,4 @@ theorem points_spec {l : List I} {a b w : List (Letter I)}
   rw [leftEnds₂_cupPrefix l hR] at hz
   exact onStrand₂_cupPrefix l hR (hq z hz).1 (hq z hz).2
 
-/-- The finite dot-count labeling is a bijection, not merely an injection. -/
-def dotsEquiv {l : List I} {a b w : List (Letter I)}
-    {R : List (TMove (Letter I))} (hR : IsMatching₂ (ups l ++ a) (b ++ w) R) :
-    (MatchingStrand (ups l ++ a) R → ℕ) ≃
-      (MatchingStrand (a ++ dualW w) (matching l b w R) → ℕ) :=
-  Equiv.arrowCongr (strandEquiv hR) (Equiv.refl ℕ)
-
-theorem dotsEquiv_sum {l : List I} {a b w : List (Letter I)}
-    {R : List (TMove (Letter I))} (hR : IsMatching₂ (ups l ++ a) (b ++ w) R)
-    (n : MatchingStrand (ups l ++ a) R → ℕ) :
-    ∑ j, dotsEquiv hR n j = ∑ j, n j := (strandEquiv hR).symm.sum_comp n
-
 end OddMath.SKM.WeakMate

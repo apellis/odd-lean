@@ -177,7 +177,6 @@ theorem oddCorner_ψ (i : I) (hi : D.parity i = 1) {n a : ℕ} (ha : a + 1 < n) 
       List.take_replicate, Diagrams.OddNilHecke.Gen.arity]
     omega
 
-
 /-! ### The projectors -/
 
 open Categorification.NilHecke in

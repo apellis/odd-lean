@@ -105,47 +105,6 @@ theorem append_relation_move_tmul_zero (i : I) (β : Multiset I)
   exact prepend_kernel_tmul_zero D Sc i β a ha n _
     (cyclotomicMk_twist_relation D Sc a ha n _ w x y) _ b
 
-/-- Selecting a source word in the moving-strand sum gives its typed representative. -/
-theorem append_entry_mul_contentMove (i : I) {n : ℕ} (β : Multiset I)
-    (s t : Word I n) (hs : wordContent s = β)
-    (f : wordObj D Sc s ⟶ wordObj D Sc t) :
-    appendAlgebra D Sc i n (FiniteHomMatrix.single t s f) * contentMove D Sc i n β =
-      FiniteHomMatrix.single (appendWord i t) (prependWord i s)
-        (moveHom D Sc i [] s.1 ≫ appendHom D Sc i s t f) := by
-  change appendLinear D Sc i n (FiniteHomMatrix.single t s f) * contentMove D Sc i n β =
-    FiniteHomMatrix.single (appendWord i t) (prependWord i s)
-      (moveHom D Sc i [] s.1 ≫ appendHom D Sc i s t f)
-  rw [appendLinear_single, contentMove, Finset.mul_sum, Finset.sum_eq_single s]
-  · simp
-  · intro w _ hw
-    exact FiniteHomMatrix.single_mul_single_of_ne _ _ _ _
-      (fun h => hw (appendWord_injective i n h.symm)) _ _
-  · simp [hs]
-
-/-- The typed all-prefix relation-killing representative. The morphism `f` may be
-any old crossing prefix, including the empty prefix, or any inhomogeneous old
-morphism. For the repeated-colour step take `s = ν` and `t = i :: ν.dropLast`:
-`f` brings the final old `i` to the first old position. The left generator is
-then precisely `f_i(x₁)`, while the proof kills its transported old relation at
-position two in the balanced target. -/
-theorem prefix_relation_move_tmul_zero (i : I) (β : Multiset I)
-    (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
-    (s t : Word I (n + 1)) (hs : wordContent s = β)
-    (f : wordObj D Sc s ⟶ wordObj D Sc t)
-    (r : Hn D Sc (n + 1 + 1))
-    (b : (qCoefficient D Sc i β a ha n).toSVec) :
-    InductionAlong.Ind.tmul
-      ((r * (cyclotomicGenerator D Sc a (appendWord i t) *
-          FiniteHomMatrix.single (appendWord i t) (prependWord i s)
-            (moveHom D Sc i [] s.1 ≫ appendHom D Sc i s t f))) •
-        InductionAlong.unitGen (prependAlgebra D Sc i (n + 1) :
-          Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))) b = 0 := by
-  have h := append_relation_move_tmul_zero D Sc i β a ha n t 1
-    (FiniteHomMatrix.single t s f) r b
-  rw [one_mul, map_mul, appendAlgebra_generator, mul_assoc,
-    append_entry_mul_contentMove D Sc i β s t hs f] at h
-  exact h
-
 /-- The bare crossing prefix taking the last strand to the first position.
 Its execution order is rightmost crossing first, so algebraically it is
 `τ₁ ⋯ τₙ` on a word of length `n + 1`. -/
@@ -156,25 +115,5 @@ def lastToFirstHom (i : I) : (ν : List I) →
       ((pres D Sc).obj (ob D [j]) ◁ lastToFirstHom i ν) ≫
         cl D Sc (j :: i :: ν) (i :: j :: ν) [.cross 0]
           (by simpa using sChain_crossAt [] ν j i)
-
-/-- The repeated-colour all-prefix identity (K): `f_i(x₁) Tₙ Vₙ₊₁`
-vanishes in the prescribed balanced target, for every finite prefix `ν`.
-There are no restrictions on repetitions or spectator parities; `ν = []`
-is the minimal prefix. -/
-theorem allPrefix_relation_tmul_zero (i : I) (ν : List I)
-    (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a)
-    (r : Hn D Sc (ν.length + 1 + 1))
-    (b : (qCoefficient D Sc i (↑(ν ++ [i]) : Multiset I) a ha ν.length).toSVec) :
-    let s : Word I (ν.length + 1) := ⟨ν ++ [i], by simp⟩
-    let t : Word I (ν.length + 1) := ⟨i :: ν, by simp⟩
-    InductionAlong.Ind.tmul
-      ((r * (cyclotomicGenerator D Sc a (appendWord i t) *
-          FiniteHomMatrix.single (appendWord i t) (prependWord i s)
-            (moveHom D Sc i [] s.1 ≫ appendHom D Sc i s t (lastToFirstHom D Sc i ν)))) •
-        InductionAlong.unitGen (prependAlgebra D Sc i (ν.length + 1) :
-          Hn D Sc (ν.length + 1) →ₙ+* Hn D Sc (ν.length + 1 + 1))) b = 0 := by
-  dsimp only
-  exact prefix_relation_move_tmul_zero D Sc i _ a ha ν.length
-    ⟨ν ++ [i], by simp⟩ ⟨i :: ν, by simp⟩ rfl (lastToFirstHom D Sc i ν) r b
 
 end OddMath.QuiverHecke

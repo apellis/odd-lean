@@ -173,41 +173,6 @@ def ELVProbeCxContentSeparatedAt [Finite I] (i : I) (t : Sector I)
 
 attribute [local irreducible] elvProbeReservoir elvProbeCrossCoeffOf
 
-/-- The chosen Dx bend has a finite series on the whole output functor. -/
-theorem elvProbeDx_content_separated_windows [Finite I]
-    (i : I) (t : Sector I)
-    (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
-    (δ : WeightBlocks D ΛR ((P).muM t))
-    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound) :
-    ∃ N, ELVProbeDxContentSeparatedAt D Sc m cutoff bound ΛP ΛR hP hR i t Z δ hdot N := by
-  let _ := contentBendFactorDot_isIso D Sc m cutoff bound ΛP ΛR hP hR i ((P).muP_preE i t)
-  obtain ⟨n, hn⟩ := elvProbeDxContentOuterDot_isNilpotent D Sc m cutoff bound ΛP ΛR hP hR i t Z δ hdot
-  rcases parity_eq_zero_or_one (D.parity i) with hi | hi
-  · exact ⟨n, probeToReservoirBend_even_separated (P) i t Z out[t,δ]
-      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
-      (elvProbeCrossCoeffOf_isInverse D Sc m cutoff bound ΛP ΛR hP hR hdot) hi n hn⟩
-  · exact ⟨2*n, probeToReservoirBend_odd_separated (P) i t Z out[t,δ]
-      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
-      (elvProbeCrossCoeffOf_isInverse D Sc m cutoff bound ΛP ΛR hP hR hdot) hi n hn⟩
-
-/-- The chosen Cx bend has its finite series in that same Hom category. -/
-theorem elvProbeCx_content_separated_windows [Finite I]
-    (i : I) (t : Sector I) (hb : StepValid (false, i) true t)
-    (hv : StepValid (true, i) false t)
-    (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
-    (δ : WeightBlocks D ΛR ((P).muM t))
-    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound) :
-    ∃ N, ELVProbeCxContentSeparatedAt D Sc m cutoff bound ΛP ΛR hP hR i t hb hv Z δ hdot N := by
-  let _ := contentBendFactorDot_isIso D Sc m cutoff bound ΛP ΛR hP hR i ((P).muP_preF i hb)
-  obtain ⟨n, hn⟩ := elvProbeCxContentOuterDot_isNilpotent D Sc m cutoff bound ΛP ΛR hP hR i t hb hv Z δ hdot
-  rcases parity_eq_zero_or_one (D.parity i) with hi | hi
-  · exact ⟨n, reservoirToProbeBend_even_separated (P) i t hb hv Z out[t,δ]
-      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
-      (elvProbeCrossCoeffOf_isInverse D Sc m cutoff bound ΛP ΛR hP hR hdot) hi n hn⟩
-  · exact ⟨2*n, reservoirToProbeBend_odd_separated (P) i t hb hv Z out[t,δ]
-      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
-      (elvProbeCrossCoeffOf_isInverse D Sc m cutoff bound ΛP ΛR hP hR hdot) hi n hn⟩
-
 /-- A common output-content length above any minimum works on every input. -/
 theorem elvProbe_content_central_separated_windows_above [Finite I]
     (i : I) (t : Sector I) (hb : StepValid (false, i) true t)

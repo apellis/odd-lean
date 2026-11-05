@@ -277,7 +277,6 @@ def shortCross (i j : I) (v t : List I) : ShortTarget D Sc cutoff i j v t →ₗ
   exact BalancedInduction.lift_tensor (affineAppend D Sc cutoff i)
     (quotient D Sc cutoff ⋙ coefficient D Sc cutoff (D.parity i * D.parity j) j v) ⟨t⟩ _ _ ⟨s⟩ c b
 
-
 /-- The square imposes precisely the remaining old output ideal. -/
 theorem shortCross_quotient_square (i j : I) (v t : List I) :
     canonicalAppendTarget D Sc cutoff i v (t ++ [j]) ∘ₗ shortCross D Sc cutoff i j v t =

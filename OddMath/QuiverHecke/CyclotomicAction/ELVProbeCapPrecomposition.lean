@@ -31,21 +31,6 @@ private theorem whiskerRight_total
   change H.map (η.app 0 M) + H.map (η.app 1 M) = H.map (η.app 0 M + η.app 1 M)
   exact (Functor.map_add H.toFunctor).symm
 
-private theorem map_window
-    {k : Type u} [CommRing k] {C R : Type (u+1)} [Category.{u} C] [Category.{u} R]
-    [Preadditive C] [Preadditive R] [Linear k C] [Linear k R]
-    (H : C ⥤ R) [H.Additive] {M S : C} (unit : M ⟶ S) (dot : End S) (cap : S ⟶ M)
-    (a : ℕ) (q : Prop) [Decidable q]
-    (h : (unit ≫ dot ^ a) ≫ cap = if q then 𝟙 M else 0) :
-    (H.map unit ≫ (H.mapEnd S dot) ^ a) ≫ H.map cap =
-      if q then 𝟙 (H.obj M) else 0 := by
-  rw [← map_pow (H.mapEnd S)]
-  change (H.map unit ≫ H.map (dot ^ a)) ≫ H.map cap = _
-  rw [← H.map_comp, ← H.map_comp, h]
-  split_ifs
-  · exact H.map_id M
-  · exact H.map_zero M M
-
 private theorem restrictedDot_supernatural
     {k C A : Type u} [CommRing k] [Category.{u} C] [Category.{u} A]
     [Preadditive C] [Linear k C] [Supercategory k C]
@@ -119,13 +104,6 @@ def preCap (R : PiSCat.{u,u,u+1} k) (i : I) (hP : 0 < cut i) :
       (SKM.homPre (k := k) (c := R) (𝟙 (modulePiCategory D Sc m))) :=
   SKM.homPreTransform (k := k) (B := PiSCat.{u,u,u+1} k) (capCell D Sc m i hP) (capCell_mem D Sc m i hP)
 
-/-- Evaluation on the regular probe is exactly the reservoir image of the
-specified native cap, without an unsigned replacement or new cap scalar. -/
-theorem preCap_total (R : PiSCat.{u,u,u+1} k) (i : I) (hP : 0 < cut i)
-    (H : modulePiCategory D Sc m ⟶ R) :
-    ((preCap D Sc m R i hP).total H).total N = H.map (cap D Sc m i hP) := by
-  rw [preCap, homPreTransform_total, whiskerRight_total, capCell_total]
-
 /-- The actual restricted induction dot as an input-supernatural 2-cell. -/
 def dotCell (i : I) : End (appendRestrict D Sc m i) :=
   (restrictedDot_supernatural (K i)
@@ -167,17 +145,6 @@ theorem preDotEnd_eq (R : PiSCat.{u,u,u+1} k) (i : I)
     (H : modulePiCategory D Sc m ⟶ R) :
     preDotEnd D Sc m R i H = H.map (moduleDot D Sc m i) :=
   preDot_total D Sc m R i H
-
-/-- The cap and dot coming from the actual Hom precomposition transformations
-retain the normalized window at the regular probe. -/
-theorem preCap_dot_unit (R : PiSCat.{u,u,u+1} k) (i : I) (hP : 0 < cut i)
-    (H : modulePiCategory D Sc m ⟶ R) (a : ℕ) (ha : a < cut i) :
-    (H.map ((adjunction (K i)).unit.app N) ≫
-      preDotEnd D Sc m R i H ^ a) ≫
-      ((preCap D Sc m R i hP).total H).total N =
-      if a + 1 = cut i then 𝟙 (H.obj N) else 0 := by
-  rw [preDotEnd_eq, preCap_total]
-  exact map_window (k := k) H.toFunctor _ _ _ a _ (module_cap_dot_unit D Sc m i hP a ha)
 
 /-- The polynomial is preserved on the evaluated, actual precomposition
 dot in the same Hom carrier as the prescribed cap. -/

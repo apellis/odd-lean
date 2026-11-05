@@ -54,24 +54,11 @@ theorem vacuumBendWordSum_odd (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1)
     ← Finset.sum_neg_distrib]
   apply Finset.sum_congr rfl
   intro r hr
-  rw [vacuumBendMonomial_native D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H hP hi (r + 1) r]
+  rw [vacuumBendMonomial_eq D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H hP hi (r + 1) r]
   have hs : -((koszulSign (D.parity i) (D.parity i)) ^ (r + 1)) = (-1 : ℤ) ^ r := by
     rw [hi, odd_coefficient]
   rw [← neg_zsmul, hs]
   congr 1
-
-/-- Homogeneous symmetrizable reservoir parameters supply a positive
-finite series length for every full tensor input functor. -/
-theorem vacuumBendWordSum_odd_exists (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
-    (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1) :
-    ∃ n : ℕ, 0 < n ∧
-      vacuumBendWordSum D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H (2 * n) ≫
-        (vacuumPostTarget D Sc m cutoff bound ΛP ΛR hcP hcR i edgeR β H).hom =
-      (vacuumPreBlockSourceIso D Sc m cutoff bound ΛP ΛR hcP i edgeP H).hom ≫
-        ProbeVacuumCap.evaluatedMixedBend D Sc m cutoff bound i hP (vacuumBendBlock D Sc m cutoff bound ΛR H) := by
-  obtain ⟨n, hn, hp⟩ := ProbeVacuumCap.diagonalPostDot_pow_zero D Sc m cutoff bound
-    (truncatedAppendDotNilpotent D Sc cutoff sy hc bound) i
-  exact ⟨n, hn, vacuumBendWordSum_odd D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H hP hi n (hp (vacuumBendBlock D Sc m cutoff bound ΛR H))⟩
 
 /-- Even colour: at any given native reservoir nilpotence exponent `n`, the actual
 finite pre-cap/post-unit word sum of length `n` is exactly the evaluated even A6 bend. -/
@@ -88,7 +75,7 @@ theorem vacuumBendWordSum_even (hP : 0 < probeCutoff D m i) (hi : D.parity i = 0
     ← Finset.sum_neg_distrib]
   apply Finset.sum_congr rfl
   intro r hr
-  rw [vacuumBendMonomial_native_even D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H hP hi (r + 1) r]
+  rw [vacuumBendMonomial_even D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H hP hi (r + 1) r]
   have hs : -((koszulSign (D.parity i) (D.parity i)) ^ (r + 1)) = (-1 : ℤ) := by
     rw [hi, koszulSign_zero_left, one_pow]
   rw [← neg_zsmul, hs]

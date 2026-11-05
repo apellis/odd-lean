@@ -377,29 +377,6 @@ instance elvQuotientFunctor_super (cutoff : I → ℕ) :
     IsSuperfunctor k (elvQuotientFunctor D Sc cutoff) where
   map_mem := elvQuotientMap_mem D Sc cutoff
 
-/-- The quotient category has exactly the previously constructed quotient tensor Homs. -/
-def elvQuotientHomEquiv (cutoff : I → ℕ) (t t' : List I) :
-    (elvQuotientObj D Sc cutoff (coefficientObj D Sc t) ⟶
-      elvQuotientObj D Sc cutoff (coefficientObj D Sc t')) ≃ₗ[k]
-      ELVCoefficientHom D Sc cutoff t t' := LinearEquiv.refl k _
-
-/-- The earlier tensor quotient is exactly the map of the categorical quotient functor. -/
-theorem elvQuotientMap_eq (cutoff : I → ℕ) (t t' : List I) :
-    (elvQuotientHomEquiv D Sc cutoff t t').toLinearMap.comp
-      (elvQuotientMap D Sc cutoff (coefficientObj D Sc t) (coefficientObj D Sc t')) =
-      elvHomQuotient D Sc cutoff t t' := by
-  ext x
-  obtain ⟨x, rfl⟩ := (sourceTensorEquiv D Sc t t').surjective x
-  induction x using TensorProduct.inductionOn with
-  | add x y hx hy => simp only [map_add, hx, hy]
-  | tmul a f =>
-    change SKM.SYM.elvModelQuotient D cutoff (SKM.SYM.polynomialExteriorEquiv D k a) ⊗ₜ[k] f =
-      elvHomQuotient D Sc cutoff t t' (sourceCoefficientHom D Sc a f)
-    rw [elvHomQuotient_source]
-    change SKM.SYM.elvCoefficientQuotient D cutoff
-      ((SKM.SYM.polynomialExteriorEquiv D k).symm (SKM.SYM.polynomialExteriorEquiv D k a)) ⊗ₜ[k] f = _
-    rw [AlgEquiv.symm_apply_apply]
-
 /-- Full source coefficients map to their exact ELV quotient classes. -/
 theorem elvQuotientMap_source (cutoff : I → ℕ) {t t' : List I}
     (a : SKM.SYM D k) (f : (pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D t')) :
@@ -443,17 +420,5 @@ theorem elvQuotientMap_kills_span (cutoff : I → ℕ) (t t' : List I) :
   change elvQuotientMap D Sc cutoff _ _ (a ≫ sourceCoefficientHom D Sc c (𝟙 _) ≫ b) = 0
   rw [elvQuotientMap_comp, elvQuotientMap_comp, elvQuotientMap_kills D Sc hc,
     Limits.zero_comp, Limits.comp_zero]
-
-/-- In the quotient category an odd coefficient anticommutes with an odd affine morphism. -/
-theorem elvQuotient_odd_comp_odd (cutoff : I → ℕ) {t t' t'' : List I}
-    (i : {i : I // D.parity i = 1})
-    (f : (pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D t'))
-    {g : (pres D Sc).obj (ob D t') ⟶ (pres D Sc).obj (ob D t'')}
-    (hg : g ∈ parity (R := k) _ _ 1) :
-    (elvQuotientFunctor D Sc cutoff).map (sourceCoefficientHom D Sc (SKM.SYM.delta D k i) f) ≫
-      (elvQuotientFunctor D Sc cutoff).map (sourceCoefficientHom D Sc 1 g) =
-      -(elvQuotientFunctor D Sc cutoff).map
-        (sourceCoefficientHom D Sc (SKM.SYM.delta D k i) (f ≫ g)) := by
-  rw [← Functor.map_comp, odd_coefficient_comp_odd D Sc i f hg, Functor.map_neg]
 
 end OddMath.QuiverHecke

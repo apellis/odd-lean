@@ -93,24 +93,4 @@ def globalBlockCounit : (globalBlockRestriction D Sc a ha i n β).toFunctor ⋙
     ((globalBlockCounit D Sc a ha i n β).app M).hom =
       (cyclotomicSuperCounit D Sc i a ha n).app M.obj := rfl
 
-/-- The induction–restriction adjunction restricted to full content blocks. -/
-def globalBlockAdjunction :
-    (globalBlockInduction D Sc a ha i n β).toFunctor ⊣
-      (globalBlockRestriction D Sc a ha i n β).toFunctor where
-  unit := globalBlockUnit D Sc a ha i n β
-  counit := globalBlockCounit D Sc a ha i n β
-  left_triangle_components M :=
-    InducedCategory.hom_ext (superInduction_triangle D Sc i a ha n M.obj)
-  right_triangle_components M :=
-    InducedCategory.hom_ext (superRestriction_triangle D Sc i a ha n M.obj)
-
-theorem globalBlockUnit_mem (M : CyclotomicContentModules D Sc a ha n β) :
-    (globalBlockUnit D Sc a ha i n β).app M ∈ parity (R := k) _ _ 0 :=
-  superUnitComponent_mem D Sc i a ha n M.obj
-
-theorem globalBlockCounit_mem
-    (M : CyclotomicContentModules D Sc a ha (n + 1) (({i} : Multiset I) + β)) :
-    (globalBlockCounit D Sc a ha i n β).app M ∈ parity (R := k) _ _ 0 :=
-  superCounitComponent_mem D Sc i a ha n M.obj
-
 end OddMath.QuiverHecke.CyclotomicAction

@@ -1,5 +1,10 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightPairInduction
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvaluatedDistinctCrossing
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCanonicalContent
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentDistinctMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVRectangularMateIso
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendToAdjunction
+import OddMath.QuiverHecke.CyclotomicAction.ELVPiSCatRectangularMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCrossMate
 
 /-! # Positive distinct crossings on OLD probe weight spaces
 
@@ -164,7 +169,7 @@ theorem probeOldBlockDistinctCross_mem (β : WeightBlocks D Λ x₀) (ε : Weigh
         (hc β ε hε)).toSuperNatTrans_isHomogeneous)
 
 /-- Each parity component retains the literal OLD positive rectangular crossing. -/
-theorem probeOldBlockDistinctCross_native_app (β : WeightBlocks D Λ x₀)
+theorem probeOldBlockDistinctCross_app (β : WeightBlocks D Λ x₀)
     (ε : WeightBlocks D Λ xu) (hε : blockSucc₂ D i j Λ h₁ h₂ β = ε)
     (p : ZMod 2) (N : ProbeCanonicalModules D Sc m β.1) :
     ((probeOldBlockDistinctCross D Sc m i j Λ h₁ h₂ h₃ h₄ β ε hε).app p N).hom =
@@ -231,13 +236,6 @@ theorem probeOldWeightDistinctCrossComponent_of (p : ZMod 2)
     rw [probeOldWeightDistinctCrossVia_eq D Sc m i j Λ h₁ h₂ h₃ h₄ hchoice.choose β ε hchoice.choose_spec hε]
   · rename_i hn
     exact absurd (⟨β, hε⟩ : ∃ β, blockSucc₂ D i j Λ h₁ h₂ β = ε) hn
-
-/-- An absent double predecessor has the prescribed zero crossing. -/
-theorem probeOldWeightDistinctCrossComponent_absent (p : ZMod 2)
-    (N : ProbeOldWeightProduct D Sc m Λ x₀) (ε : WeightBlocks D Λ xu)
-    (hε : ¬ ∃ β, blockSucc₂ D i j Λ h₁ h₂ β = ε) :
-    probeOldWeightDistinctCrossComponent D Sc m i j Λ h₁ h₂ h₃ h₄ p N ε = 0 := by
-  simp only [probeOldWeightDistinctCrossComponent, dite_eq_right hε]
 
 theorem probeOldWeightDistinctCrossComponent_mem (p : ZMod 2)
     (N : ProbeOldWeightProduct D Sc m Λ x₀) (ε : WeightBlocks D Λ xu) :

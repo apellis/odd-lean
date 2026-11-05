@@ -180,18 +180,6 @@ def dottedOutputQuotientRow (p : ZMod 2) (i : I) (v : List I) (m : ℕ)
     dottedOutputQuotientRow D Sc cutoff p i v m b ((ideal D Sc cutoff v v).mkQ g) =
       dottedOutputRow D Sc cutoff p i v m b g := rfl
 
-/-- Two-sided comparison, with arbitrary full old quotients on both sides. -/
-theorem dottedOutputQuotientRow_comparison (p : ZMod 2) (i : I) (v : List I)
-    (m n : ℕ) (b c : Old D Sc cutoff v v) :
-    dottedOutputQuotientRow D Sc cutoff p i v m b c n =
-    outputLongCoordinate D Sc cutoff p i v n
-      (pair D Sc cutoff p i (movingPower D Sc cutoff i v m ≫ bareUFull D Sc cutoff i v)
-        (oldComp D Sc cutoff v v v b
-          (oldTwist D Sc cutoff
-            (p + ((m : ZMod 2) * D.parity i + D.parity i * wordSumParity D v)) v v c))) := by
-  obtain ⟨g, rfl⟩ := (ideal D Sc cutoff v v).mkQ_surjective c
-  exact dotted_bareU_pair_coordinate D Sc cutoff p i v m n b g
-
 theorem tail_long_zero (i : I) (v : List I) :
     HEq (prependTail D Sc (longOutputIndex i v 0)) (OutputOldComposite.bareU D Sc i v) := by
   have transport {s s' t : List I} (e : s = s') {gs gs' : List PG} (eg : gs = gs')
@@ -389,30 +377,6 @@ def outputOldExtraction (p : ZMod 2) (i : I) (v : List I)
       outputLongExtraction D Sc cutoff p i v
         (act D Sc cutoff i (appendInsert D Sc cutoff i v v g) z) := rfl
 
-theorem outputOldExtraction_coordinate (p : ZMod 2) (i : I) (v : List I)
-    (z : Target D Sc cutoff i v (v ++ [i])) (n : ℕ) (c : Old D Sc cutoff v v) :
-    outputOldExtraction D Sc cutoff p i v z c n =
-      oldComp D Sc cutoff v v v (outputLongCoordinate D Sc cutoff p i v n z)
-        (oldTwist D Sc cutoff
-          (p + D.parity i * wordSumParity D v + (n : ZMod 2) * D.parity i) v v c) := by
-  obtain ⟨g, rfl⟩ := (ideal D Sc cutoff v v).mkQ_surjective c
-  rw [outputOldExtraction_mk, outputLongExtraction_apply]
-  simpa only [add_comm, add_left_comm, add_assoc] using
-    outputLongCoordinate_outputOld D Sc cutoff p i v z n g
-
-/-- Two-sided balanced output-order comparison, all degrees and both full old quotients. -/
-theorem outputLongCoordinate_twoSided_balanced (p : ZMod 2) (i : I) (v : List I) (n : ℕ)
-    (h : hom D Sc cutoff (i :: v) (v ++ [i])) (b c : Old D Sc cutoff v v) :
-    outputOldExtraction D Sc cutoff p i v
-      (balancedForward D Sc cutoff p i v (v ++ [i]) (balancedTmul D Sc cutoff p i h b)) c n =
-    oldComp D Sc cutoff v v v
-      (oldComp D Sc cutoff v v v b
-        (outputLongCoordinate D Sc cutoff p i v n (projection D Sc cutoff i v (v ++ [i]) h)))
-      (oldTwist D Sc cutoff
-        (p + D.parity i * wordSumParity D v + (n : ZMod 2) * D.parity i) v v c) := by
-  rw [outputOldExtraction_coordinate, outputLongCoordinate_balanced]
-
-
 end OddMath.QuiverHecke.ELVOld
 
 noncomputable section
@@ -543,19 +507,6 @@ theorem canonical_output_monomial (p : ZMod 2) (i : I) (v : List I) (m n : ℕ)
         (p + D.parity i * wordSumParity D v) + (m : ZMod 2) * D.parity i := by abel
     rw [hpar, twist_add, twist_twist]
   · simp only [ite_eq_right hn, map_zero, LinearMap.zero_apply]
-
-theorem canonical_output_balanced (p : ZMod 2) (i : I) (v : List I) (m n : ℕ)
-    (b c : Old D Sc cutoff v v) (g : hom D Sc cutoff v v)
-    (hg : (ideal D Sc cutoff v v).mkQ g = c) :
-    outputLongCoordinate D Sc cutoff p i v n
-      (balancedForward D Sc cutoff p i v (v ++ [i])
-        (balancedTmul D Sc cutoff p i
-          ((bareUFull D Sc cutoff i v ≫ appendInsert D Sc cutoff i v v g) ≫
-            appendMovingPower D Sc cutoff i v m) b)) =
-      if n = m then oldComp D Sc cutoff v v v b
-        (oldTwist D Sc cutoff (p + D.parity i * wordSumParity D v) v v c) else 0 := by
-  rw [balancedForward_tmul]
-  exact canonical_output_monomial D Sc cutoff p i v m n b c g hg
 
 theorem canonical_output_extraction (p : ZMod 2) (i : I) (v : List I) (m : ℕ)
     (b c : Old D Sc cutoff v v) (g : hom D Sc cutoff v v)

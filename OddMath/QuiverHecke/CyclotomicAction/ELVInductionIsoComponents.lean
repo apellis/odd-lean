@@ -55,8 +55,4 @@ theorem coendIsoLinear_bijective : Function.Bijective (coendIsoLinear K H Q P N 
   have h := svecIso_bijective ((evaluationFunctor t).mapIso e)
   exact h
 
-/-- The raw coend map retains exactly the selected total component. -/
-theorem coendIsoLinear_apply (x : Obj K P.toFunctor t) :
-    coendIsoLinear K H Q P N e t x = e.hom.total t x := rfl
-
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

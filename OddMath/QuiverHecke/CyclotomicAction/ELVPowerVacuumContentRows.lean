@@ -148,16 +148,5 @@ theorem contentPowerVacuumCap_eq_inverseRow (hN : 0 < cutoff i)
   exact hc.symm.trans
     (contentVacuumCoefficientMap_eq_inverseRow D Sc cutoff bound i M₀ hh r J)
 
-/-- Decoding the native inverse cap gives exactly the existing A/T-valued
-weighted lambda, on every native F/E vector. -/
-theorem contentPowerVacuumCap_functional (hN : 0 < cutoff i)
-    (z : (nativeFE).obj (⟨⟨[]⟩, rfl⟩ : ContentCategory D Sc cutoff bound 0)) :
-    (weightedEmptyEquiv D Sc cutoff L).symm
-      ((contentPowerVacuumCap D Sc cutoff i L hN).total ⟨⟨[]⟩, rfl⟩ z) =
-    weightedFunctional D Sc cutoff L i hN ((C₀).hom.total ⟨⟨[]⟩, rfl⟩ z) := by
-  rw [contentPowerVacuumCap, Superfunctor.comp_total]
-  exact (weightedFunctional_coefficientCap D Sc cutoff i L hN _).symm
-
-
 end PowerVacuumCoefficient
 end OddMath.QuiverHecke.ELVOld

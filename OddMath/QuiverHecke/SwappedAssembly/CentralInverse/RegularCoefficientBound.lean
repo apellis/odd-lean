@@ -45,24 +45,6 @@ theorem regular_apply (f : 𝟙 A.toSuperAlg ⟶ 𝟙 A.toSuperAlg) (x : A) :
   change f.1 ((1 : A) * x) = (show A from f.1 (1 : A)) * x at h
   simpa only [one_mul] using h
 
-/-- Homogeneity of a closed coefficient is detected at `1`, so it can be checked
-inside the reservoir algebra rather than on all vectors of all modules. -/
-theorem mem_coeffGrading_iff (n : ℤ) (f : 𝟙 A.toSuperAlg ⟶ 𝟙 A.toSuperAlg) :
-    f ∈ (coeffGrading A).deg n ↔ (show A from f.1 (1 : A)) ∈ A.degree n := by
-  change f ∈ GradedSuperBimodule.degHom (GradedSuperBimodule.regular A.gsa)
-    (GradedSuperBimodule.regular A.gsa) n ↔ _
-  rw [GradedSuperBimodule.mem_degHom_iff]
-  constructor
-  · intro hf
-    have hh := hf 0 (1 : A) (SetLike.GradedOne.one_mem : (1 : A) ∈ A.degree 0)
-    change (show A from f.1 (1 : A)) ∈ A.degree (0 + n) at hh
-    simpa only [zero_add] using hh
-  · intro hf m x hx
-    change (show A from f.1 x) ∈ A.degree (m + n)
-    rw [regular_apply A f x]
-    rw [add_comm]
-    exact SetLike.GradedMul.mul_mem hf hx
-
 /-- Evaluation at `1` is faithful on the closed reservoir coefficients. -/
 theorem regular_eq_zero (f : 𝟙 A.toSuperAlg ⟶ 𝟙 A.toSuperAlg)
     (hf : f.1 (1 : A) = 0) : f = 0 := by

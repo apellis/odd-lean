@@ -82,7 +82,6 @@ theorem curlRList_eq_sigma (i : I) (μ : X) :
   rw [E1, E2]
   exact E3.symm
 
-
 /-- The cup `η` with `n` dots on its upward leg on the right of an upward strand, then the cap `ε`
 on the left: `n` dots on the strand (zigzag). -/
 theorem etaL_capR (i : I) (μ : X) (n : ℕ) :
@@ -124,7 +123,6 @@ theorem curlR_eq (i : I) (μ : X) :
   rw [map_smul, Linear.smul_comp, plcL_comp_of_mem μ [up i] [] (bubL_mem cs i _ _)
     (etaL_mem i _ n), Category.assoc, etaL_capR]
   rfl
-
 
 /-! ## (5.20), (5.21) -/
 
@@ -201,7 +199,6 @@ theorem reta_epsL (i : I) (μ : X) (s : ℕ) :
     cl D Sc μ [up i, up i, dn i] [up i] ((epsL i s).map (whL [up i] []))
   congr 2
   simp [epsL, dotsL, whL]
-
 
 /-- **Brundan–Ellis, (5.21)**, as a sum over `r < n + max(-⟨hᵢ,λ⟩, 0) + 1`: the right curl with `n`
 dots on the loop before the crossing is `-∑_r (-1)^{|i|(r+1)}` (the counterclockwise bubble with
@@ -282,7 +279,6 @@ theorem eq_5_21' (i : I) (μ : X) (n : ℕ) :
       generalize D.parity i = a; generalize (x : ZMod 2) = y; generalize (n : ZMod 2) = z
       revert a y z; decide
     · congr 3; push_cast; ring
-
 
 /-- **Brundan–Ellis, (5.20)**, as a sum over `r < n + max(-⟨hᵢ,λ⟩, 0) + 1`: the right curl with `n`
 dots on the loop after the crossing is `-∑_r (-1)^{|i|(⟨hᵢ,λ⟩r+1)}` (`r` dots on the strand) then
@@ -385,7 +381,6 @@ theorem eq_5_20' (i : I) (μ : X) (n : ℕ) :
       generalize (n : ZMod 2) = z; generalize ((D.h i (wt D μ []) : ℤ) : ZMod 2) = w
       revert a y z w; decide
     · congr 3; push_cast; ring
-
 
 /-! ## (5.18)–(5.21) as printed -/
 

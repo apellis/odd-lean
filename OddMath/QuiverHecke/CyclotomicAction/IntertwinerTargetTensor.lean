@@ -165,44 +165,9 @@ def contentTargetEquiv : contentTargetTensor D Sc i β a ha n ≃ₗ[Hn D Sc (n 
   map_add' x y := Subtype.ext (map_add _ x y)
   map_smul' r x := Subtype.ext (map_smul _ r x)
 
-/-- The coefficient cut retains the canonical parity-shift insertion. -/
-theorem qContentCoefficientCut_insert (b : CyclotomicAlgebra D Sc a n) :
-    (qContentCoefficientCut D Sc i β a ha n (qCoefficientInsert D Sc i β a ha n b)).1 =
-      qCoefficientInsert D Sc i β a ha n (b * cyclotomicContentIdempotent D Sc a n β) :=
-  (qCoefficientInsert_content D Sc i β a ha n b).symm
-
-/-- Inclusion of a cut representative is the prescribed fixed-content target. -/
-theorem contentTargetEquiv_cut_tmul
-    (x : InductionAlong.Corner (prependAlgebra D Sc i (n + 1) :
-      Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1)))
-    (b : CyclotomicAlgebra D Sc a n) :
-    contentTargetEquiv D Sc i β a ha n
-      (InductionAlong.Ind.tmul (ContentTensor.cutCorner _ _ _ x)
-        (qContentCoefficientCut D Sc i β a ha n (qCoefficientInsert D Sc i β a ha n b))) =
-      targetContentTensor D Sc i β a ha n x b := by
-  apply Subtype.ext
-  exact (contentTargetForward_backward D Sc i β a ha n
-    (InductionAlong.Ind.tmul x (qCoefficientInsert D Sc i β a ha n b))).trans
-      (targetContent_project_tmul D Sc i β a ha n x b)
-
 /-- Q between the separately defined tensors over the unital content algebra. -/
 def contentTensorShiftedQ : contentSourceTensor D Sc i β a n →ₗ[Hn D Sc (n + 1 + 1)]
     contentTargetTensor D Sc i β a ha n :=
   (contentTargetEquiv D Sc i β a ha n).symm.toLinearMap.comp (contentTensorQ D Sc i β a n ha)
-
-/-- The prescribed Q formula uses cuts of the moving strand and the canonical shift. -/
-theorem contentTensorShiftedQ_representative
-    (x : InductionAlong.Corner (appendAlgebra D Sc i (n + 1) :
-      Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1)))
-    (b : CyclotomicAlgebra D Sc a n) :
-    contentTensorShiftedQ D Sc i β a ha n (contentSourceRepresentative D Sc i β a n x b) =
-      InductionAlong.Ind.tmul
-        (ContentTensor.cutCorner _ _ _ (qPrependCorner D Sc i (n + 1) β
-          (InductionAlong.cornerMul (contentMove_intertwines D Sc i (n + 1) β) x)))
-        (qContentCoefficientCut D Sc i β a ha n (qCoefficientInsert D Sc i β a ha n b)) := by
-  change contentTargetBackward D Sc i β a ha n
-    (contentTensorQ D Sc i β a n ha (contentSourceRepresentative D Sc i β a n x b)).1 = _
-  rw [contentTensorQ_representative]
-  rfl
 
 end OddMath.QuiverHecke

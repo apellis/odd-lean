@@ -28,29 +28,6 @@ theorem unitColumnUnshift_apply (r : Fin m) (x : unitColumnSourceSpace p M m w) 
     unitColumnUnshift M w p m r x =
       ((SKM.homParityShiftDatum (k := k) (r.val • p)).iso M).hom.total w (x r) := rfl
 
-private theorem inverseRow_total_mem {F G : Superfunctor k C (SVec k)}
-    {f : F ⟶ G} {q : ZMod 2} (hf : f ∈ parity (R := k) _ _ q) (t : C) :
-    f.total t ∈ parity (R := k) _ _ q := by
-  rcases parity_eq_zero_or_one q with rfl | rfl
-  · have h : f.total t = f.app 0 t := by
-      rw [SuperNatTrans.total, Superfunctor.app_eq_zero_of_mem hf (q := 1) (by decide), add_zero]
-    rw [h]
-    exact f.app_mem 0 t
-  · have h : f.total t = f.app 1 t := by
-      rw [SuperNatTrans.total, Superfunctor.app_eq_zero_of_mem hf (q := 0) (by decide), zero_add]
-    rw [h]
-    exact f.app_mem 1 t
-
-/-- The original source unshift gives the specified row parity r*p. -/
-theorem unitColumnUnshift_mem (r : Fin m) :
-    unitColumnUnshift M w p m r ∈ parity (R := k) _ _ (r.val • p) := by
-  apply SVec.mem_parityHom_of_apply_mem
-  intro q x hx
-  have hs := inverseRow_total_mem
-    ((SKM.homParityShiftDatum (k := k) (r.val • p)).hom_mem M) w
-  have hxr := (OddMath.FiniteSuperspace.mem_product_part _ q x).mp hx r
-  exact SVec.apply_mem_part hs hxr
-
 /-- A specified inverse coefficient row, with exactly its canonical unshift. -/
 def unitColumnInverseRow {W : SVec k} (e : unitColumnSourceSpace p M m w ≅ W) (r : Fin m) :
     W ⟶ M.obj w := e.inv ≫ unitColumnUnshift M w p m r
@@ -59,12 +36,6 @@ theorem unitColumnInverseRow_apply {W : SVec k} (e : unitColumnSourceSpace p M m
     (r : Fin m) (x : W) :
     unitColumnInverseRow M w p m e r x =
       ((SKM.homParityShiftDatum (k := k) (r.val • p)).iso M).hom.total w (e.inv x r) := rfl
-
-/-- Removing the source shift from an even matrix inverse gives degree r*p. -/
-theorem unitColumnInverseRow_mem {W : SVec k} (e : unitColumnSourceSpace p M m w ≅ W)
-    (he : e.inv ∈ parity (R := k) _ _ 0) (r : Fin m) :
-    unitColumnInverseRow M w p m e r ∈ parity (R := k) _ _ (r.val • p) := by
-  simpa only [unitColumnInverseRow, zero_add] using comp_mem he (unitColumnUnshift_mem M w p m r)
 
 private theorem unitColumnInverseRow_linear {W : SVec k}
     (e : unitColumnSourceSpace p M m w ≅ W) (r : Fin m) :

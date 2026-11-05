@@ -25,11 +25,6 @@ def productIso (e : ∀ a, V a ≅ W a) : product V ≅ product W where
     rw [← productMap_comp]
     simp only [Iso.inv_hom_id, productMap_id]
 
-theorem productIso_hom_mem (e : ∀ a, V a ≅ W a)
-    (he : ∀ a, (e a).hom ∈ parity (R := k) _ _ 0) :
-    (productIso e).hom ∈ parity (R := k) _ _ 0 :=
-  productMap_mem _ he
-
 variable {A : Type w} [Category A]
 
 /-- Pointwise products of module-valued functors, acting on both map parities. -/

@@ -64,19 +64,6 @@ private theorem restriction_total
     {F G : Superfunctor k A (SVec k)} (f : F ⟶ G) (t : C) :
     ((restriction Q).map f).total t = f.total (Q.obj t) := rfl
 
-private theorem iso_inv_hom_apply
-    {k : Type u} [CommRing k] {V W : SVec k} (e : V ≅ W) (v : V) :
-    e.inv (e.hom v) = v := by
-  have h := congrArg (fun f : V ⟶ V => f v) e.hom_inv_id
-  simpa only [SVec.comp_apply, SVec.id_apply] using h
-
-private theorem moduleIso_hom_inv_total
-    {k C : Type u} [CommRing k] [Category.{u} C]
-    [Preadditive C] [Linear k C] [Supercategory k C]
-    {F G : Superfunctor k C (SVec k)} (e : F ≅ G) (t : C) (v : G.obj t) :
-    e.hom.total t (e.inv.total t v) = v :=
-  (moduleIsoLinearEquiv e t).apply_symm_apply v
-
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
   (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
@@ -133,32 +120,6 @@ theorem contentUnitCoefficientMap_total (i : I) (ν : List I)
     coordinateProjection_total, contentUnitMatrixIso_inv_total, SVec.comp_apply]
   rfl
 
-
-/-- Every coefficient component is surjective onto its original module
-value, since the prescribed matrix and source unshift are isomorphisms. -/
-theorem contentUnitCoefficientMap_total_surjective (i : I) (ν : List I)
-    (hh : 0 ≤ contentCrossingHeight D cutoff i (ν : Multiset I))
-    (r : Fin (contentUnitCount D cutoff i (ν : Multiset I)))
-    (t : OldContentCategory D Sc cutoff ν) :
-    Function.Surjective ((contentUnitCoefficientMap D Sc cutoff M i ν hh r).total t) := by
-  classical
-  intro v
-  let e := contentUnitMatrixComponentIso D Sc cutoff M i ν hh t
-  let es := (SKM.homParityShiftDatum (k := k) (r.val • D.parity i)).iso M
-  let b : (unitMatrixFamily D Sc cutoff i M
-      (contentUnitCount D cutoff i (ν : Multiset I)) (some r)).obj t.obj := es.inv.total t.obj v
-  let x : unitMatrixSourceSpace D Sc cutoff i M
-      (contentUnitCount D cutoff i (ν : Multiset I)) t.obj := Pi.single (some r) b
-  refine ⟨e.hom x, ?_⟩
-  rw [contentUnitCoefficientMap_total]
-  change es.hom.total t.obj ((e.inv (e.hom x)) (some r)) = v
-  rw [iso_inv_hom_apply]
-  change es.hom.total t.obj ((Pi.single (some r) b :
-    (a : Option (Fin (contentUnitCount D cutoff i (ν : Multiset I)))) →
-      (unitMatrixFamily D Sc cutoff i M _ a).obj t.obj) (some r)) = v
-  rw [Pi.single_eq_same]
-  exact moduleIso_hom_inv_total es t.obj v
-
 /-- At the empty word this module map is precisely the previously
 specified coefficient of the original all-old inverse matrix. -/
 theorem contentUnitCoefficientMap_vacuum_total (i : I)
@@ -176,6 +137,5 @@ theorem contentUnitCoefficientMap_vacuum_total (i : I)
     rw [contentUnitMatrixComponentIso_hom, moduleUnitMatrixIso_hom]
   rw [he]
   rfl
-
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

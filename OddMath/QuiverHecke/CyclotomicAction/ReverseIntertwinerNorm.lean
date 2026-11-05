@@ -65,13 +65,6 @@ theorem reverseMoveHom_comp_moveHom_eq_endpointNorm_nil (i : I) (l : List I) :
       endpointNorm D Sc i l [] := by
   simpa using reverseMoveHom_comp_moveHom_nil D Sc i l
 
-/-- The one-letter chain produces the independently defined endpoint polynomial. -/
-theorem reverseMoveHom_comp_moveHom_eq_endpointNorm_singleton (i j : I) :
-    reverseMoveHom D Sc i [] [j] ≫ moveHom D Sc i [] [j] =
-      endpointNorm D Sc i [] [j] := by
-  rw [reverseMoveHom_comp_moveHom_singleton]
-  simpa [endpointNorm, endpointNormAux] using (endpointNormFactor_local D Sc [] [] j i).symm
-
 private theorem norm_comp_sub {C : Type*} [Category C] [Preadditive C]
     {A B : C} (g : A ⟶ B) (a b : End B) :
     g ≫ (a - b : End B) = g ≫ a - g ≫ b := Preadditive.comp_sub _ _ _

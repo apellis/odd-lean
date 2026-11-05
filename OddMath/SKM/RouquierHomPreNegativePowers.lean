@@ -74,21 +74,6 @@ def homPreNegativeCap (n : ℕ) (Z : homWeightSector T.obj W nuP muM) :
   (homPreDotInverse T W i muM h ((homContentPreF T W i muM h).obj Z) ^ n) ≫
     (homContentPreAdjunction T W T.leftAdjoints i muM h).counit.app Z
 
-/-- Negative dotted cups retain signed naturality on arbitrary homogeneous Hom maps. -/
-theorem homPreNegativeCup_supernatural (n : ℕ) :
-    IsSupernatural k (n * D.parity i)
-      (F := 𝟭 (homWeightSector T.obj W muP muM))
-      (G := homContentPreE T W i muM h ⋙ homContentPreF T W i muM h)
-      (homPreNegativeCup T W i muM h n) := by
-  have hc := isSupernatural_of_natTrans
-    (homContentPreAdjunction T W T.leftAdjoints i muM h).unit
-    (homContentPreAdjunction_unit_mem T W i muM h)
-  have hd := (homPreDotInverse_power_supernatural T W i muM h n).whiskerRight
-    (homContentPreF T W i muM h)
-  have ht := hc.comp hd
-  rw [zero_add] at ht
-  exact ht
-
 /-- Negative dotted caps retain signed naturality on arbitrary homogeneous Hom maps. -/
 theorem homPreNegativeCap_supernatural (n : ℕ) :
     IsSupernatural k (n * D.parity i)
@@ -103,25 +88,6 @@ theorem homPreNegativeCap_supernatural (n : ℕ) :
   have ht := hd.comp hc
   rw [add_zero] at ht
   exact ht
-
-/-- Alpha at exponent -n: negative and positive n have equal parity. -/
-theorem homPreNegativeCup_coordinates (n : ℕ) (Z : homWeightSector T.obj W muP muM) :
-    homPreNegativeCup T W i muM h n Z ≫
-      ((homParityShiftDatum (k := k) (leftAdjParity D i (-nuP))).iso
-        (T.F i h ≫ T.E i h ≫ Z)).hom =
-    koszulSign (leftAdjParity D i (-nuP)) ((n : ZMod 2) * D.parity i) •
-      ((leftUnitor Z).inv ≫ T.leftCup i h ▷ Z ≫
-        (associator (T.F i h) (T.E i h) Z).hom ≫
-        T.F i h ◁ (rouquierPower (inv (T.dot i h)) n ▷ Z)) := by
-  rw [homPreNegativeCup, homContentPreAdjunction_leftAdjoints_unit_app]
-  simp only [homPreDotInverse, whiskerRight_rouquierPower (k := k),
-    homContentPreF, Functor.comp_map, homPre, Category.assoc]
-  rw [(homParityShiftDatum (k := k) (leftAdjParity D i (-nuP))).hom_naturality
-    (TwoSupercategory.whiskerLeft_mem (T.F i h)
-      (TwoSupercategory.whiskerRight_mem Z
-        (rouquierPower_mem (preDot_inv_mem T i h) n)))]
-  simp only [Linear.comp_smul, Iso.inv_hom_id_assoc]
-  rw [koszulSign_smul (R := k)]
 
 /-- Beta at exponent -n, including the inverse cap scalar at its source height. -/
 theorem homPreNegativeCap_coordinates (n : ℕ) (Z : homWeightSector T.obj W nuP muM) :
@@ -146,14 +112,5 @@ theorem homPreNegativeCap_coordinates (n : ℕ) (Z : homWeightSector T.obj W nuP
   have hs (σ : ZMod 2) : koszulSign σ σ = koszulSign σ 1 := by
     fin_cases σ <;> rfl
   rw [hs]
-
-/-- The exponent-zero window is the existing nonnegative window. -/
-theorem homPreNegativeCup_zero (Z : homWeightSector T.obj W muP muM) :
-    homPreNegativeCup T W i muM h 0 Z = homReservoirCup T W i muM h 0 Z := by
-  simp only [homPreNegativeCup, homReservoirCup, pow_zero]
-
-theorem homPreNegativeCap_zero (Z : homWeightSector T.obj W nuP muM) :
-    homPreNegativeCap T W i muM h 0 Z = homReservoirCap T W i muM h 0 Z := by
-  simp only [homPreNegativeCap, homReservoirCap, pow_zero]
 
 end OddMath.SKM

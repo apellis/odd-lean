@@ -118,5 +118,4 @@ theorem append_insert_twisted_coefficient {i : I} {v w : List I}
       append_insert_coefficient D Sc cutoff x a a.property, koszulSign_smul (R := k),
       mul_comm q, sign_smul_sign_smul]
 
-
 end OddMath.QuiverHecke.ELVOld

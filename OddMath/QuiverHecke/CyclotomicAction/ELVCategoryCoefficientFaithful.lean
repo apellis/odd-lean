@@ -71,16 +71,4 @@ instance contentRepresentableFunctor_super (v : ContentCategory D Sc cutoff N β
 def contentRepresentable (v : ContentCategory D Sc cutoff N β) :
     ContentModules D Sc cutoff N β := ⟨contentRepresentableFunctor D Sc cutoff N β v⟩
 
-/-- Evaluation on actual source representables detects the coefficient family. -/
-theorem contentRealize_injective : Function.Injective (contentRealize D Sc cutoff N β) := by
-  intro c d h
-  apply Superfunctor.hom_ext
-  intro p v
-  have he := congrArg (fun t => ((t.app p (contentRepresentable D Sc cutoff N β v)).app p v)
-    (𝟙 v)) h
-  change (𝟙 v ≫ (proj k p c).app p v) = (𝟙 v ≫ (proj k p d).app p v) at he
-  simp only [Superfunctor.proj_app, ↓reduceIte] at he
-  change 𝟙 v.obj ≫ c.app p v = 𝟙 v.obj ≫ d.app p v at he
-  exact (Category.id_comp (c.app p v)).symm.trans (he.trans (Category.id_comp (d.app p v)))
-
 end OddMath.QuiverHecke.ELVOld

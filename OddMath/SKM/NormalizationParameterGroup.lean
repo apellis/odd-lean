@@ -12,7 +12,7 @@ import Mathlib.GroupTheory.QuotientGroup.Defs
 This constructs the unsaturated abelian presentation in
 `docs/Nondegeneracy/GroundRingDescent.md` §3, a proposed deduction supporting
 Brundan–Ellis, arXiv:1701.04133v2, Theorem 8.1 and the §8 conjecture.
-The relations encode (1.5) and the supplied normalizations (1.17), retaining
+The relations encode (1.3) and the supplied normalizations (1.17), retaining
 all weights in the original `X`. No independence of roots is required.
 This is the group part of the proposed parameter ring, not nondegeneracy
 or a construction of its coefficient polynomial ring.

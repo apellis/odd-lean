@@ -52,7 +52,6 @@ open OddMath.Frontier.EQZab (inclX inclY osymAB)
 open OddMath.Frontier.EQOnhDG (ONH)
 open DG MulOpposite TensorProductOver.RightAction
 
-
 variable (a b : ℕ)
 
 local notation "𝒪a" => DGAlgebra.gradingSubmodule ℤ (ONH a)

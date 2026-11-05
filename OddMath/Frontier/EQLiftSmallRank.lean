@@ -405,7 +405,6 @@ end Iota
 
 /-! ### Bijectivity in ranks `a + b ≤ 1` -/
 
-
 section ChiBij
 
 variable {N : ℕ} (hN : N ≤ 1) {E : Type} [Ring E] [DGAddCommGroup E] [DGRing E] [Module E (Zn N)]

@@ -32,7 +32,6 @@ theorem lin_sum {a b : Obj (sig D)} {ι : Type*} (s : Finset ι) (f : ι → Lin
     (pres D Sc).lin (∑ i ∈ s, f i) = ∑ i ∈ s, (pres D Sc).lin (f i) :=
   (pres D Sc).linFunctor.map_sum _ _
 
-
 /-- Unfold a relation of `pres D Sc` into classes of normal-form diagrams. -/
 macro "skm_rel_simp " h:ident : tactic =>
   `(tactic| simp only [relation, lin_sub, lin_add, lin_neg, lin_smul, lin_dg, lin_idg, lin_sum,

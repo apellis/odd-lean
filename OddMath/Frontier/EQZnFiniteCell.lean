@@ -225,7 +225,6 @@ theorem dAlpha_zAlpha_monomial (A : Fin N → ℕ) :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [zAlpha, zAlpha_coeff]
 
-
 /-! ## The exponent range of `B'_n`: the reversed staircase -/
 
 /-- Exponent vectors of the reversed staircase, `A_i ≤ i` (0-indexed; Ellis–Qi's
@@ -349,7 +348,6 @@ theorem staircase_span_stable_iff :
     | zero => simp
     | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
     | smul a x _ hx => rw [map_zsmul]; exact Submodule.smul_mem _ a hx
-
 
 /-! ## `B'_n` is a basis of `Z_n` as a right `OΛ_n`-module -/
 
@@ -612,7 +610,6 @@ theorem prop_3_17_acyclic_iff :
     exact (zn_not_acyclic (by omega)).2 g hg
   · intro hN f hf
     exact ⟨pd N ⟨1, hN⟩ f, acyclic (zAlpha N) ⟨1, hN⟩ (by simp [zAlpha]) hf⟩
-
 
 /-- Left multiplication by a generator has no constant term. -/
 theorem generator_mul_apply_zero (i : Fin N) (f : SkewPolynomial N) : (generator i * f) 0 = 0 := by

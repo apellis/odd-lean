@@ -45,7 +45,6 @@ private lemma route_right {C : Type*} [Category C] [Preadditive C]
   rw [hf, hg]
   simp only [Limits.comp_zero, Limits.zero_comp, add_zero]
 
-
 lemma left_route (ν : X) (G : P.Generators) (hij : i ≠ j) :
     let n : SPath (wd D ν [up j, up i, up i]) s _ := SPath.three false false true hj0 hi0 trivial hs
     let b : SPath (wd D ν [up i, up j, up i]) s _ := SPath.three false false true hi hj trivial rfl

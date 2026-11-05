@@ -99,7 +99,6 @@ theorem freeMap_smul (c : k) (x : Free k I X) :
     freeMap f (c • x) = f c • freeMap f x := by
   rw [Algebra.smul_def, map_mul, freeMap_algebraMap, ← Algebra.smul_def]
 
-
 @[simp] theorem freeMap_one (μ : X) : freeMap f (Free.one k μ : Free k I X) = Free.one k' μ :=
   freeMap_ι f _
 
@@ -216,7 +215,6 @@ theorem mapCoeffs_mk (x : Free k I X) :
   rw [h, RingQuot.lift_mkRingHom_apply]
   rfl
 
-
 @[simp] theorem mapCoeffs_one (μ : X) : mapCoeffs f D hq hπ (one D q π μ) = one D q' π' μ := by
   rw [one, mapCoeffs_mk, freeMap_one]; rfl
 
@@ -282,7 +280,6 @@ theorem mapCoeffs_rho (hπ2 : π ^ 2 = 1) (hπ2' : π' ^ 2 = 1) (x : CoveringUDo
         map_qp_eq f hq]
   | add a b ha hb => simp only [map_add, MulOpposite.unop_add, ha, hb]
   | mul a b ha hb => simp only [map_mul, MulOpposite.unop_mul, ha, hb]
-
 
 /-! ### Extension of scalars -/
 

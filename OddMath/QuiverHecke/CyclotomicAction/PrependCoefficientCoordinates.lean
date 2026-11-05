@@ -32,15 +32,6 @@ local notation "T" => InductionAlong.Ind (StringDiagrams.SuperBimodule.toSVec (q
 abbrev qPrependTensorEquiv : ((PrependShuffle (r+1) × ℕ) →₀ (StringDiagrams.SuperBimodule.toSVec (qCoefficient D Sc i β a ha r))) ≃+ T :=
   prependTensorEquiv D Sc i (r+1) (StringDiagrams.SuperBimodule.toSVec (qCoefficient D Sc i β a ha r))
 
-/-- The forward map on canonical shifted representatives. -/
-theorem qPrependTensorEquiv_single (q : PrependShuffle (r+1) × ℕ)
-    (b : CyclotomicAlgebra D Sc a r) :
-    qPrependTensorEquiv D Sc i β a ha r
-      (Finsupp.single q (qCoefficientInsert D Sc i β a ha r b)) =
-      InductionAlong.Ind.tmul (prependPBWCorner D Sc i q.1 q.2 1)
-        (qCoefficientInsert D Sc i β a ha r b) :=
-  prependTensorForward_single D Sc i (r+1) (StringDiagrams.SuperBimodule.toSVec (qCoefficient D Sc i β a ha r)) q _
-
 /-- The inverse retains the twisted left action on the coefficient. -/
 theorem qPrependTensorEquiv_symm_tmul (z : C) (y : (StringDiagrams.SuperBimodule.toSVec (qCoefficient D Sc i β a ha r)))
     (q : PrependShuffle (r+1) × ℕ) :
@@ -71,16 +62,5 @@ theorem qPrependTensorEquiv_symm_right (c : CyclotomicAlgebra D Sc a r) (t : T)
     rw [targetRightCoefficient_tmul, qPrependTensorEquiv_symm_tmul,
       qPrependTensorEquiv_symm_tmul]
     exact (map_smul (targetCoefficientRight D Sc i β a ha r c) _ y).symm
-
-/-- Right multiplication of an inserted coefficient retains its prescribed formula. -/
-theorem qPrependTensorEquiv_single_mul (q : PrependShuffle (r+1) × ℕ)
-    (b c : CyclotomicAlgebra D Sc a r) :
-    qPrependTensorEquiv D Sc i β a ha r
-      (Finsupp.single q (qCoefficientInsert D Sc i β a ha r (b*c))) =
-      targetRightCoefficient D Sc i β a ha r c
-        (qPrependTensorEquiv D Sc i β a ha r
-          (Finsupp.single q (qCoefficientInsert D Sc i β a ha r b))) := by
-  rw [qPrependTensorEquiv_single, qPrependTensorEquiv_single,
-    targetRightCoefficient_tmul, qCoefficientInsert_mul]
 
 end OddMath.QuiverHecke

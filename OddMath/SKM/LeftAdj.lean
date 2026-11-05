@@ -108,7 +108,6 @@ theorem ext_EFE (i : I) (μ : X) (hh : D.h i μ ≤ 0) {Z : (pres D Sc).Presente
   rw [mem_range] at hn
   rw [h₂ n (by omega)]
 
-
 /-! ## (6.4) -/
 
 theorem c_wt_up (i : I) (μ : X) : cs.c (wt D μ [up i]) i = cs.c μ i := by
@@ -162,7 +161,6 @@ theorem tau_sigma_epsL (i : I) (μ : X) (m : ℕ) :
   congr 1
   generalize D.parity i = a; generalize (m : ZMod 2) = x; revert a x; decide
 
-
 /-- A diagram on the two upward strands of `Eᵢ Eᵢ Fᵢ` between the crossing below and the cap `ε` on
 the right above. -/
 theorem ctx_tau_capR (i : I) (μ : X) {L : List (LayerData I)} (hL : SChain [up i, up i] L [up i, up i]) :
@@ -214,7 +212,6 @@ theorem tau_dots_tau (i : I) (μ : X) (m : ℕ) :
     ← ctx_tau_capR i μ ((sChain_dotsL [] i [up i] _).append (sChain_dotsL [up i] i [] s))]
   congr 2
   simp [dotsL, whL]
-
 
 theorem lbub_id (i : I) (μ : X) : lbub i μ (𝟙 ((pres D Sc).obj (ob D (wt D μ [up i]) []))) = 𝟙 _ := by
   rw [lbub, ← cl_nil (wt D μ [up i]) [], plcL_cl]
@@ -298,7 +295,6 @@ theorem check_6_4 (i : I) (μ : X) (hh : D.h i μ ≤ -1) :
     rw [hν, dsc, ite_eq_right (by omega), zero_smul, zero_add, sum_range_one, tau_sigma_epsL,
       tau_dots_tau, sum_range_zero, smul_zero, Limits.zero_comp, smul_zero]
 
-
 /-! ## (6.5) -/
 
 /-- The left curl with `n` dots on the loop before the crossing (the left-hand side of (5.18)). -/
@@ -323,7 +319,6 @@ theorem curl18_eq_c (i : I) (μ : X) (n : ℕ) (hn : (n : ℤ) + D.h i μ + 3 = 
 theorem rbub_id (i : I) (μ : X) : rbub i μ (𝟙 ((pres D Sc).obj (ob D (wt D μ []) []))) = 𝟙 _ := by
   rw [rbub, ← cl_nil (wt D μ []) [], plcL_cl]
   exact cl_nil μ [up i]
-
 
 /-- `T2 m ≫ L63`: the strand crossing a clockwise dotted bubble, expanded into dots below dotted
 left curls ((2.4) and (3.1)). -/
@@ -423,7 +418,6 @@ theorem T2_L63 (i : I) (μ : X) (m : ℕ) :
   generalize (m : ZMod 2) = z
   revert a x y z; decide
 
-
 /-- **(6.5)**: the composite of (6.3) with the dotted cups `↑ ⊗ ((1 ⊗ xᵐ) ∘ η)`, `m < -⟨hᵢ,λ⟩`
 (for `⟨hᵢ,λ⟩ ≤ -1`). -/
 theorem check_6_5 (i : I) (μ : X) (hh : D.h i μ ≤ -1) (m : ℕ) (hm : (m : ℤ) < -D.h i μ) :
@@ -471,7 +465,6 @@ theorem eq_6_3 (i : I) (μ : X) (hh : D.h i μ ≤ -1) :
     -(L63 cs i μ) = reps cs i μ - dsc cs i μ •
       cl D Sc μ [up i, dn i, up i] [up i] [([], Shape.cap i, [up i])] :=
   ext_EFE i μ (by omega) (check_6_4 cs i μ hh) fun m hm => check_6_5 cs i μ hh m hm
-
 
 /-! ## (6.1) -/
 

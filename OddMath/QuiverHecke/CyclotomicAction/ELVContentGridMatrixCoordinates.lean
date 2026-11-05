@@ -73,16 +73,4 @@ def oldContentCapFamilyEquiv :
       capMatrixTargetSpace D Sc cutoff i M m t.obj :=
   LinearEquiv.piCongrRight (oldContentCapSlotEquiv D Sc cutoff ν i N m t)
 
-/-- The whole unit chart keeps exactly the specified coordinate maps. -/
-theorem oldContentUnitFamilyEquiv_apply
-    (x : gridUnitMatrixSourceSpace J₀ (D.parity i) N m t) (a : Option (Fin m)) :
-    oldContentUnitFamilyEquiv D Sc cutoff ν i N m t x a =
-      oldContentUnitSlotEquiv D Sc cutoff ν i N m t a (x a) := rfl
-
-/-- The whole cap chart keeps exactly the specified coordinate maps. -/
-theorem oldContentCapFamilyEquiv_apply
-    (x : gridCapMatrixTargetSpace J₁ (D.parity i) N m t) (a : Option (Fin m)) :
-    oldContentCapFamilyEquiv D Sc cutoff ν i N m t x a =
-      oldContentCapSlotEquiv D Sc cutoff ν i N m t a (x a) := rfl
-
 end OddMath.QuiverHecke.ELVOld

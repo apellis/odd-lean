@@ -86,7 +86,7 @@ output and content in which i is absent. -/
 theorem oldContentFEChart_unitDot (t : OldContentCategory D Sc cutoff γ) (n : ℕ) (b : N.obj t) :
     oldContentFEChart D Sc cutoff γ i N t (unitDotLinear K dK N n t b) =
       unitDotLinear J dJ G n t.obj (oldContentValueChart D Sc cutoff γ N t b) := by
-  let g := actualInductionDot D Sc cutoff i G ((K).obj t).obj
+  let g := inductionDot D Sc cutoff i G ((K).obj t).obj
   have hd := oldContentAppendRestrictionIso_dot D Sc cutoff γ i N ((K).obj t)
   have hp := BalancedInduction.unitDotLinear_intertwine K dK N t _ _ hd n b
   have hu := oldContentAppendRestrictionIso_unit D Sc cutoff γ i N t b
@@ -98,7 +98,7 @@ theorem oldContentFEChart_unitDot (t : OldContentCategory D Sc cutoff γ) (n : �
   have hraw := hp.trans (hunit.trans hvalue.symm)
   have ht := BalancedInduction.unitDotLinear_apply_power J dJ G n t.obj
     (oldContentValueChart D Sc cutoff γ N t b)
-  dsimp only [g, actualInductionDot] at hraw
+  dsimp only [g, inductionDot] at hraw
   dsimp only [oldContentAppend] at he hraw ht ⊢
   exact he.trans (hraw.trans ht.symm)
 

@@ -14,7 +14,7 @@ file evaluates them on the regular probe. Through the same source chart as
 the padded Dx entry (`paddedVacuumSourceIso`), and the weight, block and
 regular-input charts of the target, the `n`-th cap row is the native
 `x ^ n ≫ v`, where `x` is the shifted pre dot and `v` the shifted pre cap
-(`paddedVacuumCap_native`). No parity, moment or cap compatibility is
+(`paddedVacuumCap_eq`). No parity, moment or cap compatibility is
 assumed.
 -/
 noncomputable section
@@ -141,14 +141,14 @@ local notation "Z" => preCapInput D Sc m Λ hc W muM H
 
 /-- Every prescribed dotted reservoir cap on the regular probe is the native
 `x ^ n ≫ v` through the normalized pre-cap source chart. No parity is used. -/
-theorem vacuumPreReservoirCap_native (hP : 0 < probeCutoff D m i) (n : ℕ) :
+theorem vacuumPreReservoirCap_eq (hP : 0 < probeCutoff D m i) (n : ℕ) :
     (SKM.homReservoirCap T W i muM h n Z).total N₀ ≫
       H.map (eqToHom (emptyProbe_regular D Sc m Λ)) =
     (vacuumPreSourceIso D Sc m Λ hc W muM i h H).hom ≫
       (ProbeVacuumCap.shiftedPreDot D Sc m (W muM) i H ^ n) ≫
         ProbeVacuumCap.shiftedPreCap D Sc m (W muM) i hP H := by
   rw [SKM.homReservoirCap, Superfunctor.comp_total, Category.assoc,
-    vacuumPreCounit_native D Sc m Λ hc W muM i h H hP, ← Category.assoc,
+    vacuumPreCounit_eq D Sc m Λ hc W muM i h H hP, ← Category.assoc,
     total_pow_square _ _ _ _ (vacuumPreDot_source D Sc m Λ hc W muM i h H hP) n,
     Category.assoc]
 
@@ -238,7 +238,7 @@ def paddedVacuumCapTargetIso :=
 /-- The prescribed padded reservoir cap row `n` at the vacuum sector is the
 native `x ^ n ≫ v` of the output block, through the same source chart as the
 padded Dx entry. No parity, moment or cap compatibility is assumed. -/
-theorem paddedVacuumCap_native (i : I) (hP : 0 < probeCutoff D m i) (n : ℕ) :
+theorem paddedVacuumCap_eq (i : I) (hP : 0 < probeCutoff D m i) (n : ℕ) :
     (P).centralPaddedCap i (((0, 0) : Sector I))
         (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
         (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) true n ≫
@@ -309,7 +309,7 @@ theorem paddedVacuumCap_native (i : I) (hP : 0 < probeCutoff D m i) (n : ℕ) :
     rw [hc₀, ← hc₁]
     exact hE0
   have hn : c₁ ≫ q = e.hom ≫ d :=
-    vacuumPreReservoirCap_native D (parameterTwist D Sc) m ΛP hcP W₀ (-ΛR) i ep₀ B₀ hP n
+    vacuumPreReservoirCap_eq D (parameterTwist D Sc) m ΛP hcP W₀ (-ΛR) i ep₀ B₀ hP n
   have hs := cap_charts_attach s u hSrc e c p q c₀ c₁ d hsq hE hn
   have hcap : PR.centralPaddedCap i (((0, 0) : Sector I)) Z E true n = s.hom ≫ c := by
     unfold ProbeReservoir.centralPaddedCap

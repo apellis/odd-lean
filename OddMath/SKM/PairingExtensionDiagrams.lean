@@ -158,7 +158,6 @@ def relationLabel : Rel D → Rel (ReservoirWeights.pairingExtension D)
   | .dcupZero i ν n hn => .dcupZero i (ν, 0) n (by simpa using hn)
   | .dcapZero i ν n hn => .dcapZero i (ν, 0) n (by simpa using hn)
 
-
 @[simp] theorem relationLabel_dom (r : Rel D) : (relationLabel D r).dom = r.dom := by
   cases r <;> rfl
 @[simp] theorem relationLabel_cod (r : Rel D) : (relationLabel D r).cod = r.cod := by

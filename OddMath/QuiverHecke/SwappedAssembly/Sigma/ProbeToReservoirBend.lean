@@ -6,16 +6,6 @@ namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct Supercategory
 universe u uB v w
 
-private theorem counit_transport {A B : Type*} [Category A] [Category B]
-    (E : A ⥤ B) (F : B ⥤ A) (adj : E ⊣ F)
-    {Y : A} {Z₀ Z : B} (q : Y = F.obj Z₀) (r : Z₀ = Z) :
-    E.map (eqToHom q) ≫ adj.counit.app Z₀ ≫ eqToHom r =
-      E.map (eqToHom q) ≫ E.map (F.map (eqToHom r)) ≫ adj.counit.app Z := by
-  subst q r
-  simp only [eqToHom_refl]
-  rw [E.map_id, F.map_id, E.map_id]
-  simp only [Category.id_comp, Category.comp_id]
-
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
   {B : Type uB} [BicategoryStruct.{w, v} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
@@ -150,30 +140,6 @@ private theorem capImage_probe_endpoint (i : I) (ν : X) {t : Sector I}
   unfold capImage
   rw [P.twoZero_two (Z' := e.symm ▸ Z) (hZ := eqRec_heq _ _)]
   rfl
-
-/-- The actual probe cap is the canonical shifted precomposition
-counit in its computed endpoint chart. -/
-theorem capImage_probe_factor (i : I) (ν : X) {t : Sector I}
-    (hw : StepValid (false, i) true (nextSector (true, i) true t))
-    (e : nextSector (false, i) true (nextSector (true, i) true t) = t) (Z : P.H t) :
-    P.capImage i ν (SPath.two true true (by trivial) hw e) (.nil t) Z =
-      (probeCapFactorIso i ν hw e Z).hom ≫
-        (homContentPreAdjunction P.T P.W.obj P.T.leftAdjoints i (P.muM t)
-          (P.muP_preE i t)).counit.app Z := by
-  rw [capImage_probe_endpoint]
-  let q := eq_of_heq (P.preF_obj_heq i e.symm (P.muP_preE i t)
-    (P.muP_preF i hw) (e.symm ▸ Z)).symm
-  let r : (e.symm ▸ (e.symm ▸ Z) : P.H t) = Z :=
-    eq_of_heq ((eqRec_heq _ _).trans (eqRec_heq _ _))
-  have h := counit_transport
-    (homContentPreE P.T P.W.obj i (P.muM t) (P.muP_preE i t))
-    (homContentPreF P.T P.W.obj i (P.muM t) (P.muP_preE i t))
-    (homContentPreAdjunction P.T P.W.obj P.T.leftAdjoints i (P.muM t) (P.muP_preE i t)) q r
-  simpa only [probeCapFactorIso, Iso.trans_hom, Functor.mapIso_hom, eqToIso.hom,
-    twoPathReturnIso, capEntry, preCap, Category.assoc,
-    step, nextSector, muM, q, r, pathFunctor_nil, Functor.id_obj] using congrArg (fun f =>
-      (twoPathEndpointIso (c₁ := ⟨up i, SKM.wt D ν [dn i]⟩) (c₂ := ⟨dn i, ν⟩)
-        true true (by trivial) hw e Z).hom ≫ f) h
 
 /-- The RP coefficient object after a reservoir cup, compared to its
 native post/pre composite. The full formal right sector is transported. -/
@@ -347,22 +313,6 @@ theorem sigmaEntry_probeToReservoir (c : P.CrossCoeff) (i : I) (ν : X) (t : Sec
       ((homContentPostF P.T.obj P.W i t.1 (P.muP t) (P.muM_postF i t)).obj)
       (eq_of_heq hh)
     simpa only [Functor.comp_obj, Functor.id_obj, SPath.castTgt, tU, tR, nextSector, muP] using he
-
-/-- The minus in the negative augmented matrix gives the negative
-native mixed bend in the same fixed endpoint charts. -/
-theorem sigmaEntry_probeToReservoir_negative (c : P.CrossCoeff) (i : I) (ν : X)
-    (t : Sector I) (Z : P.H t) :
-    (probeCapFactorIso i ν (by simp [StepValid, nextSector]) (SPath.next_upDn_true_true t) Z).inv ≫
-      (-P.sigmaEntry c i i ν
-        (SPath.two true true (by trivial) (by simp [StepValid, nextSector])
-          (SPath.next_upDn_true_true t))
-        (SPath.two false false (by trivial) (by simp [StepValid, nextSector])
-          (SPath.next_dnUp_false_false (i := i) t)) Z) ≫
-      (reservoirCupFactorIso i ν (by trivial) (by simp [StepValid, nextSector])
-        (SPath.next_dnUp_false_false (i := i) t) Z).hom =
-      -probeToReservoirBend c i t Z := by
-  erw [Preadditive.neg_comp, Preadditive.comp_neg, sigmaEntry_probeToReservoir]
-  simp only [Category.assoc, Iso.inv_hom_id_assoc, Iso.inv_hom_id, Category.comp_id]
 
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

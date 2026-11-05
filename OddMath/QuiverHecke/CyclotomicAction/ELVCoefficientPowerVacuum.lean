@@ -95,14 +95,6 @@ def coefficientPowerVacuum : Superfunctor k (OldCategory D Sc cutoff) (SVec k) :
   BalancedInduction.induced (powerCoefficientEmbedding D Sc cutoff)
     (liftedPowerRegular D cutoff L)
 
-/-- The chosen ordinary induction unit identifies the original regular
-coefficient module with the restriction of the old vacuum. -/
-def coefficientPowerVacuumUnitIso : liftedPowerRegular (k := k) D cutoff L ≅
-    (BalancedInduction.restriction (powerCoefficientEmbedding D Sc cutoff)).obj
-      (coefficientPowerVacuum D Sc cutoff L) :=
-  BalancedInduction.fullyFaithfulUnitIso (powerCoefficientEmbedding D Sc cutoff)
-    (liftedPowerRegular D cutoff L)
-
 /-- The lifted unique coefficient object. -/
 def powerCoefficientStar : PowerCoefficientCategory (k := k) D cutoff :=
   ⟨SuperalgebraCat.star (SKM.SYM.elvCoefficientParity (k := k) D cutoff)⟩

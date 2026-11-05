@@ -70,7 +70,6 @@ theorem middleReservoir_routes (hij : i ≠ j) :
       P.probePair_left_same, P.probePair_right_mixed ν i j s hR c L Z hij]
     simp only [probePairFirstIso, Functor.mapIso_inv, Functor.mapIso_hom, Functor.map_comp]
 
-
 private lemma middle_conjugate {C : Type*} [Category C] [Preadditive C]
     {A B W : C} (J : A ≅ B) (K : B ≅ W) (S R : End A) (T : End W) (Q : End B)
     (h : S ≫ J.hom ≫ K.hom = J.hom ≫ K.hom ≫ T) :
@@ -144,7 +143,6 @@ theorem middleReservoir_dotZ :
   exact heq_of_eq (congrArg (fun f => (P.step (true, i) true s trivial).map
     ((P.step (true, j) false (nextSector (true, i) true s) hR).map f))
     (P.dotImage_probe i ν (nextSector (true, j) false (nextSector (true, i) true s)) trivial trivial Z))
-
 
 /-- All three literal dot coordinates under the mixed comparison. -/
 theorem middleReservoir_dot_coordinates :

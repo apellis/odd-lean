@@ -81,7 +81,6 @@ private theorem coh_pentagon_post {e : B} (F : b ⟶ a) (E : a ⟶ b) (V : b ⟶
     bicategory
   exact congrArg Subtype.val h
 
-
 private theorem coh_cup_finish (F : a ⟶ b) (G : b ⟶ c) (H : c ⟶ d) (V : d ⟶ e) :
     (associator F (G ≫ H) V).hom ≫ F ◁ (associator G H V).hom =
       (associator F G H).inv ▷ V ≫ (associator (F ≫ G) H V).hom ≫

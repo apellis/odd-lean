@@ -86,7 +86,6 @@ theorem mem_grading_iff_degreePiece {n : ℕ} {k : ℤ} {y : ONH n} :
     y ∈ DG.grading k ↔ (equiv n).symm y ∈ degreePiece n (2 * k) := by
   rw [mem_grading_iff, grading_eq_degreePiece]; rfl
 
-
 /-- The strand window `[p, p + m + 2)` as a ring morphism `ONH_{m+2} → ONH_{n+2}`. -/
 def windowRing (m n p : ℕ) (h : p + (m + 2) ≤ n + 2) : ONH m →+* ONH n :=
   ((equiv n).toRingHom.comp (OnhWindow.windowHom m n p h)).comp (equiv m).symm.toRingHom

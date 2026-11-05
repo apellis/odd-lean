@@ -20,32 +20,6 @@ open SKM (zsign)
 variable {I X : Type*} [AddCommGroup X] (D : SKM.Datum I X)
   {k : Type*} [CommRing k] (Sc : SKM.Scalars D k)
 
-/-- The moving dot passes from the append endpoint back to the prepend endpoint. -/
-theorem dot_comp_reverseMoveHom (i : I) (l ν : List I) :
-    dotE D Sc (l ++ ν ++ [i]) (l.length + ν.length) ≫ reverseMoveHom D Sc i l ν =
-      zsign k (D.parity i * wordSumParity D ν) •
-        (reverseMoveHom D Sc i l ν ≫ dotE D Sc (l ++ i :: ν) l.length) := by
-  induction ν generalizing l with
-  | nil =>
-    simp only [reverseMoveHom, wordSumParity, List.map_nil, List.sum_nil, mul_zero,
-      List.length_nil, add_zero]
-    rw [show zsign k (0 : ZMod 2) = 1 by simp [zsign], one_smul]
-    exact dotE_comp_eqToHom D Sc (by simp) _
-  | cons j ν ih =>
-    simp only [reverseMoveHom]
-    rw [← Category.assoc, dotE_comp_eqToHom D Sc
-        (show l ++ (j :: ν) ++ [i] = (l ++ [j]) ++ ν ++ [i] by simp),
-      Category.assoc, show l.length + (j :: ν).length = (l ++ [j]).length + ν.length by simp; omega,
-      ← Category.assoc (dotE D Sc _ _), ih, Linear.smul_comp, Category.assoc, ← Category.assoc (dotE D Sc _ _),
-      dotE_comp_eqToHom D Sc
-        (show (l ++ [j]) ++ i :: ν = l ++ [j, i] ++ ν by simp),
-      show (l ++ [j]).length = l.length + 1 by simp,
-      Category.assoc, ← Category.assoc (dotE D Sc _ _), dot_succ_comp_intertwinerHom,
-      Linear.smul_comp, Category.assoc,
-      dotE_comp_eqToHom D Sc (show l ++ [i, j] ++ ν = l ++ i :: j :: ν by simp)]
-    simp only [Linear.comp_smul, smul_smul, Category.assoc, wordSumParity, List.map_cons,
-      List.sum_cons, mul_add, zsign_add_eq, mul_comm]
-
 /-- A fixed dot strictly to the left of the chain supercommutes with the reverse chain. -/
 theorem dot_left_comp_reverseMoveHom (i x : I) (l₁ : List I) (ν : List I) :
     ∀ (l l₂ : List I), l = l₁ ++ [x] ++ l₂ →
@@ -124,30 +98,5 @@ theorem dot_mem_comp_reverseMoveHom (i x : I) (v : List I) (m : List I) :
       show (l ++ [j, i] ++ m).length = l.length + 1 + (j :: m).length by simp; omega]
     simp only [Linear.comp_smul, smul_smul, Category.assoc, wordSumParity, List.map_cons,
       List.sum_cons, mul_add, zsign_add_eq, mul_comm, mul_left_comm]
-
-/-- Reverse crossing naturality on two old strands when both differ from the moving colour.
-The repeated-old-colour case is included. -/
-theorem cross_comp_reverseMoveHom_pair (l : List I) {i j c : I}
-    (hji : j ≠ i) (hci : c ≠ i) :
-    cl D Sc (l ++ [j, c] ++ [i]) (l ++ [c, j] ++ [i]) [.cross l.length]
-      (sChain_crossAt l [i] j c) ≫ reverseMoveHom D Sc i l [c, j] =
-    reverseMoveHom D Sc i l [j, c] ≫
-      cl D Sc (l ++ i :: [j, c]) (l ++ i :: [c, j]) [.cross (l.length + 1)]
-        (sChain_cross_succ l [] i j c) := by
-  simp only [reverseMoveHom]
-  rw [intertwinerHom_of_ne D Sc _ _ hji, intertwinerHom_of_ne D Sc _ _ hci,
-    intertwinerHom_of_ne D Sc _ _ hci, intertwinerHom_of_ne D Sc _ _ hji]
-  simp only [Category.assoc, eqToHom_trans_assoc]
-  repeat first
-    | rw [cl_comp_eqToHom_assoc]
-    | rw [cl_comp_eqToHom]
-    | rw [eqToHom_comp_cl_assoc]
-    | rw [eqToHom_comp_cl]
-    | rw [cl_comp_assoc]
-    | rw [cl_comp]
-  symm
-  apply braid_ne_gen D Sc l [] j c i (fun h => hji h.1)
-    (by simp) (by simp) <;> simp
-  all_goals simp
 
 end OddMath.QuiverHecke

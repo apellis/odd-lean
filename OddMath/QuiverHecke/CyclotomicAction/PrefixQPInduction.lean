@@ -325,19 +325,6 @@ variable (D Sc i β a ha n) in
 def GoodE (w : Word I (n + 1)) (g : End (wordObj D Sc (prependWord i w))) : Prop :=
   ∀ Y, KillE D Sc i β a ha n w Y → KillE D Sc i β a ha n w (g ≫ Y)
 
-theorem goodE_whiskerLeft (f : End (wordObj D Sc w)) :
-    GoodE D Sc i β a ha n w ((pres D Sc).obj (ob D [i]) ◁ f) := by
-  intro Y hY
-  unfold KillE at hY ⊢
-  rw [← End.mul_def, map_mul, cornerMap_whiskerLeft]
-  exact hY.mul_prepend _
-
-theorem goodE_dotZero : GoodE D Sc i β a ha n w (dotE D Sc (i :: w.1) 0) := by
-  intro Y hY
-  unfold KillE at hY ⊢
-  rw [← End.mul_def, map_mul, cornerMap_dotZero, ← mul_assoc]
-  exact hY.mul_firstDot.mul_prepend _
-
 variable (D Sc i β a ha n) in
 /-- The good precompositions form a subalgebra. -/
 def goodSubalgebra (w : Word I (n + 1)) : Subalgebra k (End (wordObj D Sc (prependWord i w))) where
@@ -355,9 +342,6 @@ def goodSubalgebra (w : Word I (n + 1)) : Subalgebra k (End (wordObj D Sc (prepe
     change KillE D Sc i β a ha n w ((c • 𝟙 _) ≫ Y)
     rw [Linear.smul_comp, Category.id_comp]
     exact KillE.smul hY c
-
-theorem mem_goodSubalgebra {g : End (wordObj D Sc (prependWord i w))} :
-    g ∈ goodSubalgebra D Sc i β a ha n w ↔ GoodE D Sc i β a ha n w g := Iff.rfl
 
 /-- Morphism-level square cancellation. -/
 theorem KillE.of_sq_sub (c : End (wordObj D Sc w)) {Y : End (wordObj D Sc (prependWord i w))}

@@ -124,7 +124,6 @@ theorem elvWeightNormalizedMate_comparison
     (elvWeightMixedMate_app_block D Sc cutoff bound i j Λ h₁ h₂ h₃ h₄ (D.parity i * D.parity j) M δi)
   exact ha.trans hp
 
-
 section RankOne
 variable (a : I) {y₀ y₁ y₂ : X}
   (ha : y₀ + D.α a = y₁) (hb : y₁ + D.α a = y₂)

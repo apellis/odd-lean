@@ -100,8 +100,6 @@ theorem signedAppendMovingPower_coordinate_shift (p : ZMod 2) {i : I} {v w : Lis
             exact hs
         exact t.representative_tailKey.symm.trans (hk.symm.trans q.representative_tailKey)
 
-
-
 /-- Exact shifted coordinate of an arbitrary quotient element. -/
 theorem signedAppendMovingPower_coordinate (p : ZMod 2) {i : I} {v w : List I}
     (q : AppendIdx.Tail i v w) (d : ℕ) (z : AppendTarget D Sc cutoff i v w) :
@@ -112,28 +110,6 @@ theorem signedAppendMovingPower_coordinate (p : ZMod 2) {i : I} {v w : List I}
   simpa only [appendOldReconstruct_coordinateEquiv] using
     signedAppendMovingPower_coordinate_shift D Sc cutoff p q d
       (appendOldCoordinateEquiv D Sc cutoff p i v w z)
-
-/-- No output coordinate lies above the input moving support shifted by the power. -/
-theorem signedAppendMovingPower_above (p : ZMod 2) {i : I} {v w : List I}
-    (x : AppendIdx i v w) (d : ℕ) (f : AppendOldCoordinates D Sc cutoff i v w)
-    (h : ∀ q ∈ f.support, d + q.1.1 < x.1.1) :
-    appendOldCoordinate D Sc cutoff p x
-      (appendMovingPowerTarget D Sc cutoff i v w d
-        (appendOldReconstruct D Sc cutoff p i v w f)) = 0 := by
-  have hf : f = ∑ q ∈ f.support, DirectSum.lof k _ _ q (f q) :=
-    (DFinsupp.sum_single (f := f)).symm
-  rw [hf, map_sum, map_sum, map_sum]
-  apply Finset.sum_eq_zero
-  intro q hq
-  rw [appendOldReconstruct, DirectSum.toModule_lof, signedAppendMovingPower_pair_shift]
-  apply appendOldCoordinate_pair_off
-  intro he
-  have hn := congrArg Prod.fst he
-  have hk := congrArg Prod.fst q.representative_tailKey
-  have hh := h q hq
-  change x.1.1 = d + q.representative.1.1 at hn
-  change q.representative.1.1 = q.1.1 at hk
-  omega
 
 theorem appendOldSource_signedMovingPower_above (p : ZMod 2) {i : I} {v w : List I}
     (x : AppendIdx i v w) (d : ℕ) (c : hom D Sc cutoff v v)
@@ -161,6 +137,5 @@ theorem appendOldSource_signedMovingPower_above (p : ZMod 2) {i : I} {v w : List
     (appendOldSourceTarget_pair D Sc cutoff p (q.representative.shift d) c
       (oldTwist D Sc cutoff (d • D.parity i) v q.representative.oldTarget (f q)))).trans
     (appendOldCoordinate_pair_off D Sc cutoff p x (q.representative.shift d) hoff _)
-
 
 end OddMath.QuiverHecke.ELVOld

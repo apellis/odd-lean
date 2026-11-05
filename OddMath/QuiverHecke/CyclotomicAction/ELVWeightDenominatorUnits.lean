@@ -99,37 +99,4 @@ theorem elvPostDot_square_difference_isUnit [Finite I] (hi : D.parity i = 1)
           elvPostDot_component_isNilpotent D Sc cutoff bound hdot i Λ h F M δ)
       (hanti M)
 
-include hdot in
-theorem elvPostDot_square_sum_isUnit [Finite I] (hi : D.parity i = 1)
-    (X : End (elvPostInduction D Sc cutoff bound i Λ h F))
-    (hx : X ∈ parity (R := k) _ _ 1)
-    (hu : IsUnit X)
-    (hanti : ∀ M δ,
-      elvPostEndComponent D Sc cutoff bound i Λ h F (elvPostDot D Sc cutoff bound i Λ h F) 1 M δ * elvPostEndComponent D Sc cutoff bound i Λ h F X 1 M δ =
-        -(elvPostEndComponent D Sc cutoff bound i Λ h F X 1 M δ * elvPostEndComponent D Sc cutoff bound i Λ h F (elvPostDot D Sc cutoff bound i Λ h F) 1 M δ)) :
-    IsUnit (X ^ 2 + elvPostDot D Sc cutoff bound i Λ h F ^ 2) := by
-  have hy : elvPostDot D Sc cutoff bound i Λ h F ∈ parity (R := k) _ _ 1 :=
-    hi ▸ elvPostDot_mem D Sc cutoff bound i Λ h F
-  apply superfunctorEnd_isUnit
-  · simpa only [pow_two, End.mul_def, SuperNatTrans.zmod2_one_add_one] using
-      Submodule.add_mem _ (comp_mem hx hx) (comp_mem hy hy)
-  · intro M
-    change IsUnit (
-      (show End ((elvPostInduction D Sc cutoff bound i Λ h F).obj M) from (X ^ 2).app 0 M) +
-      (show End ((elvPostInduction D Sc cutoff bound i Λ h F).obj M) from
-        (elvPostDot D Sc cutoff bound i Λ h F ^ 2).app 0 M))
-    rw [superfunctor_odd_square_app_zero _ X hx M,
-      superfunctor_odd_square_app_zero _ (elvPostDot D Sc cutoff bound i Λ h F) hy M]
-    exact product_square_sum_isUnit
-      (fun δ : WeightBlocks D Λ y => ContentModules D Sc cutoff bound δ.1)
-      ((elvPostInduction D Sc cutoff bound i Λ h F).obj M)
-      (show End ((elvPostInduction D Sc cutoff bound i Λ h F).obj M) from X.app 1 M)
-      (show End ((elvPostInduction D Sc cutoff bound i Λ h F).obj M) from
-        (elvPostDot D Sc cutoff bound i Λ h F).app 1 M)
-      (fun δ => superfunctorProductEnd_component_isUnit _ _ X hu 1 hx M δ)
-      (fun δ => by
-        simpa only [hi] using
-          elvPostDot_component_isNilpotent D Sc cutoff bound hdot i Λ h F M δ)
-      (hanti M)
-
 end OddMath.QuiverHecke.ELVOld

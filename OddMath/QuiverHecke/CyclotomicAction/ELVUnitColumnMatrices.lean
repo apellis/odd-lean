@@ -51,17 +51,6 @@ private theorem unitColumn_total (n : ℕ) (w : C) :
         SVec.toLinearMap (((SKM.homParityShiftDatum (k := k) (n • p)).iso M).hom.total w) :=
   shiftedUnitDotColumn_total J hα M n w
 
-private theorem unitColumn_total_mem (n : ℕ) (w : C) :
-    (shiftedUnitDotColumn J hα M n).total w ∈ parity (R := k) _ _ 0 := by
-  have he := shiftedUnitDotColumn_mem J hα M n
-  have hz := Superfunctor.app_eq_zero_of_mem he (by decide : (1 : ZMod 2) ≠ 0) w
-  rw [SuperNatTrans.total, hz, add_zero]
-  exact (shiftedUnitDotColumn J hα M n).app_mem 0 w
-
-/-- The remaining finite unit matrix preserves its actual source grading. -/
-theorem unitColumnMatrix_mem (m : ℕ) (w : C) :
-    unitColumnMatrix J hα M m w ∈ parity (R := k) _ _ 0 :=
-  OddMath.FiniteSuperspace.assembleColumns_even _ _ _ (fun r => unitColumn_total_mem J hα M r.val w)
 end Columns
 
 section Coordinates
@@ -82,10 +71,6 @@ def unitColumnFamilyEquiv (p : ZMod 2) (m : ℕ) :
   LinearEquiv.piCongrRight fun r : Fin m =>
     shiftedModuleValueLinearEquiv M N w v e (r.val • p)
 
-theorem unitColumnFamilyEquiv_apply (p : ZMod 2) (m : ℕ)
-    (x : unitColumnSourceSpace p M m w) (r : Fin m) :
-    unitColumnFamilyEquiv M N w v e p m x r =
-      shiftedModuleValueLinearEquiv M N w v e (r.val • p) (x r) := rfl
 end Coordinates
 
 private theorem unitColumns_square

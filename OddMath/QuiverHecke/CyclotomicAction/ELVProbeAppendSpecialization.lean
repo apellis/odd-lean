@@ -35,15 +35,6 @@ theorem elvProbeHeightWordEntry_affineUnit {n : ℕ} (s t : Word I n)
       probeHeightMk D m Sc n (FiniteHomMatrix.single t s f) := by
   rw [elvProbeHeightWordEntry_mk, elvProbeScalarHom_affineUnit]
 
-/-- The canonical restricted old append uses the already checked height append map. -/
-theorem probeOldWordEntry_append (ν : List I) (i : I)
-    {v w : ELVOld.OldContentCategory D Sc cut ν} (f : v ⟶ w) :
-    probeOldWordEntry D m Sc (i :: ν) ((ELVOld.oldContentAppend D Sc cut ν i).map f) =
-      heightAppend D Sc a i ν.length (probeOldWordEntry D m Sc ν f) := by
-  exact (elvProbeHeightWordEntry_append D m Sc i
-    (probeContentWord ν (ELVOld.oldContentWord D Sc cut ν v))
-    (probeContentWord ν (ELVOld.oldContentWord D Sc cut ν w)) f).symm
-
 /-- The actual old append-dot component specializes to the literal probe last dot. -/
 theorem elvProbeOldAppendDot_image {n : ℕ} (s : Word I n) (i : I) :
     elvProbeWordEntry D m Sc (appendWord i s) (appendWord i s)
@@ -65,16 +56,5 @@ def elvProbeOldAppendDotCorner {n : ℕ} (s : Word I n) (i : I) :
       rw [elvProbeOldAppendDot_image]
       exact (cyclotomicWordEnd D Sc a (appendWord i s)
         (dotE D Sc (s.val ++ [i]) n)).property⟩
-
-theorem elvProbeOldAppendDotCorner_eq {n : ℕ} (s : Word I n) (i : I) :
-    elvProbeOldAppendDotCorner D m Sc s i =
-      cyclotomicWordEnd D Sc a (appendWord i s) (dotE D Sc (s.val ++ [i]) n) :=
-  Subtype.ext (elvProbeOldAppendDot_image D m Sc s i)
-
-/-- Actual old append-dot images are units; no finite-dimensionality input is needed. -/
-theorem elvProbeOldAppendDotCorner_isUnit {n : ℕ} (s : Word I n) (i : I) :
-    IsUnit (elvProbeOldAppendDotCorner D m Sc s i) := by
-  rw [elvProbeOldAppendDotCorner_eq]
-  exact probeWord_dots_isUnit D Sc m n n (Nat.lt_succ_self n) (appendWord i s)
 
 end OddMath.QuiverHecke

@@ -35,13 +35,4 @@ theorem unitDotColumn_supernatural (n : ℕ) :
   simpa only [zero_add, unitDotColumn, adjunction] using hu.comp
     ((dotEnd_power_supernatural A hδ n).whiskerRight (restriction A))
 
-/-- Each dot power followed by the given ordinary counit is supernatural. -/
-theorem capDotRow_supernatural (n : ℕ) :
-    IsSupernatural k (n • q) (F := restriction A ⋙ induction A)
-      (G := 𝟭 (Superfunctor k C (SVec k))) (fun M => capDotRow A hδ M n) := by
-  have hc := isSupernatural_of_natTrans (R := k) (adjunctionCounit A) (adjunctionCounit_mem A)
-  simpa only [add_zero, capDotRow, adjunction] using
-    ((dotEnd_power_supernatural A hδ n).whiskerLeft (restriction A)).comp hc
-
-
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

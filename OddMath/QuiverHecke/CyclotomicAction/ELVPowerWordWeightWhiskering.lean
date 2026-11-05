@@ -50,7 +50,6 @@ def wordFamilyArrow (Λ x : X) (s t : List I)
     PowerWordWeight.wordFamily D Sc cutoff L Λ x s ⟶ PowerWordWeight.wordFamily D Sc cutoff L Λ x t :=
   fun β => PowerWordContentCross.contentWordArrow D Sc cutoff L β.1 s t g
 
-
 /-- The single-E source vanishes outside the content of the appended word. -/
 theorem append_source_isZero (Λ : X) (ν : List I) (i : I) (x y : X)
     (hx : x = PowerWordWeight.wordWeight D Λ ν)

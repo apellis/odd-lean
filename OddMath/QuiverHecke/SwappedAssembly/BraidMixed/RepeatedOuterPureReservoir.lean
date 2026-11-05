@@ -277,15 +277,5 @@ theorem repeatedOuterPureReservoir_path_eq (ν : X) (i j : I) {s t : Sector I}
   obtain ⟨hi, hj, hr, e, rfl⟩ := pureReservoirPath_cases ht p
   exact (pureReservoirPath_unique hi hj hr e q).symm
 
-/-- Off-diagonal entries in a pure-reservoir sector are zero: distinct paths
-cannot have such an endpoint. -/
-theorem repeatedOuterPureReservoir_offdiag (P : ProbeReservoir k B D Sc)
-    (ν : X) (i j : I) {s t : Sector I} (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (ht : t.1 = s.1) (p q : SPath (wd D ν [up i, up j, up i]) s t)
-    (hpq : p ≠ q) (Z : P.H t) :
-    braidLeft (P.swappedGens c L) i j i ν p q Z = 0 ∧
-      braidRight (P.swappedGens c L) i j i ν p q Z = 0 := by
-  exact (hpq (repeatedOuterPureReservoir_path_eq ν i j ht p q)).elim
-
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

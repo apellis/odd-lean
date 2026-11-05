@@ -26,10 +26,6 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 abbrev probeOldBlockSucc₃ (β : WeightBlocks D Λ x₀) : WeightBlocks D Λ x₃ :=
   blockSucc D Λ i h₃ (blockSucc₂ D j l Λ h₁ h₂ β)
 
-theorem probeOldBlockSucc₃_injective :
-    Function.Injective (probeOldBlockSucc₃ D i j l Λ h₁ h₂ h₃) :=
-  fun _ _ h => blockSucc₂_injective D j l Λ h₁ h₂ (blockSucc_injective D Λ i h₃ h)
-
 /-- All three chosen block inductions, retaining both stored intermediate targets. -/
 abbrev probeOldBlockTripleInd (β : WeightBlocks D Λ x₀) :=
   (probeOldBlockPairInd D Sc m j l Λ h₁ h₂ β).comp

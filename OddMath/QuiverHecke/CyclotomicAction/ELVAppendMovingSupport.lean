@@ -100,7 +100,6 @@ theorem appendMovingPower_coordinate_shift (p : ZMod 2) {i : I} {v w : List I}
             exact hs
         exact t.representative_tailKey.symm.trans (hk.symm.trans q.representative_tailKey)
 
-
 /-- The other operator changes only the old coefficient; the total parity twist is retained. -/
 theorem appendOldSourceTarget_pair (p : ZMod 2) {i : I} {v w : List I}
     (x : AppendIdx i v w) (c : hom D Sc cutoff v v)
@@ -165,19 +164,6 @@ theorem appendMovingPower_eq_oldSource (p : ZMod 2) (i : I) (v w : List I)
   rw [appendOldReconstruct_coordinateEquiv] at ho
   exact (DFinsupp.mem_support_iff.mp hq) (he.symm.trans ho)
 
-/-- The actual moving-minus-old right operator is injective; no filtration assumption is supplied. -/
-theorem appendMovingPower_sub_oldSource_injective (p : ZMod 2) (i : I) (v w : List I)
-    (d : ℕ) (hd : d • D.parity i = 0) (hpos : 0 < d) (c : hom D Sc cutoff v v) :
-    Function.Injective (appendMovingPowerTarget D Sc cutoff i v w d -
-      appendOldSourceTarget D Sc cutoff i v w c) := by
-  intro z y h
-  apply sub_eq_zero.mp
-  apply appendMovingPower_eq_oldSource D Sc cutoff p i v w d hd hpos c (z - y)
-  simp only [LinearMap.sub_apply] at h
-  simp only [map_sub]
-  exact sub_eq_sub_iff_sub_eq_sub.mp h
-
-
 theorem appendOldSource_movingPower_above (p : ZMod 2) {i : I} {v w : List I}
     (x : AppendIdx i v w) (d : ℕ) (hd : d • D.parity i = 0) (c : hom D Sc cutoff v v)
     (f : AppendOldCoordinates D Sc cutoff i v w)
@@ -201,6 +187,5 @@ theorem appendOldSource_movingPower_above (p : ZMod 2) {i : I} {v w : List I}
   change x.1.1 = d + q.representative.1.1 at hn
   change q.representative.1.1 = q.1.1 at hk
   omega
-
 
 end OddMath.QuiverHecke.ELVOld

@@ -63,15 +63,6 @@ theorem map_qPoly {A B : (pres D Sc).Presented} (φ : End A →ₐ[k] End B) (x 
   unfold qPoly
   split_ifs <;> simp only [map_sum, map_add, map_smul, map_mul, map_pow, map_one]
 
-theorem qPoly_mem {A : (pres D Sc).Presented} (S : Subalgebra k (End A)) {x y : End A}
-    (hx : x ∈ S) (hy : y ∈ S) (j l : I) : qPoly D Sc x y j l ∈ S := by
-  unfold qPoly
-  split_ifs
-  · exact S.smul_mem S.one_mem _
-  · exact S.add_mem (S.sum_mem fun p _ => S.sum_mem fun q _ =>
-      S.smul_mem (S.mul_mem (S.pow_mem hx _) (S.pow_mem hy _)) _)
-      (S.add_mem (S.smul_mem (S.pow_mem hx _) _) (S.smul_mem (S.pow_mem hy _) _))
-
 variable (D Sc) (i : I)
 
 open Classical in
@@ -219,27 +210,6 @@ def goodAll : Subalgebra k (End ((pres D Sc).obj (ob D (i :: s)))) where
     rw [AlgHom.commutes]
     exact (goodSubalgebra D Sc i β a ha n ⟨s ++ σ, h⟩).algebraMap_mem c
 
-theorem KillAll.good_comp {g : End ((pres D Sc).obj (ob D (i :: s)))} {Y : (pres D Sc).obj (ob D (i :: s)) ⟶ (pres D Sc).obj (ob D (i :: s))}
-    (hg : g ∈ goodAll D Sc i β a ha n s) (hY : KillAll D Sc i β a ha n s Y) :
-    KillAll D Sc i β a ha n s (g ≫ Y) := fun σ h => by
-  rw [MonoidalSupercategory.comp_whiskerRight (R := k)]
-  exact hg σ h _ (hY σ h)
-
-theorem whiskerLeft_mem_goodAll (f : End ((pres D Sc).obj (ob D s))) :
-    ((pres D Sc).obj (ob D [i]) ◁ f : End ((pres D Sc).obj (ob D (i :: s)))) ∈
-      goodAll D Sc i β a ha n s := fun σ h => by
-  rw [whiskerLeft_whiskerRight_cons]
-  exact goodE_whiskerLeft (w := ⟨s ++ σ, h⟩) (f ▷ (pres D Sc).obj (ob D σ))
-
-theorem dotE_zero_mem_goodAll : dotE D Sc (i :: s) 0 ∈ goodAll D Sc i β a ha n s :=
-  fun σ h => by
-    rw [dotE_whiskerRight D Sc (i :: s) σ 0 (by simp)]
-    exact goodE_dotZero (w := ⟨s ++ σ, h⟩)
-
-theorem dotE_succ_mem_goodAll (b : ℕ) : dotE D Sc (i :: s) (b + 1) ∈ goodAll D Sc i β a ha n s := by
-  rw [← whiskerLeft_dotE_cons]
-  exact whiskerLeft_mem_goodAll _
-
 /-- Adjoining a last spectator. -/
 theorem KillAll.whiskerRight_cons {Y : (pres D Sc).obj (ob D (i :: s)) ⟶ (pres D Sc).obj (ob D (i :: s))} (x : I)
     (hY : KillAll D Sc i β a ha n s Y) :
@@ -282,116 +252,6 @@ theorem KillAll.of_linear_even (hp : D.parity i = 0) (c : End ((pres D Sc).obj (
 end Context
 
 section Equation
-
-/-- The statement of `DeformedGlobalQP.md` (3) for the word `μ`:
-`f_i(x₁) (Tₙ Vₙ − A_μ)` kills in every right context. -/
-def QPIdentity (μ : List I) : Prop :=
-  KillAll D Sc i β a ha n μ
-    (((moveHom D Sc i [] μ ≫ lastToFirstHom D Sc i μ :
-          (pres D Sc).obj (ob D (i :: μ)) ⟶ (pres D Sc).obj (ob D (i :: μ))) ≫
-        _root_.Polynomial.aeval (dotE D Sc (i :: μ) 0) (a i)) -
-      qpProduct D Sc i μ ≫ _root_.Polynomial.aeval (dotE D Sc (i :: μ) 0) (a i))
-
-theorem qpIdentity_nil : QPIdentity D Sc i β a ha n [] := by
-  refine KillAll.zero.of_eq ?_
-  simp [moveHom, lastToFirstHom, qpProduct, End.one_def]
-
-/-- Distinct letters: `Tₙ₊₁Vₙ₊₁ − A = Q_(i,x)(x₁, x_(n+2)) ((TₙVₙ − A_μ) ⊗ 1_x)`. -/
-theorem qpIdentity_append_ne (μ : List I) {x : I} (hx : x ≠ i)
-    (ih : QPIdentity D Sc i β a ha n μ) : QPIdentity D Sc i β a ha n (μ ++ [x]) := by
-  have hq := qPoly_mem (goodAll D Sc i β a ha n (μ ++ [x])) dotE_zero_mem_goodAll
-    (dotE_succ_mem_goodAll μ.length) i x
-  refine (KillAll.good_comp hq (ih.whiskerRight_cons x)).of_eq ?_
-  rw [moveHom_lastToFirstHom_append_ne D Sc (Ne.symm hx) μ, qpProduct_append, End.mul_def,
-    qpFactor, ite_eq_right_of_eq_false _ _ (eq_false hx)]
-  simp only [sub_eq_add_neg, MonoidalSupercategory.add_whiskerRight (R := k),
-    MonoidalSupercategory.neg_whiskerRight (R := k),
-    MonoidalSupercategory.comp_whiskerRight (R := k),
-    aeval_dotE_whiskerRight D Sc (i :: μ) [x] (by simp), Preadditive.comp_add, Preadditive.comp_neg, Category.assoc, whiskerWordAlgHom_apply, id_eq]
-  rfl
-
-/-- (K) as a `KillAll` statement on `μ ++ [i]`. -/
-theorem killAll_relation (μ : List I) :
-    KillAll D Sc i β a ha n (μ ++ [i])
-      ((moveHom D Sc i [] (μ ++ [i]) ≫ (lastToFirstHom D Sc i μ ▷ (pres D Sc).obj (ob D [i]))) ≫ _root_.Polynomial.aeval (dotE D Sc (i :: (μ ++ [i])) 0) (a i)) := fun σ h => by
-  rw [MonoidalSupercategory.comp_whiskerRight (R := k),
-    aeval_dotE_whiskerRight D Sc _ σ (by simp)]
-  exact killE_relation_context D Sc i β a ha n μ σ h
-
-/-- The induction hypothesis on `μ`, right whiskered by `1_i`. -/
-theorem qpIdentity_whiskerRight_self (μ : List I) (ih : QPIdentity D Sc i β a ha n μ) :
-    KillAll D Sc i β a ha n (μ ++ [i]) ((moveWhisker D Sc i μ ≫ (lastToFirstHom D Sc i μ ▷ (pres D Sc).obj (ob D [i])) ≫ _root_.Polynomial.aeval (dotE D Sc (i :: (μ ++ [i])) 0) (a i)) - (@id (End ((pres D Sc).obj (ob D (i :: (μ ++ [i]))))) (qpProduct D Sc i μ ▷ (pres D Sc).obj (ob D [i])) ≫ _root_.Polynomial.aeval (dotE D Sc (i :: (μ ++ [i])) 0) (a i))) := by
-  refine (ih.whiskerRight_cons i).of_eq ?_
-  simp only [sub_eq_add_neg, MonoidalSupercategory.add_whiskerRight (R := k),
-    MonoidalSupercategory.neg_whiskerRight (R := k),
-    MonoidalSupercategory.comp_whiskerRight (R := k),
-    aeval_dotE_whiskerRight D Sc (i :: μ) [i] (by simp), Category.assoc]
-  rfl
-
-omit [Fintype I] in
-theorem sub_sq_sub_eq_neg_squareDiff (μ : List I) :
-    (dotE D Sc (i :: (μ ++ [i])) 0 ^ 2 - (show End ((pres D Sc).obj (ob D (i :: (μ ++ [i])))) from dotE D Sc (i :: (μ ++ [i])) (μ.length + 1) ≫ dotE D Sc (i :: (μ ++ [i])) (μ.length + 1))) = -OddNilHecke.Intertwiner.squareDiff (A := End _) (dotE D Sc (i :: (μ ++ [i])) 0) (dotE D Sc (i :: (μ ++ [i])) (μ.length + 1)) := by
-  rw [OddNilHecke.Intertwiner.squareDiff, neg_sub]
-  congr 1
-  rw [pow_two, End.mul_def]
-
-/-- Odd repeated letter. -/
-theorem qpIdentity_append_odd (hp : D.parity i = 1) (μ : List I)
-    (ih : QPIdentity D Sc i β a ha n μ) : QPIdentity D Sc i β a ha n (μ ++ [i]) := by
-  have hE : (dotE D Sc (i :: (μ ++ [i])) (μ.length + 1) - dotE D Sc (i :: (μ ++ [i])) 0) ∈ goodAll D Sc i β a ha n (μ ++ [i]) :=
-    Subalgebra.sub_mem _ (dotE_succ_mem_goodAll μ.length) dotE_zero_mem_goodAll
-  have hDE : OddNilHecke.Intertwiner.squareDiff (A := End _) (dotE D Sc (i :: (μ ++ [i])) 0) (dotE D Sc (i :: (μ ++ [i])) (μ.length + 1)) * (dotE D Sc (i :: (μ ++ [i])) (μ.length + 1) - dotE D Sc (i :: (μ ++ [i])) 0) = (dotE D Sc (i :: (μ ++ [i])) (μ.length + 1) - dotE D Sc (i :: (μ ++ [i])) 0) * OddNilHecke.Intertwiner.squareDiff (A := End _) (dotE D Sc (i :: (μ ++ [i])) 0) (dotE D Sc (i :: (μ ++ [i])) (μ.length + 1)) :=
-    squareDiff_mul_sub_comm (dotE_last_mul_first D Sc i μ) (zsign_mul_self _)
-  have hED : ∀ {T : (pres D Sc).Presented} (Z : (pres D Sc).obj (ob D (i :: (μ ++ [i]))) ⟶ T),
-      (dotE D Sc (i :: (μ ++ [i])) (μ.length + 1) - dotE D Sc (i :: (μ ++ [i])) 0) ≫ OddNilHecke.Intertwiner.squareDiff (A := End _) (dotE D Sc (i :: (μ ++ [i])) 0) (dotE D Sc (i :: (μ ++ [i])) (μ.length + 1)) ≫ Z = OddNilHecke.Intertwiner.squareDiff (A := End _) (dotE D Sc (i :: (μ ++ [i])) 0) (dotE D Sc (i :: (μ ++ [i])) (μ.length + 1)) ≫ (dotE D Sc (i :: (μ ++ [i])) (μ.length + 1) - dotE D Sc (i :: (μ ++ [i])) 0) ≫ Z := fun Z => by
-    rw [← Category.assoc, ← Category.assoc, ← End.mul_def, ← End.mul_def, hDE]
-  have hS : -SKM.zsign k (D.parity i * wordSumParity D μ) * SKM.zsign k (D.parity i * wordSumParity D μ) = -1 := by rw [neg_mul, zsign_mul_self]
-  have hKc := KillAll.of_sq_sub
-    (dotE D Sc (μ ++ [i]) μ.length ≫ dotE D Sc (μ ++ [i]) μ.length)
-    ((killAll_relation D Sc i β a ha n μ).neg.of_eq (Z :=
-      (dotE D Sc (i :: (μ ++ [i])) 0 ^ 2 - (show End ((pres D Sc).obj (ob D (i :: (μ ++ [i])))) from (pres D Sc).obj (ob D [i]) ◁
-        (dotE D Sc (μ ++ [i]) μ.length ≫ dotE D Sc (μ ++ [i]) μ.length))) ≫
-        (SKM.zsign k (D.parity i * wordSumParity D μ) • ((dotE D Sc (i :: (μ ++ [i])) (μ.length + 1) - dotE D Sc (i :: (μ ++ [i])) 0) ≫ (moveWhisker D Sc i μ ≫ (lastToFirstHom D Sc i μ ▷ (pres D Sc).obj (ob D [i])) ≫ _root_.Polynomial.aeval (dotE D Sc (i :: (μ ++ [i])) 0) (a i))) - OddNilHecke.Intertwiner.squareDiff (A := End _) (dotE D Sc (i :: (μ ++ [i])) 0) (dotE D Sc (i :: (μ ++ [i])) (μ.length + 1)) ≫ (moveWhisker D Sc i μ ≫ crossE D Sc (μ ++ [i] ++ [i]) μ.length ≫ (lastToFirstHom D Sc i μ ▷ (pres D Sc).obj (ob D [i])) ≫ _root_.Polynomial.aeval (dotE D Sc (i :: (μ ++ [i])) 0) (a i)))) (by
-      rw [MonoidalSupercategory.whiskerLeft_comp (R := k), whiskerLeft_dotE_cons,
-        sub_sq_sub_eq_neg_squareDiff, Preadditive.neg_comp, moveHom_append_self,
-        moveWhisker_comp_sameIntertwiner_odd D Sc i hp μ]
-      simp only [Preadditive.sub_comp, Preadditive.comp_sub, Linear.smul_comp, Linear.comp_smul, Category.assoc]))
-  refine (((KillAll.good_comp hE hKc).smul (-SKM.zsign k (D.parity i * wordSumParity D μ))).add (KillAll.good_comp hE
-    (KillAll.good_comp hE (qpIdentity_whiskerRight_self D Sc i β a ha n μ ih)))).of_eq ?_
-  rw [moveHom_lastToFirstHom_append_self_odd D Sc i hp μ, lastToFirstHom_append_self,
-    qpProduct_append, End.mul_def, qpFactor, ite_eq_left_of_eq_true _ _ (eq_true rfl), ite_eq_left_of_eq_true _ _ (eq_true hp), pow_two, End.mul_def]
-  simp only [Preadditive.comp_sub, Linear.smul_comp, Linear.comp_smul, Category.assoc, whiskerWordAlgHom_apply, smul_sub, smul_smul, hS, one_smul, neg_smul, hED]
-  abel
-
-/-- Even repeated letter. -/
-theorem qpIdentity_append_even (hp : D.parity i = 0) (μ : List I)
-    (ih : QPIdentity D Sc i β a ha n μ) : QPIdentity D Sc i β a ha n (μ ++ [i]) := by
-  have hp' : ¬D.parity i = 1 := by rw [hp]; decide
-  have hKc := KillAll.of_linear_even hp (dotE D Sc (μ ++ [i]) μ.length)
-    ((killAll_relation D Sc i β a ha n μ).of_eq (Z :=
-      ((show End ((pres D Sc).obj (ob D (i :: (μ ++ [i])))) from (pres D Sc).obj (ob D [i]) ◁ dotE D Sc (μ ++ [i]) μ.length) -
-          dotE D Sc (i :: (μ ++ [i])) 0) ≫ ((moveWhisker D Sc i μ ≫ (lastToFirstHom D Sc i μ ▷ (pres D Sc).obj (ob D [i])) ≫ _root_.Polynomial.aeval (dotE D Sc (i :: (μ ++ [i])) 0) (a i)) + (dotE D Sc (i :: (μ ++ [i])) (μ.length + 1) - dotE D Sc (i :: (μ ++ [i])) 0) ≫ (moveWhisker D Sc i μ ≫ crossE D Sc (μ ++ [i] ++ [i]) μ.length ≫ (lastToFirstHom D Sc i μ ▷ (pres D Sc).obj (ob D [i])) ≫ _root_.Polynomial.aeval (dotE D Sc (i :: (μ ++ [i])) 0) (a i)))) (by
-      rw [whiskerLeft_dotE_cons, moveHom_append_self,
-        moveWhisker_comp_sameIntertwiner_even D Sc i hp μ]
-      simp only [Preadditive.add_comp, Preadditive.comp_add, Category.assoc]))
-  refine (hKc.sub (qpIdentity_whiskerRight_self D Sc i β a ha n μ ih)).of_eq ?_
-  rw [moveHom_lastToFirstHom_append_self_even D Sc i hp μ, lastToFirstHom_append_self,
-    qpProduct_append, qpFactor, ite_eq_left_of_eq_true _ _ (eq_true rfl), ite_eq_right_of_eq_false _ _ (eq_false hp'), mul_neg_one, Preadditive.neg_comp]
-  simp only [Category.assoc, whiskerWordAlgHom_apply]
-  abel
-
-/-- `DeformedGlobalQP.md` (3): `f_i(x₁) Tₙ Vₙ ≡ f_i(x₁) A_μ` modulo endomorphisms killing in
-every right context, for every word `μ`. -/
-theorem qpIdentity (μ : List I) : QPIdentity D Sc i β a ha n μ := by
-  induction μ using List.reverseRecOn with
-  | nil => exact qpIdentity_nil D Sc i β a ha n
-  | append_singleton μ x ih =>
-    by_cases hx : x = i
-    · subst hx
-      rcases (show ∀ e : ZMod 2, e = 0 ∨ e = 1 by decide) (D.parity x) with hp | hp
-      · exact qpIdentity_append_even D Sc _ β a ha n hp μ ih
-      · exact qpIdentity_append_odd D Sc _ β a ha n hp μ ih
-    · exact qpIdentity_append_ne D Sc i β a ha n μ hx ih
 
 end Equation
 

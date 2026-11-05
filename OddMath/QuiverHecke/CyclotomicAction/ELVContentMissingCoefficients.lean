@@ -1,4 +1,5 @@
-import OddMath.QuiverHecke.CyclotomicAction.ELVContentMissingUnitRows
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentMissingUnitModules
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionUnitInverseRows
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionUnitInverseNaturality
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridRouquierFields
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionVacuumCoefficients
@@ -29,23 +30,5 @@ def contentMissingBoundaryCoefficients :
   inductionVacuumCoefficients K hDot count
     (contentMissingUnitModuleIso D Sc cutoff γ i hi)
     (contentMissingUnitModuleIso_hom D Sc cutoff γ i hi)
-
-/-- Each boundary coefficient retains the original inverse-defined module row. -/
-theorem contentMissingBoundary_coefficient_total (n : ℕ) (hn : n < count)
-    (N : Superfunctor k (OldContentCategory D Sc cutoff γ) (SVec k)) :
-    ((contentMissingBoundaryCoefficients D Sc cutoff γ i hi).coeff n).total N =
-      contentMissingUnitRow D Sc cutoff γ i hi N ⟨n, hn⟩ :=
-  inductionVacuumCoefficient_total K hDot count
-    (contentMissingUnitModuleIso D Sc cutoff γ i hi)
-    (contentMissingUnitModuleIso_hom D Sc cutoff γ i hi) n hn N
-
-/-- This is the raw top inverse row. The normalized left-adjunction
-counit has its separate prescribed scalar factor. -/
-theorem contentMissingBoundary_cap_total (hc : 0 < count)
-    (N : Superfunctor k (OldContentCategory D Sc cutoff γ) (SVec k)) :
-    ((contentMissingBoundaryCoefficients D Sc cutoff γ i hi).cap).total N =
-      contentMissingUnitRow D Sc cutoff γ i hi N ⟨count - 1, by omega⟩ := by
-  rw [SKM.RouquierBoundary.Coefficients.cap, ite_eq_left hc]
-  exact contentMissingBoundary_coefficient_total D Sc cutoff γ i hi (count - 1) (by omega) N
 
 end OddMath.QuiverHecke.ELVOld

@@ -47,12 +47,6 @@ private theorem missingConjugateGivenIso_hom_apply
     (b : B ≃ₗ[k] W) (t : B ≃ₗ[k] W') (x : V') :
     (missingConjugateGivenIso s a e b t).hom x = t (b.symm (e.hom (a (s.symm x)))) := rfl
 
-private theorem missingConjugateGivenIso_inv_apply
-    {k : Type u} [CommRing k] {A B V W V' W' : SVec k}
-    (s : A ≃ₗ[k] V') (a : A ≃ₗ[k] V) (e : V ≅ W)
-    (b : B ≃ₗ[k] W) (t : B ≃ₗ[k] W') (x : W') :
-    (missingConjugateGivenIso s a e b t).inv x = s (a.symm (e.inv (b (t.symm x)))) := rfl
-
 private theorem missingConjugateGivenIso_hom_identify
     {k : Type u} [CommRing k] {A B V W V' W' : SVec k}
     (s : A ≃ₗ[k] V') (a : A ≃ₗ[k] V) (e : V ≅ W)
@@ -154,14 +148,4 @@ theorem probeMissingColourUnitMatrixIso_hom :
     hOld hScalar
   exact hfinal
 
-/-- The independently prescribed forward matrix preserves its actual grading. -/
-theorem probeMissingColourUnitMatrixIso_hom_mem :
-    (probeMissingColourUnitMatrixIso D Sc m γ N hN i hi w).hom ∈ parity (R := k) _ _ 0 := by
-  rw [probeMissingColourUnitMatrixIso_hom]
-  exact unitColumnMatrix_mem S dS O count ((U).obj w)
-
-/-- The prescribed inverse preserves the same actual grading. -/
-theorem probeMissingColourUnitMatrixIso_inv_mem :
-    (probeMissingColourUnitMatrixIso D Sc m γ N hN i hi w).inv ∈ parity (R := k) _ _ 0 :=
-  inv_mem _ (probeMissingColourUnitMatrixIso_hom_mem D Sc m γ N hN i hi w)
 end OddMath.QuiverHecke

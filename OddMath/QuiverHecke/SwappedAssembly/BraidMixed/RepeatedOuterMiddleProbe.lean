@@ -118,7 +118,6 @@ theorem qExpr_comp_sub_reverse (Sc : Scalars D k) (i j : I)
           (RepeatedOuterQCorrection.supported_outer_even Sc i j b c hs)
           (RepeatedOuterQCorrection.supported_inner_even Sc i j b c hs) (Sc.s i j b c)
 
-
 variable {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]

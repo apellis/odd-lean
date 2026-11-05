@@ -104,14 +104,6 @@ private theorem chart_word_heq {ν ρ : List I} (h : ν = ρ) :
   cases h
   rfl
 
-/-- Every outer E context uses the same global chart of the concatenated word. -/
-theorem contextChart_global_heq (ν η : List I) :
-    HEq (PowerWordWeightContexts.contextChart D Sc cutoff L ΛR ν η
-      (PowerWordWeight.wordWeight D ΛR ν) rfl (chart D Sc m cutoff L ΛP ΛR ν)).hom
-      (chart D Sc m cutoff L ΛP ΛR (ν ++ η)).hom := by
-  exact (contextChart_heq D Sc m cutoff L ΛP ΛR ν η _ rfl _ HEq.rfl _ HEq.rfl).trans
-    (chart_word_heq D Sc m cutoff L ΛP ΛR (PowerWordContexts.extendedWord_eq ν η))
-
 /-- The given local dot chart in every outer context is the single global
 chart of its concatenated word. No comparison premise is supplied. -/
 theorem dotContextChart_global_heq (ν η : List I) (i : I) :

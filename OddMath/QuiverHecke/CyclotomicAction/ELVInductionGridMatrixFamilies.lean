@@ -80,14 +80,6 @@ theorem gridCapMatrixEntry_mem (N : Superfunctor k A (SVec k)) (m : ℕ) (a : Op
       ((SKM.homParityShiftDatum (k := k) p).inv_mem ((restriction K).obj (induced K N)))
   | some r => exact shiftedCapDotRow_mem J hα N r.val
 
-/-- The generic dotted unit field is the already specified shifted column. -/
-theorem gridUnitMatrixEntry_some (N : Superfunctor k A (SVec k)) (m : ℕ) (r : Fin m) :
-    gridUnitMatrixEntry J K hγ hβ N m (some r) = shiftedUnitDotColumn K hβ N r.val := rfl
-
-/-- The generic dotted cap field is the already specified shifted row. -/
-theorem gridCapMatrixEntry_some (N : Superfunctor k A (SVec k)) (m : ℕ) (r : Fin m) :
-    gridCapMatrixEntry J K hγ hα N m (some r) = shiftedCapDotRow J hα N r.val := rfl
-
 /-- The first unit field is the given mate after the canonical source coordinate. -/
 theorem gridUnitMatrixEntry_none_total (N : Superfunctor k A (SVec k)) (m : ℕ) (w : A) :
     SVec.toLinearMap ((gridUnitMatrixEntry J K hγ hβ N m none).total w) =
@@ -133,26 +125,6 @@ def gridUnitMatrixComponent (N : Superfunctor k A (SVec k)) (m : ℕ) (w : A) :
 def gridCapMatrixComponent (N : Superfunctor k A (SVec k)) (m : ℕ) (w : A) :
     (induced J ((restriction J).obj N)).obj w ⟶ gridCapMatrixTargetSpace K p N m w :=
   OddMath.FiniteSuperspace.assembleRows _ _ fun a => (gridCapMatrixEntry J K hγ hα N m a).total w
-
-private theorem gridEntry_total_mem
-    {F G : Superfunctor k A (SVec k)} {f : F ⟶ G}
-    (hf : f ∈ parity (R := k) _ _ 0) (w : A) :
-    f.total w ∈ parity (R := k) (F.obj w) (G.obj w) 0 := by
-  have hz := Superfunctor.app_eq_zero_of_mem hf (by decide : (1 : ZMod 2) ≠ 0) w
-  rw [SuperNatTrans.total, hz, add_zero]
-  exact f.app_mem 0 w
-
-/-- The finite unit component is even on the actual shifted source grading. -/
-theorem gridUnitMatrixComponent_mem (N : Superfunctor k A (SVec k)) (m : ℕ) (w : A) :
-    gridUnitMatrixComponent J K hγ hβ N m w ∈ parity (R := k) _ _ 0 :=
-  OddMath.FiniteSuperspace.assembleColumns_even _ _ _ fun a =>
-    gridEntry_total_mem (gridUnitMatrixEntry_mem J K hγ hβ N m a) w
-
-/-- The finite cap component is even on the actual shifted target grading. -/
-theorem gridCapMatrixComponent_mem (N : Superfunctor k A (SVec k)) (m : ℕ) (w : A) :
-    gridCapMatrixComponent J K hγ hα N m w ∈ parity (R := k) _ _ 0 :=
-  OddMath.FiniteSuperspace.assembleRows_even _ _ _ fun a =>
-    gridEntry_total_mem (gridCapMatrixEntry_mem J K hγ hα N m a) w
 
 /-- The literal unit entries assemble as a morphism of actual modules. -/
 def gridUnitMatrixModuleMap (N : Superfunctor k A (SVec k)) (m : ℕ) :

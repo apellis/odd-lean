@@ -19,7 +19,6 @@ variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
   {D : Datum I X} {Sc : Scalars D k}
 
-
 namespace ProbeReservoir
 
 theorem isIso_homDistinctMixedMateDot_of_pow_sourceUnits {a b c d : B} (E : a ⟶ b) {E' : c ⟶ d}

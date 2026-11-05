@@ -111,9 +111,4 @@ theorem probeOldActionDot_isUnit : IsUnit (End.of (probeOldActionDot D Sc m i Λ
   rw [← probeOldActionDotIso_hom]
   infer_instance
 
-theorem probeOldActionDotIso_inv_mem :
-    (probeOldActionDotIso D Sc m i Λ h).inv ∈ parity (R := k) _ _ (D.parity i) := by
-  apply Supercategory.inv_mem (probeOldActionDotIso D Sc m i Λ h)
-  simpa only [probeOldActionDotIso_hom] using probeOldActionDot_mem D Sc m i Λ h
-
 end OddMath.QuiverHecke

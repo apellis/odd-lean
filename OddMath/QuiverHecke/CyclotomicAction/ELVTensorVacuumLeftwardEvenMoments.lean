@@ -21,7 +21,7 @@ series `E(-w)(1 - w)^(-m)` (`tensorVacuumColumn_even_moments`). Leftward data
 satisfying the positive inverse equations at the vacuum sector give such an
 inverse whose column products with the native cap rows are the conjugated
 evaluated left bubble entries `dcup n ≫ ε xᴺ`
-(`vacuumLeftwardCapInverse_native_even`, `tensorVacuum_leftward_even_moments`).
+(`vacuumLeftwardCapInverse_even`, `tensorVacuum_leftward_even_moments`).
 No inverse, moment or bubble value is assumed. See
 `docs/Nondegeneracy/InverseColumnMoments.md`.
 -/
@@ -220,7 +220,7 @@ include hdot in
 data satisfying the positive inverse equations at the vacuum sector give an
 entrywise inverse of the native cap window `[bend; x ^ n ≫ v]_(n < h)` of the
 evaluated A6 bend, whose columns are the explicit `vacuumLeftwardColumn`. -/
-theorem vacuumLeftwardCapInverse_native_even (Z : (P).H ((0, 0) : Sector I))
+theorem vacuumLeftwardCapInverse_even (Z : (P).H ((0, 0) : Sector I))
     (hZ : Z = vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
         ((0, 0) : Sector I))
@@ -274,7 +274,7 @@ theorem vacuumLeftwardCapInverse_native_even (Z : (P).H ((0, 0) : Sector I))
         ProbeVacuumCap.shiftedPreCap D (parameterTwist D Sc) m
           (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i hP
           (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) := fun n =>
-    (Iso.inv_comp_eq _).2 (paddedVacuumCap_native D Sc m cutoff bound ΛP ΛR hcP hcR H i hP n)
+    (Iso.inv_comp_eq _).2 (paddedVacuumCap_eq D Sc m cutoff bound ΛP ΛR hcP hcR H i hP n)
   simp only [Iso.symm_hom, Iso.symm_inv, Category.assoc, hs, hw] at h₃
   exact ⟨_, h₃⟩
 
@@ -316,11 +316,11 @@ theorem vacuumLeftwardCapInverse_bubbleEntries_even (Z : (P).H ((0, 0) : Sector 
         c.inv ≫ (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).map
           (dc n (.nil _) p₀ ≫ (P).epsEntry cc i N ν₀ p₀ (.nil _) Z) ≫ c.hom := by
   subst hZ
-  obtain ⟨j, hj⟩ := vacuumLeftwardCapInverse_native_even D Sc m cutoff bound ΛP ΛR hcP hcR H
+  obtain ⟨j, hj⟩ := vacuumLeftwardCapInverse_even D Sc m cutoff bound ΛP ΛR hcP hcR H
     hdot i _ rfl lc dc HP hP hi
   exact ⟨paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H, j, _,
     paddedVacuumCapTargetIso_hom_eq_eqToHom D Sc m cutoff bound ΛP ΛR hcP hcR H, hj,
-    fun n N => vacuumLeftwardColumn_cap_native D Sc m cutoff bound ΛP ΛR hcP hcR H i dc cc hP
+    fun n N => vacuumLeftwardColumn_cap_eq D Sc m cutoff bound ΛP ΛR hcP hcR H i dc cc hP
       n N⟩
 
 end Generic

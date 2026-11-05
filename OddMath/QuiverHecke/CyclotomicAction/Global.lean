@@ -87,43 +87,4 @@ theorem exists_blockSucc_iff (i : I) {x y : X} (h : x + D.α i = y)
       Subtype.ext (by simp only [blockSucc_val, Multiset.singleton_add,
         Multiset.cons_erase hi])⟩
 
-/-- Empty fibres are the absent-colour boundary, not a missing height block. -/
-theorem isEmpty_of_not_mem (i : I) {x y : X} (h : x + D.α i = y)
-    (β : WeightBlocks D Λ y) (hi : i ∉ β.1) :
-    IsEmpty {γ : WeightBlocks D Λ x // blockSucc D Λ i h γ = β} :=
-  ⟨fun γ => hi ((exists_blockSucc_iff D Λ i h β).mp ⟨γ.1, γ.2⟩)⟩
-
-/-- KKO's height is the negative of the pairing with the block weight. -/
-theorem blockLoc_weight (i : I) {x : X} (β : WeightBlocks D Λ x) :
-    -D.h i (Λ - (β.1.map D.α).sum) = D.h i x := by
-  change -(D.cd.coroot i) _ = (D.cd.coroot i) _
-  rw [← map_neg, neg_sub]
-  exact congrArg (D.cd.coroot i) β.2
-
-/-- Dominance and the off-diagonal Cartan inequalities determine the boundary sign. -/
-theorem pair_nonpos_of_not_mem (hΛ : ∀ i, 0 ≤ D.h i Λ)
-    (i : I) {x : X} (β : WeightBlocks D Λ x) (hi : i ∉ β.1) : D.h i x ≤ 0 := by
-  have hs : ∀ s : Multiset I, i ∉ s → D.h i (s.map D.α).sum ≤ 0 := by
-    intro s
-    induction s using Multiset.induction_on with
-    | empty => simp [SKM.Datum.h]
-    | cons j s ih =>
-      intro hn
-      have hij : i ≠ j := fun e => hn (e ▸ Multiset.mem_cons_self j s)
-      have hj : D.h i (D.α j) ≤ 0 := D.isGCM.offDiag_nonpos i j hij
-      have ht := ih (fun e => hn (Multiset.mem_cons_of_mem e))
-      simpa only [Multiset.map_cons, Multiset.sum_cons, map_add] using add_nonpos hj ht
-  rw [← β.2]
-  change (D.cd.coroot i) ((β.1.map D.α).sum - Λ) ≤ 0
-  rw [map_sub]
-  exact sub_nonpos.mpr ((hs β.1 hi).trans (hΛ i))
-
-/-- Height alone cannot label blocks if two simple roots differ. -/
-theorem blockWeight_not_card (i j : I) (hij : D.α i ≠ D.α j) :
-    ¬ ∃ w : ℕ → X, ∀ β : Multiset I, blockWeight D Λ β = w β.card := by
-  rintro ⟨w, hw⟩
-  have e := (hw {i}).trans (hw {j}).symm
-  simp only [blockWeight_singleton] at e
-  exact hij (sub_left_injective e)
-
 end OddMath.QuiverHecke.CyclotomicAction

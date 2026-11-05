@@ -62,16 +62,6 @@ private theorem chartAtOriginalWeight_hom_heq {k J I : Type u} [CommRing k]
   cases hFG
   rfl
 
-private theorem chartAtOriginalWeight_even {k J I : Type u} [CommRing k]
-    (A : PiSCat.{u,u,u + 1} k) (C : J → PiSCat.{u,u,u + 1} k)
-    (W : (x : J) → List I → C x) {x y : J} (h : x = y)
-    (F : A ⟶ C x) (G : A ⟶ C y) (hFG : HEq F G) (R : A) (ν : List I)
-    (e : G.obj R ≅ W y ν) (he : e.hom ∈ parity (R := k) _ _ 0) :
-    (chartAtOriginalWeight A C W h F G hFG R ν e).hom ∈ parity (R := k) _ _ 0 := by
-  subst y
-  cases hFG
-  exact he
-
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (ΛP ΛR : X) (L : I × ℕ → ℕ)
 local notation "Tw" => parameterTwist D Sc
@@ -105,15 +95,6 @@ theorem tensorPathValueChart_global_heq {l : List (Col I X)} {c : I →₀ ℕ}
   unfold tensorPathValueChart
   dsimp only
   apply chartAtOriginalWeight_hom_heq
-
-/-- The global path chart is even in every original content block. -/
-theorem tensorPathValueChart_hom_mem {l : List (Col I X)} {c : I →₀ ℕ}
-    (p : SPath l (0,c) (0,0)) (hup : ∀ a ∈ l, a.l.1 = true) :
-    (tensorPathValueChart D Sc m cutoff ΛP ΛR L p hup).hom ∈ parity (R := k) _ _ 0 := by
-  unfold tensorPathValueChart
-  dsimp only
-  apply chartAtOriginalWeight_even
-  exact TensorVacuumWords.chart_even D Tw m cutoff L ΛP ΛR (l.map (fun a => a.l.2)).reverse
 
 omit [Fintype I] in
 /-- Reading the literal source labels recovers the specified source word. -/
@@ -176,22 +157,6 @@ private opaque tensorSourceModuleChart :
 source chart and the normalized global word chart. -/
 def tensorOriginalSourceModuleIso :=
   (tensorSourceModuleChart D Sc m cutoff ΛP ΛR L hP hR s).iso
-
-private theorem tensorSourceModuleIso_hom :
-    (tensorOriginalSourceModuleIso D Sc m cutoff ΛP ΛR L hP hR s).hom =
-      (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀)
-        (tensorSourceWordBlock D ΛP ΛR s)) ≫
-        (tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s).hom
-          (tensorSourceWordBlock D ΛP ΛR s) :=
-  (tensorSourceModuleChart D Sc m cutoff ΛP ΛR L hP hR s).hom_eq
-
-private theorem tensorSourceModuleIso_inv :
-    (tensorOriginalSourceModuleIso D Sc m cutoff ΛP ΛR L hP hR s).inv =
-      (tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s).inv
-        (tensorSourceWordBlock D ΛP ΛR s) ≫
-        (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).inv.total R₀)
-          (tensorSourceWordBlock D ΛP ΛR s)) :=
-  (tensorSourceModuleChart D Sc m cutoff ΛP ΛR L hP hR s).inv_eq
 
 /-- The old-word unit in the exact original-weight source-word value space. -/
 def tensorSourceWordUnit :
@@ -258,23 +223,6 @@ theorem tensorOriginalSourceUnit_wordValue :
   (tensorOriginalSourceModuleIso_apply D Sc m cutoff ΛP ΛR L hP hR s
     (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)).symm.trans
     (tensorOriginalSourceUnit_value D Sc m cutoff ΛP ΛR L hP hR s)
-
-/-- The source unit agrees exactly with the prescribed inverse whole
-source and inverse global word-chart formula. -/
-theorem tensorOriginalSourceUnit_formula :
-    tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s =
-      (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).inv.total R₀)
-        (tensorSourceWordBlock D ΛP ΛR s)).total
-          (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl)
-          ((moduleIsoLinearEquiv (Pi.isoApp (tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s)
-            (tensorSourceWordBlock D ΛP ΛR s))
-            (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl)).symm
-              (PowerWordYoneda.unitVector D Tw cutoff L s.reverse)) := by
-  unfold tensorOriginalSourceUnit
-  change (tensorOriginalSourceModuleIso D Sc m cutoff ΛP ΛR L hP hR s).inv.total _
-    (tensorSourceWordUnit D Sc cutoff ΛP ΛR L s) = _
-  rw [tensorSourceModuleIso_inv,Superfunctor.comp_total,tensorSourceWordUnit_formula]
-  rfl
 
 /-- The actual supported tensor matrix observed through its canonical
 original-input row and global path chart, on its canonical cyclic source unit. -/

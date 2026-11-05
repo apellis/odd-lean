@@ -70,14 +70,6 @@ def elvProbeHeightWordEntry {n : ℕ} (s t : Word I n) :
       probeHeightMk D m Sc n
         (FiniteHomMatrix.single t s (elvProbeScalarHom D m Sc s.val t.val f)) := rfl
 
-/-- At positive height this is the already constructed literal cyclotomic entry map. -/
-theorem elvProbeHeightWordEntry_succ {n : ℕ} (s t : Word I (n+1)) :
-    elvProbeHeightWordEntry D m Sc s t = elvProbeWordEntry D m Sc s t := by
-  apply LinearMap.ext
-  intro f
-  obtain ⟨f, rfl⟩ := (ELVOld.ideal D Sc cut s.val t.val).mkQ_surjective f
-  rfl
-
 theorem elvProbeHeightWordEntry_comp {n : ℕ} (s t z : Word I n)
     (f : ELVOld.Old D Sc cut s.val t.val) (g : ELVOld.Old D Sc cut t.val z.val) :
     elvProbeHeightWordEntry D m Sc s z (ELVOld.oldComp D Sc cut s.val t.val z.val f g) =
@@ -106,35 +98,6 @@ theorem elvProbeHeightWordEntry_id {n : ℕ} (s : Word I n) :
   rw [elvProbeHeightWordEntry_mk]
   exact congrArg (fun h : End ((pres D Sc).obj (ob D s.val)) =>
     probeHeightMk D m Sc n (FiniteHomMatrix.single s s h)) (elvProbeScalarHom_id D m Sc s.val)
-
-theorem probeHeightMk_append (i : I) (n : ℕ) (z : Hn D Sc n) :
-    heightAppend D Sc a i n (probeHeightMk D m Sc n z) =
-      probeHeightMk D m Sc (n+1) (appendAlgebra D Sc i n z) := by
-  cases n <;> rfl
-
-theorem elvProbeHeightWordEntry_append {n : ℕ} (i : I) (s t : Word I n)
-    (f : ELVOld.Old D Sc cut s.val t.val) :
-    heightAppend D Sc a i n (elvProbeHeightWordEntry D m Sc s t f) =
-      elvProbeHeightWordEntry D m Sc (appendWord i s) (appendWord i t)
-        (elvProbeOldRightContext D m Sc [i] s.val t.val f) := by
-  obtain ⟨f, rfl⟩ := (ELVOld.ideal D Sc cut s.val t.val).mkQ_surjective f
-  change heightAppend D Sc a i n
-      (probeHeightMk D m Sc n (FiniteHomMatrix.single t s (elvProbeScalarHom D m Sc s.val t.val f))) =
-    probeHeightMk D m Sc (n+1) (FiniteHomMatrix.single (appendWord i t) (appendWord i s)
-      (elvProbeScalarHom D m Sc (s.val++[i]) (t.val++[i])
-        (ELVOld.rightContext D Sc cut [i] s.val t.val f)))
-  rw [probeHeightMk_append]
-  change probeHeightMk D m Sc (n+1)
-    (appendLinear D Sc i n (FiniteHomMatrix.single t s (elvProbeScalarHom D m Sc s.val t.val f))) = _
-  rw [appendLinear_single]
-  have hc : elvProbeScalarHom D m Sc (s.val++[i]) (t.val++[i])
-        (ELVOld.rightContext D Sc cut [i] s.val t.val f) =
-      ELVOld.affineRightContext D Sc [i] s.val t.val (elvProbeScalarHom D m Sc s.val t.val f) :=
-    elvAffineScalarSpecialization_rightContext D Sc cut (probeScalarValues D m)
-      (probeScalarValues_vanish D m) [i] s.val t.val f
-  exact congrArg (fun h : (pres D Sc).obj (ob D (s.val++[i])) ⟶
-      (pres D Sc).obj (ob D (t.val++[i])) =>
-    probeHeightMk D m Sc (n+1) (FiniteHomMatrix.single (appendWord i t) (appendWord i s) h)) hc.symm
 
 /-- A content permutation viewed in the existing fixed-height word type. -/
 def probeContentWord (ν : List I) (v : ELVOld.ContentWords ν) : Word I ν.length :=
@@ -246,12 +209,6 @@ theorem elvProbeContentNonUnital_one (ν : List I) :
     FiniteHomMatrix.localUnit Finset.univ
   congr 1
 
-/-- At positive height the corner is exactly the existing cyclotomic content corner. -/
-theorem probeHeightContentCorner_cons (i : I) (ν : List I) :
-    ProbeHeightContentCorner D m Sc (i::ν) =
-      CyclotomicContentCorner D Sc a ν.length ((i::ν : List I) : Multiset I) := rfl
-
-
 private def probeHeightContentSubmodule (ν : List I) : Submodule k (heightAlgebra D Sc a ν.length) where
   carrier := (Subsemigroup.corner (probeHeightContentIdempotent D m Sc ν) : Set _)
   zero_mem' := (Subsemigroup.mem_corner_iff (probeHeightContentIdempotent_idem D m Sc ν)).mpr
@@ -305,35 +262,5 @@ def elvProbeContentSpecialization (ν : List I) :
 
 @[simp] theorem elvProbeContentSpecialization_val (ν : List I) (x : ELVOld.ContentRing D Sc cut ν) :
     (elvProbeContentSpecialization D m Sc ν x).val = elvProbeContentNonUnital D m Sc ν x := rfl
-
-/-- The algebra map retains the actual rectangular matrix-entry specialization. -/
-theorem elvProbeContentSpecialization_single (ν : List I) (v w : ELVOld.ContentWords ν)
-    (f : ELVOld.contentObject D Sc cut ν w ⟶ ELVOld.contentObject D Sc cut ν v) :
-    (elvProbeContentSpecialization D m Sc ν (FiniteHomMatrix.single v w f)).val =
-      elvProbeContentEntry D m Sc ν (v,w) f := by
-  rw [elvProbeContentSpecialization_val]
-  exact elvProbeContentLinear_single D m Sc ν v w f
-
-/-- An appended word belongs to the enlarged content frame. -/
-def probeContentAppendWord (i : I) (ν : List I) (v : ELVOld.ContentWords ν) :
-    ELVOld.ContentWords (i::ν) :=
-  ⟨v.val++[i], (v.property.append_right [i]).trans (List.perm_append_comm : (ν++[i]).Perm ([i]++ν))⟩
-
-/-- On every matrix generator the algebra specialization commutes with the existing height append. -/
-theorem elvProbeContentSpecialization_append_single (i : I) (ν : List I)
-    (v w : ELVOld.ContentWords ν)
-    (f : ELVOld.contentObject D Sc cut ν w ⟶ ELVOld.contentObject D Sc cut ν v) :
-    heightAppend D Sc a i ν.length
-        (elvProbeContentSpecialization D m Sc ν (FiniteHomMatrix.single v w f)).val =
-      (elvProbeContentSpecialization D m Sc (i::ν)
-        (FiniteHomMatrix.single (probeContentAppendWord i ν v) (probeContentAppendWord i ν w)
-          (elvProbeOldRightContext D m Sc [i] w.val v.val f))).val := by
-  rw [elvProbeContentSpecialization_single, elvProbeContentSpecialization_single]
-  exact elvProbeHeightWordEntry_append D m Sc i (probeContentWord ν w) (probeContentWord ν v) f
-
-/-- The vacuum corner unit is the genuine unit of the original empty-word height algebra. -/
-theorem elvProbeContentSpecialization_nil_one :
-    (elvProbeContentSpecialization D m Sc [] 1).val = (1 : heightAlgebra D Sc a 0) := by
-  rw [elvProbeContentSpecialization_val, elvProbeContentNonUnital_one, probeHeightContentIdempotent_nil]
 
 end OddMath.QuiverHecke
