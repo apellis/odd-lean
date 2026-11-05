@@ -358,7 +358,9 @@ theorem vacuumZeroOdd_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
     (fun q p => (LD).lcrossSame i ν₀ q p Zt) (fun _ _ _ => 0)
     (zeroHeight_negInverseAt D Sc m cutoff ΛP ΛR L hP hR sy hc i h0) h0 hP'
     (paddedVacuumDx_odd D Sc m cutoff N ΛP ΛR hP hR
-      (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) i sy hc hP' hi)
+      (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) i
+      (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+        (parameterTwist_homogeneous D Sc hc) N) hP' hi)
   rw [show vacuumBendBlock D (parameterTwist D Sc) m cutoff N ΛR
       (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) = Hv from
     tensorOutputAt_empty D (parameterTwist D Sc) m cutoff L ΛR] at hex
@@ -416,7 +418,9 @@ theorem vacuumOddZero_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
     (fun q p => (LD).lcrossSame i ν₀ q p Zt) (fun _ _ _ => 0)
     (zeroHeight_negInverseAt D Sc m cutoff ΛP ΛR L hP hR sy hc i h0) h0 hP'
     (paddedVacuumDx_odd D Sc m cutoff N ΛP ΛR hP hR
-      (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) i sy hc hP' hi)
+      (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) i
+      (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+        (parameterTwist_homogeneous D Sc hc) N) hP' hi)
   rw [show vacuumBendBlock D (parameterTwist D Sc) m cutoff N ΛR
       (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) = Hv from
     tensorOutputAt_empty D (parameterTwist D Sc) m cutoff L ΛR] at hex
@@ -475,7 +479,9 @@ theorem vacuumZeroEven_decode (i : I) (hi : D.parity i = 0) (hN : 0 < cutoff i)
     (fun q p => (LD).lcrossSame i ν₀ q p Zt) (fun _ _ _ => 0)
     (zeroHeight_negInverseAt D Sc m cutoff ΛP ΛR L hP hR sy hc i h0) h0 hP'
     (paddedVacuumDx_even D Sc m cutoff N ΛP ΛR hP hR
-      (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) i sy hc hP' hi)
+      (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) i
+      (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+        (parameterTwist_homogeneous D Sc hc) N) hP' hi)
   rw [show vacuumBendBlock D (parameterTwist D Sc) m cutoff N ΛR
       (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) = Hv from
     tensorOutputAt_empty D (parameterTwist D Sc) m cutoff L ΛR] at hex
