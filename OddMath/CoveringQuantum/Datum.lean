@@ -9,7 +9,7 @@ import LieLean.RepresentationTheory.Crystal.Basic
 
 Brundan–Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2 ([BE2]), §9 (first paragraph):
 the Cartan matrix is symmetrized by positive integers `(dᵢ)_{i ∈ I}`, the parity of `I` satisfies
-(1.2) (`dᵢⱼ = -aᵢⱼ` is even when `i` is odd), and `(-,-)` is the symmetric bilinear form on the
+(1.4) (`dᵢⱼ = -aᵢⱼ` is even when `i` is odd), and `(-,-)` is the symmetric bilinear form on the
 root lattice with `(αᵢ, αⱼ) = -dᵢ dᵢⱼ = dᵢ aᵢⱼ`.
 
 Clark–Hill–Wang, *Quantum supergroups I*, arXiv:1301.1665v2 ([CHW1]), §1.1, define a super Cartan
@@ -32,7 +32,7 @@ independence nor perfectness is needed for the definitions of `f` and `U̇_{q,π
 ## Main definitions
 
 * `SuperCartanDatum I`: a symmetrizable generalized Cartan matrix with positive integral
-  symmetrizer and a parity satisfying [BE2] (1.2).
+  symmetrizer and a parity satisfying [BE2] (1.4).
 * `SuperCartanDatum.dot`: `i · j = dᵢ aᵢⱼ`; `SuperCartanDatum.wdot`: its extension to `ℕ[I]`.
 * `SuperCartanDatum.BarConsistent`: [BE2] (10.2).
 * `RootDatum I X`: a super Cartan datum with weights, roots and coroots.
@@ -48,7 +48,7 @@ namespace OddMath.CoveringQuantum
 
 /-- A super Cartan datum ([BE2] §1 and §9; [CHW1] §1.1): a generalized Cartan matrix `a`
 symmetrized by positive integers `dᵢ` (`dᵢ aᵢⱼ = dⱼ aⱼᵢ`), and a parity `I → ℤ/2` such that
-`aᵢⱼ` is even whenever `i` is odd ([BE2] (1.2), [CHW1] §1.1 (d)). -/
+`aᵢⱼ` is even whenever `i` is odd ([BE2] (1.4), [CHW1] §1.1 (d)). -/
 structure SuperCartanDatum (I : Type*) where
   /-- The generalized Cartan matrix `aᵢⱼ = ⟨hᵢ, αⱼ⟩ = -dᵢⱼ`. -/
   a : Matrix I I ℤ
@@ -59,7 +59,7 @@ structure SuperCartanDatum (I : Type*) where
   d_mul_symm : ∀ i j, (d i : ℤ) * a i j = d j * a j i
   /-- The parity `i ↦ |i|`. -/
   parity : I → ZMod 2
-  /-- [BE2] (1.2): `aᵢⱼ` is even if `i` is odd. -/
+  /-- [BE2] (1.4): `aᵢⱼ` is even if `i` is odd. -/
   even_of_odd : ∀ i j, parity i = 1 → Even (a i j)
 
 namespace SuperCartanDatum
@@ -154,7 +154,7 @@ theorem h_α (i j : I) : D.h i (D.α j) = D.a i j := D.coroot_root i j
 def parl (i : I) (μ : X) : ZMod 2 := D.parity i * ((D.h i μ : ZMod 2) + 1)
 
 /-- `|i, λ|` depends on `λ` only through `⟨hᵢ, λ⟩ mod 2`; for odd `i` it is unchanged by adding
-roots ([BE2] (1.2)). -/
+roots ([BE2] (1.4)). -/
 theorem parl_add_α (i j : I) (μ : X) : D.parl i (μ + D.α j) = D.parl i μ := by
   simp only [parl, map_add, h_α]
   by_cases hi : D.parity i = 1

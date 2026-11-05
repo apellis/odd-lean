@@ -17,7 +17,7 @@ The reduction of a two-letter matrix to its components at sectors in general pos
 Rouquier families, whiskered by Hom-sector functors, of associators, of the comparisons of the
 parity shifts and of the mixed interchange `J`; each is supernatural of its parity. The
 polynomial `Q` is even: its monomials of odd parity have zero coefficient by the parity
-conditions on the scalars `sᵢⱼ^{pq}` and on the `dᵢⱼ` (Brundan–Ellis (1.2), (1.4)).
+conditions on the scalars `sᵢⱼ^{pq}` and on the `dᵢⱼ` (Brundan–Ellis (1.4), (1.6)).
 
 For equal colours, the coefficient `a` of the mixed block is data; its supernaturality, of
 parity `pᵢ`, is the hypothesis `CrossCoeff.IsSupernatural`.
@@ -357,7 +357,7 @@ theorem natCast_dn_mul_parity (D : Datum I X) (i j : I) :
       exact Even.zero
 
 /-- **The parameter polynomial `Q` is even**: its monomials of odd parity have zero
-coefficient (Brundan–Ellis (1.2), (1.4)). -/
+coefficient (Brundan–Ellis (1.4), (1.6)). -/
 theorem mixedQ_supernatural (i j : I) (t : Sector I)
     (hR : StepValid (true, j) false (nextSector (true, i) true t)) :
     IsSupernatural k 0

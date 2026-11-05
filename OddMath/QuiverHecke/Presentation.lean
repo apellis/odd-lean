@@ -170,7 +170,7 @@ theorem parity_sum_append (ls ms : List (LayerData I)) :
     ((crossL u i j v).map fun x => x.2.1.parity D).sum = D.parity i * D.parity j := by
   simp [crossL, Shape.parity]
 
-/-- All relations (1.7)–(1.9) are parity-homogeneous, by (1.2) and (1.4). -/
+/-- All relations (1.7)–(1.9) are parity-homogeneous, by (1.4) and (1.6). -/
 theorem isParityHomogeneous : (pres D Sc).IsParityHomogeneous := by
   intro r
   cases r with
