@@ -40,7 +40,7 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
 local notation "bound" => PowerWordContent.powerBound D cutoff L
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR
 local notation "ν₀" => (P).wt ((0, 0) : Sector I)
-local notation "Zt" => (SupportedSectors.tensorVacuum D Sc m cutoff L ΛP ΛR).obj
+local notation "Zt" => tensorSectorInput D Sc m cutoff L ΛR ΛP hcP hcR
 local notation "H" => VacuumTensor.probeFunctor D (parameterTwist D Sc) m cutoff bound
   ((BalancedInduction.restriction
     (contentInclusion D (parameterTwist D Sc) cutoff bound (0 : Multiset I))).obj
@@ -78,6 +78,7 @@ theorem tensorVacuum_negInverseAt (hh : D.h i ν₀ ≤ 0) :
       ((P).pathFunctor _q).obj Zt ⟶ ((P).pathFunctor r).obj Zt),
       (P).NegInverseAt (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ν₀
         ((0, 0) : Sector I) ((0, 0) : Sector I) Zt lc dc := by
+  rw [tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hcP hcR]
   haveI := (SupportedSectors.centralAugmentedMatrix_isIso D Sc m cutoff bound ΛP ΛR hcP hcR
     sy hc i ((0, 0) : Sector I) (SupportedSectors.tensorVacuum D Sc m cutoff L ΛP ΛR)).2 hh
   exact ⟨_, _, (P).negInverseAt_of_isIso _ i _ _ _ _⟩
