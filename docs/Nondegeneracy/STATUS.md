@@ -27,10 +27,24 @@ applies Theorems 11.7 and 12.1 (`gammaInt_bijective`) to
 `nondegeneracy_of_symmetrizer`: `γ : U̇_{q,π}(𝔤)_ℒ → K₀(𝔘̇(𝔤))` is bijective
 for homogeneous parameters over a field `k` with `2 ≠ 0`, finitely many
 colours, a finitely generated free weight lattice and linearly independent
-roots and coroots (the hypotheses of the formalized Theorem 12.1; (10.2) is
-not assumed). Beyond BE2's §12 setting these add `2 ≠ 0` and the finiteness
-and independence conditions. Consumer:
-[Decategorification](../../scripts/NonVacuity/Decategorification.lean).
+roots and coroots ((10.2) is not assumed).
+`decategorification_sourceWeightLattice` states it in BE2's own setting: the
+weight lattice `P = {λ ∈ 𝔥* | ⟨hᵢ, λ⟩ ∈ ℤ}` of a complex realization with
+linearly independent roots and coroots, an arbitrary colour set, and the route
+hypothesis `DegreeLocallyFinite` of Theorem 11.7 (automatic for finitely many
+colours). It comes from `decategorification_of_separating` (torsion-free weight
+group, independent roots, integral weights separating the coroots) and
+`gammaInt_bijective_of_nondegenerate` / `theorem_12_1_of_nondegenerate`, which
+take nondegeneracy of the form of Theorem 10.1 as input. That nondegeneracy is
+descended from finite weight windows in
+[WindowForm](../../OddMath/CoveringQuantum/UDot/WindowForm.lean)
+(`sesquilinearForm_nondegenerate_of_separating`,
+`sourceWeightLattice_nondegenerate`). Beyond BE2's §12 setting the remaining
+hypotheses are `2 ≠ 0` (characteristic 2 is not covered) and
+`DegreeLocallyFinite`. Consumers:
+[Decategorification](../../scripts/NonVacuity/Decategorification.lean),
+[DecategorificationWeightLattice](../../scripts/NonVacuity/DecategorificationWeightLattice.lean)
+(infinitely many odd colours on `P`).
 
 The proof follows the swapped route. `nondegeneracy_of_swapped_bubble_fields`
 (#1068) reduces the conjecture to the positive- and nonpositive-height bubble
