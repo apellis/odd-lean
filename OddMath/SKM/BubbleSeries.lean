@@ -57,7 +57,7 @@ theorem bubble_conv_left_unique {C : Type*} [Category C] [Preadditive C] {Z : C}
     exact add_left_cancel (hb.trans hb'.symm)
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k} (cs : CScalars Sc)
+  {Sc : IntegralScalars D k} (cs : CScalars Sc)
 
 /-- Normalized clockwise coefficients. -/
 def bubbleCoeffR (i : I) (μ : X) (n : ℕ) := (cs.c μ i : k) • bubRs cs i μ n

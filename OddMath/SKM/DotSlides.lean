@@ -104,7 +104,7 @@ theorem iter_slide' {A B : C} (x : A ⟶ A) (y : B ⟶ B) (t d : A ⟶ B) (c : k
 end Iter
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k}
+  {Sc : IntegralScalars D k}
 
 /-! ## Dots as powers -/
 

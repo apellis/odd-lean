@@ -26,7 +26,7 @@ With a symmetrizer `dᵢ` the dot on a strand of colour `i` has degree `2dᵢ`, 
   `0 < q < dⱼᵢ`.
 * `Scalars.LowerDegree`: over an arbitrary commutative ring, every nonzero `sᵢⱼ^{pq}` has
   nonnegative coefficient degree: `Qᵢⱼ` has no monomial above its leading terms.
-* `Scalars.Homogeneous.coefficientDegree_eq_zero`: the homogeneity condition (1.31) says
+* `IntegralScalars.Homogeneous.coefficientDegree_eq_zero`: the homogeneity condition (1.31) says
   exactly that nonzero coefficients have coefficient degree zero.
 * `GradedCoefficientNondegeneracy D sy`: the conjecture for graded-homogeneous parameters over
   every `ℕ`-graded commutative ring with `2` invertible. This is the statement targeted after
@@ -81,7 +81,7 @@ def Scalars.LowerDegree (sy : Symmetrizer D) (Sc : Scalars D k) : Prop :=
 
 /-- Under the homogeneity condition (1.31), nonzero coefficients have coefficient degree
 zero. -/
-theorem Scalars.Homogeneous.coefficientDegree_eq_zero {Sc : Scalars D k} (hh : Sc.Homogeneous)
+theorem IntegralScalars.Homogeneous.coefficientDegree_eq_zero {Sc : Scalars D k} (hh : Sc.Homogeneous)
     (sy : Symmetrizer D) {i j : I} {p q : ℕ} (hp : 0 < p) (hp' : (p : ℤ) < D.d i j)
     (hq : 0 < q) (hq' : (q : ℤ) < D.d j i) (hs : Sc.s i j p q ≠ 0) :
     coefficientDegree sy i j p q = 0 := by
@@ -97,7 +97,7 @@ theorem Scalars.Homogeneous.coefficientDegree_eq_zero {Sc : Scalars D k} (hh : S
   rw [this, mul_zero]
 
 /-- Homogeneous parameters are lower-degree parameters. -/
-theorem Scalars.Homogeneous.lowerDegree {Sc : Scalars D k} (hh : Sc.Homogeneous)
+theorem IntegralScalars.Homogeneous.lowerDegree {Sc : Scalars D k} (hh : Sc.Homogeneous)
     (sy : Symmetrizer D) : Sc.LowerDegree sy := by
   intro i j p q hp hp' hq hq' hs
   rw [hh.coefficientDegree_eq_zero sy hp hp' hq hq' hs]

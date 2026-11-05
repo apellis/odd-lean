@@ -20,7 +20,7 @@ namespace OddMath.SKM
 open CategoryTheory StringDiagrams Presentation Finset
 universe u v w
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k} (cs : CScalars Sc)
+  {Sc : IntegralScalars D k} (cs : CScalars Sc)
 
 /-- Evaluation of the actual dotted sideways crossing followed by the left cap. -/
 theorem sigma_dots_epsP_expansion (i : I) (μ : X) (n : ℕ) :

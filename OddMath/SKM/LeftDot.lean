@@ -45,7 +45,7 @@ open CategoryTheory StringDiagrams Presentation
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k} (cs : CScalars Sc)
+  {Sc : IntegralScalars D k} (cs : CScalars Sc)
 
 /-! ## The 2-morphisms involved -/
 
@@ -393,7 +393,7 @@ theorem lemma41_eq3_one_odd_nonneg (i : I) (μ : X) (hi : D.parity i = 1) (hh : 
 /-! ### `⟨hᵢ, λ⟩ < 0`: testing on the components of (1.14) -/
 
 /-- The `♣`-cap with label `n`. -/
-abbrev dkM (D : Datum I X) (Sc : Scalars D k) (i : I) (μ : X) (n : ℕ) :=
+abbrev dkM (D : Datum I X) (Sc : IntegralScalars D k) (i : I) (μ : X) (n : ℕ) :=
   cl D Sc μ [dn i, up i] [] (dcapL i n)
 
 /-- For `⟨hᵢ, λ⟩ ≤ 0`, a 2-morphism out of `Fᵢ Eᵢ 1_λ` is determined by its composites with `σ`
@@ -1021,9 +1021,17 @@ theorem lemma41_eq2_ne (i j : I) (μ : X) (hij : i ≠ j) (n : ℕ) :
 
 /-! ## (4.3), (4.4) for all `n` -/
 
-/-- The odd bubble squares to zero (1.24), by the super interchange law and `2 ∈ k^×`. -/
+/-- The odd bubble squares to zero (1.24): by the super interchange law if `2 ∈ k^×`, and by the
+relation (1.24) of the integral form otherwise. -/
 theorem oddBubble_comp_self (i : I) (μ : X) (hi : D.parity i = 1) :
     oddBubble cs i μ ≫ oddBubble cs i μ = 0 := by
+  by_cases h2 : IsUnit (2 : k)
+  swap
+  · have hz := lin_relation Sc (.zInt (.sq i μ))
+    simp only [relation, zGate_of_not_isUnit D i _ hi h2, lin_dg] at hz
+    rw [oddBubble_eq_cl, Linear.smul_comp, Linear.comp_smul, smul_smul, zsign_mul_self, one_smul,
+      cl_comp (sChain_oddL D i μ) (sChain_oddL D i μ)]
+    exact hz
   have hm : oddBubble cs i μ ∈ closedPar D Sc μ 1 := by
     rw [oddBubble]
     split_ifs with hh
@@ -1040,7 +1048,7 @@ theorem oddBubble_comp_self (i : I) (μ : X) (hi : D.parity i = 1) :
   have h := comm_of_mem hm hm
   rw [show zsign k ((1 : ZMod 2) * 1) = -1 by simp [zsign], neg_one_smul, eq_neg_iff_add_eq_zero,
     ← two_smul k] at h
-  obtain ⟨u, hu⟩ := Sc.two_isUnit ⟨i, hi⟩
+  obtain ⟨u, hu⟩ := h2
   have := congrArg (fun x => (↑u⁻¹ : k) • x) h
   simp only [smul_zero, smul_smul, ← hu, Units.inv_mul, one_smul] at this
   exact this

@@ -43,7 +43,7 @@ open StringDiagrams.Chord (Move Fits run Iso rl rlId mvL mvR rl_of_ne rl_of_eq)
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k} {cs : CScalars Sc}
+  {Sc : IntegralScalars D k} {cs : CScalars Sc}
 
 /-! ## Chord diagrams read one move at a time -/
 

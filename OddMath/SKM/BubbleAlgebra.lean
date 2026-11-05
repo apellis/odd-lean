@@ -134,7 +134,7 @@ theorem range_le {A : Type*} [Semiring A] [Algebra k A]
 end SYM
 
 variable {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k} (cs : CScalars Sc)
+  {Sc : IntegralScalars D k} (cs : CScalars Sc)
 
 /-- The images of the polynomial and exterior generators of `SYM`. -/
 def betaSYMGen (μ : X) : SYMGen D → End ((pres D Sc).obj (ob D μ []))

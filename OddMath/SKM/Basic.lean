@@ -122,11 +122,12 @@ theorem dn_cast {i j : I} (hij : i ≠ j) : (D.dn i j : ℤ) = D.d i j :=
 
 end Datum
 
-/-- The scalars of Brundan–Ellis §1: units `tᵢⱼ ∈ k^×` with `tᵢᵢ = 1` and `tᵢⱼ = tⱼᵢ` when
-`dᵢⱼ = 0` (1.5), and scalars `sᵢⱼ^{pq} ∈ k` (used for `0 < p < dᵢⱼ`, `0 < q < dⱼᵢ`) with
-`sᵢⱼ^{pq} = sⱼᵢ^{qp}` and `sᵢⱼ^{pq} = 0` if `p|i|` is odd (1.6). If some `i` is odd, `2` is
-invertible in `k`. -/
-structure Scalars {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X)
+/-- The scalars of Brundan–Ellis §1 without the invertibility of `2`: units `tᵢⱼ ∈ k^×` with
+`tᵢᵢ = 1` and `tᵢⱼ = tⱼᵢ` when `dᵢⱼ = 0` (1.5), and scalars `sᵢⱼ^{pq} ∈ k` (used for
+`0 < p < dᵢⱼ`, `0 < q < dⱼᵢ`) with `sᵢⱼ^{pq} = sⱼᵢ^{qp}` and `sᵢⱼ^{pq} = 0` if `p|i|` is odd
+(1.6). These are the parameters of the integral form of `𝔘(𝔤)`, which is defined over every
+commutative ring. -/
+structure IntegralScalars {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X)
     (k : Type*) [CommRing k] where
   /-- The units `tᵢⱼ`. -/
   t : I → I → kˣ
@@ -136,8 +137,17 @@ structure Scalars {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X)
   s : I → I → ℕ → ℕ → k
   s_symm : ∀ i j p q, s i j p q = s j i q p
   s_eq_zero : ∀ (i j : I) (p q : ℕ), (p : ZMod 2) * D.parity i = 1 → s i j p q = 0
+
+/-- The scalars of Brundan–Ellis §1: the data of `IntegralScalars`, and if some `i` is odd, `2`
+is invertible in `k`. -/
+structure Scalars {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X)
+    (k : Type*) [CommRing k] extends IntegralScalars D k where
   /-- `2` is invertible if some element of `I` is odd. -/
   two_isUnit : (∃ i, D.parity i = 1) → IsUnit (2 : k)
+
+instance {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X) (k : Type*) [CommRing k] :
+    Coe (Scalars D k) (IntegralScalars D k) :=
+  ⟨Scalars.toIntegralScalars⟩
 
 /-! ## Signed letters and weights -/
 

@@ -25,7 +25,7 @@ namespace OddMath.SKM
 open CategoryTheory StringDiagrams Presentation Finset
 universe u v w
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k} (cs : CScalars Sc)
+  {Sc : IntegralScalars D k} (cs : CScalars Sc)
 
 /-- For disconnected colours the coroot value is unchanged across the strand. -/
 theorem h_wt_upj_of_d_zero (i j : I) (μ : X) (hd : D.d i j = 0) :

@@ -19,7 +19,7 @@ namespace OddMath.SKM.AltBraid
 open CategoryTheory StringDiagrams Presentation Finset
 universe u v w
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k} (cs : CScalars Sc)
+  {Sc : IntegralScalars D k} (cs : CScalars Sc)
 
 /-- The left-cup pitchfork (7.5) with one spectator on the right. -/
 theorem cup_pf_right (i j a : I) (μ : X) :

@@ -21,7 +21,7 @@ open CategoryTheory StringDiagrams Presentation Supercategory
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k}
+  {Sc : IntegralScalars D k}
 
 attribute [local simp] zsign_zero omegaL_dotsL omegaC_dotsL omegaC_append parsum_dotsL
 
@@ -628,6 +628,233 @@ theorem omega_invM₁ (i : I) (ν : X) (hh : D.h i ν ≤ 0) :
 /-! ## The Chevalley involution -/
 
 /-- The image of every defining relation of `𝔘(𝔤)` vanishes. -/
+/-! ## The relations of the integral form under `ω`
+
+`ω` maps (1.24) at `ν` to (1.24) at `-ν`, and exchanges (5.9) at `ν` with (5.10) at `-ν`, up to
+signs. -/
+
+variable (Sc) in
+/-- The image under `ω` of the class of a layer list `E_s 1_ν → E_t 1_ν`, as a morphism at `-ν`. -/
+def omegaCl (ν : X) (s t : List (Letter I)) (ls : List (LayerData I)) :
+    (pres D Sc).obj (ob D (-ν) (flipW t)) ⟶ (pres D Sc).obj (ob D (-ν) (flipW s)) :=
+  omegaC D k ls • cl D Sc (-ν) (flipW t) (flipW s) (omegaL ls)
+
+theorem omegaCl_append (ν : X) {s m t : List (Letter I)} {A B : List (LayerData I)}
+    (hA : SChain s A m) (hB : SChain m B t) :
+    omegaCl Sc ν s t (A ++ B) =
+      zsign k (parsum D A * parsum D B) • (omegaCl Sc ν m t B ≫ omegaCl Sc ν s m A) := by
+  rw [omegaCl, omegaCl, omegaCl, omegaL_append, omegaC_append, Linear.smul_comp, Linear.comp_smul,
+    smul_smul, smul_smul, cl_comp (sChain_omegaL hB) (sChain_omegaL hA)]
+  congr 1
+  ring
+
+theorem omegaCl_etaL (ν : X) (i : I) (n : ℕ) :
+    omegaCl Sc ν [] [dn i, up i] (etaL i n) = cl D Sc (-ν) [up i, dn i] [] (epsL i n) := by
+  rw [omegaCl, omegaL_etaL, omegaC_etaL]
+  simp only [flipW_cons, flipW_nil, flipL_up, flipL_dn]
+  rw [cl_dotsCap Sc (-ν) i n, smul_smul, zsign_mul_self, one_smul]
+
+theorem omegaCl_epsL (ν : X) (i : I) (n : ℕ) :
+    omegaCl Sc ν [up i, dn i] [] (epsL i n) = cl D Sc (-ν) [] [dn i, up i] (etaL i n) := by
+  rw [omegaCl, omegaL_epsL, omegaC_epsL]
+  simp only [flipW_cons, flipW_nil, flipL_up, flipL_dn]
+  rw [cl_cupDots Sc (-ν) i n, smul_smul, zsign_mul_self, one_smul]
+
+theorem omegaCl_lcrossL (ν : X) (i : I) :
+    omegaCl Sc ν [dn i, up i] [up i, dn i] (lcrossL i i) =
+      -cl D Sc (-ν) [dn i, up i] [up i, dn i] (lcrossL i i) := by
+  rw [omegaCl, omegaL_lcrossL, omegaC_lcrossL, neg_one_smul]
+  simp only [flipW_cons, flipW_nil, flipL_up, flipL_dn]
+
+theorem omegaCl_dcupL (ν : X) (i : I) (m : ℕ) :
+    omegaCl Sc ν [] [up i, dn i] (dcupL i m) =
+      zsign k (D.parity i * m) • cl D Sc (-ν) [dn i, up i] [] (dcapL i m) := by
+  rw [omegaCl, omegaL_dcupL, omegaC_dcupL]
+  simp only [flipW_cons, flipW_nil, flipL_up, flipL_dn]
+
+theorem omegaCl_dcapL (ν : X) (i : I) (m : ℕ) :
+    omegaCl Sc ν [dn i, up i] [] (dcapL i m) =
+      zsign k (D.parity i * m) • cl D Sc (-ν) [] [up i, dn i] (dcupL i m) := by
+  rw [omegaCl, omegaL_dcapL, omegaC_dcapL]
+  simp only [flipW_cons, flipW_nil, flipL_up, flipL_dn]
+
+theorem parsum_lPreL (i : I) (ν : X) (hp : D.parity i = 1) :
+    parsum D (lPreL D i ν) = (D.h i ν : ZMod 2) + 1 := parity_lPreL D i ν hp
+
+theorem parsum_rPostL (i : I) (ν : X) (hp : D.parity i = 1) :
+    parsum D (rPostL D i ν) = (D.h i ν : ZMod 2) + 1 := parity_rPostL D i ν hp
+
+theorem parsum_oddL (i : I) (ν : X) (hp : D.parity i = 1) :
+    parsum D (oddL D i ν) = 1 := parity_oddL D i ν hp
+
+theorem oddPar_neg (i : I) (ν : X) : oddPar D i (-ν) = oddPar D i ν := by
+  simp [oddPar, coroot_neg]
+
+theorem omegaCl_lPreL (ν : X) (i : I) (hp : D.parity i = 1) :
+    omegaCl Sc ν [] [up i, dn i] (lPreL D i ν) =
+      zsign k ((D.h i ν : ZMod 2) + 1) • cl D Sc (-ν) [dn i, up i] [] (rPostL D i (-ν)) := by
+  unfold lPreL rPostL
+  rw [coroot_neg]
+  by_cases h : 0 < D.h i ν
+  · have h' : -D.h i ν < 0 := by omega
+    simp only [h, h', ↓reduceIte, neg_neg]
+    rw [omegaCl_dcupL, hp, one_mul, natCast_toNat_zmod2 (by omega)]
+    congr 1
+    push_cast
+    generalize (D.h i ν : ZMod 2) = a; revert a; decide
+  · have h' : ¬ -D.h i ν < 0 := by omega
+    simp only [h, h', ↓reduceIte]
+    rw [omegaCl_append ν (sChain_etaL i _) (sChain_lcrossL i i), omegaCl_lcrossL, omegaCl_etaL,
+      Preadditive.neg_comp, cl_comp (sChain_lcrossL i i) (sChain_epsL i _), smul_neg,
+      ← neg_smul]
+    congr 1
+    rw [parsum_etaL, parsum_lcrossL, hp, natCast_toNat_zmod2 (by omega)]
+    push_cast
+    generalize (D.h i ν : ZMod 2) = a
+    fin_cases a <;> simp (config := {decide := true}) [zsign]
+
+theorem omegaCl_rPostL (ν : X) (i : I) (hp : D.parity i = 1) :
+    omegaCl Sc ν [dn i, up i] [] (rPostL D i ν) =
+      zsign k ((D.h i ν : ZMod 2) + 1) • cl D Sc (-ν) [] [up i, dn i] (lPreL D i (-ν)) := by
+  unfold lPreL rPostL
+  rw [coroot_neg]
+  by_cases h : D.h i ν < 0
+  · have h' : 0 < -D.h i ν := by omega
+    simp only [h, h', ↓reduceIte]
+    rw [omegaCl_dcapL, hp, one_mul, natCast_toNat_zmod2 (by omega)]
+    congr 1
+    push_cast
+    generalize (D.h i ν : ZMod 2) = a; revert a; decide
+  · have h' : ¬ 0 < -D.h i ν := by omega
+    simp only [h, h', ↓reduceIte, neg_neg]
+    rw [omegaCl_append ν (sChain_lcrossL i i) (sChain_epsL i _), omegaCl_lcrossL, omegaCl_epsL,
+      Preadditive.comp_neg, cl_comp (sChain_etaL i _) (sChain_lcrossL i i), smul_neg,
+      ← neg_smul]
+    congr 1
+    rw [parsum_epsL, parsum_lcrossL, hp, natCast_toNat_zmod2 (by omega)]
+    generalize (D.h i ν : ZMod 2) = a
+    fin_cases a <;> simp (config := {decide := true}) [zsign]
+
+theorem omegaCl_oddL (ν : X) (i : I) (hp : D.parity i = 1) :
+    omegaCl Sc ν [] [] (oddL D i ν) =
+      zsign k ((D.h i ν : ZMod 2) + 1) • cl D Sc (-ν) [] [] (oddL D i (-ν)) := by
+  by_cases h : 0 ≤ D.h i ν
+  · have e1 : oddL D i ν = lPreL D i ν ++ epsL i (D.h i ν).toNat := by simp [oddL, h]
+    rw [e1, omegaCl_append ν (sChain_lPreL D i ν) (sChain_epsL i _), omegaCl_epsL,
+      omegaCl_lPreL ν i hp, Linear.comp_smul, smul_smul,
+      cl_comp (sChain_etaL i _) (sChain_rPostL D i (-ν))]
+    have e2 : etaL i (D.h i ν).toNat ++ rPostL D i (-ν) = oddL D i (-ν) := by
+      by_cases h0 : D.h i ν = 0
+      · simp [oddL, lPreL, rPostL, coroot_neg, h0]
+      · have h1 : ¬ 0 ≤ -D.h i ν := by omega
+        simp [oddL, coroot_neg, h1]
+    rw [e2]
+    congr 1
+    rw [parsum_lPreL i ν hp, parsum_epsL, hp, natCast_toNat_zmod2 h]
+    generalize (D.h i ν : ZMod 2) = a
+    fin_cases a <;> simp (config := {decide := true}) [zsign]
+  · have e1 : oddL D i ν = etaL i (-D.h i ν).toNat ++ rPostL D i ν := by simp [oddL, h]
+    rw [e1, omegaCl_append ν (sChain_etaL i _) (sChain_rPostL D i ν), omegaCl_etaL,
+      omegaCl_rPostL ν i hp, Linear.smul_comp, smul_smul,
+      cl_comp (sChain_lPreL D i (-ν)) (sChain_epsL i _)]
+    have e2 : lPreL D i (-ν) ++ epsL i (-D.h i ν).toNat = oddL D i (-ν) := by
+      have h1 : 0 ≤ -D.h i ν := by omega
+      simp [oddL, coroot_neg, h1]
+    rw [e2]
+    congr 1
+    rw [parsum_rPostL i ν hp, parsum_etaL, hp, natCast_toNat_zmod2 (by omega)]
+    push_cast
+    generalize (D.h i ν : ZMod 2) = a
+    fin_cases a <;> simp (config := {decide := true}) [zsign]
+
+theorem dvd_two_zmod {n : ℕ} {h : ℤ} (hn : (2 : ℤ) ∣ n + h + 1) :
+    (n : ZMod 2) + (h : ZMod 2) + 1 = 0 := by
+  have := (ZMod.intCast_zmod_eq_zero_iff_dvd (n + h + 1 : ℤ) 2).mpr hn
+  push_cast at this
+  exact this
+
+theorem omega_zSq (i : I) (ν : X) :
+    omegaLin Sc ν [] [] (relation D Sc (.zInt (.sq i ν))) = 0 := by
+  simp only [relation]
+  by_cases hg : D.parity i = 1 ∧ ¬IsUnit (2 : k)
+  swap
+  · simp only [zGate, hg, ↓reduceIte, map_zero]
+  obtain ⟨hp, h2⟩ := hg
+  rw [zGate_of_not_isUnit D i _ hp h2, omegaLin_dg]
+  change omegaCl Sc ν [] [] _ = 0
+  have hz := lin_relation Sc (.zInt (.sq i (-ν)))
+  simp only [relation, Rel.ν, ZBase.ν, Rel.dom, Rel.cod, zGate_of_not_isUnit D i _ hp h2,
+    lin_dg] at hz
+  rw [omegaCl_append ν (sChain_oddL D i ν) (sChain_oddL D i ν), omegaCl_oddL ν i hp,
+    Linear.smul_comp, Linear.comp_smul, cl_comp (sChain_oddL D i (-ν)) (sChain_oddL D i (-ν)), hz]
+  simp
+
+theorem omega_zRight (i : I) (ν : X) (n : ℕ) (hn : (2 : ℤ) ∣ n + D.h i ν + 1) :
+    omegaLin Sc ν [] [] (relation D Sc (.zInt (.right i ν n hn))) = 0 := by
+  simp only [relation]
+  by_cases hg : D.parity i = 1 ∧ ¬IsUnit (2 : k)
+  swap
+  · simp only [zGate, hg, ↓reduceIte, map_zero]
+  obtain ⟨hp, h2⟩ := hg
+  rw [zGate_of_not_isUnit D i _ hp h2, map_sub, map_smul, omegaLin_dg, omegaLin_dg]
+  change omegaCl Sc ν [] [] _ - _ • omegaCl Sc ν [] [] _ = 0
+  have hn' : (2 : ℤ) ∣ n + D.h i (-ν) + 1 := by rw [coroot_neg]; omega
+  have hz := lin_relation Sc (.zInt (.left i (-ν) n hn'))
+  simp only [relation, Rel.ν, ZBase.ν, Rel.dom, Rel.cod, zGate_of_not_isUnit D i _ hp h2,
+    lin_sub, lin_smul, lin_dg, oddPar_neg, sub_eq_zero] at hz
+  rw [omegaCl_append ν (sChain_etaL i _) (sChain_rPostL D i ν),
+    omegaCl_append ν (sChain_etaL i _) ((sChain_rPostL D i ν).append (sChain_oddL D i ν)),
+    omegaCl_append ν (sChain_rPostL D i ν) (sChain_oddL D i ν),
+    omegaCl_etaL, omegaCl_etaL, omegaCl_rPostL ν i hp, omegaCl_oddL ν i hp]
+  simp only [Linear.smul_comp, Linear.comp_smul, smul_smul, Category.assoc]
+  rw [cl_comp (sChain_lPreL D i (-ν)) (sChain_epsL i (n + 1)),
+    cl_comp (sChain_lPreL D i (-ν)) (sChain_epsL i n),
+    cl_comp (sChain_oddL D i (-ν)) ((sChain_lPreL D i (-ν)).append (sChain_epsL i n)), hz,
+    smul_smul, ← sub_smul]
+  convert zero_smul k _ using 1
+  have hn2 := dvd_two_zmod hn
+  rw [parsum_etaL, parsum_etaL, parsum_rPostL i ν hp, parsum_append, parsum_rPostL i ν hp,
+    parsum_oddL i ν hp, hp]
+  push_cast
+  revert hn2
+  generalize (D.h i ν : ZMod 2) = a
+  generalize (n : ZMod 2) = b
+  generalize oddPar D i ν = c
+  fin_cases a <;> fin_cases b <;> fin_cases c <;> simp (config := {decide := true}) [zsign]
+
+theorem omega_zLeft (i : I) (ν : X) (n : ℕ) (hn : (2 : ℤ) ∣ n + D.h i ν + 1) :
+    omegaLin Sc ν [] [] (relation D Sc (.zInt (.left i ν n hn))) = 0 := by
+  simp only [relation]
+  by_cases hg : D.parity i = 1 ∧ ¬IsUnit (2 : k)
+  swap
+  · simp only [zGate, hg, ↓reduceIte, map_zero]
+  obtain ⟨hp, h2⟩ := hg
+  rw [zGate_of_not_isUnit D i _ hp h2, map_sub, map_smul, omegaLin_dg, omegaLin_dg]
+  change omegaCl Sc ν [] [] _ - _ • omegaCl Sc ν [] [] _ = 0
+  have hn' : (2 : ℤ) ∣ n + D.h i (-ν) + 1 := by rw [coroot_neg]; omega
+  have hz := lin_relation Sc (.zInt (.right i (-ν) n hn'))
+  simp only [relation, Rel.ν, ZBase.ν, Rel.dom, Rel.cod, zGate_of_not_isUnit D i _ hp h2,
+    lin_sub, lin_smul, lin_dg, oddPar_neg, sub_eq_zero] at hz
+  rw [omegaCl_append ν (sChain_lPreL D i ν) (sChain_epsL i _),
+    omegaCl_append ν (sChain_oddL D i ν) ((sChain_lPreL D i ν).append (sChain_epsL i _)),
+    omegaCl_append ν (sChain_lPreL D i ν) (sChain_epsL i _),
+    omegaCl_epsL, omegaCl_epsL, omegaCl_lPreL ν i hp, omegaCl_oddL ν i hp]
+  simp only [Linear.smul_comp, Linear.comp_smul, smul_smul, Category.assoc]
+  rw [cl_comp (sChain_etaL i (n + 1)) (sChain_rPostL D i (-ν)),
+    cl_comp (sChain_rPostL D i (-ν)) (sChain_oddL D i (-ν)),
+    cl_comp (sChain_etaL i n) ((sChain_rPostL D i (-ν)).append (sChain_oddL D i (-ν))), hz,
+    smul_smul, ← sub_smul]
+  convert zero_smul k _ using 1
+  have hn2 := dvd_two_zmod hn
+  rw [parsum_epsL, parsum_epsL, parsum_lPreL i ν hp, parsum_append, parsum_lPreL i ν hp,
+    parsum_oddL i ν hp, hp]
+  push_cast
+  revert hn2
+  generalize (D.h i ν : ZMod 2) = a
+  generalize (n : ZMod 2) = b
+  generalize oddPar D i ν = c
+  fin_cases a <;> fin_cases b <;> fin_cases c <;> simp (config := {decide := true}) [zsign]
+
 theorem omega_relation (r : Rel D) :
     (freeLift k (SOpMap.functor (chevMap D) (chevImg D Sc))).map ((pres D Sc).rel r) = 0 := by
   apply eq_zero_of_omegaLin
@@ -657,6 +884,11 @@ theorem omega_relation (r : Rel D) :
   | invM₅ i ν m n hm hn => exact omega_invM₅ i ν m n hm hn
   | dcupZero i ν n hn => exact omega_dcupZero i ν n hn
   | dcapZero i ν n hn => exact omega_dcapZero i ν n hn
+  | zInt b =>
+    cases b with
+    | sq i ν => exact omega_zSq i ν
+    | right i ν n hn => exact omega_zRight i ν n hn
+    | left i ν n hn => exact omega_zLeft i ν n hn
 
 variable (Sc) in
 /-- **Brundan–Ellis, Proposition 3.5: the Chevalley involution** `ω : 𝔘(𝔤) → 𝔘(𝔤)^{sop}`, the

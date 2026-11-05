@@ -50,7 +50,7 @@ open StringDiagrams.Chord (Move Fits run Iso rl rlId TMove TState tStep tRun TFi
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k} {cs : CScalars Sc}
+  {Sc : IntegralScalars D k} {cs : CScalars Sc}
 
 /-! ## Shifted chord diagrams -/
 

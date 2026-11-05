@@ -22,7 +22,7 @@ namespace OddMath.SKM
 open CategoryTheory StringDiagrams Presentation Finset
 universe u v w
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k} (cs : CScalars Sc)
+  {Sc : IntegralScalars D k} (cs : CScalars Sc)
 
 theorem bubble_slide_term8 (i j : I) (μ : X) (r q s : ℕ) :
     cupAt cs i μ [up j] [] ≫

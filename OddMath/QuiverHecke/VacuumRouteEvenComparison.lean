@@ -54,7 +54,7 @@ variable {I : Type u} {X : Type v} [AddCommGroup X] {D : SKM.Datum I X}
   {k : Type w} [CommRing k] {Sc : SKM.Scalars D k}
 
 /-- Khovanov–Lauda scalars are homogeneous: every `sᵢⱼ^{pq}` vanishes, so the homogeneity
-condition (`SKM.Scalars.Homogeneous`, Brundan–Ellis (1.31)) holds vacuously. -/
+condition (`SKM.IntegralScalars.Homogeneous`, Brundan–Ellis (1.31)) holds vacuously. -/
 theorem isKLScalars_homogeneous (hS : IsKLScalars D k Sc) : Sc.Homogeneous :=
   fun i j p q _ _ _ _ hs => (hs (hS.2 i j p q)).elim
 

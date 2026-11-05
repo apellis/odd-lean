@@ -18,7 +18,7 @@ namespace OddMath.SKM
 open CategoryTheory StringDiagrams Presentation Finset
 universe u v w
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k} (cs : CScalars Sc)
+  {Sc : IntegralScalars D k} (cs : CScalars Sc)
 
 def pdcupL (i j : I) (μ : X) :
     (pres D Sc).obj (ob D μ [dn j]) ⟶ (pres D Sc).obj (ob D μ [up i, dn j, dn i]) :=

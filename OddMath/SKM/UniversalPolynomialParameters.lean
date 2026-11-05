@@ -12,7 +12,7 @@ import Mathlib.Algebra.MvPolynomial.CommRing
 The coefficient-slot polynomial extension in `GroundRingDescent.md` §3,
 for the proposed deduction supporting Brundan–Ellis, arXiv:1701.04133v2,
 Theorem 8.1 and the §8 conjecture. The slot restrictions are precisely
-`Scalars.s_eq_zero`, its symmetric counterpart, and `Scalars.Homogeneous`.
+`Scalars.s_eq_zero`, its symmetric counterpart, and `IntegralScalars.Homogeneous`.
 All allowed unused slots remain, including diagonal slots. No symmetrizer
 is needed for this construction: the homogeneity predicate uses `D.d`.
 The original colours, weights and unsaturated normalization group are retained.

@@ -32,7 +32,7 @@ open CategoryTheory StringDiagrams Presentation
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k} (cs : CScalars Sc)
+  {Sc : IntegralScalars D k} (cs : CScalars Sc)
 
 /-- The bubble with its upward side on the left and `n` dots there, (2.13) for `n ≥ 0` and (2.15)
 for `n < 0`. -/
@@ -77,5 +77,30 @@ theorem oddBubble_consistent (i : I) (μ : X) (hi : D.parity i = 1) (hh : D.h i 
   simp only [ipar, hh, hi, Int.cast_zero, zero_add, mul_one, mul_zero, zsign, ite_true,
     zero_ne_one, ite_false]
   ring
+
+/-- The odd bubble as `(-1)^{oddPar}` times the class of the layers `oddL` (with all scalars
+`c_{λ;i}^{±1}` cancelled). -/
+theorem oddBubble_eq_cl (i : I) (μ : X) :
+    oddBubble cs i μ = zsign k (oddPar D i μ) • cl D Sc μ [] [] (oddL D i μ) := by
+  unfold oddBubble oddL oddPar
+  by_cases h0 : 0 ≤ D.h i μ
+  · simp only [h0, ↓reduceIte, bubL, etaP]
+    unfold lPreL
+    by_cases hp : 0 < D.h i μ
+    · have hne : D.h i μ ≠ 0 := by omega
+      simp only [hp, hne, ↓reduceIte, zsign_zero, one_smul, Linear.smul_comp, smul_smul,
+        Units.inv_mul, cl_comp (sChain_dcupL i _) (sChain_epsL i _)]
+    · have he : D.h i μ = 0 := by omega
+      simp only [hp, he, ↓reduceIte, Linear.smul_comp, smul_smul,
+        cl_comp ((sChain_etaL i _).append (sChain_lcrossL i i)) (sChain_epsL i _)]
+      congr 1
+      rw [mul_left_comm, Units.inv_mul, mul_one, ipar, he, Int.cast_zero, zero_add, mul_one]
+  · have hn : D.h i μ < 0 := by omega
+    have hne : D.h i μ ≠ 0 := by omega
+    have hn' : 0 ≤ -D.h i μ := by omega
+    simp only [h0, hn, hn', hne, ↓reduceIte, bubR, epsP]
+    unfold rPostL
+    simp only [hn, ↓reduceIte, zsign_zero, one_smul, Linear.comp_smul, smul_smul, Units.mul_inv,
+      cl_comp (sChain_etaL i _) (sChain_dcapL i _)]
 
 end OddMath.SKM

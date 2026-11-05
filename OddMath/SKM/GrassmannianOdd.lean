@@ -35,7 +35,7 @@ open CategoryTheory StringDiagrams Presentation Finset
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k} (cs : CScalars Sc)
+  {Sc : IntegralScalars D k} (cs : CScalars Sc)
 
 /-- The odd bubble (2.18) has parity `|i|`. -/
 theorem oddBubble_mem (i : I) (μ : X) : oddBubble cs i μ ∈ closedPar D Sc μ (D.parity i) := by

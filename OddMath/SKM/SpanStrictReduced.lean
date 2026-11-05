@@ -1258,7 +1258,7 @@ section Theorem
 universe v w
 
 variable {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k} {cs : CScalars Sc}
+  {Sc : IntegralScalars D k} {cs : CScalars Sc}
 
 variable (μ : X) (a b : List (Letter I)) (M : Set (List (TMove (Letter I))))
   (hM : ∀ R ∈ M, IsMatching₂ a b R ∧ StrictReduced₂ a R)

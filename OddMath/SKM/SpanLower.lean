@@ -58,7 +58,7 @@ open CategoryTheory StringDiagrams Presentation
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k}
+  {Sc : IntegralScalars D k}
 
 /-! ## Every 2-morphism is a combination of normal-form diagrams -/
 
