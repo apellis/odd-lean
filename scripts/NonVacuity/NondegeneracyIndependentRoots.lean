@@ -15,12 +15,14 @@ private abbrev D := ELVOld.WeightedAppendFixture.datum
 
 /-- The simple roots `(2, -4)` and `(-2, 2)` of the fixture are linearly independent. -/
 private theorem roots_linearIndependent : LinearIndependent ℤ D.α := by
+  change LinearIndependent ℤ
+    (fun j i : Bool => if i = j then (2 : ℤ) else if i then -4 else -2)
   rw [Fintype.linearIndependent_iff]
   intro g hg
   have h0 := congrFun hg false
   have h1 := congrFun hg true
-  simp [Fintype.sum_bool, D, ELVOld.WeightedAppendFixture.datum,
-    CyclotomicAction.AsymmetricParameters.datum] at h0 h1
+  simp only [Fintype.sum_bool, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h0 h1
+  norm_num at h0 h1
   intro i
   cases i <;> omega
 
@@ -31,7 +33,7 @@ private def two : ℚˣ := Units.mk0 2 (by norm_num)
 private def scalars : Scalars D ℚ :=
   { ELVOld.WeightedAppendFixture.scalars with
     t := fun i j => if i = j then 1 else two
-    t_self := fun _ => if_pos rfl
+    t_self := fun _ => by simp
     t_symm_of_d_eq_zero := by intro i j _; cases i <;> cases j <;> rfl }
 
 private def sy : Symmetrizer D where
@@ -76,17 +78,21 @@ private def evenDatum : Datum Bool (Option Bool → ℤ) where
   parity := fun _ => 0
   even_of_odd := by
     intro i j h
-    exact absurd h (by decide)
+    simp at h
 
 private theorem evenDatum_d (i j : Bool) : evenDatum.d i j = if i = j then -2 else 2 := by
   cases i <;> cases j <;> rfl
 
 private theorem evenRoots_linearIndependent : LinearIndependent ℤ evenDatum.α := by
+  change LinearIndependent ℤ
+    (fun j (i : Option Bool) => Option.elim i (if j then (1 : ℤ) else 0)
+      fun i => if i = j then 2 else -2)
   rw [Fintype.linearIndependent_iff]
   intro g hg
   have h0 := congrFun hg none
   have h1 := congrFun hg (some false)
-  simp [Fintype.sum_bool, evenDatum] at h0 h1
+  simp only [Fintype.sum_bool, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h0 h1
+  norm_num at h0 h1
   intro i
   cases i <;> omega
 
@@ -96,7 +102,7 @@ private def three : ℚˣ := Units.mk0 3 (by norm_num)
 /-- General homogeneous even scalars. -/
 private def evenScalars : Scalars evenDatum ℚ where
   t := fun i j => if i = j then 1 else if i then three else two
-  t_self := fun _ => if_pos rfl
+  t_self := fun _ => by simp
   t_symm_of_d_eq_zero := by
     intro i j h
     rw [evenDatum_d] at h
@@ -108,7 +114,7 @@ private def evenScalars : Scalars evenDatum ℚ where
     simp [evenDatum] at h
   two_isUnit := by
     rintro ⟨_, h⟩
-    exact absurd h (by decide)
+    simp [evenDatum] at h
 
 private def evenSy : Symmetrizer evenDatum where
   d := fun _ => 1
