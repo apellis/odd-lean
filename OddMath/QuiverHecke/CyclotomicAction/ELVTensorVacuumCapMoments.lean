@@ -308,6 +308,15 @@ private theorem odd_reservoir_series (hi : D.parity i = 1) (hN : 0 < cutoff i) :
     (odd_reservoir_even D Sc m cutoff L i hi hN)
     (odd_reservoir_odd D Sc m cutoff L i hi hN)
 
+/-- The even-colour cap moments in the decode chart are the complete coefficients. -/
+private theorem even_moment_apply (hi : D.parity i = 0) (hN : 0 < cutoff i) (l : ℕ)
+    (z : (V).obj star) :
+    tensorVacuumDecodeLinear D Sc m cutoff L
+        ((tensorUnitCapClosure D Sc m cutoff L i hN (cutoff i - 1 + l)).total star z) =
+      completeCoefficient D cutoff L i l * tensorVacuumDecodeLinear D Sc m cutoff L z := by
+  rw [← even_colour_signedMoment D Sc cutoff L i hi hN l]
+  exact tensorPowerVacuumCap_moment_apply D Sc m cutoff L i hN _ z
+
 private theorem even_reservoir_coefficient (hi : D.parity i = 0) (hN : 0 < cutoff i) (l : ℕ) :
     tensorVacuumEndDecode D Sc m cutoff L
         ((adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ (cutoff i - 1 + l)) ≫
@@ -316,10 +325,7 @@ private theorem even_reservoir_coefficient (hi : D.parity i = 0) (hN : 0 < cutof
         (PowerSeries.invOfUnit (PowerSeries.rescale (-1) (SKM.SYM.generatorSeries k i)) 1)) := by
   refine tensorVacuumEndDecode_eq_of D Sc m cutoff L _ _ fun z => ?_
   rw [unit_cap_moment D Sc m cutoff L i hN, capCoefficientLmul_ringHom_apply]
-  have hm := tensorPowerVacuumCap_moment_apply D Sc m cutoff L i hN (cutoff i - 1 + l) z
-  rw [even_colour_signedMoment D Sc cutoff L i hi hN l] at hm
-  show _ = completeCoefficient D cutoff L i l * _
-  convert hm using 3
+  exact even_moment_apply D Sc m cutoff L i hi hN l z
 
 /-- The reservoir series of the tensor vacuum at an even colour, in the decode
 chart: `T(z) = 1/E(-z)`, the complete coefficients. -/
@@ -435,8 +441,10 @@ theorem tensorVacuumNegativeCap_odd_moments
   rw [tensorVacuumEndDecode_apply, capCoefficientLmul_apply] at e1
   rw [tensorVacuumEndDecode_apply, cap_end_mul_apply, capCoefficientLmul_apply,
     cap_lmul_apply] at e2
-  refine ⟨e1, e2.trans ?_⟩
-  rw [← mul_assoc, ← mul_assoc, (delta_commute D cutoff L i hi _).eq]
+  constructor
+  · exact e1
+  · rw [← mul_assoc, ← (delta_commute D cutoff L i hi _).eq, mul_assoc]
+    exact e2
 
 include sy hc in
 /-- **Odd colour, zero height, on the tensor vacuum.** For `cutoff i = 2 M`,
