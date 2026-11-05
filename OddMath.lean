@@ -1540,6 +1540,7 @@ import OddMath.SKM.ScalarChangeMatchingFamily
 import OddMath.SKM.ScalarChangeExamples
 import OddMath.SKM.ScalarChangeCoefficientBasis
 import OddMath.SKM.GradedParameters
+import OddMath.SKM.LowerDegreeParameters
 import OddMath.SKM.GroundRingNondegeneracy
 import OddMath.QuiverHecke.GrothendieckIsomorphism
 import OddMath.SKM.Presentation
