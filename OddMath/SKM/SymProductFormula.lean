@@ -6,6 +6,7 @@ import Mathlib.RingTheory.PowerSeries.PiTopology
 import Mathlib.Algebra.Order.Antidiag.Finsupp
 import Mathlib.Data.ZMod.Basic
 import Mathlib.RingTheory.LaurentSeries
+import Mathlib.Topology.Instances.Rat
 import OddMath.SKM.LaurentianHoms
 import OddMath.SKM.SymComponentBasis
 
@@ -389,11 +390,11 @@ variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} (sy : Symmet
 even generator `e_{i,r}` and `1 + σ q^{2 d_i}` at an odd generator `δ_i`. -/
 def symFactor (σ : ℚ) : SYMGen D → PowerSeries ℚ :=
   Sum.elim (fun a => MonomialSeries.geomSeries (symGenNatDegree D sy (Sum.inl a)))
-    (fun i => 1 + PowerSeries.C σ * X ^ symGenNatDegree D sy (Sum.inr i))
+    (fun i => 1 + PowerSeries.C σ * PowerSeries.X ^ symGenNatDegree D sy (Sum.inr i))
 
 /-- The even factor is the inverse of `1 - q^{deg e_{i,r}}`. -/
 theorem one_sub_X_pow_mul_symFactor_inl (σ : ℚ) (a : I × ℕ) :
-    (1 - X ^ symGenNatDegree D sy (Sum.inl a)) * symFactor sy σ (Sum.inl a) = 1 :=
+    (1 - PowerSeries.X ^ symGenNatDegree D sy (Sum.inl a)) * symFactor sy σ (Sum.inl a) = 1 :=
   MonomialSeries.one_sub_X_pow_mul_geomSeries (symGenNatDegree_pos sy _)
 
 /-- `symDimension` as a power series: its coefficients in nonnegative degrees. -/
