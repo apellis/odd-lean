@@ -307,12 +307,6 @@ private theorem dotPathWord :
       (νR ++ [i]) ++ ηL := by
   simp
 
-include hv pL hl pR hr in
-private theorem dotEndWeight :
-    ReservoirWord.weight D ΛR cS = PowerWordWeightContexts.contextWeight D
-      (PowerWordWeight.wordWeight D ΛR (νR ++ [i])) ηL :=
-  TensorDotObservation.endWeight D ΛR pL hl pR hr i edge
-
 private theorem dotRawHom_heq :
     HEq (ReservoirLayerCells.dotRawHom D Sc m cutoff L ΛP ΛR pL hl pR hr i edge)
       (TensorVacuumWords.wordHom D Tw m cutoff L ΛP ΛR νR ≫
@@ -324,11 +318,11 @@ private theorem dotRaw_heq (a : (P).CrossCoeff) :
     HEq (tensorLayerDotRaw D Sc m cutoff L ΛP ΛR hP hR ν u v i hv pL hl pR hr a)
       ((TensorVacuumWords.wordHom D Tw m cutoff L ΛP ΛR νR ◁
         (W).dot i (PowerWordWeight.wordWeight_append D ΛR νR i)) ▷
-        TensorHomContexts.context D Tw cutoff L ΛR (PowerWordWeight.wordWeight D ΛR (νR ++ [i])) ηL) := by
-  rw [tensorLayerDotRaw_eq]
-  exact TensorDotObservation.raw_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i edge
+        TensorHomContexts.context D Tw cutoff L ΛR (PowerWordWeight.wordWeight D ΛR (νR ++ [i])) ηL) :=
+  (heq_of_eq (tensorLayerDotRaw_eq D Sc m cutoff L ΛP ΛR hP hR ν u v i hv pL hl pR hr a)).trans
+    (TensorDotObservation.raw_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i edge)
 
-include hv pL hl pR hr in
+include hl hr in
 /-- **Dot layer on the quotient observation.** The literal dot layer of the full
 chosen action multiplies the canonical observed class on the right by the
 original affine dot, in the outer contexts read off the layer. -/
@@ -360,15 +354,19 @@ theorem tensorMatrixQuotientObservation_dot
   -- the literal layer entry, and its equality-transport form
   have hE := tensorOriginalWordEntry_layer D Sc m cutoff ΛP ΛR L hP hR s
     ((P).swappedGens a leftward) (Aℓ) hA hEnd p p hp hp x
-  obtain ⟨h₁, h₂, hT⟩ := tensorOriginalWordLayer_dot_transport D Sc m cutoff ΛP ΛR L hP hR
-    ν u v i hv pL hl pR hr (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom) p hp)
-    (tensorRowTargetIso_hom_eqToHom D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom) p hp) a leftward
+  have hT₀ := tensorOriginalWordLayer_dot_transport D Sc m cutoff ΛP ΛR L hP hR
+    ν u v i hv pL hl pR hr
+  have hT₁ := hT₀ (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom) p hp)
+  have hT₂ := hT₁ (tensorRowTargetIso_hom_eqToHom D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom) p hp)
+  obtain ⟨h₁, h₂, hT⟩ := hT₂ a leftward
   have hL : tensorOriginalWordLayer D Sc m cutoff ΛP ΛR L hP hR s ((P).swappedGens a leftward)
       (Aℓ) p p hp hp = eqToHom h₁ ≫
         tensorLayerDotRaw D Sc m cutoff L ΛP ΛR hP hR ν u v i hv pL hl pR hr a ≫ eqToHom h₂.symm :=
     hT
   -- transport to the contextual weight of the local dot chart
-  have e := dotEndWeight D ΛP ΛR s ν u v i hv pL hl pR hr
+  have e : ReservoirWord.weight D ΛR cS = PowerWordWeightContexts.contextWeight D
+      (PowerWordWeight.wordWeight D ΛR (νR ++ [i])) ηL :=
+    TensorDotObservation.endWeight D ΛR pL hl pR hr i edge
   have hM := dotRawHom_heq D Sc m cutoff ΛP ΛR L hP hR s ν u v i hv pL hl pR hr
   let entry := tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom)
     (hEnd.trans hA.endR_eq) p hp x

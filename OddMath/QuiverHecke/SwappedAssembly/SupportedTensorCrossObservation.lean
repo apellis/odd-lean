@@ -214,7 +214,7 @@ private theorem samePathWord :
   rw [PowerWordContexts.extendedWord_eq]
   simp
 
-include hv hw pL hl pR hr in
+include hl hr in
 /-- **Equal-colour crossing on the quotient observation.** The literal
 equal-colour crossing layer of the full chosen action multiplies the
 canonical observed class on the right by the original affine crossing,
@@ -335,7 +335,7 @@ private theorem crossTargetPathWord :
   rw [PowerWordContexts.extendedWord_eq]
   simp
 
-include hv₁ hv₂ hw₁ hw₂ hs pL hl pR hr in
+include hl hr in
 /-- **Distinct-colour crossing on the quotient observation.** The literal
 distinct-colour crossing layer of the full chosen action multiplies the
 canonical observed class on the right by the original affine crossing,
