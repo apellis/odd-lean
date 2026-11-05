@@ -145,14 +145,31 @@ Checked on `research/positive-bubble-field`:
   `c⁻¹·bubLs(s) = cl (dcupL i (h-1) ++ epsL i (s+h-1))`, so the `left_odd` and
   `left_even` fields reduce to the vacuum entry of this closed diagram.
 
+- `isCapInverse_centralPadded_of_posInverseAt` (`Sigma/PointwiseCapInverse`): a
+  pointwise `PosInverseAt` at a central sector gives an explicit cap inverse of the
+  padded cap, with columns the evaluated leftward cups composed with the source
+  factor and corner isomorphisms.
+- `compDiag_dcupL_epsL_swappedGens`, `map_dcup_epsEntry_eq_padded`
+  (`Sigma/PointwiseBubbleEntry`): the swapped-generator entry of
+  `dcupL i n ++ epsL i N` on empty paths is `dcup ≫ epsEntry`, and its evaluation
+  is the leftward column composed with the padded cap.
+- `vacuumLeftwardColumn`, `vacuumLeftwardCapInverse_native_odd`,
+  `vacuumLeftwardColumn_cap_native` (`ELVProbeLeftwardVacuumCapInverse`): at the
+  vacuum sector input these columns are a cap inverse of the native mixed bend,
+  and `column ≫ dot^N ≫ cap` is the conjugated evaluation of the bubble entry.
+
 Still open:
 
-1. Vacuum entry: the swapped-generator evaluation (`compDiag`) of
-   `dcupL i (h-1) ++ epsL i (2s+h-1)` at the vacuum sector equals the composite
-   `A_{h-1} ≫ dot^{h-1+2s} ≫ cap` of `tensorVacuum_chosenCapInverse_odd_moments`
-   (the leftward cup of `pointwiseLeftwardData` against that theorem's cap inverse),
-   and the decoded moment identifies it with the coefficient action of the
-   substituted-series coefficient (via `tensorVacuumEndDecode_eq_of`).
+1. Vacuum entry (remaining part): apply `tensorVacuumCapInverse_odd_moments` to
+   `vacuumLeftwardCapInverse_native_odd` at `SupportedSectors.tensorVacuum` (the
+   block `vacuumBendBlock (tensorOutputAt …)` is equal, not definitionally, to the
+   probe functor block, so the moments lemma is applied after transport along
+   that equality), then lift the resulting equality after evaluation to the
+   equality in `End(tensorVacuum)` required by
+   `pointwiseUpwardModuleAction_act_bubAt_bubLs_eq_coefficient`; this lift needs
+   faithfulness of the vacuum sector evaluation on that endomorphism space, or a
+   direct identification of the evaluated coefficient action with decoding
+   (`tensorVacuumEndDecode_eq_of`) of the substituted-series coefficient.
 2. The odd bubble `oddBubble` at positive height, the same way.
 3. Even colours need an even moment result; nonpositive height is handled
    separately.
