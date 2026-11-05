@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumUnit
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumCapInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumLeftwardMoments
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseCupInverse
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseRightBubbleEntry
 
