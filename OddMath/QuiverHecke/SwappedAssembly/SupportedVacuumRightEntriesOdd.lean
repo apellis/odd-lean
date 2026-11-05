@@ -84,10 +84,7 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
     (i : I) (hi : D.parity i = 1) (hP0 : 0 < probeCutoff D m i)
     (hh : D.h i ν₀ < 0) (e n : ℕ) (hn : n = cutoff i - 2 * m i - 1) (a : SYM D k)
     (hmom : ∀ (c : (E).obj (Ys (0,0)).obj ≅ V) (B : Fin (cutoff i - 2 * m i) →
-        ((BalancedInduction.induction
-            (contentAppend D (parameterTwist D Sc) cutoff N (0 : Multiset I) [i]) ⋙
-          BalancedInduction.restriction
-            (contentAppend D (parameterTwist D Sc) cutoff N (0 : Multiset I) [i])).obj V ⟶ V))
+        (ELVOld.unitColumnCarrier D (parameterTwist D Sc) m cutoff L i ⟶ V))
       (z : (V).obj (⟨⟨[]⟩, rfl⟩ : ContentCategory D (parameterTwist D Sc) cutoff N 0)),
       (∀ (r : ℕ) (z : (V).obj (⟨⟨[]⟩, rfl⟩ :
           ContentCategory D (parameterTwist D Sc) cutoff N 0)),
