@@ -1,5 +1,9 @@
 # Parity-shift removal and the first factor-transport equation
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: written calculations, not a localized-action identification or a Lean theorem.**
 The headline calculation is a signed odd AAB braid component together with the
 forced two-sector comparison formula. Its downstream use is to test the

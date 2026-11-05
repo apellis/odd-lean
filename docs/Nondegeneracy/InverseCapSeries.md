@@ -1,5 +1,9 @@
 # Nonpositive-height bubbles as reciprocal series
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 This note extends [InverseCapMoments](InverseCapMoments.md) and
 [NegativeCapInverse](NegativeCapInverse.md) from single moments to the
 generating series of [SwappedVacuumNonpositiveBubbles, §§3–4, (11)–(14)](SwappedVacuumNonpositiveBubbles.md),

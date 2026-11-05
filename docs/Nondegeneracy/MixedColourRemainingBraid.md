@@ -1,5 +1,9 @@
 # Zero-correction mixed-colour braid components
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: pairwise-distinct case formalized; adjacent-equal cases remain proposed.** This evaluates the
 component equations (13) of `MixedColourBlockCompletion.md` for iij, ijj
 and pairwise-distinct ijk. The unequal-probe comparison used here is the written calculation

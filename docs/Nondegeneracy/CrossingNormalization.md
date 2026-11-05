@@ -1,5 +1,9 @@
 # Equal-colour crossing normalization and central mates
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: written two-strand convention repair; not a Lean theorem or a fusion
 theorem.** The old assertion in `NondegeneracyProof.md`
 §5.3 that its mixed matrix satisfied the fixed library slides is withdrawn.

@@ -1,5 +1,9 @@
 # The deformed Rouquier matrix and its polynomial boundary
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: proposed written categorical matrix argument; scoped raw Lean results below.**
 The full action and arbitrary-endpoint categorical inverse remain open.
 The boundary identities required below are supplied by `DeformedMackeyBoundary.md`

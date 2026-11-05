@@ -164,7 +164,7 @@ Checked on `research/positive-bubble-field`:
   `dcup (h-1) ≫ ε x^(h+2s)` decode to multiplication by the substituted-series
   coefficient (times the reservoir odd coefficient in the second case).
 
-Still open:
+Open when this section was written (all proved since; see item 5 and [STATUS](STATUS.md)):
 
 1. Vacuum entry (remaining part): lift the identity of
    `tensorVacuum_leftward_odd_moments`, which holds after vacuum sector evaluation,
@@ -253,8 +253,9 @@ Still open:
    `weight_difference`, and `nondegeneracy_of_rightVacuumEntrySupply` gives the conjecture.
    The probe cutoffs of every route index are positive (`VacuumRouteIndex.probeCutoff_pos`,
    from `cutoff_bounds`), so for odd colours `M > 0` and the case `M = 0` does not arise
-   in the odd right entries. The supply is open: its six families are the negative-height
-   entries (even moments, odd moments, odd coefficient) and the zero-height entries.
+   in the odd right entries. The supply is proved (`rightVacuumEntrySupply`): its six
+   families are the negative-height entries (even moments, odd moments, odd coefficient,
+   `SupportedSectors.vacuumRightNegativeEntries`) and the zero-height entries.
 
 - Zero-height right vacuum entries
   (`SwappedAssembly/SupportedVacuumZeroHeightEntries.lean`). At a colour of height

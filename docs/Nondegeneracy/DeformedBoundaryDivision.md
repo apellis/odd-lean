@@ -1,5 +1,9 @@
 # Deformed boundary norm and polynomial division
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: written proof, partially formalized in Lean.** The boundary construction and
 compatible lifts are supplied by `DeformedMackeyBoundary.md`. This note supplies the
 norm comparison and division calculation for those specified maps, rather

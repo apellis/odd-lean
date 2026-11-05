@@ -1,5 +1,9 @@
 # Nilpotent closed-loop coefficients
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 This conditional algebraic argument concerns the block-inversion step in the Nondegeneracy Conjecture of Brundan–Ellis, *Super Kac–Moody 2-categories*. It is not yet formalized in Lean. The signed comparison with the SKM operators remains to be proved; no action or nondegeneracy theorem is asserted.
 
 ## Setup

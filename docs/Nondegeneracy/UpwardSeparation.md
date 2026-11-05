@@ -1,5 +1,9 @@
 # Bounded cyclotomic separation for the upward route
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 Research toward Brundan–Ellis, *Super Kac–Moody 2-categories*, §8,
 Nondegeneracy Conjecture; tracking issue #345. This note supplies a mathematical
 bounded-separation argument. It does **not** construct an SKM action or claim
