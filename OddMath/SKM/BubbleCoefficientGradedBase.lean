@@ -191,6 +191,7 @@ theorem elvCoefficientDegreeOver_parity (cutoff : I → ℕ) {n : ℤ}
     refine ⟨_, hm, ?_⟩
     change elvCoefficientQuotient D cutoff (_ • _) = _
     rw [map_smul]
+    rfl
   · rw [DirectSum.decompose_of_mem_ne _ (hb a) h, smul_zero]
     exact zero_mem _
 
