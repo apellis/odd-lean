@@ -90,6 +90,29 @@ private theorem vacuumNegEven_negInverseAt (i : I) (hh : D.h i ν₀ < 0) :
   centralPointwiseLeftward_negInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
     (tensorVacuum D Sc m cutoff L ΛP ΛR) hh
 
+local notation "Kc" => contentAppend D (parameterTwist D Sc) cutoff N (0 : Multiset I)
+
+include sy hc in
+/-- The decoded moments of the extreme column of an entrywise inverse of the native cup
+window, in the coefficient action form. -/
+private theorem vacuumNegEven_column (i : I) (hi : D.parity i = 0)
+    (hP0 : 0 < probeCutoff D m i) (hPN : m i < cutoff i)
+    (j : _ ⟶ ProbeVacuumCap.shiftedPreSourceObject D (parameterTwist D Sc) m
+        (contentModuleTarget D (parameterTwist D Sc) cutoff N (0 : Multiset I)) i Hv)
+    (B : Fin (cutoff i - m i) → (_ ⟶ V))
+    (hB : ProbeWindow.IsCupInverse
+      (ProbeVacuumCap.evaluatedMixedBend D (parameterTwist D Sc) m cutoff N i hP0 Hv)
+      (fun n => (BalancedInduction.adjunction (Kc [i])).unit.app V ≫
+        (ProbeVacuumCap.evaluatedPostDot D (parameterTwist D Sc) m cutoff N i Hv ^ n.val)) j B)
+    (s : ℕ) (z : (V).obj star) :
+    dec (((BalancedInduction.adjunction (Kc [i])).unit.app V ≫
+        (ProbeVacuumCap.evaluatedPostDot D (parameterTwist D Sc) m cutoff N i Hv ^
+          (cutoff i - m i - 1 + s)) ≫ B ⟨cutoff i - m i - 1, by omega⟩).total star z) =
+      coefficientPowerQuotientMap D cutoff L (SYM.polynomialInclude D k
+        (PowerSeries.coeff s (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i))) *
+        dec z :=
+  tensorVacuum_rightward_even_extreme_moments D Sc m cutoff L sy hc i hi hP0 hPN j B hB s z
+
 include sy hc in
 /-- The decoded vacuum entry of `η x^(N - M - 1 + s)` followed by `dcap (N - M - 1)` on the
 tensor vacuum object, at an even colour with negative vacuum height. -/
@@ -112,13 +135,9 @@ private theorem vacuumNegEven_tensorDecode (i : I) (hi : D.parity i = 0)
     (fun n q r => (lw).dcap i n ν₀ q r Zt)
     (vacuumNegEven_negInverseAt D Sc m cutoff ΛP ΛR L hP hR sy hc i hh) cc
   refine ⟨c, hceq, fun z => ?_⟩
-  have hcol := hcup ⟨cutoff i - m i - 1, by omega⟩ (cutoff i - m i - 1 + s)
-  have hm := tensorVacuum_rightward_even_extreme_moments D Sc m cutoff L sy hc i hi hP0
-    hPN j B hB s z
-  have e : ∀ p, polynomialToPower (k := k) D cutoff L p =
-      coefficientPowerQuotientMap D cutoff L (SYM.polynomialInclude D k p) := fun _ => rfl
-  rw [hcol, e] at hm
-  exact hm
+  exact (congrArg (fun g => dec (g.total star z))
+    (hcup ⟨cutoff i - m i - 1, by omega⟩ (cutoff i - m i - 1 + s))).symm.trans
+    (vacuumNegEven_column D Sc m cutoff ΛP ΛR L hP hR sy hc i hi hP0 hPN j B hB s z)
 
 include sy hc in
 /-- The decoded vacuum entry of `η x^e ≫ dcap n` at an even colour with negative vacuum
