@@ -100,6 +100,22 @@ theorem tensorVacuum_rightward_odd_bubbleEntries (hi : D.parity i = 1)
   exact hex
 
 include sy hc in
+/-- Probe (temporary): only the hypotheses of the cap-moment lemma. -/
+theorem tensorVacuum_rightward_probe_hyp (hi : D.parity i = 1)
+    (hP : 0 < probeCutoff D m i) (hPN : 2 * m i < cutoff i)
+    (j : _ ⟶ shiftedPreSourceObject D (parameterTwist D Sc) m
+        (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i H)
+    (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
+    (hB : ProbeWindow.IsCupInverse
+      (evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP H)
+      (fun n => (adjunction K).unit.app V ≫
+        (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ n.val)) j B)
+    (r : ℕ) (z : (V).obj star) : True := by
+  have _h := tensorVacuumNegativeCap_odd_moments_even D (parameterTwist D Sc) m cutoff L sy
+      (parameterTwist_homogeneous D Sc hc) i hi hP (by omega) hPN j B hB r z
+  trivial
+
+include sy hc in
 /-- The decoded moments of the extreme column of an entrywise inverse of the native cup
 window of the tensor vacuum bend, at an odd colour with `0 < 2 M < N`. -/
 theorem tensorVacuum_rightward_odd_extreme_moments (hi : D.parity i = 1)
