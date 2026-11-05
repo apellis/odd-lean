@@ -2458,6 +2458,7 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedSteps
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirLayerCells
 import OddMath.QuiverHecke.SwappedAssembly.SupportedPaths
 import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernelInteger
+import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernelIntegerOver
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCentreBlocks
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirClosures
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelEntryDegrees
