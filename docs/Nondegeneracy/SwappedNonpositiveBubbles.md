@@ -24,9 +24,12 @@ For `h = hᵢ(μ) ≤ 0`, in `SwappedAssembly/SupportedRightBubbleCoefficients.l
 * `VacuumRightEntries μ M N`: the six vacuum entries (even/odd colour, `h < 0` and `h = 0`, and
   the odd bubble), with coefficients the moments of `probeSeriesInv M`, their negatives at
   `h = 0`, and `±(-1)^(N_i+1) δ_i`.
-* `vacuumRightBubbles_of_entries`: these entries give `VacuumRightBubblesNonpositiveHeight`
-  for the supported action and the raw tensor coefficient action.
+* `VacuumRightBubblesNonpositiveHeight.of_closed`: for any upward action `A` and raw map,
+  the values of `A.closedAct` on these six closed diagrams give
+  `VacuumRightBubblesNonpositiveHeight` (the `h = 0`, `s = 0` cases are `1 = raw 1`).
 * `VacuumRouteSwappedNonpositiveBubbles.lean`: `SwappedRightEntriesField sy`,
+  `swappedRouteBases_closedAct_cl` (the coefficient step stated in the swapped base, so the
+  identification of `A.V t` with the tensor matrix module is made once per declaration),
   `nonpositiveBubbleField_of_entries`, and
   `nondegeneracy_of_swapped_positive_field_and_entries`.
 
@@ -36,4 +39,8 @@ For `h = hᵢ(μ) ≤ 0`, in `SwappedAssembly/SupportedRightBubbleCoefficients.l
 of the cup–dots–♦cap diagram (and at `h = 0` the cup–dots–crossing–cap diagram) at the vacuum
 sector, and identify it with the inverse-cap moments of `ELVTensorVacuumCapMoments`
 (`tensorVacuumNegativeCap_odd_moments_*` and its even variants). The `h = 0`, `s = 0` entries
-need no hypothesis (`coeff_zero_momentSeries`).
+need no hypothesis (`coeff_zero_momentSeries`). This is the right-hand mirror of
+`Sigma/PointwiseBubbleEntry` (`compDiag` of `dcupL ++ epsL` is `dcup ≫ epsEntry`): here
+`compDiag_etaL_swappedGens` and `compDiag_dcapL_swappedGens` give `etaEntry ≫ dcap`, and
+at `h = 0` `compDiag_lcrossL_swappedGens`, `compDiag_epsL_swappedGens`. Even colours need
+the even-moment results of #1062.
