@@ -145,8 +145,7 @@ theorem tensorVacuum_rightward_odd_moments (hi : D.parity i = 1)
         tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
             ((rightwardUnitColumn D (parameterTwist D Sc) m cutoff L i B
               (cutoff i - 2 * m i - 1 + (2 * r + 1)) ⟨cutoff i - 2 * m i - 1, by omega⟩).total star z) =
-          ((-1 : k) ^ (cutoff i + 1) •
-              coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) *
+          oddMomentScalar D cutoff L i hi *
             (polynomialToPower D cutoff L (PowerSeries.coeff r
               (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
               tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) := by
