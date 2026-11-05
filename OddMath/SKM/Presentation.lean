@@ -53,7 +53,7 @@ the entries of their inverses with these relations, since two-sided inverses are
 how the paper reads the inversion relations ("there are some as yet unnamed generating
 2-morphisms in `𝔘(𝔤)` which are the matrix entries of two-sided inverses").
 
-All relations are homogeneous for the parity (`isParityHomogeneous`), using (1.4) and (1.6).
+All relations are homogeneous for the parity (`isParityHomogeneous`), using (1.2) and (1.4).
 -/
 
 noncomputable section
@@ -397,7 +397,7 @@ theorem parity_sum_append (ls ms : List (LayerData I)) :
     ((dcapL i n).map fun x => x.2.1.parity D).sum = D.parity i * n := by
   simp [dcapL, Shape.parity]
 
-/-- All relations of Definition 1.5 are homogeneous for the parity, by (1.4) and (1.6). -/
+/-- All relations of Definition 1.5 are homogeneous for the parity, by (1.2) and (1.4). -/
 theorem isParityHomogeneous : (pres D Sc).IsParityHomogeneous := by
   intro r
   cases r with

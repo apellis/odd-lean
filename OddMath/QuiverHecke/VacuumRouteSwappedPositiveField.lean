@@ -74,7 +74,8 @@ theorem positiveBubbleField_swappedRouteBases (sy : SKM.Symmetrizer D) :
   positiveBubbleField_of_entries sy (swappedLeftEntriesField sy)
 
 /-- **The conjecture from the right vacuum entries** of the bubbles at nonpositive height, for
-the swapped route bases. Intermediate: `SwappedRightEntriesField` is open. -/
+the swapped route bases. The hypothesis `SwappedRightEntriesField` is proved
+(`swappedRightEntriesField_of_supply`); the unconditional form is `nondegeneracy_of_symmetrizer`. -/
 theorem nondegeneracy_of_swapped_right_entries (sy : SKM.Symmetrizer D)
     (hR : SwappedRightEntriesField sy)
     {R : Type w} [CommRing R] (h₂ : IsUnit (2 : R))
