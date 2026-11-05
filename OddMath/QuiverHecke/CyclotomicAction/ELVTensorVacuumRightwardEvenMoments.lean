@@ -92,7 +92,8 @@ theorem vacuumRightwardCupInverse_native_even (Z : (P).H ((0, 0) : Sector I))
     (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ν₀ ((0, 0) : Sector I)
     (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) lc dc HN hu hd
-  have h₃ := (h₁.coordinates (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).symm
+  have h₃ := (h₁.coordinates
+    (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).symm
     (paddedVacuumTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).symm).target
       (paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H)
   have hs : (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).inv ≫
@@ -183,7 +184,6 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
 local notation "bound" => PowerWordContent.powerBound D cutoff L
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR
 local notation "ν₀" => (P).wt ((0, 0) : Sector I)
-local notation "Zt" => (SupportedSectors.tensorVacuum D Sc m cutoff L ΛP ΛR).obj
 local notation "H" => VacuumTensor.probeFunctor D (parameterTwist D Sc) m cutoff bound
   ((BalancedInduction.restriction
     (contentInclusion D (parameterTwist D Sc) cutoff bound (0 : Multiset I))).obj
@@ -201,6 +201,48 @@ private theorem even_probeCutoff_right (hi : D.parity i = 0) : probeCutoff D m i
   simp [probeCutoff, probeDotExponent, hi]
 
 include sy hc in
+/-- The even rightward vacuum bubble entries of `vacuumRightwardCupInverse_bubbleEntries_even`,
+restated on the tensor vacuum value: window length `N - M` and the tensor probe functor. -/
+theorem tensorVacuum_rightward_even_bubbleEntries (hi : D.parity i = 0)
+    (hP : 0 < probeCutoff D m i)
+    (Z : (P).H ((0, 0) : Sector I))
+    (hZ : Z = tensorSectorInput D Sc m cutoff L ΛR ΛP hcP hcR)
+    (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
+        ((0, 0) : Sector I))
+      (p : SPath (SKM.wd D ν₀ [SKM.up i, SKM.dn i]) ((0, 0) : Sector I) ((0, 0) : Sector I)),
+      ((P).pathFunctor _q).obj Z ⟶ ((P).pathFunctor p).obj Z)
+    (dc : ℕ → ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
+        ((0, 0) : Sector I))
+      (r : SPath (SKM.wd D ν₀ []) ((0, 0) : Sector I) ((0, 0) : Sector I)),
+      ((P).pathFunctor _q).obj Z ⟶ ((P).pathFunctor r).obj Z)
+    (HN : (P).NegInverseAt (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ν₀
+      ((0, 0) : Sector I) ((0, 0) : Sector I) Z lc dc)
+    (cc : (P).CrossCoeff) :
+    ∃ (c : _ ≅ V) (j : _ ⟶ shiftedPreSourceObject D (parameterTwist D Sc) m
+        (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i H)
+      (B : Fin (cutoff i - m i) → (_ ⟶ V)),
+      ProbeWindow.IsCupInverse (evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP H)
+        (fun n => (adjunction K).unit.app V ≫
+          (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ n.val)) j B ∧
+      (∀ (n : Fin (cutoff i - m i)) (N : ℕ),
+        (adjunction K).unit.app V ≫
+          (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ N) ≫ B n =
+        c.inv ≫ (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).map
+          ((P).etaEntry cc i N ν₀ (.nil _) q₀ Z ≫ dc n q₀ (.nil _)) ≫ c.hom) := by
+  have hlen : (-D.h i ν₀).toNat = cutoff i - m i := by
+    rw [SupportedSectors.vacuum_negative_window_length D Sc m cutoff bound ΛP ΛR hcP hcR i,
+      even_probeCutoff_right D m i hi]
+  have hex := vacuumRightwardCupInverse_bubbleEntries_even D Sc m cutoff bound ΛP ΛR hcP hcR
+    (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) sy hc i Z
+    (hZ.trans (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hcP hcR).symm) lc dc HN cc
+    hP hi
+  rw [show vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR
+      (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) = H from
+    tensorOutputAt_empty D (parameterTwist D Sc) m cutoff L ΛR, hlen] at hex
+  simp only [unitDotColumn_eq_restrictedDotEnd, Category.assoc] at hex
+  exact hex
+
+include sy hc in
 /-- **Even moments of the rightward vacuum bubble entries.** For an even colour with
 `0 < M < N`, leftward data satisfying the negative inverse equations at the tensor
 vacuum give an entrywise inverse `(j, B)` of the native cup window of the tensor
@@ -210,7 +252,8 @@ decoded moments: the shift `N - M - 1 + l` gives the `l`-th coefficient of
 `momentSeries (probeSeriesInv)` at `i`. -/
 theorem tensorVacuum_rightward_even_moments (hi : D.parity i = 0)
     (hP : 0 < probeCutoff D m i) (hPN : m i < cutoff i)
-    (Z : (P).H ((0, 0) : Sector I)) (hZ : Z = Zt)
+    (Z : (P).H ((0, 0) : Sector I))
+    (hZ : Z = tensorSectorInput D Sc m cutoff L ΛR ΛP hcP hcR)
     (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
         ((0, 0) : Sector I))
       (p : SPath (SKM.wd D ν₀ [SKM.up i, SKM.dn i]) ((0, 0) : Sector I) ((0, 0) : Sector I)),
@@ -242,19 +285,8 @@ theorem tensorVacuum_rightward_even_moments (hi : D.parity i = 0)
           polynomialToPower D cutoff L (PowerSeries.coeff l
               (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
             tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z := by
-  classical
-  have hlen : (-D.h i ν₀).toNat = cutoff i - m i := by
-    rw [SupportedSectors.vacuum_negative_window_length D Sc m cutoff bound ΛP ΛR hcP hcR i,
-      even_probeCutoff_right D m i hi]
-  have hex := vacuumRightwardCupInverse_bubbleEntries_even D Sc m cutoff bound ΛP ΛR hcP hcR
-    (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) sy hc i Z
-    (hZ.trans (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hcP hcR).symm) lc dc HN cc
-    hP hi
-  rw [show vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR
-      (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) = H from
-    tensorOutputAt_empty D (parameterTwist D Sc) m cutoff L ΛR, hlen] at hex
-  simp only [unitDotColumn_eq_restrictedDotEnd, Category.assoc] at hex
-  obtain ⟨c, j, B, hB, hcup⟩ := hex
+  obtain ⟨c, j, B, hB, hcup⟩ := tensorVacuum_rightward_even_bubbleEntries D Sc m cutoff L
+    ΛP ΛR hcP hcR sy hc i hi hP Z hZ lc dc HN cc
   have hN : 0 < cutoff i := by omega
   exact ⟨c, j, B, hB, hcup, fun l z =>
     tensorVacuumNegativeCap_even_moments D (parameterTwist D Sc) m cutoff L sy
