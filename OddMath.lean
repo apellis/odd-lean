@@ -2817,3 +2817,4 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumZeroHeightEntries
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumRightEntriesEven
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumCoefficientDecode
 import OddMath.QuiverHecke.SwappedAssembly.SupportedLeftVacuumEntries
+import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumRightEntriesOdd

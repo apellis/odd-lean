@@ -131,4 +131,69 @@ theorem rightwardUnitColumn_odd_moments
   ⟨rightwardUnitColumn_odd_moments_even D Sc m cutoff L sy hc i hi hP hPN j B hB r z,
     rightwardUnitColumn_odd_moments_odd D Sc m cutoff L sy hc i hi hP hPN j B hB r z⟩
 
+/-- The decoded value of the last unit column `η xᵉ ≫ B (N - 2M - 1)` at shift `e`. -/
+def rightwardLastColumnDecode (hPN : 2 * m i < cutoff i)
+    (B : Fin (cutoff i - 2 * m i) → ((induction K ⋙ restriction K).obj V ⟶ V)) (e : ℕ) (z : (V).obj star) :
+    CoefficientPowerQuotient (k := k) D cutoff L :=
+  tensorVacuumDecodeLinear D Sc m cutoff L
+    ((rightwardUnitColumn ((adjunction K).unit.app V)
+      (evaluatedPostDot D Sc m cutoff bound i H) B e
+      ⟨cutoff i - 2 * m i - 1, by omega⟩).total star z)
+
+/-- The normalized odd coefficient `(-1)^(N+1) δ_i` in the coefficient power quotient. -/
+def rightwardOddScalar (hi : D.parity i = 1) : CoefficientPowerQuotient (k := k) D cutoff L :=
+  coefficientPowerQuotientMap D cutoff L ((-1 : k) ^ (cutoff i + 1) • SKM.SYM.delta D k ⟨i, hi⟩)
+
+omit [Fintype I] in
+theorem rightwardOddScalar_eq (hi : D.parity i = 1) :
+    rightwardOddScalar D cutoff L i hi =
+      coefficientPowerQuotientMap D cutoff L
+        ((-1 : k) ^ (cutoff i + 1) • SKM.SYM.delta D k ⟨i, hi⟩) := rfl
+
+include sy hc in
+/-- `tensorVacuumNegativeCap_odd_moments_even` for `rightwardLastColumnDecode`, at a shift
+`e` given by an equation, so that the shift is compared as a variable. -/
+theorem rightwardLastColumnDecode_even
+    (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) (hPN : 2 * m i < cutoff i)
+    (j : _ ⟶ shiftedPreSourceObject D Sc m R₀ i H)
+    (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
+    (hB : SwappedAssembly.ProbeWindow.IsCupInverse
+      (evaluatedMixedBend D Sc m cutoff bound i hP H)
+      (fun n => (adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ n.val))
+      j B)
+    (r e : ℕ) (he : e = cutoff i - 2 * m i - 1 + 2 * r) (z : (V).obj star) :
+    rightwardLastColumnDecode D Sc m cutoff L i hPN B e z =
+      polynomialToPower D cutoff L (PowerSeries.coeff r
+          (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
+        tensorVacuumDecodeLinear D Sc m cutoff L z := by
+  have h := tensorVacuumNegativeCap_odd_moments_even D Sc m cutoff L sy hc i hi hP
+    (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
+  rw [← he] at h
+  unfold rightwardLastColumnDecode
+  exact h
+
+include sy hc in
+/-- `tensorVacuumNegativeCap_odd_moments_odd` for `rightwardLastColumnDecode`, at a shift
+`e` given by an equation, so that the shift is compared as a variable. -/
+theorem rightwardLastColumnDecode_odd
+    (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) (hPN : 2 * m i < cutoff i)
+    (j : _ ⟶ shiftedPreSourceObject D Sc m R₀ i H)
+    (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
+    (hB : SwappedAssembly.ProbeWindow.IsCupInverse
+      (evaluatedMixedBend D Sc m cutoff bound i hP H)
+      (fun n => (adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ n.val))
+      j B)
+    (r e : ℕ) (he : e = cutoff i - 2 * m i - 1 + (2 * r + 1)) (z : (V).obj star) :
+    rightwardLastColumnDecode D Sc m cutoff L i hPN B e z =
+      rightwardOddScalar D cutoff L i hi *
+        (polynomialToPower D cutoff L (PowerSeries.coeff r
+          (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
+          tensorVacuumDecodeLinear D Sc m cutoff L z) := by
+  have h := tensorVacuumNegativeCap_odd_moments_odd D Sc m cutoff L sy hc i hi hP
+    (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
+  rw [← he] at h
+  unfold rightwardLastColumnDecode
+  rw [rightwardOddScalar_eq, map_smul]
+  exact h
+
 end OddMath.QuiverHecke.ELVOld
