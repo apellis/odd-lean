@@ -181,11 +181,11 @@ end VacuumRouteSector
 
 end CommRing
 
-section Field
-variable {I X k : Type u} [AddCommGroup X] [Field k]
+section Sectors
+variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cs : SKM.CScalars Sc)
 
-/-- **Field form of the vacuum route.** Over a field, route sectors for the pairing
+/-- **Sector form of the vacuum route.** Over a commutative ring, route sectors for the pairing
 extension of every finite-colour restriction of `D`, at the weights `(μ, 0)`, for
 every equal-weight pair of upward words and every degree bound, imply the
 Nondegeneracy Conjecture for `D`. -/
@@ -204,7 +204,7 @@ theorem nondegeneracy_of_vacuum_route_sectors
       (upwardCoefficientMap_injective_of_vacuum_evaluations (μ, 0) tJ t'J fun d =>
         (h J tJ t'J hw μ d).map fun S => S.toSwappedVacuumBlock.toSwappedVacuumEvaluation)
 
-end Field
+end Sectors
 
 variable {I X : Type u} [AddCommGroup X]
 

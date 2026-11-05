@@ -13,8 +13,8 @@ module records a shorter consumer: the full-coefficient upward evaluation of
 `D` at `μ`, followed by the exact presentation map, equals the upward
 evaluation of `Dₑ` at `(μ, 0)` after the coefficient-Hom equivalence. Hence
 injectivity at `(μ, 0)` in the extension implies injectivity at `μ`, and
-vacuum evaluations for `Dₑ` at the original weights suffice for the field
-theorem for `D`. No observation quotient needs to be transported back to `D`.
+vacuum evaluations for `Dₑ` at the original weights suffice for the
+conditional theorem for `D`. No observation quotient needs to be transported back to `D`.
 -/
 noncomputable section
 namespace OddMath.QuiverHecke.PairingExtension
@@ -55,10 +55,10 @@ end OddMath.QuiverHecke.PairingExtension
 namespace OddMath.QuiverHecke
 open CategoryTheory StringDiagrams
 universe u
-variable {I X k : Type u} [AddCommGroup X] [Field k]
+variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cs : SKM.CScalars Sc)
 
-/-- **Conditional field theorem through the pairing extension.** Vacuum
+/-- **Conditional theorem through the pairing extension.** Vacuum
 evaluations of the swapped action of the pairing extension, at the original
 external weights `(μ, 0)`, imply the conjecture for the original datum. -/
 theorem nondegeneracy_of_pairingExtension_vacuum_evaluations
