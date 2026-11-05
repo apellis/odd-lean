@@ -20,6 +20,21 @@ coefficient action of `a` there (`pointwiseUpwardModuleAction_act_bubAt_cl_eq_co
 -/
 
 noncomputable section
+namespace OddMath.SKM
+open CategoryTheory StringDiagrams
+
+/-- At a positive height `hᵢ(μ) > 0` the normalized left bubble `c_{μ;i}⁻¹ bubLs(s)` is the
+closed diagram of the dotted leftward cup with `hᵢ(μ) - 1` dots followed by the rightward cap
+with `s + hᵢ(μ) - 1` dots (Brundan–Ellis, arXiv:1701.04133v2, (2.11), (2.13), (2.17)). -/
+theorem inv_smul_bubLs_of_pos {I X k : Type*} [AddCommGroup X] [CommRing k] {D : Datum I X}
+    {Sc : Scalars D k} (cs : CScalars Sc) (i : I) (μ : X) (h : 0 < D.h i μ) (s : ℕ) :
+    (↑(cs.c μ i)⁻¹ : k) • bubLs cs i μ s =
+      cl D Sc μ [] [] (dcupL i (D.h i μ - 1).toNat ++ epsL i ((s : ℤ) + D.h i μ - 1).toNat) := by
+  have hn : (0 : ℤ) ≤ (s : ℤ) + D.h i μ - 1 := by omega
+  simp only [bubLs, bubL, hn, ite_true, etaP, h, Linear.smul_comp, smul_smul]
+  rw [cl_comp (sChain_dcupL i _) (sChain_epsL i _), Units.inv_mul, one_smul]
+
+end OddMath.SKM
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
 open CyclotomicAction ELVOld
@@ -128,6 +143,23 @@ theorem pointwiseUpwardModuleAction_act_bubAt_cl_eq_coefficient (μ : X) (t : Li
         ((tensorTargetFamily_isZero D Sc m cutoff ΛP ΛR L s hs).eq_of_src
           (⟨ProbeReservoir.compDiag gens (SKM.mkD D μ M hM) (SPath.nil s) (SPath.nil s)
             (Ys s).obj⟩ : End (Ys s)) _)
+
+/-- **Normalized left bubbles at positive height as source coefficients.** At `hᵢ(μ) > 0`,
+`c_{μ;i}⁻¹ bubLs(s)` beside the upward word of `t` acts as the source coefficient `a` once the
+vacuum entry of its closed diagram (`SKM.inv_smul_bubLs_of_pos`) is the coefficient action
+of `a`. -/
+theorem pointwiseUpwardModuleAction_act_bubAt_bubLs_eq_coefficient (cs : SKM.CScalars Sc)
+    (i : I) (μ : X) (h : 0 < D.h i μ) (n : ℕ) (t : List I) (a : SYM D k)
+    (hvac : ProbeReservoir.compDiag gens
+      (SKM.mkD D μ (SKM.dcupL i (D.h i μ - 1).toNat ++ SKM.epsL i ((n : ℤ) + D.h i μ - 1).toNat)
+        ((SKM.sChain_dcupL i _).append (SKM.sChain_epsL i _)))
+      (SPath.nil (0,0)) (SPath.nil (0,0)) (Ys (0,0)).obj =
+        (tensorTargetFamilyCoefficientAction D Sc m cutoff L ΛP ΛR (0,0) a).hom) :
+    (action μ).act t t (SKM.bubAt D Sc μ (upWord t) ((↑(cs.c μ i)⁻¹ : k) • SKM.bubLs cs i μ n)) =
+      tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L sw (SKM.ob D μ (upWord t)) a := by
+  rw [SKM.inv_smul_bubLs_of_pos cs i μ h n]
+  exact pointwiseUpwardModuleAction_act_bubAt_cl_eq_coefficient D Sc m cutoff ΛP ΛR L hP hR sy hc
+    sw μ t _ _ a hvac
 
 end Tensor
 
