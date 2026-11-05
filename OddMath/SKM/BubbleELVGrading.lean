@@ -25,7 +25,7 @@ noncomputable section
 open scoped Classical
 namespace OddMath.SKM.SYM
 variable {k A B : Type*} [CommRing k] [Ring A] [Algebra k A] [Ring B] [Algebra k B]
-private theorem coefficient_span_proj_mem (G : ℤ → Submodule k A) [GradedAlgebra G]
+theorem coefficient_span_proj_mem (G : ℤ → Submodule k A) [GradedAlgebra G]
     (s : Set A) (hs : ∀ x ∈ s, ∃ p, x ∈ G p)
     {x : A} (hx : x ∈ TwoSidedIdeal.span s) :
     ∀ p, GradedAlgebra.proj G p x ∈ TwoSidedIdeal.span s := by
@@ -101,7 +101,7 @@ private theorem quotientDegreeProj_mem {n m : ℤ} {x : B}
 
 /-- The image grading of a surjective map with homogeneous kernel. -/
 @[instance_reducible]
-private def quotientDegreeGrading : GradedAlgebra (fun n => (G n).map q.toLinearMap) := by
+def quotientDegreeGrading : GradedAlgebra (fun n => (G n).map q.toLinearMap) := by
   have hi : DirectSum.IsInternal (fun n => (G n).map q.toLinearMap) := by
     apply DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top
     · rw [iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero]

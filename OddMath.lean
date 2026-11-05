@@ -1594,6 +1594,7 @@ import OddMath.SKM.BubbleCoefficientBasis
 import OddMath.SKM.SymComponentBasis
 import OddMath.SKM.SymProductFormula
 import OddMath.SKM.BubbleCoefficientGrading
+import OddMath.SKM.BubbleCoefficientGradedBase
 import OddMath.Diagrams.OddNilHecke.CyclotomicNorm
 import OddMath.QuiverHecke.CoefficientExtension
 import OddMath.SKM.UpwardWordTransport
