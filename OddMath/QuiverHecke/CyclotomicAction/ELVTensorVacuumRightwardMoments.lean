@@ -70,18 +70,21 @@ decoded moments: the shift `N - 2M - 1 + 2r` gives the `r`-th coefficient of
 normalized odd coefficient. -/
 theorem tensorVacuum_rightward_odd_moments (hi : D.parity i = 1)
     (hP : 0 < probeCutoff D m i) (hPN : 2 * m i < cutoff i)
+    (Z : (P).H ((0, 0) : Sector I)) (hZ : Z = Zt)
     (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
         ((0, 0) : Sector I))
       (p : SPath (SKM.wd D ν₀ [SKM.up i, SKM.dn i]) ((0, 0) : Sector I) ((0, 0) : Sector I)),
-      ((P).pathFunctor _q).obj Zt ⟶ ((P).pathFunctor p).obj Zt)
+      ((P).pathFunctor _q).obj Z ⟶ ((P).pathFunctor p).obj Z)
     (dc : ℕ → ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
         ((0, 0) : Sector I))
       (r : SPath (SKM.wd D ν₀ []) ((0, 0) : Sector I) ((0, 0) : Sector I)),
-      ((P).pathFunctor _q).obj Zt ⟶ ((P).pathFunctor r).obj Zt)
+      ((P).pathFunctor _q).obj Z ⟶ ((P).pathFunctor r).obj Z)
     (HN : (P).NegInverseAt (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ν₀
-      ((0, 0) : Sector I) ((0, 0) : Sector I) Zt lc dc)
+      ((0, 0) : Sector I) ((0, 0) : Sector I) Z lc dc)
     (cc : (P).CrossCoeff) :
-    ∃ (c : _ ≅ V) (j : _) (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V)),
+    ∃ (c : _ ≅ V) (j : _ ⟶ shiftedPreSourceObject D (parameterTwist D Sc) m
+        (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i H)
+      (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V)),
       ProbeWindow.IsCupInverse (evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP H)
         (fun n => (adjunction K).unit.app V ≫
           (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ n.val)) j B ∧
@@ -89,7 +92,7 @@ theorem tensorVacuum_rightward_odd_moments (hi : D.parity i = 1)
         (adjunction K).unit.app V ≫
           (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ N) ≫ B n =
         c.inv ≫ (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).map
-          ((P).etaEntry cc i N ν₀ (.nil _) q₀ Zt ≫ dc n q₀ (.nil _)) ≫ c.hom) ∧
+          ((P).etaEntry cc i N ν₀ (.nil _) q₀ Z ≫ dc n q₀ (.nil _)) ≫ c.hom) ∧
       ∀ (r : ℕ) (z : (V).obj star),
         tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
             (((adjunction K).unit.app V ≫
@@ -114,8 +117,9 @@ theorem tensorVacuum_rightward_odd_moments (hi : D.parity i = 1)
     rw [SupportedSectors.vacuum_negative_window_length D Sc m cutoff bound ΛP ΛR hcP hcR i,
       odd_probeCutoff_right D m i hi]
   have hex := vacuumRightwardCupInverse_bubbleEntries D Sc m cutoff bound ΛP ΛR hcP hcR
-    (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) sy hc i Zt
-    (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hcP hcR).symm lc dc HN cc hP hi
+    (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) sy hc i Z
+    (hZ.trans (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hcP hcR).symm) lc dc HN cc
+    hP hi
   rw [show vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR
       (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) = H from
     tensorOutputAt_empty D (parameterTwist D Sc) m cutoff L ΛR, hlen] at hex
