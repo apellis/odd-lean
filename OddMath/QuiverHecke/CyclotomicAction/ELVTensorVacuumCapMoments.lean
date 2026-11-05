@@ -531,8 +531,7 @@ theorem tensorVacuumZeroHeightCap_odd_moments_even
   have e1 := LinearMap.congr_fun
     (h1.trans ((delta_commute D cutoff L i hi _).map (Algebra.lmul k AQ)).eq)
     (tensorVacuumDecodeLinear D Sc m cutoff L z)
-  rw [tensorVacuumEndDecode_apply, cap_end_mul_apply, cap_lmul_apply,
-    capCoefficientLmul_apply] at e1
+  rw [tensorVacuumEndDecode_apply, cap_end_mul_apply, cap_lmul_apply, cap_lmul_apply] at e1
   convert e1 using 3
 
 include sy hc in
