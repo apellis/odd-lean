@@ -38,9 +38,11 @@ variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X}
 
 /-- **Joint detection.** If ring maps `gⱼ : R → Sⱼ` jointly detect zero and the conjecture
 holds after base change along each of them, it holds over `R`. -/
-theorem nondegeneracyConjecture_of_separating {R : Type w} [CommRing R] {Sc : Scalars D R}
+theorem nondegeneracyConjecture_of_separating {R : Type w} [CommRing R] {Ptwo : Prop}
+    {Sc : ScalarData D R Ptwo}
     {cs : CScalars Sc} {J : Type*} {S : J → Type w'} [∀ j, CommRing (S j)]
-    (g : ∀ j, R →+* S j) (hg : ∀ r : R, (∀ j, g j r = 0) → r = 0)
+    (g : ∀ j, R →+* S j) [∀ j, ScalarChange.ZTransport (g j) D Sc]
+    (hg : ∀ r : R, (∀ j, g j r = 0) → r = 0)
     (h : ∀ j, NondegeneracyConjecture (ScalarChange.cScalars D (g j) cs)) :
     NondegeneracyConjecture cs := by
   rw [nondegeneracyConjecture_iff_injective]
@@ -101,8 +103,10 @@ theorem charZeroFieldLowerDegree_of_truncated (h : TruncatedReesNondegeneracy D 
     nondegeneracyConjecture_of_separating (fun N => trunc K N) (trunc_separate K)
       (fun N => h K Sc hl cs N)
   have hS := nondegeneracyConjecture_scalarChange ReesParameters.specialize hR
-  refine nondegeneracyConjecture_congr (ReesParameters.scalarChange_specialize sy Sc) _ cs
-    ?_ hS
+  have h₂ : IsUnit (2 : K) := isUnit_iff_ne_zero.2 two_ne_zero
+  refine nondegeneracyConjecture_congr (eq_true h₂).symm
+    (ReesParameters.scalarChange_specialize_t sy Sc)
+    (ReesParameters.scalarChange_specialize_s sy Sc) _ cs ?_ hS
   intro μ i
   ext
   simp [ScalarChange.cScalars, ReesParameters.cScalars]
