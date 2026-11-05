@@ -29,10 +29,6 @@ namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
 open BalancedInduction CyclotomicAction SwappedAssembly ProbeVacuumCap PowerVacuumCoefficient
 universe u
 
-local instance rightwardVacuumMomentsHomPi {k : Type u} [CommRing k]
-    (A B : PiSCat.{u,u,u+1} k) : PiSupercategory k (A ⟶ B) :=
-  PiTwoSupercategory.homPiLeft A B
-
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m cutoff : I → ℕ)
   (L : I × ℕ → ℕ) (ΛP ΛR : X)

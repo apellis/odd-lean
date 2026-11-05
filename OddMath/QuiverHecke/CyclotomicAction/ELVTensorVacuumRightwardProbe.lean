@@ -65,4 +65,63 @@ theorem rightwardProbe_full (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i)
   tensorVacuumNegativeCap_odd_moments_even D Tw m cutoff L sy
     (parameterTwist_homogeneous D Sc hc) i hi hP (by omega) hPN j B hB r z
 
+section PowerBound
+local notation "PB" => PowerWordContent.powerBound D cutoff L
+local notation "W₁" => Functor.obj (restriction (contentInclusion D (parameterTwist D Sc) cutoff PB (0 : Multiset I)))
+  (weightedVacuum D (parameterTwist D Sc) cutoff L)
+local notation "H₁" => VacuumTensor.probeFunctor D (parameterTwist D Sc) m cutoff PB W₁
+local notation "R₁" => contentModuleTarget D (parameterTwist D Sc) cutoff PB (0 : Multiset I)
+local notation "V₁" => Superfunctor.obj H₁ N₀
+local notation "star₁" => (⟨⟨[]⟩, rfl⟩ : ContentCategory D (parameterTwist D Sc) cutoff PB 0)
+local notation "K₁" => contentAppend D (parameterTwist D Sc) cutoff PB (0 : Multiset I) [i]
+include sy hc in
+/-- Probe: the full even moment at the parameter twist, in the cap-moment context. -/
+theorem rightwardProbe_full_powerBound (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i)
+    (hPN : 2 * m i < cutoff i)
+    (j : _ ⟶ shiftedPreSourceObject D Tw m R₁ i H₁)
+    (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V₁))
+    (hB : SwappedAssembly.ProbeWindow.IsCupInverse
+      (evaluatedMixedBend D Tw m cutoff PB i hP H₁)
+      (fun n => (adjunction K₁).unit.app V₁ ≫ (evaluatedPostDot D Tw m cutoff PB i H₁ ^ n.val))
+      j B)
+    (r : ℕ) (z : (V₁).obj star₁) :
+    tensorVacuumDecodeLinear D Tw m cutoff L
+        (((adjunction K₁).unit.app V₁ ≫
+          (evaluatedPostDot D Tw m cutoff PB i H₁ ^ (cutoff i - 2 * m i - 1 + 2 * r)) ≫
+            B ⟨cutoff i - 2 * m i - 1, by omega⟩).total star₁ z) =
+      polynomialToPower D cutoff L (PowerSeries.coeff r
+          (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
+        tensorVacuumDecodeLinear D Tw m cutoff L z :=
+  tensorVacuumNegativeCap_odd_moments_even D Tw m cutoff L sy
+    (parameterTwist_homogeneous D Sc hc) i hi hP (by omega) hPN j B hB r z
+
+end PowerBound
+
+section Instance
+local instance rightwardProbeHomPi {k : Type u} [CommRing k]
+    (A B : PiSCat.{u,u,u+1} k) : PiSupercategory k (A ⟶ B) :=
+  PiTwoSupercategory.homPiLeft A B
+include sy hc in
+/-- Probe: the full even moment at the parameter twist, in the cap-moment context. -/
+theorem rightwardProbe_full_instance (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i)
+    (hPN : 2 * m i < cutoff i)
+    (j : _ ⟶ shiftedPreSourceObject D Tw m R₀ i H)
+    (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
+    (hB : SwappedAssembly.ProbeWindow.IsCupInverse
+      (evaluatedMixedBend D Tw m cutoff bound i hP H)
+      (fun n => (adjunction K).unit.app V ≫ (evaluatedPostDot D Tw m cutoff bound i H ^ n.val))
+      j B)
+    (r : ℕ) (z : (V).obj star) :
+    tensorVacuumDecodeLinear D Tw m cutoff L
+        (((adjunction K).unit.app V ≫
+          (evaluatedPostDot D Tw m cutoff bound i H ^ (cutoff i - 2 * m i - 1 + 2 * r)) ≫
+            B ⟨cutoff i - 2 * m i - 1, by omega⟩).total star z) =
+      polynomialToPower D cutoff L (PowerSeries.coeff r
+          (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
+        tensorVacuumDecodeLinear D Tw m cutoff L z :=
+  tensorVacuumNegativeCap_odd_moments_even D Tw m cutoff L sy
+    (parameterTwist_homogeneous D Sc hc) i hi hP (by omega) hPN j B hB r z
+
+end Instance
+
 end OddMath.QuiverHecke.ELVOld
