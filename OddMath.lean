@@ -1950,6 +1950,7 @@ import OddMath.QuiverHecke.SwappedVacuum.InverseColumnSeries
 import OddMath.QuiverHecke.SwappedVacuum.InverseColumnOddSeries
 import OddMath.QuiverHecke.SwappedVacuum.InverseColumnEvenSeries
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumColumnMoments
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumCapMoments
 
 import OddMath.QuiverHecke.SwappedVacuum.NegativeCapMoments
 
@@ -2068,6 +2069,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDottedComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMateParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairDots
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerOddSeries
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerEvenColourSeries
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordCoordinates
 import OddMath.QuiverHecke.HalfTurn.PowerWordCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapRowComparison

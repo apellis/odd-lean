@@ -42,3 +42,38 @@ Here `m_r` is the `r`th coefficient of the momentSeries. No relation
 `e² = 0` and no commutation of `e` with `φ` is used. The reservoir series
 hypothesis `hT` is an input. Discharging it at `H ≤ 0` from the positive-height
 reservoir computation is the remaining step for `bubbles_eq` at nonpositive height.
+
+## On the tensor vacuum
+
+`ELVTensorVacuumCapMoments` instantiates the odd results on the prescribed
+tensor vacuum with `x` the shifted pre dot, `y` the evaluated post dot, `s`
+the A6 bend, `u` the adjunction unit, `v` the shifted pre cap and `ℓ` the
+reservoir cap, probe exponent `M = m i` and cutoff `N = cutoff i`. The
+reservoir series hypothesis is discharged by `tensorPowerVacuumCap_moment_even/odd`
+(`e = (-1)^(N+1) δ`), in the decode chart `tensorVacuumEndDecode`:
+
+* `tensorVacuumNegativeCap_odd_moments_even`, `_odd` (`2M < N`, any cup inverse `[j; B]`):
+  `u y^(N-2M-1+2r) B_(N-2M-1) = A_r`, `u y^(N-2M-1+2r+1) B_(N-2M-1) = e A_r`.
+* `tensorVacuumZeroHeightCap_odd_moments_even`, `_odd` (`2M = N`, bend an isomorphism):
+  `u y^(2r) s⁻¹ v = e A_r`, `u y^(2r+1) s⁻¹ v = A_(r+1)`.
+
+Here `A_r` is the `r`th coefficient of `(1+w)^M/C(-w)` acting on the
+coefficient chart.
+
+At an even colour the reservoir moments are the complete coefficients:
+`ELVCoefficientPowerEvenColourSeries.even_colour_signedMoment` proves
+`signedMoment (N-1+r) = h_r`, the `r`th coefficient of `1/E(-z)`, from the
+cyclotomic recurrence of the raw moments (the remainder polynomial is the
+reversed `E(-z)`). With the even slide (`koszulSign 0 0 = 1`) and the probe
+polynomial `(x - 1)^M = 0`, `SwappedVacuum.even_cap_moments` gives, with `A_l`
+now the `l`th coefficient of `(1-w)^M/E(-w)`:
+
+* `tensorVacuumNegativeCap_even_moments` (`M < N`, any cup inverse `[j; B]`):
+  `u y^(N-M-1+l) B_(N-M-1) = A_l`.
+* `tensorVacuumZeroHeightCap_even_moments` (`M = N`, bend an isomorphism):
+  `u y^l s⁻¹ v = A_(l+1)`.
+
+Still open at `H ≤ 0`: existence of the cup inverse and of the zero-height
+inverse, the case `M = 0` (the bend needs `0 < probeCutoff`), the
+identification of `momentSeries (probeSeriesInv)` with the `substitutedSeries`
+in `VacuumBubblesNonpositiveHeight`, and the attachment to `bubLs`.
