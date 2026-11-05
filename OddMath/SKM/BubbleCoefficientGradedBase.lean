@@ -29,10 +29,10 @@ namespace OddMath.SKM.SYM
 
 open OddMath.Diagrams
 
-universe u v w
+universe u
 
-variable {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X) (sy : Symmetrizer D)
-  {K : Type*} [CommRing K] {R : Type w} [CommRing R] [Algebra K R]
+variable {I : Type u} {X : Type u} [AddCommGroup X] (D : Datum I X) (sy : Symmetrizer D)
+  {K : Type u} [CommRing K] {R : Type u} [CommRing R] [Algebra K R]
   (𝒜 : ℤ → Submodule K R)
 
 /-- The degree-`n` part of `SYM D R` over `K`: coordinates at basis vectors of degree `δ` lie
@@ -144,5 +144,48 @@ def elvCoefficientDegreeGradedAlgebraOver (cutoff : I → ℕ) :
       intro x hx n
       apply elvCoefficientQuotient_eq_zero
       exact elvCoefficientIdeal_degreeOver cutoff (Quotient.exact hx) n)
+
+omit [GradedAlgebra 𝒜] in
+/-- Homogeneous scalars of the base shift the coefficientwise degree over `K`. -/
+theorem smul_mem_elvCoefficientDegreeOver [SetLike.GradedMul 𝒜] (cutoff : I → ℕ) {e n : ℤ}
+    {r : R} (hr : r ∈ 𝒜 e) {x : ELVCoefficientAlgebra (k := R) D cutoff}
+    (hx : x ∈ elvCoefficientDegreeOver D sy 𝒜 cutoff n) :
+    r • x ∈ elvCoefficientDegreeOver D sy 𝒜 cutoff (e + n) := by
+  obtain ⟨y, hy, rfl⟩ := hx
+  refine ⟨r • y, BasisGrading.smul_mem_basisPart hr hy, ?_⟩
+  change elvCoefficientQuotient D cutoff (r • y) = r • elvCoefficientQuotient D cutoff y
+  rw [map_smul]
+
+omit [GradedAlgebra 𝒜] in
+/-- The parity projections of the ELV coefficient algebra over `R` preserve the coefficientwise
+degree over `K`. -/
+theorem elvCoefficientDegreeOver_parity (cutoff : I → ℕ) {n : ℤ}
+    {x : ELVCoefficientAlgebra (k := R) D cutoff} (p : ZMod 2)
+    (hx : x ∈ elvCoefficientDegreeOver D sy 𝒜 cutoff n) :
+    (DirectSum.decompose (elvCoefficientParity (k := R) D cutoff) x p :
+      ELVCoefficientAlgebra (k := R) D cutoff) ∈ elvCoefficientDegreeOver D sy 𝒜 cutoff n := by
+  obtain ⟨y, hy, rfl⟩ := hx
+  have hb : ∀ a, elvCoefficientQuotient D cutoff (coefficientBasis D R a) ∈
+      elvCoefficientParity (k := R) D cutoff (a.2.card : ZMod 2) := by
+    intro a
+    have ha := elvModelQuotient_mem D (cutoff := cutoff) (coefficientBasis_mem_parity D R a)
+    simpa only [elvModelQuotient, AlgHom.comp_apply, AlgEquiv.coe_toAlgHom,
+      AlgEquiv.symm_apply_apply] using ha
+  change GradedAlgebra.proj (elvCoefficientParity (k := R) D cutoff) p
+    (elvCoefficientQuotient D cutoff y) ∈ _
+  rw [← (coefficientBasis D R).linearCombination_repr y, Finsupp.linearCombination_apply,
+    map_finsuppSum, map_finsuppSum]
+  refine Submodule.sum_mem _ fun a _ => ?_
+  rw [map_smul, map_smul, GradedAlgebra.proj_apply]
+  by_cases h : (a.2.card : ZMod 2) = p
+  · subst p
+    rw [DirectSum.decompose_of_mem_same _ (hb a)]
+    have hm := smul_coefficientBasis_mem (sy := sy) (hy a) (a := a)
+    rw [sub_add_cancel] at hm
+    refine ⟨_, hm, ?_⟩
+    change elvCoefficientQuotient D cutoff (_ • _) = _
+    rw [map_smul]
+  · rw [DirectSum.decompose_of_mem_ne _ (hb a) h, smul_zero]
+    exact zero_mem _
 
 end OddMath.SKM.SYM

@@ -154,6 +154,15 @@ theorem smul_basis_mem_basisPart {i : ι} {e : ℤ} {r : R} (hr : r ∈ 𝒜 e) 
   rw [map_smul, Module.Basis.repr_self, Finsupp.smul_single, smul_eq_mul, mul_one]
   exact single_mem_part hr
 
+omit [Decomposition 𝒜] in
+/-- Multiplication by a homogeneous scalar shifts the degree. -/
+theorem smul_mem_basisPart [SetLike.GradedMul 𝒜] {e n : ℤ} {r : R} (hr : r ∈ 𝒜 e) {x : M}
+    (hx : x ∈ basisPart 𝒜 δ b n) : r • x ∈ basisPart 𝒜 δ b (e + n) := by
+  intro i
+  change b.repr (r • x) i ∈ 𝒜 (e + n - δ i)
+  rw [map_smul, Finsupp.smul_apply, smul_eq_mul, add_sub_assoc]
+  exact SetLike.GradedMul.mul_mem hr (hx i)
+
 variable (𝒜 δ b)
 
 /-- **Graded free modules with a homogeneous basis.** -/
