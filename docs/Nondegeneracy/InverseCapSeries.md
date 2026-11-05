@@ -54,7 +54,7 @@ reservoir series hypothesis is discharged by `tensorPowerVacuumCap_moment_even/o
 
 * `tensorVacuumNegativeCap_odd_moments_even`, `_odd` (`2M < N`, any cup inverse `[j; B]`):
   `u y^(N-2M-1+2r) B_(N-2M-1) = A_r`, `u y^(N-2M-1+2r+1) B_(N-2M-1) = e A_r`.
-* `tensorVacuumZeroHeightCap_odd_moments` (`2M = N`, bend an isomorphism):
+* `tensorVacuumZeroHeightCap_odd_moments_even`, `_odd` (`2M = N`, bend an isomorphism):
   `u y^(2r) s⁻¹ v = e A_r`, `u y^(2r+1) s⁻¹ v = A_(r+1)`.
 
 Here `A_r` is the `r`th coefficient of `(1+w)^M/C(-w)` acting on the

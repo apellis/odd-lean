@@ -27,7 +27,8 @@ probe exponent `M` and reservoir cutoff `N`:
   `tensorVacuumNegativeCap_odd_moments_odd`);
 * at zero height `2M = N`, for the bend as an isomorphism, the moments
   `u ≫ y^(2r) ≫ s⁻¹ ≫ v` and `u ≫ y^(2r+1) ≫ s⁻¹ ≫ v` are `δ` times the
-  `r`th and the `(r+1)`st coefficient (`tensorVacuumZeroHeightCap_odd_moments`).
+  `r`th and the `(r+1)`st coefficient (`tensorVacuumZeroHeightCap_odd_moments_even`,
+  `tensorVacuumZeroHeightCap_odd_moments_odd`).
 
 These instantiate `SwappedVacuum.odd_cap_moments` with the actual slide,
 window, probe polynomial and the reservoir moments
@@ -237,6 +238,15 @@ variable (i : I)
 
 local notation "K" => contentAppend D Sc cutoff bound (0 : Multiset I) [i]
 
+omit [Fintype I] in
+/-- A power series whose coefficients are the images of those of `g` is the image of `g`. -/
+private theorem mk_eq_map_of_coeff {S R : Type*} [CommRing S] [Ring R] (φ : S →+* R)
+    (f : ℕ → R) (g : PowerSeries S) (h : ∀ l, f l = φ (PowerSeries.coeff l g)) :
+    PowerSeries.mk f = PowerSeries.map φ g := by
+  ext l
+  rw [PowerSeries.coeff_mk, PowerSeries.coeff_map]
+  exact h l
+
 /-- Left multiplication by the polynomial coefficients on the coefficient quotient. -/
 private def capCoefficientLmul : MvPolynomial (I × ℕ) k →ₐ[k] Module.End k AQ :=
   (Algebra.lmul k AQ).comp (polynomialToPower D cutoff L)
@@ -333,9 +343,7 @@ private theorem even_reservoir_series (hi : D.parity i = 0) (hN : 0 < cutoff i) 
           tensorPowerVacuumCap D Sc m cutoff L i hN)) =
       PowerSeries.map (capCoefficientLmul D cutoff L).toRingHom
         (PowerSeries.invOfUnit (PowerSeries.rescale (-1) (SKM.SYM.generatorSeries k i)) 1) := by
-  ext l
-  rw [PowerSeries.coeff_mk, PowerSeries.coeff_map]
-  exact even_reservoir_coefficient D Sc m cutoff L i hi hN l
+  mk_eq_map_of_coeff _ _ _ (even_reservoir_coefficient D Sc m cutoff L i hi hN)
 
 private theorem odd_probe_polynomial (hi : D.parity i = 1) :
     SwappedVacuum.capPolynomial
@@ -486,31 +494,25 @@ theorem tensorVacuumNegativeCap_odd_moments_odd
   exact e2
 
 include sy hc in
-/-- **Odd colour, zero height, on the tensor vacuum.** For `cutoff i = 2 M`,
-`M = m i`, and the A6 bend an isomorphism `s`, the decoded moments of the
-principal inverse are `u ≫ y^(2r) ≫ s⁻¹ ≫ v = δ · A_r` and
-`u ≫ y^(2r+1) ≫ s⁻¹ ≫ v = A_(r+1)`, where `A_r` is the `r`th coefficient of
-`(1 + w)^M / C(-w)` and `δ` the normalized odd coefficient `(-1)^(N+1) δ`. -/
-theorem tensorVacuumZeroHeightCap_odd_moments
+/-- The decoded endomorphism form of both odd zero-height moment identities. -/
+private theorem odd_zero_decoded
     (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) (hN : 0 < cutoff i)
     (hcut : cutoff i = 2 * m i)
     (s : shiftedPreSourceObject D Sc m R₀ i H ≅ _)
     (hsb : s.hom = evaluatedMixedBend D Sc m cutoff bound i hP H)
-    (r : ℕ) (z : (V).obj star) :
-    tensorVacuumDecodeLinear D Sc m cutoff L
-        (((adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ (2 * r)) ≫
-          s.inv ≫ shiftedPreCap D Sc m R₀ i hP H).total star z) =
-      ((-1 : k) ^ (cutoff i + 1) •
+    (r : ℕ) :
+    tensorVacuumEndDecode D Sc m cutoff L ((adjunction K).unit.app V ≫
+        (evaluatedPostDot D Sc m cutoff bound i H ^ (2 * r)) ≫ s.inv ≫
+          shiftedPreCap D Sc m R₀ i hP H) =
+        Algebra.lmul k AQ ((-1 : k) ^ (cutoff i + 1) •
           coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) *
-        (polynomialToPower D cutoff L (PowerSeries.coeff r
-          (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
-          tensorVacuumDecodeLinear D Sc m cutoff L z) ∧
-    tensorVacuumDecodeLinear D Sc m cutoff L
-        (((adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ (2 * r + 1)) ≫
-          s.inv ≫ shiftedPreCap D Sc m R₀ i hP H).total star z) =
-      polynomialToPower D cutoff L (PowerSeries.coeff (r + 1)
-          (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
-        tensorVacuumDecodeLinear D Sc m cutoff L z := by
+        capCoefficientLmul D cutoff L (PowerSeries.coeff r
+          (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) ∧
+      tensorVacuumEndDecode D Sc m cutoff L ((adjunction K).unit.app V ≫
+        (evaluatedPostDot D Sc m cutoff bound i H ^ (2 * r + 1)) ≫ s.inv ≫
+          shiftedPreCap D Sc m R₀ i hP H) =
+        capCoefficientLmul D cutoff L (PowerSeries.coeff (r + 1)
+          (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) := by
   have hs := odd_slide D Sc m cutoff L sy hc i hi hP
   rw [← hsb] at hs
   have hwin : ∀ a < cutoff i, (adjunction K).unit.app V ≫
@@ -526,13 +528,53 @@ theorem tensorVacuumZeroHeightCap_odd_moments
       coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)))
     (cutoff i) hcut hs hwin (odd_probe_polynomial D Sc m cutoff L i hi)
     (odd_reservoir_series D Sc m cutoff L i hi hN) r
-  have e1 := LinearMap.congr_fun h1 (tensorVacuumDecodeLinear D Sc m cutoff L z)
-  have e2 := LinearMap.congr_fun h2 (tensorVacuumDecodeLinear D Sc m cutoff L z)
-  rw [tensorVacuumEndDecode_apply, cap_end_mul_apply, capCoefficientLmul_apply,
-    cap_lmul_apply] at e1
-  rw [tensorVacuumEndDecode_apply, capCoefficientLmul_apply] at e2
-  refine ⟨?_, e2⟩
-  rw [e1, ← mul_assoc, ← mul_assoc, (delta_commute D cutoff L i hi _).eq]
+  exact ⟨h1.trans ((delta_commute D cutoff L i hi _).map (Algebra.lmul k AQ)).eq, h2⟩
+
+include sy hc in
+/-- **Odd colour, zero height, on the tensor vacuum: even moments.** For
+`cutoff i = 2 M`, `M = m i`, and the A6 bend an isomorphism `s`, the decoded
+moment `u ≫ y^(2r) ≫ s⁻¹ ≫ v` is `δ · A_r`, where `A_r` is the `r`th
+coefficient of `(1 + w)^M / C(-w)` and `δ` the normalized odd coefficient
+`(-1)^(N+1) δ`. -/
+theorem tensorVacuumZeroHeightCap_odd_moments_even
+    (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) (hN : 0 < cutoff i)
+    (hcut : cutoff i = 2 * m i)
+    (s : shiftedPreSourceObject D Sc m R₀ i H ≅ _)
+    (hsb : s.hom = evaluatedMixedBend D Sc m cutoff bound i hP H)
+    (r : ℕ) (z : (V).obj star) :
+    tensorVacuumDecodeLinear D Sc m cutoff L
+        (((adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ (2 * r)) ≫
+          s.inv ≫ shiftedPreCap D Sc m R₀ i hP H).total star z) =
+      ((-1 : k) ^ (cutoff i + 1) •
+          coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) *
+        (polynomialToPower D cutoff L (PowerSeries.coeff r
+          (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
+          tensorVacuumDecodeLinear D Sc m cutoff L z) := by
+  have e := LinearMap.congr_fun (odd_zero_decoded D Sc m cutoff L sy hc i hi hP hN hcut s hsb r).1
+    (tensorVacuumDecodeLinear D Sc m cutoff L z)
+  rw [tensorVacuumEndDecode_apply] at e
+  exact e
+
+include sy hc in
+/-- **Odd colour, zero height, on the tensor vacuum: odd moments.** Under the
+hypotheses of `tensorVacuumZeroHeightCap_odd_moments_even`, the decoded moment
+`u ≫ y^(2r+1) ≫ s⁻¹ ≫ v` is `A_(r+1)`. -/
+theorem tensorVacuumZeroHeightCap_odd_moments_odd
+    (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) (hN : 0 < cutoff i)
+    (hcut : cutoff i = 2 * m i)
+    (s : shiftedPreSourceObject D Sc m R₀ i H ≅ _)
+    (hsb : s.hom = evaluatedMixedBend D Sc m cutoff bound i hP H)
+    (r : ℕ) (z : (V).obj star) :
+    tensorVacuumDecodeLinear D Sc m cutoff L
+        (((adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ (2 * r + 1)) ≫
+          s.inv ≫ shiftedPreCap D Sc m R₀ i hP H).total star z) =
+      polynomialToPower D cutoff L (PowerSeries.coeff (r + 1)
+          (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
+        tensorVacuumDecodeLinear D Sc m cutoff L z := by
+  have e := LinearMap.congr_fun (odd_zero_decoded D Sc m cutoff L sy hc i hi hP hN hcut s hsb r).2
+    (tensorVacuumDecodeLinear D Sc m cutoff L z)
+  rw [tensorVacuumEndDecode_apply] at e
+  exact e
 
 /-! ### Even colour -/
 
