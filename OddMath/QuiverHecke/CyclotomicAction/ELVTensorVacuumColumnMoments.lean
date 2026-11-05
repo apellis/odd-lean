@@ -200,6 +200,7 @@ private theorem reservoir_odd_coefficient (hi : D.parity i = 1) (hN : 0 < cutoff
     coefficientLmul_ringHom_apply, ← mul_assoc, (odd_coefficient_commute D cutoff L i hi _).eq,
     smul_mul_assoc]
   convert tensorPowerVacuumCap_moment_odd D Sc m cutoff L i hi hN r z using 3
+  rfl
 
 private theorem tensorVacuum_reservoir_series (hi : D.parity i = 1) (hN : 0 < cutoff i) :
     PowerSeries.mk (fun l => tensorVacuumEndDecode D Sc m cutoff L
@@ -328,9 +329,20 @@ theorem tensorVacuumCapInverse_odd_moments
         (polynomialToPower D cutoff L (PowerSeries.coeff s
           (VacuumSeries.substitutedSeries k (SKM.SYM.probeSeries D k m) i)) *
           tensorVacuumDecodeLinear D Sc m cutoff L z) :=
-  tensorVacuumColumn_odd_moments D Sc m cutoff L sy hc i hi hP hN h hh hhN _ (hA.2.1 _)
-    (fun j hj => (hA.2.2.2.1 ⟨h - 1, by omega⟩ ⟨j, hj⟩).trans
-      (if_congr ⟨fun e => by rw [Fin.ext_iff] at e; dsimp only at e; omega,
-        fun e => Fin.ext (by dsimp only; omega)⟩ rfl rfl)) s z
+  by
+  have hcol : ∀ j < h, A ⟨h - 1, by omega⟩ ≫ (shiftedPreDot D Sc m R₀ i H ^ j) ≫
+      shiftedPreCap D Sc m R₀ i hP H = if j + 1 = h then 𝟙 V else 0 := by
+    intro j hj
+    have e := hA.2.2.2.1 ⟨h - 1, by omega⟩ ⟨j, hj⟩
+    dsimp only at e
+    rw [e]
+    by_cases hj' : j + 1 = h
+    · have hf : (⟨h - 1, by omega⟩ : Fin h) = ⟨j, hj⟩ := Fin.ext (by dsimp only; omega)
+      simp only [hf, hj', ↓reduceIte]
+    · have hf : ¬((⟨h - 1, by omega⟩ : Fin h) = ⟨j, hj⟩) := fun e => hj' (by
+        rw [Fin.ext_iff] at e; dsimp only at e; omega)
+      simp only [hf, hj', ↓reduceIte]
+  exact tensorVacuumColumn_odd_moments D Sc m cutoff L sy hc i hi hP hN h hh hhN
+    (A ⟨h - 1, by omega⟩) (hA.2.1 _) hcol s z
 
 end OddMath.QuiverHecke.ELVOld
