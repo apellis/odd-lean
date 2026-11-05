@@ -2758,6 +2758,7 @@ import OddMath.SKM.PairingExtensionDiagrams
 import OddMath.SKM.PairingExtensionPresentation
 import OddMath.QuiverHecke.PairingExtensionAction
 import OddMath.QuiverHecke.SwappedAssembly.SupportedActionLayers
+import OddMath.QuiverHecke.SwappedAssembly.SupportedClosedAction
 import OddMath.SKM.PairingExtensionBubbles
 import OddMath.QuiverHecke.PairingExtensionAffine
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumBendSeries
