@@ -91,12 +91,13 @@ theorem rightwardUnitColumn_odd_moments_odd
         ((rightwardUnitColumn ((adjunction K).unit.app V)
           (evaluatedPostDot D Sc m cutoff bound i H) B (cutoff i - 2 * m i - 1 + (2 * r + 1))
           ⟨cutoff i - 2 * m i - 1, by omega⟩).total star z) =
-      ((-1 : k) ^ (cutoff i + 1) •
-          coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) *
+      coefficientPowerQuotientMap D cutoff L
+          ((-1 : k) ^ (cutoff i + 1) • SKM.SYM.delta D k ⟨i, hi⟩) *
         (polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
-          tensorVacuumDecodeLinear D Sc m cutoff L z) :=
-  tensorVacuumNegativeCap_odd_moments_odd D Sc m cutoff L sy hc i hi hP
+          tensorVacuumDecodeLinear D Sc m cutoff L z) := by
+  rw [map_smul]
+  exact tensorVacuumNegativeCap_odd_moments_odd D Sc m cutoff L sy hc i hi hP
     (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
 
 include sy hc in
@@ -122,8 +123,8 @@ theorem rightwardUnitColumn_odd_moments
         ((rightwardUnitColumn ((adjunction K).unit.app V)
           (evaluatedPostDot D Sc m cutoff bound i H) B (cutoff i - 2 * m i - 1 + (2 * r + 1))
           ⟨cutoff i - 2 * m i - 1, by omega⟩).total star z) =
-      ((-1 : k) ^ (cutoff i + 1) •
-          coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) *
+      coefficientPowerQuotientMap D cutoff L
+          ((-1 : k) ^ (cutoff i + 1) • SKM.SYM.delta D k ⟨i, hi⟩) *
         (polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
           tensorVacuumDecodeLinear D Sc m cutoff L z) :=
