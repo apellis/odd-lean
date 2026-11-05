@@ -24,9 +24,6 @@ universe u
 local instance tensorLayerSquaresHomPi {k : Type u} [CommRing k] (A C : PiSCat.{u,u,u + 1} k) :
     PiSupercategory k (A ⟶ C) := PiTwoSupercategory.homPiLeft A C
 
-local notation "colApp" =>
-  @HAppend.hAppend (List (Col I X)) (List (Col I X)) (List (Col I X)) instHAppendOfAppend
-
 /-- The target-word quotient transports compose to the identity. -/
 theorem tensorTargetWordQuotientEquiv_cancel {I X k : Type u} [AddCommGroup X] [CommRing k]
     (D : Datum I X) (Sc : Scalars D k) (cutoff : I → ℕ) (L : I × ℕ → ℕ) (s : List I)
@@ -57,6 +54,8 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
 local notation "Tw" => parameterTwist D Sc
 local notation "N" => PowerWordContent.powerBound D cutoff L
 local notation "cS" => tensorSourceContent D ΛP ΛR s
+local notation "colApp" =>
+  @HAppend.hAppend (List (Col I X)) (List (Col I X)) (List (Col I X)) instHAppendOfAppend
 local notation "P" => elvProbeReservoir D Sc m cutoff N ΛP ΛR hP hR
 local notation "Q" => interpretation D Sc m cutoff N ΛP ΛR hP hR
   (tensorSourceFamily D Sc m cutoff ΛP ΛR L s) (tensorTargetFamily D Sc m cutoff ΛP ΛR L)
@@ -211,7 +210,7 @@ theorem tensorMatrixQuotientObservation_cross_of_eq [DecidableEq I]
   obtain ⟨hv₁, hv₂, rfl⟩ := SPath.two_up (i := i) (j := j) rfl rfl pm
   obtain ⟨hw₁, hw₂, hs⟩ := SPath.cross_steps hij hv₁ hv₂
   have hc : c - Finsupp.single i 1 - Finsupp.single j 1 =
-      c - Finsupp.single j 1 - Finsupp.single i 1 := tsub_right_comm _ _ _
+      c - Finsupp.single j 1 - Finsupp.single i 1 := tsub_right_comm
   rw [hc] at pR
   have hl : ∀ a ∈ (SKM.lay D ν u (SKM.Shape.cross i j) v).left, a.l.1 = true :=
     fun a ha => hupA a (List.mem_append_left _ (List.mem_append_left _ ha))
