@@ -134,7 +134,7 @@ private theorem coefficient_coordinate_unit_class_of_block (s t : List I) (h : t
   obtain rfl := eq_of_heq hw
   obtain rfl := eq_of_heq hz
   obtain rfl := eq_of_heq hu
-  exact coefficient_coordinate_unit_class_of_chart D Sc cutoff L s t h Λ x hβ A e e' he z a hUnit
+  exact coefficient_coordinate_unit_class_of_chart D Sc cutoff L s t h Λ x hβ A e e' he _ a hUnit
 
 variable (m : I → ℕ) (ΛP ΛR : X)
   (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
