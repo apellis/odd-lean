@@ -701,6 +701,9 @@ is the one in [BE2] (1.27) and Prop 4.1 (4.3)–(4.4) for odd `i` and `n = 1`: a
 the leftward cap or cup picks up `(-1)^{⟨hᵢ,λ⟩}` plus twice the odd bubble. This is what is
 proved here (`eq_1_27`, from `lemma41_eq3_odd`, `lemma41_eq4_odd`, with `oddBubble_consistent` for the odd
 bubble at `⟨hᵢ,λ⟩ = 0`). The correction will be made in a planned revision of the papers.
+This and the failure of [EL] Conjectures 3.11 and 3.12 (the bubble algebra is `Sym[d]`, smaller
+than [EL]'s `Ξ`) are recorded in ERRATA [EL]; the derivations from [EL]'s own relations given there
+are hand computations and are not formalized.
 
 ### [BE2] §11: parity and the split Grothendieck group
 
