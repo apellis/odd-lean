@@ -55,6 +55,15 @@ theorem homPostCup_weight_pullback_square (i : I) (β : I →₀ ℕ) {d : X}
 
 end Pullback
 
+/-- Attach the target and cap-target charts to a pulled-back unit square. -/
+private theorem unit_charts_attach {C : Type*} [Category C]
+    {S T₀ T₁ T₂ T₃ S' S'' : C} (a : S ⟶ T₁) (t : T₀ ≅ T₁) (v : T₁ ≅ T₂) (f : T₂ ≅ T₃)
+    (b : S ⟶ S') (a₀ : S ⟶ T₁) (c : S' ⟶ T₂) (q : S' ⟶ S'') (col : S'' ⟶ T₃)
+    (hE : a = a₀) (hsq : a₀ ≫ v.hom = b ≫ c) (hn : c ≫ f.hom = q ≫ col) :
+    (a ≫ t.inv) ≫ (t ≪≫ v ≪≫ f).hom = (b ≫ q) ≫ col := by
+  simp only [Iso.trans_hom, Category.assoc, Iso.inv_hom_id_assoc]
+  rw [hE, reassoc_of% hsq, hn]
+
 section Padded
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
@@ -124,13 +133,11 @@ theorem paddedVacuumUnit_native (i : I) (n : ℕ) :
   have hunit : PR.centralPaddedUnit i (((0, 0) : Sector I)) Z E false n =
       E.map cup ≫ tc.inv := by
     unfold ProbeReservoir.centralPaddedUnit
-    rw [dif_pos (show StepValid (SKM.dn i) false (((0, 0) : Sector I)) from by trivial)]
+    rw [dite_eq_left_of_eq_true (eq_true (show StepValid (SKM.dn i) false
+      (((0, 0) : Sector I)) from by trivial))]
     rfl
-  have htgt : (paddedVacuumTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).hom =
-      tc.hom ≫ v.hom ≫ f.hom := rfl
-  have hcap : (paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H).hom =
-      back ≫ q := rfl
-  have hE : E.map cup = E₀.map ((SKM.homWeightEquivalence PR.T PR.W ha hb).functor.map cup) :=
+  have hE : E.map cup = E₀.map ((SKM.homWeightEquivalence PR.T PR.W ha hb).functor.map cup) := by
+    simp only [E, vacuumSectorEvaluation, Functor.comp_map]
     rfl
   have hsq : E₀.map ((SKM.homWeightEquivalence PR.T PR.W ha hb).functor.map cup) ≫ v.hom =
       back ≫ E₀.map cup₀ := by
@@ -138,10 +145,20 @@ theorem paddedVacuumUnit_native (i : I) (n : ℕ) :
       (homPostCup_weight_pullback_square PR.T PR.W ha hb Z₀ i 0 er n)
     rw [Functor.map_comp, Functor.map_comp] at h
     exact h
-  have hn : E₀.map cup₀ ≫ f.hom = q ≫ col :=
-    vacuumBendPostCup_native D (parameterTwist D Sc) m cutoff bound ΛP ΛR hcP hcR i er₀ 0 H n
-  rw [hunit, htgt, hcap, Category.assoc, Iso.inv_hom_id_assoc, hE, ← Category.assoc, hsq,
-    Category.assoc, hn, Category.assoc]
+  have hc₀ : E₀.map cup₀ = cup₀.total (regularProbe D (parameterTwist D Sc) m ΛP)
+      (emptyBlock D ΛR) := by
+    simp only [cup₀, E₀, unitVacuumEvaluation, homContentEvaluation, Functor.comp_map,
+      Pi.eval_map, homTotalEvaluation]
+  have hn₁ := vacuumBendPostCup_native D (parameterTwist D Sc) m cutoff bound ΛP ΛR hcP hcR i
+    er₀ 0 H n
+  have hn : E₀.map cup₀ ≫ f.hom = q ≫ col := by
+    rw [hc₀]
+    exact hn₁
+  have hs := unit_charts_attach (E.map cup) tc v f back
+    (E₀.map ((SKM.homWeightEquivalence PR.T PR.W ha hb).functor.map cup)) (E₀.map cup₀) q col
+    hE hsq hn
+  rw [hunit]
+  exact hs
 
 end Padded
 
