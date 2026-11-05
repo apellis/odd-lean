@@ -147,6 +147,9 @@ def relationLabel : Rel (D.restrictColours J) → Rel D
   | .invM₅ i ν m n hm hn => .invM₅ i.val ν m n hm hn
   | .dcupZero i ν n hn => .dcupZero i.val ν n hn
   | .dcapZero i ν n hn => .dcapZero i.val ν n hn
+  | .zInt (.sq i ν) => .zInt (.sq i.val ν)
+  | .zInt (.right i ν n hn) => .zInt (.right i.val ν n hn)
+  | .zInt (.left i ν n hn) => .zInt (.left i.val ν n hn)
 
 /-- Restrict a raw relation label whose complete parameter support lies in `J`.
 The proof uses the label support, never the support of its linear expansion. -/
@@ -237,24 +240,30 @@ def restrictLabel (r : Rel D) (hr : ∀ i ∈ r.colours, i ∈ J) :
   | dcapZero i ν n hn =>
     let i' : J := ⟨i, hr i (by simp [Rel.colours])⟩
     exact .dcapZero i' ν n hn
+  | zInt b =>
+    have hb : b.i ∈ J := hr b.i (by simp [Rel.colours])
+    exact match b, hb with
+    | .sq i ν, hb => .zInt (.sq ⟨i, hb⟩ ν)
+    | .right i ν n hn, hb => .zInt (.right ⟨i, hb⟩ ν n hn)
+    | .left i ν n hn, hb => .zInt (.left ⟨i, hb⟩ ν n hn)
 
 /-- Restriction followed by inclusion returns the original raw relation. -/
 @[simp] theorem relationLabel_restrictLabel (r : Rel D)
     (hr : ∀ i ∈ r.colours, i ∈ J) :
     relationLabel D J (restrictLabel D J r hr) = r := by
-  cases r <;> rfl
+  cases r <;> (try cases ‹ZBase _›) <;> rfl
 
 @[simp] theorem relationLabel_dom (r : Rel (D.restrictColours J)) :
     (relationLabel D J r).dom = r.dom.map (letter J) := by
-  cases r <;> rfl
+  cases r <;> (try cases ‹ZBase _›) <;> rfl
 
 @[simp] theorem relationLabel_cod (r : Rel (D.restrictColours J)) :
     (relationLabel D J r).cod = r.cod.map (letter J) := by
-  cases r <;> rfl
+  cases r <;> (try cases ‹ZBase _›) <;> rfl
 
 @[simp] theorem relationLabel_region (r : Rel (D.restrictColours J)) :
     (relationLabel D J r).ν = r.ν := by
-  cases r <;> rfl
+  cases r <;> (try cases ‹ZBase _›) <;> rfl
 
 /-- Inclusion on objects in normal form. -/
 @[simp] theorem inclusion_ob (μ : X) (t : List (Letter J)) :
@@ -359,8 +368,12 @@ identities `relationLabel_dom` and `relationLabel_cod`. -/
 theorem linear_relation (r : Rel (D.restrictColours J)) :
     HEq (linear D J r.ν r.dom r.cod (relation (D.restrictColours J)
       (Sc.restrictColours D J) r)) (relation D Sc (relationLabel D J r)) := by
-  cases r <;> apply heq_of_eq <;>
-    dsimp only [Rel.ν, Rel.dom, Rel.cod, relationLabel]
+  cases r
+  case zInt b =>
+    cases b <;> exact heq_of_eq (by
+      simp only [relationLabel, Rel.ν, Rel.dom, Rel.cod, relation_zInt_of_scalars, linear_zero])
+  all_goals apply heq_of_eq
+  all_goals dsimp only [Rel.ν, Rel.dom, Rel.cod, relationLabel]
   all_goals
     simp only [relation, linear_sub, linear_add, linear_neg, linear_smul, linear_sum,
       linear_ite, linear_zero, dg, idg, linear_of, diagram_mkD, diagram_id]

@@ -417,6 +417,14 @@ def relation : (r : Rel D) → LinDiagram k (ob D r.ν r.dom) (ob D r.ν r.cod)
         zsign k (oddPar D i ν) • dg D ν (oddL D i ν ++ lPreL D i ν ++ epsL i n)
           (((sChain_oddL D i ν).append (sChain_lPreL D i ν)).append (sChain_epsL i _))
 
+/-- With the scalars of Definition 1.5 (`2` invertible when some colour is odd) the integral
+relations are zero. -/
+theorem relation_zInt_of_scalars (Sc : Scalars D k) (b : ZBase D) :
+    relation D Sc (.zInt b) = 0 := by
+  by_cases hp : ∃ i, D.parity i = 1
+  · cases b <;> exact zGate_of_isUnit D _ _ (Sc.two_isUnit hp)
+  · cases b <;> exact zGate_of_parity D _ _ fun h => hp ⟨_, h⟩
+
 /-- The presentation of the Kac–Moody 2-supercategory `𝔘(𝔤)` (Definition 1.5). -/
 def pres : Presentation.{w, max u v} (sig D) k where
   Rel := Rel D

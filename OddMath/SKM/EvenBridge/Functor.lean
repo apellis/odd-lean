@@ -753,5 +753,8 @@ def evenFunctor (hD : IsEven D) (hS : IsKLScalars D k Sc) :
       | invM₅ i ν m n hm hn => exact rel_invM₅ D C hc k Sc i ν m n hm hn
       | dcupZero i ν n hn => exact rel_dcupZero D C hc k Sc i ν n hn
       | dcapZero i ν n hn => exact rel_dcapZero D C hc k Sc i ν n hn
+      | zInt b =>
+        change (StringDiagrams.freeLift k _).map (relation D Sc (.zInt b)) = 0
+        rw [relation_zInt_of_scalars, Functor.map_zero]
 
 end OddMath.SKM.EvenBridge

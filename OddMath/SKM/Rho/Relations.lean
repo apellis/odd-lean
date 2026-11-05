@@ -75,7 +75,7 @@ private theorem rhoLin_relation_other (t : k) (ht : t ^ 2 = -1)
     have e : μ = ν := by simpa [Rel.ν, Rel.dom, wt_cons, sh, up, dn] using hs
     cases e
     exact RhoInversionKernel.kernel_dcapZero (sy := sy) (hc := hc) t ν i n hn
-
+  | zInt b => rw [relation_zInt_of_scalars, map_zero]
   | _ => exact (hR trivial).elim
 
 theorem rhoLin_relation (t : k) (ht : t ^ 2 = -1)
