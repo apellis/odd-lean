@@ -131,6 +131,305 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
       (parameterTwist_homogeneous D Sc hc) i hi hPi hPN j B hB r e' he' z⟩
 
 include sy hc in
+/-- The vacuum entry of `η x^e ≫ dcap n` at the shifts read off the extreme moment column,
+for an odd colour at negative height: `e = N - 2M - 1 + 2s` gives the `s`-th moment and
+`e = N - 2M - 1 + 1` the normalized odd coefficient. -/
+theorem diag_d0 (hcoef : VacuumCoefficientDecode D Sc m cutoff ΛP ΛR L hP hR)
+    (i : I) (hi : D.parity i = 1) (hP0 : 0 < probeCutoff D m i)
+    (hh : D.h i ν₀ < 0) (hPN : 2 * m i < cutoff i) (e n : ℕ) (hn : n = cutoff i - 2 * m i - 1)
+    (a : SYM D k)
+    (hmom : ∀ (c : (E).obj (Ys (0,0)).obj ≅ V) (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
+      (z : (V).obj (⟨⟨[]⟩, rfl⟩ : ContentCategory D (parameterTwist D Sc) cutoff N 0)),
+      (∀ (r : ℕ) (z : (V).obj (⟨⟨[]⟩, rfl⟩ :
+          ContentCategory D (parameterTwist D Sc) cutoff N 0)),
+        (∀ e', e' = cutoff i - 2 * m i - 1 + 2 * r →
+          ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
+          polynomialToPower D cutoff L (PowerSeries.coeff r
+              (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
+            tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) ∧
+        ∀ e', e' = cutoff i - 2 * m i - 1 + (2 * r + 1) →
+          ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
+          ELVOld.rightwardOddScalar D cutoff L i hi *
+            (polynomialToPower D cutoff L (PowerSeries.coeff r
+              (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
+              tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z)) →
+      ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e z =
+        coefficientPowerQuotientMap D cutoff L a *
+          tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) :
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀
+      (etaL i e ++ dcapL i n) ((sChain_etaL i _).append (sChain_dcapL i _)) a := by
+  sorry
+
+include sy hc in
+/-- The vacuum entry of `η x^e ≫ dcap n` at the shifts read off the extreme moment column,
+for an odd colour at negative height: `e = N - 2M - 1 + 2s` gives the `s`-th moment and
+`e = N - 2M - 1 + 1` the normalized odd coefficient. -/
+theorem diag_d1 (hcoef : VacuumCoefficientDecode D Sc m cutoff ΛP ΛR L hP hR)
+    (i : I) (hi : D.parity i = 1) (hP0 : 0 < probeCutoff D m i)
+    (hh : D.h i ν₀ < 0) (hPN : 2 * m i < cutoff i) (e n : ℕ) (hn : n = cutoff i - 2 * m i - 1)
+    (a : SYM D k)
+    (hmom : ∀ (c : (E).obj (Ys (0,0)).obj ≅ V) (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
+      (z : (V).obj (⟨⟨[]⟩, rfl⟩ : ContentCategory D (parameterTwist D Sc) cutoff N 0)),
+      (∀ (r : ℕ) (z : (V).obj (⟨⟨[]⟩, rfl⟩ :
+          ContentCategory D (parameterTwist D Sc) cutoff N 0)),
+        (∀ e', e' = cutoff i - 2 * m i - 1 + 2 * r →
+          ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
+          polynomialToPower D cutoff L (PowerSeries.coeff r
+              (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
+            tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) ∧
+        ∀ e', e' = cutoff i - 2 * m i - 1 + (2 * r + 1) →
+          ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
+          ELVOld.rightwardOddScalar D cutoff L i hi *
+            (polynomialToPower D cutoff L (PowerSeries.coeff r
+              (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
+              tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z)) →
+      ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e z =
+        coefficientPowerQuotientMap D cutoff L a *
+          tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) :
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀
+      (etaL i e ++ dcapL i n) ((sChain_etaL i _).append (sChain_dcapL i _)) a := by
+  have hhe := vacuum_height_eq D Sc m cutoff N ΛP ΛR hP hR i
+  rw [odd_probeCutoff_eq D m i hi] at hhe hP0
+  have hnZ : (n : ℤ) < -D.h i ν₀ := by rw [hhe, hn]; omega
+  have hd : ¬StepValid (dn i) true ((0, 0) : Sector I) := by simp [StepValid]
+  have hPi : 0 < probeCutoff D m i := by rw [odd_probeCutoff_eq D m i hi]; omega
+  sorry
+
+include sy hc in
+/-- The vacuum entry of `η x^e ≫ dcap n` at the shifts read off the extreme moment column,
+for an odd colour at negative height: `e = N - 2M - 1 + 2s` gives the `s`-th moment and
+`e = N - 2M - 1 + 1` the normalized odd coefficient. -/
+theorem diag_d2 (hcoef : VacuumCoefficientDecode D Sc m cutoff ΛP ΛR L hP hR)
+    (i : I) (hi : D.parity i = 1) (hP0 : 0 < probeCutoff D m i)
+    (hh : D.h i ν₀ < 0) (hPN : 2 * m i < cutoff i) (e n : ℕ) (hn : n = cutoff i - 2 * m i - 1)
+    (a : SYM D k)
+    (hmom : ∀ (c : (E).obj (Ys (0,0)).obj ≅ V) (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
+      (z : (V).obj (⟨⟨[]⟩, rfl⟩ : ContentCategory D (parameterTwist D Sc) cutoff N 0)),
+      (∀ (r : ℕ) (z : (V).obj (⟨⟨[]⟩, rfl⟩ :
+          ContentCategory D (parameterTwist D Sc) cutoff N 0)),
+        (∀ e', e' = cutoff i - 2 * m i - 1 + 2 * r →
+          ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
+          polynomialToPower D cutoff L (PowerSeries.coeff r
+              (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
+            tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) ∧
+        ∀ e', e' = cutoff i - 2 * m i - 1 + (2 * r + 1) →
+          ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
+          ELVOld.rightwardOddScalar D cutoff L i hi *
+            (polynomialToPower D cutoff L (PowerSeries.coeff r
+              (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
+              tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z)) →
+      ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e z =
+        coefficientPowerQuotientMap D cutoff L a *
+          tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) :
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀
+      (etaL i e ++ dcapL i n) ((sChain_etaL i _).append (sChain_dcapL i _)) a := by
+  have hhe := vacuum_height_eq D Sc m cutoff N ΛP ΛR hP hR i
+  rw [odd_probeCutoff_eq D m i hi] at hhe hP0
+  have hnZ : (n : ℤ) < -D.h i ν₀ := by rw [hhe, hn]; omega
+  have hd : ¬StepValid (dn i) true ((0, 0) : Sector I) := by simp [StepValid]
+  have hPi : 0 < probeCutoff D m i := by rw [odd_probeCutoff_eq D m i hi]; omega
+  obtain ⟨c, j, B, hB, hceq, hcup⟩ := tensorVacuum_rightward_odd_bubbleEntries D Sc m cutoff L
+    ΛP ΛR hP hR sy hc i hi hPi (Ys (0,0)).obj
+    ((congrArg (fun Y => Y.obj) (tensorTargetFamily_zero D Sc m cutoff ΛP ΛR L)).trans
+      (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hP hR).symm)
+    (fun q p => (lw).lcrossSame i ν₀ q p (Ys (0,0)).obj)
+    (fun n q r => (lw).dcap i n ν₀ q r (Ys (0,0)).obj)
+    (centralPointwiseLeftward_negInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
+      (Ys (0,0)) hh) cc
+  sorry
+
+include sy hc in
+/-- The vacuum entry of `η x^e ≫ dcap n` at the shifts read off the extreme moment column,
+for an odd colour at negative height: `e = N - 2M - 1 + 2s` gives the `s`-th moment and
+`e = N - 2M - 1 + 1` the normalized odd coefficient. -/
+theorem diag_d3 (hcoef : VacuumCoefficientDecode D Sc m cutoff ΛP ΛR L hP hR)
+    (i : I) (hi : D.parity i = 1) (hP0 : 0 < probeCutoff D m i)
+    (hh : D.h i ν₀ < 0) (hPN : 2 * m i < cutoff i) (e n : ℕ) (hn : n = cutoff i - 2 * m i - 1)
+    (a : SYM D k)
+    (hmom : ∀ (c : (E).obj (Ys (0,0)).obj ≅ V) (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
+      (z : (V).obj (⟨⟨[]⟩, rfl⟩ : ContentCategory D (parameterTwist D Sc) cutoff N 0)),
+      (∀ (r : ℕ) (z : (V).obj (⟨⟨[]⟩, rfl⟩ :
+          ContentCategory D (parameterTwist D Sc) cutoff N 0)),
+        (∀ e', e' = cutoff i - 2 * m i - 1 + 2 * r →
+          ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
+          polynomialToPower D cutoff L (PowerSeries.coeff r
+              (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
+            tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) ∧
+        ∀ e', e' = cutoff i - 2 * m i - 1 + (2 * r + 1) →
+          ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
+          ELVOld.rightwardOddScalar D cutoff L i hi *
+            (polynomialToPower D cutoff L (PowerSeries.coeff r
+              (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
+              tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z)) →
+      ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e z =
+        coefficientPowerQuotientMap D cutoff L a *
+          tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) :
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀
+      (etaL i e ++ dcapL i n) ((sChain_etaL i _).append (sChain_dcapL i _)) a := by
+  have hhe := vacuum_height_eq D Sc m cutoff N ΛP ΛR hP hR i
+  rw [odd_probeCutoff_eq D m i hi] at hhe hP0
+  have hnZ : (n : ℤ) < -D.h i ν₀ := by rw [hhe, hn]; omega
+  have hd : ¬StepValid (dn i) true ((0, 0) : Sector I) := by simp [StepValid]
+  have hPi : 0 < probeCutoff D m i := by rw [odd_probeCutoff_eq D m i hi]; omega
+  obtain ⟨c, j, B, hB, hceq, hcup⟩ := tensorVacuum_rightward_odd_bubbleEntries D Sc m cutoff L
+    ΛP ΛR hP hR sy hc i hi hPi (Ys (0,0)).obj
+    ((congrArg (fun Y => Y.obj) (tensorTargetFamily_zero D Sc m cutoff ΛP ΛR L)).trans
+      (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hP hR).symm)
+    (fun q p => (lw).lcrossSame i ν₀ q p (Ys (0,0)).obj)
+    (fun n q r => (lw).dcap i n ν₀ q r (Ys (0,0)).obj)
+    (centralPointwiseLeftward_negInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
+      (Ys (0,0)) hh) cc
+  apply vacuumEntry_of_decode D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀ _ _ a c
+    (vacuumDecodeFaithful_tensorTarget D Sc m cutoff ΛP ΛR L hP hR c) (hcoef c hceq a)
+  intro z
+  sorry
+
+include sy hc in
+/-- The vacuum entry of `η x^e ≫ dcap n` at the shifts read off the extreme moment column,
+for an odd colour at negative height: `e = N - 2M - 1 + 2s` gives the `s`-th moment and
+`e = N - 2M - 1 + 1` the normalized odd coefficient. -/
+theorem diag_d4 (hcoef : VacuumCoefficientDecode D Sc m cutoff ΛP ΛR L hP hR)
+    (i : I) (hi : D.parity i = 1) (hP0 : 0 < probeCutoff D m i)
+    (hh : D.h i ν₀ < 0) (hPN : 2 * m i < cutoff i) (e n : ℕ) (hn : n = cutoff i - 2 * m i - 1)
+    (a : SYM D k)
+    (hmom : ∀ (c : (E).obj (Ys (0,0)).obj ≅ V) (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
+      (z : (V).obj (⟨⟨[]⟩, rfl⟩ : ContentCategory D (parameterTwist D Sc) cutoff N 0)),
+      (∀ (r : ℕ) (z : (V).obj (⟨⟨[]⟩, rfl⟩ :
+          ContentCategory D (parameterTwist D Sc) cutoff N 0)),
+        (∀ e', e' = cutoff i - 2 * m i - 1 + 2 * r →
+          ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
+          polynomialToPower D cutoff L (PowerSeries.coeff r
+              (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
+            tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) ∧
+        ∀ e', e' = cutoff i - 2 * m i - 1 + (2 * r + 1) →
+          ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
+          ELVOld.rightwardOddScalar D cutoff L i hi *
+            (polynomialToPower D cutoff L (PowerSeries.coeff r
+              (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
+              tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z)) →
+      ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e z =
+        coefficientPowerQuotientMap D cutoff L a *
+          tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) :
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀
+      (etaL i e ++ dcapL i n) ((sChain_etaL i _).append (sChain_dcapL i _)) a := by
+  have hhe := vacuum_height_eq D Sc m cutoff N ΛP ΛR hP hR i
+  rw [odd_probeCutoff_eq D m i hi] at hhe hP0
+  have hnZ : (n : ℤ) < -D.h i ν₀ := by rw [hhe, hn]; omega
+  have hd : ¬StepValid (dn i) true ((0, 0) : Sector I) := by simp [StepValid]
+  have hPi : 0 < probeCutoff D m i := by rw [odd_probeCutoff_eq D m i hi]; omega
+  obtain ⟨c, j, B, hB, hceq, hcup⟩ := tensorVacuum_rightward_odd_bubbleEntries D Sc m cutoff L
+    ΛP ΛR hP hR sy hc i hi hPi (Ys (0,0)).obj
+    ((congrArg (fun Y => Y.obj) (tensorTargetFamily_zero D Sc m cutoff ΛP ΛR L)).trans
+      (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hP hR).symm)
+    (fun q p => (lw).lcrossSame i ν₀ q p (Ys (0,0)).obj)
+    (fun n q r => (lw).dcap i n ν₀ q r (Ys (0,0)).obj)
+    (centralPointwiseLeftward_negInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
+      (Ys (0,0)) hh) cc
+  apply vacuumEntry_of_decode D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀ _ _ a c
+    (vacuumDecodeFaithful_tensorTarget D Sc m cutoff ΛP ΛR L hP hR c) (hcoef c hceq a)
+  intro z
+  rw [ProbeReservoir.compDiag_etaL_dcapL_swappedGens (P) cc lw i e n ν₀ hnZ (0,0) _ hd]
+  sorry
+
+include sy hc in
+/-- The vacuum entry of `η x^e ≫ dcap n` at the shifts read off the extreme moment column,
+for an odd colour at negative height: `e = N - 2M - 1 + 2s` gives the `s`-th moment and
+`e = N - 2M - 1 + 1` the normalized odd coefficient. -/
+theorem diag_d5 (hcoef : VacuumCoefficientDecode D Sc m cutoff ΛP ΛR L hP hR)
+    (i : I) (hi : D.parity i = 1) (hP0 : 0 < probeCutoff D m i)
+    (hh : D.h i ν₀ < 0) (hPN : 2 * m i < cutoff i) (e n : ℕ) (hn : n = cutoff i - 2 * m i - 1)
+    (a : SYM D k)
+    (hmom : ∀ (c : (E).obj (Ys (0,0)).obj ≅ V) (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
+      (z : (V).obj (⟨⟨[]⟩, rfl⟩ : ContentCategory D (parameterTwist D Sc) cutoff N 0)),
+      (∀ (r : ℕ) (z : (V).obj (⟨⟨[]⟩, rfl⟩ :
+          ContentCategory D (parameterTwist D Sc) cutoff N 0)),
+        (∀ e', e' = cutoff i - 2 * m i - 1 + 2 * r →
+          ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
+          polynomialToPower D cutoff L (PowerSeries.coeff r
+              (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
+            tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) ∧
+        ∀ e', e' = cutoff i - 2 * m i - 1 + (2 * r + 1) →
+          ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
+          ELVOld.rightwardOddScalar D cutoff L i hi *
+            (polynomialToPower D cutoff L (PowerSeries.coeff r
+              (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
+              tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z)) →
+      ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e z =
+        coefficientPowerQuotientMap D cutoff L a *
+          tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) :
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀
+      (etaL i e ++ dcapL i n) ((sChain_etaL i _).append (sChain_dcapL i _)) a := by
+  have hhe := vacuum_height_eq D Sc m cutoff N ΛP ΛR hP hR i
+  rw [odd_probeCutoff_eq D m i hi] at hhe hP0
+  have hnZ : (n : ℤ) < -D.h i ν₀ := by rw [hhe, hn]; omega
+  have hd : ¬StepValid (dn i) true ((0, 0) : Sector I) := by simp [StepValid]
+  have hPi : 0 < probeCutoff D m i := by rw [odd_probeCutoff_eq D m i hi]; omega
+  obtain ⟨c, j, B, hB, hceq, hcup⟩ := tensorVacuum_rightward_odd_bubbleEntries D Sc m cutoff L
+    ΛP ΛR hP hR sy hc i hi hPi (Ys (0,0)).obj
+    ((congrArg (fun Y => Y.obj) (tensorTargetFamily_zero D Sc m cutoff ΛP ΛR L)).trans
+      (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hP hR).symm)
+    (fun q p => (lw).lcrossSame i ν₀ q p (Ys (0,0)).obj)
+    (fun n q r => (lw).dcap i n ν₀ q r (Ys (0,0)).obj)
+    (centralPointwiseLeftward_negInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
+      (Ys (0,0)) hh) cc
+  apply vacuumEntry_of_decode D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀ _ _ a c
+    (vacuumDecodeFaithful_tensorTarget D Sc m cutoff ΛP ΛR L hP hR c) (hcoef c hceq a)
+  intro z
+  rw [ProbeReservoir.compDiag_etaL_dcapL_swappedGens (P) cc lw i e n ν₀ hnZ (0,0) _ hd]
+  subst hn
+  sorry
+
+include sy hc in
+/-- The vacuum entry of `η x^e ≫ dcap n` at the shifts read off the extreme moment column,
+for an odd colour at negative height: `e = N - 2M - 1 + 2s` gives the `s`-th moment and
+`e = N - 2M - 1 + 1` the normalized odd coefficient. -/
+theorem diag_d6 (hcoef : VacuumCoefficientDecode D Sc m cutoff ΛP ΛR L hP hR)
+    (i : I) (hi : D.parity i = 1) (hP0 : 0 < probeCutoff D m i)
+    (hh : D.h i ν₀ < 0) (hPN : 2 * m i < cutoff i) (e n : ℕ) (hn : n = cutoff i - 2 * m i - 1)
+    (a : SYM D k)
+    (hmom : ∀ (c : (E).obj (Ys (0,0)).obj ≅ V) (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
+      (z : (V).obj (⟨⟨[]⟩, rfl⟩ : ContentCategory D (parameterTwist D Sc) cutoff N 0)),
+      (∀ (r : ℕ) (z : (V).obj (⟨⟨[]⟩, rfl⟩ :
+          ContentCategory D (parameterTwist D Sc) cutoff N 0)),
+        (∀ e', e' = cutoff i - 2 * m i - 1 + 2 * r →
+          ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
+          polynomialToPower D cutoff L (PowerSeries.coeff r
+              (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
+            tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) ∧
+        ∀ e', e' = cutoff i - 2 * m i - 1 + (2 * r + 1) →
+          ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
+          ELVOld.rightwardOddScalar D cutoff L i hi *
+            (polynomialToPower D cutoff L (PowerSeries.coeff r
+              (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
+              tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z)) →
+      ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e z =
+        coefficientPowerQuotientMap D cutoff L a *
+          tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) :
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀
+      (etaL i e ++ dcapL i n) ((sChain_etaL i _).append (sChain_dcapL i _)) a := by
+  have hhe := vacuum_height_eq D Sc m cutoff N ΛP ΛR hP hR i
+  rw [odd_probeCutoff_eq D m i hi] at hhe hP0
+  have hnZ : (n : ℤ) < -D.h i ν₀ := by rw [hhe, hn]; omega
+  have hd : ¬StepValid (dn i) true ((0, 0) : Sector I) := by simp [StepValid]
+  have hPi : 0 < probeCutoff D m i := by rw [odd_probeCutoff_eq D m i hi]; omega
+  obtain ⟨c, j, B, hB, hceq, hcup⟩ := tensorVacuum_rightward_odd_bubbleEntries D Sc m cutoff L
+    ΛP ΛR hP hR sy hc i hi hPi (Ys (0,0)).obj
+    ((congrArg (fun Y => Y.obj) (tensorTargetFamily_zero D Sc m cutoff ΛP ΛR L)).trans
+      (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hP hR).symm)
+    (fun q p => (lw).lcrossSame i ν₀ q p (Ys (0,0)).obj)
+    (fun n q r => (lw).dcap i n ν₀ q r (Ys (0,0)).obj)
+    (centralPointwiseLeftward_negInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
+      (Ys (0,0)) hh) cc
+  apply vacuumEntry_of_decode D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀ _ _ a c
+    (vacuumDecodeFaithful_tensorTarget D Sc m cutoff ΛP ΛR L hP hR c) (hcoef c hceq a)
+  intro z
+  rw [ProbeReservoir.compDiag_etaL_dcapL_swappedGens (P) cc lw i e n ν₀ hnZ (0,0) _ hd]
+  subst hn
+  refine (congrArg (fun f => tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
+    (f.total ⟨⟨[]⟩, rfl⟩ z)) (hcup ⟨cutoff i - 2 * m i - 1, by omega⟩ e).symm).trans ?_
+  sorry
+
+include sy hc in
 /-- **Odd right bubbles at negative height, moments.** For an odd colour `i` with
 `0 < probeCutoff` and negative vacuum height `h`, the vacuum entry of
 `η x^(2s - h - 1) ≫ dcap (-h - 1)` of the tensor target family is the coefficient action
