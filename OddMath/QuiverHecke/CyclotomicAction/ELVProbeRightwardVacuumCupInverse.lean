@@ -5,6 +5,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumUnit
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumCapInverse
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseCupInverse
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseRightBubbleEntry
 
 /-! # The rightward vacuum cup inverse in the native chart
 
@@ -157,5 +158,97 @@ theorem vacuumRightwardCupInverse_native_odd (Z : (P).H ((0, 0) : Sector I))
   rw [hs] at h₃
   simp only [hw] at h₃
   exact ⟨_, h₃⟩
+
+/-- The explicit native column, at the vacuum sector input itself. -/
+theorem vacuumRightwardColumn_eq
+    (dc : ℕ → ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
+        ((0, 0) : Sector I))
+      (r : SPath (SKM.wd D ν₀ []) ((0, 0) : Sector I) ((0, 0) : Sector I)),
+      ((P).pathFunctor _q).obj (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) ⟶
+        ((P).pathFunctor r).obj (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H))
+    (n : ℕ) :
+    vacuumRightwardColumn D Sc m cutoff bound ΛP ΛR hcP hcR H i _ rfl dc n =
+      ((paddedVacuumTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).inv ≫
+        ((P).centralTargetCornerIso i ((0, 0) : Sector I)
+            (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
+            (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) ⟨false, trivial⟩).hom ≫
+          (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).map
+            (((P).centralTargetFactorIso i ν₀ ((0, 0) : Sector I)
+              (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) ⟨false, trivial⟩).hom ≫
+              dc n q₀ (.nil _))) ≫
+        (paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H).hom :=
+  rfl
+
+/-- **Native unit rows against the rightward columns.** The native dotted unit
+`unit ≫ xᴺ` followed by the column `n` is the evaluated right bubble entry
+`η xᴺ ≫ dcap n`, conjugated by the cap-target chart. -/
+theorem vacuumRightwardColumn_unit (cc : (P).CrossCoeff)
+    (dc : ℕ → ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
+        ((0, 0) : Sector I))
+      (r : SPath (SKM.wd D ν₀ []) ((0, 0) : Sector I) ((0, 0) : Sector I)),
+      ((P).pathFunctor _q).obj (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) ⟶
+        ((P).pathFunctor r).obj (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H))
+    (n N : ℕ) :
+    unitDotColumn (contentAppend D (parameterTwist D Sc) cutoff bound (0 : Multiset I) [i])
+        (canonicalAppendDot_supernatural D (parameterTwist D Sc) cutoff bound
+          (0 : Multiset I) i)
+        ((vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H).obj
+          (probeOldVacuumRegular D (parameterTwist D Sc) m)) N ≫
+      vacuumRightwardColumn D Sc m cutoff bound ΛP ΛR hcP hcR H i _ rfl dc n =
+    (paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H).inv ≫
+      (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).map
+        ((P).etaEntry cc i N ν₀ (.nil _) q₀
+            (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) ≫
+          dc n q₀ (.nil _)) ≫
+      (paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H).hom := by
+  rw [vacuumRightwardColumn_eq, ← (Iso.inv_comp_eq _).2
+    (paddedVacuumUnit_native D Sc m cutoff bound ΛP ΛR hcP hcR H i N),
+    (P).map_etaEntry_dcap_eq_padded cc i ν₀ ((0, 0) : Sector I)
+      (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
+      (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) (dc n q₀ (.nil _)) N]
+  simp only [Category.assoc, Iso.hom_inv_id_assoc]
+
+include sy hc in
+/-- **Rightward vacuum cup inverse with bubble-entry columns.** For leftward data
+satisfying the negative inverse equations at an input equal to the vacuum sector
+input, the native cup window of the evaluated A6 bend has an entrywise inverse
+whose products with the native unit rows `unit ≫ xᴺ` are the evaluated right bubble
+entries `η xᴺ ≫ dcap n`, conjugated by one isomorphism `c`. -/
+theorem vacuumRightwardCupInverse_bubbleEntries (Z : (P).H ((0, 0) : Sector I))
+    (hZ : Z = vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
+    (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
+        ((0, 0) : Sector I))
+      (p : SPath (SKM.wd D ν₀ [SKM.up i, SKM.dn i]) ((0, 0) : Sector I) ((0, 0) : Sector I)),
+      ((P).pathFunctor _q).obj Z ⟶ ((P).pathFunctor p).obj Z)
+    (dc : ℕ → ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
+        ((0, 0) : Sector I))
+      (r : SPath (SKM.wd D ν₀ []) ((0, 0) : Sector I) ((0, 0) : Sector I)),
+      ((P).pathFunctor _q).obj Z ⟶ ((P).pathFunctor r).obj Z)
+    (HN : (P).NegInverseAt (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ν₀
+      ((0, 0) : Sector I) ((0, 0) : Sector I) Z lc dc)
+    (cc : (P).CrossCoeff) (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1) :
+    ∃ (c : _ ≅ _) (j : _) (B : Fin (-D.h i ν₀).toNat → _),
+      ProbeWindow.IsCupInverse
+        (ProbeVacuumCap.evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP
+          (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H))
+        (fun n : Fin (-D.h i ν₀).toNat =>
+          unitDotColumn (contentAppend D (parameterTwist D Sc) cutoff bound (0 : Multiset I) [i])
+            (canonicalAppendDot_supernatural D (parameterTwist D Sc) cutoff bound
+              (0 : Multiset I) i)
+            ((vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H).obj
+              (probeOldVacuumRegular D (parameterTwist D Sc) m)) n) j B ∧
+      ∀ (n : Fin (-D.h i ν₀).toNat) (N : ℕ),
+        unitDotColumn (contentAppend D (parameterTwist D Sc) cutoff bound (0 : Multiset I) [i])
+            (canonicalAppendDot_supernatural D (parameterTwist D Sc) cutoff bound
+              (0 : Multiset I) i)
+            ((vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H).obj
+              (probeOldVacuumRegular D (parameterTwist D Sc) m)) N ≫ B n =
+        c.inv ≫ (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).map
+          ((P).etaEntry cc i N ν₀ (.nil _) q₀ Z ≫ dc n q₀ (.nil _)) ≫ c.hom := by
+  subst hZ
+  obtain ⟨j, hj⟩ := vacuumRightwardCupInverse_native_odd D Sc m cutoff bound ΛP ΛR hcP hcR H
+    sy hc i _ rfl lc dc HN hP hi
+  exact ⟨paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H, j, _, hj,
+    fun n N => vacuumRightwardColumn_unit D Sc m cutoff bound ΛP ΛR hcP hcR H i cc dc n N⟩
 
 end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
