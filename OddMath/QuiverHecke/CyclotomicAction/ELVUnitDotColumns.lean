@@ -21,14 +21,6 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 /-- The scalar introduced by iterating the ordinary induction dot. -/
 def inductionUnitDotSign (p : ZMod 2) (n : ℕ) : k := sign k (n.choose 2 • p)
 
-theorem inductionUnitDotSign_eq (p : ZMod 2) (n : ℕ) :
-    inductionUnitDotSign (k := k) p n = (sign k p) ^ n.choose 2 := by
-  have hs (m : ℕ) : sign k (m • p) = (sign k p) ^ m := by
-    induction m with
-    | zero => simp
-    | succ m ih => rw [succ_nsmul, sign_add, ih, pow_succ]
-  exact hs _
-
 theorem inductionUnitDotSign_succ (p : ZMod 2) (n : ℕ) :
     inductionUnitDotSign (k := k) p (n + 1) =
       sign k (n • p) * inductionUnitDotSign (k := k) p n := by
@@ -142,33 +134,6 @@ theorem inductionUnitDotColumn_apply (i : I) (v t : List I) (n : ℕ)
   obtain ⟨r, rfl⟩ := (ideal D Sc cutoff v t).mkQ_surjective b
   rw [appendOutputEmbedding_single, canonicalAppendTarget_projection]
   rfl
-
-/-- The column uses the total of the constructed adjunction unit, with no unit premise. -/
-theorem inductionUnitDotColumn_categorical (i : I) (v t : List I) (n : ℕ)
-    (b : Old D Sc cutoff v t) :
-    inductionUnitDotColumn D Sc cutoff i v t n b =
-      OldInductionRepresentable.upperHomEquiv D Sc cutoff i
-        (⟨v⟩ : OldCategory D Sc cutoff) (⟨t⟩ : OldCategory D Sc cutoff)
-        ((actualInductionDot D Sc cutoff i
-          (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))
-          ((append D Sc cutoff i).obj (⟨t⟩ : OldCategory D Sc cutoff)))^[n]
-          (((BalancedInduction.adjunctionUnit (append D Sc cutoff i)).app
-            (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).total
-            (⟨t⟩ : OldCategory D Sc cutoff) b)) := by
-  let H := oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)
-  let J := append D Sc cutoff i
-  let T := actualInductionDot D Sc cutoff i H (J.obj (⟨t⟩ : OldCategory D Sc cutoff))
-  let F : BalancedInduction.Obj J H.toFunctor (J.obj (⟨t⟩ : OldCategory D Sc cutoff)) →
-      Old D Sc cutoff (v ++ [i]) (t ++ [i]) :=
-    fun y => OldInductionRepresentable.upperHomEquiv D Sc cutoff i ⟨v⟩ ⟨t⟩ (T^[n] y)
-  have hu := adjunctionUnit_total_apply D Sc cutoff i H (⟨t⟩ : OldCategory D Sc cutoff) b
-  have h := congrArg F hu
-  have hp : inductionUnitDotColumn D Sc cutoff i v t n b =
-      F (BalancedInduction.unit J H.toFunctor (⟨t⟩ : OldCategory D Sc cutoff) b) :=
-    congrArg (OldInductionRepresentable.upperHomEquiv D Sc cutoff i
-      (⟨v⟩ : OldCategory D Sc cutoff) (⟨t⟩ : OldCategory D Sc cutoff))
-      (Module.End.pow_apply T n _)
-  exact hp.trans h.symm
 
 /-- Finite polynomial assembly of the prescribed scalar-normalized ordinary columns. -/
 def unitDotPolynomialMap (i : I) (v t : List I) :

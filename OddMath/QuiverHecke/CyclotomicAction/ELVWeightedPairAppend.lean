@@ -83,103 +83,11 @@ local notation "FP" => BalancedInduction.induced JP RM
 local notation "hFP" => pairInduced_killsWeightedCoefficients D Sc cutoff N i j RM
   (weightedRestriction_kills D Sc cutoff N M)
 
-/-- The same five canonical quotient/composition maps for the functor of
-successive appends. Both ends here use induction along a composed append
-functor; the iterated-induction comparison is attached subsequently. -/
-def pairWeightedModuleIso : weightedModule D Sc cutoff N FP hFP ≅
-    BalancedInduction.induced TP M :=
-  (quotientInducedWeightedModuleIso D Sc cutoff N FP hFP).symm ≪≫
-    (BalancedInduction.inductionComp JP Q).app RM ≪≫
-      BalancedInduction.inducedIsoOfFunctorEq (JP ⋙ Q) (Q ⋙ TP)
-        (pairAppend_truncate D Sc cutoff N i j) RM ≪≫
-      ((BalancedInduction.inductionComp Q TP).app RM).symm ≪≫
-        (BalancedInduction.induction TP).mapIso (quotientInductionCounitIso D Sc cutoff N M)
-
 private def pairQuotientCounit : (BalancedInduction.induction Q).obj RM ⟶ M :=
   (quotientInductionCounitIso D Sc cutoff N M).hom
 
 local notation "P" => BalancedInduction.squareLinear JP Q Q TP
   (pairAppend_truncate D Sc cutoff N i j) RM M (pairQuotientCounit D Sc cutoff N M)
-
-private theorem pairWeightedModuleIso_hom_factor :
-    (pairWeightedModuleIso D Sc cutoff N i j M).hom =
-      (quotientInducedWeightedModuleIso D Sc cutoff N FP hFP).inv ≫
-        BalancedInduction.squareComparison JP Q Q TP (pairAppend_truncate D Sc cutoff N i j)
-          RM M (quotientInductionCounitIso D Sc cutoff N M).hom := by
-  rw [BalancedInduction.squareComparison_eq]
-  rfl
-
-/-- The selected pair comparison on the unchanged underlying coends. -/
-def pairAppendComparisonLinear (w : OldCategory D Sc cutoff) :
-    BalancedInduction.Obj JP (RM).toFunctor w →ₗ[k]
-      BalancedInduction.Obj TP M.toFunctor ((Q).obj w) :=
-  (pairWeightedModuleIso D Sc cutoff N i j M).hom.total ((Q).obj w)
-
-private def pairQuotientInverseLinear (w : OldCategory D Sc cutoff) :
-    BalancedInduction.Obj JP (RM).toFunctor w →ₗ[k]
-      BalancedInduction.Obj Q (FP).toFunctor ((Q).obj w) :=
-  (quotientInducedWeightedModuleIso D Sc cutoff N FP hFP).inv.total ((Q).obj w)
-
-private theorem pairAppendComparisonLinear_factor (w : OldCategory D Sc cutoff) :
-    pairAppendComparisonLinear D Sc cutoff N i j M w =
-      P ((Q).obj w) ∘ₗ pairQuotientInverseLinear D Sc cutoff N i j M w := by
-  exact (BalancedInduction.total_linear_congr
-    (pairWeightedModuleIso_hom_factor D Sc cutoff N i j M) ((Q).obj w)).trans
-      (BalancedInduction.composition_total_linear _ _ ((Q).obj w))
-
-/-- The prescribed pair comparison retains every coefficient and vector:
-only the old arrow is sent through the literal weighted quotient. -/
-theorem pairWeightedModuleIso_hom_tensor
-    (s w : OldCategory D Sc cutoff) (g : (JP).obj s ⟶ w) (b : M.obj ((Q).obj s)) :
-    pairAppendComparisonLinear D Sc cutoff N i j M w
-      (BalancedInduction.tensor JP (RM).toFunctor s g b) =
-      BalancedInduction.tensor TP M.toFunctor ((Q).obj s) ((Q).map g) b := by
-  have h₁ : pairQuotientInverseLinear D Sc cutoff N i j M w
-      (BalancedInduction.tensor JP (RM).toFunctor s g b) =
-      BalancedInduction.tensor Q (FP).toFunctor w (𝟙 ((Q).obj w))
-        (BalancedInduction.tensor JP (RM).toFunctor s g b) :=
-    quotientInducedWeightedModuleIso_inv_tensor D Sc cutoff N FP hFP ((Q).obj w)
-      (BalancedInduction.tensor JP (RM).toFunctor s g b)
-  have h₂ := BalancedInduction.squareLinear_tensor JP Q Q TP
-    (pairAppend_truncate D Sc cutoff N i j) RM M (pairQuotientCounit D Sc cutoff N M)
-    (quotientInductionCounitIso_hom_mem D Sc cutoff N M) s w g b
-  have hs : P ((Q).obj w)
-      (BalancedInduction.tensor Q (FP).toFunctor w (𝟙 ((Q).obj w))
-        (BalancedInduction.tensor JP (RM).toFunctor s g b)) =
-      BalancedInduction.tensor TP M.toFunctor ((Q).obj s) ((Q).map g) b := by
-    have hi : eqToHom (congrArg
-        (fun H : OldCategory D Sc cutoff ⥤ TruncatedCategory D Sc cutoff N => H.obj s)
-        (pairAppend_truncate D Sc cutoff N i j)).symm ≫ (Q).map g = (Q).map g := by
-      change 𝟙 _ ≫ (Q).map g = (Q).map g
-      exact Category.id_comp _
-    have hb : (pairQuotientCounit D Sc cutoff N M).app 0 ((Q).obj s)
-        (BalancedInduction.unit Q (RM).toFunctor s b) = b := by
-      change BalancedInduction.counit Q M.toFunctor ((Q).obj s)
-        (BalancedInduction.unit Q (Q ⋙ M.toFunctor) s b) = b
-      exact LinearMap.congr_fun (BalancedInduction.counit_unit Q M.toFunctor s) b
-    exact h₂.trans (congrArg₂
-      (fun z x => BalancedInduction.tensor TP M.toFunctor ((Q).obj s) z x) hi hb)
-  rw [pairAppendComparisonLinear_factor, LinearMap.comp_apply]
-  exact (congrArg (P ((Q).obj w)) h₁).trans hs
-
-/-- Every prescribed pair-comparison leg has parity zero. -/
-theorem pairWeightedModuleIso_hom_mem :
-    (pairWeightedModuleIso D Sc cutoff N i j M).hom ∈ parity (R := k) _ _ 0 := by
-  rw [pairWeightedModuleIso_hom_factor]
-  have h₁ := quotientInducedWeightedModuleIso_inv_mem D Sc cutoff N FP hFP
-  have h₂ := BalancedInduction.squareComparison_mem JP Q Q TP
-    (pairAppend_truncate D Sc cutoff N i j) RM M (pairQuotientCounit D Sc cutoff N M)
-    (quotientInductionCounitIso_hom_mem D Sc cutoff N M)
-  have h := comp_mem h₁ h₂
-  set_option backward.dsimp.instances true in
-    dsimp only [BalancedInduction.induction, pairQuotientCounit] at h ⊢
-  simpa only [zero_add] using h
-
-/-- The inverse has the same even coordinate convention. -/
-theorem pairWeightedModuleIso_inv_mem :
-    (pairWeightedModuleIso D Sc cutoff N i j M).inv ∈ parity (R := k) _ _ 0 :=
-  Supercategory.inv_mem (pairWeightedModuleIso D Sc cutoff N i j M)
-    (pairWeightedModuleIso_hom_mem D Sc cutoff N i j M)
 
 end Comparison
 

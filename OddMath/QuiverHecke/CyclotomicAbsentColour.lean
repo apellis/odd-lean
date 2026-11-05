@@ -74,13 +74,6 @@ def singleDotBasis (i : I) :
   (basisNF D Sc [i] [i]).reindex (Equiv.ofBijective (singleNFIndex i)
     (singleNFIndex_bijective i)).symm
 
-@[simp] theorem singleDotBasis_apply (i : I) (n : ℕ) :
-    singleDotBasis D Sc i n = dotE D Sc [i] 0 ^ n := by
-  unfold singleDotBasis
-  erw [Module.Basis.reindex_apply]
-  simpa only [basisNF_apply, Equiv.symm_symm, Equiv.ofBijective_apply] using
-    singleNFIndex_nf D Sc i n
-
 /-- Evaluation at the one-strand dot is an algebra equivalence, with no
 restriction on the colour parity. -/
 def singlePolynomialEquiv (i : I) :
@@ -100,10 +93,6 @@ def singlePolynomialEquiv (i : I) :
         rw [he]
         exact e.bijective)
 
-@[simp] theorem singlePolynomialEquiv_X (i : I) :
-    singlePolynomialEquiv D Sc i _root_.Polynomial.X = dotE D Sc [i] 0 :=
-  _root_.Polynomial.aeval_X _
-
 /-- The cyclotomic ideal inside the existing one-strand endomorphism ring. -/
 def singleCyclotomicIdeal (i : I) (a : _root_.Polynomial k) :
     Ideal (End ((pres D Sc).obj (ob D [i]))) :=
@@ -119,42 +108,5 @@ instance singleCyclotomicIdeal_twoSided (i : I) (a : _root_.Polynomial k) :
       rw [← map_mul, ← map_mul, mul_comm]
     rw [hc]
     exact Ideal.mul_mem_left _ b ha
-
-/-- The one-strand quotient of the presented quiver Hecke superalgebra. -/
-abbrev SingleCyclotomic (i : I) (a : _root_.Polynomial k) :=
-  End ((pres D Sc).obj (ob D [i])) ⧸ singleCyclotomicIdeal D Sc i a
-
-/-- The root algebra identifies the quotient, not a substitute polynomial model. -/
-def singleCyclotomicEquiv (i : I) (a : _root_.Polynomial k) :
-    AdjoinRoot a ≃ₐ[k] SingleCyclotomic D Sc i a :=
-  Ideal.quotientEquivAlg _ _ (singlePolynomialEquiv D Sc i) rfl
-
-/-- Monicity gives the finite dot coordinates at the vacuum boundary. -/
-def singleCyclotomicFinEquiv (i : I) (a : _root_.Polynomial k) (ha : a.Monic) :
-    (Fin a.natDegree → k) ≃ₗ[k] SingleCyclotomic D Sc i a :=
-  (AdjoinRoot.powerBasisAux' ha).equivFun.symm.trans
-    (singleCyclotomicEquiv D Sc i a).toLinearEquiv
-
-/-- The descended dot in the actual one-strand quotient. -/
-def singleCyclotomicDot (i : I) (a : _root_.Polynomial k) :
-    SingleCyclotomic D Sc i a :=
-  Ideal.Quotient.mk _ (dotE D Sc [i] 0)
-
-@[simp] theorem singleCyclotomicEquiv_mk (i : I) (a p : _root_.Polynomial k) :
-    singleCyclotomicEquiv D Sc i a (AdjoinRoot.mk a p) =
-      Ideal.Quotient.mk _ (singlePolynomialEquiv D Sc i p) := rfl
-
-theorem singleCyclotomicFinEquiv_apply (i : I) (a : _root_.Polynomial k)
-    (ha : a.Monic) (c : Fin a.natDegree → k) :
-    singleCyclotomicFinEquiv D Sc i a ha c =
-      ∑ d : Fin a.natDegree, c d • singleCyclotomicDot D Sc i a ^ (d : ℕ) := by
-  change singleCyclotomicEquiv D Sc i a
-    (AdjoinRoot.mk a (∑ d : Fin a.natDegree, _root_.Polynomial.monomial (d : ℕ) (c d))) = _
-  rw [singleCyclotomicEquiv_mk]
-  simp only [map_sum, ← _root_.Polynomial.C_mul_X_pow_eq_monomial, map_mul, map_pow,
-    show ∀ c, singlePolynomialEquiv D Sc i (_root_.Polynomial.C c) = algebraMap k _ c from
-      fun c => (singlePolynomialEquiv D Sc i).commutes c,
-    singlePolynomialEquiv_X, Ideal.Quotient.mk_algebraMap,
-    singleCyclotomicDot, Algebra.smul_def]
 
 end OddMath.QuiverHecke

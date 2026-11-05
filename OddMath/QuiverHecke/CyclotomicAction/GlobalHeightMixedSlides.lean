@@ -121,18 +121,6 @@ def heightTwoColourRightMul {u : C} (hu : TwoColourCornerMulData D Sc i j c a ha
   ⟨heightTwoColourRightMulLinear D Sc i j c a ha n hu,
     heightTwoColourRightMulLinear_isHom D Sc i j c a ha n hu⟩
 
-theorem heightTwoColourRightMul_parity {u : C} (hu : TwoColourCornerMulData D Sc i j c a ha n u) :
-    heightTwoColourRightMul D Sc i j c a ha n hu ∈ parity (R := k) T T d :=
-  SuperBimodule.mem_parity_iff.2 (heightTwoColourRightMulLinear_parity D Sc i j c a ha n hu)
-
-theorem heightTwoColourRightMul_apply {u : C} (hu : TwoColourCornerMulData D Sc i j c a ha n u)
-    {p : ZMod 2} (x : (T).toSVec) (hx : x ∈ (T).toSVec.part p) :
-    ((heightTwoColourRightMul D Sc i j c a ha n hu).1 x).val = koszulSign p d • (x.val * u) := by
-  change ((T).toSVec.sgn d x).val * u = _
-  rw [SVec.sgn_apply_of_mem d hx]
-  change (sign k (p * d) • x.val) * u = _
-  rw [smul_mul_assoc, Supercategory.sign_mul, Int.cast_smul_eq_zsmul]
-
 /-- The new last dot `y_i` satisfies the corner hypotheses. -/
 theorem twoColourCornerMulData_lastDot :
     TwoColourCornerMulData D Sc i j i a ha n (heightLastDot D Sc a i (n + 1)) where
@@ -175,60 +163,6 @@ local notation "Er" => heightTwoColourRightMul D Sc j i j a ha n
 local notation "El" => heightTwoColourRightMul D Sc i j j a ha n
   (twoColourCornerMulData_appendDot D Sc i j a ha n)
 
-/-- **Left slide on the corners**, distinct colours: `y_i ψ = ε ψ φⱼ(y_i)` in diagrammatic
-order. -/
-theorem heightCompositionCorner_slide_left_ne : Dr ≫ Cr = ε • (Cr ≫ Dl) := by
-  apply SuperBimodule.hom_ext
-  rw [heightBimod_zsmul_val, SuperBimodule.comp_val, SuperBimodule.comp_val]
-  refine svec_hom_ext_homogeneous fun p z hz => Subtype.ext ?_
-  simp only [SVec.zsmul_apply, SVec.comp_apply]
-  have hz₁ : (Dr).1 z ∈ (heightCompositionCorner D Sc i j a ha n).toSVec.part
-      (p + D.parity i) :=
-    SVec.apply_mem_part (heightTwoColourRightMulLinear_parity D Sc i j i a ha n
-      (twoColourCornerMulData_lastDot D Sc i j a ha n)) hz
-  have hz₂ : (Cr).1 z ∈ (heightCompositionCorner D Sc j i a ha n).toSVec.part (p + d) :=
-    SVec.apply_mem_part (heightCompositionCrossingLinear_parity D Sc i j a ha n) hz
-  change ((Cr).1 ((Dr).1 z)).val = ε • ((Dl).1 ((Cr).1 z)).val
-  rw [heightCompositionSuperCrossing_apply D Sc i j a ha n _ hz₁,
-    heightTwoColourRightMul_apply D Sc i j i a ha n _ _ hz,
-    heightTwoColourRightMul_apply D Sc j i i a ha n _ _ hz₂,
-    heightCompositionSuperCrossing_apply D Sc i j a ha n _ hz]
-  simp only [smul_mul_assoc, smul_smul, mul_assoc]
-  rw [heightLastCrossing_slide_left_ne D Sc a hij n, ← zsmul_koszulSign_eq_zsign_smul (k := k)]
-  simp only [mul_smul_comm, smul_smul]
-  congr 1
-  clear hz hz₁ hz₂
-  generalize D.parity i = e
-  generalize D.parity j = f
-  revert p e f; decide
-
-/-- **Right slide on the corners**, distinct colours: `ψ y_j = ε φᵢ(y_j) ψ` in diagrammatic
-order. -/
-theorem heightCompositionCorner_slide_right_ne : Cr ≫ Er = ε • (El ≫ Cr) := by
-  apply SuperBimodule.hom_ext
-  rw [heightBimod_zsmul_val, SuperBimodule.comp_val, SuperBimodule.comp_val]
-  refine svec_hom_ext_homogeneous fun p z hz => Subtype.ext ?_
-  simp only [SVec.zsmul_apply, SVec.comp_apply]
-  have hz₁ : (El).1 z ∈ (heightCompositionCorner D Sc i j a ha n).toSVec.part
-      (p + D.parity j) :=
-    SVec.apply_mem_part (heightTwoColourRightMulLinear_parity D Sc i j j a ha n
-      (twoColourCornerMulData_appendDot D Sc i j a ha n)) hz
-  have hz₂ : (Cr).1 z ∈ (heightCompositionCorner D Sc j i a ha n).toSVec.part (p + d) :=
-    SVec.apply_mem_part (heightCompositionCrossingLinear_parity D Sc i j a ha n) hz
-  change ((Er).1 ((Cr).1 z)).val = ε • ((Cr).1 ((El).1 z)).val
-  rw [heightCompositionSuperCrossing_apply D Sc i j a ha n _ hz₁,
-    heightTwoColourRightMul_apply D Sc i j j a ha n _ _ hz,
-    heightTwoColourRightMul_apply D Sc j i j a ha n _ _ hz₂,
-    heightCompositionSuperCrossing_apply D Sc i j a ha n _ hz]
-  simp only [smul_mul_assoc, smul_smul, mul_assoc]
-  rw [heightLastCrossing_slide_right_ne D Sc a hij n, ← zsmul_koszulSign_eq_zsign_smul (k := k)]
-  simp only [mul_smul_comm, smul_smul]
-  congr 1
-  clear hz hz₁ hz₂
-  generalize D.parity i = e
-  generalize D.parity j = f
-  revert p e f; decide
-
 end CornerSlides
 
 /-! ### Transport along the comparison -/
@@ -245,43 +179,6 @@ local notation "Dr" => heightTwoColourRightMul D Sc i j i a ha n
 local notation "Dl" => heightTwoColourRightMul D Sc i j j a ha n
   (twoColourCornerMulData_appendDot D Sc i j a ha n)
 
-/-- The outer dot becomes `y_i` on the two-colour corner. -/
-theorem heightTwoColourComposition_dot_outer :
-    whiskerRight (heightInductionSuperDot D Sc i a ha (n + 1)) Qc ≫ (iso).hom =
-      (iso).hom ≫ Dr := by
-  apply SuperBimodule.hom_ext
-  rw [SuperBimodule.comp_val, SuperBimodule.comp_val]
-  refine tensor_hom_ext_homogeneous Pc Qc fun p q x y hx hy => Subtype.ext ?_
-  have hxy := SVec.apply_mem_part (SuperBimodule.mem_parity_iff.1
-    (heightInductionCompositionIso_hom_mem D Sc i j a ha n)) (btmul_mem_part Pc Qc hx hy)
-  rw [add_zero] at hxy
-  have hc := heightLastDot_comm D Sc a i ha (n + 1)
-    ((heightInductionCorner_mem_part_iff D Sc j a ha n).1 hy)
-  rw [SVec.comp_apply, SVec.comp_apply, whiskerRight_btmul,
-    heightTwoColourRightMul_apply D Sc i j i a ha n _ _ hxy,
-    heightInductionCompositionIso_hom_btmul, heightInductionCompositionIso_hom_btmul,
-    heightInductionSuperDot_apply D Sc i a ha (n + 1) x hx, smul_mul_assoc, mul_assoc, mul_assoc,
-    hc, mul_smul_comm, smul_smul, koszulSign_add_left, mul_assoc, koszulSign_mul_self, mul_one]
-
-/-- The inner dot becomes `φᵢ(y_j)` on the two-colour corner. -/
-theorem heightTwoColourComposition_dot_inner :
-    whiskerLeft Pc (heightInductionSuperDot D Sc j a ha n) ≫ (iso).hom = (iso).hom ≫ Dl := by
-  apply SuperBimodule.hom_ext
-  rw [SuperBimodule.comp_val, SuperBimodule.comp_val]
-  refine tensor_hom_ext_homogeneous Pc Qc fun p q x y hx hy => Subtype.ext ?_
-  have hxy := SVec.apply_mem_part (SuperBimodule.mem_parity_iff.1
-    (heightInductionCompositionIso_hom_mem D Sc i j a ha n)) (btmul_mem_part Pc Qc hx hy)
-  rw [add_zero] at hxy
-  rw [SVec.comp_apply, SVec.comp_apply,
-    whiskerLeft_btmul Pc _ (heightInductionSuperDot_parity D Sc j a ha n) hx,
-    heightTwoColourRightMul_apply D Sc i j j a ha n _ _ hxy,
-    heightInductionCompositionIso_hom_btmul, SVec.hom_map_smul]
-  change sign k (p * D.parity j) • ((((iso).hom).1 (btmul Pc Qc x
-    ((heightInductionSuperDot D Sc j a ha n).1 y))).1) = _
-  rw [heightInductionCompositionIso_hom_btmul, heightInductionSuperDot_apply D Sc j a ha n y hy,
-    map_zsmul, map_mul, mul_smul_comm, Supercategory.sign_mul, Int.cast_smul_eq_zsmul, smul_smul,
-    ← koszulSign_add_left, mul_assoc]
-
 /-- The comparison component of `Ind_j ⋙ Ind_i`, written on tensor products. -/
 def heightTwoColourComparisonHom (M : HeightModules D Sc a ha n) :
     tensor Pc (tensor Qc M) ⟶ tensor T M :=
@@ -291,65 +188,6 @@ def heightTwoColourComparisonHom (M : HeightModules D Sc a ha n) :
 def heightTwoColourComparisonInv (M : HeightModules D Sc a ha n) :
     tensor T M ⟶ tensor Pc (tensor Qc M) :=
   whiskerRight (iso).inv M ≫ (assoc Pc Qc M).hom
-
-theorem heightTwoColourComparisonHom_inv (M : HeightModules D Sc a ha n) :
-    heightTwoColourComparisonHom D Sc i j a ha n M ≫
-      heightTwoColourComparisonInv D Sc i j a ha n M = 𝟙 _ := by
-  rw [heightTwoColourComparisonHom, heightTwoColourComparisonInv, Category.assoc,
-    ← Category.assoc (whiskerRight (iso).hom M), ← comp_whiskerRight, Iso.hom_inv_id,
-    id_whiskerRight, Category.id_comp, Iso.inv_hom_id]
-
-theorem heightTwoColourComparisonInv_hom (M : HeightModules D Sc a ha n) :
-    heightTwoColourComparisonInv D Sc i j a ha n M ≫
-      heightTwoColourComparisonHom D Sc i j a ha n M = 𝟙 _ := by
-  rw [heightTwoColourComparisonHom, heightTwoColourComparisonInv, Category.assoc,
-    ← Category.assoc (assoc Pc Qc M).hom, Iso.hom_inv_id, Category.id_comp,
-    ← comp_whiskerRight, Iso.inv_hom_id, id_whiskerRight]
-
-/-- The outer dot whiskered by the inner induction, through the comparison. -/
-theorem heightTwoColourComparison_dot_outer_app (M : HeightModules D Sc a ha n) :
-    whiskerRight (heightInductionSuperDot D Sc i a ha (n + 1)) (tensor Qc M) ≫
-        heightTwoColourComparisonHom D Sc i j a ha n M =
-      heightTwoColourComparisonHom D Sc i j a ha n M ≫ whiskerRight Dr M := by
-  have h := assoc_naturality_left Pc Qc M (heightInductionSuperDot D Sc i a ha (n + 1))
-  have h' : whiskerRight (heightInductionSuperDot D Sc i a ha (n + 1)) (tensor Qc M) ≫
-      (assoc Pc Qc M).inv = (assoc Pc Qc M).inv ≫
-        whiskerRight (whiskerRight (heightInductionSuperDot D Sc i a ha (n + 1)) Qc) M := by
-    rw [Iso.comp_inv_eq, Category.assoc, h, Iso.inv_hom_id_assoc]
-  rw [heightTwoColourComparisonHom, ← Category.assoc, h', Category.assoc, ← comp_whiskerRight,
-    heightTwoColourComposition_dot_outer, comp_whiskerRight, Category.assoc]
-
-/-- The inner dot under the outer induction, through the comparison. -/
-theorem heightTwoColourComparison_dot_inner_app (M : HeightModules D Sc a ha n) :
-    whiskerLeft Pc (whiskerRight (heightInductionSuperDot D Sc j a ha n) M) ≫
-        heightTwoColourComparisonHom D Sc i j a ha n M =
-      heightTwoColourComparisonHom D Sc i j a ha n M ≫ whiskerRight Dl M := by
-  have h := assoc_naturality_middle Pc Qc M (heightInductionSuperDot D Sc j a ha n)
-  have h' : whiskerLeft Pc (whiskerRight (heightInductionSuperDot D Sc j a ha n) M) ≫
-      (assoc Pc Qc M).inv = (assoc Pc Qc M).inv ≫
-        whiskerRight (whiskerLeft Pc (heightInductionSuperDot D Sc j a ha n)) M := by
-    rw [Iso.comp_inv_eq, Category.assoc, h, Iso.inv_hom_id_assoc]
-  rw [heightTwoColourComparisonHom, ← Category.assoc, h', Category.assoc, ← comp_whiskerRight,
-    heightTwoColourComposition_dot_inner, comp_whiskerRight, Category.assoc]
-
-theorem heightTwoColourComparisonInv_conj (M : HeightModules D Sc a ha n)
-    {X : tensor Pc (tensor Qc M) ⟶ tensor Pc (tensor Qc M)} {A : T ⟶ T}
-    (h : X ≫ heightTwoColourComparisonHom D Sc i j a ha n M =
-      heightTwoColourComparisonHom D Sc i j a ha n M ≫ whiskerRight A M) :
-    heightTwoColourComparisonInv D Sc i j a ha n M ≫ X =
-      whiskerRight A M ≫ heightTwoColourComparisonInv D Sc i j a ha n M := by
-  calc heightTwoColourComparisonInv D Sc i j a ha n M ≫ X
-      = heightTwoColourComparisonInv D Sc i j a ha n M ≫ X ≫
-          heightTwoColourComparisonHom D Sc i j a ha n M ≫
-            heightTwoColourComparisonInv D Sc i j a ha n M := by
-        rw [heightTwoColourComparisonHom_inv, Category.comp_id]
-    _ = (heightTwoColourComparisonInv D Sc i j a ha n M ≫
-            heightTwoColourComparisonHom D Sc i j a ha n M) ≫
-          whiskerRight A M ≫ heightTwoColourComparisonInv D Sc i j a ha n M := by
-        rw [← Category.assoc X, h]
-        simp only [Category.assoc]
-    _ = whiskerRight A M ≫ heightTwoColourComparisonInv D Sc i j a ha n M := by
-        rw [heightTwoColourComparisonInv_hom, Category.id_comp]
 
 end Transport
 
@@ -363,77 +201,6 @@ local notation "Hji" => heightTwoColourComparisonHom D Sc j i a ha n
 local notation "Iji" => heightTwoColourComparisonInv D Sc j i a ha n
 local notation "Tij" => heightCompositionCorner D Sc i j a ha n
 local notation "Tji" => heightCompositionCorner D Sc j i a ha n
-
-private theorem twoColour_comparison_slide_left (M : HeightModules D Sc a ha n)
-    {X₂ X₁ : _} {A : Tij ⟶ Tij} {B : Tji ⟶ Tji} {C : Tij ⟶ Tji}
-    (c : ℤ) (h₂ : X₂ ≫ Hij M = Hij M ≫ whiskerRight A M)
-    (h₁ : X₁ ≫ Hji M = Hji M ≫ whiskerRight B M) (hC : A ≫ C = c • (C ≫ B)) :
-    X₂ ≫ Hij M ≫ whiskerRight C M ≫ Iji M = c • ((Hij M ≫ whiskerRight C M ≫ Iji M) ≫ X₁) := by
-  rw [Category.assoc, Category.assoc,
-    heightTwoColourComparisonInv_conj D Sc j i a ha n M h₁, ← Category.assoc X₂, h₂,
-    Category.assoc, ← Category.assoc (whiskerRight A M), ← comp_whiskerRight, hC,
-    heightZsmul_whiskerRight, comp_whiskerRight, Preadditive.zsmul_comp, Preadditive.comp_zsmul]
-  simp only [Category.assoc]
-
-private theorem twoColour_comparison_slide_right (M : HeightModules D Sc a ha n)
-    {X₂ X₁ : _} {A : Tij ⟶ Tij} {B : Tji ⟶ Tji} {C : Tij ⟶ Tji}
-    (c : ℤ) (h₁ : X₁ ≫ Hij M = Hij M ≫ whiskerRight A M)
-    (h₂ : X₂ ≫ Hji M = Hji M ≫ whiskerRight B M) (hC : C ≫ B = c • (A ≫ C)) :
-    (Hij M ≫ whiskerRight C M ≫ Iji M) ≫ X₂ = c • (X₁ ≫ Hij M ≫ whiskerRight C M ≫ Iji M) := by
-  rw [Category.assoc, Category.assoc,
-    heightTwoColourComparisonInv_conj D Sc j i a ha n M h₂, ← Category.assoc X₁, h₁,
-    Category.assoc, ← Category.assoc (whiskerRight C M), ← comp_whiskerRight, hC,
-    heightZsmul_whiskerRight, comp_whiskerRight, Preadditive.zsmul_comp, Preadditive.comp_zsmul]
-  simp only [Category.assoc]
-
-/-- **The left slide for two inductions of distinct colours** (components): with `ψ` the
-crossing `Ind_j ⋙ Ind_i ⟶ Ind_i ⋙ Ind_j`, the outer dot of colour `i` followed by `ψ` is
-`ε` times `ψ` followed by the inner dot of colour `i`, `ε = (-1)^{|i||j|}`. -/
-theorem heightInduction_slide_left_ne (hij : i ≠ j) (M : HeightModules D Sc a ha n) :
-    (heightSuperInductionDot D Sc i a ha (n + 1)).app (D.parity i)
-          ((heightSuperInduction D Sc j a ha n).obj M) ≫
-        (heightSuperInductionCrossing D Sc i j a ha n).app (D.parity i * D.parity j) M =
-      koszulSign (D.parity i) (D.parity j) •
-        ((heightSuperInductionCrossing D Sc i j a ha n).app (D.parity i * D.parity j) M ≫
-          (heightSuperInduction D Sc j a ha (n + 1)).map
-            ((heightSuperInductionDot D Sc i a ha n).app (D.parity i) M)) := by
-  have hX₁ : (heightSuperInductionDot D Sc i a ha n).app (D.parity i) M =
-      whiskerRight (heightInductionSuperDot D Sc i a ha n) M := by
-    simp only [heightSuperInductionDot, ↓reduceIte]
-  have hX₂ : (heightSuperInductionDot D Sc i a ha (n + 1)).app (D.parity i)
-      ((heightSuperInduction D Sc j a ha n).obj M) =
-      whiskerRight (heightInductionSuperDot D Sc i a ha (n + 1))
-        (tensor (heightInductionCorner D Sc j a ha n) M) := by
-    simp only [heightSuperInductionDot, ↓reduceIte]; rfl
-  rw [heightSuperInductionCrossing_app, hX₁, hX₂]
-  exact twoColour_comparison_slide_left D Sc a ha n M _
-    (heightTwoColourComparison_dot_outer_app D Sc i j a ha n M)
-    (heightTwoColourComparison_dot_inner_app D Sc j i a ha n M)
-    (heightCompositionCorner_slide_left_ne D Sc hij a ha n)
-
-/-- **The right slide for two inductions of distinct colours** (components): `ψ` followed by
-the outer dot of colour `j` is `ε` times the inner dot of colour `j` followed by `ψ`. -/
-theorem heightInduction_slide_right_ne (hij : i ≠ j) (M : HeightModules D Sc a ha n) :
-    (heightSuperInductionCrossing D Sc i j a ha n).app (D.parity i * D.parity j) M ≫
-        (heightSuperInductionDot D Sc j a ha (n + 1)).app (D.parity j)
-          ((heightSuperInduction D Sc i a ha n).obj M) =
-      koszulSign (D.parity i) (D.parity j) •
-        ((heightSuperInduction D Sc i a ha (n + 1)).map
-            ((heightSuperInductionDot D Sc j a ha n).app (D.parity j) M) ≫
-          (heightSuperInductionCrossing D Sc i j a ha n).app (D.parity i * D.parity j) M) := by
-  have hX₁ : (heightSuperInductionDot D Sc j a ha n).app (D.parity j) M =
-      whiskerRight (heightInductionSuperDot D Sc j a ha n) M := by
-    simp only [heightSuperInductionDot, ↓reduceIte]
-  have hX₂ : (heightSuperInductionDot D Sc j a ha (n + 1)).app (D.parity j)
-      ((heightSuperInduction D Sc i a ha n).obj M) =
-      whiskerRight (heightInductionSuperDot D Sc j a ha (n + 1))
-        (tensor (heightInductionCorner D Sc i a ha n) M) := by
-    simp only [heightSuperInductionDot, ↓reduceIte]; rfl
-  rw [heightSuperInductionCrossing_app, hX₁, hX₂]
-  exact twoColour_comparison_slide_right D Sc a ha n M _
-    (heightTwoColourComparison_dot_inner_app D Sc i j a ha n M)
-    (heightTwoColourComparison_dot_outer_app D Sc j i a ha n M)
-    (heightCompositionCorner_slide_right_ne D Sc hij a ha n)
 
 end InductionSlides
 

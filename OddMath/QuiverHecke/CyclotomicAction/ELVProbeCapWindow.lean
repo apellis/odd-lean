@@ -39,29 +39,6 @@ private theorem inverseRow_window_cancel
   · simpa only [hq, ↓reduceIte, LinearMap.id_apply, LinearMap.comp_apply] using h
   · simpa only [hq, ↓reduceIte, LinearMap.zero_apply, map_zero, LinearMap.comp_apply] using h
 
-private theorem native_unitDot_window_apply
-    {k C A : Type u} [CommRing k] [Category.{u} C] [Category.{u} A]
-    [Preadditive C] [Linear k C] [Supercategory k C]
-    [Preadditive A] [Linear k A] [Supercategory k A]
-    (J : C ⥤ A) [J.Additive] [J.Linear k] [IsSuperfunctor k J]
-    {p : ZMod 2} {α : ∀ s, J.obj s ⟶ J.obj s} (hα : IsSupernatural k p α)
-    (M : Superfunctor k C (SVec k)) (w : C)
-    (f : (restriction J).obj ((induction J).obj M) ⟶ M)
-    (a : ℕ) (q : Prop) [Decidable q]
-    (h : SVec.toLinearMap (f.total w) ∘ₗ
-      SVec.toLinearMap ((unitDotColumn J hα M a).total w) =
-      if q then LinearMap.id else 0) (b : M.obj w) :
-    f.total w (SVec.toLinearMap (restrictedDotComponent J hα M w ^ a)
-      (((adjunction J).unit.app M).total w b)) = if q then b else 0 := by
-  have hp := LinearMap.congr_fun h b
-  rw [unitDotColumn_total_restrictedDotComponent] at hp
-  change f.total w (SVec.toLinearMap (restrictedDotComponent J hα M w ^ a)
-    (((adjunction J).unit.app M).total w b)) =
-    (if q then LinearMap.id else 0) b at hp
-  by_cases hq : q
-  · simpa only [hq, ↓reduceIte, LinearMap.id_apply] using hp
-  · simpa only [hq, ↓reduceIte, LinearMap.zero_apply] using hp
-
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ) (γ : List I)
   (N : Superfunctor k (OldContentCategory D Sc (probeCutoff D m) γ) (SVec k))
@@ -118,48 +95,5 @@ abbrev dot (i : I) : End ((source D Sc m i).obj s) :=
 /-- The given ordinary unit applied to the literal ground coordinate. -/
 def unitVector (i : I) (c : k) : (source D Sc m i).obj s :=
   ((adjunction (K i)).unit.app N).total s ((probeVacuumScalarEquiv D Sc m) c)
-
-/-- Native cap extraction on the actual dot-power/unit vectors, for every
-scalar in the original regular empty probe. -/
-theorem cap_dot_unit (i : I) (hP : 0 < cut i) (a : ℕ) (ha : a < cut i) (c : k) :
-    (cap D Sc m i hP).total s (SVec.toLinearMap (dot D Sc m i ^ a) (unitVector D Sc m i c)) =
-      if a + 1 = cut i then (probeVacuumScalarEquiv D Sc m) c else 0 := by
-  let r : Fin (CyclotomicCrossingTensor.contentUnitCount D cut i (([] : List I) : Multiset I)) :=
-    ⟨cut i - 1, by rw [VacuumCoefficient.count]; omega⟩
-  have hac : a < CyclotomicCrossingTensor.contentUnitCount D cut i (([] : List I) : Multiset I) := by
-    rw [VacuumCoefficient.count]
-    exact ha
-  have h := probeContentCoefficientCap_unitDotColumn D Sc m [] N
-    (probeOldModule_evaluatesCoefficients D m Sc [] _) i (by simp) s r a hac
-  have hp := native_unitDot_window_apply (K i)
-    (probeOldContentAppendDot_supernatural D Sc m [] i) N s
-    (cap D Sc m i hP) a (a = r.val) h ((probeVacuumScalarEquiv D Sc m) c)
-  have har : a = r.val ↔ a + 1 = cut i := by dsimp only [r]; omega
-  have he : (if a = r.val then (probeVacuumScalarEquiv D Sc m) c else 0) =
-      if a + 1 = cut i then (probeVacuumScalarEquiv D Sc m) c else 0 := by
-    by_cases hr : a = r.val
-    · rw [ite_eq_left hr, ite_eq_left (har.mp hr)]
-    · rw [ite_eq_right hr, ite_eq_right (fun htop => hr (har.mpr htop))]
-  unfold dot unitVector
-  convert hp.trans he using 1
-
-/-- The native last row has the prescribed normalized ground window, with
-no extra scalar and on every ground input. -/
-theorem groundRow_dot_unit (i : I) (hP : 0 < cut i) (a : ℕ) (ha : a < cut i) (c : k) :
-    groundRow D Sc m i hP (SVec.toLinearMap (dot D Sc m i ^ a) (unitVector D Sc m i c)) =
-      if a + 1 = cut i then c else 0 := by
-  change (probeVacuumScalarEquiv D Sc m).symm
-    ((cap D Sc m i hP).total s (SVec.toLinearMap (dot D Sc m i ^ a) (unitVector D Sc m i c))) = _
-  rw [cap_dot_unit D Sc m i hP a ha c]
-  split_ifs <;> simp only [LinearEquiv.symm_apply_apply, map_zero]
-
-/-- The actual native probe dot in this normalization obeys its signed
-cyclotomic polynomial, in the endomorphism ring of the same superspace. -/
-theorem dot_odd_polynomial (i : I) (hi : D.parity i = 1) :
-    (dot D Sc m i ^ 2 + 1) ^ m i = 0 := by
-  exact restrictedDotComponent_odd_probe_polynomial (K i)
-    (probeOldContentAppendDot_supernatural D Sc m [] i) N s (m i)
-    (probeOldVacuumModuleDot_odd D Sc m N
-      (probeOldModule_evaluatesCoefficients D m Sc [] _) i hi)
 
 end OddMath.QuiverHecke.ELVOld.ProbeVacuumCap

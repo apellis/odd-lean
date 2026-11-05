@@ -170,12 +170,6 @@ private theorem compUnit_apply (M : Superfunctor k C (SVec k)) (v : C) (m : M.ob
     ((inductionComp J K).inv.app M).app 1 z = 0 :=
   Superfunctor.app_eq_zero_of_mem (inductionComp_inv_mem J K M) (by decide) z
 
-/-- Naturality includes arbitrary sums of even and odd module maps. -/
-theorem inductionComp_naturality {M N : Superfunctor k C (SVec k)} (f : M ⟶ N) :
-    (induction K).map ((induction J).map f) ≫ (inductionComp J K).hom.app N =
-      (inductionComp J K).hom.app M ≫ (induction (J ⋙ K)).map f :=
-  (inductionComp J K).hom.naturality f
-
 /-- The total map is the sign-free flattening map, since the comparison is even. -/
 theorem inductionComp_hom_total_tensor (M : Superfunctor k C (SVec k))
     (v : C) (w : D) (z : E) (g : K.obj w ⟶ z) (h : J.obj v ⟶ w) (m : M.obj v) :

@@ -84,22 +84,11 @@ def ofComponents {p : ZMod 2} (e : ∀ X, F.obj X ≅ G.obj X)
     (h : IsSupernatural k p (F := F.toFunctor) (G := G.toFunctor) (fun X => (e X).hom)) (X : C) :
     (ofComponents e h).hom.total X = (e X).hom := homogeneous_total h X
 
-@[simp] theorem ofComponents_inv_total {p : ZMod 2} (e : ∀ X, F.obj X ≅ G.obj X)
-    (h : IsSupernatural k p (F := F.toFunctor) (G := G.toFunctor) (fun X => (e X).hom)) (X : C) :
-    (ofComponents e h).inv.total X = (e X).inv := homogeneous_total (inverseSupernatural e h) X
-
 /-- The forward map retains its specified parity. -/
 theorem ofComponents_hom_mem {p : ZMod 2} (e : ∀ X, F.obj X ≅ G.obj X)
     (h : IsSupernatural k p (F := F.toFunctor) (G := G.toFunctor) (fun X => (e X).hom)) :
     (ofComponents e h).hom ∈ parity (R := k) F G p :=
   Superfunctor.mem_parity_iff_isHomogeneous.mpr h.toSuperNatTrans_isHomogeneous
-
-/-- The inverse retains the same specified parity. -/
-theorem ofComponents_inv_mem {p : ZMod 2} (e : ∀ X, F.obj X ≅ G.obj X)
-    (h : IsSupernatural k p (F := F.toFunctor) (G := G.toFunctor) (fun X => (e X).hom)) :
-    (ofComponents e h).inv ∈ parity (R := k) G F p :=
-  Superfunctor.mem_parity_iff_isHomogeneous.mpr
-    (inverseSupernatural e h).toSuperNatTrans_isHomogeneous
 
 /-- Reassemble a given homogeneous map from isomorphisms of its total components. -/
 def ofHom {p : ZMod 2} (f : F ⟶ G) (hf : f ∈ parity (R := k) F G p)
@@ -118,26 +107,5 @@ def ofHom {p : ZMod 2} (f : F ⟶ G) (hf : f ∈ parity (R := k) F G p)
   apply total_ext
   intro X
   exact (ofComponents_hom_total e _ X).trans (he X)
-
-@[simp] theorem ofHom_inv_total {p : ZMod 2} (f : F ⟶ G) (hf : f ∈ parity (R := k) F G p)
-    (e : ∀ X, F.obj X ≅ G.obj X) (he : ∀ X, (e X).hom = f.total X) (X : C) :
-    (ofHom f hf e he).inv.total X = (e X).inv := ofComponents_inv_total e _ X
-
-/-- The inverse of the given homogeneous map has the same parity. -/
-theorem ofHom_inv_mem {p : ZMod 2} (f : F ⟶ G) (hf : f ∈ parity (R := k) F G p)
-    (e : ∀ X, F.obj X ≅ G.obj X) (he : ∀ X, (e X).hom = f.total X) :
-    (ofHom f hf e he).inv ∈ parity (R := k) G F p := by
-  apply Supercategory.inv_mem (ofHom f hf e he)
-  simpa only [ofHom_hom] using hf
-
-@[simp] theorem ofHom_hom_inv_id {p : ZMod 2} (f : F ⟶ G) (hf : f ∈ parity (R := k) F G p)
-    (e : ∀ X, F.obj X ≅ G.obj X) (he : ∀ X, (e X).hom = f.total X) :
-    f ≫ (ofHom f hf e he).inv = 𝟙 F := by
-  simpa only [ofHom_hom] using (ofHom f hf e he).hom_inv_id
-
-@[simp] theorem ofHom_inv_hom_id {p : ZMod 2} (f : F ⟶ G) (hf : f ∈ parity (R := k) F G p)
-    (e : ∀ X, F.obj X ≅ G.obj X) (he : ∀ X, (e X).hom = f.total X) :
-    (ofHom f hf e he).inv ≫ f = 𝟙 G := by
-  simpa only [ofHom_hom] using (ofHom f hf e he).inv_hom_id
 
 end OddMath.HomogeneousSuperfunctorIso

@@ -168,11 +168,4 @@ theorem evenBoundaryPhi_top (p : ZMod 2) (i : I) (hi : D.parity i = 0)
     appendC0_orderedReverseNumerator_top] at ht
   exact ht.symm
 
-/-- Negative height gives the zero row, including the zero old corner. -/
-theorem evenBoundaryPhi_eq_zero_of_negative (p : ZMod 2) (i : I) (hi : D.parity i = 0)
-    (v : List I) (d : ℕ) (hd : d + endpointQPDegree D cutoff i v < outputSDegree D i v) :
-    evenBoundaryPhi D Sc cutoff p i v d = 0 := by
-  ext m
-  exact evenBoundaryPhi_above D Sc cutoff p i hi v d m (by omega)
-
 end OddMath.QuiverHecke.ELVOld

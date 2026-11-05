@@ -31,11 +31,6 @@ def prependTensorForward : ((PrependShuffle n × ℕ) →₀ M) →+ T :=
     { toFun := fun y => InductionAlong.Ind.tmul (prependPBWCorner D Sc i q.1 q.2 1) y
       map_zero' := InductionAlong.Ind.tmul_zero _
       map_add' := InductionAlong.Ind.tmul_add _ }
-/-- The forward map is the literal finite sum, including multiterm families. -/
-theorem prependTensorForward_apply (x : (PrependShuffle n × ℕ) →₀ M) :
-    prependTensorForward D Sc i n M x =
-      x.sum (fun q y => InductionAlong.Ind.tmul (prependPBWCorner D Sc i q.1 q.2 1) y) :=
-  Finsupp.liftAddHom_apply _ _
 
 /-- Balanced coordinate extraction using the proved right-old-algebra law. -/
 def prependTensorBackward : T →+ ((PrependShuffle n × ℕ) →₀ M) :=

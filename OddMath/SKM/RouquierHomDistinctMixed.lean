@@ -241,17 +241,5 @@ theorem homDistinctMixedMate_inv_products (H : b ⟶ d) :
 instance homDistinctMixedMate_isIso (H : b ⟶ d) : IsIso (homDistinctMixedMate E A κ τ H) :=
   ⟨⟨homDistinctMixedMateInv E κ τ H, homDistinctMixedMate_inv_products E A κ τ H⟩⟩
 
-/-- `U` has the crossing parity `κ + τ`. -/
-theorem homDistinctMixedMate_mem (H : b ⟶ d) :
-    homDistinctMixedMate E A κ τ H ∈ parity (R := k) _ _ (κ + τ) := by
-  rw [homDistinctMixedMate_eq]
-  apply Submodule.smul_mem
-  have := comp_mem (TwoSupercategory.whiskerLeft_mem E
-      (TwoSupercategory.whiskerRight_mem F' ((homParityShiftDatum (k := k) κ).hom_mem H)))
-    (comp_mem (inv_mem _ (TwoSupercategory.associator_hom_mem (R := k) E H F'))
-      (TwoSupercategory.whiskerRight_mem F'
-        ((homParityShiftDatum (k := k) τ).inv_mem (E ≫ H))))
-  simpa only [zero_add] using this
-
 end Generic
 end OddMath.SKM

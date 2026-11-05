@@ -61,48 +61,10 @@ def weightedAppendRestrictionIso :
       rfl))
     (fun _ => id_mem _) (fun _ => id_mem _)
 
-@[simp] theorem weightedAppendRestrictionIso_hom_app
-    (p : ZMod 2) (s : OldCategory D Sc cutoff) :
-    (weightedAppendRestrictionIso D Sc cutoff N i M).hom.app p s =
-      if p = 0 then LinearMap.id else 0 := rfl
-
 theorem weightedAppendRestrictionIso_hom_mem :
     (weightedAppendRestrictionIso D Sc cutoff N i M).hom ∈ parity (R := k) _ _ 0 := by
   unfold weightedAppendRestrictionIso
   exact moduleIsoOfEvenNatIso_hom_mem _ _ _ _ _
-
-/-- The restriction comparison is natural for arbitrary supernatural
-input-module maps, including their odd parts. -/
-theorem weightedAppendRestrictionIso_naturality
-    {L : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k)} (f : M ⟶ L) :
-    (BalancedInduction.restriction Q).map ((BalancedInduction.restriction T).map f) ≫
-        (weightedAppendRestrictionIso D Sc cutoff N i L).hom =
-      (weightedAppendRestrictionIso D Sc cutoff N i M).hom ≫
-        (BalancedInduction.restriction J).map ((BalancedInduction.restriction Q).map f) := by
-  apply Superfunctor.hom_ext
-  intro p s
-  let v : TruncatedCategory D Sc cutoff N := ⟨s.word ++ [i]⟩
-  rcases parity_eq_zero_or_one p with rfl | rfl
-  · change (LinearMap.id : L.obj v →ₗ[k] L.obj v) ∘ₗ f.app 0 v +
-        (0 : L.obj v →ₗ[k] L.obj v) ∘ₗ f.app 1 v =
-      f.app 0 v ∘ₗ (LinearMap.id : M.obj v →ₗ[k] M.obj v) +
-        f.app 1 v ∘ₗ (0 : M.obj v →ₗ[k] M.obj v)
-    simp only [LinearMap.id_comp, LinearMap.zero_comp, LinearMap.comp_id,
-      LinearMap.comp_zero, add_zero]
-  · change (0 : L.obj v →ₗ[k] L.obj v) ∘ₗ f.app 0 v +
-        (LinearMap.id : L.obj v →ₗ[k] L.obj v) ∘ₗ f.app 1 v =
-      f.app 1 v ∘ₗ (LinearMap.id : M.obj v →ₗ[k] M.obj v) +
-        f.app 0 v ∘ₗ (0 : M.obj v →ₗ[k] M.obj v)
-    simp only [LinearMap.zero_comp, LinearMap.id_comp, LinearMap.comp_id,
-      LinearMap.comp_zero, zero_add, add_zero]
-
-/-- The whole restriction square uses the same identity-vector
-comparisons as the ordinary counit formula. -/
-def weightedAppendRestrictionNaturalIso :
-    BalancedInduction.restriction (k := k) T ⋙ BalancedInduction.restriction (k := k) Q ≅
-      BalancedInduction.restriction (k := k) Q ⋙ BalancedInduction.restriction (k := k) J :=
-  NatIso.ofComponents (weightedAppendRestrictionIso D Sc cutoff N i)
-    (fun f => weightedAppendRestrictionIso_naturality D Sc cutoff N i _ f)
 
 /-- The selected old/truncated append comparison carries the literal
 ordinary counit to the truncated counit. The old-side source is identified

@@ -125,55 +125,6 @@ theorem interpretation_evalW_eq_zero_iff (D : Datum I X) (Sc : Scalars D k) (m c
       (((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).layerRep (fun s => (Gs s).obj) (fun s => (Ys s).obj)) gens).toLocal.evalW i j u v f = 0 :=
   ModuleInterpretation.congrModules_evalW_eq_zero_iff _ _ _ i j u v f
 
-/-- A defining relation on the supported matrices, in every valid context. -/
-def relationHolds (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (bound : ℕ)
-    (ΛP ΛR : X) (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
-    (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
-    (Gs Ys : ∀ s, H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s)
-    (gens : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).Generators) (r : SKM.Rel D) : Prop :=
-  ∀ (u : Obj (SKM.sig D)) (v : List (SKM.sig D).Colour),
-    ((SKM.pres D Sc).dom r).WhiskerOK u v →
-    (interpretation D Sc m cutoff bound ΛP ΛR hP hR Gs Ys gens).evalW
-      (((SKM.pres D Sc).dom r).whisker u v) (((SKM.pres D Sc).cod r).whisker u v)
-      u v ((SKM.pres D Sc).rel r) = 0
-
-/-- Each native relation is equivalent to the same supported relation. -/
-theorem relationHolds_iff (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (bound : ℕ)
-    (ΛP ΛR : X) (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
-    (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
-    (Gs Ys : ∀ s, H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s)
-    (gens : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).Generators) (r : SKM.Rel D) :
-    relationHolds D Sc m cutoff bound ΛP ΛR hP hR Gs Ys gens r ↔ RelHolds Sc (((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).layerRep (fun s => (Gs s).obj) (fun s => (Ys s).obj)) gens) r := by
-  constructor <;> intro h u v hw
-  · exact (interpretation_evalW_eq_zero_iff D Sc m cutoff bound ΛP ΛR hP hR Gs Ys gens _ _ u v _).1
-      (h u v hw)
-  · exact (interpretation_evalW_eq_zero_iff D Sc m cutoff bound ΛP ΛR hP hR Gs Ys gens _ _ u v _).2
-      (h u v hw)
-
-/-- Super interchange on the supported matrices in every valid context. -/
-def interchangeHolds (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (bound : ℕ)
-    (ΛP ΛR : X) (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
-    (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
-    (Gs Ys : ∀ s, H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s)
-    (gens : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).Generators) : Prop :=
-  ∀ (x : InterchangeData (SKM.sig D)) (hx : x.Valid) (u : Obj (SKM.sig D))
-    (v : List (SKM.sig D).Colour), x.dom.WhiskerOK u v →
-    (interpretation D Sc m cutoff bound ΛP ΛR hP hR Gs Ys gens).evalW
-      (x.dom.whisker u v) (x.cod.whisker u v) u v (InterchangeData.rel k hx) = 0
-
-/-- The same native super-interchange equation restricts and reflects without a new premise. -/
-theorem interchangeHolds_iff (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (bound : ℕ)
-    (ΛP ΛR : X) (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
-    (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
-    (Gs Ys : ∀ s, H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s)
-    (gens : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).Generators) :
-    interchangeHolds D Sc m cutoff bound ΛP ΛR hP hR Gs Ys gens ↔ InterchangeLaw (((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).layerRep (fun s => (Gs s).obj) (fun s => (Ys s).obj)) gens) := by
-  constructor <;> intro h x hx u v hw
-  · exact (interpretation_evalW_eq_zero_iff D Sc m cutoff bound ΛP ΛR hP hR Gs Ys gens _ _ u v _).1
-      (h x hx u v hw)
-  · exact (interpretation_evalW_eq_zero_iff D Sc m cutoff bound ΛP ΛR hP hR Gs Ys gens _ _ u v _).2
-      (h x hx u v hw)
-
 /-- Intermediate assembly from the native presentation obligations. This does not construct
 the still separate central inverse, but adds no supported-category hypothesis. -/
 theorem respectsOfObligations (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (bound : ℕ)

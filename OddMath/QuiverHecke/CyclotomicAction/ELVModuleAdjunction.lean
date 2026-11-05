@@ -206,15 +206,4 @@ namespace OddMath.QuiverHecke.ELVOld
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
 
-/-- The actual balanced induction functor for the full-coefficient ELV quotient. -/
-abbrev moduleInduction (σ : List I) :
-    TruncatedModules D Sc cutoff N ⥤ TruncatedModules D Sc cutoff N :=
-  BalancedInduction.induction (truncatedAppend D Sc cutoff N σ)
-
-/-- Right-append induction has the specified right-append restriction as right adjoint.
-Both module categories contain every supernatural map, including odd maps. -/
-def moduleAdjunction (σ : List I) :
-    moduleInduction D Sc cutoff N σ ⊣ moduleRestriction D Sc cutoff N σ :=
-  BalancedInduction.adjunction (truncatedAppend D Sc cutoff N σ)
-
 end OddMath.QuiverHecke.ELVOld

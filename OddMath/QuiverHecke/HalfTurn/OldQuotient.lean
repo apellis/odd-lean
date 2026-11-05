@@ -24,14 +24,6 @@ def halfTurnOldHom (s t : List I) :
       ((⟨t.reverse⟩ : ELVOld.OldCategory D (parameterTwist D Sc) cutoff) ⟶ ⟨s.reverse⟩) :=
   sourceToOldHom D (parameterTwist D Sc) cutoff t.reverse s.reverse ∘ₗ htCoef D Sc s t
 
-/-- The actual reversed old Hom map has exactly the transformed boundary
-kernel. No vacuum evaluation or action-faithfulness premise occurs. -/
-theorem halfTurnOldHom_ker (s t : List I) :
-    LinearMap.ker (halfTurnOldHom D Sc cutoff s t) =
-      TransformedIdeal D Sc cutoff ∅ s t := by
-  rw [halfTurnOldHom, LinearMap.ker_comp, sourceToOldHom_ker]
-  exact comap_htCoef_elvRelationSpan D Sc cutoff s t
-
 private theorem sourceToOldHom_comp {s t r : List I}
     (f : coefficientObj D Sc s ⟶ coefficientObj D Sc t)
     (g : coefficientObj D Sc t ⟶ coefficientObj D Sc r) :
@@ -55,27 +47,6 @@ theorem halfTurnOldHom_comp {s t r : List I} {p q : ZMod 2}
     (htCoef D Sc s r (f ≫ g)) = _
   rw [htCoef_comp D Sc hf hg, map_smul, sourceToOldHom_comp]
   rfl
-
-/-- Bounded source windows survive in literal old cyclotomic Homs. -/
-theorem halfTurnOldHom_injective_on_extendedAtMost {s t : List I} {d N : ℕ}
-    (hN : ∀ i, N ≤ cutoff i) (hd : d + 2 * s.length.choose 2 < N) :
-    Function.Injective (fun x : ExtendedAtMost D Sc s t d =>
-      halfTurnOldHom D Sc cutoff s t x.val) := by
-  intro x y hxy
-  apply transformedIdeal_quotient_injective_on_extendedAtMost D Sc (T := ∅) hN
-    (by intro a ha; cases ha) hd
-  apply (Submodule.Quotient.eq _).mpr
-  rw [← halfTurnOldHom_ker D Sc cutoff s t]
-  change halfTurnOldHom D Sc cutoff s t (x.val - y.val) = 0
-  rw [map_sub]
-  exact sub_eq_zero.mpr hxy
-
-/-- Literal old Hom detection at the prescribed reservoir schedule. -/
-theorem halfTurnOldHom_reservoir_injective (μ : X) (s t : List I) (d : ℕ) :
-    Function.Injective (fun x : ExtendedAtMost D Sc s t d =>
-      halfTurnOldHom D Sc (reservoirLevel D μ s d) s t x.val) :=
-  halfTurnOldHom_injective_on_extendedAtMost D Sc _
-    (vacuumCutoff_le_reservoirLevel D μ s d) (by simp [vacuumCutoff])
 
 private theorem elementaryPowers_parity (L : I × ℕ → ℕ) :
     ∀ a ∈ (Set.range fun j : I × ℕ => SKM.SYM.e D k j.1 j.2 ^ L j),

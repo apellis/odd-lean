@@ -102,7 +102,6 @@ theorem offDiagonalBoundarySnake_eq_boundaryCrossCoordinates (p : ZMod 2)
     (offDiagonalLongSection D Sc cutoff p j.1 v t f)
     (offDiagonalLongExtraction_section D Sc cutoff p j.1 v t f)
 
-
 /-- The actual cap vector evaluated on the actual snake kernel coordinates. -/
 def offDiagonalCapOnKernelVector (p : ZMod 2) (j : {j : I // D.parity j = 1})
     (v t : List I) (m : ℕ)
@@ -240,15 +239,6 @@ theorem offDiagonalInputMatrix_bijective (p : ZMod 2)
           (LinearMap.ker (toCyclotomic D Sc cutoff j.1 v t)).subtype) f = b
       rw [hf]
       abel
-
-/-- The whole raw negative-height augmented matrix on the independently defined source. -/
-def offDiagonalInputMatrixEquiv (p : ZMod 2) (j : {j : I // D.parity j = 1})
-    (v t : List I) (m : ℕ)
-    (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m) :
-    Source D Sc cutoff j.1 v t ≃ₗ[k]
-      (Old D Sc cutoff (v ++ [j.1]) (t ++ [j.1]) × (Fin m → Old D Sc cutoff v t)) :=
-  LinearEquiv.ofBijective (offDiagonalInputMatrix D Sc cutoff j v t m)
-    (offDiagonalInputMatrix_bijective D Sc cutoff p j v t m hm)
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
 

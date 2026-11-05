@@ -33,9 +33,6 @@ variable {i : I} {v w : List I}
 def tailKey (x : AppendIdx i v w) : ℕ × AppendShuffle (appendLen v i) :=
   (x.1.1, x.1.2.2.2)
 
-@[simp] theorem tailKey_replaceOld (x : AppendIdx i v w) (y : NFIdx v x.oldTarget) :
-    (x.replaceOld y).tailKey = x.tailKey := rfl
-
 /-- Different moving tails have disjoint sets of old normal-form replacements. -/
 theorem replaceOld_ne_of_tailKey_ne (x z : AppendIdx i v w)
     (h : x.tailKey ≠ z.tailKey) (y : NFIdx v x.oldTarget) (b : NFIdx v z.oldTarget) :
@@ -66,18 +63,6 @@ theorem oldTarget_eq_of_tailKey_eq (x z : AppendIdx i v w)
     simpa [q] using hc
   exact List.append_cancel_right hh
 
-/-- A representative for the same tail is obtained by replacing only its old index. -/
-theorem eq_replaceOld_of_tailKey_eq (x z : AppendIdx i v w)
-    (h : x.tailKey = z.tailKey) :
-    z = x.replaceOld ((x.oldTarget_eq_of_tailKey_eq z h).symm ▸ z.old) := by
-  apply Subtype.ext
-  have hn := congrArg Prod.fst h
-  have hd := congrArg Prod.snd h
-  have hv {t t' : List I} (e : t = t') (b : NFIdx v t) :
-      (e ▸ b : NFIdx v t').val = b.val := by cases e; rfl
-  simp only [replaceOld, hv]
-  exact Prod.ext hn.symm (Prod.ext rfl (Prod.ext rfl hd.symm))
-
 /-- Moving tails that occur in the existing append basis, forgetting the old index. -/
 def Tail (i : I) (v w : List I) : Type :=
   ↥(Set.range (tailKey (i := i) (v := v) (w := w)))
@@ -90,27 +75,6 @@ def representative (q : Tail i v w) : AppendIdx i v w := q.property.choose
     q.representative.tailKey = q.val := q.property.choose_spec
 end Tail
 
-/-- Regroup existing append indices by their moving tail and old normal form. -/
-def regroupEquiv : AppendIdx i v w ≃
-    Σ q : Tail i v w, NFIdx v q.representative.oldTarget where
-  toFun x := ⟨⟨x.tailKey, ⟨x, rfl⟩⟩,
-    (oldTarget_eq_of_tailKey_eq
-      (Tail.representative ⟨x.tailKey, ⟨x, rfl⟩⟩) x
-      (Tail.representative_tailKey ⟨x.tailKey, ⟨x, rfl⟩⟩)).symm ▸ x.old⟩
-  invFun x := x.1.representative.replaceOld x.2
-  left_inv x := (eq_replaceOld_of_tailKey_eq _ x (Tail.representative_tailKey _)).symm
-  right_inv q := by
-    rcases q with ⟨q, y⟩
-    apply Sigma.ext
-    · apply Subtype.ext
-      exact q.representative_tailKey
-    · have ht (x : AppendIdx i v w) (y : NFIdx v x.oldTarget) :
-          HEq ((x.replaceOld y).old) y := by
-        apply (Subtype.heq_iff_coe_eq (by
-          intro b
-          rw [x.replaceOld_target y])).mpr
-        rfl
-      exact (eqRec_heq _ _).trans (ht _ _)
 end AppendIdx
 namespace ELVOld
 

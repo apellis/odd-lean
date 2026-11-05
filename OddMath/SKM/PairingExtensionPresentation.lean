@@ -72,10 +72,6 @@ instance presentationFunctor_linear : (presentationFunctor D Sc).Linear k := by
   unfold presentationFunctor
   infer_instance
 
-@[simp] theorem presentationFunctor_obj (a : Obj (sig D)) :
-    (presentationFunctor D Sc).obj ((pres D Sc).obj a) =
-      (pres Dₑ Scₑ).obj ((inclusion D).obj a) := rfl
-
 /-- All generators, including the inverse entries, retain their diagrams and coefficients. -/
 theorem presentationFunctor_diag {a b : Obj (sig D)} (f : a ⟶ b) :
     (presentationFunctor D Sc).map ((pres D Sc).diag f) =

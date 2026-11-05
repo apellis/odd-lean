@@ -96,18 +96,4 @@ theorem tensorOriginalWordEntry_layer (gens : (P).Generators)
   rw [tensorVacuumRowProjection_layer D Sc m cutoff ΛP ΛR L hP hR s gens A hA hEnd p q hp x]
   exact TensorEntryPullback.map_arrow (E) _ _ _ _
 
-/-- The canonical change from the global row target to a prescribed
-whole-Hom local layer chart. -/
-def tensorOriginalLayerChart {A : Obj (SKM.sig D)}
-    (p : SPath A.word (0,cS) (0,0)) (hp : ∀ c ∈ A.word, c.l.1 = true)
-    (F : probeOldWeightSpace D Tw m ΛP (-ΛP) ⟶
-      elvWeightSpace D Tw cutoff N ΛR (ReservoirWord.weight D ΛR cS))
-    (e : ((P).pathFunctor p).obj (tensorVacuum D Sc m cutoff L ΛP ΛR).obj ≅
-      (E).functor.obj F) :
-    TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hp ≅ F :=
-  TensorEntryPullback.chartChange (E)
-    (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s p hp) e
-
-
-
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

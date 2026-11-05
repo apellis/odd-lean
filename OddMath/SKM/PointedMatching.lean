@@ -32,9 +32,6 @@ def ofStrict {R : List (TMove (Letter I))} (hR : IsMatching₂ a b R) (hr : Stri
   exact ⟨R, hR, hr, q, fun j hj => (hq j hj).1, fun j hj => (hq j hj).2, σ,
     fun n => (hσ n).1⟩
 
-@[simp] theorem ofStrict_moves {R : List (TMove (Letter I))}
-    (hR : IsMatching₂ a b R) (hr : StrictReduced₂ a R) : (ofStrict hR hr).moves = R := rfl
-
 def layers (F : PointedMatching a b) (n : MatchingStrand a F.moves → ℕ) : List (XLayer I) :=
   dLay a (F.serialize n)
 

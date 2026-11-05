@@ -38,45 +38,6 @@ private theorem transport_end_value
   have ht := hg (c.symm (e.hom.total w z))
   simpa only [LinearEquiv.apply_symm_apply] using ht
 
-private def endValueLinear
-    {k C U : Type u} [CommRing k] [Category.{u} C]
-    [Preadditive C] [Linear k C] [Supercategory k C]
-    [AddCommGroup U] [Module k U]
-    (F : Superfunctor k C (SVec k)) (w : C) (decode : F.obj w →ₗ[k] U) (z : F.obj w) :
-    End F →ₗ[k] U :=
-  decode.comp ((LinearMap.applyₗ (R := k) (M := F.obj w) (M₂ := F.obj w) z).comp
-    ((svecEndEvaluation (F.obj w)).toLinearMap.comp (supernaturalTotalLinearMap F F w)))
-
-private theorem endValueLinear_apply
-    {k C U : Type u} [CommRing k] [Category.{u} C]
-    [Preadditive C] [Linear k C] [Supercategory k C]
-    [AddCommGroup U] [Module k U]
-    (F : Superfunctor k C (SVec k)) (w : C) (decode : F.obj w →ₗ[k] U)
-    (z : F.obj w) (f : End F) :
-    endValueLinear F w decode z f = decode (f.total w z) := rfl
-
-private theorem additive_polynomial_power {R U : Type*} [Ring R] [AddCommGroup U]
-    (A : R →+ U) (x : R) (M : ℕ) :
-    A ((x ^ 2 + 1) ^ M) =
-      ∑ j ∈ Finset.range (M + 1), M.choose j • A (x ^ (2 * j)) := by
-  rw [(Commute.one_right (x ^ 2)).add_pow]
-  simp only [one_pow, mul_one, ← nsmul_eq_mul', ← pow_mul, map_sum, map_nsmul]
-
-private theorem additive_polynomial_power_eq {R U : Type*} [Ring R] [AddCommGroup U]
-    (A : R →+ U) (x : R) (g : ℕ → U) (hg : ∀ a, A (x ^ a) = g a) (M : ℕ) :
-    A ((x ^ 2 + 1) ^ M) =
-      ∑ j ∈ Finset.range (M + 1), M.choose j • g (2 * j) := by
-  rw [additive_polynomial_power]
-  exact Finset.sum_congr rfl (fun j _ => congrArg (fun a => M.choose j • a) (hg (2 * j)))
-
-private theorem additive_end_polynomial_power_eq
-    {C : Type*} [Category C] [Preadditive C] {U : Type*} [AddCommGroup U]
-    (G : C) (A : End G →+ U) (x : End G) (g : ℕ → U)
-    (hg : ∀ a, A (x ^ a) = g a) (M : ℕ) :
-    A ((x ^ 2 + 1) ^ M) =
-      ∑ j ∈ Finset.range (M + 1), M.choose j • g (2 * j) :=
-  additive_polynomial_power_eq A x g hg M
-
 private theorem column_input_even
     {k C A : Type u} [CommRing k] [Category.{u} C] [Category.{u} A]
     [Preadditive C] [Linear k C] [Supercategory k C]
@@ -240,7 +201,6 @@ private theorem weightedUnitCapClosure_value (hN : 0 < cutoff i) (n : ℕ) (a : 
     contentInclusion, oldTruncateFunctor, vacuumPoint] at h ⊢
   convert! h using 1
 
-
 /-- Every native tensor vector has the existing full-coefficient moment
 of the actual prescribed unit, dot and normalized inverse cap. -/
 theorem tensorPowerVacuumCap_moment_weighted (hN : 0 < cutoff i) (n : ℕ) (z : (V).obj star) :
@@ -284,94 +244,6 @@ theorem tensorPowerVacuumCap_moment_odd (hi : D.parity i = 1) (hN : 0 < cutoff i
         (coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩) *
           completeCoefficient D cutoff L i r)) * tensorVacuumDecodeLinear D Sc m cutoff L z := by
   rw [tensorPowerVacuumCap_moment_weighted, weightedMomentMap_odd D Sc cutoff L i hi hN r]
-  rfl
-
-private theorem column_post_power (a n : ℕ) :
-    unitDotColumn K hDot V n ≫ restrictedDotEnd K hDot V ^ a =
-      unitDotColumn K hDot V (a + n) := by
-  rw [unitDotColumn_eq_restrictedDotEnd, unitDotColumn_eq_restrictedDotEnd, Category.assoc]
-  congr 1
-  change restrictedDotEnd K hDot V ^ a * restrictedDotEnd K hDot V ^ n =
-    restrictedDotEnd K hDot V ^ (a + n)
-  exact (pow_add _ _ _).symm
-
-/-- Apply the probe polynomial in the given reservoir module dot before
-the same prescribed normalized inverse cap. -/
-def tensorPolynomialCap (hN : 0 < cutoff i) (M : ℕ) :
-    (restriction K).obj ((induction K).obj V) ⟶ V :=
-  ((restrictedDotEnd K hDot V ^ 2 + 1) ^ M) ≫ tensorVacuumCap D Sc m cutoff L i hN
-
-/-- The literal n-th unit/dot column followed by this polynomial cap. -/
-def tensorPolynomialClosure (hN : 0 < cutoff i) (M n : ℕ) : End V :=
-  unitDotColumn K hDot V n ≫ tensorPolynomialCap D Sc m cutoff L i hN M
-
-/-- Every native tensor polynomial-cap closure has the existing full
-weighted coefficient moment, on every native tensor input vector. -/
-theorem tensorPolynomialCap_moment_apply (hN : 0 < cutoff i) (M n : ℕ) (z : (V).obj star) :
-    tensorVacuumDecodeLinear D Sc m cutoff L
-      ((tensorPolynomialClosure D Sc m cutoff L i hN M n).total star z) =
-      weightedPolynomialCapMoment D Sc cutoff L i hN M n
-        (tensorVacuumDecodeLinear D Sc m cutoff L z) := by
-  let Lc : End ((restriction K).obj ((induction K).obj V)) →+ End V :=
-    (Preadditive.leftComp V (unitDotColumn K hDot V n)).comp
-      (Preadditive.rightComp ((restriction K).obj ((induction K).obj V))
-        (tensorVacuumCap D Sc m cutoff L i hN))
-  have hc (f : End ((restriction K).obj ((induction K).obj V))) :
-      Lc f = unitDotColumn K hDot V n ≫ f ≫ tensorVacuumCap D Sc m cutoff L i hN := rfl
-  have hp (a : ℕ) : Lc (restrictedDotEnd K hDot V ^ a) =
-      tensorUnitCapClosure D Sc m cutoff L i hN (a + n) := by
-    rw [hc, ← Category.assoc, column_post_power]
-    rfl
-  let Ev : End V →+ AQ :=
-    (endValueLinear V star (tensorVacuumDecodeLinear D Sc m cutoff L) z).toAddMonoidHom
-  let A := Ev.comp Lc
-  have ha (a : ℕ) : A (restrictedDotEnd K hDot V ^ a) =
-      weightedMomentMap D Sc cutoff L i hN (a + n) (tensorVacuumDecodeLinear D Sc m cutoff L z) := by
-    change Ev (Lc (restrictedDotEnd K hDot V ^ a)) = _
-    rw [hp]
-    exact tensorPowerVacuumCap_moment_weighted D Sc m cutoff L i hN (a + n) z
-  have hs := additive_end_polynomial_power_eq ((restriction K).obj ((induction K).obj V))
-    A (restrictedDotEnd K hDot V)
-    (fun a => weightedMomentMap D Sc cutoff L i hN (a + n)
-      (tensorVacuumDecodeLinear D Sc m cutoff L z)) ha M
-  have he (f : End V) : Ev f = tensorVacuumDecodeLinear D Sc m cutoff L (f.total star z) := rfl
-  have ha' (f : End ((restriction K).obj ((induction K).obj V))) : A f = Ev (Lc f) := rfl
-  have heq : tensorPolynomialClosure D Sc m cutoff L i hN M n =
-      Lc ((restrictedDotEnd K hDot V ^ 2 + 1) ^ M) := by
-    rw [hc]
-    rfl
-  have hv : tensorVacuumDecodeLinear D Sc m cutoff L
-      ((tensorPolynomialClosure D Sc m cutoff L i hN M n).total star z) =
-      A ((restrictedDotEnd K hDot V ^ 2 + 1) ^ M) := by
-    rw [ha', he, ← heq]
-  have hw := LinearMap.congr_fun (weightedPolynomialCapMoment_sum D Sc cutoff L i hN M n)
-    (tensorVacuumDecodeLinear D Sc m cutoff L z)
-  apply hv.trans (hs.trans _)
-  simpa only [LinearMap.sum_apply, LinearMap.smul_apply] using hw.symm
-
-/-- The first normalized odd polynomial-cap closure at nonpositive
-height keeps the original independent exterior coefficient and sign. -/
-theorem tensorPolynomialCap_nonpositive_first_odd (hi : D.parity i = 1)
-    (hN : 0 < cutoff i) (M : ℕ) (hMN : 2 * M ≤ cutoff i) (z : (V).obj star) :
-    tensorVacuumDecodeLinear D Sc m cutoff L
-      ((tensorPolynomialClosure D Sc m cutoff L i hN M (cutoff i - 2 * M)).total star z) =
-      ((-1 : k) ^ (cutoff i + 1) •
-        coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) *
-          tensorVacuumDecodeLinear D Sc m cutoff L z := by
-  rw [tensorPolynomialCap_moment_apply,
-    weightedPolynomialCapMoment_nonpositive_first_odd D Sc cutoff L i hi hN M hMN]
-  rfl
-
-/-- At height zero this is minus the original exterior operator, still
-on every native tensor vector and before a mixed-inverse identification. -/
-theorem tensorPolynomialCap_zero_height_odd (hi : D.parity i = 1)
-    (hN : 0 < cutoff i) (M : ℕ) (hcut : cutoff i = 2 * M) (z : (V).obj star) :
-    tensorVacuumDecodeLinear D Sc m cutoff L
-      ((tensorPolynomialClosure D Sc m cutoff L i hN M 0).total star z) =
-      -(coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) *
-        tensorVacuumDecodeLinear D Sc m cutoff L z := by
-  rw [tensorPolynomialCap_moment_apply,
-    weightedPolynomialCapMoment_zero_height_odd D Sc cutoff L i hi hN M hcut]
   rfl
 
 end PowerVacuumCoefficient

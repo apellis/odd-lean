@@ -106,20 +106,4 @@ theorem outputLongExtraction_move_independentS (p : ZMod 2) (i : I) (v : List I)
   rw [h, leadingMoveEndpointPolynomial_eq_sign_smul_squareProduct,
     Linear.smul_comp, map_smul, map_smul, map_smul, outputLongExtraction_squareProduct]
 
-/-- Literal finite coefficient formula, including the prescribed old composition
-order and arbitrary full exterior old quotient coefficient on the source side. -/
-theorem outputLongCoordinate_move_independentS_balanced (p : ZMod 2) (i : I) (v : List I)
-    (b : Old D Sc cutoff v v) (n : ℕ) :
-    outputLongCoordinate D Sc cutoff p i v n
-      (balancedForward D Sc cutoff p i v (v ++ [i])
-        (balancedTmul D Sc cutoff p i
-          (affineUnit D Sc cutoff (i :: v) (v ++ [i]) (moveHom D Sc i [] v)) b)) =
-      oldComp D Sc cutoff v v v b
-        (SKM.zsign k (D.parity i) ^ v.count i • independentOutputS D Sc cutoff i v n) := by
-  rw [outputLongCoordinate_balanced]
-  have h := congrArg (fun f : ℕ →₀ Old D Sc cutoff v v => f n)
-    (outputLongExtraction_move_independentS D Sc cutoff p i v)
-  rw [outputLongExtraction_apply, Finsupp.smul_apply] at h
-  rw [h]
-
 end OddMath.QuiverHecke.ELVOld

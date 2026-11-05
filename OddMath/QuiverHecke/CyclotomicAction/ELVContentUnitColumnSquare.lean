@@ -109,10 +109,6 @@ theorem contentUnitTargetIso_hom_mem : (Target).hom ∈ parity (R := k) _ _ 0 :=
     (contentAppendToRestrictionSquare D Sc cutoff N β [i] γ hK (induced T P)) (Iso.refl FE)
     (id_mem _) (id_mem _)
 
-/-- The inverse of the same selected upper chart is even. -/
-theorem contentUnitTargetIso_inv_mem : (Target).inv ∈ parity (R := k) _ _ 0 :=
-  inv_mem _ (contentUnitTargetIso_hom_mem D Sc cutoff N β i M)
-
 /-- The selected content extension unit is even, including absent-colour contents. -/
 theorem contentUnitValueIso_hom_mem : (Value).hom ∈ parity (R := k) _ _ 0 := by
   rw [contentExtensionUnitIso, fullyFaithfulUnitIso_hom]

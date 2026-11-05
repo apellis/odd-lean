@@ -16,7 +16,6 @@ namespace OddMath.QuiverHecke.ELVOld
 open CyclotomicCrossingTensor
 universe u
 
-
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
   (ν : List I) (i : I)
@@ -40,14 +39,6 @@ def oldContentInductionDotComponent
     BalancedInduction.induced (oldContentAppend D Sc cutoff ν i) M ⟶
       BalancedInduction.induced (oldContentAppend D Sc cutoff ν i) M :=
   BalancedInduction.transformComponent (oldContentAppendDot_supernatural D Sc cutoff ν i) M
-
-theorem oldContentInductionDotComponent_supernatural :
-    IsSupernatural k (D.parity i)
-      (F := BalancedInduction.induction (oldContentAppend D Sc cutoff ν i))
-      (G := BalancedInduction.induction (oldContentAppend D Sc cutoff ν i))
-      (oldContentInductionDotComponent D Sc cutoff ν i) :=
-  BalancedInduction.transformComponent_supernatural
-    (oldContentAppendDot_supernatural D Sc cutoff ν i)
 
 /-- The literal linear component of the chosen comparison, with both raw
 coend carriers fixed before inserting its operator maps. -/

@@ -138,7 +138,6 @@ theorem scalarCoefficientPolynomial_probe_odd (i : {i : I // D.parity i = 1}) :
       rw [Nat.choose_eq_zero_of_lt hlt, Nat.cast_zero, mul_zero]
     · rfl
 
-
 /-- The actual monic coefficient family at the prescribed probe cutoff. -/
 def probeMonicCoefficient (i : I) (j : Fin (probeCutoff D m i+1)) : SKM.SYM D k :=
   if hi : D.parity i = 1 then elvMonicCoefficient D k ⟨i,hi⟩ (probeCutoff D m i) j
@@ -186,13 +185,5 @@ variable (Sc : SKM.Scalars D k)
 abbrev elvProbeAffineSpecialization :=
   elvAffineScalarSpecialization D Sc (probeCutoff D m) (probeScalarValues (k := k) D m)
     (probeScalarValues_vanish D m)
-
-/-- On every strand, the literal source polynomial maps to the prescribed probe. -/
-theorem elvProbeAffineSpecialization_dotPolynomial (i : I) (w : List I) (r : ℕ) :
-    (elvProbeAffineSpecialization D m Sc).map
-      (elvQuotientMap D Sc (probeCutoff D m) _ _
-        (coefficientDotPolynomial D Sc w r (probeCutoff D m i) (probeMonicCoefficient (k := k) D m i))) =
-      Polynomial.aeval (dotE D Sc w r) (probePolynomial (k := k) (probeDotExponent D) m i) := by
-  rw [elvAffineScalarSpecialization_dotPolynomial, scalarCoefficientPolynomial_probe]
 
 end OddMath.QuiverHecke

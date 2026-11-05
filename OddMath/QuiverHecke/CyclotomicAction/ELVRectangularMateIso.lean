@@ -66,12 +66,6 @@ def rectangularMateModuleIso (N : Superfunctor k A (SVec k))
       orderedRectangularMateComponent J K L M hα N :=
   HomogeneousSuperfunctorIso.ofHom_hom _ _ _ _
 
-/-- The module inverse has the same parity as the prescribed crossing. -/
-theorem rectangularMateModuleIso_inv_mem (N : Superfunctor k A (SVec k))
-    (h : ∀ t, Function.Bijective (orderedRectangularMateLinear J K L M hα N t)) :
-    (rectangularMateModuleIso J K L M hα N h).inv ∈ parity (R := k) _ _ p :=
-  HomogeneousSuperfunctorIso.ofHom_inv_mem _ _ _ _
-
 /-- The lower restriction followed by lower induction, as a superfunctor on modules. -/
 def rectangularMateSourceFunctor :
     Superfunctor k (Superfunctor k A (SVec k)) (Superfunctor k B (SVec k)) :=
@@ -98,26 +92,5 @@ theorem rectangularMateHom_mem :
     (F := rectangularMateSourceFunctor (k := k) J K)
     (G := rectangularMateTargetFunctor (k := k) L M)
     (orderedRectangularMateComponent_supernatural J K L M hα) N
-
-/-- The inverse is supernatural in arbitrary, including odd, input-module maps. -/
-def rectangularMateFunctorIso
-    (h : ∀ N t, Function.Bijective (orderedRectangularMateLinear J K L M hα N t)) :
-    rectangularMateSourceFunctor (k := k) J K ≅ rectangularMateTargetFunctor (k := k) L M :=
-  HomogeneousSuperfunctorIso.ofHom (rectangularMateHom J K L M hα)
-    (rectangularMateHom_mem J K L M hα)
-    (fun N => rectangularMateModuleIso J K L M hα N (h N))
-    (fun N => (rectangularMateModuleIso_hom J K L M hα N (h N)).trans
-      (rectangularMateHom_total J K L M hα N).symm)
-
-@[simp] theorem rectangularMateFunctorIso_hom
-    (h : ∀ N t, Function.Bijective (orderedRectangularMateLinear J K L M hα N t)) :
-    (rectangularMateFunctorIso J K L M hα h).hom = rectangularMateHom J K L M hα :=
-  HomogeneousSuperfunctorIso.ofHom_hom _ _ _ _
-
-/-- The input-natural inverse retains exactly the crossing parity. -/
-theorem rectangularMateFunctorIso_inv_mem
-    (h : ∀ N t, Function.Bijective (orderedRectangularMateLinear J K L M hα N t)) :
-    (rectangularMateFunctorIso J K L M hα h).inv ∈ parity (R := k) _ _ p :=
-  HomogeneousSuperfunctorIso.ofHom_inv_mem _ _ _ _
 
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

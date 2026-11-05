@@ -62,18 +62,6 @@ def sourceCoefficientHom {t t' : List I} (a : SKM.SYM D k)
     coefficientObj D Sc t ⟶ coefficientObj D Sc t' :=
   coefficientHom D Sc (SKM.SYM.polynomialExteriorEquiv D k a) f
 
-theorem odd_coefficient_comp_odd {t t' t'' : List I}
-    (i : {i : I // D.parity i = 1})
-    (f : (pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D t'))
-    {g : (pres D Sc).obj (ob D t') ⟶ (pres D Sc).obj (ob D t'')}
-    (hg : g ∈ Supercategory.parity (R := k) _ _ 1) :
-    sourceCoefficientHom D Sc (SKM.SYM.delta D k i) f ≫
-      sourceCoefficientHom D Sc 1 g =
-      -sourceCoefficientHom D Sc (SKM.SYM.delta D k i) (f ≫ g) := by
-  unfold sourceCoefficientHom
-  rw [map_one, coefficientHom_comp D Sc (SKM.SYM.polynomialExterior_delta_mem_odd D k i) _ _ hg]
-  simp [koszulSign]
-
 /-- Hom spaces are the genuine module tensor with the full abstract source
 coefficient algebra, transported only through its proved algebra equivalence. -/
 def sourceTensorEquiv (t t' : List I) :

@@ -29,35 +29,4 @@ variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
     ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
       E₁ ◁ t' ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom))
 
-/-- Two adjacent local inverses, signed slides, square-zero crossings and
-the equal-colour braid suffice for the negative-height shifted left
-adjunction. The `SuperRouquierLoc` inputs carry the slides and inverse fields. -/
-def negativeLeftAdjunction : ShiftedSuperAdjunction (k := k) F₂ E₂ (p * ((h : ZMod 2) + 1)) where
-  unit := U.cupL
-  counit := koszulSign (p * ((h : ZMod 2) + 1)) (p * ((h : ZMod 2) + 1)) • L.capL
-  unit_mem := by
-    simpa only [Int.cast_add, Int.cast_ofNat, show (2 : ZMod 2) = 0 from rfl, add_zero] using U.cupL_mem
-  counit_mem := Submodule.smul_of_tower_mem _ _ L.capL_mem
-  left_triangle := by
-    have hf := L.leftAdj_triangle_F U rfl hsq hsq' hB
-    rw [ite_eq_left hh, mul_one] at hf
-    simp only [Int.cast_add, Int.cast_one] at hf
-    rw [TwoSupercategory.whiskerLeft_zsmul (R := k), Preadditive.zsmul_comp,
-      Preadditive.comp_zsmul, Preadditive.comp_zsmul, Preadditive.comp_zsmul,
-      hf, smul_smul, koszulSign_mul_self, one_smul]
-  right_triangle := by
-    have he := L.leftAdj_triangle_E_of_neg U rfl hh hsq hsq' hB
-    rw [TwoSupercategory.zsmul_whiskerRight (R := k), Preadditive.zsmul_comp,
-      Preadditive.comp_zsmul, Preadditive.comp_zsmul, Preadditive.comp_zsmul, he]
-
-/-- The inverse-defined cup is left unchanged by the specified normalization. -/
-theorem negativeLeftAdjunction_unit :
-    (L.negativeLeftAdjunction U hh hsq hsq' hB).unit = U.cupL := rfl
-
-/-- At negative height `c=c⁻¹=(-1)^σ`; this exact factor remains on the
-native counit. In particular an odd raw last row acquires a minus sign. -/
-theorem negativeLeftAdjunction_counit :
-    (L.negativeLeftAdjunction U hh hsq hsq' hB).counit =
-      koszulSign (p * ((h : ZMod 2) + 1)) (p * ((h : ZMod 2) + 1)) • L.capL := rfl
-
 end OddMath.SKM.SuperRouquierLoc

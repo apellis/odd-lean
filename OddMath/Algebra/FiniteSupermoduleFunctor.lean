@@ -33,10 +33,6 @@ def productMap (f : ∀ a, V a ⟶ W a) : product V ⟶ product W where
     funext a
     exact LinearMap.congr_fun ((f a).naturality p g hg) (x a)
 
-@[simp] theorem productMap_app_apply (f : ∀ a, V a ⟶ W a)
-    (p : ZMod 2) (t : C) (x : (product V).obj t) (a : ι) :
-    (productMap f).app p t x a = (f a).app p t (x a) := rfl
-
 @[simp] theorem productMap_total_apply (f : ∀ a, V a ⟶ W a)
     (t : C) (x : (product V).obj t) (a : ι) :
     (productMap f).total t x a = (f a).total t (x a) := rfl
@@ -147,24 +143,5 @@ theorem productMap_columnsHom [Fintype ι] {U : Superfunctor k C (SVec k)}
   intro a _
   exact LinearMap.congr_fun (by
     simpa only [Superfunctor.comp_total] using congrArg (fun f => f.total t) (hc a)) (x a)
-
-/-- Rows commute with a coordinate map whenever every row does. -/
-theorem rowsHom_productMap {U : Superfunctor k C (SVec k)}
-    (f : ∀ a, V a ⟶ W a) (g : ∀ a, T ⟶ V a) (h : ∀ a, U ⟶ W a) (j : T ⟶ U)
-    (hg : ∀ a, g a ∈ parity (R := k) _ _ 0)
-    (hh : ∀ a, h a ∈ parity (R := k) _ _ 0)
-    (hc : ∀ a, g a ≫ f a = j ≫ h a) :
-    rowsHom g hg ≫ productMap f = j ≫ rowsHom h hh := by
-  apply hom_ext_total
-  intro t
-  rw [Superfunctor.comp_total, Superfunctor.comp_total]
-  apply LinearMap.ext
-  intro x
-  funext a
-  change (productMap f).total t ((rowsHom g hg).total t x) a =
-    (rowsHom h hh).total t (j.total t x) a
-  simp only [productMap_total_apply, rowsHom_total_apply]
-  exact LinearMap.congr_fun (by
-    simpa only [Superfunctor.comp_total] using congrArg (fun f => f.total t) (hc a)) x
 
 end OddMath.FiniteSupermodule

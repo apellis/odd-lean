@@ -47,45 +47,12 @@ private theorem equiv_hom_apply {k V W : Type u} [CommRing k]
     (e : V ≃ₗ[k] W) (f : V →ₗ[k] W) (h : e.toLinearMap = f) (x : V) :
     e x = f x := LinearMap.congr_fun h x
 
-private def superspaceIsoLinearEquiv {k : Type u} [CommRing k] {V W : SVec k}
-    (e : V ≅ W) : V ≃ₗ[k] W where
-  toLinearMap := e.hom
-  invFun := e.inv
-  left_inv x := congrArg (fun f : V ⟶ V => f x) e.hom_inv_id
-  right_inv x := congrArg (fun f : W ⟶ W => f x) e.inv_hom_id
-
 section FiniteCharts
 variable {k : Type u} [CommRing k] {ι : Type} [Fintype ι]
   (V V' : ι → SVec k) (W W' : SVec k)
   (eV : ∀ a, V a ≃ₗ[k] V' a) (eW : W ≃ₗ[k] W')
 
-private theorem columnsChart (f : ∀ a, V a ⟶ W) (g : ∀ a, V' a ⟶ W')
-    (h : ∀ a x, eW (f a x) = g a (eV a x))
-    (x : OddMath.FiniteSuperspace.product V) :
-    eW (OddMath.FiniteSuperspace.assembleColumns V W f x) =
-      OddMath.FiniteSuperspace.assembleColumns V' W' g (LinearEquiv.piCongrRight eV x) := by
-  simp only [OddMath.FiniteSuperspace.assembleColumns_apply, map_sum,
-    LinearEquiv.piCongrRight_apply]
-  apply Finset.sum_congr rfl
-  intro a _
-  exact h a (x a)
-
-omit [Fintype ι] in
-private theorem rowsChart (f : ∀ a, W ⟶ V a) (g : ∀ a, W' ⟶ V' a)
-    (h : ∀ a x, eV a (f a x) = g a (eW x)) (x : W) :
-    LinearEquiv.piCongrRight eV (OddMath.FiniteSuperspace.assembleRows W V f x) =
-      OddMath.FiniteSuperspace.assembleRows W' V' g (eW x) := by
-  funext a
-  exact h a x
 end FiniteCharts
-
-private theorem transportedMatrix_hom {k : Type u} [CommRing k]
-    {V W V' W' : SVec k} (eV : V ≃ₗ[k] V') (eW : W ≃ₗ[k] W')
-    (e : V ≅ W) (f : V' ⟶ W') (h : ∀ x, eW (e.hom x) = f (eV x)) :
-    (SVec.isoOfLinearEquiv (eV.symm.trans ((superspaceIsoLinearEquiv e).trans eW))).hom = f := by
-  apply LinearMap.ext
-  intro x
-  exact (h (eV.symm x)).trans (congrArg f (eV.apply_symm_apply x))
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ) (i : I)
@@ -118,25 +85,10 @@ private theorem oldCapRow_linear
 private theorem parity_square (p : ZMod 2) : p * p = p := by
   rcases parity_eq_zero_or_one p with h | h <;> simp only [h, mul_zero, one_mul]
 
-private theorem oldMate_linear
-    (P : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) (w : OldCategory D Sc cutoff) :
-    (matrixMateComponent D Sc cutoff i P).total w =
-      ((oldModuleMate D Sc cutoff i).app (D.parity i * D.parity i) P).total w := by
-  exact congrArg (fun q => ((oldModuleMate D Sc cutoff i).app q P).total w)
-    (parity_square (D.parity i)).symm
-
 private def oldMateRaw (P : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) (w : OldCategory D Sc cutoff) :
     BalancedInduction.Obj J ((BalancedInduction.restriction J).obj P).toFunctor w →ₗ[k]
       BalancedInduction.Obj J P.toFunctor ((J).obj w) :=
   ((oldModuleMate D Sc cutoff i).app (D.parity i * D.parity i) P).total w
-
-private theorem oldMate_apply (P : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) (w : OldCategory D Sc cutoff)
-    (x : ((BalancedInduction.induction J).obj ((BalancedInduction.restriction J).obj P)).obj w) :
-    (matrixMateComponent D Sc cutoff i P).total w x = oldMateRaw D Sc cutoff i P w x :=
-  LinearMap.congr_fun (oldMate_linear D Sc cutoff i P w) x
-
-private theorem weightedOldMateLinear_eqRaw (w : OldCategory D Sc cutoff) :
-    weightedOldMateLinear D Sc cutoff N i M w = oldMateRaw D Sc cutoff i RM w := rfl
 
 private theorem oldMatePrecompose_identity (w : OldCategory D Sc cutoff) :
     weightedOldMatePrecomposeLinear D Sc cutoff N i M ((BalancedInduction.restriction J).obj RM) (𝟙 _) w =
@@ -181,53 +133,6 @@ theorem weightedCapRowValue_compare (w : OldCategory D Sc cutoff) (n : ℕ)
   have hresult := h123.trans h4.symm
   exact hresult
 
-/-- The prescribed first matrix entry commutes with the same selected value charts. -/
-theorem weightedMateValue_compare (w : OldCategory D Sc cutoff)
-    (x : ((BalancedInduction.induction J).obj ((BalancedInduction.restriction J).obj RM)).obj w) :
-    weightedMateTargetLinearEquiv D Sc cutoff N i M w
-        ((matrixMateComponent D Sc cutoff i RM).total w x) =
-      weightedMatrixMateValue D Sc cutoff N i M ((Q).obj w)
-        (weightedMateSourceLinearEquiv D Sc cutoff N i M w x) := by
-  have hOld := oldMate_apply D Sc cutoff i RM w x
-  have h1 := congrArg (weightedMateTargetLinearEquiv D Sc cutoff N i M w) hOld
-  have hc := equiv_hom_apply (weightedMateTargetLinearEquiv D Sc cutoff N i M w)
-    (weightedAppendComparisonLinear D Sc cutoff N i M ((J).obj w))
-    (weightedMateTargetLinearEquiv_hom D Sc cutoff N i M w)
-    (oldMateRaw D Sc cutoff i RM w x)
-  have hsquare := appendWeightedModuleIso_hom_mate D Sc cutoff N i M w
-  rw [oldMatePrecompose_identity, Category.id_comp, weightedOldMateLinear_eqRaw] at hsquare
-  have h2 := LinearMap.congr_fun hsquare x
-  have h3 := LinearMap.congr_fun
-    (endpointMateLinear_refl T (truncatedEqualCross_supernatural D Sc cutoff N i) M ((Q).obj w))
-    (weightedAppendSourceLinear D Sc cutoff N i ((BalancedInduction.restriction J).obj RM)
-      ((BalancedInduction.restriction T).obj M) (weightedAppendRestrictionIso D Sc cutoff N i M).inv w x)
-  have hs := equiv_hom_apply (weightedMateSourceLinearEquiv D Sc cutoff N i M w)
-    (weightedAppendSourceLinear D Sc cutoff N i ((BalancedInduction.restriction J).obj RM)
-      ((BalancedInduction.restriction T).obj M) (weightedAppendRestrictionIso D Sc cutoff N i M).inv w)
-    (weightedMateSourceLinearEquiv_hom D Sc cutoff N i M w) x
-  have h4 := congrArg (orderedMateLinear T (truncatedEqualCross_supernatural D Sc cutoff N i) M ((Q).obj w)) hs.symm
-  have h5 := BalancedInduction.inductionMatrixMate_value_apply T
-    (truncatedEqualCross_supernatural D Sc cutoff N i) (truncatedDot_supernatural D Sc cutoff N i)
-    (parity_square (D.parity i)) M ((Q).obj w) (weightedMateSourceLinearEquiv D Sc cutoff N i M w x)
-  have h12 := h1.trans hc
-  have h23 := h2.trans h3
-  have h34 := h23.trans h4
-  have h45 := h34.trans h5.symm
-  have hresult := h12.trans h45
-  exact hresult
-
-/-- The value comparison is the square for the given total mate component. -/
-theorem weightedMateTotalValue_compare (w : OldCategory D Sc cutoff)
-    (x : ((BalancedInduction.induction J).obj ((BalancedInduction.restriction J).obj RM)).obj w) :
-    weightedMateTargetLinearEquiv D Sc cutoff N i M w
-        ((matrixMateComponent D Sc cutoff i RM).total w x) =
-      (weightedMatrixMate D Sc cutoff N i M).total ((Q).obj w)
-        (weightedMateSourceLinearEquiv D Sc cutoff N i M w x) := by
-  have h := weightedMateValue_compare D Sc cutoff N i M w x
-  have ht := weightedMatrixMateValue_eq_total D Sc cutoff N i M ((Q).obj w)
-    (weightedMateSourceLinearEquiv D Sc cutoff N i M w x)
-  exact h.trans ht
-
 local instance weightedMatrixOldPi : PiSupercategory k (Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :=
   supermodulePiSupercategory
 local instance weightedMatrixQuotientPi : PiSupercategory k (Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k)) :=
@@ -270,30 +175,5 @@ def weightedCapMatrixValueEquiv (m : ℕ) (w : OldCategory D Sc cutoff) :
     CyclotomicCrossingTensor.capMatrixTargetSpace D Sc cutoff i RM m w ≃ₗ[k]
       weightedCapMatrixTargetSpace D Sc cutoff N i M m ((Q).obj w) :=
   LinearEquiv.piCongrRight (weightedCapFamilyValueEquiv D Sc cutoff N i M m w)
-
-/-- Transport of the given old unit-matrix inverse through the selected
-source, target and canonical finite parity charts. -/
-def weightedModuleUnitMatrixIso (w : OldCategory D Sc cutoff)
-    (hh : 0 ≤ contentCrossingHeight D cutoff i (w.word : Multiset I)) :
-    weightedUnitMatrixSourceSpace D Sc cutoff N i M
-        (contentUnitCount D cutoff i (w.word : Multiset I)) ((Q).obj w) ≅
-      (((BalancedInduction.restriction T).obj ((BalancedInduction.induction T).obj M)).obj ((Q).obj w)) :=
-  SVec.isoOfLinearEquiv
-    ((weightedUnitMatrixValueEquiv D Sc cutoff N i M _ w).symm.trans
-      ((superspaceIsoLinearEquiv
-        (CyclotomicCrossingTensor.TensorMatrixCoordinates.moduleUnitMatrixIso D Sc cutoff RM i w hh)).trans
-          (weightedMateTargetLinearEquiv D Sc cutoff N i M w)))
-
-/-- Transport of the given old cap-matrix inverse through those same selected charts. -/
-def weightedModuleCapMatrixIso (w : OldCategory D Sc cutoff)
-    (hh : contentCrossingHeight D cutoff i (w.word : Multiset I) ≤ 0) :
-    (((BalancedInduction.induction T).obj ((BalancedInduction.restriction T).obj M)).obj ((Q).obj w)) ≅
-      weightedCapMatrixTargetSpace D Sc cutoff N i M
-        (contentCapCount D cutoff i (w.word : Multiset I)) ((Q).obj w) :=
-  SVec.isoOfLinearEquiv
-    ((weightedMateSourceLinearEquiv D Sc cutoff N i M w).symm.trans
-      ((superspaceIsoLinearEquiv
-        (CyclotomicCrossingTensor.TensorMatrixCoordinates.moduleCapMatrixIso D Sc cutoff RM i w hh)).trans
-          (weightedCapMatrixValueEquiv D Sc cutoff N i M _ w)))
 
 end OddMath.QuiverHecke.ELVOld

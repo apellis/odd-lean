@@ -273,11 +273,6 @@ private abbrev oldCapRow (n : ℕ) :
   restrictionModuleCell (k := k) J ◁ oldDotPower D Sc m ν i n ≫
     (inductionModuleAdjunction (k := k) J).counit
 
-private theorem induction_closed
-    (N : Superfunctor k (OldContentCategory D Sc cut ν) (SVec k)) (hN : P₀ N) :
-    P₁ ((inductionModuleCell (k := k) J).obj N) :=
-  ((probeEvaluatedInduction D Sc m ν i).obj ⟨N, hN⟩).property
-
 private theorem double_closed
     (N : Superfunctor k (OldContentCategory D Sc cut ν) (SVec k)) (hN : P₀ N) :
     P₂ ((oldDoubleFunctor D Sc m ν i).obj N) :=
@@ -476,29 +471,6 @@ def probeEvaluatedLoc :
   invPos hh := evaluated_inverseTo D Sc m ν i hh
   invNeg hh := evaluated_inverseFrom D Sc m ν i hh
 
-/-- Every positive-height inverse component is the prescribed old component. -/
-theorem probeEvaluatedLoc_invPos_f'_app (hh : 0 ≤ height) (q : ZMod 2)
-    (N : ProbeEvaluatedModules D Sc m (i :: ν)) :
-    ((((probeEvaluatedLoc D Sc m ν i).invPos hh).f').app q N).hom =
-      (((oldContentLoc D Sc cut ν i).invPos hh).f').app q N.obj := rfl
-
-/-- The entire positive-height inverse row is retained, including entries outside the sum. -/
-theorem probeEvaluatedLoc_invPos_g'_app (hh : 0 ≤ height) (n : ℕ) (q : ZMod 2)
-    (N : ProbeEvaluatedModules D Sc m (i :: ν)) :
-    ((((probeEvaluatedLoc D Sc m ν i).invPos hh).g' n).app q N).hom =
-      (((oldContentLoc D Sc cut ν i).invPos hh).g' n).app q N.obj := rfl
-
-/-- Every negative-height inverse component is the prescribed old component. -/
-theorem probeEvaluatedLoc_invNeg_f'_app (hh : height ≤ 0) (q : ZMod 2)
-    (N : ProbeEvaluatedModules D Sc m (i :: ν)) :
-    ((((probeEvaluatedLoc D Sc m ν i).invNeg hh).f').app q N).hom =
-      (((oldContentLoc D Sc cut ν i).invNeg hh).f').app q N.obj := rfl
-
-/-- The entire negative-height inverse row is retained, including entries outside the sum. -/
-theorem probeEvaluatedLoc_invNeg_g'_app (hh : height ≤ 0) (n : ℕ) (q : ZMod 2)
-    (N : ProbeEvaluatedModules D Sc m (i :: ν)) :
-    ((((probeEvaluatedLoc D Sc m ν i).invNeg hh).g' n).app q N).hom =
-      (((oldContentLoc D Sc cut ν i).invNeg hh).g' n).app q N.obj := rfl
 end Probe
 
 end OddMath.QuiverHecke

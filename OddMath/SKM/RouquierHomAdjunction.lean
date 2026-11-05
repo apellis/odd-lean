@@ -243,24 +243,4 @@ theorem homPostCounit_mem {a b c : B} {E : b ⟶ c} {F : c ⟶ b}
       (comp_mem (TwoSupercategory.whiskerLeft_mem f A.counit_mem)
         (TwoSupercategory.rightUnitor_hom_mem (R := k) f))
 
-/-- The reversed precomposition unit has even components. -/
-theorem homPreUnit_mem {a b c : B} {E : a ⟶ b} {F : b ⟶ a}
-    (A : SuperAdjunction (k := k) E F) (f : a ⟶ c) :
-    (homPreUnit A).app f ∈ parity (R := k) _ _ 0 := by
-  simpa [homPreUnit, homPreId, homPreComp, homPreTransform,
-    SuperNatTrans.toNatTrans, homPre, homPost] using
-    comp_mem (inv_mem (leftUnitor f) (TwoSupercategory.leftUnitor_hom_mem (R := k) f))
-      (comp_mem (TwoSupercategory.whiskerRight_mem f A.unit_mem)
-        (TwoSupercategory.associator_hom_mem (R := k) E F f))
-
-/-- The reversed precomposition counit has even components. -/
-theorem homPreCounit_mem {a b c : B} {E : a ⟶ b} {F : b ⟶ a}
-    (A : SuperAdjunction (k := k) E F) (f : b ⟶ c) :
-    (homPreCounit A).app f ∈ parity (R := k) _ _ 0 := by
-  simpa [homPreCounit, homPreId, homPreComp, homPreTransform,
-    SuperNatTrans.toNatTrans, homPre, homPost] using
-    comp_mem (inv_mem (associator F E f) (TwoSupercategory.associator_hom_mem (R := k) F E f))
-      (comp_mem (TwoSupercategory.whiskerRight_mem f A.counit_mem)
-        (TwoSupercategory.leftUnitor_hom_mem (R := k) f))
-
 end OddMath.SKM

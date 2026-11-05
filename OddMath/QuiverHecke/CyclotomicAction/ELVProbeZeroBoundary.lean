@@ -31,9 +31,6 @@ theorem zeroModule_evaluatesCoefficients : P (zeroModule (k := k) C) := by
 def probeEvaluatedZeroModule : ProbeEvaluatedModules D Sc m γ :=
   ⟨zeroModule C, zeroModule_evaluatesCoefficients D Sc m γ⟩
 
-@[simp] theorem probeEvaluatedZeroModule_obj :
-    (probeEvaluatedZeroModule D Sc m γ).obj = zeroModule (k := k) C := rfl
-
 /-- The zero object remains inside the given evaluated module category. -/
 theorem probeEvaluatedZeroModule_id :
     (𝟙 (probeEvaluatedZeroModule D Sc m γ) : _ ⟶ _) = 0 := by
@@ -84,13 +81,6 @@ theorem probeEvaluatedZeroCell_comp_id (B : PiSCat.{u,u,u+1} k) (H : T₀ ⟶ B)
       (probeEvaluatedZeroModule_id D Sc m γ)
   · intro N
     rfl
-
-/-- Every given transformation after the zero cell vanishes by its source identity. -/
-theorem probeEvaluatedZeroCell_whiskerLeft (B : PiSCat.{u,u,u+1} k)
-    {H J : T₀ ⟶ B} (η : H ⟶ J) : probeEvaluatedZeroCell D Sc m γ ◁ η = 0 := by
-  have h := Category.id_comp (probeEvaluatedZeroCell D Sc m γ ◁ η)
-  rw [probeEvaluatedZeroCell_comp_id D Sc m γ B H, Limits.zero_comp] at h
-  exact h.symm
 
 /-- The same zero endocell is evenly self-adjoint in the existing evaluated target. -/
 def probeEvaluatedZeroAdjunction :

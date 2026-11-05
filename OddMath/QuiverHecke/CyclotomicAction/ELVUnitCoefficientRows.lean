@@ -303,30 +303,6 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 def coefficientModule : Superfunctor k (OldCategory D Sc cutoff) (SVec k) :=
   oldRepresentable D Sc cutoff (⟨[]⟩ : OldCategory D Sc cutoff)
 
-theorem restriction_eq_zero (i : I) (t : OldCategory D Sc cutoff)
-    (z : ((BalancedInduction.restriction (append D Sc cutoff i)).obj
-      (coefficientModule D Sc cutoff)).obj t) : z = 0 := by
-  change Old D Sc cutoff [] (t.word ++ [i]) at z
-  apply old_eq_zero_of_not_perm D Sc cutoff (f := z)
-  intro h
-  have hl := h.length_eq
-  simp at hl
-
-/-- The entire induction-after-restriction term vanishes on the vacuum
-module, by balanced-tensor generation and exact content support. -/
-theorem indRes_eq_zero (i : I) (t : OldCategory D Sc cutoff)
-    (z : mateSourceSpace D Sc cutoff i (coefficientModule D Sc cutoff) t) : z = 0 := by
-  let R := (BalancedInduction.restriction (append D Sc cutoff i)).obj
-    (coefficientModule D Sc cutoff)
-  have h : (LinearMap.id : BalancedInduction.Obj (append D Sc cutoff i) R.toFunctor t →ₗ[k]
-      BalancedInduction.Obj (append D Sc cutoff i) R.toFunctor t) = 0 := by
-    apply BalancedInduction.hom_ext
-    intro v f m
-    have hm := restriction_eq_zero D Sc cutoff i v m
-    rw [hm, BalancedInduction.tensor_zero_right]
-    rfl
-  exact LinearMap.congr_fun h z
-
 @[simp] theorem count (i : I) :
     contentUnitCount D cutoff i (([] : List I) : Multiset I) = cutoff i := by
   simp [contentUnitCount, contentCrossingHeight]

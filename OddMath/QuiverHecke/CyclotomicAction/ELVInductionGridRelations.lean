@@ -27,29 +27,6 @@ private theorem total_zsmul {k C R : Type*} [CommRing k] [Category* C] [Category
     (q • f).total w = q • f.total w := by
   change q • f.app 0 w + q • f.app 1 w = q • (f.app 0 w + f.app 1 w)
   exact (smul_add _ _ _).symm
-private theorem functor_slide_of_total
-    {k A R : Type*} [CommRing k] [Category* A] [Category* R]
-    [Preadditive A] [Linear k A] [Supercategory k A]
-    [Preadditive R] [Linear k R] [Supercategory k R]
-    (F : Superfunctor k A R) (a b c : End F) (q : ℤ)
-    (h : ∀ M, b.total M ≫ c.total M - q • (c.total M ≫ a.total M) = 𝟙 (F.obj M)) :
-    b ≫ c - q • (c ≫ a) = 𝟙 F := by
-  apply OddMath.HomogeneousSuperfunctorIso.total_ext
-  intro M
-  rw [total_sub, total_zsmul, Superfunctor.comp_total, Superfunctor.comp_total]
-  exact (h M).trans (SuperNatTrans.id_total F.toFunctor M).symm
-
-private theorem functor_slide_right_of_total
-    {k A R : Type*} [CommRing k] [Category* A] [Category* R]
-    [Preadditive A] [Linear k A] [Supercategory k A]
-    [Preadditive R] [Linear k R] [Supercategory k R]
-    (F : Superfunctor k A R) (a b c : End F) (q : ℤ)
-    (h : ∀ M, c.total M ≫ b.total M - q • (a.total M ≫ c.total M) = 𝟙 (F.obj M)) :
-    c ≫ b - q • (a ≫ c) = 𝟙 F := by
-  apply OddMath.HomogeneousSuperfunctorIso.total_ext
-  intro M
-  rw [total_sub, total_zsmul, Superfunctor.comp_total, Superfunctor.comp_total]
-  exact (h M).trans (SuperNatTrans.id_total F.toFunctor M).symm
 
 private theorem module_slide_of_total
     {k C : Type u} [CommRing k] [Category.{u} C]
@@ -71,22 +48,6 @@ private theorem module_slide_right_of_total
   intro w
   rw [total_sub, total_zsmul, Superfunctor.comp_total, Superfunctor.comp_total]
   exact (h w).trans (SuperNatTrans.id_total F.toFunctor w).symm
-
-private theorem svec_slide_of_apply {k : Type u} [CommRing k]
-    (V : SVec k) (a b c : End V) (q : ℤ)
-    (h : ∀ x : V, (SVec.toLinearMap c) ((SVec.toLinearMap b) x) - q • (SVec.toLinearMap a) ((SVec.toLinearMap c) x) = x) :
-    b ≫ c - q • (c ≫ a) = 𝟙 V := by
-  apply SVec.hom_ext
-  intro x
-  simpa only [SVec.sub_apply, SVec.zsmul_apply, SVec.comp_apply, SVec.id_apply, SVec.coe_toLinearMap] using h x
-
-private theorem svec_slide_right_of_apply {k : Type u} [CommRing k]
-    (V : SVec k) (a b c : End V) (q : ℤ)
-    (h : ∀ x : V, (SVec.toLinearMap b) ((SVec.toLinearMap c) x) - q • (SVec.toLinearMap c) ((SVec.toLinearMap a) x) = x) :
-    c ≫ b - q • (a ≫ c) = 𝟙 V := by
-  apply SVec.hom_ext
-  intro x
-  simpa only [SVec.sub_apply, SVec.zsmul_apply, SVec.comp_apply, SVec.id_apply, SVec.coe_toLinearMap] using h x
 
 private theorem total_neg {k : Type u} [CommRing k] {C R : Type*}
     [Category C] [Category R] [Preadditive C] [Linear k C] [Supercategory k C]

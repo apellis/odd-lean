@@ -125,51 +125,10 @@ theorem adjacentMixed_jii_sum {M : Type*} [AddCommMonoid M] {ν : X} {i j : I} (
   · exact False.elim (hp.1 h)
   · exact False.elim (hp.2 h)
 
-
 variable {k : Type u} [CommRing k] {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)] {Sc : Scalars D k}
-
-/-- The supplied inverse identities determine the actual mixed coefficient.
-At odd colour this uses the genuine unit denominator from `CrossCoeffInputs`,
-not cancellation of a crossing or a Q polynomial. -/
-theorem adjacentMixed_coeff_unique (P : ProbeReservoir k B D Sc)
-    (c d : P.CrossCoeff Sc) (hc : c.IsInverse) (hd : d.IsInverse)
-    (h : P.CrossDenominatorUnits) (i : I) (s : Sector I)
-    (hv : StepValid (true, i) false s)
-    (Z : P.H (nextSector (true, i) true (nextSector (true, i) false s))) :
-    c.a i s hv Z = d.a i s hv Z := by
-  by_cases hi : D.parity i = 0
-  · calc
-      c.a i s hv Z = c.a i s hv Z ≫
-          ((P.rpPostDot i s hv Z - P.rpPreDot i s hv Z) ≫ d.a i s hv Z) := by
-        rw [(hd.even i hi s hv Z).2, Category.comp_id]
-      _ = d.a i s hv Z := by
-        rw [← Category.assoc, (hc.even i hi s hv Z).1, Category.id_comp]
-  · have hi' : D.parity i = 1 := by
-      rcases (show D.parity i = 0 ∨ D.parity i = 1 by
-        generalize D.parity i = p; fin_cases p
-        · exact Or.inl rfl
-        · exact Or.inr rfl) with h' | h'
-      · exact False.elim (hi h')
-      · exact h'
-    let v := P.crossDenom h i s hv Z
-    have hv' : (v : End (P.rpObj i i s hv Z)) =
-        P.rpPreDot i s hv Z ≫ P.rpPreDot i s hv Z -
-          P.rpPostDot i s hv Z ≫ P.rpPostDot i s hv Z := by
-      simp [v, crossDenom, hi, sub_eq_add_neg, add_comm, pow_two, End.mul_def]
-    have he : c.a i s hv Z ≫ (v : End (P.rpObj i i s hv Z)) =
-        d.a i s hv Z ≫ (v : End (P.rpObj i i s hv Z)) := by
-      rw [hv', (hc.odd i hi' s hv Z).1, (hd.odd i hi' s hv Z).1]
-    have hcancel := congrArg (fun f => f ≫
-      ((v⁻¹ : (End (P.rpObj i i s hv Z))ˣ) : End (P.rpObj i i s hv Z))) he
-    have hinv : (v : End (P.rpObj i i s hv Z)) ≫
-        ((v⁻¹ : (End (P.rpObj i i s hv Z))ˣ) : End (P.rpObj i i s hv Z)) = 𝟙 _ := by
-      rw [← End.mul_def, Units.inv_mul]
-      rfl
-    simpa only [Category.assoc, hinv, Category.comp_id] using hcancel
-
 
 /-- Literal left braid sum at the occupied mixed endpoint: four terms before
 using the off-diagonal zeros of the distinct-colour crossings. -/

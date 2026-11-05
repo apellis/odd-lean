@@ -72,21 +72,6 @@ def embedding : carrier (k := k) a b v d →+* R :=
 noncomputable def coefficients : Polynomial k →+* carrier (k := k) a b v d :=
   (Polynomial.aeval (spectator k a b v d)).toRingHom
 
-@[simp] theorem embedding_pointA :
-    embedding k a b v d (pointA k a b v d) = a := rfl
-
-@[simp] theorem embedding_pointB :
-    embedding k a b v d (pointB k a b v d) = b := rfl
-
-@[simp] theorem embedding_spectator :
-    embedding k a b v d (spectator k a b v d) = v := rfl
-
-@[simp] theorem embedding_correction :
-    embedding k a b v d (correction k a b v d) = d := rfl
-
-theorem embedding_injective : Function.Injective (embedding k a b v d) :=
-  Subtype.val_injective
-
 @[simp] theorem embedding_coefficients (p : Polynomial k) :
     embedding k a b v d (coefficients k a b v d p) = Polynomial.aeval v p := by
   have h : (carrier (k := k) a b v d).val.comp

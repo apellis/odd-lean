@@ -115,7 +115,6 @@ variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
 namespace ProbeReservoir
 variable {P : ProbeReservoir k B D Sc}
 
-
 attribute [local irreducible] Finsupp.zipWith contentWeight
 
 /-- A reservoir `Fᵢ` followed by a reservoir `Eᵢ` returns to the sector. -/
@@ -171,7 +170,6 @@ theorem isIso_crossMate_reservoir_of_units (c : P.CrossCoeff) (hc : c.IsInverse)
       refine Eq.trans (congrArg (· ≫ _) ?_) (h₂.trans ?_)
       · rfl
       · rfl
-
 
 /-- The reservoir swapping entry is invertible from the precise mate norm inputs. -/
 theorem isIso_sigmaEntry_reservoir_of_units (c : P.CrossCoeff) (hc : c.IsInverse)
@@ -270,93 +268,6 @@ theorem swappingInvertible_of_units (c : P.CrossCoeff) (hc : c.IsInverse)
     (hD : P.CrossDenominatorUnits) (hS : P.CrossTransposeNormUnits) :
     P.SwappingInvertible c := by
   exact swappingInvertible_of_reservoir c (swappingReservoirInvertible_of_units c hc hD hS)
-
-/-- The augmented block uses central invertibility and the precise swapping norm inputs. -/
-theorem augmentedInvertible_of_central_of_units (c : P.CrossCoeff) (hc : c.IsInverse)
-    (hD : P.CrossDenominatorUnits) (hS : P.CrossTransposeNormUnits)
-    (hcentral : P.CentralInvertible c) : P.AugmentedInvertible c := by
-  exact augmentedInvertible_of_central_of_swapping c hcentral (swappingInvertible_of_units c hc hD hS)
-
-/-- The dotted post-side mate of the crossing entry `-(a ; a ; J⁻¹)` is invertible: at an even
-colour `a` inverts `y - x`, at an odd colour `(x² - y²) a = x - y`, with `x` the invertible
-probe dot and `y` the nilpotent reservoir dot. -/
-theorem isIso_crossMate_reservoir (c : P.CrossCoeff) (hc : c.IsInverse)
-    (hT : ∀ (i : I) {x y : X} (h : x + D.α i = y), IsUnit (show End (P.T.E i h) from P.T.dot i h))
-    (hW : ∀ (i : I) {x y : X} (h : x + D.α i = y),
-      IsNilpotent (show End (P.W.E i h) from P.W.dot i h)) (i : I) (t : Sector I)
-    (hR : StepValid (true, i) false t)
-    (hR' : StepValid (true, i) false (nextSector (true, i) true t))
-    (hE : -P.muP t + D.α i = -P.muP (nextSector (true, i) true t))
-    (h : P.muM (nextSector (true, i) true (nextSector (true, i) false t)) + D.α i = P.muM t)
-    (H : homWeightSector P.T.obj P.W.obj (P.muP (nextSector (true, i) true t)) (P.muM t)) :
-    IsIso (homDistinctMixedMateDot (P.T.E i hE) (P.W.adj i h)
-      (homContentShift D i (nextSector (true, i) true t).1) (homContentShift D i t.1) H
-      ((homMixedInterchange (k := k) (P.T.E i hE) (P.W.E i h)
-        (homContentShift D i (nextSector (true, i) true t).1) (homContentShift D i t.1)
-        ((homContentPostF P.T.obj P.W i (nextSector (true, i) true t).1
-          (P.muP (nextSector (true, i) true t)) h).obj H)).hom ≫
-        (-(c.a i t hR ((homContentPostF P.T.obj P.W i (nextSector (true, i) true t).1
-            (P.muP (nextSector (true, i) true t)) h).obj H) ≫
-          c.a i t hR ((homContentPostF P.T.obj P.W i (nextSector (true, i) true t).1
-            (P.muP (nextSector (true, i) true t)) h).obj H) ≫
-          (P.mixedJ i i t hR' ((homContentPostF P.T.obj P.W i (nextSector (true, i) true t).1
-            (P.muP (nextSector (true, i) true t)) h).obj H)).inv)))) := by
-  exact isIso_crossMate_reservoir_of_units c hc
-    ((CrossCoeffInputs.of_factor P hT hW).toDenominatorUnits)
-    (CrossTransposeNormUnits.of_factor P hT hW) i t hR hR' hE h H
-
-
-/-- The swapping entry `W_B` of the same-colour sideways crossing, from the path `(P,R)` of
-`Eᵢ Fᵢ` to the path `(R,P)` of `Fᵢ Eᵢ`, is invertible: it is the reservoir mate of the
-crossing entry `-(a ; a ; J⁻¹)`, whose dotted mate is invertible by the inverse identities of
-`a`, invertibility of the probe dot and nilpotence of the reservoir dot. -/
-theorem isIso_sigmaEntry_reservoir (c : P.CrossCoeff) (hc : c.IsInverse)
-    (hT : ∀ (i : I) {x y : X} (h : x + D.α i = y), IsUnit (show End (P.T.E i h) from P.T.dot i h))
-    (hW : ∀ (i : I) {x y : X} (h : x + D.α i = y),
-      IsNilpotent (show End (P.W.E i h) from P.W.dot i h)) (i : I) (ν : X) {t s : Sector I}
-    (p : SPath (wd D ν [up i, dn i]) t s) (q : SPath (wd D ν [dn i, up i]) t s)
-    (hp : p.sides = [true, false]) (hq : q.sides = [false, true]) (Z : P.H s) :
-    IsIso (P.sigmaEntry c i i ν p q Z) := by
-  exact isIso_sigmaEntry_reservoir_of_units c hc
-    ((CrossCoeffInputs.of_factor P hT hW).toDenominatorUnits)
-    (CrossTransposeNormUnits.of_factor P hT hW) i ν p q hp hq Z
-
-
-/-- The swapping entries `W_B` are invertible for a coefficient with the characterizing inverse
-identities, when every probe dot is invertible and every reservoir dot is nilpotent. -/
-theorem swappingReservoirInvertible (c : P.CrossCoeff) (hc : c.IsInverse)
-    (hT : ∀ (i : I) {x y : X} (h : x + D.α i = y), IsUnit (show End (P.T.E i h) from P.T.dot i h))
-    (hW : ∀ (i : I) {x y : X} (h : x + D.α i = y),
-      IsNilpotent (show End (P.W.E i h) from P.W.dot i h)) :
-    P.SwappingReservoirInvertible c := by
-  exact swappingReservoirInvertible_of_units c hc
-    ((CrossCoeffInputs.of_factor P hT hW).toDenominatorUnits)
-    (CrossTransposeNormUnits.of_factor P hT hW) 
-
-
-/-- All swapping entries of the same-colour sideways crossing are invertible, under the same
-hypotheses. -/
-theorem swappingInvertible_of_factor (c : P.CrossCoeff) (hc : c.IsInverse)
-    (hT : ∀ (i : I) {x y : X} (h : x + D.α i = y), IsUnit (show End (P.T.E i h) from P.T.dot i h))
-    (hW : ∀ (i : I) {x y : X} (h : x + D.α i = y),
-      IsNilpotent (show End (P.W.E i h) from P.W.dot i h)) :
-    P.SwappingInvertible c := by
-  exact swappingInvertible_of_units c hc
-    ((CrossCoeffInputs.of_factor P hT hW).toDenominatorUnits)
-    (CrossTransposeNormUnits.of_factor P hT hW) 
-
-
-/-- The augmented blocks of the same-colour sideways crossing are invertible once the central
-entries are: the swapping entries need no further hypothesis. -/
-theorem augmentedInvertible_of_central (c : P.CrossCoeff) (hc : c.IsInverse)
-    (hT : ∀ (i : I) {x y : X} (h : x + D.α i = y), IsUnit (show End (P.T.E i h) from P.T.dot i h))
-    (hW : ∀ (i : I) {x y : X} (h : x + D.α i = y),
-      IsNilpotent (show End (P.W.E i h) from P.W.dot i h))
-    (hcentral : P.CentralInvertible c) : P.AugmentedInvertible c := by
-  exact augmentedInvertible_of_central_of_units c hc
-    ((CrossCoeffInputs.of_factor P hT hW).toDenominatorUnits)
-    (CrossTransposeNormUnits.of_factor P hT hW) hcentral
-
 
 end ProbeReservoir
 

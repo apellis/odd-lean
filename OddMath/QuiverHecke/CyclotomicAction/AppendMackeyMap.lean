@@ -57,9 +57,6 @@ def descend {w : H} (hw : w * ψ 1 = w)
     (fun z a m => hb z a m)
     (fun b z m => by rw [smul_tmul]; congr 1; exact Subtype.ext (mul_assoc b z.1 w))
 
-@[simp] theorem descend_tmul {w : H} (hw : w * ψ 1 = w) (hb) (z : Corner φ) (m : N) :
-    descend hw hb (tmul z m) = tmul ⟨z.1 * w, mul_mem_of_mul_right hw _⟩ m := rfl
-
 /-- A tensor whose corner factor ends in `ψ(c)`, with `c` acting by zero, vanishes. -/
 theorem tmul_mul_eq_zero {X : H} (hX : X * ψ 1 = X) {c : A} (hc : ∀ m : N, c • m = 0)
     (z : H) (hm : z * (X * ψ c) ∈ lIdeal (ψ 1)) (m : N) :
@@ -70,7 +67,6 @@ theorem tmul_mul_eq_zero {X : H} (hX : X * ψ 1 = X) {c : A} (hc : ∀ m : N, c 
   rw [e, op_smul_tmul, hc, tmul_zero]
 
 end Categorification.InductionAlong.Ind
-
 
 namespace OddMath.QuiverHecke
 open CategoryTheory StringDiagrams MonoidalCategory Categorification Categorification.InductionAlong
@@ -324,15 +320,6 @@ def appendMackeyMap (ha : CyclotomicPolynomialParity D a)
         noncomm_ring)
     rw [e, sub_eq_add_neg, Ind.add_tmul, Ind.neg_tmul, add_neg_eq_zero] at h0
     exact h0.symm
-
-@[simp] theorem appendMackeyMap_tmul (ha : CyclotomicPolynomialParity D a)
-    (hcyc : ∀ r ∈ cyclotomicIdeal D Sc a n, ∀ m : N, r • m = 0)
-    (hpar : ∀ t : Word I (n + 1), appendQ D a i t.1 ≠ ε →
-      ∀ m : N, FiniteHomMatrix.single t t (𝟙 (wordObj D Sc t)) • m = 0)
-    (z : InductionAlong.Corner (prependTwist D Sc i n ε)) (m : N) :
-    appendMackeyMap D Sc ha hcyc hpar (Ind.tmul z m) =
-      Ind.tmul ⟨z.1 * appendMoveMatrix D Sc a i n,
-        Ind.mul_mem_of_mul_right (appendMoveMatrix_mul_appendOne D Sc a i n) _⟩ m := rfl
 
 end Descent
 

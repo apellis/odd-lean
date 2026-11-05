@@ -169,7 +169,6 @@ lemma full_diag (ν : X)
       ProbeReservoir.zsign_mul_self', neg_one_smul]
   exact hn.trans (q_correction P i j s hj0 hi0 Y c hc)
 
-
 lemma full_diag_transport (ν : X)
     (hi : StepValid (true, i) false s)
     (hj : StepValid (true, j) false (nextSector (true, i) false s))
@@ -195,33 +194,6 @@ lemma full_diag_transport (ν : X)
             compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] n Y) (b - 1 - a)) := by
   subst e'
   exact full_diag P i j s hj0 hi0 ν hi hj e Y c L hc h hij
-
-lemma full_diag_path (ν : X)
-    (hi : StepValid (true, i) false s)
-    (hj : StepValid (true, j) false (nextSector (true, i) false s))
-    {t : Sector I}
-    (e : nextSector (true, i) false (nextSector (true, j) false (nextSector (true, i) true s)) = t)
-    (e' : nextSector (true, j) false (nextSector (true, i) false (nextSector (true, i) true s)) = t)
-    (Y : P.H t) (p : SPath (wd D ν [up i, up j, up i]) s t)
-    (hp : p = SPath.three (c₁ := ⟨up i, SKM.wt D ν [up j, up i]⟩)
-      (c₂ := ⟨up j, SKM.wt D ν [up i]⟩) (c₃ := ⟨up i, ν⟩)
-      true false false trivial hj0 hi0 e)
-    (c : P.CrossCoeff Sc) (L : P.LeftwardData) (hc : c.IsInverse)
-    (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
-    braidLeft (P.swappedGens c L) i j i ν p p Y -
-      braidRight (P.swappedGens c L) i j i ν p p Y =
-      ∑ a ∈ Finset.range (D.dn i j),
-        (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
-          (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Y) a ≫
-            compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] p Y)
-              (D.dn i j - 1 - a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
-        (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
-          (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Y) a ≫
-            compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] p Y) d ≫
-            compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] p Y) (b - 1 - a)) := by
-  subst p
-  exact full_diag_transport P i j s hj0 hi0 ν hi hj e e' Y c L hc h hij
 
 end RepeatedOuterPost
 end OddMath.QuiverHecke.SwappedAssembly

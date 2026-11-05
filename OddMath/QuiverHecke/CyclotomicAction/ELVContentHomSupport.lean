@@ -62,13 +62,6 @@ theorem obj_selected (G : Hom D Sc m cutoff bound β γ)
   rw [component_selected]
   rfl
 
-theorem map_selected (G : Hom D Sc m cutoff bound β γ)
-    {M N : ProbeOldWeightProduct D Sc m ΛP x} (f : M ⟶ N) :
-    HEq (((realization D Sc m cutoff bound β γ G).map f) γ) (G.map (f β)) := by
-  change HEq ((component D Sc m cutoff bound β γ G γ).map f) (G.map (f β))
-  rw [component_selected]
-  rfl
-
 theorem obj_off_isZero (G : Hom D Sc m cutoff bound β γ)
     (M : ProbeOldWeightProduct D Sc m ΛP x) (δ : WeightBlocks D ΛR y) (hδ : δ ≠ γ) :
     Limits.IsZero (((realization D Sc m cutoff bound β γ G).obj M) δ) := by
@@ -93,15 +86,6 @@ theorem obj_isZero_of_input (G : Hom D Sc m cutoff bound β γ)
     exact map_isZero G.toFunctor _ hM
   · exact obj_off_isZero D Sc m cutoff bound β γ G M δ hδ
 
-/-- Postcomposition by reservoir induction has the selected successor value. -/
-theorem postE_selected (i : I) {y' : X} (h : y + D.α i = y')
-    (G : Hom D Sc m cutoff bound β γ) (M : ProbeOldWeightProduct D Sc m ΛP x) :
-    ((elvE D Sc cutoff bound i ΛR h).obj
-      ((realization D Sc m cutoff bound β γ G).obj M)) (blockSucc D ΛR i h γ) =
-    (elvBlockInd D Sc cutoff bound i ΛR h γ).obj (G.obj (M β)) := by
-  change (elvInductionComponent D Sc cutoff bound i ΛR h (blockSucc D ΛR i h γ)).obj _ = _
-  rw [elvInductionComponent_obj_blockSucc, obj_selected]
-
 /-- Reservoir induction preserves exact output support, including all collisions. -/
 theorem postE_off_isZero (i : I) {y' : X} (h : y + D.α i = y')
     (G : Hom D Sc m cutoff bound β γ) (M : ProbeOldWeightProduct D Sc m ΛP x)
@@ -116,18 +100,6 @@ theorem postE_off_isZero (i : I) {y' : X} (h : y + D.α i = y')
     exact obj_off_isZero D Sc m cutoff bound β γ G M ε
       (fun he => hδ (congrArg (blockSucc D ΛR i h) he))
   · exact elvInductionComponent_isZero D Sc cutoff bound i ΛR h δ hp _
-
-/-- Restriction on the selected output successor is the chosen block restriction. -/
-theorem postF_selected (i : I) {y' : X} (h : y + D.α i = y')
-    (G : Hom D Sc m cutoff bound β (blockSucc D ΛR i h γ))
-    (M : ProbeOldWeightProduct D Sc m ΛP x) :
-    ((elvF D Sc cutoff bound i ΛR h).obj
-      ((realization D Sc m cutoff bound β (blockSucc D ΛR i h γ) G).obj M)) γ =
-    (elvBlockRes D Sc cutoff bound i ΛR h γ).obj (G.obj (M β)) := by
-  change (elvBlockRes D Sc cutoff bound i ΛR h γ).obj
-    (((realization D Sc m cutoff bound β (blockSucc D ΛR i h γ) G).obj M)
-      (blockSucc D ΛR i h γ)) = _
-  rw [obj_selected]
 
 /-- Reservoir restriction preserves exact predecessor support. -/
 theorem postF_off_isZero (i : I) {y' : X} (h : y + D.α i = y')
@@ -153,27 +125,6 @@ theorem postF_absent_isZero (i : I) {y₀ : X} (h : y₀ + D.α i = y)
   apply map_isZero
   exact obj_off_isZero D Sc m cutoff bound β γ G M _
     (fun he => hi ((exists_blockSucc_iff D ΛR i h γ).mp ⟨δ, he⟩))
-
-/-- Precomposition by probe induction on a present predecessor is the
-chosen block induction, on arbitrary modules. -/
-theorem preE_selected (i : I) {x₀ : X} (h : x₀ + D.α i = x)
-    (β₀ : WeightBlocks D ΛP x₀) (G : Hom D Sc m cutoff bound (blockSucc D ΛP i h β₀) γ)
-    (M : ProbeOldWeightProduct D Sc m ΛP x₀) :
-    ((realization D Sc m cutoff bound (blockSucc D ΛP i h β₀) γ G).obj
-      ((probeOldE D Sc m i ΛP h).obj M)) γ =
-      G.obj ((probeOldBlockInd D Sc m i ΛP h β₀).obj (M β₀)) := by
-  rw [obj_selected]
-  change G.obj ((probeOldInductionComponent D Sc m i ΛP h (blockSucc D ΛP i h β₀)).obj M) = _
-  rw [probeOldInductionComponent_blockSucc]
-  rfl
-
-/-- Precomposition by probe restriction uses its selected successor input. -/
-theorem preF_selected (i : I) {x' : X} (h : x + D.α i = x')
-    (G : Hom D Sc m cutoff bound β γ) (M : ProbeOldWeightProduct D Sc m ΛP x') :
-    ((realization D Sc m cutoff bound β γ G).obj ((probeOldF D Sc m i ΛP h).obj M)) γ =
-      G.obj ((probeOldBlockRes D Sc m i ΛP h β).obj (M (blockSucc D ΛP i h β))) := by
-  rw [obj_selected]
-  rfl
 
 /-- A probe input block missing i kills precomposition by induction on
 all output blocks; no original-weight injectivity is used. -/

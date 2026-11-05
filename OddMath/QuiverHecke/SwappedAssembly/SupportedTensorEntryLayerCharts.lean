@@ -61,24 +61,7 @@ theorem tensorLayerDotRaw_arrow (a : (P).CrossCoeff) (leftward : (P).LeftwardDat
   unfold tensorLayerDotRaw TensorEntryPullback.arrow
   rfl
 
-/-- Every global whole-Hom target chart has its canonical dot
-conjugacy to the specified local chart. The square is derived. -/
-theorem tensorOriginalWordLayer_dot
-    (G : probeOldWeightSpace D Tw m ΛP (-ΛP) ⟶
-      elvWeightSpace D Tw cutoff N ΛR (ReservoirWord.weight D ΛR cL))
-    (g : ((P).pathFunctor p).obj Z ≅ (E0).functor.obj G)
-    (a : (P).CrossCoeff) (leftward : (P).LeftwardData) :
-    proofProposition (TensorEntryPullback.arrow_chartChange (E0)
-      (A := G) (B := G) (A' := F) (B' := F)
-      (X := ((P).pathFunctor p).obj Z) (Y := ((P).pathFunctor p).obj Z) g g e e
-      ((P).compLayer ((P).swappedGens a leftward) (SKM.lay D ν u (.dot i) v) p p Z)) :=
-  TensorEntryPullback.arrow_chartChange (E0)
-    (A := G) (B := G) (A' := F) (B' := F)
-    (X := ((P).pathFunctor p).obj Z) (Y := ((P).pathFunctor p).obj Z) g g e e
-    ((P).compLayer ((P).swappedGens a leftward) (SKM.lay D ν u (.dot i) v) p p Z)
 end Dot
-
-
 
 section Same
 variable (ν : X) (u v : List (Letter I)) (i : I)
@@ -109,21 +92,6 @@ theorem tensorLayerSameCrossRaw_arrow (a : (P).CrossCoeff) (leftward : (P).Leftw
   unfold tensorLayerSameCrossRaw TensorEntryPullback.arrow
   rfl
 
-/-- Every whole-Hom source chart has the derived conjugacy to the
-prescribed local equal-colour crossing chart. -/
-theorem tensorOriginalWordLayer_sameCross
-    (G : probeOldWeightSpace D Tw m ΛP (-ΛP) ⟶
-      elvWeightSpace D Tw cutoff N ΛR (ReservoirWord.weight D ΛR cL))
-    (g : ((P).pathFunctor p).obj Z ≅ (E0).functor.obj G)
-    (a : (P).CrossCoeff) (leftward : (P).LeftwardData) :
-    proofProposition (TensorEntryPullback.arrow_chartChange (E0)
-      (A := G) (B := G) (A' := F) (B' := F)
-      (X := ((P).pathFunctor p).obj Z) (Y := ((P).pathFunctor p).obj Z) g g e e
-      ((P).compLayer ((P).swappedGens a leftward) (SKM.lay D ν u (.cross i i) v) p p Z)) :=
-  TensorEntryPullback.arrow_chartChange (E0)
-    (A := G) (B := G) (A' := F) (B' := F)
-    (X := ((P).pathFunctor p).obj Z) (Y := ((P).pathFunctor p).obj Z) g g e e
-    ((P).compLayer ((P).swappedGens a leftward) (SKM.lay D ν u (.cross i i) v) p p Z)
 end Same
 
 section Cross
@@ -182,27 +150,6 @@ theorem tensorLayerCrossRaw_arrow (a : (P).CrossCoeff) (leftward : (P).LeftwardD
   unfold tensorLayerCrossRaw TensorEntryPullback.arrow
   rfl
 
-/-- Arbitrary original whole-Hom source and target charts have the
-canonical conjugacy to the prescribed local crossing charts. -/
-theorem tensorOriginalWordLayer_cross
-    (U V : probeOldWeightSpace D Tw m ΛP (-ΛP) ⟶
-      elvWeightSpace D Tw cutoff N ΛR (ReservoirWord.weight D ΛR cL))
-    (gS : ((P).pathFunctor p).obj Z ≅ (E0).functor.obj U)
-    (gT : ((P).pathFunctor q).obj Z ≅ (E0).functor.obj V)
-    (a : (P).CrossCoeff) (leftward : (P).LeftwardData) :
-    proofProposition (TensorEntryPullback.arrow_chartChange (E0)
-      (A := U) (B := V) (A' := F) (B' := G)
-      (X := ((P).pathFunctor p).obj Z) (Y := ((P).pathFunctor q).obj Z) gS gT eS eT
-      ((P).compLayer ((P).swappedGens a leftward) (SKM.lay D ν u (.cross i j) v) p q Z)) :=
-  TensorEntryPullback.arrow_chartChange (E0)
-    (A := U) (B := V) (A' := F) (B' := G)
-    (X := ((P).pathFunctor p).obj Z) (Y := ((P).pathFunctor q).obj Z) gS gT eS eT
-    ((P).compLayer ((P).swappedGens a leftward) (SKM.lay D ν u (.cross i j) v) p q Z)
 end Cross
-
-
-
-
-
 
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

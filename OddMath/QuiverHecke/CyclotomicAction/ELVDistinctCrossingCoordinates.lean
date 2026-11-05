@@ -143,7 +143,6 @@ theorem decode_pair (i j : I) (v t : List I)
   rw [← hm, ← hd]
   exact (data_transport D Sc cutoff i j ht _ _ r).symm
 
-
 /-- The mixed crossing word in the old-only append quotient. -/
 def crossingClass (i j : I) (v s t : List I)
     (r : hom D Sc cutoff v (s ++ [j])) (c : hom D Sc cutoff (s ++ [i]) t) :
@@ -230,7 +229,6 @@ theorem decode_crossing_tail (i j : I) (hij : i ≠ j) (v s t : List I)
   rw [appendTail_power_cross]
   exact hh
 
-
 /-- Full affine balance in the independently defined short source. -/
 theorem tensor_balance (i j : I) (v s s' t : List I)
     (r : hom D Sc cutoff s s') (c : hom D Sc cutoff (s' ++ [i]) t)
@@ -308,8 +306,6 @@ theorem shortCross_injective (i j : I) (hij : i ≠ j) (v t : List I) :
     Function.Injective (shortCross D Sc cutoff i j v t) :=
   Function.LeftInverse.injective (decode_shortCross D Sc cutoff i j hij v t)
 
-
-
 /-- Every mixed append tail lies in the crossing column; distinct support
 leaves no polynomial row. -/
 theorem appendPair_mem_range_shortCross (i j : I) (hij : i ≠ j) (v t : List I)
@@ -349,19 +345,5 @@ theorem shortCross_surjective (i j : I) (hij : i ≠ j) (v t : List I) :
     change appendOldReconstruct D Sc cutoff 0 i v (t ++ [j]) (DirectSum.lof k _ _ q _) ∈ _
     rw [appendOldReconstruct, DirectSum.toModule_lof]
     exact appendPair_mem_range_shortCross D Sc cutoff i j hij v t q.representative r
-
-/-- The explicit PBW crossing equivalence before the output-old quotient. -/
-def crossingEquiv (i j : I) (hij : i ≠ j) (v t : List I) :
-    ShortTarget D Sc cutoff i j v t ≃ₗ[k] AppendTarget D Sc cutoff i v (t ++ [j]) :=
-  LinearEquiv.ofBijective (shortCross D Sc cutoff i j v t)
-    ⟨shortCross_injective D Sc cutoff i j hij v t,
-      shortCross_surjective D Sc cutoff i j hij v t⟩
-
-@[simp] theorem crossingEquiv_symm (i j : I) (hij : i ≠ j) (v t : List I)
-    (z : AppendTarget D Sc cutoff i v (t ++ [j])) :
-    (crossingEquiv D Sc cutoff i j hij v t).symm z = decode D Sc cutoff i j v t z := by
-  obtain ⟨w, rfl⟩ := shortCross_surjective D Sc cutoff i j hij v t z
-  rw [decode_shortCross D Sc cutoff i j hij]
-  exact (crossingEquiv D Sc cutoff i j hij v t).symm_apply_apply w
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct

@@ -47,13 +47,6 @@ private theorem append_weight (ν : List I) (i : I) (x : X)
   (congrArg (fun y => y + D.α i) hx).trans (PowerWordWeight.wordWeight_append D Λ ν i)
 
 omit [Fintype I] in
-/-- The resulting weight is the weight of the literal extended word. -/
-theorem context_weight_word (ν η : List I) (x : X)
-    (hx : x = PowerWordWeight.wordWeight D Λ ν) :
-    contextWeight D x η = PowerWordWeight.wordWeight D Λ (PowerWordContexts.extendedWord ν η) := by
-  induction η generalizing ν x with
-  | nil => exact hx
-  | cons i η ih => exact ih (ν ++ [i]) (x + D.α i) (append_weight D Λ ν i x hx)
 
 /-- Only the existing whole append comparisons are composed. -/
 def contextIso (ν : List I) (x : X) (hx : x = PowerWordWeight.wordWeight D Λ ν) :
@@ -120,41 +113,6 @@ def contextChart (ν η : List I) (x : X) (hx : x = PowerWordWeight.wordWeight D
       PowerWordWeight.wordFamily D Sc cutoff L Λ (contextWeight D x η) (PowerWordContexts.extendedWord ν η) :=
   (contextFunctor D Sc cutoff L Λ x η).mapIso e ≪≫ contextIso D Sc cutoff L Λ ν x hx η
 
-private theorem contextualize_arrow (s t η : List I) (x : X)
-    (hs : x = PowerWordWeight.wordWeight D Λ s) (ht : x = PowerWordWeight.wordWeight D Λ t)
-    (hst : (s : Multiset I) = (t : Multiset I))
-    (g : (OldCategory.mk t : OldCategory D Sc cutoff) ⟶ OldCategory.mk s)
-    {A B : ELVWeightProduct D Sc cutoff N Λ x}
-    (e : A ≅ PowerWordWeight.wordFamily D Sc cutoff L Λ x s)
-    (f : B ≅ PowerWordWeight.wordFamily D Sc cutoff L Λ x t) (a : A ⟶ B)
-    (ha : a ≫ f.hom = e.hom ≫ PowerWordWeightWhiskering.wordFamilyArrow D Sc cutoff L Λ x s t g) :
-    (contextFunctor D Sc cutoff L Λ x η).map a ≫ (contextChart D Sc cutoff L Λ t η x ht f).hom =
-      (contextChart D Sc cutoff L Λ s η x hs e).hom ≫
-        PowerWordWeightWhiskering.wordFamilyArrow D Sc cutoff L Λ (contextWeight D x η)
-          (PowerWordContexts.extendedWord s η) (PowerWordContexts.extendedWord t η)
-          (PowerWordContexts.extendedArrow D Sc cutoff s t η g) :=
-  comparison_step (𝟭 _) (contextFunctor D Sc cutoff L Λ x η) e f
-    (contextIso D Sc cutoff L Λ s x hs η) (contextIso D Sc cutoff L Λ t x ht η) a _ _ ha
-    (context_family_arrow D Sc cutoff L Λ s t η x hs ht hst g)
-
-/-- The given dot, inside an arbitrary chosen right E-context, has the
-literal appended old-Hom coordinate on every coefficient vector. -/
-theorem dot_in_context (ν η : List I) (i : I) :
-    (contextFunctor D Sc cutoff L Λ (PowerWordWeight.wordWeight D Λ (ν ++ [i])) η).map
-      ((elvActionDot D Sc cutoff N i Λ (PowerWordWeight.wordWeight_append D Λ ν i)).app (D.parity i)
-        (PowerWordEvaluation.value D Sc cutoff L Λ ν)) ≫
-      (contextChart D Sc cutoff L Λ (ν ++ [i]) η _ rfl (PowerWordEvaluation.appendChart D Sc cutoff L Λ ν i)).hom =
-    (contextChart D Sc cutoff L Λ (ν ++ [i]) η _ rfl (PowerWordEvaluation.appendChart D Sc cutoff L Λ ν i)).hom ≫
-      PowerWordWeightWhiskering.wordFamilyArrow D Sc cutoff L Λ
-        (contextWeight D (PowerWordWeight.wordWeight D Λ (ν ++ [i])) η)
-        (PowerWordContexts.extendedWord (ν ++ [i]) η) (PowerWordContexts.extendedWord (ν ++ [i]) η)
-        (PowerWordContexts.extendedArrow D Sc cutoff (ν ++ [i]) (ν ++ [i]) η
-          (oldAppendDotComponent D Sc cutoff i (OldCategory.mk ν))) :=
-  contextualize_arrow D Sc cutoff L Λ (ν ++ [i]) (ν ++ [i]) η _ rfl rfl rfl
-    (oldAppendDotComponent D Sc cutoff i (OldCategory.mk ν))
-    (PowerWordEvaluation.appendChart D Sc cutoff L Λ ν i) (PowerWordEvaluation.appendChart D Sc cutoff L Λ ν i) _
-    (PowerWordEvaluation.dot_append_value D Sc cutoff L Λ ν i)
-
 omit [Fintype I] in
 private theorem pair_weight (ν : List I) (i j : I) {xj xu : X}
     (h₁ : PowerWordWeight.wordWeight D Λ ν + D.α j = xj) (h₂ : xj + D.α i = xu) :
@@ -163,30 +121,4 @@ private theorem pair_weight (ν : List I) (i j : I) {xj xu : X}
     (h₁.symm.trans (PowerWordWeight.wordWeight_append D Λ ν j))).trans
       (PowerWordWeight.wordWeight_append D Λ (ν ++ [j]) i))
 
-/-- The given signed crossing inside an arbitrary chosen right E-context,
-for both colour cases, retains every old-arrow coefficient and actual weight. -/
-theorem cross_in_context (ν η : List I) (i j : I) {xj xu xi : X}
-    (h₁ : PowerWordWeight.wordWeight D Λ ν + D.α j = xj) (h₂ : xj + D.α i = xu)
-    (h₃ : PowerWordWeight.wordWeight D Λ ν + D.α i = xi) (h₄ : xi + D.α j = xu) :
-    (contextFunctor D Sc cutoff L Λ xu η).map
-      ((elvActionCross D Sc cutoff N i j Λ h₁ h₂ h₃ h₄).app (D.parity i * D.parity j)
-        (PowerWordEvaluation.value D Sc cutoff L Λ ν)) ≫
-      (contextChart D Sc cutoff L Λ ((ν ++ [i]) ++ [j]) η xu (pair_weight D Λ ν j i h₃ h₄)
-        (PowerWordEvaluation.pairChart D Sc cutoff L Λ ν j i h₃ h₄)).hom =
-    (contextChart D Sc cutoff L Λ ((ν ++ [j]) ++ [i]) η xu (pair_weight D Λ ν i j h₁ h₂)
-      (PowerWordEvaluation.pairChart D Sc cutoff L Λ ν i j h₁ h₂)).hom ≫
-      PowerWordWeightWhiskering.wordFamilyArrow D Sc cutoff L Λ (contextWeight D xu η)
-        (PowerWordContexts.extendedWord ((ν ++ [j]) ++ [i]) η)
-        (PowerWordContexts.extendedWord ((ν ++ [i]) ++ [j]) η)
-        (PowerWordContexts.extendedArrow D Sc cutoff ((ν ++ [j]) ++ [i]) ((ν ++ [i]) ++ [j]) η
-          (PowerWordContentCross.normalizedOldCross D Sc cutoff ν i j)) := by
-  have hst : (((ν ++ [j]) ++ [i] : List I) : Multiset I) = (((ν ++ [i]) ++ [j] : List I) : Multiset I) := by
-    rw [← Multiset.coe_add, ← Multiset.coe_add, ← Multiset.coe_add, ← Multiset.coe_add]
-    ac_rfl
-  exact contextualize_arrow D Sc cutoff L Λ ((ν ++ [j]) ++ [i]) ((ν ++ [i]) ++ [j]) η xu
-    (pair_weight D Λ ν i j h₁ h₂) (pair_weight D Λ ν j i h₃ h₄) hst
-    (PowerWordContentCross.normalizedOldCross D Sc cutoff ν i j)
-    (PowerWordEvaluation.pairChart D Sc cutoff L Λ ν i j h₁ h₂)
-    (PowerWordEvaluation.pairChart D Sc cutoff L Λ ν j i h₃ h₄) _
-    (PowerWordEvaluation.cross_pair_value D Sc cutoff L Λ ν i j h₁ h₂ h₃ h₄)
 end OddMath.QuiverHecke.ELVOld.PowerWordWeightContexts

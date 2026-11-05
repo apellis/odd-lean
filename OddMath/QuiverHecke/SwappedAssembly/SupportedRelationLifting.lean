@@ -39,22 +39,4 @@ theorem retainedInput_path {w : List (Col I X)} {s t : Sector I}
   rw [factor_path_obj D Sc m cutoff bound ΛP ΛR hP hR p W] at h
   exact h
 
-/-- A relation on supported unwhiskered inputs holds in every native supported context. -/
-theorem relHolds_of_supported_compEval
-    (Gs Ys : ∀ s, H D Sc' m cutoff bound ΛP ΛR s)
-    (gens : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).Generators)
-    (r : SKM.Rel D)
-    (h : ∀ {s t : Sector I} (p : SPath ((SKM.pres D Sc).dom r).word s t)
-      (q : SPath ((SKM.pres D Sc).cod r).word s t)
-      (Z : H D Sc' m cutoff bound ΛP ΛR t),
-      (P).wt t = ((SKM.pres D Sc).dom r).endR →
-      compEval gens ((SKM.pres D Sc).rel r) p q Z.obj = 0) :
-    RelHolds Sc ((P).layerRep (fun s => (Gs s).obj) (fun s => (Ys s).obj) gens) r := by
-  apply ProbeReservoir.relHolds_of_compEval_wt_on
-    (retainedInput D Sc m cutoff bound ΛP ΛR hP hR)
-    (retainedInput_path D Sc m cutoff bound ΛP ΛR hP hR)
-    (fun s => (Ys s).property) gens r
-  intro s t p q Z hZ hw
-  exact h p q ⟨Z, hZ⟩ hw
-
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

@@ -52,11 +52,6 @@ module endomorphism before evaluation or Hom precomposition. -/
 abbrev moduleDot (i : I) : End (source D Sc m i) :=
   restrictedDotEnd (K i) (probeOldContentAppendDot_supernatural D Sc m [] i) N
 
-/-- The module dot has the moving-colour degree. -/
-theorem moduleDot_mem (i : I) :
-    moduleDot D Sc m i ∈ parity (R := k) _ _ (D.parity i) :=
-  restrictedDotEnd_mem (K i) (probeOldContentAppendDot_supernatural D Sc m [] i) N
-
 /-- The given dotted-unit column followed by the prescribed last inverse
 row is the Kronecker identity as a module map, at every empty-content object. -/
 theorem unitDotColumn_cap (i : I) (hP : 0 < cut i) (a : ℕ) (ha : a < cut i) :
@@ -75,14 +70,6 @@ theorem unitDotColumn_cap (i : I) (hP : 0 < cut i) (a : ℕ) (ha : a < cut i) :
         (probeOldModule_evaluatesCoefficients D m Sc [] _) i (by simp) w r a hac)
   have har : a = r.val ↔ a + 1 = cut i := by dsimp only [r]; omega
   simpa only [har] using h
-
-/-- The ordinary unit, powers of the same module dot, and the normalized
-cap have the prescribed last-row window. No left unit is used. -/
-theorem module_cap_dot_unit (i : I) (hP : 0 < cut i) (a : ℕ) (ha : a < cut i) :
-    ((adjunction (K i)).unit.app N ≫ moduleDot D Sc m i ^ a) ≫
-      cap D Sc m i hP = if a + 1 = cut i then 𝟙 N else 0 := by
-  rw [← unitDotColumn_eq_restrictedDotEnd]
-  exact unitDotColumn_cap D Sc m i hP a ha
 
 /-- The signed probe polynomial holds on the same module endomorphism
 whose components were used for the normalized cap window. -/

@@ -22,13 +22,6 @@ local notation "N" => PowerWordContent.powerBound D cutoff L
 local notation "P" => elvProbeReservoir D Sc m cutoff N ΛP ΛR hP hR
 local notation "Z" => ObjectProperty.FullSubcategory.obj (tensorVacuum D Sc m cutoff L ΛP ΛR)
 
-private def tensorEndpointCell {x y : X} (h : x = y)
-    {F G : probeOldWeightSpace D (parameterTwist D Sc) m ΛP (-ΛP) ⟶
-      elvWeightSpace D (parameterTwist D Sc) cutoff N ΛR x} (a : F ⟶ G) :
-    (h ▸ F) ⟶ (h ▸ G) := by
-  cases h
-  exact a
-
 section Same
 variable (ν : X) (u v : List (Letter I)) (i : I)
   {cL c : I →₀ ℕ} (hv : StepValid (true,i) false (0,c))
@@ -68,22 +61,6 @@ theorem tensorLayerSameCrossRaw_eq (a : (P).CrossCoeff) :
   change E.preimage _ = _
   rw [hc,Functor.preimage_map]
 
-/-- The literal equal-colour cell after only its proved endpoint-weight transport. -/
-def tensorLayerSameCrossAt (a : (P).CrossCoeff) :
-    End (ReservoirLayerCells.crossHomAt D Sc m cutoff L ΛP ΛR pL hl pR hr i i h₁ h₂) :=
-  tensorEndpointCell D Sc m cutoff L ΛP ΛR
-    (ReservoirContexts.word_weight D ΛR pL hl)
-      (tensorLayerSameCrossRaw D Sc m cutoff L ΛP ΛR hP hR ν u v i hv hw pL hl pR hr a)
-
-/-- The transported literal equal-colour cell is the original-weight crossing. -/
-theorem tensorLayerSameCrossAt_eq (a : (P).CrossCoeff) :
-    tensorLayerSameCrossAt D Sc m cutoff L ΛP ΛR hP hR ν u v i hv hw pL hl pR hr a =
-      ReservoirLayerCells.crossAt D Sc m cutoff L ΛP ΛR pL hl pR hr i i h₁ h₂ h₁ h₂ := by
-  unfold tensorLayerSameCrossAt
-  rw [tensorLayerSameCrossRaw_eq]
-  unfold ReservoirLayerCells.crossAt
-  rfl
-
 local notation "νR" => (List.reverse (List.map (fun a => Prod.snd (SKM.Col.l a)) (Layer.right (SKM.lay D ν u (SKM.Shape.cross i i) v))))
 local notation "ηL" => (List.reverse (List.map (fun a => Prod.snd (SKM.Col.l a)) (Layer.left (SKM.lay D ν u (SKM.Shape.cross i i) v))))
 omit [Fintype I] in
@@ -96,30 +73,6 @@ private theorem sameSourceEdge
     ReservoirWord.weight D ΛR (c - Finsupp.single i 1) :=
   (congrArg (fun x => x + D.α i) (TensorReservoirWords.path_weight D ΛR pR hr)).symm.trans hE
 local notation "hC" => sameSourceEdge D ΛR ν u v i pR hr h₁
-/-- Every vector has the original affine equal-colour crossing quotient class
-under the literal supported matrix cell, with only the prescribed input class. -/
-theorem tensorLayerSameCross_class_square (a : (P).CrossCoeff)
-    (G : probeOldWeightSpace D (parameterTwist D Sc) m ΛP (-ΛP) ⟶ elvWeightSpace D (parameterTwist D Sc) cutoff N ΛR
-      (PowerWordWeightContexts.contextWeight D (ReservoirWord.weight D ΛR c) ηL))
-    (f : G ⟶ ReservoirLayerCells.crossHomAt D Sc m cutoff L ΛP ΛR pL hl pR hr i i h₁ h₂)
-    (s : List I) (β : WeightBlocks D ΛR (PowerWordWeightContexts.contextWeight D (ReservoirWord.weight D ΛR c) ηL))
-    (hs : (s.reverse : Multiset I) = β.1)
-    (z : ((G.obj (WeightTensorVacuum.regularProbe D (parameterTwist D Sc) m ΛP)) β).obj
-      (⟨⟨s.reverse⟩,hs⟩ : ContentCategory D (parameterTwist D Sc) cutoff N β.1))
-    (y : coefficientObj D Sc s ⟶ coefficientObj D Sc (PowerWordLayerClasses.domWord νR ηL (.cross i i)))
-    (hy : PowerWordQuotientCoordinates.coordinate D Sc cutoff L s (PowerWordLayerClasses.domWord νR ηL (.cross i i))
-      (TensorLayerClasses.crossVector D Sc cutoff L m ΛP ΛR νR ηL i i hC h₂ G
-        (f ≫ eqToHom (ReservoirLayerCells.crossHomAt_eq D Sc m cutoff L ΛP ΛR pL hl pR hr i i h₁ h₂)) s β hs z) =
-      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s (PowerWordLayerClasses.domWord νR ηL (.cross i i))).mkQ y) :
-    PowerWordQuotientCoordinates.coordinate D Sc cutoff L s (PowerWordLayerClasses.codWord νR ηL (.cross i i))
-      (TensorLayerClasses.crossVector D Sc cutoff L m ΛP ΛR νR ηL i i hC h₂ G
-        ((f ≫ tensorLayerSameCrossAt D Sc m cutoff L ΛP ΛR hP hR ν u v i hv hw pL hl pR hr a) ≫
-          eqToHom (ReservoirLayerCells.crossHomAt_eq D Sc m cutoff L ΛP ΛR pL hl pR hr i i h₁ h₂)) s β hs z) =
-      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s (PowerWordLayerClasses.codWord νR ηL (.cross i i))).mkQ
-        (y ≫ sourceCoefficientHom D Sc 1 (ContextualOldGenerators.layerDiagram D Sc (List.reverse ηL) (.cross i i) (List.reverse νR))) := by
-  rw [tensorLayerSameCrossAt_eq]
-  exact ReservoirLayerCells.cross_class_square D Sc m cutoff L ΛP ΛR pL hl pR hr
-    i i h₁ h₂ h₁ h₂ G f s β hs z y hy
 end Same
 private def crossRightPath {r : List (Col I X)} {cR cR' : I →₀ ℕ}
     (h : cR = cR') (pR : SPath r (0,cR') (0,0)) : SPath r (0,cR) (0,0) := by
@@ -191,26 +144,6 @@ theorem tensorLayerCrossRaw_eq (a : (P).CrossCoeff) (hij : i ≠ j) :
   change E.preimage _ = _
   rw [hc,Functor.preimage_map]
 
-/-- The distinct-colour literal cell after its proved outer endpoint transport. -/
-def tensorLayerCrossAt (a : (P).CrossCoeff) :
-    ReservoirLayerCells.crossHomAt D Sc m cutoff L ΛP ΛR pL hl r hr i j h₁ h₂ ⟶
-      ReservoirLayerCells.crossHomAt D Sc m cutoff L ΛP ΛR pL hl r hr j i h₃ h₄ :=
-  tensorEndpointCell D Sc m cutoff L ΛP ΛR
-    (ReservoirContexts.word_weight D ΛR pL hl)
-      (tensorLayerCrossRaw D Sc m cutoff L ΛP ΛR hP hR ν u v i j
-        hv₁ hv₂ hw₁ hw₂ hEnd pL hl pR hr a)
-
-/-- The transported literal distinct-colour cell equals the original-weight crossing. -/
-theorem tensorLayerCrossAt_eq (a : (P).CrossCoeff) (hij : i ≠ j) :
-    tensorLayerCrossAt D Sc m cutoff L ΛP ΛR hP hR ν u v i j
-      hv₁ hv₂ hw₁ hw₂ hEnd pL hl pR hr a =
-      ReservoirLayerCells.crossAt D Sc m cutoff L ΛP ΛR pL hl r hr i j h₁ h₂ h₃ h₄ := by
-  unfold tensorLayerCrossAt
-  rw [tensorLayerCrossRaw_eq D Sc m cutoff L ΛP ΛR hP hR ν u v i j
-    hv₁ hv₂ hw₁ hw₂ hEnd pL hl pR hr a hij]
-  unfold ReservoirLayerCells.crossAt
-  rfl
-
 local notation "νR" => (List.reverse (List.map (fun a => Prod.snd (SKM.Col.l a)) (Layer.right (SKM.lay D ν u (SKM.Shape.cross i j) v))))
 local notation "ηL" => (List.reverse (List.map (fun a => Prod.snd (SKM.Col.l a)) (Layer.left (SKM.lay D ν u (SKM.Shape.cross i j) v))))
 omit [Fintype I] in
@@ -233,30 +166,5 @@ private theorem crossTargetEdge
   (congrArg (fun x => x + D.α i) (TensorReservoirWords.path_weight D ΛR qR hr)).symm.trans hE
 local notation "hS" => crossSourceEdge D ΛR ν u v i j r hr h₁
 local notation "hT" => crossTargetEdge D ΛR ν u v i j r hr h₃
-/-- Every vector has the original affine distinct-colour crossing quotient
-class under the literal supported cell, retaining its source endpoint cast. -/
-theorem tensorLayerCross_class_square (a : (P).CrossCoeff) (hij : i ≠ j)
-    (G : probeOldWeightSpace D (parameterTwist D Sc) m ΛP (-ΛP) ⟶ elvWeightSpace D (parameterTwist D Sc) cutoff N ΛR
-      (PowerWordWeightContexts.contextWeight D (ReservoirWord.weight D ΛR c) ηL))
-    (f : G ⟶ ReservoirLayerCells.crossHomAt D Sc m cutoff L ΛP ΛR pL hl r hr i j h₁ h₂)
-    (s : List I) (β : WeightBlocks D ΛR (PowerWordWeightContexts.contextWeight D (ReservoirWord.weight D ΛR c) ηL))
-    (hsWord : (s.reverse : Multiset I) = β.1)
-    (z : ((G.obj (WeightTensorVacuum.regularProbe D (parameterTwist D Sc) m ΛP)) β).obj
-      (⟨⟨s.reverse⟩,hsWord⟩ : ContentCategory D (parameterTwist D Sc) cutoff N β.1))
-    (y : coefficientObj D Sc s ⟶ coefficientObj D Sc (PowerWordLayerClasses.domWord νR ηL (.cross i j)))
-    (hy : PowerWordQuotientCoordinates.coordinate D Sc cutoff L s (PowerWordLayerClasses.domWord νR ηL (.cross i j))
-      (TensorLayerClasses.crossVector D Sc cutoff L m ΛP ΛR νR ηL i j (hS) h₂ G
-        (f ≫ eqToHom (ReservoirLayerCells.crossHomAt_eq D Sc m cutoff L ΛP ΛR pL hl r hr i j h₁ h₂)) s β hsWord z) =
-      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s (PowerWordLayerClasses.domWord νR ηL (.cross i j))).mkQ y) :
-    PowerWordQuotientCoordinates.coordinate D Sc cutoff L s (PowerWordLayerClasses.codWord νR ηL (.cross i j))
-      (TensorLayerClasses.crossVector D Sc cutoff L m ΛP ΛR νR ηL j i (hT) h₄ G
-        ((f ≫ tensorLayerCrossAt D Sc m cutoff L ΛP ΛR hP hR ν u v i j hv₁ hv₂ hw₁ hw₂ hEnd pL hl pR hr a) ≫
-          eqToHom (ReservoirLayerCells.crossHomAt_eq D Sc m cutoff L ΛP ΛR pL hl r hr j i h₃ h₄)) s β hsWord z) =
-      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s (PowerWordLayerClasses.codWord νR ηL (.cross i j))).mkQ
-        (y ≫ sourceCoefficientHom D Sc 1 (ContextualOldGenerators.layerDiagram D Sc (List.reverse ηL) (.cross i j) (List.reverse νR))) := by
-  rw [tensorLayerCrossAt_eq D Sc m cutoff L ΛP ΛR hP hR ν u v i j
-    hv₁ hv₂ hw₁ hw₂ hEnd pL hl pR hr a hij]
-  exact ReservoirLayerCells.cross_class_square D Sc m cutoff L ΛP ΛR pL hl r hr
-    i j h₁ h₂ h₃ h₄ G f s β hsWord z y hy
 end Distinct
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

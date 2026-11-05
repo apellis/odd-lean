@@ -67,17 +67,4 @@ theorem ker_canonicalAppendTarget (i : I) (v w : List I) :
     have H := (ideal D Sc cutoff (v ++ [i]) w).sub_mem hw hi
     simpa only [sub_sub_cancel] using H
 
-/-- The cokernel of P is the actual enlarged-word cyclotomic quotient. -/
-def pMapCokernelEquiv (i : I) (v w : List I) :
-    (AppendTarget D Sc cutoff i v w ⧸ LinearMap.range (pMap D Sc cutoff i v w)) ≃ₗ[k]
-      Old D Sc cutoff (v ++ [i]) w :=
-  (Submodule.quotEquivOfEq _ _ (ker_canonicalAppendTarget D Sc cutoff i v w).symm).trans
-    ((canonicalAppendTarget D Sc cutoff i v w).quotKerEquivOfSurjective
-      (canonicalAppendTarget_surjective D Sc cutoff i v w))
-
-@[simp] theorem pMapCokernelEquiv_mk (i : I) (v w : List I)
-    (z : AppendTarget D Sc cutoff i v w) :
-    pMapCokernelEquiv D Sc cutoff i v w (Submodule.Quotient.mk z) =
-      canonicalAppendTarget D Sc cutoff i v w z := rfl
-
 end OddMath.QuiverHecke.ELVOld

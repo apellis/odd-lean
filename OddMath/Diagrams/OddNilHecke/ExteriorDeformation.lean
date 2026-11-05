@@ -46,16 +46,6 @@ def crossing : Matrix (Fin 2) (Fin 2) R := !![0, 1; 0, 0]
 /-- Left multiplication by the odd exterior parameter. -/
 def exterior (θ : R) : Matrix (Fin 2) (Fin 2) R := !![θ, 0; 0, -θ]
 
-/-- The two-strand odd nilHecke relations hold in this model. -/
-theorem nilHecke_relations (θ : R) :
-    crossing (R := R) * crossing = 0 ∧
-    firstDot θ * secondDot θ + secondDot θ * firstDot θ = 0 ∧
-    crossing * firstDot θ + secondDot θ * crossing = 1 ∧
-    firstDot θ * crossing + crossing * secondDot θ = 1 := by
-  refine ⟨?_, ?_, ?_, ?_⟩ <;>
-    ext i j <;> fin_cases i <;> fin_cases j <;>
-    simp [crossing, firstDot, secondDot, Matrix.mul_apply, Fin.sum_univ_two]
-
 /-- The exterior parameter anticommutes with all odd generators. -/
 theorem exterior_anticommutes (θ : R) (hθ : θ * θ = 0) :
     exterior θ * firstDot θ + firstDot θ * exterior θ = 0 ∧
@@ -65,45 +55,7 @@ theorem exterior_anticommutes (θ : R) (hθ : θ * θ = 0) :
     ext i j <;> fin_cases i <;> fin_cases j <;>
     simp [exterior, crossing, firstDot, secondDot, hθ]
 
-/-- The exterior scalar is square zero. -/
-theorem exterior_square (θ : R) (hθ : θ * θ = 0) :
-    exterior θ * exterior θ = 0 := by
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [exterior, Matrix.mul_apply, Fin.sum_univ_two, hθ]
-
-/-- The cyclotomic polynomial is `x₁(x₁ + δ)`, not `x₁²`. -/
-theorem cyclotomic_relation (θ : R) (hθ : θ * θ = 0) :
-    firstDot θ * firstDot θ + firstDot θ * exterior θ = 0 := by
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [exterior, firstDot, hθ]
-
-/-- The exterior parameter is not lost in the matrix model. -/
-theorem exterior_injective : Function.Injective (exterior (R := R)) := by
-  intro θ η h
-  exact congrArg (fun M => M 0 0) h
-
-/-- Nonzero parameters act nontrivially. -/
-theorem exterior_ne_zero {θ : R} (hθ : θ ≠ 0) : exterior θ ≠ 0 := by
-  intro h
-  exact hθ (congrArg (fun M => M 0 0) h)
-
 /-- The parameter of the dual numbers, with nonzero square-zero coefficient. -/
 def dualParameter : TrivSqZeroExt ℚ ℚ := TrivSqZeroExt.inr 1
-
-/-- The dual-number instance has a genuinely nonzero exterior scalar and satisfies
-all the local relations, including the deformed cyclotomic equation. -/
-theorem dualNumber_model :
-    exterior dualParameter ≠ 0 ∧
-    exterior dualParameter * exterior dualParameter = 0 ∧
-    firstDot dualParameter * firstDot dualParameter +
-      firstDot dualParameter * exterior dualParameter = 0 := by
-  have hs : dualParameter * dualParameter = 0 := by
-    exact TrivSqZeroExt.inr_mul_inr ℚ 1 1
-  refine ⟨exterior_ne_zero ?_, exterior_square _ hs, cyclotomic_relation _ hs⟩
-  intro h
-  have := congrArg TrivSqZeroExt.snd h
-  norm_num [dualParameter] at this
 
 end OddMath.OddNilHecke.ExteriorDeformation

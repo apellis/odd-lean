@@ -24,17 +24,6 @@ private theorem total_add
     (f.app 0 w + f.app 1 w) + (g.app 0 w + g.app 1 w)
   abel
 
-private theorem total_odd_probe_polynomial
-    {k C : Type u} [CommRing k] [Category.{u} C]
-    [Preadditive C] [Linear k C] [Supercategory k C]
-    (M : Superfunctor k C (SVec k)) (w : C) (x : End M) (n : ℕ)
-    (hx : (x ^ 2 + 1) ^ n = 0) :
-    ((show End (M.obj w) from x.total w) ^ 2 + 1) ^ n = 0 := by
-  have h := congrArg (fun f : End M => f.total w) hx
-  have h1 : (1 : End M).total w = (1 : End (M.obj w)) := SuperNatTrans.id_total _ _
-  rw [end_total_pow, total_add, end_total_pow, h1] at h
-  simpa only [SuperNatTrans.total, Superfunctor.zero_app, zero_add] using h
-
 private theorem homogeneous_total_mem
     {k C : Type u} [CommRing k] [Category.{u} C]
     [Preadditive C] [Linear k C] [Supercategory k C]
@@ -60,20 +49,10 @@ def restrictedDotEnd (M : Superfunctor k C (SVec k)) :
     End ((restriction J).obj ((induction J).obj M)) :=
   (restriction J).mapEnd ((induction J).obj M) (dotEnd J hα M)
 
-/-- Restriction retains the given dot's homogeneous degree. -/
-theorem restrictedDotEnd_mem (M : Superfunctor k C (SVec k)) :
-    restrictedDotEnd J hα M ∈ parity (R := k) _ _ p := by
-  exact IsSuperfunctor.map_mem (F := restriction J) (dotEnd_mem J hα M)
-
 /-- Its component is an endomorphism of the native F/E superspace. -/
 def restrictedDotComponent (M : Superfunctor k C (SVec k)) (w : C) :
     End (((restriction J).obj ((induction J).obj M)).obj w) :=
   (restrictedDotEnd J hα M).total w
-
-/-- The component is homogeneous of the same moving-colour parity. -/
-theorem restrictedDotComponent_mem (M : Superfunctor k C (SVec k)) (w : C) :
-    restrictedDotComponent J hα M w ∈ parity (R := k) _ _ p :=
-  homogeneous_total_mem (restrictedDotEnd_mem J hα M) w
 
 /-- The given dotted-unit column is the actual unit followed by powers of
 this native module dot, before taking components. -/
@@ -83,24 +62,5 @@ theorem unitDotColumn_eq_restrictedDotEnd (M : Superfunctor k C (SVec k)) (n : �
   unfold unitDotColumn restrictedDotEnd
   congr 1
   exact map_pow ((restriction J).mapEnd ((induction J).obj M)) (dotEnd J hα M) n
-
-/-- Exact component formula for the prescribed unit/dot field, using the
-endomorphism ring of that same native superspace. -/
-theorem unitDotColumn_total_restrictedDotComponent
-    (M : Superfunctor k C (SVec k)) (n : ℕ) (w : C) :
-    (unitDotColumn J hα M n).total w =
-      ((adjunction J).unit.app M).total w ≫ restrictedDotComponent J hα M w ^ n := by
-  rw [unitDotColumn_eq_restrictedDotEnd, Superfunctor.comp_total, end_total_pow]
-  rfl
-
-/-- Restriction and total component evaluation preserve the probe polynomial
-on the actual given dot; no separately supplied component operator is used. -/
-theorem restrictedDotComponent_odd_probe_polynomial
-    (M : Superfunctor k C (SVec k)) (w : C) (n : ℕ)
-    (hx : (dotEnd J hα M ^ 2 + 1) ^ n = 0) :
-    (restrictedDotComponent J hα M w ^ 2 + 1) ^ n = 0 := by
-  have hr := additiveFunctor_odd_probe_polynomial (restriction J) (dotEnd J hα M) n hx
-  exact total_odd_probe_polynomial ((restriction J).obj ((induction J).obj M)) w
-    (restrictedDotEnd J hα M) n hr
 
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

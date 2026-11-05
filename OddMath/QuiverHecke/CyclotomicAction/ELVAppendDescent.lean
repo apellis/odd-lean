@@ -269,14 +269,6 @@ def appendOldCoordinateEquiv (p : ZMod 2) (i : I) (v w : List I) :
     ⟨appendOldReconstruct_injective D Sc cutoff p i v w,
       appendOldReconstruct_surjective D Sc cutoff p i v w⟩).symm
 
-@[simp] theorem appendOldCoordinateEquiv_apply (p : ZMod 2) {i : I} {v w : List I}
-    (z : AppendTarget D Sc cutoff i v w) (q : AppendIdx.Tail i v w) :
-    appendOldCoordinateEquiv D Sc cutoff p i v w z q =
-      appendOldCoordinate D Sc cutoff p q.representative z := by
-  rw [← appendOldCoordinate_reconstruct D Sc cutoff p q]
-  exact congrArg (appendOldCoordinate D Sc cutoff p q.representative)
-    ((appendOldCoordinateEquiv D Sc cutoff p i v w).symm_apply_apply z)
-
 /-- Reconstruction is the left inverse of simultaneous extraction. -/
 @[simp] theorem appendOldReconstruct_coordinateEquiv (p : ZMod 2) (i : I) (v w : List I)
     (z : AppendTarget D Sc cutoff i v w) :

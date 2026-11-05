@@ -66,13 +66,6 @@ def probeMissingColourUnitCoefficient (r : Fin count) :
   unitColumnInverseRow O ((U).obj w) (D.parity i) count
     (probeMissingColourUnitMatrixIso D Sc m γ N hN i hi w) r
 
-/-- The inverse coefficient has its prescribed degree r*p. -/
-theorem probeMissingColourUnitCoefficient_mem (r : Fin count) :
-    probeMissingColourUnitCoefficient D Sc m γ N hN i hi w r ∈ parity (R := k) _ _ (r.val • D.parity i) :=
-  unitColumnInverseRow_mem O ((U).obj w) (D.parity i) count
-    (probeMissingColourUnitMatrixIso D Sc m γ N hN i hi w)
-    (probeMissingColourUnitMatrixIso_inv_mem D Sc m γ N hN i hi w) r
-
 /-- The selected content/scalar charts preserve the exact inverse row and
 its canonical unshift, for every coefficient (hence also the top row). -/
 theorem probeMissingColourUnitCoefficient_compare (r : Fin count) :

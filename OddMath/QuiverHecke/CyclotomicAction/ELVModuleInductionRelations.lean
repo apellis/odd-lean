@@ -47,24 +47,4 @@ theorem transformComponent_comp (M : Superfunctor k C (SVec k)) :
       CategoryTheory.Limits.comp_zero, CategoryTheory.Limits.zero_comp, smul_zero,
       zero_add, add_zero] <;> exact he
 
-/-- Composition of full induction transformations is superopposite, not ordinary opposite. -/
-theorem transform_comp :
-    (transform hβ).vcomp (transform hα) =
-      (sign k (p * q) •
-        (Superfunctor.homMk (transform (hα.comp hβ)) :
-          (⟨induction L⟩ : Superfunctor k _ _) ⟶ (⟨induction J⟩ : Superfunctor k _ _))) := by
-  apply SuperNatTrans.ext
-  funext r M
-  change (transform hβ).app 0 M ≫ (transform hα).app r M +
-    (transform hβ).app 1 M ≫ (transform hα).app (r + 1) M =
-    sign k (p * q) • (transform (hα.comp hβ)).app r M
-  have he := transformComponent_comp hα hβ M
-  rcases parity_eq_zero_or_one p with rfl | rfl <;>
-    rcases parity_eq_zero_or_one q with rfl | rfl <;>
-    rcases parity_eq_zero_or_one r with rfl | rfl <;>
-    simp only [transform, IsSupernatural.toSuperNatTrans, SVec.zmod2_one_add_one,
-      zero_add, add_zero, ↓reduceIte, one_ne_zero, zero_ne_one,
-      CategoryTheory.Limits.comp_zero, CategoryTheory.Limits.zero_comp, smul_zero,
-      zero_add, add_zero] <;> exact he
-
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

@@ -117,7 +117,6 @@ private theorem appendIdentityIndex_tail (i : I) {v t : List I}
   simp only [appendIdentityIndex, appendIdentityShuffle_word, cw,
     List.reverse_nil, List.map_nil, List.append_nil, List.map_replicate, hl]
 
-
 private theorem appendTail_cross_heq (i : I) (v s t : List I)
     (x : AppendIdx i v (t ++ [i])) (e : x.oldTarget = s ++ [i])
     (L : List PG)
@@ -224,7 +223,6 @@ private theorem appendTail_power_cross (i : I) (s t : List I) (z : AppendIdx i s
   apply eq_of_heq
   apply append_cl_heq D Sc rfl rfl
   simp only [hl, List.map_replicate]
-
 
 @[simp] theorem data_cross (i : I) (v s t : List I) (L : List PG) (m : ℕ)
     (h : SChain (s ++ [i]) (pl (s ++ [i]) L) t)
@@ -349,7 +347,6 @@ theorem decode_outputPolynomial_precomp (i : I) (v s t : List I)
         (rightContext D Sc cutoff [i] _ _ r ≫ appendOutputPolynomial D Sc cutoff i s t f)) = 0 := by
   rw [appendOutputPolynomial_precomp, ← appendOutputEmbedding_map, decode_embedding]
 
-
 /-- Recover a canonical crossing only after applying the full triangular law.
 The identity-row correction is present and is annihilated by the preceding theorem. -/
 theorem decode_canonical_crossing (i : I) (v s t : List I)
@@ -430,7 +427,6 @@ theorem decode_crossing_tail (i : I) (v s t : List I)
   rw [appendTail_power_cross]
   exact hh
 
-
 /-- Full affine balance in the independently defined short source. -/
 theorem tensor_balance (i : I) (v s s' t : List I)
     (r : hom D Sc cutoff s s') (c : hom D Sc cutoff (s' ++ [i]) t)
@@ -508,7 +504,6 @@ theorem shortCross_injective (i : I) (v t : List I) :
     Function.Injective (shortCross D Sc cutoff i v t) :=
   Function.LeftInverse.injective (decode_shortCross D Sc cutoff i v t)
 
-
 /-- The range is the original crossing span with arbitrary full old arrows on both sides. -/
 theorem range_shortCross (i : I) (v t : List I) :
     LinearMap.range (shortCross D Sc cutoff i v t) = appendCrossingSpan D Sc cutoff i v t := by
@@ -528,23 +523,6 @@ theorem range_shortCross (i : I) (v t : List I) :
     rintro z ⟨s, r, c, rfl⟩
     exact ⟨shortTensor D Sc cutoff i v s t c ((ideal D Sc cutoff _ _).mkQ r),
       column_mk D Sc cutoff i v s t c r⟩
-
-/-- The independently balanced short source identifies with the genuine crossing span. -/
-def crossingEquiv (i : I) (v t : List I) :
-    ShortTarget D Sc cutoff i v t ≃ₗ[k] appendCrossingSpan D Sc cutoff i v t where
-  toFun z := ⟨shortCross D Sc cutoff i v t z, by
-    rw [← range_shortCross]; exact ⟨z, rfl⟩⟩
-  invFun z := decode D Sc cutoff i v t z.1
-  left_inv := decode_shortCross D Sc cutoff i v t
-  right_inv z := by
-    apply Subtype.ext
-    have hz : z.1 ∈ LinearMap.range (shortCross D Sc cutoff i v t) := by
-      rw [range_shortCross]; exact z.2
-    obtain ⟨a, ha⟩ := hz
-    change shortCross D Sc cutoff i v t (decode D Sc cutoff i v t z.1) = z.1
-    rw [← ha, decode_shortCross]
-  map_add' a b := Subtype.ext (map_add _ a b)
-  map_smul' a b := Subtype.ext (map_smul _ a b)
 
 end ShortCrossCoordinates
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

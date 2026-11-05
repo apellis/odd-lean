@@ -22,39 +22,8 @@ def castLabelsEquiv (F : MatchingBasisChoice a b) (ha : a = a') (hb : b = b') :
   subst a' b'
   rfl
 
-@[simp] theorem cast_openDots (F : MatchingBasisChoice a b) (ha : a = a') (hb : b = b')
-    (t : F.Labels) :
-    (F.cast ha hb).openDots (F.castLabelsEquiv ha hb t) = F.openDots t := by
-  subst a' b'
-  rfl
-
 variable {X : Type v} [AddCommGroup X] {D : Datum I X}
   {k : Type w} [CommRing k] {Sc : Scalars D k} (cs : CScalars Sc) (μ : X)
-
-theorem cast_targetCoefficientMap (F : MatchingBasisChoice a b)
-    (ha : a = a') (hb : b = b') (t : F.Labels) (p : SYM D k) :
-    (F.cast ha hb).targetCoefficientMap cs μ (F.castLabelsEquiv ha hb t) p =
-      wordCast μ ha hb (F.targetCoefficientMap cs μ t p) := by
-  subst a' b'
-  rfl
-
-theorem cast_expansion (F : MatchingBasisChoice a b)
-    (ha : a = a') (hb : b = b') (v : F.Labels →₀ SYM D k) :
-    (F.cast ha hb).expansion cs μ (v.mapDomain (F.castLabelsEquiv ha hb)) =
-      wordCast μ ha hb (F.expansion cs μ v) := by
-  subst a' b'
-  simp only [cast, castLabelsEquiv, Equiv.refl_apply]
-  rw [show (fun x : F.Labels => x) = id from rfl, Finsupp.mapDomain_id]
-  rfl
-
-theorem cast_targetExpansion (F : MatchingBasisChoice a b)
-    (ha : a = a') (hb : b = b') (v : F.Labels →₀ SYM D k) :
-    (F.cast ha hb).targetExpansion cs μ (v.mapDomain (F.castLabelsEquiv ha hb)) =
-      wordCast μ ha hb (F.targetExpansion cs μ v) := by
-  subst a' b'
-  simp only [cast, castLabelsEquiv, Equiv.refl_apply]
-  rw [show (fun x : F.Labels => x) = id from rfl, Finsupp.mapDomain_id]
-  rfl
 
 theorem cast_expansion_injective_iff (F : MatchingBasisChoice a b)
     (ha : a = a') (hb : b = b') :

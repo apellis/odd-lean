@@ -61,11 +61,6 @@ theorem negativeKernelClosure_degree (i : I) (v t : OldCategory D Sc cutoff)
       n + 2 * sy.d i * (r + s + 1 : ℕ) := by push_cast; ring
   simpa only [negativeKernelClosure, LinearMap.comp_apply, he] using h
 
-/-- Every represented closure degree is strictly positive. -/
-theorem kernelClosureDegree_pos (i : I) (r s : ℕ) :
-    0 < 2 * sy.d i * (r + s + 1 : ℕ) := by
-  exact mul_pos (mul_pos (by norm_num) (sy.pos i)) (by positivity)
-
 omit sy hc in
 /-- On every OLD module, the positive closure acts by the prescribed unit,
 canonical principal inverse, and cap; the module vector is unrestricted. -/

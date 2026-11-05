@@ -99,26 +99,6 @@ theorem centralPaddedProbeY_hom (hb : StepValid (dn i) true t) :
         (P.centralTargetCornerIso i t Z E ⟨true, hb⟩).inv := by
   simp only [centralPaddedProbeY, dite_eq_left hb]; rfl
 
-/-- On a supported missing target, the unique padded automorphism is
-also the actual native probe dot transported through its proved zero
-roundtrip. Thus the boundary convention agrees with the prescribed unit. -/
-theorem centralPaddedProbeY_of_absent_native (hb : ¬StepValid (dn i) true t)
-    {ρ : X} (h : -ρ + D.α i = -P.muP t)
-    (hzero : Limits.IsZero ((homContentPreF P.T P.W.obj i (P.muM t) h).obj
-      ((homContentPreE P.T P.W.obj i (P.muM t) h).obj Z))) :
-    P.centralPaddedProbeY i t Z E hdot =
-      ProbeWindow.cornerAut
-        (sectorFamilyZeroCornerIso (fun a => StepValid (dn i) a t)
-          (fun a => E.obj (P.centralTargetFactor i t Z a)) true hb _ (E.map_isZero hzero))
-        (Functor.mapAut _ E (Functor.mapAut _
-          (homContentPreF P.T P.W.obj i (P.muM t) h)
-          (P.nativeProbeDotAut i hdot h Z))) := by
-  apply Iso.ext
-  have hz : Limits.IsZero (sectorFamilyCorner (fun a => StepValid (dn i) a t)
-      (fun a => E.obj (P.centralTargetFactor i t Z a)) true) := by
-    simpa only [sectorFamilyCorner, dite_eq_right hb] using Limits.isZero_zero C
-  exact hz.eq_of_src _ _
-
 omit [E.Additive] in
 /-- The actual padded principal has the prescribed native mate coordinate. -/
 theorem centralPaddedProbeSigma_native (c : P.CrossCoeff) (hb : StepValid (dn i) true t) :

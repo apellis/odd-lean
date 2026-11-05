@@ -28,16 +28,6 @@ variable {C B : Type u} [Category.{u} C] [Category.{u} B]
 variable {J K : C ⥤ B} [J.Additive] [J.Linear k] [IsSuperfunctor k J]
   [K.Additive] [K.Linear k] [IsSuperfunctor k K]
 
-/-- The two homogeneous components of induction's mate on a balanced generator. -/
-theorem transform_app_tensor {p : ZMod 2} {α : ∀ v, J.obj v ⟶ K.obj v}
-    (hα : IsSupernatural k p α) (M : Superfunctor k C (SVec k))
-    (w : B) (v : C) (h : K.obj v ⟶ w) (m : M.obj v) :
-    ((transform hα).app p M).app p w (tensor K M.toFunctor v h m) =
-      tensor J M.toFunctor v (α v ≫ twist k p h) m := by
-  simp only [transform, IsSupernatural.toSuperNatTrans, ↓reduceIte]
-  change (transformComponent hα M).app p w (tensor K M.toFunctor v h m) = _
-  rw [transformComponent_apply, ite_eq_left rfl]
-  exact transformLinear_tensor hα M w v h m
 end BalancedInduction
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -121,19 +111,6 @@ def contentInductionTransform {β γ : Multiset I} {σ τ : List I}
       (contentInductionTo D Sc cutoff N β σ γ hσ) :=
   BalancedInduction.transform (contentAppendTo_supernatural D Sc cutoff N hσ hτ ha)
 
-@[simp] theorem contentInductionTransform_tensor {β γ : Multiset I} {σ τ : List I}
-    (hσ : β + (σ : Multiset I) = γ) (hτ : β + (τ : Multiset I) = γ)
-    {p : ZMod 2} {a : (pres D Sc).obj (ob D σ) ⟶ (pres D Sc).obj (ob D τ)}
-    (ha : a ∈ parity (R := k) _ _ p) (M : ContentModules D Sc cutoff N β)
-    (w : ContentCategory D Sc cutoff N γ) (v : ContentCategory D Sc cutoff N β)
-    (h : (contentAppendTo D Sc cutoff N β τ γ hτ).obj v ⟶ w) (m : M.obj v) :
-    ((contentInductionTransform D Sc cutoff N hσ hτ ha).app p M).app p w
-      (BalancedInduction.tensor (contentAppendTo D Sc cutoff N β τ γ hτ) M.toFunctor v h m) =
-    BalancedInduction.tensor (contentAppendTo D Sc cutoff N β σ γ hσ) M.toFunctor v
-      (contentAppendToComponent D Sc cutoff N hσ hτ a v ≫ twist k p h) m :=
-  BalancedInduction.transform_app_tensor
-    (contentAppendTo_supernatural D Sc cutoff N hσ hτ ha) M w v h m
-
 /-- The dot acts on the raising functor `E`. -/
 def contentInductionDot (β : Multiset I) (i : I) :
     SuperNatTrans k (contentE D Sc cutoff N β i) (contentE D Sc cutoff N β i) :=
@@ -145,14 +122,6 @@ theorem content_pair_swap (β : Multiset I) (i j : I) :
     β + ([j, i] : Multiset I) = β + ([i, j] : Multiset I) := by
   congr 1
   exact Multiset.coe_eq_coe.mpr (List.Perm.swap i j [])
-
-/-- Raw crossing with a common exact target, contravariant in append. -/
-def contentInductionCrossRaw (β : Multiset I) (i j : I) :
-    SuperNatTrans k
-      (contentInductionTo D Sc cutoff N β [j, i] (β + ([i, j] : Multiset I))
-        (content_pair_swap β i j))
-      (contentInductionTo D Sc cutoff N β [i, j] (β + ([i, j] : Multiset I)) rfl) :=
-  contentInductionTransform D Sc cutoff N rfl (content_pair_swap β i j) (crossTwo_mem D Sc i j)
 
 /-- The normalized affine representative used by the induction crossing. -/
 def contentCrossAffine (i j : I) :
@@ -175,76 +144,5 @@ theorem contentCrossAffine_mem (i j : I) :
 @[simp] theorem contentCrossAffine_distinct (i j : I) (h : i ≠ j) :
     contentCrossAffine D Sc i j = crossTwo D Sc i j := by
   simp [contentCrossAffine, h]
-
-/-- Source normalization: minus the raw affine crossing for equal colours. -/
-def contentInductionCross (β : Multiset I) (i j : I) :
-    SuperNatTrans k
-      (contentInductionTo D Sc cutoff N β [j, i] (β + ([i, j] : Multiset I))
-        (content_pair_swap β i j))
-      (contentInductionTo D Sc cutoff N β [i, j] (β + ([i, j] : Multiset I)) rfl) :=
-  contentInductionTransform D Sc cutoff N rfl (content_pair_swap β i j)
-    (contentCrossAffine_mem D Sc i j)
-
-@[simp] theorem contentInductionDot_tensor (β : Multiset I) (i : I)
-    (M : ContentModules D Sc cutoff N β)
-    (w : ContentCategory D Sc cutoff N (β + ([i] : Multiset I)))
-    (v : ContentCategory D Sc cutoff N β)
-    (h : (contentAppend D Sc cutoff N β [i]).obj v ⟶ w) (m : M.obj v) :
-    ((contentInductionDot D Sc cutoff N β i).app (D.parity i) M).app (D.parity i) w
-      (BalancedInduction.tensor (contentAppend D Sc cutoff N β [i]) M.toFunctor v h m) =
-    BalancedInduction.tensor (contentAppendTo D Sc cutoff N β [i] _ rfl) M.toFunctor v
-      (contentAppendToComponent D Sc cutoff N rfl rfl (dotE D Sc [i] 0) v ≫
-        twist k (D.parity i) h) m :=
-  contentInductionTransform_tensor D Sc cutoff N rfl rfl _ M w v h m
-
-@[simp] theorem contentInductionCross_tensor (β : Multiset I) (i j : I)
-    (M : ContentModules D Sc cutoff N β)
-    (w : ContentCategory D Sc cutoff N (β + ([i, j] : Multiset I)))
-    (v : ContentCategory D Sc cutoff N β)
-    (h : (contentAppendTo D Sc cutoff N β [j, i] _ (content_pair_swap β i j)).obj v ⟶ w)
-    (m : M.obj v) :
-    ((contentInductionCross D Sc cutoff N β i j).app (D.parity i * D.parity j) M).app
-      (D.parity i * D.parity j) w
-      (BalancedInduction.tensor (contentAppendTo D Sc cutoff N β [j, i] _
-        (content_pair_swap β i j)) M.toFunctor v h m) =
-    BalancedInduction.tensor (contentAppendTo D Sc cutoff N β [i, j] _ rfl) M.toFunctor v
-      (contentAppendToComponent D Sc cutoff N rfl (content_pair_swap β i j)
-        (contentCrossAffine D Sc i j) v ≫ twist k (D.parity i * D.parity j) h) m :=
-  contentInductionTransform_tensor D Sc cutoff N rfl (content_pair_swap β i j) _ M w v h m
-
-/-- In equal colour the induced action is minus the raw action on every generator. -/
-theorem contentInductionCross_equal_tensor (β : Multiset I) (i : I)
-    (M : ContentModules D Sc cutoff N β)
-    (w : ContentCategory D Sc cutoff N (β + ([i, i] : Multiset I)))
-    (v : ContentCategory D Sc cutoff N β)
-    (h : (contentAppendTo D Sc cutoff N β [i, i] _ (content_pair_swap β i i)).obj v ⟶ w)
-    (m : M.obj v) :
-    ((contentInductionCross D Sc cutoff N β i i).app (D.parity i * D.parity i) M).app
-      (D.parity i * D.parity i) w
-      (BalancedInduction.tensor (contentAppendTo D Sc cutoff N β [i, i] _
-        (content_pair_swap β i i)) M.toFunctor v h m) =
-    -BalancedInduction.tensor (contentAppendTo D Sc cutoff N β [i, i] _ rfl) M.toFunctor v
-      (contentAppendToComponent D Sc cutoff N rfl (content_pair_swap β i i)
-        (crossTwo D Sc i i) v ≫ twist k (D.parity i * D.parity i) h) m := by
-  rw [contentInductionCross_tensor, contentCrossAffine_equal, contentAppendToComponent_neg,
-    Preadditive.neg_comp]
-  exact (congrArg (BalancedInduction.inclusion _ M.toFunctor w v)
-    (TensorProduct.neg_tmul _ _)).trans ((BalancedInduction.inclusion _ M.toFunctor w v).map_neg _)
-
-/-- In distinct colours the affine crossing has no extra normalization sign. -/
-theorem contentInductionCross_distinct_tensor (β : Multiset I) (i j : I) (hij : i ≠ j)
-    (M : ContentModules D Sc cutoff N β)
-    (w : ContentCategory D Sc cutoff N (β + ([i, j] : Multiset I)))
-    (v : ContentCategory D Sc cutoff N β)
-    (h : (contentAppendTo D Sc cutoff N β [j, i] _ (content_pair_swap β i j)).obj v ⟶ w)
-    (m : M.obj v) :
-    ((contentInductionCross D Sc cutoff N β i j).app (D.parity i * D.parity j) M).app
-      (D.parity i * D.parity j) w
-      (BalancedInduction.tensor (contentAppendTo D Sc cutoff N β [j, i] _
-        (content_pair_swap β i j)) M.toFunctor v h m) =
-    BalancedInduction.tensor (contentAppendTo D Sc cutoff N β [i, j] _ rfl) M.toFunctor v
-      (contentAppendToComponent D Sc cutoff N rfl (content_pair_swap β i j)
-        (crossTwo D Sc i j) v ≫ twist k (D.parity i * D.parity j) h) m := by
-  rw [contentInductionCross_tensor, contentCrossAffine_distinct D Sc i j hij]
 
 end OddMath.QuiverHecke.ELVOld

@@ -42,18 +42,6 @@ def negativeKernelCoordinates (i : I) (m : ℕ) (v : (OldCategory D Sc cutoff)�
         (Fin m → Old D Sc cutoff v.unop.word t.word)) :=
   LinearEquiv.piOptionEquivProd k
 
-@[simp] theorem positiveKernelCoordinates_fst (i : I) (m : ℕ)
-    (v : (OldCategory D Sc cutoff)ᵒᵖ) (t : OldCategory D Sc cutoff)
-    (z : (BalancedKernelTensor.piKernel (positiveKernelFamily D Sc cutoff i m t)).obj v) :
-    (positiveKernelCoordinates D Sc cutoff i m v t z).1 =
-      kernelSourceCoordinates D Sc cutoff i v t (z none) := rfl
-
-@[simp] theorem positiveKernelCoordinates_snd (i : I) (m : ℕ)
-    (v : (OldCategory D Sc cutoff)ᵒᵖ) (t : OldCategory D Sc cutoff)
-    (z : (BalancedKernelTensor.piKernel (positiveKernelFamily D Sc cutoff i m t)).obj v)
-    (r : Fin m) :
-    (positiveKernelCoordinates D Sc cutoff i m v t z).2 r = z (some r) := rfl
-
 @[simp] theorem negativeKernelCoordinates_fst (i : I) (m : ℕ)
     (v : (OldCategory D Sc cutoff)ᵒᵖ) (t : OldCategory D Sc cutoff)
     (z : (BalancedKernelTensor.piKernel (negativeKernelFamily D Sc cutoff i m t)).obj v) :
@@ -64,23 +52,5 @@ def negativeKernelCoordinates (i : I) (m : ℕ) (v : (OldCategory D Sc cutoff)�
     (z : (BalancedKernelTensor.piKernel (negativeKernelFamily D Sc cutoff i m t)).obj v)
     (r : Fin m) :
     (negativeKernelCoordinates D Sc cutoff i m v t z).2 r = z (some r) := rfl
-
-/-- The row map in the same bundled kernel endpoints as the stored coefficient. -/
-def kernelMateRowLinear (i : I) (v : (OldCategory D Sc cutoff)ᵒᵖ)
-    (t : OldCategory D Sc cutoff) :
-    (IndResKernel.kernel (k := k) (append D Sc cutoff i) t).obj v →ₗ[k]
-      (BalancedKernelTensor.inductionKernel (k := k) (append D Sc cutoff i)
-        ((append D Sc cutoff i).obj t)).obj v :=
-  (matrixMateRow D Sc cutoff i v.unop.word t.word).comp
-    (kernelSourceCoordinates D Sc cutoff i v t).toLinearMap
-
-/-- The prescribed coefficient and row agree as maps before evaluation. -/
-theorem actualMateKernelLinear_eq_row (i : I) (v : (OldCategory D Sc cutoff)ᵒᵖ)
-    (t : OldCategory D Sc cutoff) :
-    actualMateKernelLinear D Sc cutoff i v t = kernelMateRowLinear D Sc cutoff i v t := by
-  rcases v with ⟨⟨v⟩⟩
-  rcases t with ⟨t⟩
-  rw [actualMateKernelLinear_eq_component]
-  rfl
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

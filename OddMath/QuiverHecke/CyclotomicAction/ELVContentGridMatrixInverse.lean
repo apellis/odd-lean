@@ -89,10 +89,6 @@ private theorem gridUnitIsoOfBijective_hom
     (h : ∀ t, Function.Bijective (gridUnitMatrixComponent J K hγ hβ N m t)) :
     (gridUnitIsoOfBijective J K hγ hβ N m h).hom = gridUnitMatrixModuleMap J K hγ hβ N m :=
   HomogeneousSuperfunctorIso.ofHom_hom _ _ _ _
-private theorem gridUnitIsoOfBijective_inv_mem
-    (h : ∀ t, Function.Bijective (gridUnitMatrixComponent J K hγ hβ N m t)) :
-    (gridUnitIsoOfBijective J K hγ hβ N m h).inv ∈ parity (R := k) _ _ 0 :=
-  HomogeneousSuperfunctorIso.ofHom_inv_mem _ _ _ _
 
 private def gridCapIsoOfBijective
     (h : ∀ t, Function.Bijective (gridCapMatrixComponent J K hγ hα N m t)) :
@@ -107,10 +103,6 @@ private theorem gridCapIsoOfBijective_hom
     (h : ∀ t, Function.Bijective (gridCapMatrixComponent J K hγ hα N m t)) :
     (gridCapIsoOfBijective J K hγ hα N m h).hom = gridCapMatrixModuleMap J K hγ hα N m :=
   HomogeneousSuperfunctorIso.ofHom_hom _ _ _ _
-private theorem gridCapIsoOfBijective_inv_mem
-    (h : ∀ t, Function.Bijective (gridCapMatrixComponent J K hγ hα N m t)) :
-    (gridCapIsoOfBijective J K hγ hα N m h).inv ∈ parity (R := k) _ _ 0 :=
-  HomogeneousSuperfunctorIso.ofHom_inv_mem _ _ _ _
 end GenericInverse
 end BalancedInduction
 
@@ -204,16 +196,5 @@ theorem oldContentGridCapMatrixIso_hom
         (oldContentAppendDot_supernatural D Sc cutoff ν i) N
         (contentCapCount D cutoff i ((i :: ν : List I) : Multiset I)) :=
   BalancedInduction.gridCapIsoOfBijective_hom J₀ J₁ _ _ N _ _
-
-/-- The prescribed unit inverse is even on the canonical parity family. -/
-theorem oldContentGridUnitMatrixIso_inv_mem
-    (hh : 0 ≤ contentCrossingHeight D cutoff i ((i :: ν : List I) : Multiset I)) :
-    (oldContentGridUnitMatrixIso D Sc cutoff ν i N hh).inv ∈ parity (R := k) _ _ 0 :=
-  BalancedInduction.gridUnitIsoOfBijective_inv_mem J₀ J₁ _ _ N _ _
-/-- The prescribed cap inverse is even on the canonical parity family. -/
-theorem oldContentGridCapMatrixIso_inv_mem
-    (hh : contentCrossingHeight D cutoff i ((i :: ν : List I) : Multiset I) ≤ 0) :
-    (oldContentGridCapMatrixIso D Sc cutoff ν i N hh).inv ∈ parity (R := k) _ _ 0 :=
-  BalancedInduction.gridCapIsoOfBijective_inv_mem J₀ J₁ _ _ N _ _
 
 end OddMath.QuiverHecke.ELVOld

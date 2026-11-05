@@ -134,87 +134,11 @@ def homMatrixTwistAlgebra (n : ℕ) (p : ZMod 2) : Hn D Sc n →ₙₐ[k] Hn D S
 /-- The parity of an unordered colour content. -/
 def contentSumParity (β : Multiset I) : ZMod 2 := (β.map D.parity).sum
 
-theorem wordSumParity_eq_content {n : ℕ} (s : Word I n) :
-    wordSumParity D s.1 = contentSumParity D (wordContent s) := rfl
-
 variable [Fintype I]
 
 /-- The sum of `g_n ⋯ g_1 e(i,ν)` over the words of content `β`. -/
 def contentMove (i : I) (n : ℕ) (β : Multiset I) : Hn D Sc (n + 1) :=
   ∑ w ∈ Finset.univ.filter (fun w : Word I n => wordContent w = β),
     FiniteHomMatrix.single (appendWord i w) (prependWord i w) (moveHom D Sc i [] w.1)
-
-private theorem contentMove_mul_entry (i : I) {n : ℕ} (β : Multiset I) (s t : Word I n)
-    (f : wordObj D Sc (prependWord i s) ⟶ wordObj D Sc (prependWord i t)) :
-    contentMove D Sc i n β * FiniteHomMatrix.single (prependWord i t) (prependWord i s) f =
-      if wordContent t = β then
-        FiniteHomMatrix.single (appendWord i t) (prependWord i s) (f ≫ moveHom D Sc i [] t.1)
-      else 0 := by
-  rw [contentMove, Finset.sum_mul]
-  by_cases ht : wordContent t = β
-  · rw [ite_eq_left ht, Finset.sum_eq_single t]
-    · simp
-    · intro b _ hb
-      exact FiniteHomMatrix.single_mul_single_of_ne _ _ _ _
-        (fun h => hb (prependWord_injective i n h)) _ _
-    · simp [ht]
-  · rw [ite_eq_right ht]
-    apply Finset.sum_eq_zero
-    intro b hb
-    apply FiniteHomMatrix.single_mul_single_of_ne
-    intro h
-    have he := prependWord_injective i n h
-    subst b
-    exact ht (Finset.mem_filter.mp hb).2
-
-private theorem entry_mul_contentMove (i : I) {n : ℕ} (β : Multiset I) (s t : Word I n)
-    (f : wordObj D Sc (appendWord i s) ⟶ wordObj D Sc (appendWord i t)) :
-    FiniteHomMatrix.single (appendWord i t) (appendWord i s) f * contentMove D Sc i n β =
-      if wordContent s = β then
-        FiniteHomMatrix.single (appendWord i t) (prependWord i s) (moveHom D Sc i [] s.1 ≫ f)
-      else 0 := by
-  rw [contentMove, Finset.mul_sum]
-  by_cases hs : wordContent s = β
-  · rw [ite_eq_left hs, Finset.sum_eq_single s]
-    · simp
-    · intro b _ hb
-      exact FiniteHomMatrix.single_mul_single_of_ne _ _ _ _
-        (fun h => hb (appendWord_injective i n h.symm)) _ _
-    · simp [hs]
-  · rw [ite_eq_right hs]
-    apply Finset.sum_eq_zero
-    intro b hb
-    apply FiniteHomMatrix.single_mul_single_of_ne
-    intro h
-    have he := appendWord_injective i n h.symm
-    subst b
-    exact hs (Finset.mem_filter.mp hb).2
-
-/-- KKO (8.13) as an equality in `Hn`, for arbitrary inhomogeneous algebra elements.
-The exponent `p(i)p(β)` is the twist required by the shifted coefficient factor in Q. -/
-theorem contentMove_balance (i : I) (n : ℕ) (β : Multiset I) (z : Hn D Sc n) :
-    appendLinear D Sc i n (homMatrixTwist D Sc n (D.parity i * contentSumParity D β) z) *
-        contentMove D Sc i n β =
-      contentMove D Sc i n β * prependLinear D Sc i n z := by
-  induction z using FiniteHomMatrix.induction with
-  | hz => simp
-  | ha a b ha hb => simp only [map_add, add_mul, mul_add, ha, hb]
-  | hs t s f =>
-    rw [homMatrixTwist_single, appendLinear_single, prependLinear_single,
-      entry_mul_contentMove, contentMove_mul_entry]
-    by_cases h : wordContent s = wordContent t
-    · rw [h]
-      split_ifs with ht
-      · congr 1
-        have hp : wordSumParity D s.1 = contentSumParity D β := by
-          rw [wordSumParity_eq_content, h, ht]
-        simpa only [hp, appendHom, prependHom, LinearMap.coe_mk, AddHom.coe_mk,
-          wordObj, prependWord, appendWord, List.nil_append, List.singleton_append] using
-          (hom_comp_moveHom D Sc i f).symm
-      · rfl
-    · have hf := hom_eq_zero_of_content_ne D Sc h f
-      subst f
-      simp [appendHom, prependHom, MonoidalSupercategory.whiskerLeft_zero (R := k),
-        MonoidalSupercategory.zero_whiskerRight (R := k)]
 
 end OddMath.QuiverHecke

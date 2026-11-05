@@ -46,22 +46,4 @@ theorem coefficientAction_output
   rw [coefficientAction_total, vacuumBlockAction_total]
   rfl
 
-/-- Any even module chart intertwines arbitrary full source coefficients. -/
-theorem coefficientAction_evenChart
-    (a : SKM.SYM D k) (M : probeOldWeightSpace D Sc m ΛP (-ΛP))
-    (β : WeightBlocks D ΛR (ReservoirWord.weight D ΛR 0))
-    (T : Superfunctor k (ContentCategory D Sc cutoff N β.1) (SVec k))
-    (f : ((Z).obj M) β ⟶ T) (hf : f ∈ parity (R := k) _ _ 0)
-    (c : ContentCategory D Sc cutoff N β.1) :
-    (((sourceCoefficientAction D Sc m cutoff L ΛP ΛR a).total M) β).total c ≫ f.total c =
-      f.total c ≫ T.map (contentCoefficientArrow D Sc cutoff L c
-        (SKM.SYM.elvCoefficientQuotient D cutoff a)) := by
-  change (((VacuumTensorCoefficientMaps.coefficientAction D Sc m cutoff L ΛP ΛR
-    (SKM.SYM.elvCoefficientQuotient D cutoff a)).total M) β).total c ≫ f.total c = _
-  rw [coefficientAction_output]
-  have htotal (d : ContentCategory D Sc cutoff N β.1) : f.total d = f.app 0 d := by
-    rw [SuperNatTrans.total, Superfunctor.app_eq_zero_of_mem hf (by decide : (1 : ZMod 2) ≠ 0) d,
-      add_zero]
-  rw [htotal]
-  exact ((Superfunctor.toSuperNatTrans f).isSupernatural 0).naturality_zero _
 end OddMath.QuiverHecke.ELVOld.TensorCoefficientNaturality

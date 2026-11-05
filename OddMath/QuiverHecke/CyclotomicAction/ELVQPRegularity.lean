@@ -222,21 +222,4 @@ theorem projection_qp_relation_regular (i : I) (v w : List I)
   projection_relation_regular D Sc cutoff i v w h
     (projection_qpProduct_regular D Sc cutoff i v w _ hh)
 
-/-- The actual crossing composite followed by the relation detects every old-only class.
-Combining this with descent of Q and P proves injectivity of P. -/
-theorem projection_move_relation_regular (i : I) (v w : List I)
-    (h : hom D Sc cutoff (i :: v) w)
-    (hh : projection D Sc cutoff i v w
-      (affineUnit D Sc cutoff _ _ (moveHom D Sc i [] v ≫ lastToFirstHom D Sc i v) ≫
-        relation D Sc cutoff i v ≫ h) = 0) :
-    projection D Sc cutoff i v w h = 0 := by
-  have he := congrArg (act D Sc cutoff i h) (qp_projection_product D Sc cutoff i v)
-  change projection D Sc cutoff i v w
-      ((affineUnit D Sc cutoff _ _ (moveHom D Sc i [] v ≫ lastToFirstHom D Sc i v) ≫
-        relation D Sc cutoff i v) ≫ h) =
-    projection D Sc cutoff i v w
-      ((affineUnit D Sc cutoff _ _ (qpProduct D Sc i v) ≫ relation D Sc cutoff i v) ≫ h) at he
-  simp only [Category.assoc] at he
-  exact projection_qp_relation_regular D Sc cutoff i v w h (he.symm.trans hh)
-
 end OddMath.QuiverHecke.ELVOld

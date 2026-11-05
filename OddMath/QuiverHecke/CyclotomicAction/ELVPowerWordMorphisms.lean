@@ -31,16 +31,6 @@ theorem fromArrow_generator (g : vt ⟶ vs) (p : ZMod 2) (w : OldCategory D Sc c
     (((Wt).obj vs).proj p (powerWordGenerator D Sc cutoff L t vs g)) = _
   rw [PowerWordYoneda.generator_proj, PowerWordYoneda.generator_naturality]
 
-theorem fromArrow_tensor (g : vt ⟶ vs) (p : ZMod 2) (w : OldCategory D Sc cutoff)
-    (h : vs ⟶ w) (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) :
-    (fromArrow D Sc cutoff L s t g).app p w
-      (BalancedInduction.tensor (powerWordCoefficientSource D Sc cutoff s)
-        (liftedPowerRegular D cutoff L).toFunctor (powerCoefficientStar D cutoff) h
-        ((coefficientPowerIdeal D cutoff (elementaryCoefficients (k := k) D cutoff) L).ringCon.mkₐ k a)) =
-      powerWordGenerator D Sc cutoff L t w
-        (proj k p g ≫ twist k p (coefficientEndomorphism D Sc cutoff s a ≫ h)) := by
-  rw [PowerWordYoneda.tensor_eq_generator, fromArrow_generator]
-
 theorem fromArrow_mem {p : ZMod 2} (g : vt ⟶ vs) (hg : g ∈ parity (R := k) vt vs p) :
     fromArrow D Sc cutoff L s t g ∈ parity (R := k) _ _ p := by
   apply mem_iff_proj.mpr
@@ -120,7 +110,6 @@ theorem fromArrow_eq_transform {p : ZMod 2} (g : vt ⟶ vs)
   rw [transform_unit J K hα R, transform_unit J K hα R]
   rcases parity_eq_zero_or_one p with rfl | rfl <;>
     simp only [ite_true, one_ne_zero, zero_ne_one, ite_false, zero_add, add_zero]
-
 
 /-- Composition retains the super-opposite convolution, including the
 odd-odd minus. It uses the full old Homs, with all exterior coefficients. -/

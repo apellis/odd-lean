@@ -97,16 +97,6 @@ theorem elvPostProbe_square_difference_isUnit [Finite I]
     (elvPostProbeDot_isUnit D Sc cutoff bound i Λ h F α hu)
     (elvPostProbe_odd_anticomm D Sc cutoff bound i Λ h F α)
 
-theorem elvPostProbe_square_sum_isUnit [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (hi : D.parity i = 1)
-    (α : End F) (hα : α ∈ parity (R := k) _ _ 1) (hu : IsUnit α) :
-    IsUnit (elvPostProbeDot D Sc cutoff bound i Λ h F α ^ 2 +
-      elvPostDot D Sc cutoff bound i Λ h F ^ 2) :=
-  elvPostDot_square_sum_isUnit D Sc cutoff bound sy hc i Λ h F hi _
-    (elvPostProbeDot_mem D Sc cutoff bound i Λ h F α hα)
-    (elvPostProbeDot_isUnit D Sc cutoff bound i Λ h F α hu)
-    (elvPostProbe_odd_anticomm D Sc cutoff bound i Λ h F α)
-
 private theorem functor_map_end_pow {C C' : Type*} [Category C] [Category C']
     (G : C ⥤ C') (M : C) (f : End M) (n : ℕ) :
     G.map (f ^ n) = (show End (G.obj M) from G.map f) ^ n :=
@@ -126,13 +116,6 @@ abbrev elvShiftedPostEnd
 abbrev elvShiftedPostDot (κ : ZMod 2) :
     End (elvShiftedPostInduction D Sc cutoff bound i Λ h F κ) :=
   elvShiftedPostEnd D Sc cutoff bound i Λ h F (elvPostDot D Sc cutoff bound i Λ h F) κ
-
-/-- The chosen shifted dot is exactly the prescribed shifted postcomposition. -/
-theorem elvShiftedPostDot_eq (κ : ZMod 2) :
-    elvShiftedPostDot D Sc cutoff bound i Λ h F κ =
-      (SKM.homParityShift (k := k)
-        (C := A ⟶ elvWeightSpace D Sc cutoff bound Λ y) κ).map
-        (F ◁ elvActionDot D Sc cutoff bound i Λ h) := rfl
 
 theorem elvShiftedPostProbe_difference_isUnit [Finite I]
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (κ : ZMod 2)
@@ -166,23 +149,6 @@ theorem elvShiftedPostProbe_square_difference_isUnit [Finite I]
     S.map (elvPostProbeDot D Sc cutoff bound i Λ h F α ^ 2 -
       elvPostDot D Sc cutoff bound i Λ h F ^ 2)) at hh
   rw [Functor.map_sub, functor_map_end_pow, functor_map_end_pow] at hh
-  exact hh
-
-theorem elvShiftedPostProbe_square_sum_isUnit [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (κ : ZMod 2)
-    (hi : D.parity i = 1) (α : End F)
-    (hα : α ∈ parity (R := k) _ _ 1) (hu : IsUnit α) :
-    IsUnit (elvShiftedPostEnd D Sc cutoff bound i Λ h F
-        (elvPostProbeDot D Sc cutoff bound i Λ h F α) κ ^ 2 +
-      elvShiftedPostDot D Sc cutoff bound i Λ h F κ ^ 2) := by
-  let S := SKM.homParityShift (k := k)
-    (C := A ⟶ elvWeightSpace D Sc cutoff bound Λ y) κ
-  have hh := (elvPostProbe_square_sum_isUnit D Sc cutoff bound i Λ h F sy hc hi α hα hu).map
-    (S.mapEnd (elvPostInduction D Sc cutoff bound i Λ h F))
-  change IsUnit (show End (S.obj (elvPostInduction D Sc cutoff bound i Λ h F)) from
-    S.map (elvPostProbeDot D Sc cutoff bound i Λ h F α ^ 2 +
-      elvPostDot D Sc cutoff bound i Λ h F ^ 2)) at hh
-  rw [Functor.map_add, functor_map_end_pow, functor_map_end_pow] at hh
   exact hh
 
 end OddMath.QuiverHecke.ELVOld

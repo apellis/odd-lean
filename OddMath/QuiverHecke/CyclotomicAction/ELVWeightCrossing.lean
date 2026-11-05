@@ -124,25 +124,6 @@ theorem elvWeightCrossVia_component (β : WeightBlocks D Λ x₀)
           (blockSucc₂_swap D i j Λ h₁ h₂ h₃ h₄ hε)).inv.app M :=
   congrFun (IsSupernatural.toSuperNatTrans_app _) M
 
-/-- The independently assembled weight crossing commutes with the canonical
-comparison to the normalized affine source crossing. -/
-theorem elvWeightCrossVia_comparison (β : WeightBlocks D Λ x₀)
-    (ε : WeightBlocks D Λ x₃) (hε : blockSucc₂ D i j Λ h₁ h₂ β = ε)
-    (M : ELVWeightProduct D Sc cutoff bound Λ x₀) :
-    (elvWeightCrossVia D Sc cutoff bound i j Λ h₁ h₂ h₃ h₄ β ε hε).app
-        (D.parity i * D.parity j) M ≫
-        (elvWeightPairComparison D Sc cutoff bound j i Λ h₃ h₄ β ε
-          (blockSucc₂_swap D i j Λ h₁ h₂ h₃ h₄ hε)).hom.app M =
-      (elvWeightPairComparison D Sc cutoff bound i j Λ h₁ h₂ β ε hε).hom.app M ≫
-        (contentInductionTransform D Sc cutoff bound
-          (elvWeightPair_content_eq D j i Λ h₃ h₄ β ε
-            (blockSucc₂_swap D i j Λ h₁ h₂ h₃ h₄ hε))
-          (elvWeightPair_content_eq D i j Λ h₁ h₂ β ε hε)
-          (contentCrossAffine_mem D Sc i j)).app (D.parity i * D.parity j) (M β) := by
-  rw [elvWeightCrossVia_component]
-  simp only [Category.assoc, Iso.inv_hom_id_app]
-  erw [Category.comp_id]
-
 theorem elvWeightCrossVia_eq (β β' : WeightBlocks D Λ x₀)
     (ε : WeightBlocks D Λ x₃) (hε : blockSucc₂ D i j Λ h₁ h₂ β = ε)
     (hε' : blockSucc₂ D i j Λ h₁ h₂ β' = ε) :

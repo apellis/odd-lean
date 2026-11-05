@@ -168,34 +168,6 @@ theorem actualCapKernelComponent_moduleCapRow (i : I) (n : ℕ) (v t : OldCatego
   exact hc.trans (moduleCapRow_total_apply D Sc cutoff i
     (oldRepresentable D Sc cutoff v) t n (oldSourceKernelEquiv D Sc cutoff i v t z)).symm
 
-theorem actualDotKernelComponent_pow_apply (i : I) (n : ℕ) (v t : OldCategory D Sc cutoff)
-    (z : IndResKernel.Component (k := k) (append D Sc cutoff i) v t) :
-    oldSourceKernelEquiv D Sc cutoff i v t
-      ((actualDotKernelComponent D Sc cutoff i v t ^ n) z) =
-    (actualInductionDot D Sc cutoff i
-      ((BalancedInduction.restriction (append D Sc cutoff i)).obj
-        (oldRepresentable D Sc cutoff v)) t ^ n)
-      (oldSourceKernelEquiv D Sc cutoff i v t z) :=
-  transportEnd_pow_apply _ _ n z
-
-/-- The fixed actual induction dot is ordinary-right natural on the coefficient kernel. -/
-def actualDotKernel (i : I) (t : OldCategory D Sc cutoff) :
-    IndResKernel.kernel (k := k) (append D Sc cutoff i) t ⟶
-      IndResKernel.kernel (k := k) (append D Sc cutoff i) t where
-  app v := ModuleCat.ofHom (actualDotKernelComponent D Sc cutoff i v.unop t)
-  naturality _ _ a := by
-    apply ModuleCat.hom_ext
-    exact actualDotKernelComponent_precompose D Sc cutoff i a.unop t
-
-/-- The fixed ordinary adjunction counit is ordinary-right natural. -/
-def actualCounitKernel (i : I) (t : OldCategory D Sc cutoff) :
-    IndResKernel.kernel (k := k) (append D Sc cutoff i) t ⟶
-      BalancedKernelTensor.inductionKernel (k := k) (𝟭 (OldCategory D Sc cutoff)) t where
-  app v := ModuleCat.ofHom (actualCounitKernelComponent D Sc cutoff i v.unop t)
-  naturality _ _ a := by
-    apply ModuleCat.hom_ext
-    exact actualCounitKernelComponent_precompose D Sc cutoff i a.unop t
-
 /-- Every fixed ordinary counit/dot-power row is an ordinary-right kernel map. -/
 def actualCapKernel (i : I) (n : ℕ) (t : OldCategory D Sc cutoff) :
     IndResKernel.kernel (k := k) (append D Sc cutoff i) t ⟶

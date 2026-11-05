@@ -43,12 +43,6 @@ def actionHom : Polynomial R →+* AddMonoid.End M :=
 instance : Module (Polynomial R) (CentralPolynomialModule f) :=
   Module.compHom M (actionHom f)
 
-@[simp] theorem smul_of (p : Polynomial R) (m : M) :
-    p • of f m = of f (actionHom f p m) := rfl
-
-@[simp] theorem of_symm_smul (p : Polynomial R) (m : CentralPolynomialModule f) :
-    (of f).symm (p • m) = actionHom f p ((of f).symm m) := rfl
-
 @[simp] theorem actionHom_C (r : R) (m : M) :
     actionHom f (Polynomial.C r) m = r • m := by
   change (Polynomial.eval₂ (Module.toAddMonoidEnd R M) f.toAddMonoidHom

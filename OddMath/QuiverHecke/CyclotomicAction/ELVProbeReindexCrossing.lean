@@ -40,20 +40,6 @@ def oldAppendToCrossLinear
     Obj M (induced K N).toFunctor w →ₗ[k] Obj L (induced J N).toFunctor w :=
   (rectangularCrossComponent J K L M hc N).total w
 
-theorem oldAppendToCrossLinear_tensor
-    (N : Superfunctor k (OldContentCategory D Sc cutoff ν) (SVec k))
-    (s : OldContentCategory D Sc cutoff ν) (t : OldContentCategory D Sc cutoff νi)
-    (w : OldContentCategory D Sc cutoff ν₂) (a : (K).obj s ⟶ t)
-    (g : (M).obj t ⟶ w) (b : N.obj s) :
-    oldAppendToCrossLinear D Sc cutoff ν i j hj hi hL hM N w
-        (tensor M (induced K N).toFunctor (w := w) t g
-          (tensor K N.toFunctor (w := t) s a b)) =
-      tensor L (induced J N).toFunctor (w := w) ((J).obj s)
-        (oldAppendToCross D Sc cutoff ν i j hj hi hL hM s ≫
-          twist k (D.parity i * D.parity j) ((M).map a ≫ g))
-        (tensor J N.toFunctor (w := (J).obj s) s (𝟙 _) b) :=
-  rectangularCrossComponent_total_tensor J K L M hc N s t w a g b
-
 local notation "r₀" => List.Perm.refl ν
 local notation "rj" => List.Perm.refl (j :: ν)
 local notation "ri" => List.Perm.refl (i :: ν)
@@ -73,96 +59,12 @@ local notation "α₀" => oldAppendToCross D Sc cutoff ν i j rj ri rL rM
 local notation "S" => oldAppendPairReindexLinear D Sc cutoff r₀ i j ri hi hi rM hM h₂
 local notation "T" => oldAppendPairReindexLinear D Sc cutoff r₀ j i rj hj hj rL hL h₂
 
-/-- The common canonical tensor, retaining the physical crossing and full twist. -/
-def oldAppendReindexCrossTensor
-    (N : Superfunctor k (OldContentCategory D Sc cutoff ν) (SVec k))
-    (s : OldContentCategory D Sc cutoff ν) (t : OldContentCategory D Sc cutoff (i :: ν))
-    (w : OldContentCategory D Sc cutoff ν₂) (a : (K₀).obj s ⟶ t)
-    (g : (M₀).obj t ⟶ (Q₂inv).obj w) (b : N.obj s) :
-    Obj L (induced J ((R₀).obj N)).toFunctor w :=
-  tensor L (induced J ((R₀).obj N)).toFunctor (w := w) ((J).obj ((Q₀).obj s))
-    (oldAppendToCross D Sc cutoff ν i j hj hi hL hM ((Q₀).obj s) ≫
-      twist k (D.parity i * D.parity j)
-        ((M).map (show (K).obj ((Q₀).obj s) ⟶ (Qi).obj t from a) ≫
-          (show (M).obj ((Qi).obj t) ⟶ w from g)))
-    (tensor J ((R₀).obj N).toFunctor (w := (J).obj ((Q₀).obj s)) ((Q₀).obj s) (𝟙 _) b)
-
 attribute [local irreducible] oldAppendToCrossLinear oldAppendPairReindexLinear
   oldAppendReindexIso oldAppendPairReindexIso
-
-theorem oldAppendReindexCross_left_tensor
-    (N : Superfunctor k (OldContentCategory D Sc cutoff ν) (SVec k))
-    (s : OldContentCategory D Sc cutoff ν) (t : OldContentCategory D Sc cutoff (i :: ν))
-    (w : OldContentCategory D Sc cutoff ν₂) (a : (K₀).obj s ⟶ t)
-    (g : (M₀).obj t ⟶ (Q₂inv).obj w) (b : N.obj s) :
-    T N w (χ₀ N ((Q₂inv).obj w)
-        (tensor M₀ (induced K₀ N).toFunctor (w := (Q₂inv).obj w) t g
-          (tensor K₀ N.toFunctor (w := t) s a b))) =
-      oldAppendReindexCrossTensor D Sc cutoff ν i j hj hi hL hM N s t w a g b := by
-  have hcross := oldAppendToCrossLinear_tensor D Sc cutoff ν i j rj ri rL rM N s t
-    ((Q₂inv).obj w) a g b
-  have hp := oldAppendPairReindexIso_hom_tensor D Sc cutoff r₀ j i rj hj hj rL hL h₂ N s
-    ((J₀).obj s) w (𝟙 _)
-    (α₀ s ≫ twist k (D.parity i * D.parity j) ((M₀).map a ≫ g)) b
-  have hv := congrArg (T N w) hcross
-  exact hv.trans (hp.trans (by rfl))
-
-theorem oldAppendReindexCross_right_tensor
-    (N : Superfunctor k (OldContentCategory D Sc cutoff ν) (SVec k))
-    (s : OldContentCategory D Sc cutoff ν) (t : OldContentCategory D Sc cutoff (i :: ν))
-    (w : OldContentCategory D Sc cutoff ν₂) (a : (K₀).obj s ⟶ t)
-    (g : (M₀).obj t ⟶ (Q₂inv).obj w) (b : N.obj s) :
-    oldAppendToCrossLinear D Sc cutoff ν i j hj hi hL hM ((R₀).obj N) w
-        (S N w (tensor M₀ (induced K₀ N).toFunctor (w := (Q₂inv).obj w) t g
-          (tensor K₀ N.toFunctor (w := t) s a b))) =
-      oldAppendReindexCrossTensor D Sc cutoff ν i j hj hi hL hM N s t w a g b := by
-  have hp := oldAppendPairReindexIso_hom_tensor D Sc cutoff r₀ i j ri hi hi rM hM h₂ N s t w a g b
-  have hcross := oldAppendToCrossLinear_tensor D Sc cutoff ν i j hj hi hL hM ((R₀).obj N)
-    ((Q₀).obj s) ((Qi).obj t) w
-    (show (K).obj ((Q₀).obj s) ⟶ (Qi).obj t from a)
-    (show (M).obj ((Qi).obj t) ⟶ w from g) b
-  have hv := congrArg (oldAppendToCrossLinear D Sc cutoff ν i j hj hi hL hM ((R₀).obj N) w) hp
-  exact hv.trans (hcross.trans (by rfl))
-
-/-- The selected pair comparisons intertwine the prescribed positive crossing on all vectors. -/
-theorem oldAppendReindexCrossLinear
-    (N : Superfunctor k (OldContentCategory D Sc cutoff ν) (SVec k))
-    (w : OldContentCategory D Sc cutoff ν₂) :
-    T N w ∘ₗ χ₀ N ((Q₂inv).obj w) =
-      oldAppendToCrossLinear D Sc cutoff ν i j hj hi hL hM ((R₀).obj N) w ∘ₗ S N w := by
-  apply doubleHom_ext K₀ M₀ N (w := (Q₂inv).obj w)
-  intro s t a g b
-  simp only [LinearMap.comp_apply]
-  exact (oldAppendReindexCross_left_tensor D Sc cutoff ν i j hj hi hL hM N s t w a g b).trans
-    (oldAppendReindexCross_right_tensor D Sc cutoff ν i j hj hi hL hM N s t w a g b).symm
 
 local notation "eS" => oldAppendPairReindexIso D Sc cutoff r₀ i j ri hi hi rM hM h₂
 local notation "eT" => oldAppendPairReindexIso D Sc cutoff r₀ j i rj hj hj rL hL h₂
 local notation "hc₀" => oldAppendToCross_supernatural D Sc cutoff ν i j rj ri rL rM
-
-private theorem crossing_restriction_total
-    {k C A : Type u} [CommRing k] [Category.{u} C] [Category.{u} A]
-    [Preadditive C] [Linear k C] [Supercategory k C]
-    [Preadditive A] [Linear k A] [Supercategory k A]
-    (Q : C ⥤ A) [Q.Additive] [Q.Linear k] [IsSuperfunctor k Q]
-    {P P' : Superfunctor k A (SVec k)} (f : P ⟶ P') (w : C) :
-    ((restriction Q).map f).total w = f.total (Q.obj w) := rfl
-
-/-- The whole supernatural crossing square uses the selected pair isomorphisms. -/
-theorem oldAppendReindexCross
-    (N : Superfunctor k (OldContentCategory D Sc cutoff ν) (SVec k)) :
-    (restriction Q₂inv).map (rectangularCrossComponent J₀ K₀ L₀ M₀ hc₀ N) ≫
-        (eT).hom.app N =
-      (eS).hom.app N ≫ rectangularCrossComponent J K L M hc ((R₀).obj N) := by
-  let V := (oldModuleReindex D Sc cutoff h₂).obj (induced M₀ (induced K₀ N))
-  let W := induced L (induced J ((R₀).obj N))
-  apply HomogeneousSuperfunctorIso.total_ext (F := V) (G := W)
-  intro w
-  rw [Superfunctor.comp_total, Superfunctor.comp_total,
-    crossing_restriction_total Q₂inv (rectangularCrossComponent J₀ K₀ L₀ M₀ hc₀ N) w]
-  have hraw := oldAppendReindexCrossLinear D Sc cutoff ν i j hj hi hL hM N w
-  unfold oldAppendPairReindexLinear oldAppendToCrossLinear at hraw
-  exact hraw
 
 end OddMath.QuiverHecke
 
@@ -210,20 +112,6 @@ def probeAppendToCross :
     (appendToCrossTarget_closed D Sc m ν i j hj hL)
     (rectangularCrossComponent_supernatural J K L M hc).toSuperNatTrans
 
-theorem probeAppendToCross_mem :
-    probeAppendToCross D Sc m ν i j hj hi hL hM ∈ parity (R := k) _ _
-      (D.parity i * D.parity j) :=
-  Superfunctor.mem_parity_iff_isHomogeneous.mpr
-    (fullLiftTrans_homogeneous (ProbeEvaluatesCoefficients D m Sc ν)
-      (ProbeEvaluatesCoefficients D m Sc ν₂)
-      (appendToCrossSource_closed D Sc m ν i j hi hM)
-      (appendToCrossTarget_closed D Sc m ν i j hj hL) _
-      (rectangularCrossComponent_supernatural J K L M hc).toSuperNatTrans_isHomogeneous)
-
-theorem probeAppendToCross_native_app (p : ZMod 2) (N : ProbeEvaluatedModules D Sc m ν) :
-    ((probeAppendToCross D Sc m ν i j hj hi hL hM).app p N).hom =
-      (rectangularCrossComponent_supernatural J K L M hc).toSuperNatTrans.app p N.obj := rfl
-
 theorem probeAppendToCross_native_total (N : ProbeEvaluatedModules D Sc m ν) :
     ((probeAppendToCross D Sc m ν i j hj hi hL hM).total N).hom =
       rectangularCrossComponent J K L M hc N.obj := by
@@ -242,15 +130,6 @@ theorem probeAppendToCross_total (N : ProbeEvaluatedModules D Sc m ν) :
       probeAppendToCrossComponent D Sc m ν i j hj hi hL hM N :=
   InducedCategory.hom_ext (probeAppendToCross_native_total D Sc m ν i j hj hi hL hM N)
 
-/-- At cons representatives this is the existing selected evaluated crossing. -/
-theorem probeAppendToCross_cons :
-    probeAppendToCross D Sc m ν i j (List.Perm.refl _) (List.Perm.refl _)
-      (List.Perm.refl _) (List.Perm.swap i j ν) = probeEvaluatedDistinctCross D Sc m ν i j := by
-  apply Superfunctor.hom_ext
-  intro p N
-  apply InducedCategory.hom_ext
-  rfl
-
 local notation "r₀" => List.Perm.refl ν
 local notation "rj" => List.Perm.refl (j :: ν)
 local notation "ri" => List.Perm.refl (i :: ν)
@@ -267,23 +146,5 @@ local notation "eT" => oldAppendPairReindexIso D Sc cut r₀ j i rj hj hj rL hL 
 local notation "ES" => probeAppendPairReindexIso D Sc m r₀ i j ri hi hi rM hM h₂
 local notation "ET" => probeAppendPairReindexIso D Sc m r₀ j i rj hj hj rL hL h₂
 local notation "hc₀" => oldAppendToCross_supernatural D Sc cut ν i j rj ri rL rM
-
-/-- The selected pair square for the actual full evaluated probe crossing. -/
-theorem probeAppendReindexCross (N : ProbeEvaluatedModules D Sc m ν) :
-    (probeEvaluatedReindex D Sc m h₂).map
-        ((probeAppendToCross D Sc m ν i j rj ri rL rM).total N) ≫ (ET).hom.app N =
-      (ES).hom.app N ≫
-        (probeAppendToCross D Sc m ν i j hj hi hL hM).total
-          ((probeEvaluatedReindex D Sc m r₀).obj N) := by
-  apply InducedCategory.hom_ext
-  change (restriction Q₂inv).map (((probeAppendToCross D Sc m ν i j rj ri rL rM).total N).hom) ≫
-      (eT).hom.app N.obj =
-    (eS).hom.app N.obj ≫
-      (((probeAppendToCross D Sc m ν i j hj hi hL hM).total
-        ((probeEvaluatedReindex D Sc m r₀).obj N)).hom)
-  rw [probeAppendToCross_native_total D Sc m ν i j rj ri rL rM N,
-    probeAppendToCross_native_total D Sc m ν i j hj hi hL hM
-      ((probeEvaluatedReindex D Sc m r₀).obj N)]
-  exact oldAppendReindexCross D Sc cut ν i j hj hi hL hM N.obj
 
 end OddMath.QuiverHecke

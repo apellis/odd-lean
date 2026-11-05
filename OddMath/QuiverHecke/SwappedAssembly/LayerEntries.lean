@@ -63,12 +63,6 @@ theorem append_heq_right {l m m' : List (Col I X)} {s t r : Sector I} (p : SPath
   rw [eq_of_heq hq]
 
 omit [AddCommGroup X] in
-/-- Concatenation respects heterogeneous equality of the left factor. -/
-theorem append_heq_left {l l' m : List (Col I X)} {s t r : Sector I} {p : SPath l s t}
-    {p' : SPath l' s t} (q : SPath m t r) (hl : l = l') (hp : HEq p p') :
-    HEq (p.append q) (p'.append q) := by
-  subst hl
-  rw [eq_of_heq hp]
 
 omit [AddCommGroup X] in
 /-- Every path of a concatenated word is the concatenation of its two parts. -/

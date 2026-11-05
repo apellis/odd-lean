@@ -201,16 +201,6 @@ theorem orderedReverseNumerator_top (i : I) (v : List I) :
     (by simpa only [Units.val_one, one_smul] using endpointOutputCoefficients_top D Sc cutoff i v)
   simpa only [endpointQPDegree, appendQPProductUnit, mul_one, Nat.add_comm] using H
 
-theorem orderedReverseNumerator_support (i : I) (v : List I) :
-    (orderedQPOutputCoefficients D Sc cutoff i v (List.range v.length)
-      (endpointOutputCoefficients D Sc cutoff i v)).support ⊆
-        Finset.range (endpointQPDegree D cutoff i v + 1) := by
-  intro n hn
-  apply Finset.mem_range.mpr
-  by_contra h
-  exact (Finsupp.mem_support_iff.mp hn)
-    (orderedReverseNumerator_above D Sc cutoff i v n (by omega))
-
 /-- The concrete reverse numerator at every input power retains its unit top
 coefficient: the total coefficient twist fixes the scalar identity. -/
 theorem appendC0_orderedReverseNumerator_top (i : I) (v : List I) (d : ℕ) :

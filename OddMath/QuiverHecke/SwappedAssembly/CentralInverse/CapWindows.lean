@@ -94,10 +94,6 @@ variable {X Y O : C} {h : ℕ}
     (capMap s w i none : X ⟶ Y) = s := rfl
 @[simp] lemma capMap_some (s : X ⟶ Y) (w : Fin h → (X ⟶ O)) (i) (n : Fin h) :
     (capMap s w i (some n) : X ⟶ O) = w n := rfl
-@[simp] lemma capInv_none (j : Y ⟶ X) (A : Fin h → (O ⟶ X)) (i) :
-    (capInv j A none i : Y ⟶ X) = j := rfl
-@[simp] lemma capInv_some (j : Y ⟶ X) (A : Fin h → (O ⟶ X)) (i) (n : Fin h) :
-    (capInv j A (some n) i : O ⟶ X) = A n := rfl
 @[simp] lemma tri_none_none (a : Y ⟶ Y) (B : Fin h → (O ⟶ Y)) :
     (tri a B none none : Y ⟶ Y) = a := rfl
 @[simp] lemma tri_none_some (a : Y ⟶ Y) (B : Fin h → (O ⟶ Y)) (m : Fin h) :
@@ -107,23 +103,12 @@ variable {X Y O : C} {h : ℕ}
 @[simp] lemma tri_some_some (a : Y ⟶ Y) (B : Fin h → (O ⟶ Y)) (n m : Fin h) :
     (tri a B (some n) (some m) : O ⟶ O) = if n = m then 𝟙 O else 0 := rfl
 
-@[simp] lemma capObj_id_none : ((𝟙 (capObj Y O h) : capObj Y O h ⟶ _) none none : Y ⟶ Y) =
-    𝟙 Y := Mat_.id_apply_self _ _
 @[simp] lemma capObj_id_some (n m : Fin h) :
     ((𝟙 (capObj Y O h) : capObj Y O h ⟶ _) (some n) (some m) : O ⟶ O) =
       if n = m then 𝟙 O else 0 := by
   by_cases hnm : n = m
   · subst hnm; simp only [↓reduceIte]; exact Mat_.id_apply_self _ _
   · simp only [hnm, ↓reduceIte]; exact Mat_.id_apply_of_ne _ _ _ (by simpa using hnm)
-@[simp] lemma capObj_id_none_some (m : Fin h) :
-    ((𝟙 (capObj Y O h) : capObj Y O h ⟶ _) none (some m) : Y ⟶ O) = 0 :=
-  Mat_.id_apply_of_ne _ _ _ (by simp)
-@[simp] lemma capObj_id_some_none (n : Fin h) :
-    ((𝟙 (capObj Y O h) : capObj Y O h ⟶ _) (some n) none : O ⟶ Y) = 0 :=
-  Mat_.id_apply_of_ne _ _ _ (by simp)
-@[simp] lemma oneObj_id (i j) :
-    ((𝟙 (oneObj X) : oneObj X ⟶ _) i j : X ⟶ X) = 𝟙 X :=
-  Mat_.id_apply_self _ _
 
 end Entries
 
@@ -304,7 +289,6 @@ theorem exists_isCapInverse_shift (s : X ⟶ Y) (x : Aut X) (y : Aut Y) (v : X �
   have : IsIso (x ^ (-(l : ℤ))).hom := Iso.isIso_hom (X := X) (Y := X) (x ^ (-(l : ℤ)))
   rw [hcap]
   infer_instance
-
 
 /-! ### Shifted cup windows, by duality -/
 

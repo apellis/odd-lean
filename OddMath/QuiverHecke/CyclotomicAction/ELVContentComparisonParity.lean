@@ -95,13 +95,6 @@ theorem oldContentAppendExtensionIso_hom_mem
     (oldContentInclusion D Sc cutoff (i :: ν)) M)
     (inductionComp_inv_mem (oldContentInclusion D Sc cutoff ν) (append D Sc cutoff i) M)
 
-/-- The chosen inverse append/extension comparison is even. -/
-theorem oldContentAppendExtensionIso_inv_mem
-    (M : Superfunctor k (OldContentCategory D Sc cutoff ν) (SVec k)) :
-    (oldContentAppendExtensionIso D Sc cutoff ν i).inv.app M ∈ parity (R := k) _ _ 0 :=
-  inv_mem ((oldContentAppendExtensionIso D Sc cutoff ν i).app M)
-    (oldContentAppendExtensionIso_hom_mem D Sc cutoff ν i M)
-
 /-- The given append/restriction chart includes its actual even inclusion unit. -/
 theorem oldContentAppendRestrictionIso_hom_mem
     (M : Superfunctor k (OldContentCategory D Sc cutoff ν) (SVec k)) :
@@ -114,20 +107,6 @@ theorem oldContentAppendRestrictionIso_hom_mem
     ((oldContentAppendExtensionIso D Sc cutoff ν i).app M)
     (oldContentAppendExtensionIso_hom_mem D Sc cutoff ν i M) t
 
-/-- The inverse of that selected native chart is even. -/
-theorem oldContentAppendRestrictionIso_inv_mem
-    (M : Superfunctor k (OldContentCategory D Sc cutoff ν) (SVec k)) :
-    (oldContentAppendRestrictionIso D Sc cutoff ν i M).inv ∈ parity (R := k) _ _ 0 :=
-  inv_mem (oldContentAppendRestrictionIso D Sc cutoff ν i M)
-    (oldContentAppendRestrictionIso_hom_mem D Sc cutoff ν i M)
-
-/-- The input-natural append chart retains the same even chosen component. -/
-theorem oldContentAppendRestrictionNaturalIso_hom_mem
-    (M : Superfunctor k (OldContentCategory D Sc cutoff ν) (SVec k)) :
-    (oldContentAppendRestrictionNaturalIso D Sc cutoff ν i).hom.app M ∈ parity (R := k) _ _ 0 := by
-  rw [oldContentAppendRestrictionNaturalIso_hom_app]
-  exact oldContentAppendRestrictionIso_hom_mem D Sc cutoff ν i M
-
 /-- The whole chosen F/E chart is even on arbitrary full-coefficient modules. -/
 theorem oldContentFERestrictionNaturalIso_hom_mem
     (M : Superfunctor k (OldContentCategory D Sc cutoff ν) (SVec k)) :
@@ -135,12 +114,5 @@ theorem oldContentFERestrictionNaturalIso_hom_mem
   rw [oldContentFERestrictionNaturalIso_hom_app]
   exact IsSuperfunctor.map_mem (F := restriction (oldContentAppend D Sc cutoff ν i))
     (oldContentAppendRestrictionIso_hom_mem D Sc cutoff ν i M)
-
-/-- The inverse whole F/E chart has that same even convention. -/
-theorem oldContentFERestrictionNaturalIso_inv_mem
-    (M : Superfunctor k (OldContentCategory D Sc cutoff ν) (SVec k)) :
-    (oldContentFERestrictionNaturalIso D Sc cutoff ν i).inv.app M ∈ parity (R := k) _ _ 0 :=
-  inv_mem ((oldContentFERestrictionNaturalIso D Sc cutoff ν i).app M)
-    (oldContentFERestrictionNaturalIso_hom_mem D Sc cutoff ν i M)
 
 end OddMath.QuiverHecke.ELVOld

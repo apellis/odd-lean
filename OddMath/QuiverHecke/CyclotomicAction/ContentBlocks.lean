@@ -108,17 +108,6 @@ theorem contentIdempotent_central (n : ℕ) (β : Multiset I) (z : Hn D Sc n) :
     · have hf := hom_eq_zero_of_content_ne D Sc h f
       simp [hf]
 
-/-- Distinct contents are orthogonal. -/
-theorem contentIdempotent_orthogonal (n : ℕ) {β γ : Multiset I} (h : β ≠ γ) :
-    contentIdempotent D Sc n β * contentIdempotent D Sc n γ = 0 := by
-  conv_lhs => rhs; unfold contentIdempotent FiniteHomMatrix.localUnit
-  rw [Finset.mul_sum]
-  apply Finset.sum_eq_zero
-  intro s hs
-  change contentIdempotent D Sc n β * FiniteHomMatrix.single s s _ = 0
-  rw [content_mul_single, ite_eq_right]
-  exact fun e => h (e.symm.trans (Finset.mem_filter.mp hs).2)
-
 /-- Content idempotent in the specified cyclotomic quotient. -/
 def cyclotomicContentIdempotent (a : I → _root_.Polynomial k) (n : ℕ)
     (β : Multiset I) : CyclotomicAlgebra D Sc a n :=
@@ -136,12 +125,6 @@ theorem cyclotomicContentIdempotent_central (a : I → _root_.Polynomial k)
       z * cyclotomicContentIdempotent D Sc a n β := by
   obtain ⟨z, rfl⟩ := Ideal.Quotient.mk_surjective z
   exact congrArg (cyclotomicMk D Sc a n) (contentIdempotent_central D Sc (n + 1) β z)
-
-theorem cyclotomicContentIdempotent_orthogonal (a : I → _root_.Polynomial k)
-    (n : ℕ) {β γ : Multiset I} (h : β ≠ γ) :
-    cyclotomicContentIdempotent D Sc a n β * cyclotomicContentIdempotent D Sc a n γ = 0 := by
-  rw [cyclotomicContentIdempotent, cyclotomicContentIdempotent, ← map_mul,
-    contentIdempotent_orthogonal D Sc (n + 1) h, map_zero]
 
 omit [Fintype I] in
 /-- Rightmost strand insertion adds exactly its colour to content. -/

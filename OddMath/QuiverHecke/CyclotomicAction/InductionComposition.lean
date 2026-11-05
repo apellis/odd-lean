@@ -139,7 +139,6 @@ def compositionCorner : SuperBimodule GC GA where
     ((reg).ract_mem p (θ r) (compositionAppend_parity D Sc i j a ha n hr))
     (fun x _ => compositionCorner_right_mem D Sc i j a n r x)
 
-
 local notation "T" => compositionCorner D Sc i j a ha n
 
 /-- Parity in the composite corner is inherited from the quotient algebra. -/
@@ -297,25 +296,9 @@ def inductionCompositionIso : tensor P Q ≅ T where
     apply SVec.hom_ext
     exact compositionCornerLinear_inverse D Sc i j a ha n
 
-/-- The comparison sends a pure tensor to the ordered product. -/
-@[simp] theorem inductionCompositionIso_hom_btmul (x : (P).toSVec) (y : (Q).toSVec) :
-    (((inductionCompositionIso D Sc i j a ha n).hom).1 (btmul P Q x y)).1 =
-      x.1 * φ y.1 := rfl
-
-/-- The inverse inserts the lower idempotent without a parity sign. -/
-@[simp] theorem inductionCompositionIso_inv_apply (z : (T).toSVec) :
-    ((inductionCompositionIso D Sc i j a ha n).inv).1 z =
-      btmul P Q (compositionCornerInclusion D Sc i j a ha n z)
-        (inductionCornerIdempotent D Sc j a ha n) := rfl
-
 /-- The comparison is an even map. -/
 theorem inductionCompositionIso_hom_mem :
     (inductionCompositionIso D Sc i j a ha n).hom ∈ Supercategory.parity (R := k) _ _ 0 :=
   mem_parity_iff.mpr (compositionCornerLinear_mem D Sc i j a ha n)
-
-/-- The inverse comparison is an even map. -/
-theorem inductionCompositionIso_inv_mem :
-    (inductionCompositionIso D Sc i j a ha n).inv ∈ Supercategory.parity (R := k) _ _ 0 :=
-  mem_parity_iff.mpr (compositionCornerInverseLinear_mem D Sc i j a ha n)
 
 end OddMath.QuiverHecke

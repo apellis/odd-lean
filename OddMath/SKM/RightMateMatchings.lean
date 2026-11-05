@@ -37,17 +37,6 @@ theorem cupPrefixLayers_eq (l : List I) (a : List (Letter I)) (L : List (LayerDa
   | cons i l ih =>
     simp [cupPrefixLayers, ih, cupAttachLayers, cupN, dns, ups, whL, List.append_assoc]
 
-theorem cupPrefixLayers_eq_partialMate (l : List I) (a b : List (Letter I))
-    (L : List (LayerData I)) :
-    cupPrefixLayers l a L = partialRightMateL l [] a b L := by
-  simp [cupPrefixLayers_eq, partialRightMateL, dns, capN]
-
-theorem sChain_cupPrefixLayers (l : List I) {a b : List (Letter I)}
-    {L : List (LayerData I)} (hL : SChain (ups l ++ a) L b) :
-    SChain a (cupPrefixLayers l a L) (dns l ++ b) := by
-  rw [cupPrefixLayers_eq_partialMate l a b]
-  simpa [ups] using sChain_partialRightMateL l [] a b (by simpa [ups] using hL)
-
 theorem cupPrefix_matching_iso (l : List I) {a b : List (Letter I)}
     {R : List (TMove (Letter I))} (hR : IsMatching₂ (ups l ++ a) b R) :
     IsMatching₂ a (dns l ++ b) (cupPrefixMatching l R) ∧
@@ -93,10 +82,6 @@ def cupPrefixStrandEquiv (l : List I) {a b : List (Letter I)}
   invFun j := ⟨j.val, by rw [← leftEnds₂_cupPrefix l hR]; exact j.property⟩
   left_inv _ := rfl
   right_inv _ := rfl
-
-@[simp] theorem cupPrefixStrandEquiv_val (l : List I) {a b : List (Letter I)}
-    {R : List (TMove (Letter I))} (hR : IsMatching₂ (ups l ++ a) b R)
-    (j : MatchingStrand (ups l ++ a) R) : (cupPrefixStrandEquiv l hR j).val = j.val := rfl
 
 theorem tmoves_cupPrefix (l : List I) (ds : List (DTMove I)) :
     tmoves (cupPrefixMoves l ds) = cupPrefixMatching l (tmoves ds) := by
@@ -179,15 +164,6 @@ section Evaluation
 variable {X : Type*} [AddCommGroup X] {D : Datum I X}
   {k : Type*} [CommRing k] (Sc : Scalars D k)
 
-/-- The matching-syntax source-prefix construction is recovered by the
-native right closure; no right closing word or bubble transport is needed. -/
-theorem cl_rightClosure_cupPrefix (μ : X) (l : List I) {a b : List (Letter I)}
-    {L : List (LayerData I)} (hL : SChain (ups l ++ a) L b) :
-    cl D Sc μ (ups l ++ a) (b ++ ups [])
-      (rightClosureL l [] a b (cupPrefixLayers l a L)) =
-    cl D Sc μ (ups l ++ a) (b ++ ups []) L := by
-  rw [cupPrefixLayers_eq_partialMate l a b]
-  exact cl_rightClosure_partialMate Sc μ l [] a b (by simpa [ups] using hL)
 end Evaluation
 
 end OddMath.SKM

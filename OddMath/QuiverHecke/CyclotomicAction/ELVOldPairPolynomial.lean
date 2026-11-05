@@ -89,22 +89,6 @@ theorem signedQuadraticComponent_pairDots (i j : I)
         (pairSecondDot D (parameterTwist D Sc) cutoff i j s) := by
   rw [pairFirstDot_affine, pairSecondDot_affine, ← elvSignedPairQuadEval_map]
   rfl
-/-- The polynomial in the two independent OLD dots is even supernatural. -/
-theorem pairPolynomial_supernatural {i j : I} (hij : i ≠ j) :
-    IsSupernatural k 0 (fun s : OldCategory D (parameterTwist D Sc) cutoff =>
-      elvSignedPairQuadEval D Sc
-        (R := End (((append D (parameterTwist D Sc) cutoff i) ⋙
-          (append D (parameterTwist D Sc) cutoff j)).obj s)) i j
-        (pairFirstDot D (parameterTwist D Sc) cutoff i j s)
-        (pairSecondDot D (parameterTwist D Sc) cutoff i j s)) := by
-  have ha : IsSupernatural k (D.parity i * D.parity j)
-      (crossComponent D (parameterTwist D Sc) cutoff j i) := by
-    simpa only [mul_comm] using cross_supernatural D (parameterTwist D Sc) cutoff j i
-  exact BalancedInduction.signedQuadratic_supernatural ha
-    (cross_supernatural D (parameterTwist D Sc) cutoff i j) (fun s => by
-      rw [← signedQuadraticComponent_pairDots]
-      simpa only [mul_comm, signedQuadraticComponent, Functor.comp_obj, append] using
-        crossComponent_parameterUntwist D Sc cutoff hij.symm s)
 
 end CyclotomicCrossingTensor.Distinct
 end OddMath.QuiverHecke.ELVOld

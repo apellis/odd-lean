@@ -201,10 +201,4 @@ theorem firstDot_relation_transport (j : {j : I // D.parity j = 1}) (v : List I)
   intro r _
   simpa only [term_pre, term_dot] using term_difference D Sc cutoff j v (cutoff j.1) r.val r.isLt
 
-/-- The even-cutoff boundary relation kills delta itself at cutoff zero. -/
-theorem firstDot_delta_cutoff_zero (j : {j : I // D.parity j = 1}) (h : cutoff j.1 = 0) :
-    SKM.SYM.elvCoefficientQuotient (k := k) D cutoff (SKM.SYM.delta D k j) = 0 := by
-  have ht := SKM.SYM.elvCoefficientQuotient_top (k := k) D cutoff j (by simp [h])
-  simpa only [h, Nat.zero_div, SKM.SYM.elvChi, mul_one] using ht
-
 end OddMath.QuiverHecke.ELVOld

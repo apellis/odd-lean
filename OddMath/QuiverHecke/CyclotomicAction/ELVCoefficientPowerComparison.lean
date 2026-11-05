@@ -111,28 +111,4 @@ instance powerToWeighted_super (N : ℕ)
     funext v
     exact congrFun h ⟨v.word⟩
 
-@[simp] theorem weightedToPower_obj_carrier (N : ℕ)
-    (hT : coefficientPowerIdeal D cutoff c L ≤ coefficientWeightedIdeal D cutoff N)
-    (M : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k))
-    (v : List I) :
-    ((weightedToPower D Sc cutoff c L N hT).obj M).obj.obj ⟨v⟩ = M.obj ⟨v⟩ := rfl
-
-@[simp] theorem powerToWeighted_obj_carrier (N : ℕ)
-    (hW : coefficientWeightedIdeal D cutoff N ≤ coefficientPowerIdeal D cutoff c L)
-    (M : CoefficientPowerModules D Sc cutoff c L) (v : List I) :
-    ((powerToWeighted D Sc cutoff c L N hW).obj M).obj ⟨v⟩ = M.obj.obj ⟨v⟩ := rfl
-
-@[simp] theorem weightedToPower_map_app (N : ℕ)
-    (hT : coefficientPowerIdeal D cutoff c L ≤ coefficientWeightedIdeal D cutoff N)
-    (M N' : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k)) (f : M ⟶ N')
-    (p : ZMod 2) (v : List I) :
-    (((weightedToPower D Sc cutoff c L N hT).map f).hom).app p ⟨v⟩ =
-      f.app p ⟨v⟩ := rfl
-
-@[simp] theorem powerToWeighted_map_app (N : ℕ)
-    (hW : coefficientWeightedIdeal D cutoff N ≤ coefficientPowerIdeal D cutoff c L)
-    (M N' : CoefficientPowerModules D Sc cutoff c L) (f : M ⟶ N') (p : ZMod 2)
-    (v : List I) :
-    ((powerToWeighted D Sc cutoff c L N hW).map f).app p ⟨v⟩ = f.hom.app p ⟨v⟩ := rfl
-
 end OddMath.QuiverHecke.ELVOld

@@ -178,31 +178,5 @@ theorem weightedFunctional_compare (i : I) (hN : 0 < cutoff i)
     (killsWeighted D Sc cutoff L) i (height D cutoff i) (topSlot D cutoff i hN) z
   exact congrArg (coefficientPowerVacuumEmptyEquiv D Sc cutoff L).symm hc
 
-/-- The actual weighted last inverse row extracts every literal A/T
-coefficient on the prescribed native weighted unit/dot columns. -/
-theorem weightedFunctional_unitDotColumn (i : I) (hN : 0 < cutoff i)
-    (a : ℕ) (ha : a < cutoff i) (z : CoefficientPowerQuotient (k := k) D cutoff L) :
-    weightedFunctional D Sc cutoff L i hN
-      ((unitDotColumn (truncatedAppend D Sc cutoff bound [i])
-        (truncatedDot_supernatural D Sc cutoff bound i) (weightedVacuum D Sc cutoff L) a).total
-          ((oldTruncateFunctor D Sc cutoff bound).obj ⟨[]⟩)
-            (weightedEmptyEquiv D Sc cutoff L z)) =
-      if a + 1 = cutoff i then z else 0 := by
-  let e := weightedEmptyEquiv D Sc cutoff L
-  have hw := weightedUnitCoefficient_unitDotColumn D Sc cutoff bound i
-    (weightedVacuum D Sc cutoff L) ⟨[]⟩ (height D cutoff i) (topSlot D cutoff i hN) a
-    (by simpa only [VacuumCoefficient.count] using ha) (e z)
-  have har : a = (topSlot D cutoff i hN).val ↔ a + 1 = cutoff i := by
-    dsimp only [topSlot]
-    omega
-  change e.symm
-    (weightedUnitCoefficient D Sc cutoff bound i (weightedVacuum D Sc cutoff L) ⟨[]⟩
-      (height D cutoff i) (topSlot D cutoff i hN) _) = _
-  by_cases htop : a + 1 = cutoff i
-  · rw [ite_eq_left (har.mpr htop)] at hw
-    simpa only [ite_eq_left htop] using (congrArg e.symm hw).trans (e.symm_apply_apply z)
-  · rw [ite_eq_right (fun he => htop (har.mp he))] at hw
-    simpa only [ite_eq_right htop] using (congrArg e.symm hw).trans (map_zero e.symm)
-
 end PowerVacuumCoefficient
 end OddMath.QuiverHecke.ELVOld

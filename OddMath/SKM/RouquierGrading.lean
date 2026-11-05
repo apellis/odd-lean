@@ -214,11 +214,6 @@ theorem associator_inv_mem {μ ν ρ σ : X} (f : W.obj μ ⟶ W.obj ν) (g : W.
   let _ := G.graded μ σ
   simpa using inv_mem_degree (R := k) (associator f g h) (G.associator_mem f g h)
 
-theorem leftUnitor_inv_mem {μ ν : X} (f : W.obj μ ⟶ W.obj ν) :
-    (leftUnitor f).inv ∈ G.deg _ _ 0 := by
-  let _ := G.graded μ ν
-  simpa using inv_mem_degree (R := k) (leftUnitor f) (G.leftUnitor_mem f)
-
 theorem rightUnitor_inv_mem {μ ν : X} (f : W.obj μ ⟶ W.obj ν) :
     (rightUnitor f).inv ∈ G.deg _ _ 0 := by
   let _ := G.graded μ ν

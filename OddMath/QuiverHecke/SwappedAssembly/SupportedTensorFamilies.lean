@@ -134,30 +134,9 @@ def tensorSourceFamily (s : List I) (t : Sector I) : H D Sc' m cutoff N ΛP ΛR 
       tensorSourceObject D Sc m cutoff ΛP ΛR L s := by
   simp [tensorSourceFamily]
 
-/-- All other source rows are actual whole-functor zeros. -/
-theorem tensorSourceFamily_isZero (s : List I) (t : Sector I)
-    (ht : t ≠ (0,tensorSourceContent D ΛP ΛR s)) :
-    Limits.IsZero (tensorSourceFamily D Sc m cutoff ΛP ΛR L s t) := by
-  rw [tensorSourceFamily,dite_eq_right ht]
-  exact supportedZero_isZero D Sc' m cutoff N ΛP ΛR t
-
 variable (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
   (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
 local notation "P" => elvProbeReservoir D Sc m cutoff N ΛP ΛR hP hR
-
-/-- The fixed source detector is the literal tensor Hom word through the prescribed even chart. -/
-def tensorSourceObjectIso (s : List I) :
-    (tensorSourceObject D Sc m cutoff ΛP ΛR L s).obj ≅
-      tensorHomAt D Sc m cutoff L ΛP ΛR
-        (TensorReservoirWords.pathHom D Sc' m cutoff L ΛP ΛR
-          (tensorSourcePath D ΛP ΛR s) (tensorSourceLabels_up D ΛP ΛR s)) :=
-  tensorVacuumPathIso D Sc m cutoff L ΛP ΛR hP hR
-    (tensorSourcePath D ΛP ΛR s) (tensorSourceLabels_up D ΛP ΛR s)
-
-theorem tensorSourceObjectIso_hom_mem (s : List I) :
-    (tensorSourceObjectIso D Sc m cutoff ΛP ΛR L hP hR s).hom ∈ parity (R := k) _ _ 0 :=
-  tensorVacuumPathIso_hom_mem D Sc m cutoff L ΛP ΛR hP hR
-    (tensorSourcePath D ΛP ΛR s) (tensorSourceLabels_up D ΛP ΛR s)
 
 /-- The specified vacuum corner has exactly the original external weight ΛP − ΛR. -/
 theorem tensorVacuumWeight : (P).wt (0,0) = ΛP - ΛR := by
@@ -168,7 +147,6 @@ abbrev tensorWordMatrixModule (s t : List I) :=
   matrixModule D Sc m cutoff N ΛP ΛR
     (tensorSourceFamily D Sc m cutoff ΛP ΛR L s) (tensorTargetFamily D Sc m cutoff ΛP ΛR L)
     (SKM.ob D μ (upWord t))
-
 
 omit [Fintype I] in
 /-- The word matrix's chosen terminal sector has its original external weight. -/

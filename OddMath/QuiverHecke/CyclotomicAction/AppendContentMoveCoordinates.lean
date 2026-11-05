@@ -201,15 +201,6 @@ theorem length_longPrependShuffle (r : ℕ) :
     length (r + 1) (longPrependShuffle r).1 = r := by
   rw [← length_inv, ← length_canWord, canWord_longPrependShuffle, length_descRun]
 
-/-- The chronological long chain crosses old strands in their original order. -/
-theorem cw_longPrependShuffle (r : ℕ) :
-    cw (canWord (r + 1) (longPrependShuffle r).1⁻¹) =
-      (List.range r).map PG.cross := by
-  have hr : List.range' 0 r = List.range r := by
-    induction r with
-    | zero => rfl
-    | succ r ih => simp only [List.range'_concat, List.range_succ, Nat.zero_add, one_mul, ih]
-  simp [canWord_longPrependShuffle, cw, descRun, hr]
 end OddMath.QuiverHecke
 namespace OddMath.QuiverHecke
 

@@ -19,12 +19,6 @@ def evenUnitDotPolynomialMap (i : {i : I // D.parity i = 0}) (v t : List I) :
     (ℕ →₀ Old D Sc cutoff v t) →ₗ[k] Old D Sc cutoff (v ++ [i.1]) (t ++ [i.1]) :=
   Finsupp.lsum k fun n => inductionUnitDotColumn D Sc cutoff i.1 v t n
 
-@[simp] theorem evenUnitDotPolynomialMap_single (i : {i : I // D.parity i = 0})
-    (v t : List I) (n : ℕ) (b : Old D Sc cutoff v t) :
-    evenUnitDotPolynomialMap D Sc cutoff i v t (Finsupp.single n b) =
-      inductionUnitDotColumn D Sc cutoff i.1 v t n b := by
-  rw [evenUnitDotPolynomialMap, Finsupp.lsum_single]
-
 theorem evenUnitDotPolynomialMap_eq (i : {i : I // D.parity i = 0}) (v t : List I) :
     evenUnitDotPolynomialMap D Sc cutoff i v t = unitDotPolynomialMap D Sc cutoff i.1 v t := by
   unfold evenUnitDotPolynomialMap unitDotPolynomialMap

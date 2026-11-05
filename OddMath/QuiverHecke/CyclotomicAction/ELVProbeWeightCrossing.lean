@@ -112,12 +112,6 @@ theorem probeOldBlockEqualCross_mem (β : WeightBlocks D Λ x₀) :
       (Superfunctor.mem_parity_iff_isHomogeneous.mp
         (inductionModuleCross_mem (J β) (K β) (hc β))))
 
-/-- Every parity component has exactly its prescribed OLD module map. -/
-theorem probeOldBlockEqualCross_native_app (β : WeightBlocks D Λ x₀)
-    (p : ZMod 2) (M : ProbeCanonicalModules D Sc m β.1) :
-    ((probeOldBlockEqualCross D Sc m i Λ h₁ h₂ β).app p M).hom =
-      (inductionModuleCross (J β) (K β) (hc β)).app p M.obj := rfl
-
 /-- Forgetting only scalar-evaluation certificates retains the literal OLD crossing. -/
 theorem probeOldBlockEqualCross_native_total (β : WeightBlocks D Λ x₀)
     (M : ProbeCanonicalModules D Sc m β.1) :

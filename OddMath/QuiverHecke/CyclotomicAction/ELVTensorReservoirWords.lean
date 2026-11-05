@@ -121,7 +121,6 @@ private theorem comparison {l : List (SKM.Col I X)} {c : I →₀ ℕ}
         have hlist := wordHom_word_heq D Sc m cutoff L ΛP ΛR hwords
         exact (heq_of_eq hc).trans (hpost.trans (happ.trans hlist))
 
-
 omit [Fintype I] in
 /-- The actual endpoint weight is the unchanged original weight of the
 reversed labelled colour word. -/
@@ -144,7 +143,6 @@ theorem path_weight {l : List (SKM.Col I X)} {c : I →₀ ℕ}
         have hy := (edge D ΛR i c hv).symm.trans ((congrArg (fun x => x + D.α i) (ih p ht)).trans
           (PowerWordWeight.wordWeight_append D ΛR ((l.map (fun a => a.l.2)).reverse) i))
         simpa only [List.map_cons, List.reverse_cons] using hy
-
 
 /-- The entire postcomposed tensor Hom is the chosen reversed append Hom,
 with only its proved original-weight endpoint presentation changed. -/
@@ -170,26 +168,5 @@ theorem pathHomAt_eq_wordHom {l : List (SKM.Col I X)} {c : I →₀ ℕ}
       TensorVacuumWords.wordHom D Sc m cutoff L ΛP ΛR ((l.map (fun a => a.l.2)).reverse) :=
   eq_of_heq ((atWeight_heq D Sc m cutoff L ΛP ΛR _ _).trans
     (pathHom_heq D Sc m cutoff L ΛP ΛR p hl))
-
-/-- The path-Hom value uses precisely the existing chosen word chart on
-every actual regular-probe vector and full original-weight component. -/
-def valueChart {l : List (SKM.Col I X)} {c : I →₀ ℕ}
-    (p : SPath l (0,c) (0,0)) (hl : ∀ a ∈ l, a.l.1 = true) :
-    (pathHomAt D Sc m cutoff L ΛP ΛR p hl).obj R₀ ≅
-      PowerWordWeight.wordFamily D Sc cutoff L ΛR
-        (PowerWordWeight.wordWeight D ΛR ((l.map (fun a => a.l.2)).reverse))
-        ((l.map (fun a => a.l.2)).reverse) :=
-  eqToIso (congrArg (fun F => F.obj R₀) (pathHomAt_eq_wordHom D Sc m cutoff L ΛP ΛR p hl)) ≪≫
-    TensorVacuumWords.chart D Sc m cutoff L ΛP ΛR ((l.map (fun a => a.l.2)).reverse)
-
-/-- The concrete value chart is even, so it can be used for the odd
-factor-generator interchange in the observation square. -/
-theorem valueChart_hom_mem {l : List (SKM.Col I X)} {c : I →₀ ℕ}
-    (p : SPath l (0,c) (0,0)) (hl : ∀ a ∈ l, a.l.1 = true) :
-    (valueChart D Sc m cutoff L ΛP ΛR p hl).hom ∈ parity (R := k) _ _ 0 := by
-  simpa only [valueChart, Iso.trans_hom, eqToIso.hom, zero_add] using
-    comp_mem (eqToHom_mem_parity_zero (congrArg (fun F => Superfunctor.obj F R₀)
-      (pathHomAt_eq_wordHom D Sc m cutoff L ΛP ΛR p hl)))
-      (TensorVacuumWords.chart_even D Sc m cutoff L ΛP ΛR ((l.map (fun a => a.l.2)).reverse))
 
 end OddMath.QuiverHecke.ELVOld.TensorReservoirWords

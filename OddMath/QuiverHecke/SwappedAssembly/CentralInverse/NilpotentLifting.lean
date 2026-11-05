@@ -55,11 +55,6 @@ section Biproduct
 
 variable [HasBinaryBiproducts C] {A B : C}
 
-/-- The block map `[1, l; m, 1] : A ⊞ B ⟶ A ⊞ B`: `inl ↦ inl + l ≫ inr`, `inr ↦ m ≫ inl + inr`.
-This is `A0 = 1 + KI` of `SwappedHomInversion.md` (10), with `l = C_RP j_P`, `m = D_PR j_R`. -/
-noncomputable def unipotentBlock (l : A ⟶ B) (m : B ⟶ A) : A ⊞ B ⟶ A ⊞ B :=
-  biprod.desc (biprod.inl + l ≫ biprod.inr) (m ≫ biprod.inl + biprod.inr)
-
 /-- The lower shear `inl ↦ inl`, `inr ↦ m ≫ inl + inr`. -/
 noncomputable def lowerShear (m : B ⟶ A) : A ⊞ B ⟶ A ⊞ B :=
   biprod.desc biprod.inl (m ≫ biprod.inl + biprod.inr)
@@ -92,23 +87,6 @@ instance isIso_lowerShear (m : B ⟶ A) : IsIso (lowerShear m) :=
 instance isIso_upperShear (l : A ⟶ B) : IsIso (upperShear l) :=
   ⟨⟨upperShear (-l), by rw [upperShear_comp, add_neg_cancel, upperShear_zero],
     by rw [upperShear_comp, neg_add_cancel, upperShear_zero]⟩⟩
-
-/-- `[1, l; m, 1] = [1, 0; m, 1] ≫ diag(1, 1 - m ≫ l) ≫ [1, l; 0, 1]`. -/
-theorem unipotentBlock_eq (l : A ⟶ B) (m : B ⟶ A) :
-    unipotentBlock l m = lowerShear m ≫ biprod.map (𝟙 A) (𝟙 B - m ≫ l) ≫ upperShear l := by
-  apply biprod.hom_ext'
-  · simp [unipotentBlock, lowerShear, upperShear]
-  · simp [unipotentBlock, lowerShear, upperShear, Preadditive.add_comp, Preadditive.comp_add,
-      Preadditive.sub_comp]
-
-/-- `SwappedHomInversion.md` (10): `[1, l; m, 1]` is invertible when `m ≫ l` is nilpotent. -/
-theorem isIso_unipotentBlock (l : A ⟶ B) (m : B ⟶ A) (h : IsNilpotent (show End B from m ≫ l)) :
-    IsIso (unipotentBlock l m) := by
-  have := isIso_one_sub_of_isNilpotent _ h
-  have : IsIso (biprod.map (𝟙 A) (𝟙 B - m ≫ l)) :=
-    (biprod.mapIso (Iso.refl A) (asIso (𝟙 B - m ≫ l))).isIso_hom
-  rw [unipotentBlock_eq]
-  infer_instance
 
 end Biproduct
 

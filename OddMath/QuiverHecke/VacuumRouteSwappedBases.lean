@@ -159,10 +159,4 @@ coefficient action. -/
 def swappedRouteBases (sy : SKM.Symmetrizer D) : VacuumRouteBases D := fun ι =>
   ι.swappedBase sy
 
-@[simp] theorem swappedRouteBases_A (sy : SKM.Symmetrizer D) (ι : VacuumRouteIndex D) :
-    (swappedRouteBases sy ι).A = ι.swappedAction sy := rfl
-
-@[simp] theorem swappedRouteBases_vacuum (sy : SKM.Symmetrizer D) (ι : VacuumRouteIndex D) :
-    (swappedRouteBases sy ι).vacuum = ι.swappedVacuum sy := rfl
-
 end OddMath.QuiverHecke

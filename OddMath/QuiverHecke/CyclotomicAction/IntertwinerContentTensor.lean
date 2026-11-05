@@ -74,8 +74,6 @@ def cut (a : A) : he.Corner := ⟨e * a, a, by
   change e * a * e = e * a
   rw [mul_assoc, ← hc a, ← mul_assoc, he.eq]⟩
 
-@[simp] theorem cut_val (a : A) : (cut e he hc a).1 = e * a := rfl
-
 /-- The coefficient projection is literal multiplication by the quotient identity. -/
 def cutCoefficient (c : C) (hqc : ∀ c, q e * c = c * q e) : Coefficient q e he :=
   ⟨q e * c, c, by
@@ -160,14 +158,6 @@ theorem backward_forward (z : Source φ q e he) :
       Subtype.ext ((Subsemigroup.mem_corner_iff (he.map q)).mp b.2).1
     rw [hx, hb]
 
-/-- The other composite is the content projection, not the identity on all heights. -/
-theorem forward_backward_tmul (x : InductionAlong.Corner φ) (b : C) :
-    forward φ q e he hsmul
-      (backward φ q e he hc hsmul hqc (InductionAlong.Ind.tmul x b)) =
-        InductionAlong.Ind.tmul x (q e * b) := by
-  change InductionAlong.Ind.tmul (op e • x) (q e * b) = _
-  rw [InductionAlong.Ind.op_smul_tmul, hsmul, ← mul_assoc, ← map_mul, he.eq]
-
 end Comparison
 end OddMath.QuiverHecke.ContentTensor
 
@@ -188,107 +178,5 @@ abbrev contentSourceTensor := ContentTensor.Source
   (appendAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))
   (cyclotomicMk D Sc a n).toRingHom (contentIdempotent D Sc (n + 1) β)
   (contentIdempotent_sq D Sc (n + 1) β)
-
-
-/-- The append left ideal is already supported on the enlarged content block. -/
-theorem contentSourceCorner_support
-    (x : InductionAlong.Corner (ContentTensor.append
-      (appendAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))
-      (contentIdempotent D Sc (n + 1) β) (contentIdempotent_sq D Sc (n + 1) β))) :
-    contentIdempotent D Sc (n + 1 + 1) ({i} + β) * x.1 = x.1 := by
-  have hx : x.1 * appendAlgebra D Sc i (n + 1) (contentIdempotent D Sc (n + 1) β) = x.1 := x.2
-  calc
-    _ = contentIdempotent D Sc (n + 1 + 1) ({i} + β) *
-        (x.1 * appendAlgebra D Sc i (n + 1) (contentIdempotent D Sc (n + 1) β)) := congrArg _ hx.symm
-    _ = x.1 * (contentIdempotent D Sc (n + 1 + 1) ({i} + β) *
-        appendAlgebra D Sc i (n + 1) (contentIdempotent D Sc (n + 1) β)) := by
-      rw [← mul_assoc, contentIdempotent_central, mul_assoc]
-    _ = x.1 := by rw [contentIdempotent_appendAlgebra, contentIdempotent_sq, hx]
-
-/-- Inclusion of both factors of the fixed-content source tensor. -/
-def contentSourceForward : contentSourceTensor D Sc i β a n →ₗ[Hn D Sc (n + 1 + 1)]
-    InductionAlong.Ind (CyclotomicAlgebra D Sc a n)
-      (appendAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1)) :=
-  ContentTensor.forward _ _ _ _ (fun _ _ => rfl)
-
-/-- The inverse representative assignment cuts the append factor and coefficient. -/
-def contentSourceBackward :
-    InductionAlong.Ind (CyclotomicAlgebra D Sc a n)
-      (appendAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))
-    →ₗ[Hn D Sc (n + 1 + 1)] contentSourceTensor D Sc i β a n :=
-  ContentTensor.backward _ _ _ _ (contentIdempotent_central D Sc (n + 1) β)
-    (fun _ _ => rfl) (cyclotomicContentIdempotent_central D Sc a n β)
-
-/-- The inclusion followed by the cut assignment is identity on the content tensor. -/
-theorem contentSourceBackward_forward (z : contentSourceTensor D Sc i β a n) :
-    contentSourceBackward D Sc i β a n (contentSourceForward D Sc i β a n z) = z :=
-  ContentTensor.backward_forward _ _ _ _ _ _ _ z
-
-/-- On the height tensor the reverse composite is exactly the existing content projector. -/
-theorem contentSourceForward_backward (z) :
-    contentSourceForward D Sc i β a n (contentSourceBackward D Sc i β a n z) =
-      sourceRightCoefficient D Sc i a n (cyclotomicContentIdempotent D Sc a n β) z := by
-  induction z using InductionAlong.Ind.induction_on with
-  | zero => rw [map_zero, map_zero, map_zero]
-  | add x y hx hy => rw [map_add, map_add, map_add, hx, hy]
-  | tmul x b =>
-    change ContentTensor.forward _ _ _ _ _ (ContentTensor.backward _ _ _ _ _ _ _ _) = _
-    rw [ContentTensor.forward_backward_tmul, sourceRightCoefficient_tmul]
-    exact congrArg (InductionAlong.Ind.tmul x)
-      (cyclotomicContentIdempotent_central D Sc a n β b)
-
-/-- The forward multiplication/inclusion map takes values in the fixed-content source. -/
-theorem contentSourceForward_mem (z : contentSourceTensor D Sc i β a n) :
-    contentSourceForward D Sc i β a n z ∈ qSourceContent D Sc i β a n := by
-  rw [mem_qSourceContent, ← contentSourceForward_backward, contentSourceBackward_forward]
-
-/-- Explicit two-sided comparison with the fixed-content summand, not a chosen bijection. -/
-def contentSourceEquiv : contentSourceTensor D Sc i β a n ≃ₗ[Hn D Sc (n + 1 + 1)]
-    qSourceContent D Sc i β a n where
-  toFun z := ⟨contentSourceForward D Sc i β a n z, contentSourceForward_mem D Sc i β a n z⟩
-  invFun z := contentSourceBackward D Sc i β a n z.1
-  left_inv := contentSourceBackward_forward D Sc i β a n
-  right_inv z := Subtype.ext ((contentSourceForward_backward D Sc i β a n z.1).trans
-    ((mem_qSourceContent D Sc i β a n z.1).mp z.2))
-  map_add' x y := Subtype.ext (map_add _ x y)
-  map_smul' r x := Subtype.ext (map_smul _ r x)
-
-/-- The inverse representative cuts both tensor factors. -/
-def contentSourceRepresentative
-    (x : InductionAlong.Corner (appendAlgebra D Sc i (n + 1) :
-      Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1)))
-    (b : CyclotomicAlgebra D Sc a n) : contentSourceTensor D Sc i β a n :=
-  contentSourceBackward D Sc i β a n (InductionAlong.Ind.tmul x b)
-
-@[simp] theorem contentSourceEquiv_representative
-    (x : InductionAlong.Corner (appendAlgebra D Sc i (n + 1) :
-      Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1)))
-    (b : CyclotomicAlgebra D Sc a n) :
-    contentSourceEquiv D Sc i β a n (contentSourceRepresentative D Sc i β a n x b) =
-      sourceContentTensor D Sc i β a n x b := by
-  apply Subtype.ext
-  exact (contentSourceForward_backward D Sc i β a n (InductionAlong.Ind.tmul x b)).trans
-    (sourceContent_project_tmul D Sc i β a n x b)
-
-/-- The moving-strand map with source tensor over the unital content algebra.
-The shifted target remains a fixed-content image, not yet its tensor comparison. -/
-def contentTensorQ (ha : CyclotomicPolynomialParity D a) :
-    contentSourceTensor D Sc i β a n →ₗ[Hn D Sc (n + 1 + 1)]
-      qTargetContent D Sc i β a ha n :=
-  (contentCornerQ D Sc i β a ha n).comp (contentSourceEquiv D Sc i β a n).toLinearMap
-
-/-- The comparison preserves the prescribed moving-strand representative formula. -/
-theorem contentTensorQ_representative (ha : CyclotomicPolynomialParity D a)
-    (x : InductionAlong.Corner (appendAlgebra D Sc i (n + 1) :
-      Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1)))
-    (b : CyclotomicAlgebra D Sc a n) :
-    (contentTensorQ D Sc i β a n ha (contentSourceRepresentative D Sc i β a n x b)).1 =
-      InductionAlong.Ind.tmul
-        (qPrependCorner D Sc i (n + 1) β
-          (InductionAlong.cornerMul (contentMove_intertwines D Sc i (n + 1) β) x))
-        (qCoefficientInsert D Sc i β a ha n b) := by
-  change (contentCornerQ D Sc i β a ha n
-    (contentSourceEquiv D Sc i β a n (contentSourceRepresentative D Sc i β a n x b))).1 = _
-  rw [contentSourceEquiv_representative, contentCornerQ_tmul]
 
 end OddMath.QuiverHecke

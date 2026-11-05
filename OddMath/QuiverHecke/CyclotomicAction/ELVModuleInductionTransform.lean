@@ -65,13 +65,6 @@ omit [J.Linear k] [IsSuperfunctor k J] in
   rw [transformLinear, lift_tensor, transformSummand_tmul]
 
 omit [J.Linear k] [IsSuperfunctor k J] in
-/-- Signed right multiplication on a homogeneous kernel element. -/
-theorem transformLinear_tensor_of_mem (w : D) (v : C) {r : ZMod 2}
-    (h : K.obj v ⟶ w) (hh : h ∈ parity (R := k) _ _ r) (m : M.obj v) :
-    transformLinear hα M w (tensor K M.toFunctor v h m) =
-      sign k (p * r) • tensor J M.toFunctor v (α v ≫ h) m := by
-  rw [transformLinear_tensor, twist_of_mem p hh, Linear.comp_smul]
-  simp only [tensor, ← smul_tmul', map_smul]
 
 theorem transformLinear_mem (w : D) :
     (transformLinear hα M w : superspace K M.toFunctor w ⟶ superspace J M.toFunctor w) ∈
@@ -173,83 +166,10 @@ theorem transform_unit (v : C) (m : M.obj v) :
       postcompose J M.toFunctor (α v) (unit J M.toFunctor v m) := by
   rw [unit_apply, transformLinear_tensor, twist_id, Category.comp_id, postcompose_unit]
 
-/-- Counit compatibility with evaluation of the original transformation on restriction. -/
-theorem transform_counit (N : Superfunctor k D (SVec k)) (w : D) (v : C)
-    (h : K.obj v ⟶ w) (m : N.obj (J.obj v)) :
-    counit J N.toFunctor w
-      (transformLinear hα ((restriction J).obj N) w
-        (tensor K (J ⋙ N.toFunctor) v h m)) =
-      counit K N.toFunctor w
-        (tensor K (K ⋙ N.toFunctor) v (twist k p h) (N.map (α v) m)) := by
-  have ht := congrArg (counit J N.toFunctor w)
-    (transformLinear_tensor hα ((restriction J).obj N) w v h m)
-  refine ht.trans ?_
-  change counit J N.toFunctor w (tensor J (J ⋙ N.toFunctor) v (α v ≫ twist k p h) m) = _
-  rw [counit_tensor, counit_tensor, N.toFunctor.map_comp]
-  rfl
-
 end OddMath.QuiverHecke.ELVOld.BalancedInduction
 
 namespace OddMath.QuiverHecke.ELVOld
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
-
-/-- A homogeneous appended affine map induces a transformation in the reverse direction. -/
-def moduleInductionTransform {σ τ : List I} {p : ZMod 2}
-    {a : (pres D Sc).obj (ob D σ) ⟶ (pres D Sc).obj (ob D τ)}
-    (ha : a ∈ parity (R := k) _ _ p) :
-    SuperNatTrans k (moduleInduction D Sc cutoff N τ) (moduleInduction D Sc cutoff N σ) :=
-  BalancedInduction.transform (truncatedAppendComponent_supernatural D Sc cutoff N ha)
-
-@[simp] theorem moduleInductionTransform_tensor {σ τ : List I} {p : ZMod 2}
-    {a : (pres D Sc).obj (ob D σ) ⟶ (pres D Sc).obj (ob D τ)}
-    (ha : a ∈ parity (R := k) _ _ p) (M : TruncatedModules D Sc cutoff N)
-    (w v : TruncatedCategory D Sc cutoff N)
-    (h : (truncatedAppend D Sc cutoff N τ).obj v ⟶ w) (m : M.obj v) :
-    ((moduleInductionTransform D Sc cutoff N ha).app p M).app p w
-      (BalancedInduction.tensor (truncatedAppend D Sc cutoff N τ) M.toFunctor v h m) =
-    BalancedInduction.tensor (truncatedAppend D Sc cutoff N σ) M.toFunctor v
-      (truncatedAppendComponent D Sc cutoff N a v ≫ twist k p h) m := by
-  simp only [moduleInductionTransform, BalancedInduction.transform,
-    IsSupernatural.toSuperNatTrans, ↓reduceIte]
-  change ((BalancedInduction.transformComponent
-    (truncatedAppendComponent_supernatural D Sc cutoff N ha) M).app p w)
-    (BalancedInduction.tensor (truncatedAppend D Sc cutoff N τ) M.toFunctor v h m) = _
-  rw [BalancedInduction.transformComponent_apply]
-  simp only [↓reduceIte, BalancedInduction.transformLinear_tensor]
-
-/-- The raw appended dot. This does not assert a normalized SKM action. -/
-def moduleInductionDot (i : I) :
-    SuperNatTrans k (moduleInduction D Sc cutoff N [i]) (moduleInduction D Sc cutoff N [i]) :=
-  moduleInductionTransform D Sc cutoff N (by
-    simpa only [pow_one, one_nsmul] using firstDot_pow_parity D Sc i [] 1)
-
-/-- The raw appended crossing reverses append-transformation direction.
-No equal-colour normalization or parameter twist is asserted. -/
-def moduleInductionCross (i j : I) :
-    SuperNatTrans k (moduleInduction D Sc cutoff N [j, i])
-      (moduleInduction D Sc cutoff N [i, j]) :=
-  moduleInductionTransform D Sc cutoff N (crossTwo_mem D Sc i j)
-
-@[simp] theorem moduleInductionDot_tensor (i : I) (M : TruncatedModules D Sc cutoff N)
-    (w v : TruncatedCategory D Sc cutoff N)
-    (h : (truncatedAppend D Sc cutoff N [i]).obj v ⟶ w) (m : M.obj v) :
-    ((moduleInductionDot D Sc cutoff N i).app (D.parity i) M).app (D.parity i) w
-      (BalancedInduction.tensor (truncatedAppend D Sc cutoff N [i]) M.toFunctor v h m) =
-    BalancedInduction.tensor (truncatedAppend D Sc cutoff N [i]) M.toFunctor v
-      (truncatedAppendComponent D Sc cutoff N (dotE D Sc [i] 0) v ≫
-        twist k (D.parity i) h) m :=
-  moduleInductionTransform_tensor D Sc cutoff N _ M w v h m
-
-@[simp] theorem moduleInductionCross_tensor (i j : I) (M : TruncatedModules D Sc cutoff N)
-    (w v : TruncatedCategory D Sc cutoff N)
-    (h : (truncatedAppend D Sc cutoff N [j, i]).obj v ⟶ w) (m : M.obj v) :
-    ((moduleInductionCross D Sc cutoff N i j).app (D.parity i * D.parity j) M).app
-      (D.parity i * D.parity j) w
-      (BalancedInduction.tensor (truncatedAppend D Sc cutoff N [j, i]) M.toFunctor v h m) =
-    BalancedInduction.tensor (truncatedAppend D Sc cutoff N [i, j]) M.toFunctor v
-      (truncatedAppendComponent D Sc cutoff N (crossTwo D Sc i j) v ≫
-        twist k (D.parity i * D.parity j) h) m :=
-  moduleInductionTransform_tensor D Sc cutoff N _ M w v h m
 
 end OddMath.QuiverHecke.ELVOld

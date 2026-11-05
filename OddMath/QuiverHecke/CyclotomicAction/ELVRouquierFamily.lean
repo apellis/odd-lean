@@ -32,18 +32,9 @@ def elvRouquierFamily :
   loc i _ _ _ h₁ h₂ := Classical.choice
     (elvWeightRouquierLocal_nonempty D Sc cutoff bound i Λ h₁ h₂ (hcutoff i))
 
-/-- Assembly retains all chosen upward generators definitionally. -/
-theorem elvRouquierFamily_toRouquierData :
-    (elvRouquierFamily D Sc cutoff bound Λ hcutoff).toRouquierData =
-      elvRouquierData D Sc cutoff bound Λ := rfl
-
 /-- Restriction is the prescribed right adjoint at each original weight. -/
 theorem elvRouquierFamily_F (i : I) {x y : X} (h : x + D.α i = y) :
     (elvRouquierFamily D Sc cutoff bound Λ hcutoff).F i h =
       elvF D Sc cutoff bound i Λ h := rfl
 
-/-- No rescaling of either adjunction map is introduced by assembly. -/
-theorem elvRouquierFamily_adj (i : I) {x y : X} (h : x + D.α i = y) :
-    (elvRouquierFamily D Sc cutoff bound Λ hcutoff).adj i h =
-      elvActionAdjunction D Sc cutoff bound i Λ h := rfl
 end OddMath.QuiverHecke.ELVOld

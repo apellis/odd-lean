@@ -76,17 +76,6 @@ private theorem signed_conjugation {C : Type*} [Category C] [Preadditive C]
   simpa only [Category.assoc, Iso.hom_inv_id, Category.comp_id, Preadditive.zsmul_comp,
     Iso.conj_apply, Iso.symm_inv, Iso.symm_hom] using hh
 
-private theorem koszul_power (p σ : ZMod 2) (a : ℕ) :
-    koszulSign p σ ^ a = koszulSign ((a : ZMod 2) * p) σ := by
-  induction a with
-  | zero => simp only [pow_zero, Nat.cast_zero, zero_mul, koszulSign_zero_left]
-  | succ a ih =>
-    rw [pow_succ, ih, Nat.cast_add, Nat.cast_one, add_mul, one_mul, koszulSign_add_left]
-
-private theorem signed_power {A : Type*} [Ring A] (d : A) (p σ : ZMod 2) (a : ℕ) :
-    (koszulSign p σ • d) ^ a = koszulSign ((a : ZMod 2) * p) σ • d ^ a := by
-  rw [smul_pow, koszul_power]
-
 private theorem signed_polynomial {A : Type*} [Ring A] (d : A) (p σ : ZMod 2) (n : ℕ)
     (h : (d ^ 2 + 1) ^ n = 0) : ((koszulSign p σ • d) ^ 2 + 1) ^ n = 0 := by
   rw [smul_pow, pow_two (koszulSign p σ), koszulSign_mul_self, one_smul]
@@ -154,27 +143,6 @@ theorem shiftedPreDot_coordinates (R : PiSCat.{u,u,u+1} k) (i : I)
   rw [← hraw, ← he] at h
   simpa only [coordinatePreDotPower, pow_one, preDotEnd_eq, Iso.conj_apply,
     Iso.symm_inv, Iso.symm_hom] using hc h
-
-/-- The nth raw pre-induction-dot power retains the full source-parity
-Koszul factor, rather than an unsigned conjugation. -/
-theorem shiftedPreDot_power (R : PiSCat.{u,u,u+1} k) (i : I)
-    (H : modulePiCategory D Sc m ⟶ R) (a : ℕ) :
-    shiftedPreDot D Sc m R i H ^ a =
-      koszulSign ((a : ZMod 2) * D.parity i) ((cut i - 1) • D.parity i) •
-        coordinatePreDotPower D Sc m R i H a := by
-  rw [shiftedPreDot_coordinates, signed_power, ← coordinatePreDotPower_eq D Sc m R i H a]
-
-/-- The normalized cap window on powers of the actual dot on the shifted
-Hom block has exactly the source-parity power sign. -/
-theorem shiftedPreCap_rawDot_unit (R : PiSCat.{u,u,u+1} k) (i : I) (hP : 0 < cut i)
-    (H : modulePiCategory D Sc m ⟶ R) (a : ℕ) (ha : a < cut i) :
-    (shiftedPreUnit D Sc m R i H ≫ shiftedPreDot D Sc m R i H ^ a) ≫
-      shiftedPreCap D Sc m R i hP H =
-      koszulSign ((a : ZMod 2) * D.parity i) ((cut i - 1) • D.parity i) •
-        (if a + 1 = cut i then 𝟙 (H.obj N) else 0) := by
-  rw [shiftedPreDot_power, Preadditive.comp_zsmul, Preadditive.zsmul_comp,
-    shiftedPreCap_dot_unit]
-  exact ha
 
 /-- Squaring removes the comparison sign, so the prescribed signed probe
 polynomial holds on the actual shifted pre-induction dot. -/

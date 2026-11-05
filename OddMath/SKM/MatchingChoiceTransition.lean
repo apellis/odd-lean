@@ -587,30 +587,5 @@ theorem expansion_injective_of_choice (F G : MatchingBasisChoice a b)
   apply hG
   simpa only [F.choiceTransition_evaluation cs μ G] using h
 
-theorem expansion_injective_choice_iff (F G : MatchingBasisChoice a b) :
-    Function.Injective (F.expansion cs μ) ↔ Function.Injective (G.expansion cs μ) :=
-  ⟨G.expansion_injective_of_choice cs μ F, F.expansion_injective_of_choice cs μ G⟩
-
-/-- The same signed triangular transition is surjective by finite well-founded
-recursion; no uniform nilpotence exponent is required. -/
-theorem choiceTransition_surjective (F G : MatchingBasisChoice a b) :
-    Function.Surjective (F.choiceTransition cs μ G) := by
-  apply MatchingTransition.transition_surjective (F.labelsEquiv G)
-    (fun i j => ncr₂ i.1.val < ncr₂ j.1.val ∨
-      (ncr₂ i.1.val = ncr₂ j.1.val ∧ F.openDots i < F.openDots j))
-    (MatchingTransition.crossingDot_wellFounded (fun t => ncr₂ t.1.val) F.openDots)
-    (F.unitColumn cs μ G) (fun i => zsign k (F.columnData cs μ G i).1 • 1)
-    (F.unitColumn_lower cs μ G)
-  intro i
-  simp only [F.unitColumn_diagonal cs μ G i, smul_mul_assoc, one_mul,
-    smul_smul, zsign_mul_self', one_smul]
-
-/-- Complete choices have isomorphic finite coefficient spaces, with the
-isomorphism intertwining their actual oriented evaluations. -/
-def choiceLinearEquiv (F G : MatchingBasisChoice a b) :
-    (F.Labels →₀ SYM D k) ≃ₗ[k] (G.Labels →₀ SYM D k) :=
-  LinearEquiv.ofBijective (F.choiceTransition cs μ G)
-    ⟨F.choiceTransition_injective cs μ G, F.choiceTransition_surjective cs μ G⟩
-
 end MatchingBasisChoice
 end OddMath.SKM

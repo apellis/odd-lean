@@ -28,14 +28,6 @@ abbrev elvContentDotTo (β γ : Multiset I) (hγ : β + ([i] : Multiset I) = γ)
   contentInductionTransform D Sc cutoff bound hγ hγ (by
     simpa only [pow_one, one_nsmul] using firstDot_pow_parity D Sc i [] 1)
 
-/-- Changing the common target preserves the exact chosen content dot. -/
-theorem elvContentDotTo_heq (β γ : Multiset I)
-    (hγ : β + ([i] : Multiset I) = γ) :
-    HEq (elvContentDotTo D Sc cutoff bound i β γ hγ)
-      (contentInductionDot D Sc cutoff bound β i) := by
-  subst γ
-  rfl
-
 /-- The normalized content dot between a block and its successor. -/
 abbrev elvBlockDot (β : WeightBlocks D Λ x) :=
   elvContentDotTo D Sc cutoff bound i β.1 (blockSucc D Λ i h β).1

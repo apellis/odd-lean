@@ -58,14 +58,6 @@ def distinctSourceExchange (μ : X) (L Q b : List (Letter I)) (i j : I) (hij : i
   map_add' f g := Preadditive.comp_add ..
   map_smul' r f := Linear.comp_smul ..
 
-theorem contextualSigma_mem_parity (μ : X) (L Q : List (Letter I)) (i j : I) :
-    contextualSigma (D := D) (Sc := Sc) μ L Q i j ∈
-      homPar D Sc μ (L ++ [up j, dn i] ++ Q) (L ++ [dn i, up j] ++ Q)
-        (D.parity i * D.parity j) := by
-  simpa only [contextualSigma, parsum_map_whL, parsum_sigmaL] using
-    (cl_mem_homPar' (D := D) (Sc := Sc) μ (L ++ [up j, dn i] ++ Q)
-      (L ++ [dn i, up j] ++ Q) ((sigmaL i j).map (whL L Q)))
-
 /-- Target exchange preserves the exact ordered source coefficient. -/
 theorem distinctTargetExchange_coefficient (cs : CScalars Sc) (μ : X)
     (a L Q : List (Letter I)) (i j : I) (hij : i ≠ j)
@@ -76,20 +68,5 @@ theorem distinctTargetExchange_coefficient (cs : CScalars Sc) (μ : X)
   change (bubAt D Sc μ a (betaSYM cs μ p) ≫ f) ≫ contextualSigma μ L Q i j =
     bubAt D Sc μ a (betaSYM cs μ p) ≫ (f ≫ contextualSigma μ L Q i j)
   exact Category.assoc _ _ _
-
-/-- Source exchange applies the actual full-SYM parity involution, with no
-homogeneity restriction on its input coefficient and no scalar t_ij. -/
-theorem distinctSourceExchange_coefficient (cs : CScalars Sc) (μ : X)
-    (L Q b : List (Letter I)) (i j : I) (hij : i ≠ j)
-    (f : (pres D Sc).obj (ob D μ (L ++ [dn i, up j] ++ Q)) ⟶ (pres D Sc).obj (ob D μ b))
-    (p : SYM D k) :
-    distinctSourceExchange μ L Q b i j hij
-      (bubAt D Sc μ (L ++ [dn i, up j] ++ Q) (betaSYM cs μ p) ≫ f) =
-      bubAt D Sc μ (L ++ [up j, dn i] ++ Q)
-        (betaSYM cs μ (SYM.parityTwist D k (D.parity i * D.parity j) p)) ≫
-        distinctSourceExchange μ L Q b i j hij f := by
-  change contextualSigma μ L Q i j ≫ (_ ≫ f) = _ ≫ (contextualSigma μ L Q i j ≫ f)
-  rw [← Category.assoc, ← source_target_twist cs μ (contextualSigma_mem_parity μ L Q i j),
-    Category.assoc]
 
 end OddMath.SKM

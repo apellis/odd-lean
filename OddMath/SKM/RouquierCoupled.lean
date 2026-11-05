@@ -622,23 +622,6 @@ def targetSector (s : CoupledSector) : TargetSector C.A₂ C.x₂ where
   dot_comm := C.DE₂.diag_proj C.dot₂ s
   unit_comm := coupledUnit_proj C.DE₂ C.DF₂ C.adj₂ s
 
-/-- **The mate projection formula of the coupled crossing.** The coordinates are
-the actual dotted sector cups and caps, with powers of the probe inverses for
-negative indices. -/
-theorem mateProjectionFormula :
-    SuperRouquierLoc.MateProjectionFormula C.A₁ C.A₂ C.coupledCross C.p
-      (sectorIn (C.DE₁.inc reservoir) (C.DF₁.inc reservoir))
-      (sectorIn (C.DE₁.inc probe) (C.DF₁.inc probe))
-      (sectorOut (C.DE₂.proj reservoir) (C.DF₂.proj reservoir))
-      (sectorOut (C.DE₂.proj probe) (C.DF₂.proj probe))
-      (C.targetSector reservoir).cup (C.sourceSector reservoir).cap
-      (probeCup (C.targetSector probe) C.inv₂) (probeCap (C.sourceSector probe) C.inv₁)
-      C.N C.N :=
-  SuperRouquierLoc.MateProjectionFormula.of_sectors C.coupledCross C.p C.slide
-    (C.sourceSector reservoir) (C.sourceSector probe)
-    (C.targetSector reservoir) (C.targetSector probe)
-    C.inv₁ C.inv₁_dot₁ C.inv₂ C.dot₂_inv₂ C.N C.N C.nil₂ C.nil₁
-
 end CoupledFactors
 
 end OddMath.SKM

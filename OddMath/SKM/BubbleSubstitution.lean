@@ -422,11 +422,6 @@ def substitutionEquiv (u w : I → PowerSeries k) (s t : {i : I // D.parity i = 
           RingHom.id_apply, mul_comm, huw i])
       fun i => by rw [mul_comm, hst i])
 
-@[simp] theorem substitutionEquiv_apply (u w : I → PowerSeries k)
-    (s t : {i : I // D.parity i = 1} → k) (hu : ∀ i, PowerSeries.constantCoeff (u i) = 1)
-    (huw : ∀ i, u i * w i = 1) (hst : ∀ i, s i * t i = 1) (x : SYM D k) :
-    substitutionEquiv D k u w s t hu huw hst x = substitutionHom D k u s x := rfl
-
 /-- Every triangular substitution preserves the coefficient-weight filtration. -/
 theorem substitutionHom_mem_coefficientAtMost (u : I → PowerSeries k)
     (s : {i : I // D.parity i = 1} → k) (n : ℕ) {x : SYM D k}
@@ -497,11 +492,6 @@ def probeSubstitution (M N : I → ℕ) : SYM D k ≃ₐ[k] SYM D k :=
 theorem probeSubstitution_mem_coefficientAtMost (M N : I → ℕ) (n : ℕ) {x : SYM D k}
     (hx : x ∈ CoefficientAtMost D k n) :
     probeSubstitution D k M N x ∈ CoefficientAtMost D k n :=
-  substitutionHom_mem_coefficientAtMost D k _ _ n hx
-
-theorem probeSubstitution_symm_mem_coefficientAtMost (M N : I → ℕ) (n : ℕ) {x : SYM D k}
-    (hx : x ∈ CoefficientAtMost D k n) :
-    (probeSubstitution D k M N).symm x ∈ CoefficientAtMost D k n :=
   substitutionHom_mem_coefficientAtMost D k _ _ n hx
 
 end OddMath.SKM.SYM

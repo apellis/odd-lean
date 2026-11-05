@@ -45,9 +45,4 @@ def oldContentLoc : SKM.SuperRouquierLoc (k := k)
     rw [koszulSign_smul (R := k)] at h
     convert! h using 1
 
-/-- Its chosen negative crossing is square-zero as a two-morphism. -/
-theorem oldContentLoc_cross_square :
-    inductionModuleCross J K hCross ≫ inductionModuleCross J K hCross = 0 :=
-  inductionModuleCross_square J K hCross (oldContentEqualCross_square D Sc cutoff ν i)
-
 end OddMath.QuiverHecke.ELVOld

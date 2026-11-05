@@ -126,12 +126,4 @@ theorem reverseMoveHom_comp_moveHom_cons (i j : I) (l ν : List I) :
   rw [← Category.assoc (intertwinerHom D Sc l ν j i),
     intertwinerHom_comp_reverse]
 
-/-- On a singleton, the append-end norm is exactly the local polynomial square. -/
-theorem reverseMoveHom_comp_moveHom_singleton (i j : I) :
-    reverseMoveHom D Sc i [] [j] ≫ moveHom D Sc i [] [j] =
-      intertwinerSquare D Sc [] [] j i := by
-  simpa only [reverseMoveHom, moveHom, List.nil_append, List.append_nil,
-    List.cons_append, eqToHom_refl, Category.id_comp, Category.comp_id] using
-    intertwinerHom_comp_reverse D Sc [] [] j i
-
 end OddMath.QuiverHecke

@@ -27,19 +27,6 @@ structure CupInverseData {X Y O : C} {n : ℕ} (s : X ⟶ Y) (u : Fin n → (O �
   window : Fin n → (Y ⟶ O)
   isInverse : IsCupInverse s u principal window
 
-/-- Negating the principal entries retains the specified cap columns. -/
-def CapInverseData.negPrincipal {X Y O : C} {n : ℕ} {s : X ⟶ Y}
-    {v : Fin n → (X ⟶ O)} (J : CapInverseData s v) : CapInverseData (-s) v where
-  principal := -J.principal
-  window := J.window
-  isInverse := J.isInverse.neg_principal
-
-/-- Negating the principal entries retains the specified unit rows. -/
-def CupInverseData.negPrincipal {X Y O : C} {n : ℕ} {s : X ⟶ Y}
-    {u : Fin n → (O ⟶ Y)} (J : CupInverseData s u) : CupInverseData (-s) u where
-  principal := -J.principal
-  window := J.window
-  isInverse := J.isInverse.neg_principal
 end ProbeWindow
 
 namespace ProbeReservoir
@@ -84,7 +71,6 @@ def centralPaddedReservoir_capInverseData (ha : StepValid (up i) false t)
   rw [hv] at H
   exact ⟨_, _, H⟩
 
-
 /-- Retain the specified principal and finite entries in literal padded coordinates. -/
 def centralPaddedReservoir_cupInverseData (ha : StepValid (up i) false t)
     (hh : D.h i (P.muM t) ≤ 0) :
@@ -115,7 +101,6 @@ def centralPaddedReservoir_cupInverseData (ha : StepValid (up i) false t)
     simp only [centralPaddedUnit, dite_eq_left hb, centralFactorUnit]
   rw [hu] at H
   exact ⟨_, _, H⟩
-
 
 /-- Retain the specified principal and finite entries in literal padded coordinates. -/
 def centralPaddedReservoir_capInverseData_of_source_isZero
@@ -149,7 +134,6 @@ def centralPaddedReservoir_capInverseData_of_source_isZero
     exact hz.eq_of_src _ _
   rw [hs, hv] at H
   exact ⟨_, _, H⟩
-
 
 /-- Retain the specified principal and finite entries in literal padded coordinates. -/
 def centralPaddedReservoir_cupInverseData_of_source_isZero
@@ -185,7 +169,6 @@ def centralPaddedReservoir_cupInverseData_of_source_isZero
   rw [hu] at H
   exact ⟨_, _, H⟩
 
-
 end ProbeReservoir
 
 namespace SupportedSectors
@@ -219,30 +202,6 @@ def reservoirCapInverseData
     (P).centralPaddedReservoir_capInverseData_of_source_isZero c i t Z.obj E ha h
       (reservoirSource_absent_isZero D Sc m cutoff bound ΛP ΛR hP hR i t Z ha h) hh
 
-/-- At an occupied source, the principal is literally the specified `W.loc` entry. -/
-theorem reservoirCapInverseData_principal
-    (i : I) (t : Sector I)
-    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
-    (E : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t ⥤ C) [E.Additive]
-    (c : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).CrossCoeff) (hh : 0 ≤ D.h i ((P).muM t)) (ha : StepValid (up i) false t) :
-    (reservoirCapInverseData D Sc m cutoff bound ΛP ΛR hP hR i t Z E c hh).principal =
-      ((P).centralTargetCornerIso i t Z.obj E ⟨false, by trivial⟩).hom ≫
-      E.map ((homContentPostInverseTarget (P).T.obj (P).W i t.1 ((P).muP t) ((P).muM_postF i t) Z.obj).hom ≫ Z.obj ◁ (((P).W.loc i ((P).muM_postE i ha) ((P).muM_postF i t)).invPos hh).f' ≫
-        (homContentPostInverseSource (P).T.obj (P).W i t.1 ((P).muP t) ((P).muM_postE i ha) Z.obj).inv) ≫ ((P).centralSourceCornerIso i t Z.obj E ⟨false, ha⟩).inv := by
-  simp only [reservoirCapInverseData, dite_eq_left ha]; rfl
-
-/-- Every occupied inverse window entry is the same chosen local factor entry. -/
-theorem reservoirCapInverseData_window
-    (i : I) (t : Sector I)
-    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
-    (E : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t ⥤ C) [E.Additive]
-    (c : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).CrossCoeff) (hh : 0 ≤ D.h i ((P).muM t)) (ha : StepValid (up i) false t)
-    (r : Fin (D.h i ((P).muM t)).toNat) :
-    (reservoirCapInverseData D Sc m cutoff bound ΛP ΛR hP hR i t Z E c hh).window r =
-      E.map ((BicategoryStruct.rightUnitor Z.obj).inv ≫ Z.obj ◁ (((P).W.loc i ((P).muM_postE i ha) ((P).muM_postF i t)).invPos hh).g' r ≫
-        (homContentPostInverseSource (P).T.obj (P).W i t.1 ((P).muP t) ((P).muM_postE i ha) Z.obj).inv) ≫ ((P).centralSourceCornerIso i t Z.obj E ⟨false, ha⟩).inv := by
-  simp only [reservoirCapInverseData, dite_eq_left ha]; rfl
-
 /-- At an absent source the chosen principal maps into the literal zero corner. -/
 theorem reservoirCapInverseData_principal_of_absent
     (i : I) (t : Sector I)
@@ -271,30 +230,6 @@ def reservoirCupInverseData
     (P).centralPaddedReservoir_cupInverseData_of_source_isZero c i t Z.obj E ha h
       (reservoirSource_absent_isZero D Sc m cutoff bound ΛP ΛR hP hR i t Z ha h) hh
 
-/-- At an occupied source, the principal is literally the specified `W.loc` entry. -/
-theorem reservoirCupInverseData_principal
-    (i : I) (t : Sector I)
-    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
-    (E : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t ⥤ C) [E.Additive]
-    (c : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).CrossCoeff) (hh : D.h i ((P).muM t) ≤ 0) (ha : StepValid (up i) false t) :
-    (reservoirCupInverseData D Sc m cutoff bound ΛP ΛR hP hR i t Z E c hh).principal =
-      ((P).centralTargetCornerIso i t Z.obj E ⟨false, by trivial⟩).hom ≫
-      E.map ((homContentPostInverseTarget (P).T.obj (P).W i t.1 ((P).muP t) ((P).muM_postF i t) Z.obj).hom ≫ Z.obj ◁ (((P).W.loc i ((P).muM_postE i ha) ((P).muM_postF i t)).invNeg hh).f' ≫
-        (homContentPostInverseSource (P).T.obj (P).W i t.1 ((P).muP t) ((P).muM_postE i ha) Z.obj).inv) ≫ ((P).centralSourceCornerIso i t Z.obj E ⟨false, ha⟩).inv := by
-  simp only [reservoirCupInverseData, dite_eq_left ha]; rfl
-
-/-- Every occupied inverse window entry is the same chosen local factor entry. -/
-theorem reservoirCupInverseData_window
-    (i : I) (t : Sector I)
-    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
-    (E : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t ⥤ C) [E.Additive]
-    (c : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).CrossCoeff) (hh : D.h i ((P).muM t) ≤ 0) (ha : StepValid (up i) false t)
-    (r : Fin (-D.h i ((P).muM t)).toNat) :
-    (reservoirCupInverseData D Sc m cutoff bound ΛP ΛR hP hR i t Z E c hh).window r =
-      ((P).centralTargetCornerIso i t Z.obj E ⟨false, by trivial⟩).hom ≫ E.map ((homContentPostInverseTarget (P).T.obj (P).W i t.1 ((P).muP t) ((P).muM_postF i t) Z.obj).hom ≫
-        Z.obj ◁ (((P).W.loc i ((P).muM_postE i ha) ((P).muM_postF i t)).invNeg hh).g' r ≫ (BicategoryStruct.rightUnitor Z.obj).hom) := by
-  simp only [reservoirCupInverseData, dite_eq_left ha]; rfl
-
 /-- At an absent source the chosen principal maps into the literal zero corner. -/
 theorem reservoirCupInverseData_principal_of_absent
     (i : I) (t : Sector I)
@@ -319,22 +254,6 @@ theorem reservoirCapInverseData_window_of_absent
       (fun a => E.obj ((P).centralSourceFactor i t Z.obj a)) false) := by
     simpa only [sectorFamilyCorner, dite_eq_right ha] using Limits.isZero_zero C
   exact hz.eq_of_tgt _ _
-
-/-- At an absent source the finite unit rows retain the prescribed native predecessor. -/
-theorem reservoirCupInverseData_window_of_absent
-    (i : I) (t : Sector I)
-    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
-    (E : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t ⥤ C) [E.Additive]
-    (c : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).CrossCoeff) (hh : D.h i ((P).muM t) ≤ 0)
-    (ha : ¬StepValid (up i) false t) (r : Fin (-D.h i ((P).muM t)).toNat) :
-    (reservoirCupInverseData D Sc m cutoff bound ΛP ΛR hP hR i t Z E c hh).window r =
-      ((P).centralTargetCornerIso i t Z.obj E ⟨false, by trivial⟩).hom ≫
-        E.map ((homContentPostInverseTarget (P).T.obj (P).W i t.1 ((P).muP t)
-          ((P).muM_postF i t) Z.obj).hom ≫
-          Z.obj ◁ (((P).W.loc i (show (P).muM t - D.α i + D.α i = (P).muM t from
-              sub_add_cancel _ _) ((P).muM_postF i t)).invNeg hh).g' r ≫
-          (BicategoryStruct.rightUnitor Z.obj).hom) := by
-  simp only [reservoirCupInverseData, dite_eq_right ha]; rfl
 
 end SupportedSectors
 end OddMath.QuiverHecke.SwappedAssembly

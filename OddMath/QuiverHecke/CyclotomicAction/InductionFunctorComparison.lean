@@ -62,28 +62,6 @@ def inductionFunctorComparisonApp (M : CyclotomicSupermodules D Sc a ha n) :
     (F).obj M ≅ (compositionCornerFunctor D Sc i j a ha n).obj M :=
   (assoc P Q M).symm ≪≫ inductionCompositionTensorIso D Sc i j a ha n M
 
-/-- The comparison has even parity. -/
-theorem inductionFunctorComparisonApp_hom_mem (M : CyclotomicSupermodules D Sc a ha n) :
-    (inductionFunctorComparisonApp D Sc i j a ha n M).hom ∈
-      Supercategory.parity (R := k) _ _ 0 := by
-  change ((assoc P Q M).inv ≫
-    whiskerRight (inductionCompositionIso D Sc i j a ha n).hom M) ∈
-      Supercategory.parity (R := k) (tensor P (tensor Q M)) (tensor T M) 0
-  simpa only [add_zero] using Supercategory.comp_mem
-    (assoc_inv_mem P Q M)
-    (whiskerRight_mem _ (inductionCompositionIso_hom_mem D Sc i j a ha n) M)
-
-/-- Its inverse is even as well. -/
-theorem inductionFunctorComparisonApp_inv_mem (M : CyclotomicSupermodules D Sc a ha n) :
-    (inductionFunctorComparisonApp D Sc i j a ha n M).inv ∈
-      Supercategory.parity (R := k) _ _ 0 := by
-  change (whiskerRight (inductionCompositionIso D Sc i j a ha n).inv M ≫
-    (assoc P Q M).hom) ∈
-      Supercategory.parity (R := k) (tensor T M) (tensor P (tensor Q M)) 0
-  simpa only [add_zero] using Supercategory.comp_mem
-    (whiskerRight_mem _ (inductionCompositionIso_inv_mem D Sc i j a ha n) M)
-    (assoc_hom_mem P Q M)
-
 /-- Naturality includes all homogeneous and inhomogeneous module maps. -/
 theorem inductionFunctorComparisonApp_naturality
     {M N : CyclotomicSupermodules D Sc a ha n} (f : M ⟶ N) :
@@ -117,17 +95,5 @@ theorem inductionFunctorComparisonApp_naturality
 def inductionFunctorComparison : F ≅ compositionCornerFunctor D Sc i j a ha n :=
   NatIso.ofComponents (inductionFunctorComparisonApp D Sc i j a ha n)
     (fun f => inductionFunctorComparisonApp_naturality D Sc i j a ha n f)
-
-/-- On pure tensors the comparison multiplies the two corner factors in order. -/
-@[simp] theorem inductionFunctorComparison_hom_btmul
-    (M : CyclotomicSupermodules D Sc a ha n) (x : (P).toSVec) (y : (Q).toSVec)
-    (m : M.toSVec) :
-    ((inductionFunctorComparison D Sc i j a ha n).hom.app M).1
-      (btmul P (tensor Q M) x (btmul Q M y m)) =
-      btmul T M (compositionCornerBi D Sc i j a ha n x y) m := by
-  change (whiskerRight (inductionCompositionIso D Sc i j a ha n).hom M).1
-    ((assoc P Q M).inv.1 (btmul P (tensor Q M) x (btmul Q M y m))) = _
-  rw [assoc_inv_btmul, whiskerRight_btmul]
-  rfl
 
 end OddMath.QuiverHecke

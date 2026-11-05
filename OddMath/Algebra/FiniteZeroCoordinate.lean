@@ -33,32 +33,11 @@ def dropZeroPrincipalEquiv (h₀ : Subsingleton (V none)) :
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
-@[simp] theorem dropZeroPrincipalEquiv_apply (h₀ : Subsingleton (V none))
-    (x : product V) (a : ι) : dropZeroPrincipalEquiv V h₀ x a = x (some a) := rfl
-
 @[simp] theorem dropZeroPrincipalEquiv_symm_none (h₀ : Subsingleton (V none))
     (x : withoutPrincipal V) : (dropZeroPrincipalEquiv V h₀).symm x none = 0 := rfl
 
 @[simp] theorem dropZeroPrincipalEquiv_symm_some (h₀ : Subsingleton (V none))
     (x : withoutPrincipal V) (a : ι) : (dropZeroPrincipalEquiv V h₀).symm x (some a) = x a := rfl
-
-/-- Dropping the zero coordinate preserves the actual pointwise grading. -/
-theorem dropZeroPrincipalEquiv_hom_mem (h₀ : Subsingleton (V none)) :
-    SVec.ofHom (dropZeroPrincipalEquiv V h₀).toLinearMap ∈
-      parity (R := k) (product V) (withoutPrincipal V) 0 := by
-  apply SVec.mem_parityHom_of_apply_mem
-  intro q x hx
-  dsimp only [withoutPrincipal]
-  rw [add_zero, mem_product_part]
-  intro a
-  exact (mem_product_part V q x).mp hx (some a)
-
-/-- Reinserting the zero coordinate is even on the same actual gradings. -/
-theorem dropZeroPrincipalEquiv_inv_mem (h₀ : Subsingleton (V none)) :
-    (SVec.isoOfLinearEquiv (dropZeroPrincipalEquiv V h₀)).inv ∈
-      parity (R := k) (withoutPrincipal V) (product V) 0 :=
-  inv_mem (SVec.isoOfLinearEquiv (dropZeroPrincipalEquiv V h₀))
-    (dropZeroPrincipalEquiv_hom_mem V h₀)
 
 /-- Removing a zero principal coordinate leaves precisely the remaining
 columns of the prescribed finite matrix. -/

@@ -51,13 +51,6 @@ theorem affineEquiv_apply {s t : List I}
     rw [basisNF_apply, affineEquiv_nf, presentationFunctor_nf]
   exact LinearMap.congr_fun h f
 
-/-- Tensor transport before identifying the coefficient-extended Hom spaces. -/
-def sourceEquiv (s t : List I) :
-    (SKM.SYM D k ⊗[k] ((pres D Sc).obj (ob D s) ⟶ (pres D Sc).obj (ob D t))) ≃ₗ[k]
-      (SKM.SYM Dₑ k ⊗[k] ((pres Dₑ Scₑ).obj (ob Dₑ s) ⟶ (pres Dₑ Scₑ).obj (ob Dₑ t))) :=
-  TensorProduct.congr (SKM.PairingExtension.coefficientEquiv (k := k) D).toLinearEquiv
-    (affineEquiv D Sc s t)
-
 /-- The tensor equivalence transports the full source coefficient algebra. -/
 def coefficientHomEquiv (s t : List I) :
     (coefficientObj (k := k) D Sc s ⟶ coefficientObj (k := k) D Sc t) ≃ₗ[k]
@@ -75,43 +68,5 @@ theorem coefficientHomEquiv_source {s t : List I} (a : SKM.SYM D k)
       ((SKM.SYM.polynomialExteriorEquiv Dₑ k).symm
         (SKM.SYM.polynomialExteriorEquiv D k a))) ⊗ₜ[k] ((presentationFunctor D Sc).map f)
   rw [AlgEquiv.apply_symm_apply, affineEquiv_apply]
-
-theorem coefficientHomEquiv_basis {s t : List I}
-    (i : SKM.SYM.CoefficientIndex D × NFIdx s t) :
-    coefficientHomEquiv D Sc s t (extensionBasis D Sc s t i) =
-      extensionBasis Dₑ Scₑ s t i := by
-  rcases i with ⟨a, i⟩
-  rw [extensionBasis_apply, coefficientHomEquiv_source, coefficientEquiv_basis,
-    presentationFunctor_nf, extensionBasis_apply]
-
-theorem extensionDegree_eq {s t : List I}
-    (i : SKM.SYM.CoefficientIndex D × NFIdx s t) :
-    extensionDegree Dₑ i = extensionDegree D i := rfl
-
-theorem coefficientHomEquiv_mem_atMost {s t : List I} {d : ℕ}
-    {f : coefficientObj (k := k) D Sc s ⟶ coefficientObj (k := k) D Sc t}
-    (hf : f ∈ ExtendedAtMost D Sc s t d) :
-    coefficientHomEquiv D Sc s t f ∈ ExtendedAtMost Dₑ Scₑ s t d := by
-  induction hf using Submodule.span_induction with
-  | mem f hf =>
-    obtain ⟨i, hi, rfl⟩ := hf
-    rw [coefficientHomEquiv_basis]
-    exact Submodule.subset_span ⟨i, hi, rfl⟩
-  | zero => rw [map_zero]; exact Submodule.zero_mem _
-  | add a b _ _ ha hb => rw [map_add]; exact Submodule.add_mem _ ha hb
-  | smul r a _ ha => rw [map_smul]; exact Submodule.smul_mem _ r ha
-
-theorem coefficientHomEquiv_mem_atLeast {s t : List I} {d : ℤ}
-    {f : coefficientObj (k := k) D Sc s ⟶ coefficientObj (k := k) D Sc t}
-    (hf : f ∈ ExtendedAtLeast D Sc s t d) :
-    coefficientHomEquiv D Sc s t f ∈ ExtendedAtLeast Dₑ Scₑ s t d := by
-  induction hf using Submodule.span_induction with
-  | mem f hf =>
-    obtain ⟨i, hi, rfl⟩ := hf
-    rw [coefficientHomEquiv_basis]
-    exact Submodule.subset_span ⟨i, hi, rfl⟩
-  | zero => rw [map_zero]; exact Submodule.zero_mem _
-  | add a b _ _ ha hb => rw [map_add]; exact Submodule.add_mem _ ha hb
-  | smul r a _ ha => rw [map_smul]; exact Submodule.smul_mem _ r ha
 
 end OddMath.QuiverHecke.PairingExtension

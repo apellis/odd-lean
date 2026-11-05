@@ -115,11 +115,6 @@ instance : (probeOldOrdinaryFunctor D Sc m ν).Linear k where
 /-- The same actual word, viewed in the source old content category. -/
 def probeOrdinaryOldObject (v : Q) : C := ⟨⟨v.word⟩,v.wordPerm⟩
 
-@[simp] theorem probeOldOrdinaryFunctor_obj_lift (v : Q) :
-    (probeOldOrdinaryFunctor D Sc m ν).obj (probeOrdinaryOldObject D Sc m ν v) = v := by
-  cases v
-  rfl
-
 variable
   (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
   (hN : ProbeEvaluatesCoefficients D m Sc ν N)

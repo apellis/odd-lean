@@ -135,17 +135,6 @@ theorem evS_one (μ : X) (s : List (Letter I)) :
 
 /-! ## Inclusion of formal sums -/
 
-omit [CommRing k] in
-@[simp] theorem pushS_nil : pushS J ([] : List (k × List (LayerData J))) = [] := rfl
-
-omit [CommRing k] in
-@[simp] theorem pushS_cons (p : k × List (LayerData J)) (L : List (k × List (LayerData J))) :
-    pushS J (p :: L) = (p.1, p.2.map (layerData J)) :: pushS J L := rfl
-
-omit [CommRing k] in
-theorem pushS_append (L M : List (k × List (LayerData J))) :
-    pushS J (L ++ M) = pushS J L ++ pushS J M := List.map_append ..
-
 theorem pushS_smulS (a : k) (L : List (k × List (LayerData J))) :
     pushS J (smulS a L) = smulS a (pushS J L) := by
   simp [pushS, smulS]
@@ -298,7 +287,6 @@ theorem pushS_epsPS (i : J) (μ : X) :
   · simp only [epsPS, hh, h, ↓reduceIte, pushS, List.map_cons, List.map_nil, map_dcapL]; rfl
   · simp only [epsPS, hh, h, ↓reduceIte, pushS, List.map_cons, List.map_nil, List.map_append,
       map_lcrossL, map_epsL]; rfl
-
 
 variable {J} in
 theorem pushS_bubLS (i : J) (μ : X) (n : ℤ) :

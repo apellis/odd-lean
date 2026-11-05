@@ -135,24 +135,6 @@ def appendOldSourceTarget (i : I) (v w : List I) (c : hom D Sc cutoff v v) :
     (Linear.leftComp k _ (rightContext D Sc cutoff [i] v v c))
     (fun _ hh => comp_appendRelations D Sc cutoff i c hh)
 
-/-- The parity-shifted source action and the unchanged append action intertwine.
-This reuses the proved old balance; no balance hypothesis is supplied. -/
-theorem pMap_twistedOldSource (i : I) (v w : List I) (c : hom D Sc cutoff v v)
-    (z : Target D Sc cutoff i v w) :
-    pMap D Sc cutoff i v w
-        (oldSourceTarget D Sc cutoff i v w (twist k (appendQ D cutoff i v) c) z) =
-      appendOldSourceTarget D Sc cutoff i v w c (pMap D Sc cutoff i v w z) := by
-  obtain ⟨h, rfl⟩ := projection_surjective D Sc cutoff i v w z
-  have he := appendRelations_comp D Sc cutoff i
-    (appendError_mem_appendRelations D Sc cutoff i c) h
-  have hz := (appendProjection_eq_zero_iff D Sc cutoff i v w _).mpr he
-  rw [appendError_apply, Preadditive.sub_comp, map_sub, sub_eq_zero] at hz
-  change appendProjection D Sc cutoff i v w (appendW D Sc cutoff i v ≫
-      (insert D Sc cutoff i v v (twist k (appendQ D cutoff i v) c) ≫ h)) =
-    appendProjection D Sc cutoff i v w (rightContext D Sc cutoff [i] v v c ≫
-      (appendW D Sc cutoff i v ≫ h))
-  simpa only [Category.assoc] using hz.symm
-
 /-- The prescribed central exponent is one at even colour, two at odd colour. -/
 def centralDegree (i : I) : ℕ := if D.parity i = 0 then 1 else 2
 
@@ -176,18 +158,6 @@ theorem pMap_central (i : I) (v w : List I) (z : Target D Sc cutoff i v w) :
   · exact pMap_movingEvenDot D Sc cutoff i hi v w z
   · exact pMap_movingSquare D Sc cutoff i v w z
 
-theorem centralSource_oldSource (i : I) (v w : List I) (c : hom D Sc cutoff v v)
-    (z : Target D Sc cutoff i v w) :
-    centralSource D Sc cutoff i v w (oldSourceTarget D Sc cutoff i v w c z) =
-      oldSourceTarget D Sc cutoff i v w c (centralSource D Sc cutoff i v w z) := by
-  obtain ⟨h, rfl⟩ := projection_surjective D Sc cutoff i v w z
-  change projection D Sc cutoff i v w (movingPower D Sc cutoff i v _ ≫
-    (insert D Sc cutoff i v v c ≫ h)) =
-    projection D Sc cutoff i v w (insert D Sc cutoff i v v c ≫
-      (movingPower D Sc cutoff i v _ ≫ h))
-  rw [← Category.assoc, movingPower_insert D Sc cutoff i _ (centralDegree_even D i),
-    Category.assoc]
-
 theorem appendMovingPower_whisker (i : I) (v : List I) (d : ℕ) :
     appendMovingPower D Sc cutoff i v d =
       affineUnit D Sc cutoff (v ++ [i]) (v ++ [i]) ((pres D Sc).obj (ob D v) ◁ (dotE D Sc [i] 0 ^ d)) := by
@@ -200,91 +170,5 @@ theorem appendMovingPower_whisker (i : I) (v : List I) (d : ℕ) :
       rw [MonoidalSupercategory.whiskerLeft_comp (R := k), ih, whiskerLeft_dotE D Sc v i rfl]
   rw [he]
   rfl
-
-theorem appendMovingPower_rightContext (i : I) (v : List I) (d : ℕ)
-    (hd : d • D.parity i = 0) (c : hom D Sc cutoff v v) :
-    appendMovingPower D Sc cutoff i v d ≫ rightContext D Sc cutoff [i] v v c =
-      rightContext D Sc cutoff [i] v v c ≫ appendMovingPower D Sc cutoff i v d := by
-  rw [appendMovingPower_whisker, trailing_comp_rightContext D Sc cutoff (v := v) (w := v)
-    (hd ▸ firstDot_pow_parity D Sc i [] d)]
-  simp only [twist_zero]
-
-theorem centralAppend_oldSource (i : I) (v w : List I) (c : hom D Sc cutoff v v)
-    (z : AppendTarget D Sc cutoff i v w) :
-    centralAppend D Sc cutoff i v w (appendOldSourceTarget D Sc cutoff i v w c z) =
-      appendOldSourceTarget D Sc cutoff i v w c (centralAppend D Sc cutoff i v w z) := by
-  obtain ⟨h, rfl⟩ := appendProjection_surjective D Sc cutoff i v w z
-  change appendProjection D Sc cutoff i v w (appendMovingPower D Sc cutoff i v _ ≫
-    (rightContext D Sc cutoff [i] v v c ≫ h)) =
-    appendProjection D Sc cutoff i v w (rightContext D Sc cutoff [i] v v c ≫
-      (appendMovingPower D Sc cutoff i v _ ≫ h))
-  rw [← Category.assoc, appendMovingPower_rightContext D Sc cutoff i v _ (centralDegree_even D i),
-    Category.assoc]
-
-/-- The old-only source with the prescribed central polynomial action. -/
-abbrev CentralTarget (i : I) (v w : List I) :=
-  Module.AEval' (centralSource D Sc cutoff i v w)
-
-/-- The append-old target with the prescribed central polynomial action. -/
-abbrev CentralAppendTarget (i : I) (v w : List I) :=
-  Module.AEval' (centralAppend D Sc cutoff i v w)
-
-/-- P is polynomial-linear for the dot at even colour and square at odd colour.
-The intertwining proof is `pMap_central`, not an input assumption. -/
-def pCentralMap (i : I) (v w : List I) :
-    CentralTarget D Sc cutoff i v w →ₗ[Polynomial k] CentralAppendTarget D Sc cutoff i v w :=
-  LinearMap.ofAEval (centralSource D Sc cutoff i v w)
-    ((Module.AEval'.of (centralAppend D Sc cutoff i v w)).toLinearMap.comp
-      (pMap D Sc cutoff i v w)) (fun z => by
-        simp only [LinearMap.comp_apply, LinearEquiv.coe_coe]
-        rw [Module.AEval'.X_smul_of]
-        exact congrArg (Module.AEval'.of (centralAppend D Sc cutoff i v w))
-          (pMap_central D Sc cutoff i v w z))
-
-@[simp] theorem pCentralMap_of (i : I) (v w : List I) (z : Target D Sc cutoff i v w) :
-    pCentralMap D Sc cutoff i v w (Module.AEval'.of (centralSource D Sc cutoff i v w) z) =
-      Module.AEval'.of (centralAppend D Sc cutoff i v w) (pMap D Sc cutoff i v w z) := rfl
-
-/-- Each twisted old source operator is linear for the central polynomial action. -/
-def centralOldSource (i : I) (v w : List I) (c : hom D Sc cutoff v v) :
-    CentralTarget D Sc cutoff i v w →ₗ[Polynomial k] CentralTarget D Sc cutoff i v w :=
-  LinearMap.ofAEval (centralSource D Sc cutoff i v w)
-    ((Module.AEval'.of (centralSource D Sc cutoff i v w)).toLinearMap.comp
-      (oldSourceTarget D Sc cutoff i v w (twist k (appendQ D cutoff i v) c))) (fun z => by
-        simp only [LinearMap.comp_apply, LinearEquiv.coe_coe]
-        rw [Module.AEval'.X_smul_of]
-        exact congrArg (Module.AEval'.of (centralSource D Sc cutoff i v w))
-          (centralSource_oldSource D Sc cutoff i v w _ z).symm)
-
-/-- Each append old operator is linear for the same central polynomial action. -/
-def centralOldAppend (i : I) (v w : List I) (c : hom D Sc cutoff v v) :
-    CentralAppendTarget D Sc cutoff i v w →ₗ[Polynomial k] CentralAppendTarget D Sc cutoff i v w :=
-  LinearMap.ofAEval (centralAppend D Sc cutoff i v w)
-    ((Module.AEval'.of (centralAppend D Sc cutoff i v w)).toLinearMap.comp
-      (appendOldSourceTarget D Sc cutoff i v w c)) (fun z => by
-        simp only [LinearMap.comp_apply, LinearEquiv.coe_coe]
-        rw [Module.AEval'.X_smul_of]
-        exact congrArg (Module.AEval'.of (centralAppend D Sc cutoff i v w))
-          (centralAppend_oldSource D Sc cutoff i v w c z).symm)
-
-theorem pCentralMap_oldSource (i : I) (v w : List I) (c : hom D Sc cutoff v v)
-    (z : CentralTarget D Sc cutoff i v w) :
-    pCentralMap D Sc cutoff i v w (centralOldSource D Sc cutoff i v w c z) =
-      centralOldAppend D Sc cutoff i v w c (pCentralMap D Sc cutoff i v w z) :=
-  pMap_twistedOldSource D Sc cutoff i v w c z
-
-/-- Twisted old action factors through the old cyclotomic quotient. -/
-theorem centralOldSource_ideal (i : I) (v w : List I) {c : hom D Sc cutoff v v}
-    (hc : c ∈ ideal D Sc cutoff v v) (z : CentralTarget D Sc cutoff i v w) :
-    centralOldSource D Sc cutoff i v w c z = 0 := by
-  obtain ⟨h, rfl⟩ := projection_surjective D Sc cutoff i v w z
-  exact projection_old_ideal D Sc cutoff i (twist_ideal D Sc cutoff _ hc) h
-
-/-- The append action also factors through the old cyclotomic quotient. -/
-theorem centralOldAppend_ideal (i : I) (v w : List I) {c : hom D Sc cutoff v v}
-    (hc : c ∈ ideal D Sc cutoff v v) (z : CentralAppendTarget D Sc cutoff i v w) :
-    centralOldAppend D Sc cutoff i v w c z = 0 := by
-  obtain ⟨h, rfl⟩ := appendProjection_surjective D Sc cutoff i v w z
-  exact appendProjection_old_ideal D Sc cutoff i hc h
 
 end OddMath.QuiverHecke.ELVOld

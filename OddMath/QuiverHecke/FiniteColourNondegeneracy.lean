@@ -70,37 +70,11 @@ theorem nondegeneracy_of_restrictColours_upward
   rw [wt_ups_restrictColours, wt_ups_restrictColours]
   exact hw
 
-/-- **Finite-colour reduction.** Upward coefficient injectivity for every datum with a
-finite colour set (on the same weight lattice and ground ring) implies the Nondegeneracy
-Conjecture for every datum. -/
-theorem nondegeneracy_of_finiteColour_upward
-    (h : ∀ (J : Type u) [Finite J] (D' : SKM.Datum J X) (Sc' : SKM.Scalars D' k)
-      (cs' : SKM.CScalars Sc') (t t' : List J),
-      SKM.wt D' 0 (SKM.ups t) = SKM.wt D' 0 (SKM.ups t') →
-      ∀ μ : X, Function.Injective (upwardCoefficientMap D' Sc' cs' μ t t')) :
-    SKM.NondegeneracyConjecture cs :=
-  nondegeneracy_of_restrictColours_upward D Sc cs fun J tJ t'J hw μ =>
-    h J (D.restrictColours J) (Sc.restrictColours D J) (cs.restrictColours D J Sc) tJ t'J hw μ
-
 end CommRing
 
 section Field
 variable {I X k : Type u} [AddCommGroup X] [Field k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cs : SKM.CScalars Sc)
-
-/-- **Conditional field theorem, finite-colour form.** Over a field, vacuum evaluations of the
-swapped action at every finite-colour restriction of `D`, every equal-weight pair of upward
-words, every external weight and every degree bound imply the Nondegeneracy Conjecture for
-`D`. -/
-theorem nondegeneracy_of_restrictColours_vacuum_evaluations
-    (h : ∀ (J : Finset I) (tJ t'J : List J),
-      SKM.wt (D.restrictColours J) 0 (SKM.ups tJ) =
-        SKM.wt (D.restrictColours J) 0 (SKM.ups t'J) →
-      ∀ (μ : X) (d : ℕ), Nonempty (SwappedVacuumEvaluation (D.restrictColours J)
-        (Sc.restrictColours D J) (cs.restrictColours D J Sc) μ tJ t'J d)) :
-    SKM.NondegeneracyConjecture cs :=
-  nondegeneracy_of_restrictColours_upward D Sc cs fun J tJ t'J hw μ =>
-    upwardCoefficientMap_injective_of_vacuum_evaluations μ tJ t'J (h J tJ t'J hw μ)
 
 end Field
 

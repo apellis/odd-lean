@@ -27,18 +27,4 @@ def ofBijectiveTotals {p : ZMod 2} (f : F ⟶ G) (hf : f ∈ parity (R := k) _ _
     (hb : ∀ X, Function.Bijective (f.total X)) : (ofBijectiveTotals f hf hb).hom = f :=
   ofHom_hom f hf _ _
 
-/-- The inverse retains the forward parity, including odd maps. -/
-theorem ofBijectiveTotals_inv_mem {p : ZMod 2} (f : F ⟶ G) (hf : f ∈ parity (R := k) _ _ p)
-    (hb : ∀ X, Function.Bijective (f.total X)) :
-    (ofBijectiveTotals f hf hb).inv ∈ parity (R := k) _ _ p :=
-  ofHom_inv_mem f hf _ _
-
-@[simp] theorem ofBijectiveTotals_hom_inv_id {p : ZMod 2} (f : F ⟶ G) (hf : f ∈ parity (R := k) _ _ p)
-    (hb : ∀ X, Function.Bijective (f.total X)) : f ≫ (ofBijectiveTotals f hf hb).inv = 𝟙 F := by
-  simpa only [ofBijectiveTotals_hom] using (ofBijectiveTotals f hf hb).hom_inv_id
-
-@[simp] theorem ofBijectiveTotals_inv_hom_id {p : ZMod 2} (f : F ⟶ G) (hf : f ∈ parity (R := k) _ _ p)
-    (hb : ∀ X, Function.Bijective (f.total X)) : (ofBijectiveTotals f hf hb).inv ≫ f = 𝟙 G := by
-  simpa only [ofBijectiveTotals_hom] using (ofBijectiveTotals f hf hb).inv_hom_id
-
 end OddMath.HomogeneousSuperfunctorIso

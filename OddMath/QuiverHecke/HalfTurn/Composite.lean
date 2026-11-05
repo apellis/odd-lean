@@ -147,31 +147,4 @@ theorem halfTurn_mkD {t t' : List I} (ls : List (LayerData I)) (h : SChain t ls 
   apply Presentation.diag_eq_of_layers_eq
   simp only [Diagram.layers_cast, layers_mkD, flipL_map_mirrorLD]
 
-/-- The half-turn of a dot in context: a dot on the reflected strand. -/
-theorem halfTurn_dot (u : List I) (i : I) (v : List I) :
-    SOp.unsop ((halfTurnFunctor D Sc).map ((pres D Sc).diag
-      (mkD D [(u, Shape.dot i, v)] (t := u ++ [i] ++ v) (t' := u ++ [i] ++ v) ⟨rfl, rfl⟩))) =
-      (pres D (parameterTwist D Sc)).diag
-        (Diagram.cast (mkD D [(v.reverse, Shape.dot i, u.reverse)]
-          (t := v.reverse ++ [i] ++ u.reverse) (t' := v.reverse ++ [i] ++ u.reverse)
-          ⟨rfl, rfl⟩) ((congrArg (ob D) (by simp)).trans (halfTurn_obj D (u ++ [i] ++ v)).symm)
-          ((congrArg (ob D) (by simp)).trans (halfTurn_obj D (u ++ [i] ++ v)).symm)) := by
-  rw [halfTurn_mkD, halfTurnC_singleton, halfTurnWeight, one_smul]
-  apply Presentation.diag_eq_of_layers_eq
-  simp [halfTurnL, halfTurnLD]
-
-/-- The half-turn of a crossing in context: `ε_ij` times the crossing of the reflected strands,
-in the reverse direction. -/
-theorem halfTurn_cross (u : List I) (i j : I) (v : List I) :
-    SOp.unsop ((halfTurnFunctor D Sc).map ((pres D Sc).diag
-      (mkD D [(u, Shape.cross i j, v)] (t := u ++ [i, j] ++ v) (t' := u ++ [j, i] ++ v)
-        ⟨rfl, rfl⟩))) =
-      (if i = j then -1 else 1 : k) • (pres D (parameterTwist D Sc)).diag
-        (Diagram.cast (mkD D [(v.reverse, Shape.cross i j, u.reverse)]
-          (t := v.reverse ++ [i, j] ++ u.reverse) (t' := v.reverse ++ [j, i] ++ u.reverse)
-          ⟨rfl, rfl⟩) ((congrArg (ob D) (by simp)).trans (halfTurn_obj D (u ++ [j, i] ++ v)).symm)
-          ((congrArg (ob D) (by simp)).trans (halfTurn_obj D (u ++ [i, j] ++ v)).symm)) := by
-  rw [halfTurn_mkD, halfTurnC_singleton, halfTurnWeight]
-  congr 1
-
 end OddMath.QuiverHecke

@@ -110,9 +110,5 @@ theorem negativeKernelBoundary_degree (i : I) (v t : OldCategory D Sc cutoff)
   simpa only [negativeKernelBoundary, LinearMap.comp_apply, he] using h
 
 omit hc in
-/-- Every off-window difference occurring in either orientation is positive. -/
-theorem kernelBoundaryDegree_pos (i : I) {m n : ℕ} (hmn : m < n) :
-    0 < 2 * sy.d i * ((n : ℤ) - m) :=
-  mul_pos (mul_pos (by norm_num) (sy.pos i)) (by omega)
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

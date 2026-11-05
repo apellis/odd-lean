@@ -174,31 +174,6 @@ theorem ren (δ : ℕ) {I : Type*} (f : ℕ → ℕ) (hf : Function.Injective f)
     rw [stepRen_map δ f hf k T m hR.1, step δ flipL f hf k T (hfix _ le_rfl) m hR.1]
     exact ih _ (fun n hn => hfix n ((next_le flipL k T m).trans hn)) hR.2 _
 
-/-- Relabelling preserves the complete reducedness data at a valid state:
-no repeated crossings, no diagonal crossings, and no repeated critical IDs. -/
-theorem reducedData_iff (δ : ℕ) (d : α → α) (f : ℕ → ℕ) (hf : Function.Injective f)
-    (k : ℕ) (T : TState α) (hfix : ∀ n, T.nxt ≤ n → f n = n + δ)
-    (R : List (TMove α)) (hR : TFits d k T R) (cl : List ℕ) :
-    ((tRun d k (rename δ f T) R).xs.Nodup ∧
-      (∀ z ∈ (tRun d k (rename δ f T) R).xs, ¬ z.IsDiag) ∧
-      (tCrit d k (rename δ f T) (cl.map f) R).Nodup) ↔
-    ((tRun d k T R).xs.Nodup ∧
-      (∀ z ∈ (tRun d k T R).xs, ¬ z.IsDiag) ∧
-      (tCrit d k T cl R).Nodup) := by
-  rw [run δ d f hf k T hfix R hR, crit δ d f hf k T hfix R hR cl]
-  simp only [rename, List.nodup_map_iff (Sym2.map.injective hf),
-    List.nodup_map_iff hf, List.mem_map, forall_exists_index, and_imp]
-  constructor
-  · rintro ⟨hn, hd, hc⟩
-    refine ⟨hn, ?_, hc⟩
-    intro z hz
-    exact fun h => hd _ z hz rfl (h.map)
-  · rintro ⟨hn, hd, hc⟩
-    refine ⟨hn, ?_, hc⟩
-    intro z x hx he
-    subst z
-    exact fun h => hd x hx ((Sym2.isDiag_map hf).mp h)
-
 end Shift
 
 namespace Frozen
@@ -986,23 +961,6 @@ noncomputable def attach {L Q Z : List (Letter I)} (x : Letter I)
   intro j hj
   rw [capCounts_on_strands x F.matching n j hj]
 
-@[simp] theorem attach_moves {L Q Z : List (Letter I)} (x : Letter I)
-    (F : PointedMatching (L ++ Q) Z) : (attach x F).moves = .cap L.length :: F.moves := rfl
-
-@[simp] theorem attach_points {L Q Z : List (Letter I)} (x : Letter I)
-    (F : PointedMatching (L ++ Q) Z) :
-    (attach x F).points = capPoints L.length Q.length F.points := rfl
-
-/-- Complete existence of cap-adapted pointed representatives with actual serializers. -/
-theorem exists_pointed_cap_adapted {L Q Z : List (Letter I)} (x : Letter I)
-    {R : List (TMove (Letter I))} (hR : IsMatching₂ (L ++ flipL x :: x :: Q) Z R)
-    (hc : Same (pairing₂ (L ++ flipL x :: x :: Q) R) Q.length (Q.length + 1)) :
-    ∃ F : PointedMatching (L ++ Q) Z,
-      Iso (pairing₂ (L ++ flipL x :: x :: Q) (attach x F).moves)
-        (pairing₂ (L ++ flipL x :: x :: Q) R) := by
-  obtain ⟨S, hS, hs, _, _, hi⟩ := exists_cap_adapted x hR hc
-  exact ⟨PointedMatching.ofStrict hS hs, hi⟩
-
 /-- The serializer evaluates to cap dots, the actual contextual cap layers,
 and exactly the inherited residual layers. -/
 theorem capMoves_layers (L Q : List (Letter I)) (x : Letter I) (b : ℕ) (ds : List (DTMove I)) :
@@ -1036,21 +994,6 @@ theorem cap_pairing_iso_iff {L Q Z : List (Letter I)} (x : Letter I)
       (hA.pairing_properties.2.2.trans hB.pairing_properties.2.2.symm)
       ((cap_delete_iso L Q x R hR.1).symm.trans (hi.trans (cap_delete_iso L Q x S hS.1)))
 
-/-- Any complete residual family yields a complete *actual* cap-adapted family,
-with no separately assumed cap comparison or realization map. -/
-theorem cap_family_complete {L Q Z : List (Letter I)} (x : Letter I)
-    (M : Set (List (TMove (Letter I))))
-    (hm : ∀ S ∈ M, IsMatching₂ (L ++ Q) Z S)
-    (hcomplete : ∀ R, IsMatching₂ (L ++ Q) Z R → StrictReduced₂ (L ++ Q) R →
-      ∃ S ∈ M, Iso (pairing₂ (L ++ Q) S) (pairing₂ (L ++ Q) R))
-    {R : List (TMove (Letter I))} (hR : IsMatching₂ (L ++ flipL x :: x :: Q) Z R)
-    (hc : Same (pairing₂ (L ++ flipL x :: x :: Q) R) Q.length (Q.length + 1)) :
-    ∃ S ∈ M, Iso (pairing₂ (L ++ flipL x :: x :: Q) (.cap L.length :: S))
-      (pairing₂ (L ++ flipL x :: x :: Q) R) := by
-  obtain ⟨T, hT, ht, _, _, hi⟩ := exists_cap_adapted x hR hc
-  obtain ⟨S, hS, hST⟩ := hcomplete T hT ht
-  exact ⟨S, hS, ((cap_pairing_iso_iff x (hm S hS) hT).2 hST).trans hi⟩
-
 /-- Natural strand counts split bijectively into one cap count and residual counts. -/
 noncomputable def labelEquiv {L Q Z : List (Letter I)} (x : Letter I)
     {R : List (TMove (Letter I))} (hR : IsMatching₂ (L ++ Q) Z R) :
@@ -1058,13 +1001,6 @@ noncomputable def labelEquiv {L Q Z : List (Letter I)} (x : Letter I)
       ℕ × (MatchingStrand (L ++ Q) R → ℕ) :=
   capLabelEquiv (cap_matching x hR).pairing_properties.1
     (cap_same L Q x R hR.1) (cap_delete_iso L Q x R hR.1)
-
-/-- Serializer compatibility uses the constructed label equivalence. -/
-theorem attach_serialize {L Q Z : List (Letter I)} (x : Letter I)
-    (F : PointedMatching (L ++ Q) Z)
-    (n : MatchingStrand (L ++ flipL x :: x :: Q) (attach x F).moves → ℕ) :
-    (attach x F).serialize n = capMoves L.length ((labelEquiv x F.matching) n).1
-      (F.serialize ((labelEquiv x F.matching) n).2) := rfl
 
 /-- The attached pointed representative has precisely the expected layer factorization. -/
 theorem attach_layers {L Q Z : List (Letter I)} (x : Letter I)

@@ -101,11 +101,6 @@ def outputLongSection (p : ZMod 2) (i : I) (v : List I) :
   | add f g hf hg => simp only [map_add, hf, hg]
   | single m b => rw [outputLongSection_single, outputLongExtraction_lift]
 
-private theorem longOutputIndex_shift (i : I) (v : List I) (m d : ℕ) :
-    (longOutputIndex i v m).shift d = longOutputIndex i v (d + m) := by
-  apply Subtype.ext
-  rfl
-
 /-- Rho preserves the specified long lift summand, with the total old twist
 and the signed old delta action of the checked output convention. -/
 theorem boundaryRho_outputLongLift (p : ZMod 2)
@@ -247,98 +242,6 @@ theorem outputCorrectedLift_even (p : ZMod 2) (j : {j : I // D.parity j = 1})
   rw [ht] at h
   exact h
 
-/-- Odd corrected iterates have exactly two adjacent normalized long tails. -/
-theorem outputCorrectedLift_odd (p : ZMod 2) (j : {j : I // D.parity j = 1})
-    (v : List I) (q : ℕ) (b : Old D Sc cutoff v v) :
-    outputCorrectedLift D Sc cutoff p j v (2 * q + 1) b =
-      outputLongLift D Sc cutoff p j.1 v (2 * q + 1)
-        (oldTwist D Sc cutoff (D.parity j.1) v v b) +
-      outputLongLift D Sc cutoff p j.1 v (2 * q) (outputDeltaCoefficient D Sc cutoff p j v b) := by
-  rw [outputCorrectedLift, Function.iterate_succ_apply']
-  change boundaryRho D Sc cutoff j v (v ++ [j.1])
-    (outputCorrectedLift D Sc cutoff p j v (2 * q) b) = _
-  rw [outputCorrectedLift_even, boundaryRho_outputLongLift]
-  simp only [outputDeltaCoefficient, LinearMap.smul_apply, map_smul]
-
-/-- Explicit corrected coordinates, including the full old-coefficient twist. -/
-theorem outputCorrectedLift_coordinates (p : ZMod 2) (j : {j : I // D.parity j = 1})
-    (v : List I) (q : ℕ) (b : Old D Sc cutoff v v) :
-    outputLongExtraction D Sc cutoff p j.1 v (outputCorrectedLift D Sc cutoff p j v (2 * q) b) =
-      Finsupp.single (2 * q) b ∧
-    outputLongExtraction D Sc cutoff p j.1 v (outputCorrectedLift D Sc cutoff p j v (2 * q + 1) b) =
-      Finsupp.single (2 * q + 1) (oldTwist D Sc cutoff (D.parity j.1) v v b) +
-      Finsupp.single (2 * q) (outputDeltaCoefficient D Sc cutoff p j v b) := by
-  constructor
-  · rw [outputCorrectedLift_even, outputLongExtraction_lift]
-  · rw [outputCorrectedLift_odd, map_add, outputLongExtraction_lift, outputLongExtraction_lift]
-
-/-- Inverse triangular change on each adjacent even/odd coefficient pair. -/
-def outputCorrectedPairEquiv (p : ZMod 2) (j : {j : I // D.parity j = 1}) (v : List I) :
-    (Old D Sc cutoff v v × Old D Sc cutoff v v) ≃ₗ[k]
-      (Old D Sc cutoff v v × Old D Sc cutoff v v) where
-  toFun b := (b.1 + outputDeltaCoefficient D Sc cutoff p j v b.2,
-    oldTwist D Sc cutoff (D.parity j.1) v v b.2)
-  invFun a := (a.1 - outputDeltaCoefficient D Sc cutoff p j v
-    (oldTwist D Sc cutoff (D.parity j.1) v v a.2),
-    oldTwist D Sc cutoff (D.parity j.1) v v a.2)
-  left_inv b := by simp only [oldTwist_twice, add_sub_cancel_right]
-  right_inv a := by simp only [oldTwist_twice, sub_add_cancel]
-  map_add' a b := by
-    simp only [Prod.fst_add, Prod.snd_add, map_add]
-    ext <;> simp only [Prod.fst_add, Prod.snd_add]
-    abel
-  map_smul' c b := by
-    apply Prod.ext
-    · simp only [Prod.smul_fst, Prod.smul_snd, map_smul, smul_add, RingHom.id_apply]
-    · simp only [Prod.smul_snd, map_smul, RingHom.id_apply]
-
-/-- Applying the explicit pair change gives exactly the extracted pair of
-corrected lifts; it is not an independently postulated coordinate system. -/
-theorem outputCorrectedPairEquiv_extract (p : ZMod 2) (j : {j : I // D.parity j = 1})
-    (v : List I) (q : ℕ) (b : Old D Sc cutoff v v × Old D Sc cutoff v v) :
-    outputLongExtraction D Sc cutoff p j.1 v
-      (outputCorrectedLift D Sc cutoff p j v (2 * q) b.1 +
-        outputCorrectedLift D Sc cutoff p j v (2 * q + 1) b.2) =
-      Finsupp.single (2 * q) (outputCorrectedPairEquiv D Sc cutoff p j v b).1 +
-        Finsupp.single (2 * q + 1) (outputCorrectedPairEquiv D Sc cutoff p j v b).2 := by
-  rw [map_add, (outputCorrectedLift_coordinates D Sc cutoff p j v q b.1).1,
-    (outputCorrectedLift_coordinates D Sc cutoff p j v q b.2).2]
-  change _ = Finsupp.single (2 * q) (b.1 + outputDeltaCoefficient D Sc cutoff p j v b.2) +
-    Finsupp.single (2 * q + 1) (oldTwist D Sc cutoff (D.parity j.1) v v b.2)
-  rw [Finsupp.single_add]
-  abel
-
-/-- The inverse triangular formula recovers each odd PBW tail from actual
-corrected iterates, without an existence or basis hypothesis. -/
-theorem outputLongLift_odd_inverse (p : ZMod 2) (j : {j : I // D.parity j = 1})
-    (v : List I) (q : ℕ) (b : Old D Sc cutoff v v) :
-    outputLongLift D Sc cutoff p j.1 v (2 * q + 1) b =
-      outputCorrectedLift D Sc cutoff p j v (2 * q + 1)
-        (oldTwist D Sc cutoff (D.parity j.1) v v b) -
-      outputCorrectedLift D Sc cutoff p j v (2 * q)
-        (outputDeltaCoefficient D Sc cutoff p j v
-          (oldTwist D Sc cutoff (D.parity j.1) v v b)) := by
-  rw [outputCorrectedLift_odd, oldTwist_twice, outputCorrectedLift_even, add_sub_cancel_right]
-
-/-- The normalized lift of an arbitrary coordinate pair is obtained by the
-explicit inverse triangular change, applied to actual corrected iterates. -/
-theorem outputLongSection_pair_inverse (p : ZMod 2) (j : {j : I // D.parity j = 1})
-    (v : List I) (q : ℕ) (a : Old D Sc cutoff v v × Old D Sc cutoff v v) :
-    outputLongSection D Sc cutoff p j.1 v
-      (Finsupp.single (2 * q) a.1 + Finsupp.single (2 * q + 1) a.2) =
-    outputCorrectedLift D Sc cutoff p j v (2 * q)
-      ((outputCorrectedPairEquiv D Sc cutoff p j v).symm a).1 +
-    outputCorrectedLift D Sc cutoff p j v (2 * q + 1)
-      ((outputCorrectedPairEquiv D Sc cutoff p j v).symm a).2 := by
-  rw [map_add, outputLongSection_single, outputLongSection_single]
-  change _ = outputCorrectedLift D Sc cutoff p j v (2 * q)
-    (a.1 - outputDeltaCoefficient D Sc cutoff p j v
-      (oldTwist D Sc cutoff (D.parity j.1) v v a.2)) +
-    outputCorrectedLift D Sc cutoff p j v (2 * q + 1)
-      (oldTwist D Sc cutoff (D.parity j.1) v v a.2)
-  rw [outputCorrectedLift_even, map_sub, outputCorrectedLift_odd, oldTwist_twice]
-  abel
-
 /-- Finite triangular coordinate change on all degrees, with full old coefficients. -/
 def outputCorrectedChange (p : ZMod 2) (j : {j : I // D.parity j = 1}) (v : List I) :
     (ℕ →₀ Old D Sc cutoff v v) →ₗ[k] (ℕ →₀ Old D Sc cutoff v v) :=
@@ -378,56 +281,5 @@ private theorem corrected_changeInv_single (p : ZMod 2) (j : {j : I // D.parity 
   simp only [outputCorrectedChangeInv, Finsupp.lsum_single, he, ite_true, ho, ite_false,
     LinearMap.sub_apply, LinearMap.comp_apply, Finsupp.lsingle_apply, Nat.add_sub_cancel]
   exact ⟨trivial, trivial⟩
-
-/-- The corrected coordinates give a genuine automorphism of all finite rows. -/
-def outputCorrectedCoordinateEquiv (p : ZMod 2) (j : {j : I // D.parity j = 1}) (v : List I) :
-    (ℕ →₀ Old D Sc cutoff v v) ≃ₗ[k] (ℕ →₀ Old D Sc cutoff v v) where
-  toLinearMap := outputCorrectedChange D Sc cutoff p j v
-  invFun := outputCorrectedChangeInv D Sc cutoff p j v
-  left_inv f := by
-    change outputCorrectedChangeInv D Sc cutoff p j v
-      (outputCorrectedChange D Sc cutoff p j v f) = f
-    induction f using Finsupp.induction_linear with
-    | zero => simp only [map_zero]
-    | add f g hf hg => simp only [map_add, hf, hg]
-    | single m b =>
-      rcases (show ∃ q, m = 2 * q ∨ m = 2 * q + 1 from ⟨m / 2, by omega⟩) with ⟨q, h | h⟩
-      · subst m
-        rw [(corrected_change_single D Sc cutoff p j v q b).1,
-          (corrected_changeInv_single D Sc cutoff p j v q b).1]
-      · subst m
-        rw [(corrected_change_single D Sc cutoff p j v q b).2, map_add,
-          (corrected_changeInv_single D Sc cutoff p j v q _).2,
-          (corrected_changeInv_single D Sc cutoff p j v q _).1, oldTwist_twice, sub_add_cancel]
-  right_inv f := by
-    change outputCorrectedChange D Sc cutoff p j v
-      (outputCorrectedChangeInv D Sc cutoff p j v f) = f
-    induction f using Finsupp.induction_linear with
-    | zero => simp only [map_zero]
-    | add f g hf hg => simp only [map_add, hf, hg]
-    | single m b =>
-      rcases (show ∃ q, m = 2 * q ∨ m = 2 * q + 1 from ⟨m / 2, by omega⟩) with ⟨q, h | h⟩
-      · subst m
-        rw [(corrected_changeInv_single D Sc cutoff p j v q b).1,
-          (corrected_change_single D Sc cutoff p j v q b).1]
-      · subst m
-        rw [(corrected_changeInv_single D Sc cutoff p j v q b).2, map_sub,
-          (corrected_change_single D Sc cutoff p j v q _).2,
-          (corrected_change_single D Sc cutoff p j v q _).1, oldTwist_twice, add_sub_cancel_right]
-
-/-- The complete corrected coordinate equivalence is extracted from the actual
-rho iterates on the bare-long class, at every degree and full old coefficient. -/
-theorem outputCorrectedCoordinateEquiv_single (p : ZMod 2)
-    (j : {j : I // D.parity j = 1}) (v : List I) (m : ℕ) (b : Old D Sc cutoff v v) :
-    outputCorrectedCoordinateEquiv D Sc cutoff p j v (Finsupp.single m b) =
-      outputLongExtraction D Sc cutoff p j.1 v (outputCorrectedLift D Sc cutoff p j v m b) := by
-  change outputCorrectedChange D Sc cutoff p j v (Finsupp.single m b) = _
-  rcases (show ∃ q, m = 2 * q ∨ m = 2 * q + 1 from ⟨m / 2, by omega⟩) with ⟨q, h | h⟩
-  · subst m
-    rw [(corrected_change_single D Sc cutoff p j v q b).1,
-      (outputCorrectedLift_coordinates D Sc cutoff p j v q b).1]
-  · subst m
-    rw [(corrected_change_single D Sc cutoff p j v q b).2,
-      (outputCorrectedLift_coordinates D Sc cutoff p j v q b).2]
 
 end OddMath.QuiverHecke.ELVOld

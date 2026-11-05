@@ -98,18 +98,6 @@ private theorem tensorMap_scalar_square {W : Superfunctor k C (SVec k)}
   rw [SVec.whiskerRight_tmul, VacuumTensor.scalarTensorIso_hom_tmul,
     VacuumTensor.scalarTensorIso_hom_tmul, map_smul]
 
-/-- Reservoir maps retain their homogeneous parity on the whole tensor functor. -/
-theorem reservoirMap_mem {W W' : Superfunctor k C (SVec k)} (a : A)
-    {f : W ⟶ W'} {p : ZMod 2} (hf : f ∈ parity (R := k) _ _ p) :
-    reservoirMap a f ∈ parity (R := k) _ _ p := by
-  rw [Superfunctor.mem_parity_iff]
-  funext M
-  change tensorMap (proj k (p + 1) f) (M.obj a) = 0
-  rw [proj_of_mem_ne hf (Ne.symm (zmod2_add_one_ne p))]
-  apply Superfunctor.hom_ext
-  intro q c
-  exact (VacuumTensor.rightFunctor (M.obj a)).map_zero _ _
-
 /-- Tensoring the reservoir factor preserves the endomorphism algebra. -/
 def reservoirEndAction (W : Superfunctor k C (SVec k)) (a : A) :
     End W →ₐ[k] End (VacuumTensor.superfunctor W a) :=
@@ -300,23 +288,6 @@ theorem coefficientAction_total (a : A)
       ((WeightTensorVacuum.emptyProbe D Sc m ΛP).obj M)).total c = _
   exact reservoirMap_total _ _ _ _
 
-/-- The tensor action preserves each coefficient parity on all input blocks. -/
-theorem coefficientAction_mem {a : A} {p : ZMod 2}
-    (ha : a ∈ SKM.SYM.elvCoefficientParity D cutoff p) :
-    coefficientAction D Sc m cutoff L ΛP ΛR a ∈ parity (R := k) _ _ p := by
-  have hb (β : WeightBlocks D ΛR (ReservoirWord.weight D ΛR 0)) :
-      vacuumBlockAction D Sc cutoff L ΛR β a ∈ parity (R := k) _ _ p :=
-    map_mem (BalancedInduction.restriction (contentInclusion D Sc cutoff N β.1))
-      (weightedModuleHom_mem D Sc cutoff N _ _ _ _ _
-        (coefficientModuleAction_mem D Sc cutoff _ ha))
-  have ht (β : WeightBlocks D ΛR (ReservoirWord.weight D ΛR 0)) :
-      blockTensorAction D Sc m cutoff L ΛP ΛR β a ∈ parity (R := k) _ _ p :=
-    Superfunctor.whiskerLeft_mem (WeightTensorVacuum.emptyProbe D Sc m ΛP)
-      (reservoirMap_mem _ (hb β))
-  rw [Superfunctor.mem_parity_iff]
-  funext M β
-  exact Superfunctor.app_eq_zero_of_mem (ht β) (zmod2_add_one_ne p) M
-
 private theorem coefficientAction_block (a : A)
     (M : ProbeOldWeightProduct D Sc m ΛP (-ΛP))
     (β : WeightBlocks D ΛR (ReservoirWord.weight D ΛR 0)) :
@@ -441,8 +412,6 @@ def postcompositionAlgHom (A B : C) : End B →ₐ[k] Module.End k (A ⟶ B) :=
       intro f
       exact (Category.assoc f b a).symm)
 
-@[simp] theorem postcompositionAlgHom_apply (A B : C) (a : End B) (f : A ⟶ B) :
-    postcompositionAlgHom (k := k) A B a f = f ≫ a := rfl
 end Hom
 
 section Paths
@@ -471,25 +440,6 @@ def pathHomCoefficientAction {l : List (SKM.Col I X)} {c : I →₀ ℕ}
   (postcompositionAlgHom G (TensorReservoirWords.pathHom D Sc m cutoff L ΛP ΛR p hl)).comp
     (pathCoefficientAction D Sc m cutoff L ΛP ΛR p hl)
 
-/-- Placement on a word Hom is postcomposition, including inhomogeneous
-coefficients and arbitrary whole-functor maps from the source. -/
-@[simp] theorem pathHomCoefficientAction_apply {l : List (SKM.Col I X)} {c : I →₀ ℕ}
-    (p : SPath l (0,c) (0,0)) (hl : ∀ a ∈ l, a.l.1 = true)
-    (G : probeOldWeightSpace D Sc m ΛP (-ΛP) ⟶
-      elvWeightSpace D Sc cutoff N ΛR (ReservoirWord.weight D ΛR c))
-    (a : SKM.SYM D k) (f : G ⟶ TensorReservoirWords.pathHom D Sc m cutoff L ΛP ΛR p hl) :
-    pathHomCoefficientAction D Sc m cutoff L ΛP ΛR p hl G a f =
-      f ≫ pathCoefficientAction D Sc m cutoff L ΛP ΛR p hl a := rfl
-
-/-- Every probe input sees the same literal path-whiskering of its vacuum coefficient. -/
-theorem pathCoefficientAction_total {l : List (SKM.Col I X)} {c : I →₀ ℕ}
-    (p : SPath l (0,c) (0,0)) (hl : ∀ a ∈ l, a.l.1 = true)
-    (a : SKM.SYM D k) (M : ProbeOldWeightProduct D Sc m ΛP (-ΛP)) :
-    (pathCoefficientAction D Sc m cutoff L ΛP ΛR p hl a).total M =
-      (ReservoirWord.word (elvRouquierData D Sc cutoff N ΛR) ΛR p hl).map
-        ((sourceCoefficientAction D Sc m cutoff L ΛP ΛR a).total M) := by
-  change _ + _ = _
-  exact (ReservoirWord.word (elvRouquierData D Sc cutoff N ΛR) ΛR p hl).toFunctor.map_add.symm
 end Paths
 
 end OddMath.QuiverHecke.ELVOld.VacuumTensorCoefficientMaps

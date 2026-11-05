@@ -75,20 +75,6 @@ def transportedScalars : Scalars datum ℚ where
   s_eq_zero := fun _ _ _ _ _ => rfl
   two_isUnit := by intro _; norm_num
 
-theorem transported_homogeneous : transportedScalars.Homogeneous := by
-  intro _ _ _ _ _ _ _ _ h
-  exact (h rfl).elim
-
-theorem transported_quadratic (u v : ℚ) :
-    quadraticValue transportedScalars false true u v = u ^ 2 - v ^ 4 := by
-  have h₂ : datum.dn false true = 2 := rfl
-  have h₄ : datum.dn true false = 4 := rfl
-  simp [quadraticValue, transportedScalars, h₂, h₄, sub_eq_add_neg]
-
-/-- The two terms have the same weighted degree for the displayed symmetrizer. -/
-theorem equal_weighted_degree :
-    2 * symmetrizer.d false = 4 * symmetrizer.d true := by rfl
-
 /-- In square coordinates, no crossing-product scalar repairs unchanged parameters. -/
 theorem no_common_quadratic_scalar :
     ¬ ∃ c : ℚ, ∀ z w : ℚ, c * (z + w ^ 2) = -z + w ^ 2 := by
@@ -97,12 +83,6 @@ theorem no_common_quadratic_scalar :
   have h₂ := hc 0 1
   norm_num at h₁ h₂
   linarith
-
-/-- A sign on either individual dot does not change the source polynomial. -/
-theorem dot_signs_do_not_repair (u v : ℚ) :
-    quadraticValue scalars false true (-u) (-v) = quadraticValue scalars false true u v := by
-  rw [quadratic, quadratic]
-  ring
 
 /-- Four signed odd right multiplications have positive sign. -/
 theorem oddRight_fourth {A : Type*} [Ring A] (σ : A →+* A)

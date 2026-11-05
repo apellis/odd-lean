@@ -98,11 +98,6 @@ lemma outer_degree_even (i j : I) (hi : D.parity i = 1) : Even (D.dn i j) := by
 
 variable {C : Type*} [Category C] [Preadditive C] [Linear k C] {V : C}
 
-/-- A disconnected polynomial has zero outer difference, with no denominator hypothesis. -/
-lemma qExpr_disconnected_difference (x y z : End V) (i j : I) (hd : D.d i j = 0) :
-    ProbeReservoir.qExpr Sc x y i j - ProbeReservoir.qExpr Sc z y i j = 0 := by
-  simp [ProbeReservoir.qExpr, hd]
-
 /-- Expansion of the outer difference for a connected pair. -/
 lemma qExpr_difference (x y z : End V) (i j : I) (hd : D.d i j ≠ 0) :
     ProbeReservoir.qExpr Sc x y i j - ProbeReservoir.qExpr Sc z y i j =
@@ -149,9 +144,5 @@ theorem qExpr_correction (A x y z : End V) (i j : I)
           (Sc.s i j b c)
 
 omit [Preadditive C] [Linear k C] in
-/-- Independently check the chronological order of the correction monomial. -/
-lemma correction_order (x y z : End V) (a b c : ℕ) :
-    x^b*y^c*z^a = ((z^a : End V) ≫ (y^c : End V) ≫ (x^b : End V)) := by
-  simp only [End.mul_def]
 
 end OddMath.QuiverHecke.SwappedAssembly.RepeatedOuterQCorrection

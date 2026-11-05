@@ -227,28 +227,6 @@ theorem oldAppendToDistinctMateModuleIso_hom (hij : i ≠ j)
       orderedRectangularMateComponent J K L M hc N :=
   rectangularMateModuleIso_hom J K L M hc N _
 
-theorem oldAppendToDistinctMateModuleIso_inv_mem (hij : i ≠ j)
-    (N : Superfunctor k (OldContentCategory D Sc cutoff νj) (SVec k)) :
-    (oldAppendToDistinctMateModuleIso D Sc cutoff ν i j hj hi hL hM hij N).inv ∈
-      parity (R := k) _ _ (D.parity i * D.parity j) :=
-  rectangularMateModuleIso_inv_mem J K L M hc N _
-
-/-- The inverse is natural in every stored-target input-module map. -/
-def oldAppendToDistinctMateFunctorIso (hij : i ≠ j) :
-    rectangularMateSourceFunctor (k := k) J K ≅ rectangularMateTargetFunctor (k := k) L M :=
-  rectangularMateFunctorIso J K L M hc
-    (fun N t => oldAppendToDistinctMateLinear_bijective D Sc cutoff ν i j hj hi hL hM hij N t)
-
-theorem oldAppendToDistinctMateFunctorIso_hom (hij : i ≠ j) :
-    (oldAppendToDistinctMateFunctorIso D Sc cutoff ν i j hj hi hL hM hij).hom =
-      rectangularMateHom J K L M hc :=
-  rectangularMateFunctorIso_hom J K L M hc _
-
-theorem oldAppendToDistinctMateFunctorIso_inv_mem (hij : i ≠ j) :
-    (oldAppendToDistinctMateFunctorIso D Sc cutoff ν i j hj hi hL hM hij).inv ∈
-      parity (R := k) _ _ (D.parity i * D.parity j) :=
-  rectangularMateFunctorIso_inv_mem J K L M hc _
-
 end OddMath.QuiverHecke
 
 namespace OddMath.QuiverHecke
@@ -295,12 +273,6 @@ abbrev probeAppendToDistinctMateTarget :
   fullLiftSuperfunctor P Q (rectangularMateTargetFunctor (k := k) L M)
     (appendToMateTarget_closed D Sc m i j hL hM)
 
-theorem probeAppendToDistinctMateSource_toFunctor :
-    (probeAppendToDistinctMateSource D Sc m ν i j hj hi).toFunctor = S := rfl
-
-theorem probeAppendToDistinctMateTarget_toFunctor :
-    (probeAppendToDistinctMateTarget D Sc m i j hL hM).toFunctor = T := rfl
-
 def probeAppendToDistinctMateComponent (N : ProbeEvaluatedModules D Sc m νj) :
     (probeAppendToDistinctMateSource D Sc m ν i j hj hi).obj N ⟶
       (probeAppendToDistinctMateTarget D Sc m i j hL hM).obj N :=
@@ -342,71 +314,9 @@ theorem probeAppendToDistinctMateModuleIso_hom (hij : i ≠ j) (N : ProbeEvaluat
   apply InducedCategory.hom_ext
   exact oldAppendToDistinctMateModuleIso_hom D Sc cut ν i j hj hi hL hM hij N.obj
 
-theorem probeAppendToDistinctMateModuleIso_inv_native (hij : i ≠ j)
-    (N : ProbeEvaluatedModules D Sc m νj) :
-    (probeAppendToDistinctMateModuleIso D Sc m ν i j hj hi hL hM hij N).inv.hom =
-      (oldAppendToDistinctMateModuleIso D Sc cut ν i j hj hi hL hM hij N.obj).inv := rfl
-
-/-- The selected stored-target mate has its natural inverse at distinct colours. -/
-def probeAppendToDistinctMateIso (hij : i ≠ j) :
-    probeAppendToDistinctMateSource D Sc m ν i j hj hi ≅
-      probeAppendToDistinctMateTarget D Sc m i j hL hM :=
-  HomogeneousSuperfunctorIso.ofHom
-    (probeAppendToDistinctMate D Sc m ν i j hj hi hL hM)
-    (probeAppendToDistinctMate_mem D Sc m ν i j hj hi hL hM)
-    (probeAppendToDistinctMateModuleIso D Sc m ν i j hj hi hL hM hij)
-    (probeAppendToDistinctMateModuleIso_hom D Sc m ν i j hj hi hL hM hij)
-
-theorem probeAppendToDistinctMateIso_hom (hij : i ≠ j) :
-    (probeAppendToDistinctMateIso D Sc m ν i j hj hi hL hM hij).hom =
-      probeAppendToDistinctMate D Sc m ν i j hj hi hL hM :=
-  HomogeneousSuperfunctorIso.ofHom_hom _ _ _ _
-
-theorem probeAppendToDistinctMateIso_inv_mem (hij : i ≠ j) :
-    (probeAppendToDistinctMateIso D Sc m ν i j hj hi hL hM hij).inv ∈
-      parity (R := k) _ _ (D.parity i * D.parity j) :=
-  HomogeneousSuperfunctorIso.ofHom_inv_mem _ _ _ _
-
 local notation "Ei" => probeAppendToE D Sc m ν i νi hi
 local notation "V" => probeAppendToE D Sc m νj i ν₂ hL
 local notation "A" => probeAppendToRightAdjunction D Sc m ν j νj hj
 local notation "B" => probeAppendToRightAdjunction D Sc m νi j ν₂ hM
-
-/-- Bending uses precisely the selected lower counit and upper unit. -/
-theorem probeAppendToRectangularMate_eq :
-    SKM.rectangularMate A B Ei V (probeAppendToCross D Sc m ν i j hj hi hL hM) =
-      probeAppendToDistinctMate D Sc m ν i j hj hi hL hM := by
-  apply Superfunctor.hom_ext
-  intro q N
-  rw [SKM.rectangularMate_piscat_app A B Ei V (probeAppendToCross D Sc m ν i j hj hi hL hM)
-    (fun Z => Superfunctor.app_eq_zero_of_mem (B).unit_mem (by decide) Z)
-    (fun Z => Superfunctor.app_eq_zero_of_mem (A).counit_mem (by decide) Z)]
-  apply InducedCategory.hom_ext
-  change (adjunctionUnit M).app _ ≫
-      (restriction M).map
-        ((rectangularCrossComponent_supernatural J K L M hc).toSuperNatTrans.app q
-          ((restriction J).obj N.obj)) ≫
-      (restriction M).map ((induction L).map ((adjunctionCounit J).app N.obj)) =
-    (rectangularMateHom J K L M hc).app q N.obj
-  by_cases hq : q = D.parity i * D.parity j
-  · subst q
-    rw [IsSupernatural.toSuperNatTrans_app, rectangularMateHom, IsSupernatural.toSuperNatTrans_app]
-    rfl
-  · simp only [rectangularMateHom, IsSupernatural.toSuperNatTrans, hq, ite_false,
-      Functor.map_zero, Limits.comp_zero, Limits.zero_comp]
-
-/-- The presentation sideways crossing is the same stored-target OLD mate. -/
-theorem probeAppendToCrossMate_eq :
-    SKM.crossMate (E₃ := Ei) (E₄ := V) A B (probeAppendToCross D Sc m ν i j hj hi hL hM) =
-      probeAppendToDistinctMate D Sc m ν i j hj hi hL hM :=
-  (SKM.crossMate_piscat_eq_rectangular A B Ei V (probeAppendToCross D Sc m ν i j hj hi hL hM)).trans
-    (probeAppendToRectangularMate_eq D Sc m ν i j hj hi hL hM)
-
-/-- The prescribed stored-target sideways crossing has its constructed inverse. -/
-theorem probeAppendToCrossMate_isIso (hij : i ≠ j) :
-    IsIso (SKM.crossMate (E₃ := Ei) (E₄ := V) A B (probeAppendToCross D Sc m ν i j hj hi hL hM)) := by
-  rw [probeAppendToCrossMate_eq,
-    ← probeAppendToDistinctMateIso_hom D Sc m ν i j hj hi hL hM hij]
-  infer_instance
 
 end OddMath.QuiverHecke

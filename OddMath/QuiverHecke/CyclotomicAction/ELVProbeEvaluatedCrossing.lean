@@ -34,11 +34,6 @@ private theorem doubleInduction_closed
     Q (((inductionModuleCell (k := k) J) ≫ inductionModuleCell (k := k) K).obj N) :=
   ((E ⋙ E').obj ⟨N, hN⟩).property
 
-/-- The prescribed negative crossing, with its full underlying module map. -/
-def probeEvaluatedEqualCrossComponent (N : ProbeEvaluatedModules D Sc m ν) :
-    (E ⋙ E').obj N ⟶ (E ⋙ E').obj N :=
-  ⟨(inductionModuleCross J K hCross).app (D.parity i) N.obj⟩
-
 /-- The homogeneous crossing on the actual evaluated double induction. -/
 def probeEvaluatedEqualCross :
     End (⟨E ⋙ E'⟩ : Superfunctor k (ProbeEvaluatedModules D Sc m ν)
@@ -58,55 +53,5 @@ theorem probeEvaluatedEqualCross_native_app (q : ZMod 2)
     (N : ProbeEvaluatedModules D Sc m ν) :
     ((probeEvaluatedEqualCross D Sc m ν i).app q N).hom =
       (inductionModuleCross J K hCross).app q N.obj := rfl
-
-/-- Restriction retains supernaturality on every even or odd input map. -/
-theorem probeEvaluatedEqualCrossComponent_supernatural :
-    IsSupernatural k (D.parity i) (F := E ⋙ E') (G := E ⋙ E')
-      (probeEvaluatedEqualCrossComponent D Sc m ν i) := by
-  have h : (probeEvaluatedEqualCross D Sc m ν i).app (D.parity i) =
-      probeEvaluatedEqualCrossComponent D Sc m ν i := by
-    funext N
-    apply InducedCategory.hom_ext
-    rw [probeEvaluatedEqualCross_native_app]
-    rfl
-  rw [← h]
-  exact (probeEvaluatedEqualCross D Sc m ν i).isSupernatural (D.parity i)
-
-/-- Total evaluation retains the specified component without changing its sign. -/
-theorem probeEvaluatedEqualCross_total (N : ProbeEvaluatedModules D Sc m ν) :
-    (probeEvaluatedEqualCross D Sc m ν i).total N =
-      probeEvaluatedEqualCrossComponent D Sc m ν i N := by
-  apply InducedCategory.hom_ext
-  change (inductionModuleCross J K hCross).total N.obj = _
-  exact OddMath.HomogeneousSuperfunctorIso.total_eq_app
-    (inductionModuleCross J K hCross) (inductionModuleCross_mem J K hCross) N.obj
-
-/-- The faithful full inclusion sends the crossing to the chosen OLD crossing. -/
-theorem probeEvaluatedEqualCross_native_total (N : ProbeEvaluatedModules D Sc m ν) :
-    ((probeEvaluatedEqualCross D Sc m ν i).total N).hom =
-      (inductionModuleCross J K hCross).total N.obj := rfl
-
-/-- Naturality for an arbitrary input arrow, including sums of both parities. -/
-theorem probeEvaluatedEqualCrossComponent_naturality_twist
-    {M N : ProbeEvaluatedModules D Sc m ν} (f : M ⟶ N) :
-    (E ⋙ E').map f ≫
-        probeEvaluatedEqualCrossComponent D Sc m ν i N =
-      probeEvaluatedEqualCrossComponent D Sc m ν i M ≫
-        (E ⋙ E').map (twist k (D.parity i) f) :=
-  (probeEvaluatedEqualCrossComponent_supernatural D Sc m ν i).naturality_twist f
-
-/-- The square-zero identity holds on the entire evaluated probe category. -/
-theorem probeEvaluatedEqualCross_square :
-    probeEvaluatedEqualCross D Sc m ν i ≫ probeEvaluatedEqualCross D Sc m ν i = 0 := by
-  apply OddMath.HomogeneousSuperfunctorIso.total_ext
-  intro N
-  rw [Superfunctor.comp_total]
-  apply InducedCategory.hom_ext
-  change ((probeEvaluatedEqualCross D Sc m ν i).total N).hom ≫
-    ((probeEvaluatedEqualCross D Sc m ν i).total N).hom = 0
-  simp only [probeEvaluatedEqualCross_native_total]
-  rw [← Superfunctor.comp_total,
-    inductionModuleCross_square J K hCross (oldContentEqualCross_square D Sc cut ν i)]
-  rfl
 
 end OddMath.QuiverHecke

@@ -55,22 +55,4 @@ theorem elvCoefficientIdeal_le_weight {cutoff : I → ℕ} {N : ℕ}
   intro x hx
   exact (mem_coefficientIdeal_iff D k _ _).mpr (elvCoefficientRelation_mem_high D k hN hx)
 
-/-- The actual multicolour coefficient quotient retains the entire bounded
-coefficient span, including independent products of odd parameters. -/
-theorem elvCoefficient_quotient_injective {cutoff : I → ℕ} {d : ℕ}
-    (hd : ∀ i, d ≤ cutoff i) :
-    Function.Injective (fun x : CoefficientAtMost D k d =>
-      (elvCoefficientIdeal D k cutoff).ringCon.mk' (x : SYM D k)) := by
-  intro x y hxy
-  apply Subtype.ext
-  apply sub_eq_zero.mp
-  have hmem : (x : SYM D k) - y ∈ elvCoefficientIdeal D k cutoff :=
-    (TwoSidedIdeal.rel_iff _ _ _).mp (Quotient.exact hxy)
-  have hw : (x : SYM D k) - y ∈ CoefficientAtLeast D k (d + 1) := by
-    exact (mem_coefficientIdeal_iff D k _ _).mp (elvCoefficientIdeal_le_weight D k hd hmem)
-  exact Submodule.disjoint_def.mp
-    (disjoint_coefficientAtMost_coefficientAtLeast D k (Nat.lt_succ_self d)) _
-    (Submodule.sub_mem _ x.property y.property)
-    hw
-
 end OddMath.SKM.SYM

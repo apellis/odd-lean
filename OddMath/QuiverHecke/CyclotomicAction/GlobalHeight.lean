@@ -55,21 +55,11 @@ instance (n : ℕ) : GradedAlgebra (heightParity D Sc a ha n) := by
 abbrev HeightModules (n : ℕ) :=
   SuperBimodule (heightParity D Sc a ha n) (trivialGrading k)
 
-/-- No comparison is needed at positive height: the superspaces are identical. -/
-theorem heightModules_succ (n : ℕ) :
-    HeightModules D Sc a ha (n + 1) = CyclotomicSupermodules D Sc a ha n := rfl
-
 /-- The first strand uses the vacuum inclusion, subsequent strands the quotient inclusion. -/
 def heightAppend (i : I) : (n : ℕ) →
     heightAlgebra D Sc a n →ₙₐ[k] heightAlgebra D Sc a (n + 1)
   | 0 => vacuumAppend D Sc i a
   | n + 1 => cyclotomicAppend D Sc i a n
-
-@[simp] theorem heightAppend_zero (i : I) :
-    heightAppend D Sc a i 0 = vacuumAppend D Sc i a := rfl
-
-@[simp] theorem heightAppend_succ (i : I) (n : ℕ) :
-    heightAppend D Sc a i (n + 1) = cyclotomicAppend D Sc i a n := rfl
 
 /-- Every strand map in the extended tower is even. -/
 theorem heightAppend_parity (i : I) (n : ℕ) {p : ZMod 2}
@@ -87,10 +77,5 @@ def heightContentSupported : (n : ℕ) → Multiset I → HeightModules D Sc a h
 /-- The supercategory of a content, now with its correct height including the vacuum. -/
 abbrev GlobalContentModules (β : Multiset I) :=
   ObjectProperty.FullSubcategory (heightContentSupported D Sc a ha β.card β)
-
-/-- Content zero is genuinely at height zero, not at the one-strand quotient. -/
-theorem globalContentModules_zero :
-    GlobalContentModules D Sc a ha 0 =
-      ObjectProperty.FullSubcategory (fun _ : HeightModules D Sc a ha 0 => (0 : Multiset I) = 0) := rfl
 
 end OddMath.QuiverHecke.CyclotomicAction

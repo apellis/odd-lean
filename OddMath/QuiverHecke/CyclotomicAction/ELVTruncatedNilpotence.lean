@@ -63,42 +63,7 @@ def truncatedDot (v : List I) (r : ℕ) : TruncatedEnd D Sc cutoff N v :=
   (truncatedIdeal D Sc cutoff N v v).mkQ
     ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k] dotE D Sc v r)
 
-/-- Only an active position is assigned a positive dot degree. -/
-theorem truncatedDot_degree {v : List I} {r : ℕ} {i : I} (hi : v[r]? = some i) :
-    truncatedDot D Sc cutoff N v r ∈
-      truncatedEndDegree D Sc cutoff N sy hc v (2 * sy.d i) := by
-  apply Submodule.mem_map_of_mem
-  let _ := elvCoefficientCategoryGrading (k := k) D sy cutoff
-  let _ := gradedSupercategory D sy Sc hc
-  let _ := elvHomGrading D sy Sc hc cutoff
-  have hf : dotE D Sc v r ∈ homDegree D sy Sc v v (2 * sy.d i) := by
-    unfold dotE genE
-    split_ifs
-    · apply Presentation.diag_mem_homDeg'
-      rw [degree_gdeg_mkD]
-      obtain ⟨hr, rfl⟩ := List.getElem?_eq_some_iff.mp hi
-      have hdrop : v.drop r = v[r] :: v.drop (r + 1) := List.drop_eq_getElem_cons hr
-      simp only [pl_cons, pl_nil, List.append_nil, PG.ld, hdrop,
-        List.map_singleton, List.sum_singleton, gdeg]
-    · exact Submodule.zero_mem _
-  have hu : (1 : SKM.SYM D k) ∈ SKM.SYM.coefficientDegreePart D k sy 0 :=
-    SetLike.one_mem_graded _
-  have he := elvQuotientMap_source_mem_degree D sy Sc hc cutoff hu hf
-  rw [elvQuotientMap_source, map_one, zero_add] at he
-  exact he
-
 include sy hc in
-/-- All active positioned dots have one exponent at fixed content. There is no
-position on the empty word, and no assertion about an invalid last index. -/
-theorem truncatedContent_dot_pow_zero [Finite I] (ν : List I) :
-    ∃ e : ℕ, 0 < e ∧ ∀ (v : List I), v.Perm ν →
-      ∀ (r : ℕ) (i : I), v[r]? = some i →
-        truncatedDot D Sc cutoff N v r ^ e = 0 := by
-  obtain ⟨e, he, hp⟩ := truncatedContent_positive_pow_zero D Sc cutoff sy hc N ν
-  refine ⟨e, he, fun v hv r i hi => hp v hv _ ?_ _
-    (truncatedDot_degree D Sc cutoff sy hc N hi)⟩
-  have := sy.pos i
-  omega
 
 include sy hc in
 /-- The last-strand dot of the existing append transformation is nilpotent,

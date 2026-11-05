@@ -28,21 +28,6 @@ abbrev SourcePolynomialIndex (ν : List I) (d : ℕ) := SourceTailIndex ν × Fi
 abbrev SourcePolynomialCoefficients (ν : List I) (d : ℕ) :=
   ⨁ q : SourcePolynomialIndex ν d × ℕ, OldContentRow D Sc cutoff ν q.1.1.1.val
 
-/-- Regroup the coefficient carrier as a finite family of genuine row polynomials
-`ℕ →₀ OldContentRow`. This is the coefficient form of the finite row decomposition. -/
-def sourcePolynomialCoefficientEquiv (ν : List I) (d : ℕ) :
-    SourcePolynomialCoefficients D Sc cutoff ν d ≃ₗ[(ContentRing D Sc cutoff ν)ᵐᵒᵖ]
-      (∀ q : SourcePolynomialIndex ν d, ℕ →₀ OldContentRow D Sc cutoff ν q.1.1.val) :=
-  (DirectSum.lequivCongrLeft (ContentRing D Sc cutoff ν)ᵐᵒᵖ
-    (Equiv.sigmaEquivProd (SourcePolynomialIndex ν d) ℕ).symm).trans
-    ((DirectSum.sigmaLcurryEquiv (ContentRing D Sc cutoff ν)ᵐᵒᵖ
-      (δ := fun (q : SourcePolynomialIndex ν d) (_ : ℕ) =>
-        OldContentRow D Sc cutoff ν q.1.1.val)).trans
-      ((DirectSum.linearEquivFunOnFintype (ContentRing D Sc cutoff ν)ᵐᵒᵖ _ _).trans
-        (LinearEquiv.piCongrRight fun q : SourcePolynomialIndex ν d =>
-          (finsuppLequivDFinsupp (ContentRing D Sc cutoff ν)ᵐᵒᵖ
-            (M := OldContentRow D Sc cutoff ν q.1.1.val)).symm)))
-
 /-- Euclidean division of a moving exponent. -/
 def sourceExponentSplit (d : ℕ) (hd : 0 < d) : ℕ ≃ Fin d × ℕ where
   toFun m := (⟨m % d, Nat.mod_lt m hd⟩, m / d)
@@ -129,16 +114,6 @@ def oldRowInsert (ν : List I) (t : ContentWords ν)
     oldRowInsert D Sc cutoff ν t (z + w) =
       oldRowInsert D Sc cutoff ν t z + oldRowInsert D Sc cutoff ν t w := by
   simp [oldRowInsert, Finset.sum_add_distrib]
-
-@[simp] theorem oldRowInsert_single (ν : List I) (t v : ContentWords ν)
-    (z : Old D Sc cutoff v.val t.val) :
-    oldRowInsert D Sc cutoff ν t (Pi.single v z) = single t v z := by
-  unfold oldRowInsert
-  rw [Finset.sum_eq_single v]
-  · simp
-  · intro b _ hb
-    simp [Pi.single_eq_of_ne hb]
-  · simp
 
 private theorem oldRowInsert_singleVec (ν : List I) (t v : ContentWords ν)
     (z : Old D Sc cutoff v.val t.val) :
@@ -508,19 +483,6 @@ theorem sourceRowsPolynomial_finite (ν : List I) (d : ℕ) (hd : 0 < d) :
       (SourceRowsPolynomial D Sc cutoff ν d) :=
   Module.Finite.of_surjective (sourceRowsPolynomialRetraction D Sc cutoff ν d)
     (Function.LeftInverse.surjective (sourceRowsPolynomialRetraction_section D Sc cutoff ν d hd))
-
-@[simp] theorem sourceRowsPolynomialEquiv_symm_of (ν : List I) (d : ℕ) (hd : 0 < d)
-    (z : SourcePolynomialCoefficients D Sc cutoff ν d) :
-    (sourceRowsPolynomialEquiv D Sc cutoff ν d hd).symm
-      (RightCentralPolynomialModule.of _ z) =
-      RightCentralPolynomialModule.of _ (sourceRowsJoin D Sc cutoff ν d z) := rfl
-
-@[simp] theorem sourceRowsPolynomialEquiv_of (ν : List I) (d : ℕ) (hd : 0 < d)
-    (z : SourceRows D Sc cutoff ν) :
-    sourceRowsPolynomialEquiv D Sc cutoff ν d hd (RightCentralPolynomialModule.of _ z) =
-      RightCentralPolynomialModule.of _ (sourceRowsSplit D Sc cutoff ν d hd z) := by
-  apply (sourceRowsPolynomialEquiv D Sc cutoff ν d hd).symm.injective
-  rw [LinearEquiv.symm_apply_apply, sourceRowsPolynomialEquiv_symm_of, sourceRowsJoin_split]
 
 instance sourceRowsPolynomial_projective_inst (ν : List I) (d : ℕ) [NeZero d] :
     Module.Projective (Polynomial (ContentRing D Sc cutoff ν))ᵐᵒᵖ

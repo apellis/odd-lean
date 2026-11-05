@@ -134,40 +134,6 @@ theorem alphaNormalizedTerm_eq (i : I) (v s t : List I) (x : PrependIdx i s t)
     pprimeTensor_balance]
   rfl
 
-/-- Finite normalization of an affine first factor, retaining its old coefficient action. -/
-def alphaNormalize (i : I) (v s t : List I)
-    (b : Old D Sc cutoff v (s ++ [i])) :
-    hom D Sc cutoff (i :: s) t →ₗ[k] PprimeDomain D Sc cutoff i v t :=
-  (Finsupp.lsum k (alphaNormalizedTerm D Sc cutoff i v s t · b)) ∘ₗ
-    (prependAffineEquiv D Sc cutoff i s t).toLinearMap
-
-/-- Full PBW normalization is the original balanced class, on every source object. -/
-theorem alphaNormalize_eq_tensor (i : I) (v s t : List I)
-    (h : hom D Sc cutoff (i :: s) t) (b : Old D Sc cutoff v (s ++ [i])) :
-    alphaNormalize D Sc cutoff i v s t b h = pprimeTensor D Sc cutoff i v s t h b := by
-  obtain ⟨f, rfl⟩ := (prependAffineEquiv D Sc cutoff i s t).symm.surjective h
-  induction f using Finsupp.induction_linear with
-  | zero => simp [alphaNormalize, pprimeTensor, BalancedInduction.tensor]
-  | add f g hf hg =>
-    simp only [map_add, hf, hg, pprimeTensor, BalancedInduction.tensor,
-      TensorProduct.add_tmul]
-  | single x a =>
-    change Finsupp.lsum k (alphaNormalizedTerm D Sc cutoff i v s t · b)
-      ((prependAffineEquiv D Sc cutoff i s t)
-        ((prependAffineEquiv D Sc cutoff i s t).symm (Finsupp.single x a))) = _
-    rw [LinearEquiv.apply_symm_apply, Finsupp.lsum_single,
-      prependAffineEquiv_symm_single, alphaNormalizedTerm_eq]
-
-/-- Cross-source independence of the finite normalization under the full lower balance. -/
-theorem alphaNormalize_balance (i : I) (v s s' t : List I)
-    (r : hom D Sc cutoff s s') (h : hom D Sc cutoff (i :: s') t)
-    (b : Old D Sc cutoff v (s ++ [i])) :
-    alphaNormalize D Sc cutoff i v s t b (insert D Sc cutoff i s s' r ≫ h) =
-      alphaNormalize D Sc cutoff i v s' t
-        ((coefficient D Sc cutoff (epsilon D cutoff i v) i v).map
-          ((ideal D Sc cutoff s s').mkQ r) b) h := by
-  rw [alphaNormalize_eq_tensor, alphaNormalize_eq_tensor, pprimeTensor_balance]
-
 /-- Literal word of a bare moving tail, including all moving dots. -/
 def alphaTailWord {i : I} {v w : List I} (x : PrependIdx i v w) : List PG :=
   (List.replicate x.1.1 0).map PG.dot ++
@@ -327,23 +293,6 @@ theorem extract_pair_tail (i : I) (v t : List I) (x : PrependIdx i v (t ++ [i]))
   simpa only [prependOldReconstruct, DirectSum.toModule_lof] using
     extract_reconstruct_of D Sc cutoff i v t q (ht ▸ b)
 
-/-- The decoder is a left inverse on every canonical short-tail balanced class,
-with arbitrary old quotient coefficient. The comparison with all smaller
-tails is supplied by `alphaExtendedIndex` and `extract_alpha_tail` below. -/
-theorem extract_alpha_stripTerm (i : I) (v t : List I)
-    (q : PrependIdx.Tail i v (t ++ [i])) (hq : AlphaStrippable q.representative)
-    (b : Old D Sc cutoff v q.representative.oldTarget) :
-    extract D Sc cutoff i v t
-      (alpha D Sc cutoff i v t (alphaStripTerm D Sc cutoff i v t q.representative b)) =
-        alphaStripTerm D Sc cutoff i v t q.representative b := by
-  rw [alpha_stripTerm D Sc cutoff i v t q.representative hq]
-  have hu : affineUnit D Sc cutoff _ _ (prependTail D Sc q.representative) =
-      ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k]
-        prependTail D Sc q.representative) := rfl
-  rw [hu]
-  simpa only [prependOldReconstruct, DirectSum.toModule_lof] using
-    extract_reconstruct_of D Sc cutoff i v t q b
-
 /-- The bare moving word fits its smaller source. -/
 theorem alphaTailWord_fits {i : I} {s t : List I} (x : PrependIdx i s t) :
     Fits (i :: x.oldTarget).length (alphaTailWord x) := by
@@ -483,25 +432,5 @@ theorem extract_comp_alpha (i : I) (v t : List I) :
     (z : PprimeDomain D Sc cutoff i v t) :
     extract D Sc cutoff i v t (alpha D Sc cutoff i v t z) = z :=
   LinearMap.congr_fun (extract_comp_alpha D Sc cutoff i v t) z
-
-/-- The actual short source column is injective, without an independence premise. -/
-theorem alpha_injective (i : I) (v t : List I) :
-    Function.Injective (alpha D Sc cutoff i v t) :=
-  Function.LeftInverse.injective (extract_alpha D Sc cutoff i v t)
-
-/-- The actual short moving-word map is injective by the actual column square.
-No injectivity of the crossing column is needed for this implication. -/
-theorem pprime_injective (i : I) (v t : List I) :
-    Function.Injective (pprime D Sc cutoff i v t) := by
-  intro z z' h
-  apply alpha_injective D Sc cutoff i v t
-  apply pMap_injective D Sc cutoff i v (t ++ [i])
-  have hz := LinearMap.congr_fun (shortColumn_square D Sc cutoff i v t) z
-  have hz' := LinearMap.congr_fun (shortColumn_square D Sc cutoff i v t) z'
-  change pMap D Sc cutoff i v (t ++ [i]) (alpha D Sc cutoff i v t z) =
-    shortCross D Sc cutoff i v t (pprime D Sc cutoff i v t z) at hz
-  change pMap D Sc cutoff i v (t ++ [i]) (alpha D Sc cutoff i v t z') =
-    shortCross D Sc cutoff i v t (pprime D Sc cutoff i v t z') at hz'
-  rw [hz, hz', h]
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

@@ -154,19 +154,5 @@ variable {B : Type v} [BicategoryStruct.{w,w} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear K (a ⟶ b)]
   [∀ a b : B, Supercategory K (a ⟶ b)] [TwoSupercategory K B]
 
-/-- Forget the coupled factors, keeping the constructed sector summands. -/
-def FusedCoupledAction.toSectorAction {μ : X} (A : FusedCoupledAction D S cK μ B) :
-    FusedSectorAction D S cK μ B where
-  family := A.family
-  sectors m g := (A.sectors m g).toVacuumSectorBubble
-
-/-- **Detection from coupled separated factors.** The coupled crossing, its
-slide and the sector summands are constructed; the remaining inputs are the
-factor data, the vacuum values, the fused bubble identification and the
-regular identification of the vacuum words. -/
-theorem upward_independence_of_fused_coupled_actions
-    (A : ∀ μ, FusedCoupledAction D S cK μ B) : SKM.WeakMate.UpwardIndependence cK :=
-  upward_independence_of_fused_sector_actions fun μ => (A μ).toSectorAction
-
 end Field
 end OddMath.QuiverHecke

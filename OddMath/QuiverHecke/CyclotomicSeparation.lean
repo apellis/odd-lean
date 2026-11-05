@@ -146,42 +146,6 @@ def CyclotomicSpan (t t' : List I) (N : ℕ) :
     ∃ b : (pres D Sc).obj (ob D u) ⟶ (pres D Sc).obj (ob D t'),
       a ≫ firstDotPower D Sc u M ≫ b = f}
 
-theorem cyclotomicSpan_comp {t u t' : List I} {N : ℕ}
-    {f : (pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D u)}
-    (hf : f ∈ CyclotomicSpan D Sc t u N)
-    (g : (pres D Sc).obj (ob D u) ⟶ (pres D Sc).obj (ob D t')) :
-    f ≫ g ∈ CyclotomicSpan D Sc t t' N := by
-  induction hf using Submodule.span_induction with
-  | mem f hf =>
-    obtain ⟨v, hv, M, hM, a, b, rfl⟩ := hf
-    apply Submodule.subset_span
-    exact ⟨v, hv, M, hM, a, b ≫ g, by simp only [Category.assoc]⟩
-  | zero => simp
-  | add f h _ _ hf hh =>
-    rw [Preadditive.add_comp]
-    exact Submodule.add_mem _ hf hh
-  | smul c f _ hf =>
-    rw [Linear.smul_comp]
-    exact Submodule.smul_mem _ c hf
-
-theorem comp_cyclotomicSpan {t u t' : List I} {N : ℕ}
-    (f : (pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D u))
-    {g : (pres D Sc).obj (ob D u) ⟶ (pres D Sc).obj (ob D t')}
-    (hg : g ∈ CyclotomicSpan D Sc u t' N) :
-    f ≫ g ∈ CyclotomicSpan D Sc t t' N := by
-  induction hg using Submodule.span_induction with
-  | mem g hg =>
-    obtain ⟨v, hv, M, hM, a, b, rfl⟩ := hg
-    apply Submodule.subset_span
-    exact ⟨v, hv, M, hM, f ≫ a, b, by simp only [Category.assoc]⟩
-  | zero => simp
-  | add g h _ _ hg hh =>
-    rw [Preadditive.comp_add]
-    exact Submodule.add_mem _ hg hh
-  | smul c g _ hg =>
-    rw [Linear.comp_smul]
-    exact Submodule.smul_mem _ c hg
-
 /-- The cyclotomic relation ideal has no bounded low-dot PBW coordinates. -/
 theorem cyclotomicSpan_le_dotAtLeast {t t' : List I} {N : ℕ}
     (ht : 0 < t.length) (hN : 2 * t.length.choose 2 ≤ N) :

@@ -66,79 +66,7 @@ def componentTensor (v t : D) (s : C) (g : J.obj s ⟶ t)
     (b : v ⟶ J.obj s) : Component (k := k) J v t :=
   BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s g b
 
-@[simp] theorem precompose_componentTensor {v w : D} (a : v ⟶ w) (t : D)
-    (s : C) (g : J.obj s ⟶ t) (b : w ⟶ J.obj s) :
-    precompose (k := k) J a t (componentTensor (k := k) J w t s g b) =
-      componentTensor (k := k) J v t s g (a ≫ b) :=
-  precompose_tensor J a t s g b
-
 variable [Preadditive C] [Linear k C] [Supercategory k C]
   [J.Additive] [J.Linear k] [IsSuperfunctor k J]
-
-/-- The existing balanced-induction grading on each coefficient module. -/
-def coefficientGrading (t : D) :
-    BalancedKernelTensor.CoefficientGrading (kernel (k := k) J t) where
-  odd v := (BalancedInduction.superspace J (J ⋙ homModule (k := k) v) t).odd
-  odd_comp_odd v :=
-    (BalancedInduction.superspace J (J ⋙ homModule (k := k) v) t).odd_comp_odd
-
-theorem coefficientSpace_eq (t v : D) :
-    BalancedKernelTensor.coefficientSpace (coefficientGrading (k := k) J t) v =
-      BalancedInduction.superspace J (J ⋙ homModule (k := k) v) t := rfl
-
-/-- Sum projection with the coefficient exposed as a raw category arrow. -/
-theorem component_proj_tensor (v t : D) (q : ZMod 2) (s : C)
-    (g : J.obj s ⟶ t) (b : v ⟶ J.obj s) :
-    (BalancedInduction.superspace J (J ⋙ homModule (k := k) v) t).proj q
-        (componentTensor (k := k) J v t s g b) =
-      componentTensor (k := k) J v t s (proj k q g) (proj k 0 b) +
-        componentTensor (k := k) J v t s (proj k (q + 1) g) (proj k 1 b) := by
-  have h := BalancedInduction.proj_tensor J (J ⋙ homModule (k := k) v) t q s g b
-  change _ = BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s
-      (proj k q g) ((homSVec k D v (J.obj s)).proj 0 b) +
-    BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s
-      (proj k (q + 1) g) ((homSVec k D v (J.obj s)).proj 1 b) at h
-  simpa only [homSVec_proj, componentTensor] using h
-
-/-- Ordinary precomposition has the source arrow's full parity. -/
-theorem precompose_mem {v w : D} {p : ZMod 2} (a : v ⟶ w)
-    (ha : a ∈ parity (R := k) v w p) (t : D) :
-    (precompose (k := k) J a t :
-      BalancedInduction.superspace J (J ⋙ homModule (k := k) w) t ⟶
-        BalancedInduction.superspace J (J ⋙ homModule (k := k) v) t) ∈
-      parity (R := k)
-        (BalancedInduction.superspace J (J ⋙ homModule (k := k) w) t)
-        (BalancedInduction.superspace J (J ⋙ homModule (k := k) v) t) p := by
-  change ∀ q, precompose (k := k) J a t ∘ₗ
-      (BalancedInduction.superspace J (J ⋙ homModule (k := k) w) t).proj q =
-    (BalancedInduction.superspace J (J ⋙ homModule (k := k) v) t).proj (q + p) ∘ₗ
-      precompose (k := k) J a t
-  intro q
-  apply BalancedInduction.hom_ext
-  intro s g b
-  change w ⟶ J.obj s at b
-  have h0 := (proj_comp_of_mem_left (R := k) 0 ha b).symm
-  have h1 := (proj_comp_of_mem_left (R := k) 1 ha b).symm
-  change precompose (k := k) J a t
-      ((BalancedInduction.superspace J (J ⋙ homModule (k := k) w) t).proj q
-        (componentTensor (k := k) J w t s g b)) =
-    (BalancedInduction.superspace J (J ⋙ homModule (k := k) v) t).proj (q + p)
-      (precompose (k := k) J a t (componentTensor (k := k) J w t s g b))
-  rw [component_proj_tensor, map_add, precompose_componentTensor,
-    precompose_componentTensor, precompose_componentTensor, component_proj_tensor]
-  rcases parity_eq_zero_or_one p with rfl | rfl
-  · simp only [zero_add, add_zero] at h0 h1 ⊢
-    rw [← h0, ← h1]
-  · simp only [add_zero, SVec.zmod2_one_add_one] at h0 h1
-    simp only [add_assoc, SVec.zmod2_one_add_one, add_zero]
-    rw [← h0, ← h1]
-    exact add_comm _ _
-
-/-- The coefficient kernel satisfies the ordinary-right graded balance input. -/
-theorem isGradedKernel (t : D) :
-    BalancedKernelTensor.IsGradedKernel (kernel (k := k) J t)
-      (coefficientGrading (k := k) J t) := by
-  intro v w p a ha
-  exact precompose_mem J a ha t
 
 end OddMath.QuiverHecke.ELVOld.IndResKernel

@@ -55,18 +55,11 @@ def reservoirLevel (μ : X) (t : List I) (d : ℕ) (i : I) : ℕ :=
 def probeExponent (μ : X) (t : List I) (d : ℕ) (i : I) : ℕ :=
   if D.parity i = 1 then probeLevel D μ t d i / 2 else probeLevel D μ t d i
 
-theorem probeLevel_even (μ : X) (t : List I) (d : ℕ) (i : I) : Even (probeLevel D μ t d i) :=
-  ⟨vacuumCutoff t d + (D.h i μ).toNat, by unfold probeLevel; ring⟩
-
 theorem probeLevel_sub_reservoirLevel (μ : X) (t : List I) (d : ℕ) (i : I) :
     (probeLevel D μ t d i : ℤ) - reservoirLevel D μ t d i = D.h i μ := by
   unfold probeLevel reservoirLevel
   simp only [Nat.cast_add, Nat.cast_mul, Nat.cast_ofNat]
   omega
-
-theorem vacuumCutoff_le_reservoirLevel (μ : X) (t : List I) (d : ℕ) (i : I) :
-    vacuumCutoff t d ≤ reservoirLevel D μ t d i := by
-  unfold reservoirLevel; omega
 
 theorem vacuumCutoff_sub_choose (t : List I) (d : ℕ) :
     (vacuumCutoff t d : ℤ) - 2 * t.length.choose 2 = d + 1 := by
@@ -144,15 +137,6 @@ end SwappedVacuumBlock
 section Field
 variable {I X k : Type u} [AddCommGroup X] [Field k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cs : SKM.CScalars Sc)
-
-/-- **Conditional field theorem.** Vacuum blocks at every equal-weight upward word
-pair, external weight and degree bound imply the Nondegeneracy Conjecture. -/
-theorem nondegeneracy_of_vacuum_blocks
-    (h : ∀ (t t' : List I), SKM.wt D 0 (SKM.ups t) = SKM.wt D 0 (SKM.ups t') →
-      ∀ (μ : X) (d : ℕ), Nonempty (SwappedVacuumBlock D Sc cs μ t t' d)) :
-    SKM.NondegeneracyConjecture cs :=
-  nondegeneracy_of_vacuum_evaluations fun t t' hw μ d =>
-    (h t t' hw μ d).map SwappedVacuumBlock.toSwappedVacuumEvaluation
 
 end Field
 

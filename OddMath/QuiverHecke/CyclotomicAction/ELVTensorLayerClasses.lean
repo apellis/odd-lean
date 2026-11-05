@@ -21,12 +21,6 @@ private def reindex {s t : List I} (h : s = t) (w : OldCategory D Sc cutoff) :
   subst t
   exact LinearMap.id
 
-private theorem reindex_eq_zero_iff {s t : List I} (h : s = t) (w : OldCategory D Sc cutoff)
-    (v : (powerWordModule D Sc cutoff L s).obj w) :
-    reindex D Sc cutoff L h w v = 0 ↔ v = 0 := by
-  subst t
-  rfl
-
 private theorem reindex_fromArrow {s t s' t' : List I} (hs : s = s') (ht : t = t')
     (g : (OldCategory.mk t' : OldCategory D Sc cutoff) ⟶ OldCategory.mk s')
     (w : OldCategory D Sc cutoff) (v : (powerWordModule D Sc cutoff L s').obj w) :
@@ -89,32 +83,6 @@ def dotVector (ν η : List I) (i : I)
     ((((TensorHomContexts.dotChart D Tw m cutoff L ΛP ΛR ν η i).hom β).total
       (observation D Sc cutoff L ΛR s β hs))
         (((f.total R₀) β).total (observation D Sc cutoff L ΛR s β hs) z))
-
-/-- Normalization detects zero of the evaluated entry vector, without
-asserting faithfulness of evaluation on whole Hom transformations. -/
-theorem dotVector_eq_zero_iff (ν η : List I) (i : I)
-    (G : probeOldWeightSpace D Tw m ΛP (-ΛP) ⟶ elvWeightSpace D Tw cutoff N ΛR
-      (PowerWordWeightContexts.contextWeight D (PowerWordWeight.wordWeight D ΛR (ν ++ [i])) η))
-    (f : G ⟶ TensorVacuumWords.wordHom D Tw m cutoff L ΛP ΛR ν ≫
-      (W).E i (PowerWordWeight.wordWeight_append D ΛR ν i) ≫
-      TensorHomContexts.context D Tw cutoff L ΛR (PowerWordWeight.wordWeight D ΛR (ν ++ [i])) η)
-    (s : List I)
-    (β : WeightBlocks D ΛR (PowerWordWeightContexts.contextWeight D
-      (PowerWordWeight.wordWeight D ΛR (ν ++ [i])) η))
-    (hs : (s.reverse : Multiset I) = β.1)
-    (z : ((G.obj R₀) β).obj (observation D Sc cutoff L ΛR s β hs)) :
-    dotVector D Sc cutoff L m ΛP ΛR ν η i G f s β hs z = 0 ↔
-      (((f.total R₀) β).total (observation D Sc cutoff L ΛR s β hs) z) = 0 := by
-  let e := moduleIsoLinearEquiv
-    (Pi.isoApp (TensorHomContexts.dotChart D Tw m cutoff L ΛP ΛR ν η i) β)
-      (observation D Sc cutoff L ΛR s β hs)
-  change reindex D Tw cutoff L (dot_word ν η i).symm (OldCategory.mk s.reverse) (e _) = 0 ↔ _ = 0
-  rw [reindex_eq_zero_iff]
-  constructor
-  · intro h
-    exact e.injective (h.trans (map_zero e).symm)
-  · intro h
-    rw [h, map_zero]
 
 /-- The literal chosen dot in the actual tensor-Hom entry is the physical
 signed old layer map on every evaluated vector. -/
@@ -189,30 +157,6 @@ def crossVector (ν η : List I) (i j : I) {xj xu : X}
     ((((TensorHomContexts.pairChart D Tw m cutoff L ΛP ΛR ν η i j h₁ h₂).hom β).total
       (observation D Sc cutoff L ΛR s β hs))
         (((f.total R₀) β).total (observation D Sc cutoff L ΛR s β hs) z))
-
-/-- The pair chart detects zero of each evaluated input vector,
-without a faithfulness claim for whole Hom transformations. -/
-theorem crossVector_eq_zero_iff (ν η : List I) (i j : I) {xj xu : X}
-    (h₁ : PowerWordWeight.wordWeight D ΛR ν + D.α j = xj) (h₂ : xj + D.α i = xu)
-    (G : probeOldWeightSpace D Tw m ΛP (-ΛP) ⟶ elvWeightSpace D Tw cutoff N ΛR
-      (PowerWordWeightContexts.contextWeight D xu η))
-    (f : G ⟶ TensorVacuumWords.wordHom D Tw m cutoff L ΛP ΛR ν ≫
-      (W).E j h₁ ≫ (W).E i h₂ ≫ TensorHomContexts.context D Tw cutoff L ΛR xu η)
-    (s : List I) (β : WeightBlocks D ΛR (PowerWordWeightContexts.contextWeight D xu η))
-    (hs : (s.reverse : Multiset I) = β.1)
-    (z : ((G.obj R₀) β).obj (observation D Sc cutoff L ΛR s β hs)) :
-    crossVector D Sc cutoff L m ΛP ΛR ν η i j h₁ h₂ G f s β hs z = 0 ↔
-      (((f.total R₀) β).total (observation D Sc cutoff L ΛR s β hs) z) = 0 := by
-  let e := moduleIsoLinearEquiv
-    (Pi.isoApp (TensorHomContexts.pairChart D Tw m cutoff L ΛP ΛR ν η i j h₁ h₂) β)
-      (observation D Sc cutoff L ΛR s β hs)
-  change reindex D Tw cutoff L (cross_word_source ν η i j).symm (OldCategory.mk s.reverse) (e _) = 0 ↔ _ = 0
-  rw [reindex_eq_zero_iff]
-  constructor
-  · intro h
-    exact e.injective (h.trans (map_zero e).symm)
-  · intro h
-    rw [h, map_zero]
 
 /-- The chosen crossing in an arbitrary actual tensor-Hom entry is the
 physical signed old layer map on every evaluated vector. -/

@@ -18,14 +18,6 @@ universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
 
-private theorem equiv_total_comp_apply
-    {C : Type u} [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
-    {M N : Superfunctor k C (SVec k)} (f : M ⟶ N) (t : C)
-    {V W : Type u} [AddCommGroup V] [Module k V] [AddCommGroup W] [Module k W]
-    (e : V ≃ₗ[k] M.obj t) (H : N.obj t →ₗ[k] W) (z : V) :
-    (H.comp ((SVec.toLinearMap (f.total t)).comp e.toLinearMap)) z =
-      H (f.total t (e z)) := rfl
-
 private def kernelNatTrans
     {C : Type u} [Category.{u} C] (K L : C ⥤ ModuleCat k)
     (f : ∀ v, K.obj v →ₗ[k] L.obj v)
@@ -34,12 +26,6 @@ private def kernelNatTrans
   naturality _ _ a := by
     apply ModuleCat.hom_ext
     exact hf a
-
-private theorem kernelNatTrans_apply
-    {C : Type u} [Category.{u} C] (K L : C ⥤ ModuleCat k)
-    (f : ∀ v, K.obj v →ₗ[k] L.obj v)
-    (hf : ∀ {v w} (a : v ⟶ w), (f w).comp (K.map a).hom = (L.map a).hom.comp (f v))
-    (v : C) (z : K.obj v) : (kernelNatTrans K L f hf).app v z = f v z := rfl
 
 /-- The representable coefficient functors agree literally in the old category. -/
 def oldSourceKernelEquiv (i : I) (v t : OldCategory D Sc cutoff) :

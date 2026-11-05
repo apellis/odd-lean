@@ -59,11 +59,6 @@ def inversePair (i j : I) (v s t : List I) :
     apply (Submodule.Quotient.mk_eq_zero _).mpr
     exact Submodule.subset_span ⟨s, c, hc, b, rfl⟩)
 
-@[simp] theorem inversePair_mk (i j : I) (v s t : List I)
-    (c : hom D Sc cutoff (s ++ [i]) t) (b : Old D Sc cutoff v (s ++ [j])) :
-    inversePair D Sc cutoff i j v s t ((ideal D Sc cutoff _ _).mkQ c) b =
-      (firstIdeal D Sc cutoff i j v t).mkQ (shortTensor D Sc cutoff i j v s t c b) := rfl
-
 theorem shortTensor_balance (i j : I) (v s s' t : List I)
     (r : hom D Sc cutoff s s') (c : hom D Sc cutoff (s' ++ [i]) t)
     (b : Old D Sc cutoff v (s ++ [j])) :

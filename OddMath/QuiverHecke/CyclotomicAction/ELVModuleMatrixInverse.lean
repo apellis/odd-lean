@@ -147,22 +147,4 @@ theorem moduleCapMatrixIso_hom (i : I) (t : OldCategory D Sc cutoff)
     (contentCapCount D cutoff i (t.word : Multiset I)) t
       (actualNegativeKernelMap_bijective D Sc cutoff i t hh) x
 
-theorem moduleCapMatrixIso_hom_even (i : I) (t : OldCategory D Sc cutoff)
-    (hh : contentCrossingHeight D cutoff i (t.word : Multiset I) ≤ 0) :
-    (moduleCapMatrixIso D Sc cutoff M i t hh).hom ∈ parity (R := k)
-      (mateSourceSpace D Sc cutoff i M t)
-      (capMatrixTargetSpace D Sc cutoff i M
-        (contentCapCount D cutoff i (t.word : Multiset I)) t) 0 := by
-  rw [moduleCapMatrixIso_hom]
-  exact capMatrixComponent_even D Sc cutoff i M _ t
-
-theorem moduleCapMatrixIso_inv_even (i : I) (t : OldCategory D Sc cutoff)
-    (hh : contentCrossingHeight D cutoff i (t.word : Multiset I) ≤ 0) :
-    (moduleCapMatrixIso D Sc cutoff M i t hh).inv ∈ parity (R := k)
-      (capMatrixTargetSpace D Sc cutoff i M
-        (contentCapCount D cutoff i (t.word : Multiset I)) t)
-      (mateSourceSpace D Sc cutoff i M t) 0 :=
-  Supercategory.inv_mem (moduleCapMatrixIso D Sc cutoff M i t hh)
-    (moduleCapMatrixIso_hom_even D Sc cutoff M i t hh)
-
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.TensorMatrixCoordinates

@@ -23,34 +23,6 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 local notation "Sc'" => parameterTwist D Sc
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR
 
-/-- The full path-Hom inclusion in the computed chosen-factor charts. -/
-def pathHomEquiv {w v : List (Col I X)} {s t : Sector I}
-    (p : SPath w s t) (q : SPath v s t) (Z : H D Sc' m cutoff bound ΛP ΛR t) :
-    ((pathFunctor D Sc' m cutoff bound ΛP ΛR p).obj Z ⟶
-      (pathFunctor D Sc' m cutoff bound ΛP ΛR q).obj Z) ≃ₗ[k]
-    (((P).pathFunctor p).obj Z.obj ⟶ ((P).pathFunctor q).obj Z.obj) :=
-  (InducedCategory.homLinearEquiv (R := k)).trans
-    (Linear.homCongr k
-      (eqToIso (factor_path_obj D Sc m cutoff bound ΛP ΛR hP hR p Z))
-      (eqToIso (factor_path_obj D Sc m cutoff bound ΛP ΛR hP hR q Z)))
-
-/-- Restricting a factor generator and then including it gives exactly its prescribed entry. -/
-theorem pathHomEquiv_restrictGenImage {g : SKM.Shape I} {ν : X} (e : (P).GenImage g ν)
-    {s t : Sector I} (p : SPath (wd D ν g.dom) s t) (q : SPath (wd D ν g.cod) s t)
-    (Z : H D Sc' m cutoff bound ΛP ΛR t) :
-    pathHomEquiv D Sc m cutoff bound ΛP ΛR hP hR p q Z
-      (restrictGenImage D Sc m cutoff bound ΛP ΛR hP hR e p q Z) = e p q Z.obj := by
-  exact (pathHomEquiv D Sc m cutoff bound ΛP ΛR hP hR p q Z).apply_symm_apply (e p q Z.obj)
-
-/-- The whole chosen upward generator matrix is retained entry by entry. -/
-theorem pathHomEquiv_upwardImage (c : (P).CrossCoeff) (g : (SKM.sig D).Gen)
-    {s t : Sector I} (p : SPath (wd D g.2 g.1.dom) s t) (q : SPath (wd D g.2 g.1.cod) s t)
-    (Z : H D Sc' m cutoff bound ΛP ΛR t) :
-    pathHomEquiv D Sc m cutoff bound ΛP ΛR hP hR p q Z
-      (upwardImage D Sc m cutoff bound ΛP ΛR hP hR c g p q Z) =
-        ((P).upwardGens c).image g p q Z.obj :=
-  pathHomEquiv_restrictGenImage D Sc m cutoff bound ΛP ΛR hP hR _ p q Z
-
 /-- A supported matrix entry has the same Hom module as its chosen ambient entry. -/
 def entryEquiv {w : List (Col I X)} {s t : Sector I} (p : SPath w s t)
     (G : H D Sc' m cutoff bound ΛP ΛR s) (Z : H D Sc' m cutoff bound ΛP ΛR t) :

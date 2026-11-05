@@ -146,24 +146,6 @@ instance heightSuperInduction_super :
     Supercategory.IsSuperfunctor k (heightSuperInduction D Sc i a ha n) where
   map_mem := fun hf => SuperBimodule.whiskerLeft_mem _ _ hf
 
-/-- The extended colour-cut bimodule agrees with the existing one at positive height. -/
-theorem heightInductionCorner_succ :
-    heightInductionCorner D Sc i a ha (n + 1) = inductionCorner D Sc i a ha n := by
-  rfl
-
-/-- At positive height this is the previously defined superinduction functor. -/
-theorem heightSuperInduction_succ :
-    heightSuperInduction D Sc i a ha (n + 1) =
-      cyclotomicSuperInduction D Sc i a ha n := by
-  let L (P : SuperBimodule (cyclotomicParity D Sc a ha (n + 1))
-      (cyclotomicParity D Sc a ha n)) :
-      CyclotomicSupermodules D Sc a ha n ⥤ CyclotomicSupermodules D Sc a ha (n + 1) :=
-    { obj M := SuperBimodule.tensor P M
-      map f := SuperBimodule.whiskerLeft P f
-      map_id M := SuperBimodule.whiskerLeft_id P M
-      map_comp f g := SuperBimodule.whiskerLeft_comp P f g }
-  exact congrArg L (heightInductionCorner_succ D Sc i a ha n)
-
 /-- The empty content projector is the whole empty-word algebra. -/
 theorem contentIdempotent_zero : contentIdempotent D Sc 0 0 = 1 := by
   classical
@@ -240,9 +222,6 @@ def heightContentCast {m m' : ℕ} {γ γ' : Multiset I} (hm : m = m') (hγ : γ
   subst hm
   subst hγ
   exact Superfunctor.id k _
-
-@[simp] theorem heightContentCast_rfl (m : ℕ) (γ : Multiset I) :
-    heightContentCast D Sc a ha (rfl : m = m) (rfl : γ = γ) = Superfunctor.id k _ := rfl
 
 omit [Fintype I] in
 /-- Adding one colour raises the height by one. -/

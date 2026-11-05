@@ -360,11 +360,6 @@ theorem appendC0Candidate_canonical_crossing (i : I) (v s t : List I)
     split <;> simp
   exact (hu.smul_eq_zero).mp hz
 
-/-- The actual polynomial output embedding is injective over the full ELV old quotient. -/
-theorem appendOutputEmbedding_injective (i : I) (v t : List I) :
-    Function.Injective (appendOutputEmbedding D Sc cutoff i v t) :=
-  Function.LeftInverse.injective (appendC0Candidate_embedding D Sc cutoff i v t)
-
 private def appendShuffleSizeCast {n n' : ℕ} (e : n = n') :
     AppendShuffle (show n + 1 = n + 1 from rfl) ≃
       AppendShuffle (show n' + 1 = n' + 1 from rfl) := by
@@ -559,25 +554,6 @@ theorem appendCrossingSpan_le_ker (i : I) (v t : List I) :
   rintro z ⟨s, r, g, rfl⟩
   exact appendC0_crossing D Sc cutoff i v s t r g
 
-/-- The global constant defect on every genuine crossing, not merely a local
-identity or an assumed polynomial-linear projection. -/
-theorem appendC0_outputDot_crossing (i : I) (v s t : List I)
-    (r : hom D Sc cutoff v (s ++ [i])) (g : hom D Sc cutoff (s ++ [i]) t) :
-    appendC0 D Sc cutoff i v t
-      (appendOutputDot D Sc cutoff i v t (appendCrossingClass D Sc cutoff i v s t r g)) =
-    -SKM.zsign k (D.parity i * D.parity i) •
-      Finsupp.single 0 ((ideal D Sc cutoff v t).mkQ (r ≫ twist k (D.parity i) g)) := by
-  rw [appendOutputDot_crossingClass, map_sub, map_smul, map_smul,
-    appendC0_crossing, appendC0_embedding, smul_zero, zero_sub, neg_smul]
-
-theorem appendC0_outputDot_crossing_odd (i : I) (hi : D.parity i = 1) (v s t : List I)
-    (r : hom D Sc cutoff v (s ++ [i])) (g : hom D Sc cutoff (s ++ [i]) t) :
-    appendC0 D Sc cutoff i v t
-      (appendOutputDot D Sc cutoff i v t (appendCrossingClass D Sc cutoff i v s t r g)) =
-      Finsupp.single 0 ((ideal D Sc cutoff v t).mkQ (r ≫ twist k 1 g)) := by
-  rw [appendOutputDot_crossingClass_odd D Sc cutoff i hi, map_add, map_neg,
-    appendC0_crossing, neg_zero, appendC0_embedding, zero_add]
-
 private theorem appendRunWord_shape (i : I) (u t : List I) (n : ℕ) (hn : u.length = n)
     (j : Fin (n + 1))
     (ht : tgt (u ++ [i]) (cw (Categorification.TypeA.canWord (n + 1) (appendRun n j).1⁻¹)) = t ++ [i]) :
@@ -729,107 +705,5 @@ theorem appendC0_residual_mem (i : I) (v t : List I)
       appendCrossingSpan D Sc cutoff i v t := by
   rw [← appendC0_ker, LinearMap.mem_ker]
   simp only [map_sub, appendC0_embedding, sub_self]
-
-/-- The prescribed augmented inverse: subtract the actual polynomial output
-from the vector to obtain its crossing component. -/
-def appendC0Splitting (i : I) (v t : List I) :
-    AppendTarget D Sc cutoff i v (t ++ [i]) ≃ₗ[k]
-      (appendCrossingSpan D Sc cutoff i v t × (ℕ →₀ Old D Sc cutoff v t)) where
-  toFun z := (⟨z - appendOutputEmbedding D Sc cutoff i v t (appendC0 D Sc cutoff i v t z),
-    appendC0_residual_mem D Sc cutoff i v t z⟩, appendC0 D Sc cutoff i v t z)
-  invFun p := p.1.1 + appendOutputEmbedding D Sc cutoff i v t p.2
-  left_inv z := sub_add_cancel z _
-  right_inv p := by
-    obtain ⟨c, f⟩ := p
-    have hc : appendC0 D Sc cutoff i v t c.1 = 0 := appendCrossingSpan_le_ker D Sc cutoff i v t c.2
-    apply Prod.ext
-    · apply Subtype.ext
-      change c.1 + _ - _ = c.1
-      simp only [map_add, hc, appendC0_embedding, zero_add, add_sub_cancel_right]
-    · change appendC0 D Sc cutoff i v t (c.1 + _) = f
-      simp only [map_add, hc, appendC0_embedding, zero_add]
-  map_add' a b := by
-    apply Prod.ext
-    · apply Subtype.ext
-      change a + b - _ = (a - _) + (b - _)
-      simp only [map_add]
-      abel
-    · exact map_add _ a b
-  map_smul' a b := by
-    apply Prod.ext
-    · apply Subtype.ext
-      change a • b - _ = a • (b - _)
-      simp only [map_smul, smul_sub]
-    · exact map_smul _ a b
-
-@[simp] theorem appendC0Splitting_symm (i : I) (v t : List I)
-    (c : appendCrossingSpan D Sc cutoff i v t) (f : ℕ →₀ Old D Sc cutoff v t) :
-    (appendC0Splitting D Sc cutoff i v t).symm (c, f) =
-      c.1 + appendOutputEmbedding D Sc cutoff i v t f := rfl
-
-/-- The output-dot commutator of the actual global polynomial projection. -/
-def appendC0Defect (i : I) (v t : List I) :
-    AppendTarget D Sc cutoff i v (t ++ [i]) →ₗ[k] (ℕ →₀ Old D Sc cutoff v t) :=
-  (appendC0 D Sc cutoff i v t).comp (appendOutputDot D Sc cutoff i v t) -
-    (appendOutputShift D Sc cutoff v t).comp (appendC0 D Sc cutoff i v t)
-
-@[simp] theorem appendC0Defect_embedding (i : I) (v t : List I)
-    (f : ℕ →₀ Old D Sc cutoff v t) :
-    appendC0Defect D Sc cutoff i v t (appendOutputEmbedding D Sc cutoff i v t f) = 0 := by
-  simp only [appendC0Defect, LinearMap.sub_apply, LinearMap.comp_apply,
-    appendOutputDot_embedding, appendC0_embedding, sub_self]
-
-@[simp] theorem appendC0Defect_crossing (i : I) (v s t : List I)
-    (r : hom D Sc cutoff v (s ++ [i])) (g : hom D Sc cutoff (s ++ [i]) t) :
-    appendC0Defect D Sc cutoff i v t (appendCrossingClass D Sc cutoff i v s t r g) =
-      -SKM.zsign k (D.parity i * D.parity i) •
-        Finsupp.single 0 ((ideal D Sc cutoff v t).mkQ (r ≫ twist k (D.parity i) g)) := by
-  simp only [appendC0Defect, LinearMap.sub_apply, LinearMap.comp_apply,
-    appendC0_outputDot_crossing, appendC0_crossing, map_zero, sub_zero]
-
-/-- The global output-dot defect has degree zero on every append-target vector. -/
-theorem appendC0Defect_degreeZero (i : I) (v t : List I)
-    (z : AppendTarget D Sc cutoff i v (t ++ [i])) :
-    appendC0Defect D Sc cutoff i v t z =
-      Finsupp.single 0 (appendC0Defect D Sc cutoff i v t z 0) := by
-  have hc : ∀ c ∈ appendCrossingSpan D Sc cutoff i v t,
-      appendC0Defect D Sc cutoff i v t c =
-        Finsupp.single 0 (appendC0Defect D Sc cutoff i v t c 0) := by
-    intro c hc
-    induction hc using Submodule.span_induction with
-    | mem c hc =>
-      obtain ⟨s, r, g, rfl⟩ := hc
-      simp only [appendC0Defect_crossing, Finsupp.single_eq_same,
-        Finsupp.smul_single]
-    | zero => simp only [map_zero, Finsupp.zero_apply, Finsupp.single_zero]
-    | add a b ha hb ha' hb' =>
-      rw [map_add, ha', hb']
-      simp only [Finsupp.add_apply, Finsupp.single_eq_same, Finsupp.single_add]
-    | smul a b hb hb' =>
-      rw [map_smul, hb']
-      simp only [Finsupp.single_eq_same, Finsupp.smul_single]
-  have hh := hc _ (appendC0_residual_mem D Sc cutoff i v t z)
-  simpa only [map_sub, appendC0Defect_embedding, sub_zero] using hh
-
-theorem appendCrossingSpan_disjoint_output (i : I) (v t : List I) :
-    Disjoint (appendCrossingSpan D Sc cutoff i v t)
-      (LinearMap.range (appendOutputEmbedding D Sc cutoff i v t)) := by
-  apply Submodule.disjoint_def.mpr
-  intro z hc hp
-  obtain ⟨f, rfl⟩ := hp
-  have hf : f = 0 := (appendC0_embedding D Sc cutoff i v t f).symm.trans
-    (appendCrossingSpan_le_ker D Sc cutoff i v t hc)
-  simp only [hf, map_zero]
-
-/-- The global output-dot formula, with its required degree-zero defect. -/
-theorem appendC0_outputDot (i : I) (v t : List I)
-    (z : AppendTarget D Sc cutoff i v (t ++ [i])) :
-    appendC0 D Sc cutoff i v t (appendOutputDot D Sc cutoff i v t z) =
-      appendOutputShift D Sc cutoff v t (appendC0 D Sc cutoff i v t z) +
-        Finsupp.single 0 (appendC0Defect D Sc cutoff i v t z 0) := by
-  have h := appendC0Defect_degreeZero D Sc cutoff i v t z
-  change appendC0 D Sc cutoff i v t (appendOutputDot D Sc cutoff i v t z) -
-    appendOutputShift D Sc cutoff v t (appendC0 D Sc cutoff i v t z) = _ at h
-  exact (sub_eq_iff_eq_add.mp h).trans (add_comm _ _)
 
 end OddMath.QuiverHecke.ELVOld

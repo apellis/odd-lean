@@ -113,11 +113,6 @@ def SwappedVacuumObservation.toSwappedVacuumBlock {μ : X} {t t' : List I} {d : 
   SwappedVacuumBlock.ofCornerEvaluation cs O.action O.vacuum O.raw O.bubbles.vacuumMoments
     O.corner O.ideal_le
 
-/-- The vacuum block of an observation acts through the swapped action. -/
-theorem SwappedVacuumObservation.toSwappedVacuumBlock_A {μ : X} {t t' : List I} {d : ℕ}
-    (O : SwappedVacuumObservation B D Sc cs μ t t' d) : O.toSwappedVacuumBlock.A = O.action :=
-  rfl
-
 end Observation
 
 section Field
@@ -127,31 +122,6 @@ variable {I X k : Type u} [AddCommGroup X] [Field k]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cs : SKM.CScalars Sc)
-
-/-- **Conditional field theorem from swapped vacuum observations.** If at every
-equal-weight pair of upward words, every external weight `μ` and every degree bound `d` there
-is a swapped vacuum observation in `B`, then the Nondegeneracy Conjecture holds for `cs`.
-The observations are hypotheses; see the module docstring for the list of open inputs. -/
-theorem nondegeneracy_of_swapped_vacuum_observations
-    (h : ∀ (t t' : List I), SKM.wt D 0 (SKM.ups t) = SKM.wt D 0 (SKM.ups t') →
-      ∀ (μ : X) (d : ℕ), Nonempty (SwappedVacuumObservation B D Sc cs μ t t' d)) :
-    SKM.NondegeneracyConjecture cs :=
-  nondegeneracy_of_vacuum_blocks D Sc cs fun t t' hw μ d =>
-    (h t t' hw μ d).map SwappedVacuumObservation.toSwappedVacuumBlock
-
-/-- **Conditional field theorem, finite-colour form.** For an arbitrary colour set, swapped
-vacuum observations in `B` for every restriction of `D` to a finite set of colours, at every
-equal-weight upward word pair, external weight and degree bound, give the Nondegeneracy
-Conjecture for `D` (`SwappedNondegeneracy.md` §5). The observations are hypotheses. -/
-theorem nondegeneracy_of_restrictColours_swapped_vacuum_observations
-    (h : ∀ (J : Finset I) (tJ t'J : List J),
-      SKM.wt (D.restrictColours J) 0 (SKM.ups tJ) =
-        SKM.wt (D.restrictColours J) 0 (SKM.ups t'J) →
-      ∀ (μ : X) (d : ℕ), Nonempty (SwappedVacuumObservation B (D.restrictColours J)
-        (Sc.restrictColours D J) (cs.restrictColours D J Sc) μ tJ t'J d)) :
-    SKM.NondegeneracyConjecture cs :=
-  nondegeneracy_of_restrictColours_vacuum_evaluations D Sc cs fun J tJ t'J hw μ d =>
-    (h J tJ t'J hw μ d).map fun O => O.toSwappedVacuumBlock.toSwappedVacuumEvaluation
 
 end Field
 

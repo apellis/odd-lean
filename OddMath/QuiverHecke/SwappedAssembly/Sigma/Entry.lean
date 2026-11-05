@@ -38,12 +38,6 @@ theorem sides_of_nil {s t : Sector I} (p : SPath ([] : List (Col I X)) s t) :
     p.sides = [] ∧ s = t := by
   cases p; exact ⟨rfl, rfl⟩
 
-theorem exists_sides_one {c : Col I X} {s t : Sector I} (p : SPath [c] s t) :
-    ∃ τ, p.sides = [τ] := by
-  rcases p with _ | ⟨_, τ, _, _, p⟩
-  rcases p with _ | _
-  exact ⟨τ, rfl⟩
-
 theorem exists_sides_pair {c₁ c₂ : Col I X} {s t : Sector I} (p : SPath [c₁, c₂] s t) :
     ∃ a b, p.sides = [a, b] := by
   obtain ⟨a, b, _, _, h, rfl⟩ := exists_eq_pair p
@@ -124,7 +118,6 @@ theorem compLayer_ne_zero (gens : P.Generators) (L : Layer (SKM.sig D)) {s t : S
     rw [compLayer_eq, hz]
     simp
   · exact absurd (compLayer_eq_zero gens L _ _ hout Z) h
-
 
 /-- The summands of the two paths at a nonzero entry of a layer differ only inside the
 generator. -/

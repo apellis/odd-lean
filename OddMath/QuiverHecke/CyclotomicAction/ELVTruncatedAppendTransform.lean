@@ -143,22 +143,10 @@ def truncatedAppendDot (i : I) :
   truncatedAppendTransform D Sc cutoff N (by
     simpa only [pow_one, one_nsmul] using firstDot_pow_parity D Sc i [] 1)
 
-/-- The appended crossing retains the source and target colour order. -/
-def truncatedAppendCross (i j : I) :
-    SuperNatTrans k (truncatedAppend D Sc cutoff N [i, j])
-      (truncatedAppend D Sc cutoff N [j, i]) :=
-  truncatedAppendTransform D Sc cutoff N (crossTwo_mem D Sc i j)
-
 @[simp] theorem truncatedAppendDot_app (i : I) (v : TruncatedCategory D Sc cutoff N) :
     (truncatedAppendDot D Sc cutoff N i).app (D.parity i) v =
       truncatedAppendComponent D Sc cutoff N (dotE D Sc [i] 0) v := by
   simp only [truncatedAppendDot, truncatedAppendTransform,
-    IsSupernatural.toSuperNatTrans, ↓reduceIte]
-
-@[simp] theorem truncatedAppendCross_app (i j : I) (v : TruncatedCategory D Sc cutoff N) :
-    (truncatedAppendCross D Sc cutoff N i j).app (D.parity i * D.parity j) v =
-      truncatedAppendComponent D Sc cutoff N (crossTwo D Sc i j) v := by
-  simp only [truncatedAppendCross, truncatedAppendTransform,
     IsSupernatural.toSuperNatTrans, ↓reduceIte]
 
 variable (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
@@ -197,15 +185,5 @@ theorem truncatedAppendDot_degree (i : I) (v : TruncatedCategory D Sc cutoff N) 
     rw [degree_gdeg_mkD]
     simp [pl, PG.ld, gdeg]
   · exact Submodule.zero_mem _
-
-theorem truncatedAppendCross_degree (i j : I) (v : TruncatedCategory D Sc cutoff N) :
-    (truncatedAppendCross D Sc cutoff N i j).app (D.parity i * D.parity j) v ∈
-      truncatedDegree D Sc cutoff sy hc N (v.word ++ [i, j]) (v.word ++ [j, i])
-        (sy.d i * D.d i j) := by
-  rw [truncatedAppendCross_app]
-  apply truncatedAppendComponent_mem_degree
-  apply Presentation.diag_mem_homDeg'
-  rw [degree_gdeg_mkD]
-  simp [pl, PG.ld, gdeg]
 
 end OddMath.QuiverHecke.ELVOld

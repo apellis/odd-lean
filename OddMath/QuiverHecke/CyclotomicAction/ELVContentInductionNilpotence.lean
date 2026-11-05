@@ -79,24 +79,6 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (N : ℕ)
 
 include sy hc in
-/-- One positive exponent works for the actual content-induction dot at every
-module and target object, in both parities, at fixed source content. Finite
-colours supply the coefficient-degree bound; no global weight bound is claimed. -/
-theorem contentInductionDot_pow_zero [Finite I] (ν : List I) (i : I) :
-    ∃ e : ℕ, 0 < e ∧ ∀ (M : ContentModules D Sc cutoff N (ν : Multiset I))
-      (w : ContentCategory D Sc cutoff N ((ν : Multiset I) + ([i] : Multiset I))),
-      let f : End ((contentE D Sc cutoff N (ν : Multiset I) i).obj M |>.obj w) :=
-        ((contentInductionDot D Sc cutoff N (ν : Multiset I) i).app (D.parity i) M).app
-          (D.parity i) w
-      f ^ e = 0 := by
-  obtain ⟨e, he, hp⟩ := truncatedAppendDot_pow_zero D Sc cutoff sy hc N ν i
-  refine ⟨e, he, fun M w => ?_⟩
-  dsimp only
-  rw [contentInductionDot_component, BalancedInduction.transformComponent_app, ite_eq_left rfl]
-  apply BalancedInduction.transformLinear_pow_zero
-  intro v
-  have hv : v.obj.word.Perm ν := Multiset.coe_eq_coe.mp v.content
-  simpa only [truncatedAppendDot_app, contentAppendToComponent] using hp v.obj hv
 
 include sy hc in
 /-- The independently defined content dot is nilpotent as an endomorphism in
@@ -114,14 +96,5 @@ theorem contentInductionDot_module_pow_zero [Finite I] (ν : List I) (i : I) :
   simpa only [truncatedAppendDot_app, contentAppendToComponent] using hp v.obj hv
 
 include sy hc in
-/-- Any ground-scalar normalization, in particular either sign, has the same
-uniform exponent. The exterior coefficient algebra is not made commutative. -/
-theorem contentInductionDot_smul_pow_zero [Finite I] (ν : List I) (i : I) :
-    ∃ e : ℕ, 0 < e ∧ ∀ (c : k) (M : ContentModules D Sc cutoff N (ν : Multiset I)),
-      (c • (show End ((contentE D Sc cutoff N (ν : Multiset I) i).obj M) from
-        (contentInductionDot D Sc cutoff N (ν : Multiset I) i).app (D.parity i) M)) ^ e = 0 := by
-  obtain ⟨e, he, hp⟩ := contentInductionDot_module_pow_zero D Sc cutoff sy hc N ν i
-  refine ⟨e, he, fun c M => ?_⟩
-  rw [smul_pow, hp M, smul_zero]
 
 end OddMath.QuiverHecke.ELVOld

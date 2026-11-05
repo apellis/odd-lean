@@ -88,16 +88,6 @@ def lift (w : D) (q : ∀ v : C, (J.obj v ⟶ w) ⊗[k] (M.obj v) →ₗ[k] V)
   ext f m
   exact h v f m
 
-/-- Uniqueness in the balanced universal property. -/
-theorem lift_unique (w : D)
-    (q : ∀ v : C, (J.obj v ⟶ w) ⊗[k] (M.obj v) →ₗ[k] V) (hq)
-    (a : Obj J M w →ₗ[k] V)
-    (ha : ∀ v h m, a (tensor J M v h m) = q v (h ⊗ₜ[k] m)) :
-    a = lift J M w q hq := by
-  apply hom_ext
-  intro v h m
-  rw [ha, lift_tensor]
-
 /-- Covariance in the target object, on underlying modules. -/
 def postcompose {w z : D} (a : w ⟶ z) : Obj J M w →ₗ[k] Obj J M z :=
   lift J M w (fun v => inclusion J M z v ∘ₗ TensorProduct.map
@@ -193,10 +183,5 @@ end OddMath.QuiverHecke.ELVOld.BalancedInduction
 namespace OddMath.QuiverHecke.ELVOld
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
-
-/-- Underlying balanced induction module for right append on the truncated ELV category. -/
-abbrev moduleInductionTensor (σ : List I) (M : TruncatedModules D Sc cutoff N)
-    (w : TruncatedCategory D Sc cutoff N) :=
-  BalancedInduction.Obj (truncatedAppend D Sc cutoff N σ) M.toFunctor w
 
 end OddMath.QuiverHecke.ELVOld

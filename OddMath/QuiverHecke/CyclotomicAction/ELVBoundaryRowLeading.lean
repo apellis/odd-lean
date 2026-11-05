@@ -153,16 +153,6 @@ theorem outputBoundary_corrected_above (p : ZMod 2)
     one_pow, one_smul, smul_zero] at h'
   rw [h', map_zero, LinearMap.zero_apply]
 
-/-- The low corrected source window is killed by the boundary. -/
-theorem outputBoundary_corrected_eq_zero (p : ZMod 2)
-    (j : {j : I // D.parity j = 1}) (v : List I) (d : ℕ)
-    (c : Old D Sc cutoff v v)
-    (hd : d + endpointQPDegree D cutoff j.1 v < outputSDegree D j.1 v) :
-    outputPolynomialBoundary D Sc cutoff p j v
-      (outputLongExtraction D Sc cutoff p j.1 v (outputCorrectedLift D Sc cutoff p j v d c)) = 0 := by
-  ext n
-  exact outputBoundary_corrected_above D Sc cutoff p j v d n c (by omega)
-
 /-- The leading coefficient map is the specified scalar times total parity twist. -/
 theorem outputBoundary_corrected_signed_top (p : ZMod 2)
     (j : {j : I // D.parity j = 1}) (v : List I) (d n : ℕ)

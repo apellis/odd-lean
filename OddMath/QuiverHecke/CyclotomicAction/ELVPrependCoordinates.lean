@@ -110,21 +110,6 @@ theorem prepend_insert_coefficient {i : I} {v w : List I} (x : PrependIdx i v w)
     ((1 * a) ⊗ₜ[k] (affineInsert D Sc i v x.oldTarget x.old.nf ≫ prependTail D Sc x)) = _
   rw [one_mul, ← prependElt_insert_tail]
 
-/-- The signed old block is transferred through the proved balanced equivalence. -/
-theorem balancedEquiv_prepend_coefficient (p : ZMod 2) {i : I} {v w : List I}
-    (x : PrependIdx i v w) {q : ZMod 2}
-    (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff)
-    (ha : a ∈ SKM.SYM.elvCoefficientParity D cutoff q) :
-    balancedEquiv D Sc cutoff p i v w
-      (balancedTmul D Sc cutoff p i
-        ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k] prependTail D Sc x)
-        ((ideal D Sc cutoff v x.oldTarget).mkQ (twist k p (a ⊗ₜ[k] x.old.nf)))) =
-      koszulSign q (prependTailParity D x) •
-        projection D Sc cutoff i v w
-          ((prependAffineEquiv D Sc cutoff i v w).symm (Finsupp.single x a)) := by
-  rw [balancedEquiv_tmul, twist_twist, prepend_insert_coefficient D Sc cutoff x a ha,
-    map_zsmul, prependAffineEquiv_symm_single]
-
 /-- Coefficient parity involution, distinct from total parity on old Homs. -/
 def coefficientTwist (r : ZMod 2) :
     SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff →ₗ[k]
@@ -199,16 +184,6 @@ theorem balancedEquiv_prependExpansion (p : ZMod 2) (i : I) (v w : List I)
   | single x a =>
     rw [prependBalancedExpansion_single, balancedEquiv_prependBalancedTerm,
       prependAffineEquiv_symm_single]
-
-/-- Every balanced class has a normalized finite PBW expansion with old coefficients. -/
-theorem prependBalancedExpansion_surjective (p : ZMod 2) (i : I) (v w : List I) :
-    Function.Surjective (prependBalancedExpansion D Sc cutoff p i v w) := by
-  intro z
-  obtain ⟨h, hh⟩ := projection_surjective D Sc cutoff i v w
-    (balancedEquiv D Sc cutoff p i v w z)
-  refine ⟨prependAffineEquiv D Sc cutoff i v w h, ?_⟩
-  apply (balancedEquiv D Sc cutoff p i v w).injective
-  rw [balancedEquiv_prependExpansion, LinearEquiv.symm_apply_apply, hh]
 
 /-- The exact kernel remains the old relation span; no moving polynomial is imposed. -/
 theorem prependBalancedExpansion_eq_zero_iff (p : ZMod 2) (i : I) (v w : List I)

@@ -140,20 +140,6 @@ def negativeKernelEquiv (i : I) (v t : OldCategory D Sc cutoff)
       (contentCapCount D cutoff i (t.word : Multiset I)) t).app (op v)).hom
     (actualNegativeKernelMap_bijective D Sc cutoff i t hh v)
 
-omit sy hc in
-theorem positiveKernelEquiv_apply (i : I) (v t : OldCategory D Sc cutoff)
-    (hh : 0 ≤ contentCrossingHeight D cutoff i (t.word : Multiset I)) (z) :
-    positiveKernelEquiv D Sc cutoff i v t hh z =
-      (actualPositiveKernelMap D Sc cutoff i
-        (contentUnitCount D cutoff i (t.word : Multiset I)) t).app (op v) z := rfl
-
-omit sy hc in
-theorem negativeKernelEquiv_apply (i : I) (v t : OldCategory D Sc cutoff)
-    (hh : contentCrossingHeight D cutoff i (t.word : Multiset I) ≤ 0) (z) :
-    negativeKernelEquiv D Sc cutoff i v t hh z =
-      (actualNegativeKernelMap D Sc cutoff i
-        (contentCapCount D cutoff i (t.word : Multiset I)) t).app (op v) z := rfl
-
 /-- The positive inverse preserves the intrinsic shifted coordinate degrees. -/
 theorem positiveKernelEquiv_inverse_degree (i : I) (v t : OldCategory D Sc cutoff)
     (hh : 0 ≤ contentCrossingHeight D cutoff i (t.word : Multiset I)) {n : ℤ}

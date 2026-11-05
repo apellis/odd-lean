@@ -127,10 +127,4 @@ def appendRunEquiv (n : ℕ) : Fin (n + 1) ≃ AppendShuffle (show n + 1 = n + 1
 @[simp] theorem appendRunEquiv_apply (n : ℕ) (j : Fin (n + 1)) :
     appendRunEquiv n j = appendRun n j := rfl
 
-/-- Every append shuffle has the ascending run as canonical inverse word. -/
-theorem exists_canWord_eq_range' (n : ℕ) (u : AppendShuffle (show n + 1 = n + 1 from rfl)) :
-    ∃ j : Fin (n + 1), canWord (n + 1) u.1⁻¹ = List.range' j (n - j) := by
-  obtain ⟨j, rfl⟩ := (appendRunEquiv n).surjective u
-  exact ⟨j, canWord_appendRun n j⟩
-
 end OddMath.QuiverHecke

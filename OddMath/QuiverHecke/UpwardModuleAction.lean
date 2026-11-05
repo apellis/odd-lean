@@ -63,37 +63,9 @@ def closedAct (t : List I) :
     rw [map_smul, SKM.bubAt_id, map_smul, A.act_id]
     rfl
 
-
 /-- The bubble algebra acting on `V t` through `β` of (1.22). -/
 def bubbles (t : List I) : SKM.SYM D k →ₐ[k] Module.End k (A.V t) :=
   (A.closedAct t).comp (SKM.betaSYM cs μ)
-
-theorem bubbles_apply (t : List I) (a : SKM.SYM D k) :
-    A.bubbles cs t a = A.act t t (SKM.bubAt D Sc μ (upWord t) (SKM.betaSYM cs μ a)) := rfl
-
-
-/-- An upward action, a vacuum, reservoir coordinates and their recovery maps
-give the reservoir-vacuum consumer. The bubble field is the derived action. -/
-def toReservoirVacuumEvaluation (cutoff : I → ℕ) (vacuum : ∀ t, A.V t)
-    (reservoir : ∀ t, SKM.SYM D k →ₐ[k] Module.End k (A.V t))
-    (recover : ∀ t t', A.V t' →ₗ[k] ReservoirQuotient D Sc cutoff t t')
-    (window : List I → List I → ℕ)
-    (affine_coordinates : ∀ t t' (a : SKM.SYM D k)
-      (f : (pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D t')),
-      sourceCoefficientHom D Sc a f ∈ ExtendedAtMost D Sc t t' (window t t') →
-      recover t t' (A.act t t' ((alpha D Sc μ).map f) (reservoir t a (vacuum t))) =
-        (ELVRelationSpan D Sc cutoff t t').mkQ (sourceCoefficientHom D Sc a f)) :
-    ReservoirVacuumEvaluation D Sc cs μ cutoff where
-  V := A.V
-  act := A.act
-  act_comp := A.act_comp
-  vacuum := vacuum
-  bubbles := A.bubbles cs
-  bubbles_eq _ _ := rfl
-  reservoir := reservoir
-  recover := recover
-  window := window
-  affine_coordinates := affine_coordinates
 
 end UpwardModuleAction
 end OddMath.QuiverHecke

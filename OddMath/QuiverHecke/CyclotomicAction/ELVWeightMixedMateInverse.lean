@@ -197,14 +197,4 @@ theorem elvWeightMixedMate_isIso (hij : i ≠ j) :
   isIso_of_homogeneous_components _ (elvWeightMixedMate_mem D Sc cutoff bound i j Λ h₁ h₂ h₃ h₄)
     (elvWeightMixedMate_component_isIso D Sc cutoff bound i j Λ h₁ h₂ h₃ h₄ hij)
 
-/-- The input-natural inverse keeps the mixed parity, including distinct odd colours. -/
-theorem elvWeightMixedMate_inverse_mem (hij : i ≠ j) :
-    inv (I := elvWeightMixedMate_isIso D Sc cutoff bound i j Λ h₁ h₂ h₃ h₄ hij)
-      (elvWeightMixedMate D Sc cutoff bound i j Λ h₁ h₂ h₃ h₄) ∈
-        parity (R := k) _ _ (D.parity i * D.parity j) := by
-  let : IsIso (elvWeightMixedMate D Sc cutoff bound i j Λ h₁ h₂ h₃ h₄) :=
-    elvWeightMixedMate_isIso D Sc cutoff bound i j Λ h₁ h₂ h₃ h₄ hij
-  exact Supercategory.inv_mem (asIso (elvWeightMixedMate D Sc cutoff bound i j Λ h₁ h₂ h₃ h₄))
-    (elvWeightMixedMate_mem D Sc cutoff bound i j Λ h₁ h₂ h₃ h₄)
-
 end OddMath.QuiverHecke.ELVOld

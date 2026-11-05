@@ -54,20 +54,4 @@ def positiveCoefficient (hh : 0 ≤ D.h i x₁) (r s : ℕ) : ContentCoefficient
 def negativeCoefficient (hh : D.h i x₁ ≤ 0) (r s : ℕ) : ContentCoefficient D Sc cutoff N β.1 :=
   ModuleCentre.reconstruct D Sc cutoff N β.1 (negativeContent D Sc cutoff N Λ hcutoff i h₁ h₂ β hh r s)
 
-theorem positiveCoefficient_total (hh : 0 ≤ D.h i x₁) (r s : ℕ)
-    (M : ELVWeightProduct D Sc cutoff N Λ x₁) :
-    (contentRealize D Sc cutoff N β.1
-      (positiveCoefficient D Sc cutoff N Λ hcutoff i h₁ h₂ β hh r s)).total (M β) =
-        (positive D Sc cutoff N Λ hcutoff i h₁ h₂ hh r s).total M β := by
-  rw [positiveCoefficient, ModuleCentre.realize_reconstruct]
-  exact positiveContent_total D Sc cutoff N Λ hcutoff i h₁ h₂ β hh r s M
-
-theorem negativeCoefficient_total (hh : D.h i x₁ ≤ 0) (r s : ℕ)
-    (M : ELVWeightProduct D Sc cutoff N Λ x₁) :
-    (contentRealize D Sc cutoff N β.1
-      (negativeCoefficient D Sc cutoff N Λ hcutoff i h₁ h₂ β hh r s)).total (M β) =
-        (negative D Sc cutoff N Λ hcutoff i h₁ h₂ hh r s).total M β := by
-  rw [negativeCoefficient, ModuleCentre.realize_reconstruct]
-  exact negativeContent_total D Sc cutoff N Λ hcutoff i h₁ h₂ β hh r s M
-
 end OddMath.QuiverHecke.ELVOld.ReservoirBoundaries

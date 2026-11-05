@@ -272,52 +272,5 @@ theorem tensorVacuum_rightward_even_extreme_moments (hi : D.parity i = 0)
     (parameterTwist_homogeneous D Sc hc) i hi hP (by omega) hPN j B hB l z
 
 include sy hc in
-/-- **Even moments of the rightward vacuum bubble entries.** For an even colour with
-`0 < M < N`, leftward data satisfying the negative inverse equations at the tensor
-vacuum give an entrywise inverse `(j, B)` of the native cup window of the tensor
-vacuum bend such that every product `unit ≫ xᴺ ≫ B n` is the evaluated right bubble
-entry `η xᴺ ≫ dcap n` conjugated by one isomorphism `c` (an `eqToHom`), and the last
-column has the decoded moments: the shift `N - M - 1 + l` gives the `l`-th coefficient of
-`momentSeries (probeSeriesInv)` at `i`. -/
-theorem tensorVacuum_rightward_even_moments (hi : D.parity i = 0)
-    (hP : 0 < probeCutoff D m i) (hPN : m i < cutoff i)
-    (Z : (P).H ((0, 0) : Sector I))
-    (hZ : Z = tensorSectorInput D Sc m cutoff L ΛR ΛP hcP hcR)
-    (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
-        ((0, 0) : Sector I))
-      (p : SPath (SKM.wd D ν₀ [SKM.up i, SKM.dn i]) ((0, 0) : Sector I) ((0, 0) : Sector I)),
-      ((P).pathFunctor _q).obj Z ⟶ ((P).pathFunctor p).obj Z)
-    (dc : ℕ → ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
-        ((0, 0) : Sector I))
-      (r : SPath (SKM.wd D ν₀ []) ((0, 0) : Sector I) ((0, 0) : Sector I)),
-      ((P).pathFunctor _q).obj Z ⟶ ((P).pathFunctor r).obj Z)
-    (HN : (P).NegInverseAt (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ν₀
-      ((0, 0) : Sector I) ((0, 0) : Sector I) Z lc dc)
-    (cc : (P).CrossCoeff) :
-    ∃ (c : _ ≅ V) (j : _ ⟶ shiftedPreSourceObject D (parameterTwist D Sc) m
-        (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i H)
-      (B : Fin (cutoff i - m i) → (_ ⟶ V)),
-      ProbeWindow.IsCupInverse (evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP H)
-        (fun n => (adjunction K).unit.app V ≫
-          (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ n.val)) j B ∧
-      (∃ h, c.hom = eqToHom h) ∧
-      (∀ (n : Fin (cutoff i - m i)) (N : ℕ),
-        (adjunction K).unit.app V ≫
-          (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ N) ≫ B n =
-        c.inv ≫ (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).map
-          ((P).etaEntry cc i N ν₀ (.nil _) q₀ Z ≫ dc n q₀ (.nil _)) ≫ c.hom) ∧
-      ∀ (l : ℕ) (z : (V).obj star),
-        tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
-            (((adjunction K).unit.app V ≫
-              (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^
-                (cutoff i - m i - 1 + l)) ≫
-                B ⟨cutoff i - m i - 1, by omega⟩).total star z) =
-          polynomialToPower D cutoff L (PowerSeries.coeff l
-              (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
-            tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z := by
-  obtain ⟨c, j, B, hB, hceq, hcup⟩ := tensorVacuum_rightward_even_bubbleEntries D Sc m cutoff L
-    ΛP ΛR hcP hcR sy hc i hi hP Z hZ lc dc HN cc
-  exact ⟨c, j, B, hB, hceq, hcup, fun l z =>
-    tensorVacuum_rightward_even_extreme_moments D Sc m cutoff L sy hc i hi hP hPN j B hB l z⟩
 
 end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum

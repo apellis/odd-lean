@@ -30,14 +30,6 @@ theorem probeScalarAction_old (v w : C) (f : v ⟶ w) :
       N.toFunctor.map (X := v) (Y := w) f :=
   probeOrdinaryModuleHom_old D m Sc ν N hN v w f
 
-/-- Identity in the quotient acts as the actual module identity. -/
-theorem probeScalarAction_id (v : C) :
-    probeOrdinaryModuleHom D m Sc ν N hN v v (𝟙 ((Q).obj v)) = 𝟙 (N.obj v) := by
-  have hq := (Q).map_id v
-  have ho := probeScalarAction_old D Sc m ν N hN v v (𝟙 v)
-  exact (congrArg (probeOrdinaryModuleHom D m Sc ν N hN v v) hq).symm.trans
-    (ho.trans (N.toFunctor.map_id v))
-
 /-- Composition holds on unchanged old values, without rebuilding object labels. -/
 theorem probeScalarAction_comp (v w z : C)
     (f : (Q).obj v ⟶ (Q).obj w) (g : (Q).obj w ⟶ (Q).obj z) :
@@ -60,27 +52,6 @@ theorem probeScalarAction_comp (v w z : C)
       (congrArg₂ (fun x : N.obj v ⟶ N.obj w => fun y : N.obj w ⟶ N.obj z => x ≫ y)
         hf.symm hg.symm)))
 
-/-- A homogeneous old module operator intertwines every ordinary Hom action
-with its full parity twist, using fullness of the scalar quotient. -/
-theorem probeScalarAction_naturality {p : ZMod 2}
-    (θ : ∀ v : C, N.obj v ⟶ N.obj v)
-    (hθ : IsSupernatural k p (F := N.toFunctor) (G := N.toFunctor) θ)
-    (v w : C) (f : (Q).obj v ⟶ (Q).obj w) :
-    probeOrdinaryModuleHom D m Sc ν N hN v w f ≫ θ w =
-      θ v ≫ probeOrdinaryModuleHom D m Sc ν N hN v w (twist k p f) := by
-  obtain ⟨fr,rfl⟩ := elvProbeOldHom_surjective D m Sc v.obj.word w.obj.word f
-  let f₀ : v ⟶ w := fr
-  change probeOrdinaryModuleHom D m Sc ν N hN v w ((Q).map (X := v) (Y := w) f₀) ≫ θ w =
-    θ v ≫ probeOrdinaryModuleHom D m Sc ν N hN v w
-      (twist k p ((Q).map (X := v) (Y := w) f₀))
-  calc
-    _ = N.toFunctor.map f₀ ≫ θ w := congrArg (fun x => x ≫ θ w)
-      (probeScalarAction_old D Sc m ν N hN v w f₀)
-    _ = θ v ≫ N.toFunctor.map (twist k p f₀) := hθ.naturality_twist f₀
-    _ = θ v ≫ probeOrdinaryModuleHom D m Sc ν N hN v w ((Q).map (twist k p f₀)) :=
-      congrArg (fun x => θ v ≫ x) (probeScalarAction_old D Sc m ν N hN v w (twist k p f₀)).symm
-    _ = _ := congrArg (fun x => θ v ≫ probeOrdinaryModuleHom D m Sc ν N hN v w x)
-      (map_twist (Q) p f₀)
 end Action
 
 /-- The prescribed old dot, on the existing content append functor. -/
@@ -178,12 +149,6 @@ def probeOrdinaryInverseHom (v : C)
     ((twist k (D.parity i) (X := (U).obj ((J).obj v)) (Y := (U).obj t)).comp
       ((U).mapLinearMap (R := k) (X := (J).obj v) (Y := t)))
 
-@[simp] theorem probeOrdinaryInverseHom_apply (v : C)
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) :
-    probeOrdinaryInverseHom D Sc m ν i v t g =
-      probeOrdinarySourceDotInverse D Sc m ν i v ≫
-        twist k (D.parity i) ((U).map (X := (J).obj v) (Y := t) g) := rfl
-
 /-- This is the ordinary Hom identity needed for actual old coend balancing. -/
 theorem probeOrdinaryInverseHom_balance (v w : C)
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν))
@@ -270,13 +235,6 @@ def probeOldInverseGenerator (v : C)
   (Linear.leftComp k ((L).obj t)
     (show N.obj v ⟶ (L).obj ((J).obj v) from ELVOld.BalancedInduction.unit J N.toFunctor v)).comp
       (probeOldInverseHomAction D Sc m ν i N hN v t)
-
-@[simp] theorem probeOldInverseGenerator_apply (v : C)
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) (b : N.obj v) :
-    probeOldInverseGenerator D Sc m ν i N hN v t g b =
-      probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) t
-        (probeOrdinaryInverseHom D Sc m ν i v t g)
-        (ELVOld.BalancedInduction.unit J N.toFunctor v b) := rfl
 
 def probeOldInverseSummand (v : C)
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
@@ -451,24 +409,6 @@ variable [Fintype I] {B : Type u} [Ring B] [Algebra k B]
   (M : SuperBimodule
     (heightParity D Sc (probePolynomial (k := k) (probeDotExponent D) m)
       (probePolynomial_parity D m) ν.length) GB)
-
-/-- For the prescribed ordinary probe module the scalar-evaluation input is
-proved, so the old coend dot unit has no additional representation hypothesis. -/
-def probeModuleOldInductionDotUnit (i : I)
-    (t : ELVOld.OldContentCategory D Sc (probeCutoff D m) (i :: ν)) :
-    (End (ELVOld.BalancedInduction.superspace
-      (ELVOld.oldContentAppend D Sc (probeCutoff D m) ν i)
-      (probeOldModule D m Sc ν M).toFunctor t))ˣ :=
-  probeOldContentInductionDotUnit D Sc m ν i (probeOldModule D m Sc ν M)
-    (probeOldModule_evaluatesCoefficients D m Sc ν M) t
-
-theorem probeModuleOldInductionDot_isUnit (i : I)
-    (t : ELVOld.OldContentCategory D Sc (probeCutoff D m) (i :: ν)) :
-    IsUnit (End.of (probeOldContentInductionDot D Sc m ν i (probeOldModule D m Sc ν M) t) :
-      End (ELVOld.BalancedInduction.superspace
-        (ELVOld.oldContentAppend D Sc (probeCutoff D m) ν i)
-        (probeOldModule D m Sc ν M).toFunctor t)) :=
-  (probeModuleOldInductionDotUnit D Sc m ν M i t).isUnit
 
 end ProbeModule
 

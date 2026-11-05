@@ -217,9 +217,4 @@ def orderedRectangularMateEquiv (N : Superfunctor k A (SVec k)) (t : B)
     Obj K ((restriction J).obj N).toFunctor t ≃ₗ[k] Obj L N.toFunctor (M.obj t) :=
   LinearEquiv.ofBijective (orderedRectangularMateLinear J K L M hα N t) h
 
-@[simp] theorem orderedRectangularMateEquiv_toLinearMap (N : Superfunctor k A (SVec k)) (t : B)
-    (h : Function.Bijective (orderedRectangularMateLinear J K L M hα N t)) :
-    (orderedRectangularMateEquiv J K L M hα N t h).toLinearMap =
-      orderedRectangularMateLinear J K L M hα N t := rfl
-
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

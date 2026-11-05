@@ -99,21 +99,5 @@ theorem probeQPair_heq (i j r : I) (s : Sector I)
   cases hθ
   rfl
 
-/-- The two-factor mixed weight on `PᵢPⱼRᵣ`. -/
-def distinctProbeWeight (i j r : I) (s : Sector I)
-    (hR : StepValid (true, r) false s)
-    (Z : P.H (nextSector (true, r) false (nextSector (true, j) true (nextSector (true, i) true s)))) :=
-  qExpr Sc (P.distinctProbeOuterDot i j r s hR Z) (P.distinctProbeSpectatorDot i j r s hR Z) i r ≫
-    qExpr Sc (P.distinctProbeInnerDot i j r s hR Z) (P.distinctProbeSpectatorDot i j r s hR Z) j r
-
-/-- The weight agrees with the homogeneous-spectator formulation. -/
-theorem distinctProbeWeight_eq (i j r : I) (s : Sector I)
-    (hR : StepValid (true, r) false s)
-    (Z : P.H (nextSector (true, r) false (nextSector (true, j) true (nextSector (true, i) true s)))) :
-    P.distinctProbeWeight i j r s hR Z =
-      P.probeQPair i j r s
-        ((P.step (true, r) false (nextSector (true, j) true (nextSector (true, i) true s)) hR).obj Z)
-        (P.dotDiag r false (nextSector (true, j) true (nextSector (true, i) true s)) hR Z) := rfl
-
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

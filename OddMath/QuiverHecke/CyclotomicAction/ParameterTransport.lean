@@ -85,19 +85,4 @@ theorem parameterTwist_involutive : parameterTwist D (parameterTwist D Sc) = Sc 
       (SKM.zsign k (parameterSignExponent D i j p q) * Sc.s i j p q) = Sc.s i j p q
     rw [← mul_assoc, zsign_mul_self, one_mul]
 
-/-- Every even power of a signed odd right multiplier has the expected half-exponent sign. -/
-theorem oddRight_iterate_even {A : Type*} [Ring A] (σ : A →+* A)
-    (hσ : Function.Involutive σ) (x : A) (hx : σ x = -x) (m : ℕ) (h : A) :
-    (CyclotomicAction.oddRight σ x)^[2 * m] h = (-1 : ℤ) ^ m • (h * x ^ (2 * m)) := by
-  induction m generalizing h with
-  | zero => simp
-  | succ m ih =>
-    rw [Nat.mul_succ, Function.iterate_add_apply, ih]
-    change (-1 : ℤ) ^ m • (CyclotomicAction.oddRight σ x
-      (CyclotomicAction.oddRight σ x h) * x ^ (2 * m)) = _
-    rw [CyclotomicAction.oddRight_comp σ hσ x x hx]
-    simp only [← pow_two, neg_mul, mul_assoc, ← pow_add, smul_neg]
-    rw [Nat.add_comm 2 (2 * m)]
-    simp [pow_succ]
-
 end OddMath.QuiverHecke

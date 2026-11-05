@@ -51,15 +51,4 @@ def SuperSumInvTo.mulProfile {f : A ⟶ B} {g : ℕ → (A ⟶ Z)}
   gf := J.gf
   gg := J.gg
 
-@[simp] theorem SuperSumInvFrom.mulProfile_f' {f : B ⟶ A} {g : ℕ → (Z ⟶ A)}
-    (J : SuperSumInvFrom (k := k) f g p (fun m => m • p) n) : J.mulProfile.f' = J.f' := rfl
-@[simp] theorem SuperSumInvFrom.mulProfile_g' {f : B ⟶ A} {g : ℕ → (Z ⟶ A)}
-    (J : SuperSumInvFrom (k := k) f g p (fun m => m • p) n) (m : ℕ) :
-    J.mulProfile.g' m = J.g' m := rfl
-@[simp] theorem SuperSumInvTo.mulProfile_f' {f : A ⟶ B} {g : ℕ → (A ⟶ Z)}
-    (J : SuperSumInvTo (k := k) f g p (fun m => m • p) n) : J.mulProfile.f' = J.f' := rfl
-@[simp] theorem SuperSumInvTo.mulProfile_g' {f : A ⟶ B} {g : ℕ → (A ⟶ Z)}
-    (J : SuperSumInvTo (k := k) f g p (fun m => m • p) n) (m : ℕ) :
-    J.mulProfile.g' m = J.g' m := rfl
-
 end OddMath.SKM

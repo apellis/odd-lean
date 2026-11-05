@@ -44,12 +44,5 @@ def strictResidualLabels (B : MatchingBasisChoice a b) : B.Labels ≃ B.strictRe
 variable {X : Type v} [AddCommGroup X] {D : Datum I X}
   {k : Type w} [CommRing k] {Sc : Scalars D k}
 
-/-- Residual independence transfers by choice invariance, not by an unsupported
-identification of serializers. This retains the full abstract SYM coefficients. -/
-theorem strictResidualChoice_independent (B : MatchingBasisChoice a b)
-    (cs : CScalars Sc) (μ : X) (hB : Function.Injective (B.expansion cs μ)) :
-    Function.Injective (B.strictResidualChoice.expansion cs μ) :=
-  B.strictResidualChoice.expansion_injective_of_choice cs μ B hB
-
 end MatchingBasisChoice
 end OddMath.SKM

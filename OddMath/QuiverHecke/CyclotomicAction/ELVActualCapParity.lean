@@ -66,31 +66,6 @@ theorem shiftedSourceParityIso_hom_mem (i : I) (v : List I) :
   exact map_mem (BalancedInduction.induction (append D Sc cutoff i))
     (actualParityCoefficientMap_mem D Sc cutoff i v)
 
-theorem shiftedSourceCounit_eq_inverse_counit (i : I) (v : List I) :
-    shiftedSourceCounit D Sc cutoff i v =
-      (shiftedSourceParityIso D Sc cutoff i v).inv ≫
-        (BalancedInduction.adjunctionCounit (append D Sc cutoff i)).app
-          (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)) := by
-  have h := congrArg (fun f => (shiftedSourceParityIso D Sc cutoff i v).inv ≫ f)
-    (shiftedSourceParityIso_counit D Sc cutoff i v)
-  simpa only [← Category.assoc, Iso.inv_hom_id, Category.id_comp] using h
-
-theorem shiftedSourceCounit_mem (i : I) (v : List I) :
-    shiftedSourceCounit D Sc cutoff i v ∈ parity (R := k) _ _ 1 := by
-  rw [shiftedSourceCounit_eq_inverse_counit]
-  have hc : (BalancedInduction.adjunctionCounit (append D Sc cutoff i)).app
-      (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)) ∈
-      parity (R := k)
-        ((BalancedInduction.induction (append D Sc cutoff i)).obj
-          ((BalancedInduction.restriction (append D Sc cutoff i)).obj
-            (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))))
-        (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)) 0 :=
-    BalancedInduction.adjunctionCounit_mem (append D Sc cutoff i)
-      (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))
-  have h := comp_mem
-    (inv_mem _ (shiftedSourceParityIso_hom_mem D Sc cutoff i v)) hc
-  simpa only [add_zero] using h
-
 theorem odd_total_eq_app_one
     {M N : Superfunctor k (OldCategory D Sc cutoff) (SVec k)} {f : M ⟶ N}
     (hf : f ∈ parity (R := k) M N 1) (t : OldCategory D Sc cutoff) :

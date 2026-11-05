@@ -229,15 +229,6 @@ theorem oldCapRow_eq (P : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) (n 
     CyclotomicCrossingTensor.moduleCapRow D Sc cutoff i P n =
       BalancedInduction.capDotRow J (CyclotomicCrossingTensor.oldAppendDot_supernatural D Sc cutoff i) P n := rfl
 
-/-- The target dot is the given truncated module-induction generator. -/
-theorem truncatedModuleDot_eq (P : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k)) :
-    (moduleInductionDot D Sc cutoff N i).app (D.parity i) P =
-      BalancedInduction.dotEnd T (truncatedDot_supernatural D Sc cutoff N i) P := by
-  change (if D.parity i = D.parity i then
-    BalancedInduction.transformComponent (truncatedDot_supernatural D Sc cutoff N i) P else 0) = _
-  rw [ite_eq_left rfl]
-  rfl
-
 /-- The source comparison intertwines the given signed dot on every input
 module map's parity-zero component, before restriction is specialized. -/
 theorem weightedAppendSourceLinear_dot
@@ -267,19 +258,6 @@ theorem weightedAppendSourceLinear_dot
     (BalancedInduction.transformLinear (truncatedDot_supernatural D Sc cutoff N i) L ((Q).obj w)) h₁'
     (by simpa only [CyclotomicCrossingTensor.actualInductionDot] using
       appendWeightedModuleIso_hom_dot D Sc cutoff N i L w)
-
-/-- Every power of the prescribed signed source dot is transported by the
-same source chart. -/
-theorem weightedAppendSourceLinear_dot_pow
-    (R : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
-    (L : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k))
-    (c : R ⟶ weightedRestriction D Sc cutoff N L) (w : OldCategory D Sc cutoff) (n : ℕ) :
-    weightedAppendSourceLinear D Sc cutoff N i R L c w ∘ₗ
-        ((BalancedInduction.transformLinear
-          (CyclotomicCrossingTensor.oldAppendDot_supernatural D Sc cutoff i) R w) ^ n) =
-      ((BalancedInduction.transformLinear (truncatedDot_supernatural D Sc cutoff N i) L ((Q).obj w)) ^ n) ∘ₗ
-        weightedAppendSourceLinear D Sc cutoff N i R L c w :=
-  intertwine_pow _ _ _ (weightedAppendSourceLinear_dot D Sc cutoff N i R L c w) n
 
 variable (M : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k))
 local notation "RM" => weightedRestriction D Sc cutoff N M

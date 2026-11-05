@@ -133,24 +133,4 @@ def cyclotomicEquiv (i j : I) (hij : i ≠ j) (v t : List I) :
     ⟨toCyclotomic_injective D Sc cutoff i j hij v t,
       toCyclotomic_surjective D Sc cutoff i j hij v t⟩
 
-/-- The inverse on an arbitrary full-coefficient affine representative is the
-explicit signed PBW decoder followed by the first-factor quotient. -/
-theorem cyclotomicEquiv_symm_mk (i j : I) (hij : i ≠ j) (v t : List I)
-    (f : hom D Sc cutoff (v ++ [i]) (t ++ [j])) :
-    (cyclotomicEquiv D Sc cutoff i j hij v t).symm
-      ((ideal D Sc cutoff (v ++ [i]) (t ++ [j])).mkQ f) =
-      q D Sc cutoff i j v t
-        (decode D Sc cutoff i j v t (appendProjection D Sc cutoff i v (t ++ [j]) f)) := by
-  apply (cyclotomicEquiv D Sc cutoff i j hij v t).injective
-  rw [LinearEquiv.apply_symm_apply]
-  have hs : shortCross D Sc cutoff i j v t
-      (decode D Sc cutoff i j v t (appendProjection D Sc cutoff i v (t ++ [j]) f)) =
-        appendProjection D Sc cutoff i v (t ++ [j]) f := by
-    rw [← crossingEquiv_symm D Sc cutoff i j hij v t]
-    exact (crossingEquiv D Sc cutoff i j hij v t).apply_symm_apply _
-  have h := LinearMap.congr_fun (shortCross_quotient_square D Sc cutoff i j v t)
-    (decode D Sc cutoff i j v t (appendProjection D Sc cutoff i v (t ++ [j]) f))
-  rw [LinearMap.comp_apply, hs, canonicalAppendTarget_projection] at h
-  exact h
-
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct

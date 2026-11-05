@@ -19,13 +19,6 @@ section Detection
 variable {k : Type u} [CommRing k] {C : Type*} [Category C]
   [Preadditive C] [Linear k C] [Supercategory k C]
   {A B Z : C} {p : ZMod 2} {q : ℕ → ZMod 2} {n : ℕ}
-private theorem row_principal_eq {f : A ⟶ B} {g : ℕ → (A ⟶ Z)}
-    (K : SKM.SuperSumInvTo (k := k) f g p q n) (s : B ⟶ A)
-    (hs : s ≫ f = 𝟙 B) (hg : ∀ r, r < n → s ≫ g r = 0) : s = K.f' := by
-  apply K.hom_ext
-  · exact hs.trans K.ff.symm
-  · intro r hr
-    exact (hg r hr).trans (K.fg r hr).symm
 private theorem column_principal_eq {f : B ⟶ A} {g : ℕ → (Z ⟶ A)}
     (K : SKM.SuperSumInvFrom (k := k) f g p q n) (s : A ⟶ B)
     (hs : f ≫ s = 𝟙 B) (hg : ∀ r, r < n → g r ≫ s = 0) : s = K.f' := by
@@ -74,7 +67,6 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (i : I) {x₀ x₁ x₂ : X} (h₁ : x₀ + D.α i = x₁) (h₂ : x₁ + D.α i = x₂)
   (M : ELVWeightProduct D Sc cutoff N Λ x₁) (δ : WeightBlocks D Λ x₁)
 local notation "W" => elvRouquierFamily D Sc cutoff N Λ hcutoff
-
 
 /-- The literal chosen principal at an input family and output block. -/
 def elvChosenCapPrincipal (hh : 0 ≤ D.h i x₁) :=

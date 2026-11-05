@@ -26,15 +26,6 @@ def homReservoirDot (Z : homWeightSector T.obj W muP muM) :
     End ((homContentPreE T W i muM h).obj Z) := T.dot i h ▷ Z
 
 omit [∀ a b : B, PiSupercategory k (a ⟶ b)] in
-/-- Every raw power is supernatural on the full Hom space, including odd maps. -/
-theorem homReservoirDot_power_naturality (n : ℕ)
-    {Z Z' : homWeightSector T.obj W muP muM} {q : ZMod 2} {g : Z ⟶ Z'}
-    (hg : g ∈ parity (R := k) _ _ q) :
-    (homReservoirDot T W i muM h Z ^ n) ≫ T.E i h ◁ g =
-      koszulSign ((n : ZMod 2) * D.parity i) q •
-        (T.E i h ◁ g ≫ (homReservoirDot T W i muM h Z' ^ n)) := by
-  simp only [homReservoirDot, whiskerRight_rouquierPower (k := k)]
-  exact TwoSupercategory.super_interchange (rouquierPower_mem (T.dot_mem i h) n) hg
 
 /-- Dotted unit of the specified normalized Hom adjunction. -/
 def homReservoirCup (n : ℕ) (Z : homWeightSector T.obj W muP muM) :

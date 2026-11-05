@@ -22,35 +22,6 @@ universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
 
-private theorem conj_of_square {A B : Type u} [AddCommGroup A] [Module k A]
-    [AddCommGroup B] [Module k B] (e : A ≃ₗ[k] B)
-    (a : Module.End k A) (b : Module.End k B)
-    (h : e.toLinearMap ∘ₗ a = b ∘ₗ e.toLinearMap) : e.symm.conjAlgEquiv k b = a := by
-  apply LinearMap.ext
-  intro x
-  apply e.injective
-  change e (e.symm (b (e x))) = e (a x)
-  rw [e.apply_symm_apply]
-  exact (congrArg (fun f : A →ₗ[k] B => f x) h).symm
-
-private theorem endLinear_source_congr {β : Multiset I} {σ : List I} {p : ZMod 2}
-    {a b : End ((pres D Sc).obj (ob D σ))}
-    (ha : a ∈ parity (R := k) _ _ p) (hb : b ∈ parity (R := k) _ _ p)
-    (hab : a = b) (M : ContentModules D Sc cutoff N β)
-    (w : ContentCategory D Sc cutoff N (β + (σ : Multiset I))) :
-    BalancedInduction.transformLinear
-      (contentAppendTo_supernatural D Sc cutoff N rfl rfl ha) M w =
-      contentInductionEndLinear D Sc cutoff N hb M w := by
-  cases hab
-  rfl
-
-private theorem comp_right_congr {A B : Type u}
-    [AddCommGroup A] [Module k A] [AddCommGroup B] [Module k B]
-    {f g : Module.End k B} (h : f = g) (e : A →ₗ[k] B) :
-    f.comp e = g.comp e := by
-  cases h
-  rfl
-
 /-- Evaluation of induction on a homogeneous module map. The statement keeps
 the actual induced SVec objects on the left and the raw formula on the right. -/
 theorem contentInductionMap_total_of_mem
@@ -91,63 +62,6 @@ theorem contentInductionTransform_total {β γ : Multiset I} {σ τ : List I}
       simp [SuperNatTrans.total, IsSupernatural.toSuperNatTrans]
   exact (congrArg (fun f => f.total z) h).trans ht
 
-theorem contentEPairDot_zero_whisker (β : Multiset I) (i j : I)
-    (M : ContentModules D Sc cutoff N β)
-    (w : ContentCategory D Sc cutoff N (β + ([i,j] : Multiset I))) :
-    contentEPairDot D Sc cutoff N β i j M w 0 =
-      ((contentInductionTo D Sc cutoff N (β + ([i] : Multiset I)) [j]
-          (β + ([i,j] : Multiset I)) (contentPair_sum β i j).symm).map
-        (BalancedInduction.transformComponent
-          (contentAppendTo_supernatural D Sc cutoff N
-            (β := β) (γ := β + ([i] : Multiset I)) (σ := [i]) (τ := [i]) rfl rfl
-            (firstDot_parity D Sc i [])) M)).total w := by
-  unfold contentEPairDot
-  simp only [ite_true]
-  apply conj_of_square
-  have h := contentInductionComp_inner D Sc cutoff N β [i] [j]
-    (β + ([i,j] : Multiset I)) (contentPair_sum β i j).symm rfl (firstDot_parity D Sc i []) M w
-  have ht := contentInductionMap_total_of_mem
-    (contentAppendTo D Sc cutoff N (β + ([i] : Multiset I)) [j]
-      (β + ([i,j] : Multiset I)) (contentPair_sum β i j).symm)
-    (BalancedInduction.transformComponent_mem
-      (contentAppendTo_supernatural D Sc cutoff N
-        (β := β) (γ := β + ([i] : Multiset I)) rfl rfl
-        (firstDot_parity D Sc i [])) M) w
-  rw [← ht] at h
-  have he := endLinear_source_congr D Sc cutoff N
-    (MonoidalSupercategory.whiskerRight_mem (R := k) ((pres D Sc).obj (ob D [j]))
-      (firstDot_parity D Sc i [])) (firstDot_parity D Sc i [j])
-    (dotE_whiskerRight D Sc [i] [j] 0 (by simp)) M w
-  exact h.trans (comp_right_congr (k := k) he
-    (contentEPairEquiv D Sc cutoff N β i j _ rfl M w).toLinearMap)
-
-theorem contentEPairDot_one_whisker (β : Multiset I) (i j : I)
-    (M : ContentModules D Sc cutoff N β)
-    (w : ContentCategory D Sc cutoff N (β + ([i,j] : Multiset I))) :
-    contentEPairDot D Sc cutoff N β i j M w 1 =
-      ((contentInductionTransform D Sc cutoff N
-        (β := β + ([i] : Multiset I))
-        (γ := β + ([i,j] : Multiset I))
-        (contentPair_sum β i j).symm (contentPair_sum β i j).symm
-        (firstDot_parity D Sc j [])).app (D.parity j)
-        (BalancedInduction.induced (contentAppendTo D Sc cutoff N β [i] _ rfl) M)).total w := by
-  unfold contentEPairDot
-  simp only [show (1 : Fin 2) ≠ 0 by decide, ite_false]
-  apply conj_of_square
-  have h := contentInductionComp_outer D Sc cutoff N β [i] [j]
-    (β + ([i,j] : Multiset I)) (contentPair_sum β i j).symm rfl (firstDot_parity D Sc j []) M w
-  have ht := contentInductionTransform_total D Sc cutoff N
-    (β := β + ([i] : Multiset I)) (γ := β + ([i,j] : Multiset I))
-    (contentPair_sum β i j).symm (contentPair_sum β i j).symm (firstDot_parity D Sc j [])
-    (BalancedInduction.induced (contentAppendTo D Sc cutoff N β [i] _ rfl) M) w
-  rw [← ht] at h
-  have he := endLinear_source_congr D Sc cutoff N
-    (MonoidalSupercategory.whiskerLeft_mem (R := k) ((pres D Sc).obj (ob D [i]))
-      (firstDot_parity D Sc j [])) (contentPairDot_one_parity D Sc i j)
-    (whiskerLeft_letter_dotE D Sc i [j] 0) M w
-  exact h.trans (comp_right_congr (k := k) he
-    (contentEPairEquiv D Sc cutoff N β i j _ rfl M w).toLinearMap)
-
 theorem contentInductionDot_component (β : Multiset I) (i : I)
     (M : ContentModules D Sc cutoff N β) :
     (contentInductionDot D Sc cutoff N β i).app (D.parity i) M =
@@ -156,67 +70,6 @@ theorem contentInductionDot_component (β : Multiset I) (i : I)
   exact congrFun (IsSupernatural.toSuperNatTrans_app
     (BalancedInduction.transformComponent_supernatural
       (contentAppendTo_supernatural D Sc cutoff N rfl rfl (firstDot_parity D Sc i [])))) M
-
-theorem contentEPairDot_zero_singleLetter (β : Multiset I) (i j : I)
-    (M : ContentModules D Sc cutoff N β)
-    (w : ContentCategory D Sc cutoff N (β + ([i,j] : Multiset I))) :
-    contentEPairDot D Sc cutoff N β i j M w 0 =
-      ((contentInductionTo D Sc cutoff N (β + ([i] : Multiset I)) [j]
-          (β + ([i,j] : Multiset I)) (contentPair_sum β i j).symm).map
-        ((contentInductionDot D Sc cutoff N β i).app (D.parity i) M)).total w := by
-  rw [contentInductionDot_component]
-  exact contentEPairDot_zero_whisker D Sc cutoff N β i j M w
-
-/-- The first single-letter dot, acted on by the actual second induction functor. -/
-def contentEPairInnerDot (β : Multiset I) (i j : I)
-    (M : ContentModules D Sc cutoff N β)
-    (w : ContentCategory D Sc cutoff N (β + ([i,j] : Multiset I))) :
-    Module.End k (ContentEPairSpace D Sc cutoff N β i j _ rfl M w) :=
-  ((contentInductionTo D Sc cutoff N (β + ([i] : Multiset I)) [j]
-      (β + ([i,j] : Multiset I)) (contentPair_sum β i j).symm).map
-    ((contentInductionDot D Sc cutoff N β i).app (D.parity i) M)).total w
-
-/-- The actual single-letter dot component at the explicitly recast target. -/
-def contentEPairOuterDot (β : Multiset I) (i j : I)
-    (M : ContentModules D Sc cutoff N β)
-    (w : ContentCategory D Sc cutoff N (β + ([i,j] : Multiset I))) :
-    Module.End k (ContentEPairSpace D Sc cutoff N β i j _ rfl M w) :=
-  ((contentInductionTransform D Sc cutoff N
-    (β := β + ([i] : Multiset I)) (γ := β + ([i,j] : Multiset I))
-    (contentPair_sum β i j).symm (contentPair_sum β i j).symm
-    (firstDot_parity D Sc j [])).app (D.parity j)
-    (BalancedInduction.induced (contentAppendTo D Sc cutoff N β [i] _ rfl) M)).total w
-
-theorem contentEPairDot_zero_eq_inner (β : Multiset I) (i j : I)
-    (M : ContentModules D Sc cutoff N β)
-    (w : ContentCategory D Sc cutoff N (β + ([i,j] : Multiset I))) :
-    contentEPairDot D Sc cutoff N β i j M w 0 = contentEPairInnerDot D Sc cutoff N β i j M w :=
-  contentEPairDot_zero_singleLetter D Sc cutoff N β i j M w
-
-theorem contentEPairDot_one_eq_outer (β : Multiset I) (i j : I)
-    (M : ContentModules D Sc cutoff N β)
-    (w : ContentCategory D Sc cutoff N (β + ([i,j] : Multiset I))) :
-    contentEPairDot D Sc cutoff N β i j M w 1 = contentEPairOuterDot D Sc cutoff N β i j M w :=
-  contentEPairDot_one_whisker D Sc cutoff N β i j M w
-
-/-- Original-Sc quadratic in the independently whiskered single-letter dots. -/
-theorem contentEPair_whiskered_quadratic (β : Multiset I) {i j : I} (hij : i ≠ j)
-    (M : ContentModules D (parameterTwist D Sc) cutoff N β)
-    (w : ContentCategory D (parameterTwist D Sc) cutoff N (β + ([i,j] : Multiset I))) :
-    let A := contentEPairInnerDot D (parameterTwist D Sc) cutoff N β i j M w
-    let B := contentEPairOuterDot D (parameterTwist D Sc) cutoff N β i j M w
-    (contentEPairCross D (parameterTwist D Sc) cutoff N β i j _ rfl
-        (content_pair_swap β i j) M w).comp
-      (contentEPairCross D (parameterTwist D Sc) cutoff N β j i _
-        (content_pair_swap β i j) rfl M w) =
-    if D.d i j = 0 then (Sc.t i j : k) • (1 : Module.End k _) else
-      ∑ r ∈ Finset.Ioo 0 (D.dn i j), ∑ s ∈ Finset.Ioo 0 (D.dn j i),
-        Sc.s i j r s • (B ^ s * A ^ r) +
-      ((Sc.t i j : k) • A ^ D.dn i j + (Sc.t j i : k) • B ^ D.dn j i) := by
-  dsimp only
-  rw [contentEPair_quadratic D Sc cutoff N β hij]
-  unfold contentEPairPolynomial
-  rw [contentEPairDot_zero_eq_inner, contentEPairDot_one_eq_outer]
 
 end OddMath.QuiverHecke.ELVOld
 

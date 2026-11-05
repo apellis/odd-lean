@@ -141,38 +141,4 @@ theorem contentMixedBraid_tensor (β : Multiset I) {i j : I} (hij : i ≠ j)
   all_goals first | exact contentTripleLeft_parity D Sc _ _ _ |
     exact contentTripleRight_parity D Sc _ _ _
 
-theorem contentBraidCorrection_parity {i j : I} (hij : i ≠ j) :
-    contentBraidCorrection D Sc i j ∈ parity (R := k) _ _ (D.parity i) := by
-  rw [← contentTriple_braid D Sc i j hij]
-  have hp : D.parity i * D.parity j +
-      (D.parity i * D.parity i + D.parity j * D.parity i) = D.parity i := by
-    rcases parity_eq_zero_or_one (D.parity i) with hp | hp <;>
-      rcases parity_eq_zero_or_one (D.parity j) with hq | hq <;> simp [hp,hq]
-  apply Submodule.sub_mem
-  · have h1 := comp_mem (contentTripleLeft_parity D Sc i j i)
-      (comp_mem (contentTripleRight_parity D Sc j i i) (contentTripleLeft_parity D Sc j i i))
-    rw [hp] at h1
-    exact h1
-  · have h2 := comp_mem (contentTripleRight_parity D Sc i j i)
-      (comp_mem (contentTripleLeft_parity D Sc i i j) (contentTripleRight_parity D Sc i i j))
-    have hp' : D.parity j * D.parity i +
-        (D.parity i * D.parity i + D.parity i * D.parity j) = D.parity i := by
-      simpa only [mul_comm (D.parity j) (D.parity i)] using hp
-    rw [hp'] at h2
-    exact h2
-
-/-- Mixed braid as linear maps, with the full source correction over the prescribed twist. -/
-theorem contentMixedBraid_source_linear (β : Multiset I) {i j : I} (hij : i ≠ j)
-    (M : ContentModules D (parameterTwist D Sc) cutoff N β)
-    (w : ContentCategory D (parameterTwist D Sc) cutoff N (β + ([i,j,i] : Multiset I))) :
-    contentMixedBraid D (parameterTwist D Sc) cutoff N β i j M w =
-      sign k (D.parity i * D.parity j) •
-        contentInductionEndLinear D (parameterTwist D Sc) cutoff N
-          (contentBraidCorrection_parity D (parameterTwist D Sc) hij) M w := by
-  apply BalancedInduction.hom_ext
-  intro v h m
-  rw [contentMixedBraid_tensor D _ cutoff N β hij, LinearMap.smul_apply,
-    contentInductionEndLinear, BalancedInduction.transformLinear_tensor]
-  rfl
-
 end OddMath.QuiverHecke.ELVOld

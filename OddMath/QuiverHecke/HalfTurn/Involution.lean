@@ -42,9 +42,6 @@ def scalarsCast {Sc₁ Sc₂ : SKM.Scalars D k} (e : Sc₁ = Sc₂) {s s' t t' :
       (coefficientObj D Sc₂ s' ⟶ coefficientObj D Sc₂ t') := by
   subst e hs ht; exact LinearEquiv.refl k _
 
-theorem scalarsCast_refl {s t : List I} (x : coefficientObj D Sc s ⟶ coefficientObj D Sc t) :
-    scalarsCast D (rfl : Sc = Sc) (rfl : s = s) (rfl : t = t) x = x := rfl
-
 theorem scalarsCast_scalarsCast {Sc₁ Sc₂ Sc₃ : SKM.Scalars D k} (e : Sc₁ = Sc₂) (e' : Sc₂ = Sc₃)
     {s s' s'' t t' t'' : List I} (hs : s = s') (ht : t = t') (hs' : s' = s'') (ht' : t' = t'')
     (x : coefficientObj D Sc₁ s ⟶ coefficientObj D Sc₁ t) :
@@ -142,13 +139,6 @@ theorem htCoef_htCoefInv {s t : List I}
     htCoef_scalarsCast, htCoef_htCoef, scalarsCast_scalarsCast]
   rfl
 
-theorem htCoef_surjective (s t : List I) : Function.Surjective (htCoef D Sc s t) :=
-  fun y => ⟨htCoefInv D Sc s t y, htCoef_htCoefInv D Sc y⟩
-
-/-- **The half-turn is bijective** on coefficient-extended Hom spaces. -/
-theorem htCoef_bijective (s t : List I) : Function.Bijective (htCoef D Sc s t) :=
-  ⟨htCoef_injective D Sc s t, htCoef_surjective D Sc s t⟩
-
 /-- The half-turn as a linear isomorphism `Hom(s, t) ≅ Hom'(t^rev, s^rev)` of
 coefficient-extended Hom spaces, `Hom'` for the parameters `parameterTwist D Sc`. -/
 def htCoefEquiv (s t : List I) :
@@ -158,14 +148,5 @@ def htCoefEquiv (s t : List I) :
   LinearEquiv.ofLinearMap (htCoef D Sc s t) (htCoefInv D Sc s t)
     (LinearMap.ext fun y => htCoef_htCoefInv D Sc y)
     (LinearMap.ext fun x => htCoefInv_htCoef D Sc x)
-
-@[simp] theorem htCoefEquiv_apply {s t : List I}
-    (x : coefficientObj D Sc s ⟶ coefficientObj D Sc t) :
-    htCoefEquiv D Sc s t x = htCoef D Sc s t x := rfl
-
-@[simp] theorem htCoefEquiv_symm_apply {s t : List I}
-    (y : coefficientObj D (parameterTwist D Sc) t.reverse ⟶
-      coefficientObj D (parameterTwist D Sc) s.reverse) :
-    (htCoefEquiv D Sc s t).symm y = htCoefInv D Sc s t y := rfl
 
 end OddMath.QuiverHecke

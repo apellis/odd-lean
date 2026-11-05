@@ -70,7 +70,6 @@ theorem reservoirPairFirstIso_conj_map_prPostDot :
   simp only [Category.assoc, Iso.hom_inv_id, Category.comp_id, Linear.smul_comp] at h
   rw [h, smul_smul, koszulSign_mul_self, one_smul]
 
-
 private theorem reservoirPair_flip_sign {C : Type*} [Category C] [Preadditive C]
     {A : C} (p q : ZMod 2) {a b : A ⟶ A}
     (h : a = koszulSign p q • b) : b = koszulSign p q • a := by
@@ -141,10 +140,6 @@ theorem reservoirPairLastDot_comp_prPostDot :
   simp only [Functor.map_comp, Functor.map_zsmul] at h'
   exact h'
 
-/-- `D² = 0` on `PRR`. -/
-theorem reservoirPairCross_sq : P.reservoirPairCross i r t hv hw Z ≫ P.reservoirPairCross i r t hv hw Z = 0 := by
-  rw [reservoirPairCross, ← Functor.map_comp, P.postCrossSame_sq, Functor.map_zero]
-
 /-- **The slides of `D` past the reservoir dots** `y`, `z` of `PRR`. -/
 theorem reservoirPairCross_slides :
     (P.prPostDot i r t hv (P.reservoirPairRest i r t hw Z) ≫ P.reservoirPairCross i r t hv hw Z -
@@ -159,7 +154,6 @@ theorem reservoirPairCross_slides :
   simp only [Functor.map_sub, Functor.map_comp, Functor.map_zsmul] at h₁' h₂'
   exact ⟨h₁'.trans (CategoryTheory.Functor.map_id _ _),
     h₂'.trans (CategoryTheory.Functor.map_id _ _)⟩
-
 
 /-- Both signs disappear on the separately supported powers of Q. -/
 theorem reservoirPairFirstIso_conj_mixedQ :

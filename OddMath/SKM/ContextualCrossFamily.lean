@@ -78,50 +78,6 @@ theorem strictReduced_append_cross_of_not_ilv
     exact ⟨by omega, by rw [h₀]; simp, by rw [h₀, h₁, he]⟩
   · exact fun h => hi ((ilv2_iff_ilv hR.pairing_properties.1 h₀ h₁).mp h)
 
-/-- Every distinct-strand class has a pair of strict representatives on the
-two exchanged targets, related by one literal terminal crossing on the
-noninterleaving side. The original class is retained exactly up to pairing Iso. -/
-theorem exists_adapted_distinct_pair (a P Q : List (Letter I)) (x y : Letter I)
-    {T : List (TMove (Letter I))} (hT : IsMatching₂ a (P ++ x :: y :: Q) T)
-    (hn : ¬ Same (pairing₂ a T) (a.length + P.length) (a.length + P.length + 1)) :
-    ∃ R S, IsMatching₂ a (P ++ x :: y :: Q) R ∧ StrictReduced₂ a R ∧
-      IsMatching₂ a (P ++ y :: x :: Q) S ∧ StrictReduced₂ a S ∧
-      Iso (pairing₂ a R) (pairing₂ a T) ∧
-      Iso (pairing₂ a S) (swapAt (pairing₂ a R) (a.length + P.length)) ∧
-      (S = R ++ [.mv (.cross P.length)] ∨ R = S ++ [.mv (.cross P.length)]) := by
-  classical
-  by_cases hi : Ilv (pairing₂ a T) (a.length + P.length)
-  · obtain ⟨S, hS, hrS, hs⟩ := exists_strictReduced_target_swap a P Q x y hT
-    have hp := target_pair_bound hT
-    have hnS : ¬ Same (pairing₂ a S) (a.length + P.length) (a.length + P.length + 1) := by
-      intro h
-      have hh := (hs.2 _ _).mp h
-      rw [same_swapAt hp, tau_left, tau_right] at hh
-      exact hn hh.symm
-    have hiS : ¬ Ilv (pairing₂ a S) (a.length + P.length) := by
-      rw [ilv_iff_of_iso hs, ilv_swapAt_iff hT.pairing_properties.1 hp hn]
-      exact not_not_intro hi
-    let R := S ++ [.mv (.cross P.length)]
-    refine ⟨R, S, matching_append_cross a P Q y x hS,
-      strictReduced_append_cross_of_not_ilv hS hrS hnS hiS, hS, hrS, ?_, ?_, Or.inr rfl⟩
-    · rw [show pairing₂ a R = swapAt (pairing₂ a S) (a.length + P.length) from
-        pairing_append_cross a P S]
-      simpa only [swapAt_swapAt] using hs.swapAt (a.length + P.length)
-    · rw [show pairing₂ a R = swapAt (pairing₂ a S) (a.length + P.length) from
-        pairing_append_cross a P S, swapAt_swapAt]
-      exact Iso.refl _
-  · obtain ⟨R, hR, hrR, hr⟩ := exists_strictReduced_matching
-      hT.pairing_properties.1 hT.pairing_properties.2.1 hT.pairing_properties.2.2
-    have hnR : ¬ Same (pairing₂ a R) (a.length + P.length) (a.length + P.length + 1) :=
-      fun h => hn ((hr.2 _ _).mp h)
-    have hiR : ¬ Ilv (pairing₂ a R) (a.length + P.length) := by
-      rwa [ilv_iff_of_iso hr]
-    refine ⟨R, R ++ [.mv (.cross P.length)], hR, hrR,
-      matching_append_cross a P Q x y hR,
-      strictReduced_append_cross_of_not_ilv hR hrR hnR hiR, hr, ?_, Or.inl rfl⟩
-    rw [pairing_append_cross]
-    exact Iso.refl _
-
 /-- The literal crossing transports strand labels by the endpoint
 transposition; it does not choose a colour-only bijection. -/
 def terminalCrossStrandEquiv {a P Q : List (Letter I)} {x y : Letter I}
@@ -130,24 +86,5 @@ def terminalCrossStrandEquiv {a P Q : List (Letter I)} {x y : Letter I}
     MatchingStrand a R ≃ MatchingStrand a (R ++ [.mv (.cross P.length)]) :=
   matchingStrandEquivOfSwap (target_pair_bound hR) hn (by
     rw [pairing_append_cross]; exact Iso.refl _)
-
-@[simp] theorem terminalCrossStrandEquiv_val {a P Q : List (Letter I)} {x y : Letter I}
-    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (P ++ x :: y :: Q) R)
-    (hn : ¬ Same (pairing₂ a R) (a.length + P.length) (a.length + P.length + 1))
-    (j : MatchingStrand a R) :
-    (terminalCrossStrandEquiv hR hn j).val = tau (a.length + P.length) j.val := rfl
-
-def terminalCrossCountsEquiv {a P Q : List (Letter I)} {x y : Letter I}
-    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (P ++ x :: y :: Q) R)
-    (hn : ¬ Same (pairing₂ a R) (a.length + P.length) (a.length + P.length + 1)) :
-    (MatchingStrand a R → ℕ) ≃ (MatchingStrand a (R ++ [.mv (.cross P.length)]) → ℕ) :=
-  _root_.Equiv.arrowCongr (terminalCrossStrandEquiv hR hn) (_root_.Equiv.refl ℕ)
-
-@[simp] theorem terminalCrossCountsEquiv_apply {a P Q : List (Letter I)} {x y : Letter I}
-    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (P ++ x :: y :: Q) R)
-    (hn : ¬ Same (pairing₂ a R) (a.length + P.length) (a.length + P.length + 1))
-    (n : MatchingStrand a R → ℕ) (j : MatchingStrand a R) :
-    terminalCrossCountsEquiv hR hn n (terminalCrossStrandEquiv hR hn j) = n j := by
-  simp [terminalCrossCountsEquiv]
 
 end OddMath.SKM

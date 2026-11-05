@@ -156,14 +156,6 @@ theorem oldContentDistinctCross_supernatural :
     intro s t p f hf
     exact (Distinct.cross_supernatural D Sc cutoff i j).naturality hf
 
-/-- The independently prescribed content cup-crossing-cap, with both ordinary adjunctions. -/
-def oldContentDistinctMateComponent
-    (N : Superfunctor k (OldContentCategory D Sc cutoff (j :: ν)) (SVec k)) :
-    BalancedInduction.induced K ((BalancedInduction.restriction J).obj N) ⟶
-      (BalancedInduction.restriction M).obj (BalancedInduction.induced L N) :=
-  BalancedInduction.orderedRectangularMateComponent J K L M
-    (oldContentDistinctCross_supernatural D Sc cutoff ν i j) N
-
 /-- The selected source chart first uses content i-induction, then j-restriction extension. -/
 def oldContentDistinctSourceIso
     (N : Superfunctor k (OldContentCategory D Sc cutoff (j :: ν)) (SVec k)) :
@@ -175,16 +167,6 @@ def oldContentDistinctSourceIso
     (BalancedInduction.restriction Qi).mapIso
       ((BalancedInduction.induction A).mapIso
         (oldContentRestrictionExtensionIso D Sc cutoff ν j N))
-
-/-- The selected target chart is j-restriction of the selected upper i-induction comparison. -/
-def oldContentDistinctTargetIso
-    (N : Superfunctor k (OldContentCategory D Sc cutoff (j :: ν)) (SVec k)) :
-    (BalancedInduction.restriction M).obj (BalancedInduction.induced L N) ≅
-      (BalancedInduction.restriction Qi).obj
-        ((BalancedInduction.restriction B).obj
-          (BalancedInduction.induced A (BalancedInduction.induced Qj N))) :=
-  (BalancedInduction.restriction M).mapIso
-    (oldContentAppendRestrictionIso D Sc cutoff (j :: ν) i N)
 
 /-- The selected source chart on literal balanced coends. -/
 def oldContentDistinctSourceNativeLinear
@@ -409,24 +391,5 @@ theorem oldContentDistinctMateLinear_bijective (hij : i ≠ j)
     (oldContentDistinctTargetLinear_bijective D Sc cutoff ν i j N t) hOld
   intro x
   exact LinearMap.congr_fun (oldContentDistinctMateLinear_square D Sc cutoff ν i j N t) x
-
-/-- The actual positive content cup-crossing-cap has a linear inverse for every input module. -/
-def oldContentDistinctMateEquiv (hij : i ≠ j)
-    (N : Superfunctor k (OldContentCategory D Sc cutoff (j :: ν)) (SVec k))
-    (t : OldContentCategory D Sc cutoff (i :: ν)) :
-    BalancedInduction.Obj K ((BalancedInduction.restriction J).obj N).toFunctor t ≃ₗ[k]
-      BalancedInduction.Obj L N.toFunctor ((M).obj t) :=
-  BalancedInduction.orderedRectangularMateEquiv J K L M
-    (oldContentDistinctCross_supernatural D Sc cutoff ν i j) N t
-    (oldContentDistinctMateLinear_bijective D Sc cutoff ν i j hij N t)
-
-@[simp] theorem oldContentDistinctMateEquiv_toLinearMap (hij : i ≠ j)
-    (N : Superfunctor k (OldContentCategory D Sc cutoff (j :: ν)) (SVec k))
-    (t : OldContentCategory D Sc cutoff (i :: ν)) :
-    (oldContentDistinctMateEquiv D Sc cutoff ν i j hij N t).toLinearMap =
-      BalancedInduction.orderedRectangularMateLinear J K L M
-        (oldContentDistinctCross_supernatural D Sc cutoff ν i j) N t :=
-  BalancedInduction.orderedRectangularMateEquiv_toLinearMap J K L M
-    (oldContentDistinctCross_supernatural D Sc cutoff ν i j) N t _
 
 end OddMath.QuiverHecke.ELVOld

@@ -60,51 +60,6 @@ def heightCornerPairingBi : (P).toSVec →ₗ[k] (Q).toSVec →ₗ[k] B where
   map_add' x y := by ext z; exact add_mul x.1 y.1 z.1
   map_smul' c x := by ext y; exact smul_mul_assoc c x.1 y.1
 
-/-- The pairing descends through balancing over the lower cyclotomic algebra. -/
-def heightCornerPairingLinear : (tensor P Q).toSVec →ₗ[k] B :=
-  tensorLift (heightCornerPairingBi D Sc i a ha n) (fun x r y => mul_assoc x.1 (φ r) y.1)
-
-@[simp] theorem heightCornerPairingLinear_btmul (x : (P).toSVec) (y : (Q).toSVec) :
-    heightCornerPairingLinear D Sc i a ha n (btmul P Q x y) = x.1 * y.1 :=
-  tensorLift_btmul _ _ x y
-
-/-- Multiplication preserves total parity. -/
-theorem heightCornerPairing_mem :
-    SVec.ofHom (heightCornerPairingLinear D Sc i a ha n) ∈
-      SVec.parityHom (tensor P Q).toSVec (regular GB).toSVec 0 := by
-  apply tensor_mem_parity_of_btmul
-  intro p q x y hx hy
-  change heightCornerPairingLinear D Sc i a ha n (btmul P Q x y) ∈ (regularSVec GB).part (p + q + 0)
-  rw [heightCornerPairingLinear_btmul, add_zero, mem_regularSVec_part_iff]
-  exact SetLike.GradedMul.mul_mem
-    ((heightInductionCorner_mem_part_iff D Sc i a ha n).mp hx)
-    ((heightRestrictionCorner_mem_part_iff D Sc i a ha n).mp hy)
-
-/-- The even evaluation `B e ⊗_A e B → B`. -/
-def heightCornerEvaluation : tensor P Q ⟶ regular GB :=
-  ⟨SVec.ofHom (heightCornerPairingLinear D Sc i a ha n), by
-    apply (isHom_iff_of_mem (heightCornerPairing_mem D Sc i a ha n)).mpr
-    constructor
-    · intro p b _
-      simp only [mul_zero, Supercategory.sign_zero, one_smul]
-      apply tensor_hom_ext P Q
-      intro x y
-      change heightCornerPairingLinear D Sc i a ha n ((tensor P Q).lact b (btmul P Q x y)) =
-        b * heightCornerPairingLinear D Sc i a ha n (btmul P Q x y)
-      rw [lact_btmul, heightCornerPairingLinear_btmul, heightCornerPairingLinear_btmul]
-      exact mul_assoc b x.1 y.1
-    · intro b
-      apply tensor_hom_ext P Q
-      intro x y
-      change heightCornerPairingLinear D Sc i a ha n ((tensor P Q).ract b (btmul P Q x y)) =
-        heightCornerPairingLinear D Sc i a ha n (btmul P Q x y) * b
-      rw [ract_btmul, heightCornerPairingLinear_btmul, heightCornerPairingLinear_btmul]
-      exact (mul_assoc x.1 y.1 b).symm⟩
-
-theorem heightCornerEvaluation_mem :
-    heightCornerEvaluation D Sc i a ha n ∈ Supercategory.parity (R := k) _ _ 0 :=
-  (mem_parity_iff).mpr (heightCornerPairing_mem D Sc i a ha n)
-
 /-- The even colour-cut idempotent in the induction bimodule. -/
 def heightInductionCornerIdempotent : (P).toSVec :=
   ⟨φ 1, by change φ 1 * φ 1 = φ 1; rw [← map_mul, mul_one]⟩
@@ -119,82 +74,6 @@ theorem heightInductionCornerIdempotent_mem :
     heightInductionCornerIdempotent D Sc i a ha n ∈ (P).toSVec.part 0 :=
   (heightInductionCorner_mem_part_iff D Sc i a ha n).mpr
     (heightAppend_parity D Sc a ha i n (SetLike.one_mem_graded GA))
-
-/-- The linear coevaluation `a ↦ φ(a) ⊗ e`. -/
-def heightCornerUnitLinear : A →ₗ[k] (tensor Q P).toSVec where
-  toFun r := btmul Q P (heightRestrictionCornerOf D Sc i a ha n r)
-    (heightInductionCornerIdempotent D Sc i a ha n)
-  map_add' r s := by rw [map_add, btmul_add_left]
-  map_smul' c r := by rw [map_smul, btmul_smul_left]; rfl
-
-@[simp] theorem heightCornerUnitLinear_apply (r : A) :
-    heightCornerUnitLinear D Sc i a ha n r = btmul Q P (heightRestrictionCornerOf D Sc i a ha n r)
-      (heightInductionCornerIdempotent D Sc i a ha n) := rfl
-
-theorem heightCornerUnitLinear_lact (r s : A) :
-    heightCornerUnitLinear D Sc i a ha n (r * s) =
-      (tensor Q P).lact r (heightCornerUnitLinear D Sc i a ha n s) := by
-  rw [heightCornerUnitLinear_apply, heightCornerUnitLinear_apply, lact_btmul]
-  congr 1
-  apply Subtype.ext
-  exact map_mul φ r s
-
-theorem heightCornerUnitLinear_ract (r s : A) :
-    heightCornerUnitLinear D Sc i a ha n (r * s) =
-      (tensor Q P).ract s (heightCornerUnitLinear D Sc i a ha n r) := by
-  rw [heightCornerUnitLinear_apply, heightCornerUnitLinear_apply, ract_btmul]
-  have hm : heightRestrictionCornerOf D Sc i a ha n (r * s) =
-      (Q).ract (φ s) (heightRestrictionCornerOf D Sc i a ha n r) :=
-    Subtype.ext (map_mul φ r s)
-  rw [hm, btmul_ract_lact]
-  congr 1
-  apply Subtype.ext
-  change φ s * φ 1 = φ 1 * φ s
-  rw [← map_mul, ← map_mul, mul_one, one_mul]
-
-theorem heightCornerUnit_mem :
-    SVec.ofHom (heightCornerUnitLinear D Sc i a ha n) ∈
-      SVec.parityHom (regular GA).toSVec (tensor Q P).toSVec 0 := by
-  apply SVec.mem_parityHom_of_apply_mem
-  intro p r hr
-  apply btmul_mem_part
-  · apply (heightRestrictionCorner_mem_part_iff D Sc i a ha n).mpr
-    exact heightAppend_parity D Sc a ha i n ((mem_regularSVec_part_iff GA).mp hr)
-  · exact heightInductionCornerIdempotent_mem D Sc i a ha n
-
-/-- The even coevaluation `A → e B ⊗_B B e`. -/
-def heightCornerCoevaluation : regular GA ⟶ tensor Q P :=
-  ⟨SVec.ofHom (heightCornerUnitLinear D Sc i a ha n), by
-    apply (isHom_iff_of_mem (heightCornerUnit_mem D Sc i a ha n)).mpr
-    constructor
-    · intro p r _
-      simp only [mul_zero, Supercategory.sign_zero, one_smul]
-      apply SVec.hom_ext
-      intro s
-      exact heightCornerUnitLinear_lact D Sc i a ha n r s
-    · intro r
-      apply SVec.hom_ext
-      intro s
-      exact heightCornerUnitLinear_ract D Sc i a ha n s r⟩
-
-theorem heightCornerCoevaluation_mem :
-    heightCornerCoevaluation D Sc i a ha n ∈ Supercategory.parity (R := k) _ _ 0 :=
-  (mem_parity_iff).mpr (heightCornerUnit_mem D Sc i a ha n)
-
-/-- The first elementary triangular identity for the corner pairing. -/
-@[simp] theorem heightCornerPairing_right_unit (x : (P).toSVec) :
-    heightCornerPairingLinear D Sc i a ha n
-      (btmul P Q x (heightRestrictionCornerOf D Sc i a ha n 1)) = x.1 := by
-  rw [heightCornerPairingLinear_btmul]
-  exact x.2
-
-/-- The second elementary triangular identity for the corner pairing. -/
-@[simp] theorem heightCornerPairing_left_unit (y : (Q).toSVec) :
-    heightCornerPairingLinear D Sc i a ha n
-      (btmul P Q (heightInductionCornerIdempotent D Sc i a ha n) y) = y.1 := by
-  rw [heightCornerPairingLinear_btmul]
-  exact y.2
-
 
 /-! ### From `SuperAdjunctionUnit` -/
 local notation "ep" => heightInductionCornerIdempotent D Sc i a ha n
@@ -289,7 +168,6 @@ def heightSuperUnit : 𝟭 (HeightModules D Sc a ha n) ⟶
       exact heightSuperUnitComponent_naturality_of_mem D Sc i a ha n g hg
     · intro f g hf hg
       simp only [whiskerLeft_add, Preadditive.add_comp, Preadditive.comp_add, hf, hg]
-
 
 /-! ### From `SuperAdjunctionCounit` -/
 section Counit
@@ -490,7 +368,6 @@ def heightSuperCounit :
 
 end Counit
 
-
 /-! ### From `SuperAdjunction` -/
 
 theorem heightSuperInduction_triangle (M : HeightModules D Sc a ha n) :
@@ -532,39 +409,6 @@ theorem heightSuperRestriction_triangle (M : HeightModules D Sc a ha (n + 1)) :
   congr 1
   apply Subtype.ext
   exact y.2
-
-/-- Induction is left adjoint to restriction on the actual supermodule categories. -/
-def heightSuperIndResAdjunction : F ⊣ E where
-  unit := heightSuperUnit D Sc i a ha n
-  counit := heightSuperCounit D Sc i a ha n
-  left_triangle_components := heightSuperInduction_triangle D Sc i a ha n
-  right_triangle_components := heightSuperRestriction_triangle D Sc i a ha n
-
-/-- The adjunction bijection preserves the parity of a homogeneous morphism. -/
-theorem heightSuperAdjunction_homEquiv_mem
-    {M : HeightModules D Sc a ha n}
-    {N : HeightModules D Sc a ha (n + 1)} {p : ZMod 2}
-    {f : (F).obj M ⟶ N} (hf : f ∈ Supercategory.parity (R := k) _ _ p) :
-    (heightSuperIndResAdjunction D Sc i a ha n).homEquiv M N f ∈
-      Supercategory.parity (R := k) _ _ p := by
-  rw [Adjunction.homEquiv_unit]
-  change heightSuperUnitComponent D Sc i a ha n M ≫ whiskerLeft Q f ∈
-    Supercategory.parity (R := k) _ _ p
-  simpa only [zero_add] using Supercategory.comp_mem
-    (heightSuperUnitComponent_mem D Sc i a ha n M) (whiskerLeft_mem Q f hf)
-
-/-- The inverse adjunction bijection also preserves parity. -/
-theorem heightSuperAdjunction_homEquiv_symm_mem
-    {M : HeightModules D Sc a ha n}
-    {N : HeightModules D Sc a ha (n + 1)} {p : ZMod 2}
-    {f : M ⟶ (E).obj N} (hf : f ∈ Supercategory.parity (R := k) _ _ p) :
-    ((heightSuperIndResAdjunction D Sc i a ha n).homEquiv M N).symm f ∈
-      Supercategory.parity (R := k) _ _ p := by
-  rw [Adjunction.homEquiv_counit]
-  change whiskerLeft P f ≫ heightSuperCounitComponent D Sc i a ha n N ∈
-    Supercategory.parity (R := k) _ _ p
-  simpa only [add_zero] using Supercategory.comp_mem
-    (whiskerLeft_mem P f hf) (heightSuperCounitComponent_mem D Sc i a ha n N)
 
 /-! ### Content blocks at every height -/
 

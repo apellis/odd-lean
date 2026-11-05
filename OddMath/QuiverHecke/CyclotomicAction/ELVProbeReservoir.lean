@@ -37,18 +37,9 @@ def elvProbeReservoir : ProbeReservoir k (PiSCat.{u,u,u + 1} k) D Sc where
   ΛP := ΛP
   ΛR := ΛR
 
-theorem elvProbeReservoir_T :
-    (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).T =
-      probeOldRouquierFamily D Sc' m ΛP hP := rfl
-
 theorem elvProbeReservoir_W :
     (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).W =
       elvRouquierFamily D Sc' cutoff bound ΛR hR := rfl
-
-/-- The normalized shifted probe adjunctions are the existing family construction. -/
-theorem elvProbeReservoir_leftAdj :
-    (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).leftAdj =
-      (probeOldRouquierFamily D Sc' m ΛP hP).leftAdjoints := rfl
 
 /-- The whole chosen probe dot is a unit, as required by the mixed denominators. -/
 theorem elvProbeReservoir_dot_isUnit [Fintype I] (i : I) {x y : X} (h : x + D.α i = y) :

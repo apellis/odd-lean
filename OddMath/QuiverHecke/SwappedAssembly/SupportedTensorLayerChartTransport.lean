@@ -82,17 +82,6 @@ theorem exists_eqToHom_homShiftConjugationIso (F : C ⥤ C') [F.Additive] [F.Lin
   rw [F.map_id, Category.comp_id]
   rfl
 
-/-- The same transport with every instance argument read off from the goal
-rather than synthesized. -/
-theorem exists_eqToHom_homShiftConjugationIso_of {k : Type r} {_ : CommRing k} {C : Type u'}
-    {_ : Category.{v'} C} {_ : Preadditive C} {_ : Linear k C} {_ : Supercategory k C}
-    {_ : PiSupercategory k C} {C' : Type u'} {_ : Category.{v'} C'} {_ : Preadditive C'}
-    {_ : Linear k C'} {_ : Supercategory k C'} {_ : PiSupercategory k C'}
-    {F : C ⥤ C'} {_ : F.Additive} {_ : F.Linear k} {_ : IsSuperfunctor k F}
-    {p : ZMod 2} (hp : p = 0) {Z : C} :
-    ∃ h, (homShiftConjugationIso (k := k) F p Z).hom = eqToHom h :=
-  exists_eqToHom_homShiftConjugationIso F p hp Z
-
 end Shift
 
 theorem homContentShift_zero {I X : Type*} [AddCommGroup X] (D : Datum I X) (i : I) :
@@ -100,22 +89,6 @@ theorem homContentShift_zero {I X : Type*} [AddCommGroup X] (D : Datum I X) (i :
   simp only [homContentShift, map_zero, mul_zero]
 
 namespace SupportedSectors.TensorEntryPullback
-
-/-- For an equivalence given by an equality of indices, a change between
-two charts that are both equality transports is an equality transport. -/
-theorem chartChange_eqToHom {J : Type*} (C : J → Type*) [∀ j, Category (C j)]
-    {x y : J} (h : x = y) {X : C y} {A A' : C x}
-    (e : X ≅ (Pi.eqToEquivalence C h).functor.obj A)
-    (d : X ≅ (Pi.eqToEquivalence C h).functor.obj A')
-    (he : ∃ h, e.hom = eqToHom h) (hd : ∃ h, d.hom = eqToHom h) :
-    ∃ h', (chartChange (Pi.eqToEquivalence C h) e d).hom = eqToHom h' := by
-  subst h
-  obtain ⟨h₁, he'⟩ := exists_eqToHom_inv e he
-  obtain ⟨h₂, hd'⟩ := hd
-  refine ⟨h₁.trans h₂, ?_⟩
-  apply (Pi.eqToEquivalence C (rfl : x = x)).functor.map_injective
-  simp only [chartChange, Functor.preimageIso_hom, Functor.map_preimage, Iso.trans_hom,
-    Iso.symm_hom, he', hd', eqToHom_trans, eqToHom_map]
 
 /-- An equivalence whose functor pulls equality transports back to
 equality transports: Pi reindexing along an equality of indices. -/
@@ -164,26 +137,6 @@ theorem arrow_eqToHom_conj_of {X Y : C₂} {A B A' B' : C₁}
   rw [← Category.assoc, ← sq, Category.assoc, eqToHom_trans, eqToHom_refl, Category.comp_id]
 
 end General
-
-/-- Two pulled-back arrows of the same whole-Hom map, in two pairs of charts
-that are all equality transports, agree up to equality transport. -/
-theorem arrow_eqToHom_conj {J : Type*} (C : J → Type*) [∀ j, Category (C j)]
-    {x y : J} (h : x = y) {X Y : C y} {A B A' B' : C x}
-    (e : X ≅ (Pi.eqToEquivalence C h).functor.obj A)
-    (d : Y ≅ (Pi.eqToEquivalence C h).functor.obj B)
-    (e' : X ≅ (Pi.eqToEquivalence C h).functor.obj A')
-    (d' : Y ≅ (Pi.eqToEquivalence C h).functor.obj B')
-    (he : ∃ h, e.hom = eqToHom h) (hd : ∃ h, d.hom = eqToHom h)
-    (he' : ∃ h, e'.hom = eqToHom h) (hd' : ∃ h, d'.hom = eqToHom h) (m : X ⟶ Y) :
-    ∃ (hA : A = A') (hB : B = B'),
-      arrow (Pi.eqToEquivalence C h) e d m =
-        eqToHom hA ≫ arrow (Pi.eqToEquivalence C h) e' d' m ≫ eqToHom hB.symm := by
-  obtain ⟨hA, hcA⟩ := chartChange_eqToHom C h e e' he he'
-  obtain ⟨hB, hcB⟩ := chartChange_eqToHom C h d d' hd hd'
-  refine ⟨hA, hB, ?_⟩
-  have sq := arrow_chartChange (Pi.eqToEquivalence C h) e d e' d' m
-  rw [hcA, hcB] at sq
-  rw [← Category.assoc, ← sq, Category.assoc, eqToHom_trans, eqToHom_refl, Category.comp_id]
 
 end SupportedSectors.TensorEntryPullback
 
@@ -283,24 +236,6 @@ theorem tensorLayerDotIso_hom_eqToHom :
     | apply exists_eqToHom_map
     | apply exists_eqToHom_whiskerRight
     | apply ProbeReservoir.reservoirWordFunctorIso_hom_app_eqToHom
-
-/-- Any equality-transport chart and the local dot chart differ by an
-equality transport in the original whole-Hom category. -/
-theorem tensorLayerDot_chartChange_eqToHom
-    {G : probeOldWeightSpace D (parameterTwist D Sc) m ΛP (-ΛP) ⟶
-      elvWeightSpace D (parameterTwist D Sc) cutoff N ΛR (ReservoirWord.weight D ΛR cL)}
-    (g : ((P).pathFunctor (SPath.append (SPath.append pL
-        (SPath.cons (Col.mk (up i) (SKM.wt D ν v)) false (0,c) hv (SPath.nil _))) pR)).obj
-          (ObjectProperty.FullSubcategory.obj (tensorVacuum D Sc m cutoff L ΛP ΛR)) ≅
-      (tensorHomEquivalence D Sc m cutoff L ΛP ΛR (ReservoirWord.weight D ΛR cL)).functor.obj G)
-    (hg : ∃ h, g.hom = eqToHom h) :
-    ∃ h, (TensorEntryPullback.chartChange
-      (tensorHomEquivalence D Sc m cutoff L ΛP ΛR (ReservoirWord.weight D ΛR cL)) g
-      (tensorLayerDotIso D Sc m cutoff L ΛP ΛR hP hR ν u v i hv pL hl pR hr)).hom =
-        eqToHom h := by
-  exact TensorEntryPullback.chartChange_eqToHom_of _
-    (tensorHomEquivalence_preimage_eqToHom D Sc m cutoff ΛP ΛR L _) g _ hg
-    (tensorLayerDotIso_hom_eqToHom D Sc m cutoff ΛP ΛR L hP hR ν u v i hv pL hl pR hr)
 
 /-- **Dot layer coherence.** In every global chart that is an equality
 transport, the pulled-back literal dot layer of the full chosen action is the

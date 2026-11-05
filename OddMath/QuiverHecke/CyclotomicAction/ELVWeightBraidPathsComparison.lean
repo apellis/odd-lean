@@ -53,11 +53,6 @@ local notation "b₀" => elvWeightPrefixCross D Sc cutoff bound i j l Λ hal hlj
 local notation "b₁" => elvWeightSuffixCross D Sc cutoff bound i l j Λ haj hjl hd₁ hji hd₃
 local notation "b₂" => elvWeightPrefixCross D Sc cutoff bound l i j Λ haj hji hai hij hd₃
 
-/-- The path beginning with the prescribed suffix crossing. -/
-abbrev elvWeightBraidLeftPath := a₀ ≫ a₁ ≫ a₂
-/-- The path beginning with the prescribed prefix crossing. -/
-abbrev elvWeightBraidRightPath := b₀ ≫ b₁ ≫ b₂
-
 variable (β : WeightBlocks D Λ a)
 local notation "βl" => blockSucc D Λ l hal β
 local notation "βi" => blockSucc D Λ i hai β

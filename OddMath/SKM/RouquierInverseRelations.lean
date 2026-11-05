@@ -69,16 +69,8 @@ theorem cupN_of_nonneg (hh : 0 ≤ h) (n : ℕ) : L.cupN n = (L.invPos hh).g' n 
   rw [cupN, dite_eq_left hh]
 
 omit [TwoSupercategory k B] in
-theorem cupN_of_neg (hh : h < 0) (n : ℕ) : L.cupN n = 0 := by
-  rw [cupN, dite_eq_right (not_le.mpr hh)]
-
-omit [TwoSupercategory k B] in
 theorem capN_of_nonpos (hh : h ≤ 0) (n : ℕ) : L.capN n = (L.invNeg hh).g' n := by
   rw [capN, dite_eq_left hh]
-
-omit [TwoSupercategory k B] in
-theorem capN_of_pos (hh : 0 < h) (n : ℕ) : L.capN n = 0 := by
-  rw [capN, dite_eq_right (not_le.mpr hh)]
 
 omit [TwoSupercategory k B] in
 /-- Brundan (3.3): for `h > 0` the leftward cup is the last dotted inverse cup. -/
@@ -97,18 +89,6 @@ theorem capL_of_neg (hh : h < 0) : L.capL = L.capN (-h - 1).toNat := by
 omit [TwoSupercategory k B] in
 theorem capL_of_nonneg (hh : 0 ≤ h) : L.capL = -(L.sigL ≫ L.capD h.toNat) := by
   rw [capL, ite_eq_right (not_lt.mpr hh)]
-
-omit [TwoSupercategory k B] in
-theorem ccw_of_nonneg {k : ℤ} (hk : 0 ≤ k) : L.ccw k = L.cupL ≫ L.capD k.toNat := by
-  rw [ccw, ite_eq_left hk]
-
-omit [TwoSupercategory k B] in
-theorem ccw_of_neg_of_lt {k : ℤ} (hk : k < 0) (hk' : k < h - 1) : L.ccw k = 0 := by
-  rw [ccw, ite_eq_right (not_le.mpr hk), ite_eq_right (by omega), ite_eq_right (by omega)]
-
-omit [TwoSupercategory k B] in
-theorem cw_of_nonneg {k : ℤ} (hk : 0 ≤ k) : L.cw k = L.cupD k.toNat ≫ L.capL := by
-  rw [cw, ite_eq_left hk]
 
 omit [TwoSupercategory k B] in
 theorem cw_of_neg_of_lt {k : ℤ} (hk : k < 0) (hk' : k < -h - 1) : L.cw k = 0 := by
@@ -193,26 +173,8 @@ theorem cupD_capL (hh : h < 0) {n : ℕ} (hn : n < (-h).toNat) :
   rw [capL_of_neg hh, cupD_capN hh.le hn (by omega)]
 
 omit [TwoSupercategory k B] in
-/-- Brundan (3.6), (3.8). -/
-theorem ccw_of_lt (hh : 0 < h) {k : ℤ} (hk : k < h - 1) : L.ccw k = 0 := by
-  rcases lt_or_ge k 0 with hk0 | hk0
-  · exact ccw_of_neg_of_lt hk0 hk
-  · rw [ccw_of_nonneg hk0, cupL_capD hh (by omega), ite_eq_right (by omega)]
 
 omit [TwoSupercategory k B] in
-theorem ccw_self (hh : 0 < h) : L.ccw (h - 1) = 𝟙 _ := by
-  rw [ccw_of_nonneg (by omega), cupL_capD hh (by omega), ite_eq_left rfl]
-
-omit [TwoSupercategory k B] in
-/-- Brundan (3.7), (3.9). -/
-theorem cw_of_lt (hh : h < 0) {k : ℤ} (hk : k < -h - 1) : L.cw k = 0 := by
-  rcases lt_or_ge k 0 with hk0 | hk0
-  · exact cw_of_neg_of_lt hk0 hk
-  · rw [cw_of_nonneg hk0, cupD_capL hh (by omega), ite_eq_right (by omega)]
-
-omit [TwoSupercategory k B] in
-theorem cw_self (hh : h < 0) : L.cw (-h - 1) = 𝟙 _ := by
-  rw [cw_of_nonneg (by omega), cupD_capL hh (by omega), ite_eq_left rfl]
 
 end SuperRouquierLoc
 end OddMath.SKM

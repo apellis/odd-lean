@@ -33,17 +33,6 @@ def appendAffineEquiv (i : I) (v w : List I) :
     (appendBasis D Sc (i := i) (s := v) (t := w)).repr).trans
       (TensorProduct.finsuppScalarRight k k _ _)
 
-@[simp] theorem appendAffineEquiv_tmul (i : I) (v w : List I)
-    (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff)
-    (f : (pres D Sc).obj (ob D (v ++ [i])) ⟶ (pres D Sc).obj (ob D w))
-    (x : AppendIdx i v w) :
-    appendAffineEquiv D Sc cutoff i v w (a ⊗ₜ[k] f) x =
-      (appendBasis D Sc).repr f x • a := by
-  change TensorProduct.finsuppScalarRight k k _ _
-    ((TensorProduct.congr (LinearEquiv.refl k _) (appendBasis D Sc).repr) (a ⊗ₜ[k] f)) x = _
-  rw [TensorProduct.congr_tmul, LinearEquiv.refl_apply,
-    TensorProduct.finsuppScalarRight_apply_tmul_apply]
-
 @[simp] theorem appendAffineEquiv_symm_single {i : I} {v w : List I}
     (x : AppendIdx i v w) (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) :
     (appendAffineEquiv D Sc cutoff i v w).symm (Finsupp.single x a) =
@@ -117,6 +106,5 @@ theorem append_insert_twisted_coefficient {i : I} {v w : List I}
     rw [ht, ← TensorProduct.smul_tmul', map_smul, Linear.smul_comp,
       append_insert_coefficient D Sc cutoff x a a.property, koszulSign_smul (R := k),
       mul_comm q, sign_smul_sign_smul]
-
 
 end OddMath.QuiverHecke.ELVOld

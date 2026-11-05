@@ -50,96 +50,15 @@ def oldAppendReindexModuleHom
     (N : Superfunctor k (OldContentCategory D Sc cutoff ν₀) (SVec k)) :
     (R₁).obj (induced J N) ⟶ induced K ((R₀).obj N) := (e₁).hom.app N
 
-theorem oldAppendReindexModuleHom_mem
-    (N : Superfunctor k (OldContentCategory D Sc cutoff ν₀) (SVec k)) :
-    oldAppendReindexModuleHom D Sc cutoff q₀ i a₁ b₁ q₁ N ∈ parity (R := k) _ _ 0 :=
-  oldAppendReindexIso_hom_mem D Sc cutoff q₀ i a₁ b₁ q₁ N
-
 local notation "c₁" => oldAppendReindexModuleHom D Sc cutoff q₀ i a₁ b₁ q₁
 local notation "c₂" => oldAppendReindexModuleHom D Sc cutoff q₁ j a₂ b₂ q₂
 
-theorem oldAppendReindexModuleHom_app_zero
-    (N : Superfunctor k (OldContentCategory D Sc cutoff ν₀) (SVec k))
-    (t : OldContentCategory D Sc cutoff μ₁) :
-    (c₁ N).app 0 t = oldAppendReindexLinear D Sc cutoff q₀ i a₁ b₁ q₁ N t := by
-  let V := (R₁).obj (induced J N)
-  let W := induced K ((R₀).obj N)
-  have h := HomogeneousSuperfunctorIso.total_eq_app (F := V) (G := W) (p := 0)
-    (c₁ N) (oldAppendReindexModuleHom_mem D Sc cutoff q₀ i a₁ b₁ q₁ N) t
-  exact h.symm
-
-/-- The even module component retains the chosen single-append tensor formula. -/
-theorem oldAppendReindexModuleHom_app_zero_tensor
-    (N : Superfunctor k (OldContentCategory D Sc cutoff ν₀) (SVec k))
-    (s : OldContentCategory D Sc cutoff ν₀) (t : OldContentCategory D Sc cutoff μ₁)
-    (a : (J).obj s ⟶ (oldContentReindex D Sc cutoff q₁.symm).obj t) (b : N.obj s) :
-    (c₁ N).app 0 t
-        (tensor J N.toFunctor (w := (oldContentReindex D Sc cutoff q₁.symm).obj t) s a b) =
-      tensor K ((R₀).obj N).toFunctor (w := t)
-        ((oldContentReindex D Sc cutoff q₀).obj s) a b := by
-  have h := congrArg
-    (fun f : Obj J N.toFunctor ((oldContentReindex D Sc cutoff q₁.symm).obj t) →ₗ[k]
-        Obj K ((R₀).obj N).toFunctor t =>
-      f (tensor J N.toFunctor (w := (oldContentReindex D Sc cutoff q₁.symm).obj t) s a b))
-    (oldAppendReindexModuleHom_app_zero D Sc cutoff q₀ i a₁ b₁ q₁ N t)
-  exact h.trans (oldAppendReindexIso_hom_tensor D Sc cutoff q₀ i a₁ b₁ q₁ N s t a b)
-
-/-- Insert an inner tensor into the upper coend, with its raw domain specified. -/
-def oldAppendReindexOuterTensorLinear
-    (N : Superfunctor k (OldContentCategory D Sc cutoff ν₀) (SVec k))
-    (t : OldContentCategory D Sc cutoff μ₁) (w : OldContentCategory D Sc cutoff μ₂)
-    (g : (M).obj t ⟶ w) :
-    Obj K ((R₀).obj N).toFunctor t →ₗ[k] Obj M (induced K ((R₀).obj N)).toFunctor w :=
-  inclusion M (induced K ((R₀).obj N)).toFunctor w t ∘ₗ TensorProduct.mk k _ _ g
-
 attribute [local irreducible] oldAppendReindexLinear oldAppendReindexModuleHom oldAppendReindexIso
-
-theorem oldAppendReindexLinear_outer_tensor
-    (N : Superfunctor k (OldContentCategory D Sc cutoff ν₀) (SVec k))
-    (s : OldContentCategory D Sc cutoff ν₀) (t : OldContentCategory D Sc cutoff ν₁)
-    (w : OldContentCategory D Sc cutoff μ₂) (a : (J).obj s ⟶ t)
-    (g : (M).obj ((oldContentReindex D Sc cutoff q₁).obj t) ⟶ w) (b : N.obj s) :
-    tensor M (induced K ((R₀).obj N)).toFunctor (w := w)
-        ((oldContentReindex D Sc cutoff q₁).obj t) g
-        (oldAppendReindexLinear D Sc cutoff q₀ i a₁ b₁ q₁ N
-          ((oldContentReindex D Sc cutoff q₁).obj t)
-          (tensor J N.toFunctor (w := t) s a b)) =
-      tensor M (induced K ((R₀).obj N)).toFunctor (w := w)
-        ((oldContentReindex D Sc cutoff q₁).obj t) g
-        (tensor K ((R₀).obj N).toFunctor (w := (oldContentReindex D Sc cutoff q₁).obj t)
-          ((oldContentReindex D Sc cutoff q₀).obj s) a b) := by
-  have h := oldAppendReindexIso_hom_tensor D Sc cutoff q₀ i a₁ b₁ q₁ N s
-    ((oldContentReindex D Sc cutoff q₁).obj t) a b
-  let f : Obj K ((R₀).obj N).toFunctor ((oldContentReindex D Sc cutoff q₁).obj t) →
-      Obj M (induced K ((R₀).obj N)).toFunctor w :=
-    oldAppendReindexOuterTensorLinear D Sc cutoff q₀ i j b₁ b₂ N
-      ((oldContentReindex D Sc cutoff q₁).obj t) w g
-  have he : f (oldAppendReindexLinear D Sc cutoff q₀ i a₁ b₁ q₁ N
-        ((oldContentReindex D Sc cutoff q₁).obj t)
-        (tensor J N.toFunctor (w := t) s a b)) =
-      f (tensor K ((R₀).obj N).toFunctor (w := (oldContentReindex D Sc cutoff q₁).obj t)
-        ((oldContentReindex D Sc cutoff q₀).obj s) a b) := congrArg f h
-  exact he
 
 /-- Compose the chosen upper and lower adjunction comparisons, without a new gauge. -/
 def oldAppendPairReindexIso :
     (induction J ⋙ induction L) ⋙ R₂ ≅ R₀ ⋙ (induction K ⋙ induction M) :=
   Functor.isoWhiskerLeft (induction J) e₂ ≪≫ Functor.isoWhiskerRight e₁ (induction M)
-
-theorem oldAppendPairReindexIso_hom
-    (N : Superfunctor k (OldContentCategory D Sc cutoff ν₀) (SVec k)) :
-    (oldAppendPairReindexIso D Sc cutoff q₀ i j a₁ b₁ q₁ a₂ b₂ q₂).hom.app N =
-      c₂ (induced J N) ≫ moduleMap M (c₁ N) := by
-  unfold oldAppendReindexModuleHom
-  rfl
-
-theorem oldAppendPairReindexIso_hom_mem
-    (N : Superfunctor k (OldContentCategory D Sc cutoff ν₀) (SVec k)) :
-    (oldAppendPairReindexIso D Sc cutoff q₀ i j a₁ b₁ q₁ a₂ b₂ q₂).hom.app N ∈
-      parity (R := k) _ _ 0 := by
-  rw [oldAppendPairReindexIso_hom]
-  exact comp_mem (oldAppendReindexModuleHom_mem D Sc cutoff q₁ j a₂ b₂ q₂ (induced J N))
-    (map_mem (induction M) (oldAppendReindexModuleHom_mem D Sc cutoff q₀ i a₁ b₁ q₁ N))
 
 /-- Fix both nested coend carriers before evaluating the pair comparison. -/
 def oldAppendPairReindexLinear
@@ -148,43 +67,6 @@ def oldAppendPairReindexLinear
     Obj L (induced J N).toFunctor ((oldContentReindex D Sc cutoff q₂.symm).obj w) →ₗ[k]
       Obj M (induced K ((R₀).obj N)).toFunctor w :=
   ((oldAppendPairReindexIso D Sc cutoff q₀ i j a₁ b₁ q₁ a₂ b₂ q₂).hom.app N).total w
-
-theorem oldAppendPairReindexLinear_comp
-    (N : Superfunctor k (OldContentCategory D Sc cutoff ν₀) (SVec k))
-    (w : OldContentCategory D Sc cutoff μ₂) :
-    oldAppendPairReindexLinear D Sc cutoff q₀ i j a₁ b₁ q₁ a₂ b₂ q₂ N w =
-      mapComponent M (c₁ N) 0 w ∘ₗ
-        oldAppendReindexLinear D Sc cutoff q₁ j a₂ b₂ q₂ (induced J N) w := by
-  unfold oldAppendPairReindexLinear
-  rw [oldAppendPairReindexIso_hom, Superfunctor.comp_total,
-    moduleMap_total_even M (c₁ N)
-      (oldAppendReindexModuleHom_mem D Sc cutoff q₀ i a₁ b₁ q₁ N) w]
-  unfold oldAppendReindexLinear oldAppendReindexModuleHom
-  rfl
-
-/-- Both coefficient arrows and the vector survive the chosen pair comparison. -/
-theorem oldAppendPairReindexIso_hom_tensor
-    (N : Superfunctor k (OldContentCategory D Sc cutoff ν₀) (SVec k))
-    (s : OldContentCategory D Sc cutoff ν₀) (t : OldContentCategory D Sc cutoff ν₁)
-    (w : OldContentCategory D Sc cutoff μ₂)
-    (a : (J).obj s ⟶ t)
-    (g : (L).obj t ⟶ (oldContentReindex D Sc cutoff q₂.symm).obj w) (b : N.obj s) :
-    oldAppendPairReindexLinear D Sc cutoff q₀ i j a₁ b₁ q₁ a₂ b₂ q₂ N w
-        (tensor L (induced J N).toFunctor
-          (w := (oldContentReindex D Sc cutoff q₂.symm).obj w) t g
-          (tensor J N.toFunctor (w := t) s a b)) =
-      tensor M (induced K ((R₀).obj N)).toFunctor (w := w)
-        ((oldContentReindex D Sc cutoff q₁).obj t) g
-        (tensor K ((R₀).obj N).toFunctor
-          (w := (oldContentReindex D Sc cutoff q₁).obj t)
-          ((oldContentReindex D Sc cutoff q₀).obj s) a b) := by
-  rw [oldAppendPairReindexLinear_comp, LinearMap.comp_apply,
-    oldAppendReindexIso_hom_tensor D Sc cutoff q₁ j a₂ b₂ q₂ (induced J N) t w]
-  rw [mapComponent_tensor M (c₁ N) 0 w
-    ((oldContentReindex D Sc cutoff q₁).obj t) g (tensor J N.toFunctor (w := t) s a b), twist_zero]
-  rw [oldAppendReindexModuleHom_app_zero D Sc cutoff q₀ i a₁ b₁ q₁ N
-    ((oldContentReindex D Sc cutoff q₁).obj t)]
-  exact oldAppendReindexLinear_outer_tensor D Sc cutoff q₀ i j a₁ b₁ q₁ b₂ N s t w a g b
 
 end OddMath.QuiverHecke
 
@@ -213,23 +95,5 @@ def probeAppendPairReindexIso :
       intro N N' f
       apply InducedCategory.hom_ext
       exact (e).hom.naturality f.hom)
-
-theorem probeAppendPairReindexIso_hom_native (N : ProbeEvaluatedModules D Sc m ν₀) :
-    ((probeAppendPairReindexIso D Sc m q₀ i j a₁ b₁ q₁ a₂ b₂ q₂).hom.app N).hom =
-      (e).hom.app N.obj := rfl
-
-theorem probeAppendPairReindexIso_inv_native (N : ProbeEvaluatedModules D Sc m ν₀) :
-    ((probeAppendPairReindexIso D Sc m q₀ i j a₁ b₁ q₁ a₂ b₂ q₂).inv.app N).hom =
-      (e).inv.app N.obj := rfl
-
-theorem probeAppendPairReindexIso_hom_mem (N : ProbeEvaluatedModules D Sc m ν₀) :
-    (probeAppendPairReindexIso D Sc m q₀ i j a₁ b₁ q₁ a₂ b₂ q₂).hom.app N ∈
-      parity (R := k) _ _ 0 :=
-  oldAppendPairReindexIso_hom_mem D Sc cut q₀ i j a₁ b₁ q₁ a₂ b₂ q₂ N.obj
-
-theorem probeAppendPairReindexIso_hom_linear (N : ProbeEvaluatedModules D Sc m ν₀)
-    (w : OldContentCategory D Sc cut μ₂) :
-    (((probeAppendPairReindexIso D Sc m q₀ i j a₁ b₁ q₁ a₂ b₂ q₂).hom.app N).hom).total w =
-      oldAppendPairReindexLinear D Sc cut q₀ i j a₁ b₁ q₁ a₂ b₂ q₂ N.obj w := rfl
 
 end OddMath.QuiverHecke

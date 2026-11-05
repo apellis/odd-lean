@@ -47,28 +47,6 @@ theorem moduleCapRow_total (i : I)
   rw [moduleCapRow, Superfunctor.comp_total, SVec.toLinearMap_comp,
     inductionDotModule_power_total]
 
-/-- In canonical upper-Hom coordinates the actual module unit column is the prescribed ordinary column. -/
-theorem moduleUnitColumn_upper (i : I) (v t : List I) (n : ℕ)
-    (b : Old D Sc cutoff v t) :
-    OldInductionRepresentable.upperHomEquiv D Sc cutoff i
-      (⟨v⟩ : OldCategory D Sc cutoff) (⟨t⟩ : OldCategory D Sc cutoff)
-      ((moduleUnitColumn D Sc cutoff i
-        (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)) n).total
-          (⟨t⟩ : OldCategory D Sc cutoff) b) =
-      inductionUnitDotColumn D Sc cutoff i v t n b := by
-  let H := oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)
-  let e := OldInductionRepresentable.upperHomEquiv D Sc cutoff i
-    (⟨v⟩ : OldCategory D Sc cutoff) (⟨t⟩ : OldCategory D Sc cutoff)
-  have h := LinearMap.congr_fun (moduleUnitColumn_total D Sc cutoff i H ⟨t⟩ n) b
-  refine (congrArg e h).trans ?_
-  change e (((actualInductionDot D Sc cutoff i H ((append D Sc cutoff i).obj ⟨t⟩)) ^ n)
-    (((BalancedInduction.adjunction (append D Sc cutoff i)).unit.app H).total ⟨t⟩ b)) =
-    e (((actualInductionDot D Sc cutoff i H ((append D Sc cutoff i).obj ⟨t⟩)) ^ n)
-      (BalancedInduction.unit (append D Sc cutoff i) H.toFunctor ⟨t⟩ b))
-  exact congrArg (fun z => e (((actualInductionDot D Sc cutoff i H
-    ((append D Sc cutoff i).obj ⟨t⟩)) ^ n) z))
-      (adjunctionUnit_total_apply D Sc cutoff i H ⟨t⟩ b)
-
 /-- The unit entry uses precisely the canonical source parity coordinate. -/
 theorem unitMatrixEntry_some_total (i : I)
     (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
@@ -97,22 +75,6 @@ theorem capMatrixEntry_some_total (i : I)
   rw [Superfunctor.comp_total]
   exact (moduleIsoLinearEquiv
     ((SKM.homParityShiftDatum (k := k) (r.val • D.parity i)).iso M) t).apply_symm_apply _
-
-/-- The shifted unit slot is the ordinary unscaled column in canonical upper-Hom coordinates. -/
-theorem unitMatrixEntry_some_upper (i : I) (v t : List I) (m : ℕ) (r : Fin m)
-    (b : (unitMatrixFamily D Sc cutoff i
-      (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)) m (some r)).obj
-        (⟨t⟩ : OldCategory D Sc cutoff)) :
-    OldInductionRepresentable.upperHomEquiv D Sc cutoff i
-      (⟨v⟩ : OldCategory D Sc cutoff) (⟨t⟩ : OldCategory D Sc cutoff)
-      ((unitMatrixEntry D Sc cutoff i
-        (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)) m (some r)).total
-          (⟨t⟩ : OldCategory D Sc cutoff) b) =
-      inductionUnitDotColumn D Sc cutoff i v t r.val
-        (moduleIsoLinearEquiv ((SKM.homParityShiftDatum (k := k) (r.val • D.parity i)).iso
-          (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)))
-            (⟨t⟩ : OldCategory D Sc cutoff) b) := by
-  rw [unitMatrixEntry_some_total, moduleUnitColumn_upper]
 
 /-- The first source-shifted module entry before evaluating components. -/
 theorem unitMatrixEntry_none (i : I)

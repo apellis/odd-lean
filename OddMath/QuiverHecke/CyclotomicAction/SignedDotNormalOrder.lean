@@ -102,20 +102,6 @@ def sourceDotSign (t : List I) : List ℕ → ℕ → k
   | a :: σ, p => SKM.zsign k (crossDotExponent D (tgt t (cw σ)) a p) *
       sourceDotSign t σ (swapNat a p)
 
-/-- The recursively tracked input position is the inverse permutation action. -/
-theorem sourceDotPosition_eq {n : ℕ} {σ : List ℕ} (hv : ValidWord n σ)
-    (p : Fin n) : sourceDotPosition σ p = ((wordProd n σ)⁻¹ p : ℕ) := by
-  induction σ generalizing p with
-  | nil => simp [sourceDotPosition]
-  | cons a σ ih =>
-    have ha : a + 1 < n := hv a (by simp)
-    have hp : swapNat a p < n := by unfold swapNat; split_ifs <;> omega
-    rw [sourceDotPosition, ih (fun x hx => hv x (by simp [hx])) ⟨swapNat a p, hp⟩]
-    simp only [wordProd_cons, mul_inv_rev, sadj_inv, Equiv.Perm.mul_apply]
-    congr 2
-    ext
-    rw [sadj_val_of_lt ha]
-
 /-- Move a dot across an arbitrary crossing word, retaining the computed sign
 and its source-endpoint position, in any diagrammatic context. -/
 theorem dot_down_signed {t t' : List I} (P : List PG) {n : ℕ} (hn : t.length = n)

@@ -69,13 +69,6 @@ theorem actualSourceInputDot_carrier (j : {j : I // D.parity j = 1})
   simp only [actualSourceInputDot, LinearMap.comp_apply,
     LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]
 
-theorem parityIso_total_apply
-    (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
-    (t : OldCategory D Sc cutoff) (b : M.obj t) :
-    (supermoduleParityIso M).hom.total t b = b := by
-  change (0 : M.obj t) + b = b
-  exact zero_add b
-
 /-- The coefficient module comparison is identity on every underlying vector. -/
 theorem inducedCoefficientForward_total_tensor (i : I) (v s t : List I)
     (g : Old D Sc cutoff (s ++ [i]) t) (b : Old D Sc cutoff v (s ++ [i])) :
@@ -179,7 +172,6 @@ private theorem induced_sgn_tensor
   rw [twist_apply, sign_one, neg_one_smul, ← sub_eq_add_neg]
   simp only [BalancedInduction.tensor, TensorProduct.sub_tmul, TensorProduct.tmul_sub, map_sub]
   abel
-
 
 /-- Actual grading on coefficient(1) contributes the shift minus, including
 the entire old coefficient and the kernel-arrow parity. -/

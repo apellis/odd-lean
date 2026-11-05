@@ -64,18 +64,6 @@ def matrixEmbeddingIso (M N : Mat_ C) (e : N.ι ↪ M.ι)
       simp only [Limits.comp_zero, Limits.zero_comp]
     · simp
 
-@[simp] theorem matrixEmbeddingIso_hom_apply (M N : Mat_ C) (e : N.ι ↪ M.ι)
-    (E : ∀ j, M.X (e j) ≅ N.X j)
-    (hzero : ∀ i, (∀ j, e j ≠ i) → Limits.IsZero (M.X i)) (i j) :
-    (matrixEmbeddingIso M N e E hzero).hom i j =
-      famId M.X i (e j) ≫ (E j).hom := rfl
-
-@[simp] theorem matrixEmbeddingIso_inv_apply (M N : Mat_ C) (e : N.ι ↪ M.ι)
-    (E : ∀ j, M.X (e j) ≅ N.X j)
-    (hzero : ∀ i, (∀ j, e j ≠ i) → Limits.IsZero (M.X i)) (j i) :
-    (matrixEmbeddingIso M N e E hzero).inv j i =
-      (E j).inv ≫ famId M.X (e j) i := rfl
-
 /-- In the inserted coordinates every entry of a map is its specified
 source chart, the old entry, and the inverse target chart. -/
 def matrixEmbeddingMap {M N M' N' : Mat_ C} (S : M ≅ N) (T : M' ≅ N')

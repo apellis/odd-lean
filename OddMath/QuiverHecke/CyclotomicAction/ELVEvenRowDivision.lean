@@ -74,10 +74,4 @@ def evenBoundaryRowDivisionEquiv (p : ZMod 2) (i : I) (hi : D.parity i = 0)
     (offDiagonalBoundary_even_above D Sc cutoff p i hi v t)
     (offDiagonalBoundary_even_top D Sc cutoff p i hi v t)
 
-@[simp] theorem evenBoundaryRowDivisionEquiv_apply (p : ZMod 2) (i : I)
-    (hi : D.parity i = 0) (v t : List I)
-    (x : evenBoundaryRowHigh D Sc cutoff i v t × evenBoundaryRowWindow D Sc cutoff i v t) :
-    evenBoundaryRowDivisionEquiv D Sc cutoff p i hi v t x =
-      offDiagonalPolynomialBoundary D Sc cutoff p i v t x.1 + x.2 := rfl
-
 end OddMath.QuiverHecke.ELVOld

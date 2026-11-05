@@ -55,14 +55,6 @@ theorem contentPairComparisonTo_hom :
   simp only [Category.id_comp]
   rfl
 
-theorem contentPairComparisonTo_inv :
-    (contentInductionCompTo D Sc cutoff bound β [i] δ hδ [j] γ hγ h).inv =
-      (contentEPairToComparison D Sc cutoff bound β i j γ h).inv ≫
-        eqToHom (contentPairInductionTo_eq D Sc cutoff bound β i j δ γ hδ hγ h).symm := by
-  subst δ
-  change _ = _ ≫ 𝟙 _
-  simp only [Category.comp_id]
-  rfl
 end Content
 
 section Weight
@@ -90,18 +82,6 @@ theorem elvBlockPairComparison_hom (β : WeightBlocks D Λ x₀) :
           (blockSucc₂ D i j Λ h₁ h₂ β).1
           (elvBlockPair_content_eq D i j Λ h₁ h₂ β)).hom :=
   contentPairComparisonTo_hom D Sc cutoff bound β.1 j i
-    (blockSucc D Λ j h₁ β).1 (blockSucc₂ D i j Λ h₁ h₂ β).1
-    (elvBlockSucc_content_eq D j Λ h₁ β)
-    (elvBlockSucc_content_eq D i Λ h₂ (blockSucc D Λ j h₁ β))
-    (elvBlockPair_content_eq D i j Λ h₁ h₂ β)
-
-theorem elvBlockPairComparison_inv (β : WeightBlocks D Λ x₀) :
-    (elvBlockPairComparison D Sc cutoff bound i j Λ h₁ h₂ β).inv =
-      (contentEPairToComparison D Sc cutoff bound β.1 j i
-          (blockSucc₂ D i j Λ h₁ h₂ β).1
-          (elvBlockPair_content_eq D i j Λ h₁ h₂ β)).inv ≫
-        eqToHom (elvBlockPairCanonical_eq D Sc cutoff bound i j Λ h₁ h₂ β).symm :=
-  contentPairComparisonTo_inv D Sc cutoff bound β.1 j i
     (blockSucc D Λ j h₁ β).1 (blockSucc₂ D i j Λ h₁ h₂ β).1
     (elvBlockSucc_content_eq D j Λ h₁ β)
     (elvBlockSucc_content_eq D i Λ h₂ (blockSucc D Λ j h₁ β))

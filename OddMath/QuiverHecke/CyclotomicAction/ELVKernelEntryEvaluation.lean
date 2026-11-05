@@ -78,54 +78,6 @@ def moduleSourceEvaluation :
         ((BalancedInduction.restriction (append D Sc cutoff i)).obj M)).obj t :=
   IndResKernel.evaluate (append D Sc cutoff i) M.toFunctor v t m
 
-/-- The two ordinary quotient evaluations with a fixed input vector. -/
-def kernelMateEvaluation :
-    IndResKernel.Component (k := k) (append D Sc cutoff i) v t →ₗ[k]
-      BalancedInduction.Obj (append D Sc cutoff i) M.toFunctor
-        ((append D Sc cutoff i).obj t) :=
-  (BalancedInduction.coefficientEvaluation (append D Sc cutoff i) M.toFunctor
-    v ((append D Sc cutoff i).obj t) m).comp (actualMateKernelComponent D Sc cutoff i v t)
-
-def moduleMateEvaluation :
-    IndResKernel.Component (k := k) (append D Sc cutoff i) v t →ₗ[k]
-      BalancedInduction.Obj (append D Sc cutoff i) M.toFunctor
-        ((append D Sc cutoff i).obj t) :=
-  (SVec.toLinearMap ((matrixMateComponent D Sc cutoff i M).total t)).comp
-    (moduleSourceEvaluation D Sc cutoff i M v t m)
-
-@[simp] theorem kernelMateEvaluation_tensor (s : OldCategory D Sc cutoff)
-    (g : (append D Sc cutoff i).obj s ⟶ t)
-    (b : v ⟶ (append D Sc cutoff i).obj s) :
-    kernelMateEvaluation D Sc cutoff i M v t m
-      (BalancedInduction.tensor (append D Sc cutoff i)
-        ((append D Sc cutoff i) ⋙ IndResKernel.homModule (k := k) v) s g b) =
-      BalancedInduction.tensor (append D Sc cutoff i) M.toFunctor v
-        (actualMateKernelComponent D Sc cutoff i v t
-          (BalancedInduction.tensor (append D Sc cutoff i)
-            ((append D Sc cutoff i) ⋙ IndResKernel.homModule (k := k) v) s g b)) m := rfl
-
-@[simp] theorem moduleMateEvaluation_tensor (s : OldCategory D Sc cutoff)
-    (g : (append D Sc cutoff i).obj s ⟶ t)
-    (b : v ⟶ (append D Sc cutoff i).obj s) :
-    moduleMateEvaluation D Sc cutoff i M v t m
-      (BalancedInduction.tensor (append D Sc cutoff i)
-        ((append D Sc cutoff i) ⋙ IndResKernel.homModule (k := k) v) s g b) =
-      (matrixMateComponent D Sc cutoff i M).total t
-        (BalancedInduction.tensor (append D Sc cutoff i)
-          ((BalancedInduction.restriction (append D Sc cutoff i)).obj M).toFunctor
-          s g (M.map b m)) := by
-  exact congrArg ((matrixMateComponent D Sc cutoff i M).total t)
-    (IndResKernel.evaluate_tensor (append D Sc cutoff i) M.toFunctor v t m s g b)
-
-/-- The same identity on every coefficient of the balanced source. -/
-theorem actualMateKernel_evaluate :
-    kernelMateEvaluation D Sc cutoff i M v t m = moduleMateEvaluation D Sc cutoff i M v t m := by
-  apply BalancedInduction.hom_ext
-  intro s g b
-  change v ⟶ (append D Sc cutoff i).obj s at b
-  rw [kernelMateEvaluation_tensor, moduleMateEvaluation_tensor]
-  exact actualMateKernel_evaluate_tensor D Sc cutoff i M v t m s g b
-
 /-- Evaluation intertwines the actual kernel dot with the actual module dot. -/
 theorem actualDotKernel_evaluate :
     (IndResKernel.evaluate (append D Sc cutoff i) M.toFunctor v t m).comp

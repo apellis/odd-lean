@@ -123,12 +123,4 @@ theorem targetRightDot_sq_sub_coefficient_injective (c : CyclotomicAlgebra D Sc 
   simp only [map_sub]
   exact sub_eq_sub_iff_sub_eq_sub.mp h
 
-/-- In particular the prescribed last-dot square is an allowed right coefficient. -/
-theorem targetRightDot_sq_sub_lastDot_sq_injective :
-    Function.Injective (fun t : T =>
-      (targetRightDot D Sc i β a ha r ^ 2) t -
-        targetRightCoefficient D Sc i β a ha r
-          (cyclotomicMk D Sc a r (affineLastDot D Sc i r) ^ 2) t) :=
-  targetRightDot_sq_sub_coefficient_injective D Sc i β a ha r _
-
 end OddMath.QuiverHecke

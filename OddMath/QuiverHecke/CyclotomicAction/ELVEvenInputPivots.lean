@@ -102,34 +102,5 @@ theorem evenInputContractionAffine_pivot (p : ZMod 2) (i : I) (hi : D.parity i =
   rw [evenInputContractionAffine_iterate_boundaryCrossCoordinates D Sc cutoff p i hi]
   exact offDiagonalBoundary_even_top D Sc cutoff p i hi v t (r + d + 1) 0 b (by omega)
 
-/-- The same recurrence on the original q quotient, before any categorical normalization. -/
-theorem evenInputContraction_iterate_boundaryCrossCoordinates (p : ZMod 2) (i : I)
-    (hi : D.parity i = 0) (v t : List I) (r d : ℕ) (b : Old D Sc cutoff v t) :
-    evenInputContraction D Sc cutoff i hi v t
-      ((evenCrossingInputDot D Sc cutoff i hi v t)^[r]
-        (q D Sc cutoff i v t (evenBoundaryCrossCoordinates D Sc cutoff p i v t (Finsupp.single d b)))) =
-      offDiagonalPolynomialBoundary D Sc cutoff p i v t (Finsupp.single (r + d + 1) b) 0 := by
-  rw [evenInputContraction_iterate_q,
-    evenInputContractionAffine_iterate_boundaryCrossCoordinates D Sc cutoff p i hi]
-
-theorem evenInputContraction_below (p : ZMod 2) (i : I) (hi : D.parity i = 0)
-    (v t : List I) (r d : ℕ) (b : Old D Sc cutoff v t)
-    (h : r + d + 1 + endpointQPDegree D cutoff i v < outputSDegree D i v) :
-    evenInputContraction D Sc cutoff i hi v t
-      ((evenCrossingInputDot D Sc cutoff i hi v t)^[r]
-        (q D Sc cutoff i v t (evenBoundaryCrossCoordinates D Sc cutoff p i v t (Finsupp.single d b)))) = 0 := by
-  rw [evenInputContraction_iterate_q]
-  exact evenInputContractionAffine_below D Sc cutoff p i hi v t r d b h
-
-theorem evenInputContraction_pivot (p : ZMod 2) (i : I) (hi : D.parity i = 0)
-    (v t : List I) (r d : ℕ) (b : Old D Sc cutoff v t)
-    (h : outputSDegree D i v = r + d + 1 + endpointQPDegree D cutoff i v) :
-    evenInputContraction D Sc cutoff i hi v t
-      ((evenCrossingInputDot D Sc cutoff i hi v t)^[r]
-        (q D Sc cutoff i v t (evenBoundaryCrossCoordinates D Sc cutoff p i v t (Finsupp.single d b)))) =
-      evenOffDiagonalBoundaryLeadingEquiv D Sc cutoff p i v t b := by
-  rw [evenInputContraction_iterate_q]
-  exact evenInputContractionAffine_pivot D Sc cutoff p i hi v t r d b h
-
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
 

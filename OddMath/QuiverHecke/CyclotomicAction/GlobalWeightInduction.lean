@@ -142,9 +142,6 @@ instance : IsSuperfunctor k (globalEFunctor D Sc a ha i Λ h) where
 def globalE : globalWeightSpace D Sc a ha Λ x ⟶ globalWeightSpace D Sc a ha Λ y :=
   ⟨globalEFunctor D Sc a ha i Λ h⟩
 
-@[simp] theorem globalE_obj (M : WeightProduct D Sc a ha Λ x) (δ : WeightBlocks D Λ y) :
-    (globalE D Sc a ha i Λ h).obj M δ = (inductionComponent D Sc a ha i Λ h δ).obj M := rfl
-
 end Weight
 
 end OddMath.QuiverHecke.CyclotomicAction

@@ -189,35 +189,6 @@ def toMackeyBoundary : MackeyBoundary σ L₁ L₀ L₀' where
   P_split := M.P_split
   A_rsmul := M.A_rsmul
 
-@[simp] theorem toMackeyBoundary_A : M.toMackeyBoundary.A = M.A := rfl
-
-@[simp] theorem toMackeyBoundary_B₁ : M.toMackeyBoundary.B₁ = M.B₁ := rfl
-
-/-- **(7) for every corrected iterate**, with the lift of `S(ρ̄) w₀` given modulo the short
-span: if `z₀ ≡ ℓ(S) mod L₁'` and `P z₀ = j(c F)`, then `Σ_j φ_(k+j) b_j = c F t^k`. -/
-theorem norm_of_short {S F : ℕ →₀ B} {D : ℕ} (hS : DegLT S (D + 1)) (hSσ : ∀ j, σ (S j) = S j)
-    {c : B} (hc : σ c = c) {z₀ : L₁} (hz₁ : z₀ - M.ℓ S ∈ M.short)
-    (hz₀ : M.P z₀ = M.j (lsmul c F)) (k : ℕ) :
-    ∑ j ∈ Finset.range (D + 1), rsmul (S j) (M.toMackeyBoundary.φ (k + j)) =
-      lsmul c (tPow σ k F) :=
-  M.toMackeyBoundary.norm hS hSσ hc (M.B₁_eq hz₁) hz₀ k
-
-/-- **Displays (2) and (4)** for the short-coset boundary, with `z₀ ≡ ℓ(S) mod L₁'`. -/
-theorem window_pos_of_short (hσ : Function.Injective σ) {S F : ℕ →₀ B} {D N : ℕ}
-    (hS : MonicDeg S D) (hF : MonicDeg F N) (hSσ : ∀ j, σ (S j) = S j) (c : Bˣ)
-    (hc : σ c = c) {z₀ : L₁} (hz₁ : z₀ - M.ℓ S ∈ M.short)
-    (hz₀ : M.P z₀ = M.j (lsmul (c : B) F)) (hDN : D ≤ N) (p : ℕ →₀ B) :
-    ∃! wr : (ℕ →₀ B) × (ℕ →₀ B), DegLT wr.2 (N - D) ∧ M.A wr.1 + wr.2 = p :=
-  M.toMackeyBoundary.window_pos hσ hS hF hSσ c hc (M.B₁_eq hz₁) hz₀ hDN p
-
-theorem window_neg_of_short (hσ : Function.Bijective σ) {S F : ℕ →₀ B} {D N : ℕ}
-    (hS : MonicDeg S D) (hF : MonicDeg F N) (hSσ : ∀ j, σ (S j) = S j) (c : Bˣ)
-    (hc : σ c = c) {z₀ : L₁} (hz₁ : z₀ - M.ℓ S ∈ M.short)
-    (hz₀ : M.P z₀ = M.j (lsmul (c : B) F)) (hND : N < D) (p : ℕ →₀ B) (x : ℕ → B) :
-    ∃! v : ℕ →₀ B, M.A v = p ∧
-      ∀ r < D - N, capRow σ M.toMackeyBoundary.φ r v = x r :=
-  M.toMackeyBoundary.window_neg hσ hS hF hSσ c hc (M.B₁_eq hz₁) hz₀ hND p x
-
 end MackeyCosets
 
 end OddMath.QuiverHecke.CyclotomicAction.BoundaryPolynomial

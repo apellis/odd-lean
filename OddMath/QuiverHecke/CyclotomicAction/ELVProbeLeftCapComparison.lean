@@ -55,15 +55,6 @@ private theorem coefficientDropIso_row
     (fun z => ((SKM.homParityShiftDatum (k := k) (r.val • D.parity i)).iso M).hom.total w.obj z)
     hDrop).trans hField.symm)
 
-private theorem coefficientMap_vacuum_linear
-    (hh₀ : 0 ≤ contentCrossingHeight D cutoff i (([] : List I) : Multiset I))
-    (r : Fin (contentUnitCount D cutoff i (([] : List I) : Multiset I))) :
-    SVec.toLinearMap ((contentUnitCoefficientMap D Sc cutoff M i [] hh₀ r).total
-      (⟨⟨[]⟩,List.Perm.refl _⟩ : OldContentCategory D Sc cutoff [])) =
-    moduleUnitCoefficient D Sc cutoff M i (⟨[]⟩ : OldCategory D Sc cutoff) hh₀ r := by
-  apply LinearMap.ext
-  intro x
-  exact contentUnitCoefficientMap_vacuum_total D Sc cutoff M i hh₀ r x
 end GlobalModule
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -164,19 +155,4 @@ local notation "G₀" => induced (oldContentInclusion D Sc cut []) N
 local notation "hi₀" => (by simp : i ∉ ([] : List I))
 local notation "hh₀" => contentCrossingHeight_nonneg_of_not_mem D cut [] i hi₀
 
-/-- At genuine empty output the selected scalar coefficient is exactly
-compared with the original all-old inverse moduleUnitCoefficient. This
-retains the normalized left-cap row rather than the ordinary right counit. -/
-theorem probeVacuumUnitCoefficient_compare
-    (r : Fin (contentUnitCount D cut i (([] : List I) : Multiset I))) :
-    ((oldContentValueChart D Sc cut [] N v).symm.trans
-      (probeOutputValueLinearEquiv D Sc m [] N hN v)).toLinearMap ∘ₗ
-      TensorMatrixCoordinates.moduleUnitCoefficient D Sc cut G₀ i (⟨[]⟩ : OldCategory D Sc cut) hh₀ r =
-    SVec.toLinearMap (probeMissingColourUnitCoefficient D Sc m [] N hN i hi₀ v r) ∘ₗ
-      ((oldContentFEChart D Sc cut [] i N v).symm.trans
-        (probeOutputFELinearEquiv D Sc m [] N hN i v)).toLinearMap := by
-  have hCompare := probeMissingColourUnitCoefficient_contentMap D Sc m [] N hN i hi₀ v r
-  have hField := coefficientMap_vacuum_linear D Sc cut G₀ i hh₀ r
-  have h := linearSquare_reencode _ _ _ _ _ _ _ _ rfl hField.symm rfl rfl hCompare
-  exact h
 end OddMath.QuiverHecke

@@ -108,14 +108,4 @@ theorem rightDotCoefficient_of_mem (i : I) (a : I → _root_.Polynomial k)
   convert h using 1
   rfl
 
-/-- On pure tensors, the source action includes the coefficient involution. -/
-@[simp] theorem sourceRightDot_tmul (i : I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n : ℕ)
-    (x : InductionAlong.Corner (appendAlgebra D Sc i (n + 1) :
-      Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1)))
-    (b : CyclotomicAlgebra D Sc a n) :
-    sourceRightDot D Sc i a ha n (InductionAlong.Ind.tmul x b) =
-      InductionAlong.Ind.tmul (rightDotCorner D Sc i (n + 1) x)
-        (rightDotCoefficient D Sc i a ha n b) := rfl
-
 end OddMath.QuiverHecke

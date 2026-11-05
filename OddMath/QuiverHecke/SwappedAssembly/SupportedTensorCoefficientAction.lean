@@ -53,51 +53,6 @@ def tensorVacuumCoefficientAction : SYM D k →ₐ[k] End Z where
     apply InducedCategory.hom_ext
     exact (tensorAmbientCoefficientAction D Sc m cutoff L ΛP ΛR).commutes r
 
-private theorem reindexCoefficientAction_ne_zero {x y z : X} (h : x = y)
-    (F : probeOldWeightSpace D Tw m ΛP x ⟶ elvWeightSpace D Tw cutoff N ΛR z)
-    (φ : SYM D k →ₐ[k] End F) (a : SYM D k) (ha : φ a ≠ 0) :
-    reindexCoefficientAction D Sc m cutoff L ΛP ΛR h F φ a ≠ 0 := by
-  subst y
-  exact ha
-
-/-- Passing to the supported full Hom and its formal input-weight presentation
-retains every nonzero source coefficient endomorphism. -/
-theorem tensorVacuumCoefficientAction_ne_zero (a : SYM D k)
-    (ha : sourceCoefficientAction D Tw m cutoff L ΛP ΛR a ≠ 0) :
-    tensorVacuumCoefficientAction D Sc m cutoff L ΛP ΛR a ≠ 0 := by
-  intro hz
-  have h := congrArg (fun f => f.hom) hz
-  exact reindexCoefficientAction_ne_zero D Sc m cutoff L ΛP ΛR
-    (probeWeight_vacuum D ΛP).symm
-    (WeightTensorVacuum.selectedHom D Tw m cutoff ΛP ΛR L)
-    (sourceCoefficientAction D Tw m cutoff L ΛP ΛR) a ha h
-
-/-- A literal supported path carries its coefficient by that same path functor. -/
-def tensorPathCoefficientAction {l : List (Col I X)} {s : Sector I}
-    (p : SPath l s (0,0)) : SYM D k →ₐ[k]
-      End ((pathFunctor D Tw m cutoff N ΛP ΛR p).obj Z) :=
-  (functorEndAction (pathFunctor D Tw m cutoff N ΛP ΛR p).toFunctor Z).comp
-    (tensorVacuumCoefficientAction D Sc m cutoff L ΛP ΛR)
-
-/-- Whole word Homs carry coefficients by postcomposition with the
-path-whiskered literal tensor-vacuum map. -/
-def tensorWordHomCoefficientAction {l : List (Col I X)} {s : Sector I}
-    (p : SPath l s (0,0)) (G : H D Tw m cutoff N ΛP ΛR s) :
-    SYM D k →ₐ[k] Module.End k (G ⟶ (pathFunctor D Tw m cutoff N ΛP ΛR p).obj Z) :=
-  (postcompositionAlgHom G ((pathFunctor D Tw m cutoff N ΛP ΛR p).obj Z)).comp
-    (tensorPathCoefficientAction D Sc m cutoff L ΛP ΛR p)
-
-@[simp] theorem tensorWordHomCoefficientAction_apply {l : List (Col I X)} {s : Sector I}
-    (p : SPath l s (0,0)) (G : H D Tw m cutoff N ΛP ΛR s)
-    (a : SYM D k) (f : G ⟶ (pathFunctor D Tw m cutoff N ΛP ΛR p).obj Z) :
-    tensorWordHomCoefficientAction D Sc m cutoff L ΛP ΛR p G a f =
-      f ≫ tensorPathCoefficientAction D Sc m cutoff L ΛP ΛR p a := rfl
-
-/-- The source family uses exactly the coefficient action on its chosen whole path object. -/
-def tensorSourceCoefficientAction (s : List I) : SYM D k →ₐ[k]
-    End (tensorSourceObject D Sc m cutoff ΛP ΛR L s) :=
-  tensorPathCoefficientAction D Sc m cutoff L ΛP ΛR (tensorSourcePath D ΛP ΛR s)
-
 private def zeroObjectCoefficientAction {C : Type*} [Category* C] [Preadditive C] [Linear k C]
     (V : C) (hV : Limits.IsZero V) : SYM D k →ₐ[k] End V :=
   AlgHom.ofLinearMap 0 (hV.eq_of_src _ _) (fun _ _ => hV.eq_of_src _ _)
@@ -140,14 +95,6 @@ def tensorFamilyWordHomCoefficientAction {l : List (Col I X)} {s t : Sector I}
     ((pathFunctor D Tw m cutoff N ΛP ΛR p).obj
       (tensorTargetFamily D Sc m cutoff ΛP ΛR L t))).comp
         (tensorFamilyPathCoefficientAction D Sc m cutoff L ΛP ΛR p)
-
-@[simp] theorem tensorFamilyWordHomCoefficientAction_apply {l : List (Col I X)} {s t : Sector I}
-    (p : SPath l s t) (sourceWord : List I) (a : SYM D k)
-    (f : tensorSourceFamily D Sc m cutoff ΛP ΛR L sourceWord s ⟶
-      (pathFunctor D Tw m cutoff N ΛP ΛR p).obj
-        (tensorTargetFamily D Sc m cutoff ΛP ΛR L t)) :
-    tensorFamilyWordHomCoefficientAction D Sc m cutoff L ΛP ΛR p sourceWord a f =
-      f ≫ tensorFamilyPathCoefficientAction D Sc m cutoff L ΛP ΛR p a := rfl
 
 private theorem reindexCoefficientAction_heq {x y z : X} (h : x = y)
     (F : probeOldWeightSpace D Tw m ΛP x ⟶ elvWeightSpace D Tw cutoff N ΛR z)

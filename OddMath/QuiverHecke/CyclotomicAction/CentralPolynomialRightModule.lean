@@ -41,20 +41,6 @@ def polynomialOpHom : (Polynomial R)ᵐᵒᵖ →+* Polynomial Rᵐᵒᵖ :=
     polynomialOpHom R (op Polynomial.X) = Polynomial.X := by
   simp [polynomialOpHom, Polynomial.eval₂RingHom']
 
-@[simp] theorem polynomialOpHom_monomial (n : ℕ) (r : R) :
-    polynomialOpHom R (op (Polynomial.monomial n r)) = Polynomial.monomial n (op r) := by
-  rw [← Polynomial.C_mul_X_pow_eq_monomial]
-  simp [op_mul, ← Polynomial.C_mul_X_pow_eq_monomial]
-
-/-- The ring homomorphism takes the opposite of every coefficient. -/
-@[simp] theorem polynomialOpHom_coeff (p : Polynomial R) (n : ℕ) :
-    (polynomialOpHom R (op p)).coeff n = op (p.coeff n) := by
-  induction p using Polynomial.induction_on' with
-  | add p q hp hq => simp only [op_add, map_add, Polynomial.coeff_add, hp, hq]
-  | monomial k r =>
-      rw [polynomialOpHom_monomial]
-      by_cases hk : k = n <;> simp [Polynomial.coeff_monomial, hk]
-
 variable {R} {M : Type v} [AddCommGroup M] [Module Rᵐᵒᵖ M]
 
 /-- A right module over the ordinary central polynomial ring. -/
@@ -72,9 +58,6 @@ instance : Module (Polynomial R)ᵐᵒᵖ (RightCentralPolynomialModule f) :=
 
 /-- The additive identification with the underlying right coefficient module. -/
 def of : M ≃+ RightCentralPolynomialModule f := CentralPolynomialModule.of f
-
-@[simp] theorem smul_of (p : (Polynomial R)ᵐᵒᵖ) (m : M) :
-    p • of f m = of f (CentralPolynomialModule.actionHom f (polynomialOpHom R p) m) := rfl
 
 @[simp] theorem C_smul_of (r : R) (m : M) :
     op (Polynomial.C r) • of f m = of f (op r • m) := by simp
