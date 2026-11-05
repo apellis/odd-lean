@@ -78,14 +78,14 @@ theorem tensorVacuum_rightward_odd_bubbleEntries (hi : D.parity i = 1)
     (cc : (P).CrossCoeff) :
     ∃ (c : _ ≅ V) (j : _ ⟶ shiftedPreSourceObject D (parameterTwist D Sc) m
         (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i H)
-      (B : Fin (cutoff i - 2 * m i) →
-        (unitColumnCarrier D (parameterTwist D Sc) m cutoff L i ⟶ V)),
+      (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V)),
       ProbeWindow.IsCupInverse (evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP H)
         (fun n => (adjunction K).unit.app V ≫
           (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ n.val)) j B ∧
       (∃ h, c.hom = eqToHom h) ∧
       (∀ (n : Fin (cutoff i - 2 * m i)) (N : ℕ),
-        rightwardUnitColumn D (parameterTwist D Sc) m cutoff L i B N n =
+        rightwardUnitColumn ((adjunction K).unit.app V)
+          (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H) B N n =
         c.inv ≫ (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).map
           ((P).etaEntry cc i N ν₀ (.nil _) q₀ Z ≫ dc n q₀ (.nil _)) ≫ c.hom) := by
   have hlen : (-D.h i ν₀).toNat = cutoff i - 2 * m i := by
@@ -125,26 +125,29 @@ theorem tensorVacuum_rightward_odd_moments (hi : D.parity i = 1)
     (cc : (P).CrossCoeff) :
     ∃ (c : _ ≅ V) (j : _ ⟶ shiftedPreSourceObject D (parameterTwist D Sc) m
         (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i H)
-      (B : Fin (cutoff i - 2 * m i) →
-        (unitColumnCarrier D (parameterTwist D Sc) m cutoff L i ⟶ V)),
+      (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V)),
       ProbeWindow.IsCupInverse (evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP H)
         (fun n => (adjunction K).unit.app V ≫
           (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ n.val)) j B ∧
       (∃ h, c.hom = eqToHom h) ∧
       (∀ (n : Fin (cutoff i - 2 * m i)) (N : ℕ),
-        rightwardUnitColumn D (parameterTwist D Sc) m cutoff L i B N n =
+        rightwardUnitColumn ((adjunction K).unit.app V)
+          (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H) B N n =
         c.inv ≫ (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).map
           ((P).etaEntry cc i N ν₀ (.nil _) q₀ Z ≫ dc n q₀ (.nil _)) ≫ c.hom) ∧
       ∀ (r : ℕ) (z : (V).obj star),
         tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
-            ((rightwardUnitColumn D (parameterTwist D Sc) m cutoff L i B
+            ((rightwardUnitColumn ((adjunction K).unit.app V)
+              (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H) B
               (cutoff i - 2 * m i - 1 + 2 * r) ⟨cutoff i - 2 * m i - 1, by omega⟩).total star z) =
           polynomialToPower D cutoff L (PowerSeries.coeff r
               (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
             tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z ∧
         tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
-            ((rightwardUnitColumn D (parameterTwist D Sc) m cutoff L i B
-              (cutoff i - 2 * m i - 1 + (2 * r + 1)) ⟨cutoff i - 2 * m i - 1, by omega⟩).total star z) =
+            ((rightwardUnitColumn ((adjunction K).unit.app V)
+              (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H) B
+              (cutoff i - 2 * m i - 1 + (2 * r + 1))
+              ⟨cutoff i - 2 * m i - 1, by omega⟩).total star z) =
           ((-1 : k) ^ (cutoff i + 1) •
               coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) *
             (polynomialToPower D cutoff L (PowerSeries.coeff r
