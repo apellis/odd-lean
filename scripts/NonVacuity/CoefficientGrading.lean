@@ -137,7 +137,7 @@ example (a : Obj (QuiverHecke.sig datum)) :
   have hX : (MvPolynomial.X () : Rees) ∈ reesGrading 1 :=
     (MvPolynomial.mem_weightedHomogeneousSubmodule _ _ _ _).mpr
       (MvPolynomial.isWeightedHomogeneous_X ℚ _ ())
-  simpa using smul_mem_part hX (of_mem_part' (𝒜 := reesGrading) (deg := deg) (𝟙 a)
+  exact smul_mem_part hX (of_mem_part' (𝒜 := reesGrading) (deg := deg) (𝟙 a)
     (Diagram.degree_id _ _))
 
 /-- The truncation `ℚ[h]/(h³)` with `h` in degree `1` grades the quiver Hecke supercategory
