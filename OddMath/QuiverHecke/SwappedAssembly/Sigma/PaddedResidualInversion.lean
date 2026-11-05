@@ -68,7 +68,9 @@ theorem centralFactorMatrix_content_isIso
     probe_slide D Sc m cutoff bound ΛP ΛR hP hR c i t Z E
   have hq : q * q = 1 := koszulSign_mul_self _ _
   obtain ⟨N, hN, hDx, hCx⟩ := elvProbe_content_padded_central_separated_windows_above
-    D Sc m cutoff bound ΛP ΛR hP hR i t Z.obj β sy hc (max r.toNat (-r).toNat)
+    D Sc m cutoff bound ΛP ΛR hP hR i t Z.obj β
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound) (max r.toNat (-r).toNat)
   change Dx = -∑ a ∈ Finset.range N,
     q ^ (a + 1) • ((x ^ (-(a : ℤ) - 1)).hom ≫ v ≫ uR a) at hDx
   change Cx = ∑ a ∈ Finset.range N,

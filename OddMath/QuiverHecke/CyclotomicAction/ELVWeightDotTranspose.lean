@@ -216,7 +216,8 @@ theorem elvActionDotTranspose_component_pow_zero [Finite I]
     ∃ e : ℕ, 0 < e ∧ ∀ N : ELVWeightProduct D Sc cutoff bound Λ y,
       (show End (((elvF D Sc cutoff bound i Λ h).obj N) β) from
         (elvActionDotTranspose D Sc cutoff bound i Λ h).app (D.parity i) N β) ^ e = 0 := by
-  obtain ⟨e, he, hp⟩ := elvWeightDotComponent_pow_zero D Sc cutoff bound i Λ h sy hc
+  obtain ⟨e, he, hp⟩ := elvWeightDotComponent_pow_zero D Sc cutoff bound i Λ h
+    (truncatedAppendDotNilpotent D Sc cutoff sy hc bound)
     (blockSucc D Λ i h β)
   refine ⟨e, he, fun N => ?_⟩
   have hz := elvDot_total_power_zero D Sc cutoff bound i Λ h

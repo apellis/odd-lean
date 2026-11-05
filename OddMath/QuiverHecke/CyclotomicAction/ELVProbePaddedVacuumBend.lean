@@ -246,7 +246,9 @@ theorem paddedVacuumDx_odd (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1) :
   let := (factorDotIso D Sc m cutoff bound ΛP ΛR hcP hcR i) (((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).muP_preE i (((0, 0) : Sector I)))
   have hA := elvProbeDxOuterDot_isNilpotent D Sc m cutoff bound ΛP ΛR hcP hcR i (((0, 0) : Sector I)) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (sectorRegular D Sc m cutoff bound ΛP ΛR hcP hcR)
-    (sectorEmpty D Sc m cutoff bound ΛP ΛR hcP hcR) sy hc
+    (sectorEmpty D Sc m cutoff bound ΛP ΛR hcP hcR)
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)
   simp only [probeToReservoirBendCoefficientEvaluation, RingHom.comp_apply] at hA
   let : (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).Additive :=
     vacuumSectorEvaluation_additive D Sc m cutoff bound ΛP ΛR hcP hcR
@@ -339,7 +341,9 @@ theorem paddedVacuumDx_even (hP : 0 < probeCutoff D m i) (hi : D.parity i = 0) :
   let := (factorDotIso D Sc m cutoff bound ΛP ΛR hcP hcR i) (((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).muP_preE i (((0, 0) : Sector I)))
   have hA := elvProbeDxOuterDot_isNilpotent D Sc m cutoff bound ΛP ΛR hcP hcR i (((0, 0) : Sector I)) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (sectorRegular D Sc m cutoff bound ΛP ΛR hcP hcR)
-    (sectorEmpty D Sc m cutoff bound ΛP ΛR hcP hcR) sy hc
+    (sectorEmpty D Sc m cutoff bound ΛP ΛR hcP hcR)
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)
   simp only [probeToReservoirBendCoefficientEvaluation, RingHom.comp_apply] at hA
   let : (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).Additive :=
     vacuumSectorEvaluation_additive D Sc m cutoff bound ΛP ΛR hcP hcR

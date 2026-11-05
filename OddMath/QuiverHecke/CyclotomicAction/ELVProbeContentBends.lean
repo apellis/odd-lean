@@ -49,14 +49,13 @@ theorem elvProbeMixedPostDot_pow_zero [Finite I]
     (i : I) (t : Sector I) (hv : StepValid (true, i) false t)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H
       (nextSector (true, i) true (nextSector (true, i) false t)))
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
+    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
     (δ : WeightBlocks D ΛR ((P).muM t)) :
     ∃ n : ℕ, 0 < n ∧ ∀ M : (P).T.obj (-(P).muP t),
       End.of (((P).rpPostDot i t hv Z).total M δ) ^ n = 0 :=
   elvShiftedPostEndEvaluation_dot_pow_zero D Sc' cutoff bound i ΛR
     ((P).muM_postE i hv)
-    (elvProbeMixedBase D Sc m cutoff bound ΛP ΛR hP hR i t Z) sy
-    (parameterTwist_homogeneous D Sc hc) (SKM.homContentShift D i t.1) δ
+    (elvProbeMixedBase D Sc m cutoff bound ΛP ΛR hP hR i t Z) hdot (SKM.homContentShift D i t.1) δ
 
 private theorem evaluated_conjugation_isNilpotent
     {C E : Type*} [Category C] [Preadditive C] [Category E] [Preadditive E]
@@ -90,13 +89,13 @@ theorem elvProbeDxContentOuterDot_isNilpotent [Finite I]
     (i : I) (t : Sector I)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
     (δ : WeightBlocks D ΛR ((P).muM t))
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) :
+    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound) :
     IsNilpotent (probeToReservoirBendCoefficientEvaluation (P) i t Z out[t,δ]
       ((P).rpPostDot i s[i,t] hv[i,t] U[i,t,Z])) := by
   let J := (FR[i,t]) ⋙ out[t,δ]
   let y := (P).rpPostDot i s[i,t] hv[i,t] U[i,t,Z]
   obtain ⟨n, _, hn⟩ := elvProbeMixedPostDot_pow_zero D Sc m cutoff bound ΛP ΛR hP hR
-    i s[i,t] hv[i,t] U[i,t,Z] sy hc (blockSucc D ΛR i ((P).muM_postF i t) δ)
+    i s[i,t] hv[i,t] U[i,t,Z] hdot (blockSucc D ΛR i ((P).muM_postF i t) δ)
   have hy : IsNilpotent ((J.mapEnd _) y) := by
     refine ⟨n, ?_⟩
     exact outputEnd_pow_zero D Sc' cutoff bound ΛR ((P).muM t)
@@ -125,13 +124,13 @@ theorem elvProbeCxContentOuterDot_isNilpotent [Finite I]
     (hv : StepValid (true, i) false t)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
     (δ : WeightBlocks D ΛR ((P).muM t))
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) :
+    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound) :
     IsNilpotent (reservoirToProbeBendCoefficientEvaluation (P) i t hb hv Z out[t,δ]
       ((P).rpPostDot i s[i,t] hv U[i,t,hb,hv,Z])) := by
   let J := (FP[i,t,hb]) ⋙ out[t,δ]
   let y := (P).rpPostDot i s[i,t] hv U[i,t,hb,hv,Z]
   obtain ⟨n, _, hn⟩ := elvProbeMixedPostDot_pow_zero D Sc m cutoff bound ΛP ΛR hP hR
-    i s[i,t] hv U[i,t,hb,hv,Z] sy hc δ
+    i s[i,t] hv U[i,t,hb,hv,Z] hdot δ
   have hy : IsNilpotent ((J.mapEnd _) y) := by
     refine ⟨n, ?_⟩
     exact outputEnd_pow_zero D Sc' cutoff bound ΛR ((P).muM t)
@@ -157,39 +156,39 @@ private theorem contentBendFactorDot_isIso [Finite I] (i : I) {x y : X} (h : x +
 def ELVProbeDxContentSeparatedAt [Finite I] (i : I) (t : Sector I)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
     (δ : WeightBlocks D ΛR ((P).muM t))
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (N : ℕ) : Prop :=
+    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound) (N : ℕ) : Prop :=
   let _ := contentBendFactorDot_isIso D Sc m cutoff bound ΛP ΛR hP hR i ((P).muP_preE i t)
   ProbeToReservoirSeparatedAt (P) i t Z out[t,δ]
-    (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc) N
+    (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot) N
 
 /-- The whole-output Cx equation retains the normalized shifted cap. -/
 def ELVProbeCxContentSeparatedAt [Finite I] (i : I) (t : Sector I)
     (hb : StepValid (false, i) true t) (hv : StepValid (true, i) false t)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
     (δ : WeightBlocks D ΛR ((P).muM t))
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (N : ℕ) : Prop :=
+    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound) (N : ℕ) : Prop :=
   let _ := contentBendFactorDot_isIso D Sc m cutoff bound ΛP ΛR hP hR i ((P).muP_preF i hb)
   ReservoirToProbeSeparatedAt (P) i t hb hv Z out[t,δ]
-    (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc) N
+    (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot) N
 
-attribute [local irreducible] elvProbeReservoir elvProbeCrossCoeff
+attribute [local irreducible] elvProbeReservoir elvProbeCrossCoeffOf
 
 /-- The chosen Dx bend has a finite series on the whole output functor. -/
 theorem elvProbeDx_content_separated_windows [Finite I]
     (i : I) (t : Sector I)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
     (δ : WeightBlocks D ΛR ((P).muM t))
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) :
-    ∃ N, ELVProbeDxContentSeparatedAt D Sc m cutoff bound ΛP ΛR hP hR i t Z δ sy hc N := by
+    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound) :
+    ∃ N, ELVProbeDxContentSeparatedAt D Sc m cutoff bound ΛP ΛR hP hR i t Z δ hdot N := by
   let _ := contentBendFactorDot_isIso D Sc m cutoff bound ΛP ΛR hP hR i ((P).muP_preE i t)
-  obtain ⟨n, hn⟩ := elvProbeDxContentOuterDot_isNilpotent D Sc m cutoff bound ΛP ΛR hP hR i t Z δ sy hc
+  obtain ⟨n, hn⟩ := elvProbeDxContentOuterDot_isNilpotent D Sc m cutoff bound ΛP ΛR hP hR i t Z δ hdot
   rcases parity_eq_zero_or_one (D.parity i) with hi | hi
   · exact ⟨n, probeToReservoirBend_even_separated (P) i t Z out[t,δ]
-      (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc)
-      (elvProbeCrossCoeff_isInverse D Sc m cutoff bound ΛP ΛR hP hR sy hc) hi n hn⟩
+      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
+      (elvProbeCrossCoeffOf_isInverse D Sc m cutoff bound ΛP ΛR hP hR hdot) hi n hn⟩
   · exact ⟨2*n, probeToReservoirBend_odd_separated (P) i t Z out[t,δ]
-      (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc)
-      (elvProbeCrossCoeff_isInverse D Sc m cutoff bound ΛP ΛR hP hR sy hc) hi n hn⟩
+      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
+      (elvProbeCrossCoeffOf_isInverse D Sc m cutoff bound ΛP ΛR hP hR hdot) hi n hn⟩
 
 /-- The chosen Cx bend has its finite series in that same Hom category. -/
 theorem elvProbeCx_content_separated_windows [Finite I]
@@ -197,17 +196,17 @@ theorem elvProbeCx_content_separated_windows [Finite I]
     (hv : StepValid (true, i) false t)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
     (δ : WeightBlocks D ΛR ((P).muM t))
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) :
-    ∃ N, ELVProbeCxContentSeparatedAt D Sc m cutoff bound ΛP ΛR hP hR i t hb hv Z δ sy hc N := by
+    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound) :
+    ∃ N, ELVProbeCxContentSeparatedAt D Sc m cutoff bound ΛP ΛR hP hR i t hb hv Z δ hdot N := by
   let _ := contentBendFactorDot_isIso D Sc m cutoff bound ΛP ΛR hP hR i ((P).muP_preF i hb)
-  obtain ⟨n, hn⟩ := elvProbeCxContentOuterDot_isNilpotent D Sc m cutoff bound ΛP ΛR hP hR i t hb hv Z δ sy hc
+  obtain ⟨n, hn⟩ := elvProbeCxContentOuterDot_isNilpotent D Sc m cutoff bound ΛP ΛR hP hR i t hb hv Z δ hdot
   rcases parity_eq_zero_or_one (D.parity i) with hi | hi
   · exact ⟨n, reservoirToProbeBend_even_separated (P) i t hb hv Z out[t,δ]
-      (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc)
-      (elvProbeCrossCoeff_isInverse D Sc m cutoff bound ΛP ΛR hP hR sy hc) hi n hn⟩
+      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
+      (elvProbeCrossCoeffOf_isInverse D Sc m cutoff bound ΛP ΛR hP hR hdot) hi n hn⟩
   · exact ⟨2*n, reservoirToProbeBend_odd_separated (P) i t hb hv Z out[t,δ]
-      (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc)
-      (elvProbeCrossCoeff_isInverse D Sc m cutoff bound ΛP ΛR hP hR sy hc) hi n hn⟩
+      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
+      (elvProbeCrossCoeffOf_isInverse D Sc m cutoff bound ΛP ΛR hP hR hdot) hi n hn⟩
 
 /-- A common output-content length above any minimum works on every input. -/
 theorem elvProbe_content_central_separated_windows_above [Finite I]
@@ -215,13 +214,13 @@ theorem elvProbe_content_central_separated_windows_above [Finite I]
     (hv : StepValid (true, i) false t)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
     (δ : WeightBlocks D ΛR ((P).muM t))
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (minimum : ℕ) :
-    ∃ N, minimum ≤ N ∧ ELVProbeDxContentSeparatedAt D Sc m cutoff bound ΛP ΛR hP hR i t Z δ sy hc N ∧
-      ELVProbeCxContentSeparatedAt D Sc m cutoff bound ΛP ΛR hP hR i t hb hv Z δ sy hc N := by
+    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound) (minimum : ℕ) :
+    ∃ N, minimum ≤ N ∧ ELVProbeDxContentSeparatedAt D Sc m cutoff bound ΛP ΛR hP hR i t Z δ hdot N ∧
+      ELVProbeCxContentSeparatedAt D Sc m cutoff bound ΛP ΛR hP hR i t hb hv Z δ hdot N := by
   let _ := contentBendFactorDot_isIso D Sc m cutoff bound ΛP ΛR hP hR i ((P).muP_preE i t)
   let _ := contentBendFactorDot_isIso D Sc m cutoff bound ΛP ΛR hP hR i ((P).muP_preF i hb)
-  obtain ⟨nD, hD⟩ := elvProbeDxContentOuterDot_isNilpotent D Sc m cutoff bound ΛP ΛR hP hR i t Z δ sy hc
-  obtain ⟨nC, hC⟩ := elvProbeCxContentOuterDot_isNilpotent D Sc m cutoff bound ΛP ΛR hP hR i t hb hv Z δ sy hc
+  obtain ⟨nD, hD⟩ := elvProbeDxContentOuterDot_isNilpotent D Sc m cutoff bound ΛP ΛR hP hR i t Z δ hdot
+  obtain ⟨nC, hC⟩ := elvProbeCxContentOuterDot_isNilpotent D Sc m cutoff bound ΛP ΛR hP hR i t hb hv Z δ hdot
   let n := max (max nD nC) minimum
   have hDn := pow_eq_zero_of_le
     ((Nat.le_max_left nD nC).trans (Nat.le_max_left (max nD nC) minimum)) hD
@@ -231,16 +230,16 @@ theorem elvProbe_content_central_separated_windows_above [Finite I]
   rcases parity_eq_zero_or_one (D.parity i) with hi | hi
   · refine ⟨n, hminimum, ?_, ?_⟩
     · exact probeToReservoirBend_even_separated (P) i t Z out[t,δ]
-        (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc)
-        (elvProbeCrossCoeff_isInverse D Sc m cutoff bound ΛP ΛR hP hR sy hc) hi n hDn
+        (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
+        (elvProbeCrossCoeffOf_isInverse D Sc m cutoff bound ΛP ΛR hP hR hdot) hi n hDn
     · exact reservoirToProbeBend_even_separated (P) i t hb hv Z out[t,δ]
-        (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc)
-        (elvProbeCrossCoeff_isInverse D Sc m cutoff bound ΛP ΛR hP hR sy hc) hi n hCn
+        (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
+        (elvProbeCrossCoeffOf_isInverse D Sc m cutoff bound ΛP ΛR hP hR hdot) hi n hCn
   · refine ⟨2*n, (by omega), ?_, ?_⟩
     · exact probeToReservoirBend_odd_separated (P) i t Z out[t,δ]
-        (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc)
-        (elvProbeCrossCoeff_isInverse D Sc m cutoff bound ΛP ΛR hP hR sy hc) hi n hDn
+        (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
+        (elvProbeCrossCoeffOf_isInverse D Sc m cutoff bound ΛP ΛR hP hR hdot) hi n hDn
     · exact reservoirToProbeBend_odd_separated (P) i t hb hv Z out[t,δ]
-        (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc)
-        (elvProbeCrossCoeff_isInverse D Sc m cutoff bound ΛP ΛR hP hR sy hc) hi n hCn
+        (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
+        (elvProbeCrossCoeffOf_isInverse D Sc m cutoff bound ΛP ΛR hP hR hdot) hi n hCn
 end OddMath.QuiverHecke
