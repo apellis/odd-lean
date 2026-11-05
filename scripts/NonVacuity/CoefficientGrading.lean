@@ -140,8 +140,20 @@ example (a : Obj (QuiverHecke.sig datum)) :
   simpa using smul_mem_part hX (of_mem_part' (𝒜 := reesGrading) (deg := deg) (𝟙 a)
     (Diagram.degree_id _ _))
 
+/-- The truncation `ℚ[h]/(h³)` with `h` in degree `1` grades the quiver Hecke supercategory
+with the truncated Rees parameters. -/
+example :
+    letI := OddMath.Diagrams.Linear.restrictScalars ℚ (TruncatedRees.TruncRing ℚ 3)
+      (QuiverHecke.H datum (QuiverHecke.truncatedReesScalars datum symmetrizer scalars 3))
+    letI := OddMath.Diagrams.Supercategory.restrictScalars ℚ (TruncatedRees.TruncRing ℚ 3)
+      (QuiverHecke.H datum (QuiverHecke.truncatedReesScalars datum symmetrizer scalars 3))
+    GradedSupercategory ℚ
+      (QuiverHecke.H datum (QuiverHecke.truncatedReesScalars datum symmetrizer scalars 3)) :=
+  QuiverHecke.truncatedReesGradedSupercategory datum symmetrizer lowerDegree 3
+
 #print axioms OddMath.QuiverHecke.isHomogeneous_rees
 #print axioms OddMath.Diagrams.CoefficientGrading.iSupIndep_presentedPart
 #print axioms OddMath.QuiverHecke.reesGradedSupercategory
+#print axioms OddMath.QuiverHecke.truncatedReesGradedSupercategory
 
 end NonVacuity.CoefficientGrading

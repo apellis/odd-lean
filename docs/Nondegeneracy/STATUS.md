@@ -893,7 +893,8 @@ the branch are those of [FieldScopeBoundary](FieldScopeBoundary.md):
    `GradedSupercategory K` (`Diagrams.CoefficientGrading.gradedSupercategory`;
    the quiver Hecke case over `K[h]`: `QuiverHecke.reesGradedSupercategory`);
    consumer [CoefficientGrading](../../scripts/NonVacuity/CoefficientGrading.lean).
-   Open: the grading of the truncations `K[h]/(h^N)` and the field-route
+   The truncations `K[h]/(h^N)`: `QuiverHecke.truncGradedAlgebra`,
+   `QuiverHecke.truncatedReesGradedSupercategory`. Open: the field-route
    arguments over these bases (step 2, item 4). Plan, comparison and design: [Phase2Plan](Phase2Plan.md).
 2. **All-even comparison.** A checked comparison at parity identically zero
    recovering the benchmark's ordinary basis theorem: presentations,
