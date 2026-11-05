@@ -119,6 +119,36 @@ private theorem vacuumNegEven_column (i : I) (hi : D.parity i = 0)
   exact hm
 
 include sy hc in
+/-- The even rightward bubble entries on the tensor vacuum object, for the pointwise
+leftward data. -/
+private theorem vacuumNegEven_bubble (i : I) (hi : D.parity i = 0)
+    (hP0 : 0 < probeCutoff D m i) (hh : D.h i ν₀ < 0) :
+    ∃ (c : _ ≅ V) (j : _ ⟶ ProbeVacuumCap.shiftedPreSourceObject D (parameterTwist D Sc) m
+        (contentModuleTarget D (parameterTwist D Sc) cutoff N (0 : Multiset I)) i Hv)
+      (B : Fin (cutoff i - m i) → (_ ⟶ V)),
+      ProbeWindow.IsCupInverse
+        (ProbeVacuumCap.evaluatedMixedBend D (parameterTwist D Sc) m cutoff N i hP0 Hv)
+        (fun n => (BalancedInduction.adjunction (Kc [i])).unit.app V ≫
+          (ProbeVacuumCap.evaluatedPostDot D (parameterTwist D Sc) m cutoff N i Hv ^ n.val))
+        j B ∧
+      (∃ h, c.hom = eqToHom h) ∧
+      (∀ (n : Fin (cutoff i - m i)) (e : ℕ),
+        (BalancedInduction.adjunction (Kc [i])).unit.app V ≫
+          (ProbeVacuumCap.evaluatedPostDot D (parameterTwist D Sc) m cutoff N i Hv ^ e) ≫
+            B n =
+        c.inv ≫ (E).map ((P).etaEntry cc i e ν₀ (.nil _)
+            (SPath.centralDnUp i (SKM.wt D ν₀ [SKM.up i]) ν₀ ((0, 0) : Sector I) ⟨false, trivial⟩)
+            Zt ≫
+          (lw).dcap i n ν₀ (SPath.centralDnUp i (SKM.wt D ν₀ [SKM.up i]) ν₀ ((0, 0) : Sector I) ⟨false, trivial⟩)
+            (.nil _) Zt) ≫ c.hom) :=
+  tensorVacuum_rightward_even_bubbleEntries D Sc m
+    cutoff L ΛP ΛR hP hR sy hc i hi hP0 Zt
+    (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hP hR).symm
+    (fun q p => (lw).lcrossSame i ν₀ q p Zt)
+    (fun n q r => (lw).dcap i n ν₀ q r Zt)
+    (vacuumNegEven_negInverseAt D Sc m cutoff ΛP ΛR L hP hR sy hc i hh) cc
+
+include sy hc in
 /-- The decoded vacuum entry of `η x^(N - M - 1 + s)` followed by `dcap (N - M - 1)` on the
 tensor vacuum object, at an even colour with negative vacuum height. -/
 private theorem vacuumNegEven_tensorDecode (i : I) (hi : D.parity i = 0)
@@ -133,12 +163,8 @@ private theorem vacuumNegEven_tensorDecode (i : I) (hi : D.parity i = 0)
       coefficientPowerQuotientMap D cutoff L (SYM.polynomialInclude D k
         (PowerSeries.coeff s (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i))) *
         dec z := by
-  obtain ⟨c, j, B, hB, hceq, hcup⟩ := tensorVacuum_rightward_even_bubbleEntries D Sc m
-    cutoff L ΛP ΛR hP hR sy hc i hi hP0 Zt
-    (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hP hR).symm
-    (fun q p => (lw).lcrossSame i ν₀ q p Zt)
-    (fun n q r => (lw).dcap i n ν₀ q r Zt)
-    (vacuumNegEven_negInverseAt D Sc m cutoff ΛP ΛR L hP hR sy hc i hh) cc
+  obtain ⟨c, j, B, hB, hceq, hcup⟩ :=
+    vacuumNegEven_bubble D Sc m cutoff ΛP ΛR L hP hR sy hc i hi hP0 hh
   refine ⟨c, hceq, fun z => ?_⟩
   exact (congrArg (fun g => dec (g.total star z))
     (hcup ⟨cutoff i - m i - 1, by omega⟩ (cutoff i - m i - 1 + s))).symm.trans
