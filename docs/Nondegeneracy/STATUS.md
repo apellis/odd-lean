@@ -855,9 +855,16 @@ the branch are those of [FieldScopeBoundary](FieldScopeBoundary.md):
    normalizations, decorated matching families and bubble coefficients, and
    the grading. #1059 compares conclusions only, for Khovanov–Lauda scalars
    and finitely many colours.
-3. **Normalizations.** `CScalars` is supplied; recovering every benchmark
-   datum requires supplying compatible normalizations under its realization
-   hypotheses or a change-of-normalization comparison.
+3. **Normalizations.** `CScalars` is supplied to the end theorem. A choice
+   exists whenever the simple roots are linearly independent over `ℤ` in the
+   weight group (`SKM.CScalars.nonempty_of_linearIndependent`, combined with
+   the end theorem in `QuiverHecke.exists_nondegeneracy_of_linearIndependent`),
+   which includes Brundan–Ellis's setting. Benchmark realizations with
+   dependent roots still need compatible normalizations or a
+   change-of-normalization comparison.
+
+The audit of the formal statement against Brundan–Ellis §8, and the precise
+scope of the even specialization, are in [StatementAudit](StatementAudit.md).
 
 The conditional `VacuumRouteSector` inputs of the earlier vacuum route are no
 longer on the critical path.

@@ -1530,6 +1530,8 @@ import OddMath.SKM.PitchforkCap
 import OddMath.SKM.PitchforkCup
 import OddMath.SKM.PitchforkRot
 import OddMath.SKM.MoreGenerators
+import OddMath.SKM.CScalarsExistence
+import OddMath.QuiverHecke.NondegeneracyIndependentRoots
 import OddMath.SKM.ScalarChange
 import OddMath.SKM.ScalarChangePresentation
 import OddMath.SKM.ScalarChangeBaseChange
