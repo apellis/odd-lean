@@ -218,7 +218,13 @@ Still open:
    `dcupL i (h-1) ++ epsL i h` with coefficient `probeSign cutoff i • δᵢ`. Both use the
    cutoff of the tensor target family as `N`; the route transport identifies it.
 2. The odd bubble `oddBubble` at positive height, the same way.
-3. Even colours need an even moment result; nonpositive height is handled
+3. Even colours: `ELVTensorVacuumLeftwardEvenMoments.lean` gives the even moment
+   identity `tensorVacuum_leftward_even_moments` (from the generic
+   `even_column_moments_of_slide`, the probe polynomial `(x - 1)^m`, the even central
+   slide and the reservoir series `1/E(-z)`), and
+   `SupportedSectors.vacuumEntry_left_even` the entry of
+   `dcupL i (h-1) ++ epsL i (s+h-1)` with coefficient
+   `coeff s (substitutedSeries (probeSeries m) i)`. Nonpositive height is handled
    separately.
 4. Transport from `actionAt (probeHW - reservoirHW)` and the restricted datum to the
    route index to conclude `PositiveBubbleField (swappedRouteBases sy)`. The assembly is
@@ -230,5 +236,11 @@ Still open:
    `SwappedLeftEntriesField sy`, the vacuum entries
    `SupportedSectors.VacuumLeftEntries` at every route index (with
    `M = probeExponent`, `N = reservoirLevel`). With the right entries,
-   `nondegeneracy_of_swapped_entries` gives the conjecture. What remains is the
-   entries themselves (items 1–3), at the route parameters.
+   `nondegeneracy_of_swapped_entries` gives the conjecture. The entries are discharged
+   in `VacuumRouteSwappedPositiveField.lean`: `SupportedSectors.vacuumLeftEntries`
+   assembles items 1–3 at the vacuum weight `ΛP - ΛR` (`tensorVacuumWeight`), the
+   route weight is `probeHW - reservoirHW` (`weight_difference`), and the reservoir
+   levels are positive (`VacuumRouteIndex.level_pos`, from `cutoff_bounds`). So
+   `swappedLeftEntriesField` and `positiveBubbleField_swappedRouteBases` hold with
+   no hypothesis, and `nondegeneracy_of_swapped_right_entries` reduces the
+   conjecture to `SwappedRightEntriesField` (nonpositive height).
