@@ -561,6 +561,109 @@ from `0` in Lean.
    additional operators and prove the distant relation on its proposed
    polynomial module. The PBW theorem itself is not contradicted.
 
+## [EL] A. P. Ellis, A. D. Lauda, *An odd categorification of U_q(sl₂)*, arXiv:1307.7816v2
+
+[EL]'s 2-category `U_π` is not formalized separately: for a single odd colour it is the
+2-category of [BE2] (see "Relation to Ellis–Lauda" in the README). The entries below are hand
+computations from [EL]'s own relations, checked against the printed text; the Lean declarations
+cited concern [BE2]'s 2-category. Names in this section are in `OddMath.SKM` unless otherwise
+indicated. `Ξ` is the superalgebra of §3.4.2 (generators `z_a`, `a ≥ 1`, of q-degree `2a` and
+parity `a mod 2`, with `z_a z_b = (−1)^{ab} z_b z_a`), and `z_a` also denotes its image under the
+bubble map (3.56). In a region of weight `λ ≥ 1`, write `B_m` for the clockwise bubble with `m`
+dots; it has q-degree `2(m − λ + 1)`, `B_m = 0` for `m < λ − 1`, `B_{λ−1} = 1`, and
+`z_a = ±B_{a+λ−1}`.
+
+1. **(3.15) = Lemma 5.1 (5.5), the case `λ = 0`: missing bubble term [false as printed;
+   corrected relation proved for [BE2]].** For `λ > 0`, (3.15) says that `(−1)^λ` times the dot
+   on a downward strand defined with the right-oriented adjunction equals the dot defined with
+   the left-oriented adjunction plus `2` times the strand next to the degree-2 clockwise bubble
+   `z₁` in the region of weight `λ + 1`. For `λ = 0` it is printed without the bubble term
+   (right-adjunction dot `= −` left-adjunction dot). The last step of the proof of Lemma 5.1
+   draws this conclusion (`γ₁ = 0` at `µ = −1`). The relation that holds at every weight is
+   [BE2] (1.27) (equivalently Prop 4.1 (4.3)–(4.4) for an odd colour and `n = 1`): at `λ = 0` it
+   has the same shape as for `λ > 0`, with sign `(−1)^0 = 1` and the term `2 ·` (odd bubble).
+   [BE2] §2 points out the problem, citing it as [EL, (3.1)].
+
+   **Consequence of the printed relation (not formalized).** Closing off the `λ = 0` relation
+   with `m` dots, exactly as in the proof of Lemma 5.1 (equation (5.8) with `µ = −1`,
+   `γ₀ = −1`, `γ₁ = 0`), gives `(1 − (−1)^m) B_{m+1} = 0` in `End(1_1)`. For `m` odd this is
+   `2 z_{2i} = 0` for every `i ≥ 1`. Over a field of characteristic `≠ 2` the printed
+   presentation therefore kills the degree-4 bubble `z₂` in weight 1, whereas in [BE2]'s
+   2-category the degree-4 bubbles are nonzero in every weight (`End(1_λ) ≅ Sym[d]`, see entry
+   2). This uses the sign `(−1)^{m+µ}` of [EL]'s closing-off computation, which we did not
+   re-derive from the defining relations.
+
+   **Declarations.** `eq_1_27`, from `lemma41_eq3_odd`, `lemma41_eq4_odd`, with
+   `oddBubble_consistent` for the odd bubble at `⟨hᵢ,λ⟩ = 0`.
+
+   **For the authors.** In (3.15) and in Lemma 5.1 (5.5), the case `λ = 0` should have the
+   same form as the case `λ > 0`: the right-oriented dot equals `(−1)^0` times the
+   left-oriented dot plus twice the strand next to the degree-2 bubble, as in Brundan–Ellis
+   (1.27). With the printed `λ = 0` case, closing off with an odd number of dots as in the
+   proof of Lemma 5.1 gives `2 z_{2i} = 0` in `End(1_1)`, so the printed presentation is not
+   equivalent to the intended one in weight 1. The last sentence of the proof of Lemma 5.1,
+   which concludes `γ₁ = 0`, needs to be redone.
+
+2. **Conjectures 3.11 and 3.12: the bubble algebra is smaller than `Ξ` [false as printed].**
+   Conjecture 3.11 (first bullet) asserts that over a field of characteristic `≠ 2` the
+   diagrams of Prop 3.9 in which no odd-degree bubble is repeated form a basis of
+   `HOM_{U_π}(E_ε 1_λ, E_{ε′} 1_λ)`; for `ε = ∅`, `ε′ = (◦)` this says that `z₃` and `z₁z₂` are
+   linearly independent in `HOM(1_λ, Π1_λ⟨6⟩)`, and that the bubble algebra has graded
+   dimension `ξ₀` of (3.57). The second bullet and Conjecture 3.12 assert that over `ℤ` the
+   map `Ξ → ΠHOM_{U_π}(1_λ, 1_λ)` of (3.56) is an isomorphism, so `z₃`, `z₁z₂` span a free
+   submodule of rank 2. Both fail in every weight `λ ≥ 2`.
+
+   **Counterexample (hand computation from [EL]'s relations, not formalized).** Let `λ ≥ 2` and
+   `µ = λ − 2 ≥ 0`. Closing off the relation (3.15) (at weight `µ + 1`) with `m` dots, as in
+   the proof of Lemma 5.1, uses only defining relations of `U_π` (the adjunctions (3.13),
+   (3.14), dot moves and isotopy of dashed lines) and gives (5.8) in weight `λ`, with the
+   coefficients `γ₀ = (−1)^{µ+1}` and `γ₁ = 2(−1)^{µ+1} z₁` of (3.15) (this is (5.9)).
+   Substituting `m = j + µ + 1` gives
+
+       (1 + (−1)^j) z_{j+1} = ±2 z_j z₁   in End_{U_π}(1_λ), for all j ≥ 0  (z₀ = 1).
+
+   For `j = 2`: `2(z₃ ∓ z₁z₂) = 0`.
+   - Over a field of characteristic `≠ 2`, `z₃ = ±z₁z₂`, so two elements of the conjectured
+     basis are linearly dependent and the q-degree-6 odd part has dimension at most 1, not 2.
+   - Over `ℤ`, the odd part of `Ξ` in q-degree 6 is `ℤz₃ ⊕ ℤz₁z₂ ⊕ (ℤ/2)z₁³`, in which
+     `2(z₃ ∓ z₁z₂) ≠ 0`; it maps to zero, so (3.56) is not injective.
+
+   The conclusion does not depend on the signs in the closing-off computation: whatever the
+   signs, the vanishing of negative-degree bubbles (`m = µ`) and `B_{µ+1} = 1` force one of
+   `2z₁ = 0` or `2z₃ = ±2z₁z₂`, and either refutes both conjectures. The general solution is
+   `z_{2i+1} = ±z₁ z_{2i}` (`i ≥ 1`) when 2 is invertible; with `z₁² = 0` this shows that the
+   monomials `z_{2a₁}⋯z_{2a_r}` and `z₁z_{2a₁}⋯z_{2a_r}` span the bubble algebra, so its graded
+   dimension is at most `∏_{a≥1} (1 − q^{4a})^{−1} · (1 + πq²)`. This differs from `ξ₀` first
+   in q-degree 6 (odd part: 1 against 2).
+
+   **Corrected statement.** For [BE2]'s 2-category with a single odd colour, in which (5.7) is
+   `z_{2i+1} = (odd bubble) · z_{2i}` up to units, the bubble map `β_λ : Sym[d] → End(1_λ)` (`Sym`
+   the symmetric functions, `e_r` even of q-degree `4r`; `d` odd of q-degree 2, `d² = 0`) is an
+   isomorphism over any commutative ring with 2 invertible, so the bound above is attained.
+   The general-`ε` form of Conjecture 3.11 is [BE2]'s Nondegeneracy Conjecture for a single odd
+   colour. Transferring these statements to `U_π` uses the 2-equivalence between [EL] and [BE2]
+   sketched in [BE2] §2, which requires entry 1 at `λ = 0`; that comparison is not formalized.
+   The integral structure of `ΠHOM_{U_π}(1_λ, 1_λ)` is not determined here.
+
+   **Declarations.** On `master`: `eq_5_7_a`, `eq_5_7_b` ([BE2] (5.7): an odd-degree bubble is
+   the odd bubble times the bubble with one dot fewer), `oddBubble_sq` ([BE2] (1.24)),
+   `betaD` (the map `Sym[d] → End(1_λ)`), `betaD_de`, `betaD_dh`. Injectivity of `β_λ`, so the
+   dimension is exactly 1 in q-degree 6, is `OddMath.QuiverHecke.betaSYM_bijective` on the
+   research branch `research/odd-nondegeneracy`, for symmetrizable data, homogeneous
+   parameters and 2 invertible. The counterexample in `U_π` itself is not formalized.
+
+   **For the authors.** In weights `λ ≥ 2`, closing off the odd dot-cyclicity relation (3.15)
+   with `j + λ − 1` dots, as in the proof of Lemma 5.1, gives `(1 + (−1)^j) z_{j+1} = ±2 z_j z₁`;
+   for `j = 2` this is `2(z₃ ∓ z₁z₂) = 0`. So in characteristic `≠ 2` the two conjectured basis
+   elements `z₃` and `z₁z₂` of `HOM(1_λ, Π1_λ⟨6⟩)` are proportional, contradicting the first
+   bullet of Conjecture 3.11, and over `ℤ` the nonzero element `2(z₃ ∓ z₁z₂)` of `Ξ` lies in the
+   kernel of (3.56), contradicting the second bullet and Conjecture 3.12. Every odd generator
+   `z_{2i+1}` is `±z₁z_{2i}`, so the bubble algebra in characteristic `≠ 2` is
+   `k[z₂, z₄, …] ⊗ Λ[z₁]`, of graded dimension `∏_{a≥1} (1 − q^{4a})^{−1} (1 + πq²)` rather than
+   `ξ₀`. This matches Brundan–Ellis's `Sym[d]` and the theorem of Brundan–Kleshchev
+   (arXiv:2203.14149v3, Theorem 13.5, over algebraically closed fields of characteristic
+   `≠ 2`) that `Sym[d]` is the full endomorphism algebra of `1_λ` in odd `sl₂`.
+
 ## [BE2] J. Brundan, A. P. Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2
 
 Names in this section are in `OddMath.SKM` unless otherwise indicated.
