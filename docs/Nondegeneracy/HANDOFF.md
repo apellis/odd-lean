@@ -30,8 +30,9 @@ Next mathematical targets, in order:
 
 Start with [STATUS](STATUS.md) for established scope and claim boundaries.
 [SwappedNondegeneracy](SwappedNondegeneracy.md) is the written proof.
-Earlier dependency analyses, including the superseded conditional vacuum route
-(`QuiverHecke.nondegeneracy_of_vacuum_route`, #1056), are in git history.
+The Lean proof runs through the vacuum route of #1056, whose hypotheses the
+swapped bubble fields supply (proof-structure table in [STATUS](STATUS.md)).
+Earlier dependency analyses are in git history.
 
 ## Phase 1 field endpoint and Phase 2 boundary
 

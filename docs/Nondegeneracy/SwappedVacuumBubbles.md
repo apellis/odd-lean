@@ -1,5 +1,9 @@
 # Bubble moments on the swapped vacuum at positive height
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: proposed written derivation, not a Lean theorem.** Assume the
 specified full swapped action and its augmented inverse. For an odd colour
 at strictly positive external height, the source-placed odd bubble is

@@ -40,8 +40,10 @@ the window. The conclusion `nondegeneracy_of_vacuum_evaluations` is the
 field theorem `NondegeneracyConjecture cs` conditional on these data at
 every equal-weight upward pair, weight and degree.
 
-No vacuum evaluation is constructed here, and the explicit substitution
-and placement sign of the written proof are not yet instantiated.
+No vacuum evaluation is constructed here. The substitution and placement are
+instantiated for upward module actions by `UpwardModuleAction.toSwappedVacuumEvaluation`,
+and the evaluations for the swapped action are supplied in `VacuumRouteSwappedCharts`;
+the resulting theorem is `nondegeneracy_of_symmetrizer`.
 -/
 noncomputable section
 namespace OddMath.QuiverHecke

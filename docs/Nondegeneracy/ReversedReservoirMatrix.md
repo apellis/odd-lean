@@ -1,5 +1,9 @@
 # Reversed reservoir windows and the principal-mate obstruction
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: written component and matrix calculations, not Lean theorems.**
 The height reversal and both finite dotted-window comparisons below are
 proved from the existing inverse relations and dot slide. They construct

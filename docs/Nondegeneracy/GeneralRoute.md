@@ -1,5 +1,9 @@
 # A proposed route to super nondegeneracy
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: proposed.** This is a dependency graph, not a proof of
 `SKM.NondegeneracyConjecture`. Statements labelled proposed remain obligations
 unless an existing Lean declaration is explicitly named. Finite tests below do
@@ -11,7 +15,8 @@ This route supports Phase 1: compatible symmetrizable Cartan superdata with
 homogeneous scalar parameters, including mixed parity and adjacent odd colours.
 Finite-colour field constructions feed the proved arbitrary-colour and
 ground-ring reductions. Presentation base change and the characteristic-zero
-field-to-ring reduction are already formalized; the field input remains open.
+field-to-ring reduction are already formalized; the field input is proved in the
+symmetrizable homogeneous scope (`nondegeneracy_of_symmetrizer`).
 Do not replace homogeneous parameters by KL parameters or exclude odd heights.
 Phase 2 pursues inhomogeneous parameters for symmetrizable data. No proof for
 nonsymmetrizable data is pursued. The even benchmark and branch completion
@@ -250,7 +255,8 @@ as a theorem until A2 and C2 are established.**
 over every ordinary commutative ring with 2 invertible from
 `CharZeroFieldNondegeneracy D`. Presentation base change and the universal
 homogeneous-parameter comparison are implemented; see
-[GroundRingDescent](GroundRingDescent.md). The field input remains open.
+[GroundRingDescent](GroundRingDescent.md). The field input is proved in the symmetrizable
+homogeneous scope (`nondegeneracy_of_symmetrizer`).
 Phase 2 must justify its own parameter extension and any required descent;
 the homogeneous theorem does not remove its own parameter hypothesis.
 

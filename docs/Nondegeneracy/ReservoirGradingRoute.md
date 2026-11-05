@@ -1,5 +1,9 @@
 # Reservoir grading for `CentralInvertible`: route assessment
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: assessment of formalization routes, with the abstract part checked in Lean
 (`OddMath/SKM/RouquierGrading.lean`, see §4).** It concerns the two inputs of
 `SwappedHomInversion.md` §4 that come from the integer gradings (G6)–(G8) of

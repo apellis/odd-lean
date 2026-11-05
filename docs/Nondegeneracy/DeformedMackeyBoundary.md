@@ -1,5 +1,9 @@
 # First-order deformed Mackey boundary
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: written proof, partially formalized in Lean.** The corrected source
 operator, normalized long lifts and local full-ELV append-crossing triangularity
 are checked. The actual global polynomial projection, crossing-span kernel and

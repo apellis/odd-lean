@@ -27,9 +27,8 @@ This file assembles the checked reductions into one conditional statement,
   fed through `SwappedVacuumBlock.toSwappedVacuumEvaluation`, which packages
   `UpwardModuleAction.toSwappedVacuumEvaluation`.
 
-The inputs that are not yet proved for the constructed swapped action are
-recorded as the fields of `VacuumRouteSector`, split by the topic that
-discharges them:
+The inputs about the constructed swapped action are recorded as the fields of
+`VacuumRouteSector`, split by the topic that discharges them:
 * `VacuumBubblesPositiveHeight`: the left-bubble generating series at colours
   with `hᵢ(μ) > 0`, even and odd, and the odd bubble there;
 * `VacuumBubblesNonpositiveHeight`: the same at colours with `hᵢ(μ) ≤ 0`;
@@ -39,7 +38,9 @@ discharges them:
 * `VacuumChartCoherence`: the literal evaluation of every presented upward
   diagram at the reservoir-shifted vacuum (regular-probe chart coherence).
 
-The statement is intermediate: it carries these route hypotheses, which are open.
+The statement is a reduction step: for the swapped route bases the four inputs are
+proved (`VacuumRouteFields`, `VacuumRouteSwappedCharts`, `VacuumRouteSwappedPositiveField`,
+`VacuumRouteSwappedRightNegative`), which gives `nondegeneracy_of_symmetrizer`.
 -/
 
 noncomputable section
@@ -233,11 +234,11 @@ theorem VacuumRouteHypotheses.charZeroFieldNondegeneracy {D : SKM.Datum I X}
 
 /-- **The odd/mixed Nondegeneracy Conjecture from the vacuum route hypotheses**
 (Brundan–Ellis, arXiv:1701.04133v2, §8, in the research scope of
-`FieldScopeBoundary.md`). For a symmetrizable datum `D` satisfying the open route
+`FieldScopeBoundary.md`). For a symmetrizable datum `D` satisfying the route
 hypotheses `VacuumRouteHypotheses D sy`, the conjecture holds over every commutative
 ring in which `2` is invertible, for every homogeneous scalar system and every
-normalization. This is an intermediate statement: its route hypotheses are not yet
-discharged. -/
+normalization. A reduction step: the route hypotheses hold for the swapped route bases,
+and the resulting statement without them is `nondegeneracy_of_symmetrizer`. -/
 theorem nondegeneracy_of_vacuum_route {D : SKM.Datum I X} {sy : SKM.Symmetrizer D}
     (H : VacuumRouteHypotheses D sy) {R : Type w} [CommRing R] (h₂ : IsUnit (2 : R))
     {Sc : SKM.Scalars D R} (hh : Sc.Homogeneous) (cs : SKM.CScalars Sc) :

@@ -1,5 +1,9 @@
 # Swapped Hom assembly and finite-colour passage
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: proposed conditional written theorem, not a Lean theorem.** Given
 precisely the factor models listed in §1, the prescribed swapped Hom maps
 satisfy the entire finite-colour parity-supercategory presentation. Section 5

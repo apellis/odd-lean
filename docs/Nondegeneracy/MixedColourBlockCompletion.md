@@ -1,5 +1,9 @@
 # Repeated-outer-colour sector blocks and unequal probe transport
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: proposed component proof, not a Lean theorem.** The headline is
 that the prescribed crossing has execution braid difference
 `diag(-q_i C_ij)` on each of `(A_i A_j B_i, B_i A_j A_i)` and

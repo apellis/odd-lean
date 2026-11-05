@@ -1,5 +1,9 @@
 # Lowest and highest weight versions of the action
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 Status: **proposed conditional construction**. Its input is a genuine
 multicolour action, including the presentation comparison identified in
 ActionReview.md. The construction supplies the other weight orientation;
