@@ -1,7 +1,0 @@
-# The independently whiskered OLD weight crossings in triple coordinates
-
-`probeOldWeightCrossPrefix_via_total` compares the selected first-pair crossing, including its source and target associators, with the actual evaluated crossing component mapped by the prescribed third induction. `probeOldWeightCrossSuffix_via_total` compares the independently selected last-pair crossing after the actual first induction with the corresponding evaluated component. Both retain all specified supported intermediate and final stored blocks, and the negative-equal/positive-distinct scalar convention.
-
-The prefix and suffix total lemmas retain the literal global whiskerings. Their common-coordinate comparisons use the proved chosen input-object equalities; a generic heterogeneous comparison transports the unscaled component before reinstating its scalar. No braid, comparison, inverse or finiteness premise is introduced.
-
-The producer and paired occupied consumer pass scoped checks with warnings as errors and both transparency compatibility settings. The consumer applies both total and component comparisons to actual evaluated modules on nonempty mixed content, checks three odd strands with independently swapped intermediate paths, retains positive-exponent nonzero append outputs and audits all 40 owned declarations against the allowed axioms. The corrected and general braid equations are separate attachments of the checked stored-target relations.

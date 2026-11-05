@@ -1,7 +1,0 @@
-# Multicolour OLD braid on nested triple induction
-
-`nestedTripleCross_braid` compares the actual independent positive pair crossings on whole nested balanced-induction modules. `nestedPrefix_flatten` and `nestedSuffix_flatten` use the same prescribed triple flattening. Their six instances attach the proved direct coefficient braid, with no source-braid or comparison premise.
-
-`normalizedNestedTripleCross_braid` retains negative equal and positive distinct pair crossings. Each side crosses each of the three colour pairs once; the two scalar products agree without changing the chosen maps. Equal and distinct reduction lemmas identify the negative physical equal crossing and the positive mixed crossing separately. This is the uncorrected case; the repeated-outer polynomial correction remains a separate obligation, as does attachment to the chosen evaluated/canonical weight generators.
-
-The producer and paired consumer pass scoped checks with warnings as errors and both transparency compatibility options. The consumer audits all 19 owned declarations against `propext`, `Classical.choice` and `Quot.sound`. The consumer uses mixed and three-odd inputs, nonempty OLD representables and their parity shifts, arbitrary induced vectors, the literal three-level nested unit tensor, nonzero homogeneous interior parameters in original and twisted scalar families, and positive-exponent nonzero append outputs. Full integration verification remains separate.

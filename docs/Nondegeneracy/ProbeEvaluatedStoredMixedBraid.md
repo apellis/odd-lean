@@ -1,9 +1,0 @@
-# The corrected braid on the chosen evaluated stored-target generators
-
-`probeStoredMixedBraid_polynomial` proves the whole corrected relation in the actual full scalar-evaluated probe categories, with all seven append-to functors and arbitrary stored representatives at the six vertices. Its left side uses the independently chosen `probeAppendToCrossComponent` maps and negative equal crossings. Its right side is the ordered original-`Sc` correction in `probeStoredFirstDot`, `probeStoredMiddleDot` and `probeStoredLastDot`, each built from the prescribed `probeAppendToDotComponent` and actual induction maps.
-
-`probeStoredMixedBraid_native` retains the entire ordinary OLD grid map, and the three dot native lemmas retain their entire independently whiskered OLD maps. The faithful full-subcategory endomorphism algebra transports the polynomial without adding a braid, naturality, comparison, inverse or finiteness premise. The acting scalars are `parameterTwist D Sc`; the correction coefficients remain `Sc`. No restriction from a coefficient-power-truncated reservoir is used.
-
-The producer and paired occupied consumer pass scoped checks with warnings as errors and both transparency compatibility options. The consumer audits all 89 owned declarations against `propext`, `Classical.choice` and `Quot.sound`. It constructs actual evaluated probe modules on nonempty mixed content, proves all seven permutations for non-cons stored representatives, checks the native crossing/dot comparisons, applies the equation to arbitrary module vectors, tests mixed and three-odd strands and nonzero homogeneous interior parameters, and retains positive-exponent nonzero append outputs. Full integration verification remains separate.
-
-The remaining action attachment uses the chosen product-weight triple coordinates and native crossing/dot components. The generic uncorrected three-colour cube and the completed whole-weight multicolour record remain separate obligations.
