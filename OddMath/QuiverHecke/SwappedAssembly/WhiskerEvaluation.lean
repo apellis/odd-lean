@@ -85,6 +85,35 @@ theorem evalW_apply_whisker (gens : P.Generators) {a b : Obj (SKM.sig D)} (X : (
     erw [compList_whisker_eq_zero gens u v _ (Diagram.chain d) hw pu1 p1 pv1 pu q pv hd]
     simp
 
+/-- **Entries of a whiskered diagram up to equalities of boundary objects.** The evaluation
+of the whiskered layers of a diagram `d : a ⟶ b`, read on objects `A = u ⊗ a ⊗ v` and
+`B = u ⊗ b ⊗ v` given only up to equality, is block diagonal with blocks `F_{pu}` of the
+entries of `d`. -/
+theorem res_opList_ext_whisker_apply (gens : P.Generators) {a b : Obj (SKM.sig D)}
+    (d : a ⟶ b) (u : Obj (SKM.sig D)) (v : List (SKM.sig D).Colour) (hw : a.WhiskerOK u v)
+    {A C : Obj (SKM.sig D)} (eA : a.whisker u v = A) (eC : b.whisker u v = C)
+    (x : P.Mod Gs Ys A) {s x' y t : Sector I}
+    (ht : P.wt t = C.endR) (hta : P.wt t = A.endR)
+    (pu : SPath u.word s x') (q : SPath b.word x' y) (pv : SPath v y t)
+    [Fintype (SPath a.word x' y)] :
+    ((P.layerRep Gs Ys gens).toLocal.res C
+        ((P.layerRep Gs Ys gens).toLocal.opList ((Diagram.layers d).map (·.whisker u v))
+          ((P.layerRep Gs Ys gens).toLocal.ext A x)) : P.Mod Gs Ys C) s ⟨t, ht⟩
+        (((pu.append q).append pv).cast (congrArg Obj.word eC)) =
+      ∑ p : SPath a.word x' y,
+        x s ⟨t, hta⟩ (((pu.append p).append pv).cast (congrArg Obj.word eA)) ≫
+          eqToHom (by rw [P.pathFunctor_cast]; exact P.pathFunctor_append_append_obj pu p pv (Ys t)) ≫
+            (P.pathFunctor pu).map (compDiag gens d p q ((P.pathFunctor pv).obj (Ys t))) ≫
+              eqToHom (by
+                rw [P.pathFunctor_cast]; exact (P.pathFunctor_append_append_obj pu q pv (Ys t)).symm) := by
+  subst eA eC
+  have h := evalW_apply_whisker P gens (Finsupp.single d (1 : k)) u v hw x ht hta pu q pv
+  erw [LocalInterpretation.evalW_single, one_smul] at h
+  simp only [SPath.cast_rfl]
+  erw [h]
+  refine Finset.sum_congr rfl fun p _ => ?_
+  simp only [compEval, Finsupp.sum_single_index, zero_smul, one_smul]
+
 end ProbeReservoir
 
 end OddMath.QuiverHecke.SwappedAssembly
