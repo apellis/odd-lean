@@ -1,0 +1,94 @@
+# Phase 2: inhomogeneous parameters
+
+Phase 1 proves the nondegeneracy conjecture for symmetrizable Cartan superdata and
+homogeneous admissible parameters (`OddMath.QuiverHecke.nondegeneracy_of_symmetrizer`,
+under `Scalars.Homogeneous`, BE2 (1.31)). Phase 2 removes homogeneity for symmetrizable
+data. The benchmark is Brundan–Wang–Webster, arXiv:2505.22929, Theorem 5.6, which proves
+nondegeneracy in the purely even case for parameters with coefficients in an ℕ-graded ring.
+
+## Target statement
+
+`OddMath/SKM/GradedParameters.lean` states the target as a proposition.
+
+- `coefficientDegree sy i j p q = 2(dᵢ dᵢⱼ - dᵢ p - dⱼ q)` is the degree that a coefficient
+  `sᵢⱼ^{pq}` needs for the polynomial `Qᵢⱼ(u, v)` to be homogeneous of total degree
+  `2 dᵢ dᵢⱼ` when `u` has degree `2dᵢ` and `v` has degree `2dⱼ`. It is symmetric under
+  `(i, j, p, q) ↦ (j, i, q, p)` (`coefficientDegree_symm`).
+- `Scalars.GradedHomogeneous sy 𝒜 Sc`: for an ℕ-grading `𝒜` of the ground ring, every
+  `tᵢⱼ` lies in degree 0, and every nonzero `sᵢⱼ^{pq}` lies in degree
+  `coefficientDegree sy i j p q`. This degree is then nonnegative.
+- `Scalars.LowerDegree sy Sc`: every nonzero `sᵢⱼ^{pq}` has `coefficientDegree ≥ 0`. This
+  is the ungraded class: the monomials of `Qᵢⱼ` that are allowed in the graded setting are
+  exactly those of degree at most the leading degree.
+- `GradedCoefficientNondegeneracy D sy`: for every ℕ-graded commutative ring `k` with 2
+  invertible, every `Sc` satisfying `GradedHomogeneous` and every compatible `cs`, the
+  nondegeneracy conjecture holds.
+
+Checked consequences in the same file:
+
+- `Scalars.Homogeneous.coefficientDegree_eq_zero`: a homogeneous parameter has coefficient
+  degree 0 at each nonzero coefficient, so Phase 1 parameters satisfy `LowerDegree`
+  (`Scalars.Homogeneous.lowerDegree`) and are `GradedHomogeneous` for the trivial grading.
+- `ReesParameters.scalars sy Sc`: over `k[h]`, replace `sᵢⱼ^{pq}` by `sᵢⱼ^{pq} h^{deficit}`
+  with `deficit = coefficientDegree`. For `LowerDegree` parameters this is `GradedHomogeneous`
+  for the polynomial grading (`ReesParameters.gradedHomogeneous`), and its specialization at
+  `h = 1` returns `Sc` (`ReesParameters.scalarChange_specialize`).
+- `nondegeneracyConjecture_of_lowerDegree`: the target implies nondegeneracy for every
+  `LowerDegree` parameter over a ring with 2 invertible, by the Rees family and
+  `nondegeneracyConjecture_scalarChange`.
+
+## Comparison with BWW Theorem 5.6
+
+| BWW Thm 5.6 | Target | Status |
+|---|---|---|
+| Symmetrizable Cartan datum | `Symmetrizer D` | same |
+| Purely even data | Cartan superdata with parity | the target is more general |
+| Ground ring ℕ-graded, commutative | `GradedRing 𝒜` | same |
+| `tᵢⱼ` a unit in degree 0 | `tᵢⱼ ∈ 𝒜 0` (units by `Scalars`) | same |
+| `Qᵢⱼ` homogeneous of the leading degree | `GradedHomogeneous` | see the gap below |
+| Coefficient monomials `u^r v^s` for `0 ≤ r < -aᵢⱼ`, `0 ≤ s < -aⱼᵢ` | BE2 `Scalars` has `s` only for `0 < p < dᵢⱼ`, `0 < q < dⱼᵢ` | **gap** |
+| No restriction on 2 | `IsUnit 2` | intended Phase 2 hypothesis |
+| Root datum hypotheses of BWW | the BE2 weight lattice of `D` | as in Phase 1 |
+| Compatible bubble parameters | `cs : CScalars Sc` supplied | as in Phase 1 |
+
+**Gap in the parameter range.** BE2's `Scalars` carries the mixed coefficients `sᵢⱼ^{pq}`
+only for `p` and `q` both positive. BWW also allow the monomials with `p = 0` or `q = 0`
+(other than the leading pair `u^{dᵢⱼ}`, `v^{dⱼᵢ}`), in positive degree. Those polynomials
+cannot be expressed in the current `Scalars` structure. So `GradedCoefficientNondegeneracy`
+covers BWW's class restricted to the BE2 parameter shape. Covering the rest requires an
+extended parameter structure and a check that the BE2 relations and the Phase 1
+constructions accept it. That is a decision about the statement, recorded here as open.
+
+## Why the associated graded alone does not suffice
+
+Filter the algebra by degree. The associated graded algebra is a quotient of the algebra
+with the leading (homogeneous) parameters, so a basis theorem for the homogeneous algebra
+gives only an upper bound for the inhomogeneous one. That gives spanning, which is already
+known (`nondegeneracyConjecture_iff_injective`). Independence would need the Rees family over
+`k[h]` to be `h`-torsion free, which is equivalent to the conclusion. The usable reduction
+goes the other way: graded-homogeneous parameters over `k[h]` imply the inhomogeneous case
+by specialization at `h = 1`, as in `nondegeneracyConjecture_of_lowerDegree`.
+
+## Route to the target
+
+The Phase 1 proof uses homogeneity only through the grading of the supercategory
+(`isHomogeneous_gdeg`, `gradedSupercategory`), but that grading is load-bearing: it gives
+nilpotence of positive-degree elements in truncated categories, degree bounds on cyclotomic
+kernels, and degree bounds on inverse matrix entries. Each of these survives if the base
+ring is graded, with its degree-0 part a characteristic-zero field and positive-degree
+coefficients nilpotent. The plan:
+
+1. Reduce the target to the universal graded parameter ring (polynomial coefficients with
+   the coefficient degrees above, units adjoined for `t`), then to finite truncations
+   `K₀[s]/(s)^{≥ N}` over a characteristic-zero field `K₀`. The truncated rings are Artinian
+   and finite over `K₀`.
+2. Generalize the grading layer so that ring elements may carry positive degree, then
+   recheck the degree arguments of the field route over such a base.
+3. Rerun the detection and inverse-degree arguments of Phase 1 with base coefficients of
+   positive degree, which behave like the existing truncated coefficient generators.
+4. Descent to ordinary commutative rings with 2 invertible, as in Phase 1.
+5. All-even specialization and comparison with BWW Theorem 5.6.
+
+Main risks: the grading refactor touches every degree computation of the field route; the
+Phase 1 arguments that use that the base is a field (dimension counts, inverses) must be
+replaced by arguments over Artinian bases; the parameter-range gap above.
