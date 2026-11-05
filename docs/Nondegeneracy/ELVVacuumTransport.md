@@ -1,5 +1,9 @@
 # ELV vacuum transport: coefficient repair and orientation boundary
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: written coefficient and local polynomial transport proofs, not
 Lean theorems or a vacuum comparison.** The full affine equivalence in §3
 remains conditional. This audits the route at commit

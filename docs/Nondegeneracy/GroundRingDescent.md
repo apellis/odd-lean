@@ -6,7 +6,7 @@ nonsymmetrizable proof is pursued. The endpoint is the odd analog of the cited
 even benchmark, with a checked all-even specialization and 2 invertible.
 Historical proposals below do not enlarge that scope.
 
-**Status: the conditional ground-ring descent is formalized in Lean.**
+**Status: the ground-ring descent is formalized in Lean.**
 This note supports Brundan–Ellis, *Super Kac–Moody 2-categories*,
 arXiv:1701.04133v2, Theorem 8.1 and the §8 Nondegeneracy Conjecture.
 The implemented endpoint is
@@ -17,9 +17,9 @@ separating characteristic-zero fields and coefficient/matching-family
 specialization are implemented. The importing consumer is
 `scripts/NonVacuity/GroundRingNondegeneracy.lean`.
 
-The field-case input itself remains open; the current proposed field
-argument is [SwappedNondegeneracy](SwappedNondegeneracy.md).
-The descent is not a proof that its factor actions and recovery maps exist.
+The field-case input is proved for symmetrizable data and homogeneous parameters
+([SwappedNondegeneracy](SwappedNondegeneracy.md)); with the descent it gives
+`nondegeneracy_of_symmetrizer`.
 
 ## 1. Exact conclusion and source boundary
 

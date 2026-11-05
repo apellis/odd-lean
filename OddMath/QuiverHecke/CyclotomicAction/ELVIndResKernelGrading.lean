@@ -1,4 +1,4 @@
-import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernelNaturality
+import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelTensorGrading
 
 /-! # Grading of the induction-restriction coefficient kernel

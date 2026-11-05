@@ -1,5 +1,9 @@
 # Deformed cyclotomic ideal sum
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: the componentwise full-ELV ideal sum and canonical ground-ring-linear
 P cokernel are proved in `ELVIdealSum.lean` and `ELVCokernel.lean`.** The statements
 use the prescribed scalar datum (including its condition on 2 when odd colours

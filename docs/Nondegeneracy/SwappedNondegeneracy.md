@@ -5,11 +5,11 @@ parameters. Phase 2 will pursue inhomogeneous parameters; neither phase
 pursues nonsymmetrizable Cartan data. Branch completion and the required
 all-even comparison are specified in [FieldScopeBoundary](FieldScopeBoundary.md).
 
-**Status: full written proof, proposed until checked in Lean.** This is the
+**Status: written proof, formalized in Lean as [`nondegeneracy_of_symmetrizer`](../../OddMath/QuiverHecke/VacuumRouteSwappedRightNegative.lean).** This is the
 canonical theorem-and-proof entrypoint for the swapped Hom construction.
 The factor construction, conditional action assembly and bounded detecting
-family below compose to a written proof under the hypotheses stated here.
-They have not been composed into a Lean proof of nondegeneracy. Older
+family below compose to the proof; the Lean proof follows the vacuum route described
+in [STATUS](STATUS.md#proof-structure). Older
 conditional notes retain their local hypotheses and historical boundaries;
 those boundaries are discharged here by the linked constructions, not by
 assuming a detecting action exists.

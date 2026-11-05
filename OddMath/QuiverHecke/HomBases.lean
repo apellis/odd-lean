@@ -7,6 +7,7 @@ import OddMath.QuiverHecke.WidthZero
 import OddMath.SKM.BubbleCoefficientBasis
 import OddMath.SKM.DimensionFormula
 import OddMath.SKM.GroundRingNondegeneracy
+import OddMath.SKM.SymProductFormula
 
 /-!
 # Bases of 2-morphism spaces and graded dimensions
@@ -35,6 +36,9 @@ is invertible.
   over the decorated matchings of the shifted dimensions of `SYM`.
 * `homDimension_eq_form_mul_symDimension`: Theorem 12.1, equation (dum): the graded superdimension of
   `Hom(E_a 1_λ, E_b 1_λ)` is `⟨e_a 1_λ, e_b 1_λ⟩` times the graded superdimension of `SYM`.
+* `homDimension_eq_form_mul_tprod_symFactor`: the same with the graded superdimension of `SYM`
+  written as the product of `(1 - q^{deg e_{i,r}})⁻¹` over the even generators and
+  `1 + π q^{2 d_i}` over the odd generators (`SKM.symDimension_eq_tprod`).
 
 ## Hypotheses compared with the source
 
@@ -45,6 +49,8 @@ also assume `DegreeLocallyFinite`, which holds for finitely many colours.
 -/
 
 noncomputable section
+
+open scoped PowerSeries.WithPiTopology
 
 namespace OddMath.QuiverHecke
 
@@ -224,6 +230,21 @@ theorem homDimension_eq_form_mul_symDimension (h₂ : (2 : k) ≠ 0) (hc : Sc.Ho
         SKM.symDimension Q.skmSymmetrizer k σ :=
   SKM.hom_dimension_eq_form_mul_sym Q cs hc hf
     (nondegeneracy_of_symmetrizer Q.skmSymmetrizer (IsUnit.mk0 _ h₂) hc cs) μ a b hab σ hσ
+
+/-- **BE2 Theorem 12.1, equation (dum), with the product formula for `SYM`** (the product in
+the corrected form of ERRATA [BE2] 8): the graded superdimension of `Hom(E_a 1_λ, E_b 1_λ)`
+(with `π ↦ σ`, `σ² = 1`) is `⟨e_a 1_λ, e_b 1_λ⟩` times the coefficientwise convergent product
+of `(1 - q^{deg e_{i,r}})⁻¹` over the even generators `e_{i,r}` and `1 + σ q^{2 d_i}` over the
+odd generators `δ_i` of `SYM`. -/
+theorem homDimension_eq_form_mul_tprod_symFactor (h₂ : (2 : k) ≠ 0) (hc : Sc.Homogeneous)
+    (cs : SKM.CScalars Sc) (hf : Q.skmSymmetrizer.DegreeLocallyFinite) (μ : X)
+    (a b : List (SKM.Letter I)) (hab : SKM.wt Q.toSKM 0 a = SKM.wt Q.toSKM 0 b)
+    (σ : ℚ) (hσ : σ ^ 2 = 1) :
+    SKM.homDimension Q.skmSymmetrizer cs hc hf μ a b σ =
+      signLaurent σ hσ (sesquilinearForm Q (algebraWord Q μ a) (algebraWord Q μ b)) *
+        ((∏' g, SKM.symFactor Q.skmSymmetrizer σ g : PowerSeries ℚ) : LaurentSeries ℚ) := by
+  rw [homDimension_eq_form_mul_symDimension Q h₂ hc cs hf μ a b hab σ hσ,
+    SKM.symDimension_eq_tprod Q.skmSymmetrizer k hf σ hσ]
 
 end RootDatum
 

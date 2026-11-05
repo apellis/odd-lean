@@ -1,7 +1,0 @@
-# Multicolour OLD braid on direct triple induction
-
-`triplePrefix_supernatural` and `tripleSuffix_supernatural` retain the actual independent OLD source whiskers. `directTripleCross_braid` proves their balanced-induction three-path relation on entire direct triple modules, with no supplied braid, comparison or inverse premise. The coefficient quotient supplies the source relation, and `transformComponent_multicolour_braid` cancels the two matching superopposite composition signs.
-
-The producer and paired occupied consumer pass scoped checks with warnings as errors and both transparency compatibility options. The consumer audits all four owned declarations against `propext`, `Classical.choice` and `Quot.sound`. It applies the relation at mixed and three-odd moving strands, occupied nonempty OLD representables, a parity-shifted input, arbitrary induced vectors and the literal canonical unit tensor. It also retains nonzero homogeneous interior parameters in the original and twisted scalar families and positive-exponent nonzero append outputs. Full integration verification remains separate.
-
-The theorem uses positive coefficient crossings. The independent rectangular pair crossings must still be attached using the six chosen triple-comparison squares, and the negative equal-crossing normalization must be retained. The repeated-outer case must separately identify the ordered original-parameter three-dot correction. No complete probe multicolour action is asserted here.

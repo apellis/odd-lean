@@ -67,10 +67,21 @@ is the actual graded superdimension of `SYM`; the product printed in the proof o
 Theorem 12.1 needs the odd-colour correction of ERRATA [BE2] 8,
 `S = ∏_{i even} ∏_{r≥1} (1 − q_i^{2r})⁻¹ · ∏_{i odd} (1 + π q_i²) ∏_{r≥1} (1 − q_i^{4r})⁻¹`.
 
+The coefficients of `S` count monomials of `SYM` (`SYM.componentBasis`,
+`SYM.finrank_component`, `symDimension_coeff_eq_card`). Expanding the product monomial by
+monomial gives the product identity as formal power series in `q`, with `π ↦ s`:
+`SKM.hasProd_symFactor` states that the factors `SKM.symFactor` (`(1 − q^{deg e_{i,r}})⁻¹` for
+the even generators `e_{i,r}`, `1 + s q^{2 d_i}` for the odd generators `δ_i`) have product
+`S` in `PowerSeries ℚ` with the coefficientwise topology, and `SKM.symDimension_eq_tprod`
+reads it in Laurent series. The generic step is `MonomialSeries.hasProd_monomialSeries`.
+Composed with (dum):
+
+  `dim_{q,π} Hom(E_a 1_λ, E_b 1_λ) = ⟨e_a 1_λ, e_b 1_λ⟩ · ∏_g symFactor g`
+
+(`homDimension_eq_form_mul_tprod_symFactor`).
+
 ## Open
 
-* The product formula for `S` itself is not formalized; (dum) is stated with `S` defined as the
-  graded superdimension of `SYM`.
 * `DegreeLocallyFinite` is an intermediate hypothesis of the dimension statements; it holds
   for finitely many colours. The infinite-colour reading is ERRATA [BE2] 15.
 * Inhomogeneous parameters (Phase 2) are not covered.

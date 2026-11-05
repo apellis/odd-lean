@@ -1,5 +1,0 @@
-# Prescribed cap inversion on absent output blocks
-
-`elvWeightAbsentCapInverse_nonempty` fills the absent block case of BE (1.13). Absence forces nonpositive categorical height, and the cap range assumes nonnegative height, so the height is zero. The already constructed unit inverse has an empty finite window; the same principal inverse supplies the prescribed cap inverse. The actual cap-power rows retain their grades, and no target-vanishing or inverse assumption is supplied.
-
-`elvWeightAbsentCapFamily_nonempty` bundles these inverses over all input weight modules using only the given principal and cap-row supernatural families. Its concrete consumer covers both moving parities, the vacuum weight block, parity-shifted representables and a canonical odd input map. The strict producer and paired consumer have passed with all 41 owned declarations audited against the standard axiom allowlist. The empty-window algebra is proved with abstract category endpoints before substituting the weight functors. Supported content inversion remains separate.

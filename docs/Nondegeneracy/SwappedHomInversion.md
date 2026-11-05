@@ -1,5 +1,9 @@
 # Same-colour inversion with the probe on the precomposition side
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: proposed written proof, not a Lean theorem.** On each specified
 finite homogeneous reservoir quotient, the prescribed same-colour augmented
 map on `Hom(T(-muP),W(muM))` has a two-sided inverse when T is the unit-dot

@@ -1,5 +1,9 @@
 # Deformed all-prefix QP calculation
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: the signed all-word QP identity and full ELV P descent are formalized.** The checked
 library convention retains a minus sign for each repeated-even factor;
 see §3. Old-generator balance and the quotient map P are proved in §4.

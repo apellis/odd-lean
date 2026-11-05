@@ -1,7 +1,0 @@
-# Rectangular triple-induction crossing comparisons
-
-`inductionTripleFlattening_prefix_rectangular` and `inductionTripleFlattening_suffix_rectangular` intertwine the two independent rectangular pair crossings with their literal source whiskers. Both use the same prefix-first chosen triple flattening; the suffix proof uses the proved equality of the two ordinary flattening orders. The intermediate category traversed by a pair may differ between the source and target orders. No comparison or braid premise is supplied.
-
-These identities provide the six squares required for the independently whiskered multicolour module braid. The remaining assembly must retain the superopposite composition signs and, in the repeated-outer case, the original-parameter ordered correction. Those relations are not conclusions of the comparison identities alone.
-
-The producer and paired consumer pass scoped checks with warnings as errors and both transparency compatibility options. The consumer audits all four owned declarations against `propext`, `Classical.choice` and `Quot.sound`. Its applications use actual mixed OLD crossings, three odd moving strands, occupied representables, both moving parities in changing fixed-content categories, and a distinct-colour rectangle whose two middle categories differ while its upper target is literally shared. It also retains positive-exponent nonzero append outputs. Full integration verification remains separate.

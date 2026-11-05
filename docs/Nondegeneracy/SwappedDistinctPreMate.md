@@ -1,5 +1,9 @@
 # Distinct-colour precomposition mate
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: canonical distinct left-mate invertibility is checked at every
 weight from the existing Rouquier multicolour relations, with no new
 left-mate or cyclicity premise.** This evaluates

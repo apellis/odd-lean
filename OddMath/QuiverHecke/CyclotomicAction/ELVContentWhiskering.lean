@@ -2,7 +2,7 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.CyclotomicAction.ELVInductionAssociativity
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionWhiskering
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentSingleLetterRelations
 
 /-! # Content induction and independent whiskering

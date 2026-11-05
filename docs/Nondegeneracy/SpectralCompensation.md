@@ -1,5 +1,9 @@
 # Spectral compensation: exact targets and an actual coefficient check
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 This separates a verified one-colour coupling calculation, an algebraic
 weighted-cover calculation, and the outstanding categorical comparison.
 The intended general scope is characteristic zero with symmetrizable,

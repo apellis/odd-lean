@@ -1,4 +1,5 @@
-import OddMath.QuiverHecke.HalfTurn.QuotientEquivalence
+import OddMath.QuiverHecke.HalfTurn.CoefficientGenerators
+import Mathlib.LinearAlgebra.Quotient.Basic
 import OddMath.QuiverHecke.HalfTurn.Homogeneous
 import OddMath.QuiverHecke.CyclotomicAction.ELVSourceQuotientComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVSourcePowerComparison

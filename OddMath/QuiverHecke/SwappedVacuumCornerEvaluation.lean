@@ -133,10 +133,11 @@ end UpwardModuleAction
 
 variable (D Sc) in
 /-- **A corner evaluation of an upward module action at source word `s`.** The fields
-are the inputs of `SwappedVacuumCoordinates.md` §§2–5 not yet supplied by the swapped
-action: submodules `K t` (the transformed ideal), evaluation maps into the quotients,
-the generator square on each layer (if `v` evaluates to the class of `y`, then the layer
-applied to `v` evaluates to the class of `y ≫ (1 ⊗ layer)`), and the vacuum value. The
+are the inputs of `SwappedVacuumCoordinates.md` §§2–5 (for the swapped action they are
+supplied by `VacuumRouteIndex.swappedCornerEvaluation`): submodules `K t` (the transformed
+ideal), evaluation maps into the quotients, the generator square on each layer (if `v`
+evaluates to the class of `y`, then the layer applied to `v` evaluates to the class of
+`y ≫ (1 ⊗ layer)`), and the vacuum value. The
 square is consistent because the ideal of §5 is closed under right composition. -/
 structure VacuumCornerEvaluation {μ : X} (A : UpwardModuleAction D Sc μ) (s : List I)
     (raw : SKM.SYM D k →ₐ[k] Module.End k (A.V s)) (vacuum : A.V s) where

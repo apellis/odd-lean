@@ -4,7 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightMixedCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightDistinctSlides
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightTripleCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightTripleInduction
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightDistinctCrossing
 
 /-! # Stored-target coordinates of the selected OLD weight crossings
 

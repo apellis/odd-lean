@@ -1,5 +1,0 @@
-# The prescribed global OLD probe dot
-
-`probeOldActionDot` is the chosen signed OLD append dot on every original-weight induction block. Its predecessor formula is exactly conjugation of `probeAppendToInductionDot` by the selected induction-component equality; the absent branch acts on the zero evaluated module. Its degree is the moving colour parity, including odd colours, and naturality retains the Koszul sign against odd input maps.
-
-The strict producer and paired concrete ordinary-probe-module consumer pass for both moving parities, mixed occupied contents, absent vacuum blocks and actual odd input maps. All 21 owned declarations pass the standard axiom audit. The full build, global axiom audit and all non-vacuity checks passed in [#1011](https://github.com/apellis/odd-lean/pull/1011), at source head `77756d711f4e30fa50de52363f3a3d84e3075b81` ([CI run](https://github.com/apellis/odd-lean/actions/runs/41684396198)). Whole-dot invertibility is a separate attachment using the evaluated OLD module unit theorem; no arbitrary unevaluated old dot-unit assertion is made here.

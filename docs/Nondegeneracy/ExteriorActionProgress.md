@@ -1,5 +1,9 @@
 # Exterior coefficients: a same-factor obstruction and surviving route
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 ## Verified obstruction
 
 The separating-action construction must distinguish an abstract coefficient

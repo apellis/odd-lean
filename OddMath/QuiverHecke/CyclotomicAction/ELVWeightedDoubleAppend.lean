@@ -1,5 +1,6 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedPairAppend
-import OddMath.QuiverHecke.CyclotomicAction.ELVInductionSquareComposition
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionSquareTransform
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionComp
 
 /-! # Iterated weighted append comparison
 
