@@ -89,4 +89,16 @@ def Supercategory.restrictScalars [Supercategory R C] :
     id_mem := fun X => Supercategory.id_mem (R := R) X
     comp_mem := fun hf hg => Supercategory.comp_mem (R := R) hf hg }
 
+/-- The parity projections of the restricted supercategory are those of the original one. -/
+theorem Supercategory.proj_restrictScalars [Supercategory R C] (p : ZMod 2) {X Y : C}
+    (f : X ⟶ Y) :
+    letI := Linear.restrictScalars K R C
+    letI := Supercategory.restrictScalars K R C
+    Supercategory.proj K p f = Supercategory.proj R p f := by
+  let _ := Linear.restrictScalars K R C
+  let _ := Supercategory.restrictScalars K R C
+  exact Supercategory.proj_eq_of_add (R := K)
+    (Supercategory.proj_add_proj_add_one (R := R) p f).symm
+    (Supercategory.proj_mem (R := R) p f) (Supercategory.proj_mem (R := R) (p + 1) f)
+
 end OddMath.Diagrams
