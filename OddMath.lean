@@ -812,6 +812,7 @@ import OddMath.Diagrammatics.Even.Fixtures
 import OddMath.Diagrammatics.Even
 import OddMath.Diagrammatics.OddDots
 import OddMath.Diagrams.CoefficientGradedSupercategory
+import OddMath.Diagrams.BasisGrading
 import OddMath.Diagrams.BoxProductCoefficientGraded
 import OddMath.Diagrams.CoefficientGrading
 import OddMath.Diagrams.GradedTensor
