@@ -2,7 +2,9 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumRightwardMoments
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeRightwardVacuumCupInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumCapMoments
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumWholeInput
 
 /-! # Even moments of the rightward vacuum bubble entries
 
