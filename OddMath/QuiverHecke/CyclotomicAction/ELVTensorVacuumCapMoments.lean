@@ -248,11 +248,11 @@ private theorem mk_eq_map_of_coeff {S R : Type*} [CommRing S] [Ring R] (φ : S �
   exact h l
 
 /-- Left multiplication by the polynomial coefficients on the coefficient quotient. -/
-private def capCoefficientLmul : MvPolynomial (I × ℕ) k →ₐ[k] Module.End k AQ :=
+def capCoefficientLmul : MvPolynomial (I × ℕ) k →ₐ[k] Module.End k AQ :=
   (Algebra.lmul k AQ).comp (polynomialToPower D cutoff L)
 
 omit [Fintype I] in
-private theorem capCoefficientLmul_apply (p : MvPolynomial (I × ℕ) k) (w : AQ) :
+theorem capCoefficientLmul_apply (p : MvPolynomial (I × ℕ) k) (w : AQ) :
     capCoefficientLmul D cutoff L p w = polynomialToPower D cutoff L p * w := rfl
 
 omit [Fintype I] in
@@ -337,7 +337,7 @@ private theorem even_reservoir_coefficient (hi : D.parity i = 0) (hN : 0 < cutof
 
 /-- The reservoir series of the tensor vacuum at an even colour, in the decode
 chart: `T(z) = 1/E(-z)`, the complete coefficients. -/
-private theorem even_reservoir_series (hi : D.parity i = 0) (hN : 0 < cutoff i) :
+theorem tensorVacuum_even_reservoir_series (hi : D.parity i = 0) (hN : 0 < cutoff i) :
     PowerSeries.mk (fun l => tensorVacuumEndDecode D Sc m cutoff L
         ((adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ (cutoff i - 1 + l)) ≫
           tensorPowerVacuumCap D Sc m cutoff L i hN)) =
@@ -362,7 +362,8 @@ private theorem odd_probe_polynomial (hi : D.parity i = 1) :
   simp only [map_pow, map_add, Polynomial.aeval_X, map_one]
   exact shiftedPreDot_odd_polynomial D Sc m R₀ i hi H
 
-private theorem even_probe_polynomial (hi : D.parity i = 0) :
+/-- At an even colour the probe dot satisfies `(x - 1)^(m i) = 0` as a cap polynomial. -/
+theorem shiftedPreDot_even_capPolynomial (hi : D.parity i = 0) :
     SwappedVacuum.capPolynomial
       (fun n => ((Polynomial.X - 1 : Polynomial k) ^ m i).coeff n) (m i)
       (shiftedPreDot D Sc m R₀ i H) = 0 := by
@@ -388,7 +389,8 @@ private theorem odd_slide (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) :
   simpa only [hi, koszulSign_one_one, neg_one_zsmul, neg_one_smul] using hs
 
 include sy hc in
-private theorem even_slide (hi : D.parity i = 0) (hP : 0 < probeCutoff D m i) :
+/-- The even-colour central slide of the A6 bend, with the unit Koszul sign made explicit. -/
+theorem evaluatedMixedBend_even_slide_sub (hi : D.parity i = 0) (hP : 0 < probeCutoff D m i) :
     evaluatedMixedBend D Sc m cutoff bound i hP H ≫ evaluatedPostDot D Sc m cutoff bound i H -
       (1 : k) • (shiftedPreDot D Sc m R₀ i H ≫ evaluatedMixedBend D Sc m cutoff bound i hP H) =
       shiftedPreCap D Sc m R₀ i hP H ≫ (adjunction K).unit.app V := by
@@ -603,8 +605,9 @@ theorem tensorVacuumNegativeCap_even_moments
     (evaluatedPostDot D Sc m cutoff bound i H) (evaluatedMixedBend D Sc m cutoff bound i hP H)
     ((adjunction K).unit.app V) (shiftedPreCap D Sc m R₀ i hP H)
     (tensorPowerVacuumCap D Sc m cutoff L i hN) (cutoff i) hPN
-    (even_slide D Sc m cutoff L sy hc i hi hP) hwin (even_probe_polynomial D Sc m cutoff L i hi)
-    j B hB (even_reservoir_series D Sc m cutoff L i hi hN) l
+    (evaluatedMixedBend_even_slide_sub D Sc m cutoff L sy hc i hi hP) hwin
+    (shiftedPreDot_even_capPolynomial D Sc m cutoff L i hi)
+    j B hB (tensorVacuum_even_reservoir_series D Sc m cutoff L i hi hN) l
   have e1 := LinearMap.congr_fun h1 (tensorVacuumDecodeLinear D Sc m cutoff L z)
   rw [tensorVacuumEndDecode_apply, capCoefficientLmul_apply] at e1
   exact e1
@@ -626,7 +629,7 @@ theorem tensorVacuumZeroHeightCap_even_moments
       polynomialToPower D cutoff L (PowerSeries.coeff (l + 1)
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
         tensorVacuumDecodeLinear D Sc m cutoff L z := by
-  have hs := even_slide D Sc m cutoff L sy hc i hi hP
+  have hs := evaluatedMixedBend_even_slide_sub D Sc m cutoff L sy hc i hi hP
   rw [← hsb] at hs
   have hwin : ∀ a < cutoff i, (adjunction K).unit.app V ≫
       (evaluatedPostDot D Sc m cutoff bound i H ^ a) ≫ tensorPowerVacuumCap D Sc m cutoff L i hN =
@@ -637,8 +640,8 @@ theorem tensorVacuumZeroHeightCap_even_moments
     (evaluatedPostDot D Sc m cutoff bound i H) s
     ((adjunction K).unit.app V) (shiftedPreCap D Sc m R₀ i hP H)
     (tensorPowerVacuumCap D Sc m cutoff L i hN) (cutoff i) hcut hs hwin
-    (even_probe_polynomial D Sc m cutoff L i hi)
-    (even_reservoir_series D Sc m cutoff L i hi hN) l
+    (shiftedPreDot_even_capPolynomial D Sc m cutoff L i hi)
+    (tensorVacuum_even_reservoir_series D Sc m cutoff L i hi hN) l
   have e1 := LinearMap.congr_fun h1 (tensorVacuumDecodeLinear D Sc m cutoff L z)
   rw [tensorVacuumEndDecode_apply, capCoefficientLmul_apply] at e1
   convert e1 using 3

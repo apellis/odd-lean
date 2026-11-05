@@ -67,6 +67,13 @@ variable (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (i : I)
 local notation "p₀" => SPath.centralUpDn i (SKM.wt D ν₀ [SKM.dn i]) ν₀ ((0, 0) : Sector I)
   ⟨true, trivial⟩
 
+/-- The cap target comparison `paddedVacuumCapTargetIso` is an `eqToHom`. -/
+theorem paddedVacuumCapTargetIso_hom_eq_eqToHom :
+    ∃ h, (paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H).hom = eqToHom h := by
+  rw [paddedVacuumCapTargetIso, Iso.trans_hom, Functor.mapIso_hom, Functor.mapIso_hom,
+    capPullbackSelfIso_hom, eqToIso.hom, eqToHom_map, eqToHom_map, eqToHom_trans]
+  exact ⟨_, rfl⟩
+
 include sy hc in
 /-- **Leftward vacuum cap inverse with bubble-entry columns.** For leftward data
 satisfying the positive inverse equations at an input equal to the vacuum sector
