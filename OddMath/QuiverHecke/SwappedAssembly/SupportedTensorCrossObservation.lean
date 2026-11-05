@@ -27,9 +27,6 @@ open CategoryTheory StringDiagrams Supercategory OddMath.SKM BicategoryStruct
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
 open CyclotomicAction ELVOld
 
-local notation "colApp" =>
-  @HAppend.hAppend (List (Col I X)) (List (Col I X)) (List (Col I X)) instHAppendOfAppend
-
 universe u
 local instance tensorCrossObservationHomPi {k : Type u} [CommRing k]
     (A C : PiSCat.{u,u,u + 1} k) :
@@ -174,6 +171,8 @@ local notation "cS" => tensorSourceContent D ΛP ΛR s
 local notation "P" => elvProbeReservoir D Sc m cutoff N ΛP ΛR hP hR
 local notation "Q" => interpretation D Sc m cutoff N ΛP ΛR hP hR
   (tensorSourceFamily D Sc m cutoff ΛP ΛR L s) (tensorTargetFamily D Sc m cutoff ΛP ΛR L)
+local notation "colApp" =>
+  @HAppend.hAppend (List (Col I X)) (List (Col I X)) (List (Col I X)) instHAppendOfAppend
 
 section Same
 variable (ν : X) (u v : List (Letter I)) (i : I)
