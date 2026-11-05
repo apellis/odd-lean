@@ -300,11 +300,12 @@ theorem diagonal_dots_exchange (i : I) (H : modulePiCategory D Sc m ⟶ R₀) :
 
 /-- A fixed-content nilpotence exponent works on the actual mixed
 reservoir dot at every regular-probe Hom object. -/
-theorem diagonalPostDot_pow_zero (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (i : I) :
+theorem diagonalPostDot_pow_zero
+    (hdot : TruncatedAppendDotNilpotent D Sc reservoirCutoff bound) (i : I) :
     ∃ n : ℕ, 0 < n ∧ ∀ H : modulePiCategory D Sc m ⟶ R₀,
       diagonalPostDot D Sc m reservoirCutoff bound i H ^ n = 0 := by
   obtain ⟨n, hn, hp⟩ := contentInductionDot_module_pow_zero D Sc reservoirCutoff bound
-    (truncatedAppendDotNilpotent D Sc reservoirCutoff sy hc bound) [] i
+    hdot [] i
   refine ⟨n, hn, fun H => ?_⟩
   have h := hp (shiftedPreSourceObject D Sc m R₀ i H)
   rw [contentInductionDot_component] at h
@@ -314,11 +315,12 @@ theorem diagonalPostDot_pow_zero (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) 
 
 /-- The target's restricted reservoir dot has a positive nilpotence
 exponent at this fixed content, on every regular-probe Hom object. -/
-theorem evaluatedPostDot_pow_zero (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (i : I) :
+theorem evaluatedPostDot_pow_zero
+    (hdot : TruncatedAppendDotNilpotent D Sc reservoirCutoff bound) (i : I) :
     ∃ n : ℕ, 0 < n ∧ ∀ H : modulePiCategory D Sc m ⟶ R₀,
       evaluatedPostDot D Sc m reservoirCutoff bound i H ^ n = 0 := by
   obtain ⟨n, hn, hp⟩ := contentInductionDot_module_pow_zero D Sc reservoirCutoff bound
-    (truncatedAppendDotNilpotent D Sc reservoirCutoff sy hc bound) [] i
+    hdot [] i
   refine ⟨n, hn, fun H => ?_⟩
   have h := hp (H.obj N₀)
   rw [contentInductionDot_component] at h

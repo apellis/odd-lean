@@ -62,10 +62,10 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 local notation "R₀" => contentModuleTarget D Sc reservoirCutoff bound (0 : Multiset I)
 local notation "N₀" => probeOldVacuumRegular D Sc m
 
-include sy hc in
 /-- The signed mate slide on the actual regular-probe evaluated mixed
 bend. All its maps are the given raw dot, shifted cap and reservoir unit. -/
-theorem evaluatedMixedBend_odd_slide (i : I) (hi : D.parity i = 1)
+theorem evaluatedMixedBend_odd_slideOf
+    (hdot : TruncatedAppendDotNilpotent D Sc reservoirCutoff bound) (i : I) (hi : D.parity i = 1)
     (hP : 0 < probeCutoff D m i) (H : modulePiCategory D Sc m ⟶ R₀) :
     evaluatedMixedBend D Sc m reservoirCutoff bound i hP H ≫
         evaluatedPostDot D Sc m reservoirCutoff bound i H -
@@ -73,8 +73,8 @@ theorem evaluatedMixedBend_odd_slide (i : I) (hi : D.parity i = 1)
         (shiftedPreDot D Sc m R₀ i H ≫ evaluatedMixedBend D Sc m reservoirCutoff bound i hP H) =
       shiftedPreCap D Sc m R₀ i hP H ≫
         (adjunction (contentAppend D Sc reservoirCutoff bound (0 : Multiset I) [i])).unit.app (H.obj N₀) := by
-  obtain ⟨n, hn, hd⟩ := diagonalPostDot_pow_zero D Sc m reservoirCutoff bound sy hc i
-  obtain ⟨l, hl, hy⟩ := evaluatedPostDot_pow_zero D Sc m reservoirCutoff bound sy hc i
+  obtain ⟨n, hn, hd⟩ := diagonalPostDot_pow_zero D Sc m reservoirCutoff bound hdot i
+  obtain ⟨l, hl, hy⟩ := evaluatedPostDot_pow_zero D Sc m reservoirCutoff bound hdot i
   have hd' : diagonalPostDot D Sc m reservoirCutoff bound i H ^ (n + l) = 0 :=
     pow_eq_zero_of_le (by omega) (hd H)
   have hy' : evaluatedPostDot D Sc m reservoirCutoff bound i H ^ (2 * (n + l)) = 0 :=
@@ -88,5 +88,20 @@ theorem evaluatedMixedBend_odd_slide (i : I) (hi : D.parity i = 1)
     simpa only [series, Category.assoc] using he
   rw [hs, hi, koszulSign_one_one, neg_one_zsmul, sub_neg_eq_add]
   exact series_slide _ (shiftedPreDot_isUnit D Sc m R₀ i hi H) _ _ _ hy'
+
+include sy hc in
+/-- For homogeneous parameters: the signed mate slide on the actual regular-probe evaluated mixed
+bend. All its maps are the given raw dot, shifted cap and reservoir unit. -/
+theorem evaluatedMixedBend_odd_slide (i : I) (hi : D.parity i = 1)
+    (hP : 0 < probeCutoff D m i) (H : modulePiCategory D Sc m ⟶ R₀) :
+    evaluatedMixedBend D Sc m reservoirCutoff bound i hP H ≫
+        evaluatedPostDot D Sc m reservoirCutoff bound i H -
+      koszulSign (D.parity i) (D.parity i) •
+        (shiftedPreDot D Sc m R₀ i H ≫ evaluatedMixedBend D Sc m reservoirCutoff bound i hP H) =
+      shiftedPreCap D Sc m R₀ i hP H ≫
+        (adjunction (contentAppend D Sc reservoirCutoff bound (0 : Multiset I) [i])).unit.app (H.obj N₀) :=
+  evaluatedMixedBend_odd_slideOf D Sc m reservoirCutoff bound
+    (truncatedAppendDotNilpotent D Sc reservoirCutoff sy hc bound) i hi hP H
+
 end ProbeVacuumCap
 end OddMath.QuiverHecke.ELVOld

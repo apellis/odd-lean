@@ -256,7 +256,8 @@ theorem paddedVacuumDx_odd (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1) :
     (vacuumSectorEvaluation_eq D Sc m cutoff bound ΛP ΛR hcP hcR).symm _ hA
   obtain ⟨nA, hnA⟩ := hA' 
   obtain ⟨nB, _positive, hnB⟩ := ProbeVacuumCap.diagonalPostDot_pow_zero D (parameterTwist D Sc) m cutoff bound
-    sy (parameterTwist_homogeneous D Sc hc) i
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound) i
   let n := max nA nB
   have ha' := pow_eq_zero_of_le (Nat.le_max_left nA nB) hnA
   have hb' := pow_eq_zero_of_le (Nat.le_max_right nA nB) (hnB (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H))
@@ -351,7 +352,8 @@ theorem paddedVacuumDx_even (hP : 0 < probeCutoff D m i) (hi : D.parity i = 0) :
     (vacuumSectorEvaluation_eq D Sc m cutoff bound ΛP ΛR hcP hcR).symm _ hA
   obtain ⟨nA, hnA⟩ := hA' 
   obtain ⟨nB, _positive, hnB⟩ := ProbeVacuumCap.diagonalPostDot_pow_zero D (parameterTwist D Sc) m cutoff bound
-    sy (parameterTwist_homogeneous D Sc hc) i
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound) i
   let n := max nA nB
   have ha' := pow_eq_zero_of_le (Nat.le_max_left nA nB) hnA
   have hb' := pow_eq_zero_of_le (Nat.le_max_right nA nB) (hnB (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H))

@@ -69,7 +69,8 @@ theorem vacuumBendWordSum_odd_exists (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneo
         (vacuumPostTarget D Sc m cutoff bound ΛP ΛR hcP hcR i edgeR β H).hom =
       (vacuumPreBlockSourceIso D Sc m cutoff bound ΛP ΛR hcP i edgeP H).hom ≫
         ProbeVacuumCap.evaluatedMixedBend D Sc m cutoff bound i hP (vacuumBendBlock D Sc m cutoff bound ΛR H) := by
-  obtain ⟨n, hn, hp⟩ := ProbeVacuumCap.diagonalPostDot_pow_zero D Sc m cutoff bound sy hc i
+  obtain ⟨n, hn, hp⟩ := ProbeVacuumCap.diagonalPostDot_pow_zero D Sc m cutoff bound
+    (truncatedAppendDotNilpotent D Sc cutoff sy hc bound) i
   exact ⟨n, hn, vacuumBendWordSum_odd D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H hP hi n (hp (vacuumBendBlock D Sc m cutoff bound ΛR H))⟩
 
 /-- Even colour: at any given native reservoir nilpotence exponent `n`, the actual
