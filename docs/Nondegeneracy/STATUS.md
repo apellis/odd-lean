@@ -20,6 +20,18 @@ arXiv:1701.04133v2, §8). It has no further hypotheses; its axioms are
 applies it to a mixed-parity two-colour datum with distinct symmetrizer
 entries.
 
+**Consequence: the Decategorification Conjecture (BE2 §12).**
+`QuiverHecke.SerreComplex.decategorification`
+([Decategorification](../../OddMath/QuiverHecke/Decategorification.lean))
+applies Theorems 11.7 and 12.1 (`gammaInt_bijective`) to
+`nondegeneracy_of_symmetrizer`: `γ : U̇_{q,π}(𝔤)_ℒ → K₀(𝔘̇(𝔤))` is bijective
+for homogeneous parameters over a field `k` with `2 ≠ 0`, finitely many
+colours, a finitely generated free weight lattice and linearly independent
+roots and coroots (the hypotheses of the formalized Theorem 12.1; (10.2) is
+not assumed). Beyond BE2's §12 setting these add `2 ≠ 0` and the finiteness
+and independence conditions. Consumer:
+[Decategorification](../../scripts/NonVacuity/Decategorification.lean).
+
 The proof follows the swapped route. `nondegeneracy_of_swapped_bubble_fields`
 (#1068) reduces the conjecture to the positive- and nonpositive-height bubble
 fields on the swapped route bases. The positive-height field is proved
