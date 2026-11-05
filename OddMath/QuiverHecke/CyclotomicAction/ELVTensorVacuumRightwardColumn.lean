@@ -42,10 +42,12 @@ variable (i : I)
 
 local notation "K" => contentAppend D Sc cutoff bound (0 : Multiset I) [i]
 
-/-- The unit column `η ≫ xᵉ ≫ B n` of a family `B` of maps into the tensor vacuum value. -/
-def rightwardUnitColumn {w : ℕ} (B : Fin w → ((induction K ⋙ restriction K).obj V ⟶ V))
-    (e : ℕ) (n : Fin w) : V ⟶ V :=
-  (adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ e) ≫ B n
+/-- The unit column `u ≫ xᵉ ≫ B n` of a family `B` of maps out of the object of an
+endomorphism `x`, for a unit `u` into that object. It is generic in its objects, so its
+instances are never written out. -/
+abbrev rightwardUnitColumn {C : Type*} {_ : Category C} {Y Z : C} (u : Y ⟶ Z) (x : End Z)
+    {w : ℕ} (B : Fin w → (Z ⟶ Y)) (e : ℕ) (n : Fin w) : Y ⟶ Y :=
+  u ≫ (x ^ e) ≫ B n
 
 include sy hc in
 /-- **Odd colour, negative height: even moments of the last unit column.** For an
@@ -55,22 +57,21 @@ coefficient of `(1 + w)^M / C(-w)`. -/
 theorem rightwardUnitColumn_odd_moments_even
     (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) (hPN : 2 * m i < cutoff i)
     (j : _ ⟶ shiftedPreSourceObject D Sc m R₀ i H)
-    (B : Fin (cutoff i - 2 * m i) → ((induction K ⋙ restriction K).obj V ⟶ V))
+    (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
     (hB : SwappedAssembly.ProbeWindow.IsCupInverse
       (evaluatedMixedBend D Sc m cutoff bound i hP H)
       (fun n => (adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ n.val))
       j B)
     (r : ℕ) (z : (V).obj star) :
     tensorVacuumDecodeLinear D Sc m cutoff L
-        ((rightwardUnitColumn D Sc m cutoff L i B (cutoff i - 2 * m i - 1 + 2 * r)
+        ((rightwardUnitColumn ((adjunction K).unit.app V)
+          (evaluatedPostDot D Sc m cutoff bound i H) B (cutoff i - 2 * m i - 1 + 2 * r)
           ⟨cutoff i - 2 * m i - 1, by omega⟩).total star z) =
       polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
-        tensorVacuumDecodeLinear D Sc m cutoff L z := by
-  have h := tensorVacuumNegativeCap_odd_moments_even D Sc m cutoff L sy hc i hi hP
+        tensorVacuumDecodeLinear D Sc m cutoff L z :=
+  tensorVacuumNegativeCap_odd_moments_even D Sc m cutoff L sy hc i hi hP
     (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
-  unfold rightwardUnitColumn
-  exact h
 
 include sy hc in
 /-- **Odd colour, negative height: odd moments of the last unit column.** Under the
@@ -80,24 +81,24 @@ coefficient `(-1)^(N+1) δ`. -/
 theorem rightwardUnitColumn_odd_moments_odd
     (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) (hPN : 2 * m i < cutoff i)
     (j : _ ⟶ shiftedPreSourceObject D Sc m R₀ i H)
-    (B : Fin (cutoff i - 2 * m i) → ((induction K ⋙ restriction K).obj V ⟶ V))
+    (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
     (hB : SwappedAssembly.ProbeWindow.IsCupInverse
       (evaluatedMixedBend D Sc m cutoff bound i hP H)
       (fun n => (adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ n.val))
       j B)
     (r : ℕ) (z : (V).obj star) :
     tensorVacuumDecodeLinear D Sc m cutoff L
-        ((rightwardUnitColumn D Sc m cutoff L i B (cutoff i - 2 * m i - 1 + (2 * r + 1))
+        ((rightwardUnitColumn ((adjunction K).unit.app V)
+          (evaluatedPostDot D Sc m cutoff bound i H) B (cutoff i - 2 * m i - 1 + (2 * r + 1))
           ⟨cutoff i - 2 * m i - 1, by omega⟩).total star z) =
-      ((-1 : k) ^ (cutoff i + 1) •
-          coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) *
+      coefficientPowerQuotientMap D cutoff L
+          ((-1 : k) ^ (cutoff i + 1) • SKM.SYM.delta D k ⟨i, hi⟩) *
         (polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
           tensorVacuumDecodeLinear D Sc m cutoff L z) := by
-  have h := tensorVacuumNegativeCap_odd_moments_odd D Sc m cutoff L sy hc i hi hP
+  rw [map_smul]
+  exact tensorVacuumNegativeCap_odd_moments_odd D Sc m cutoff L sy hc i hi hP
     (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
-  unfold rightwardUnitColumn
-  exact h
 
 include sy hc in
 /-- **Odd colour, negative height: the last unit column.** Both moment identities of
@@ -105,23 +106,25 @@ include sy hc in
 theorem rightwardUnitColumn_odd_moments
     (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) (hPN : 2 * m i < cutoff i)
     (j : _ ⟶ shiftedPreSourceObject D Sc m R₀ i H)
-    (B : Fin (cutoff i - 2 * m i) → ((induction K ⋙ restriction K).obj V ⟶ V))
+    (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
     (hB : SwappedAssembly.ProbeWindow.IsCupInverse
       (evaluatedMixedBend D Sc m cutoff bound i hP H)
       (fun n => (adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ n.val))
       j B)
     (r : ℕ) (z : (V).obj star) :
     tensorVacuumDecodeLinear D Sc m cutoff L
-        ((rightwardUnitColumn D Sc m cutoff L i B (cutoff i - 2 * m i - 1 + 2 * r)
+        ((rightwardUnitColumn ((adjunction K).unit.app V)
+          (evaluatedPostDot D Sc m cutoff bound i H) B (cutoff i - 2 * m i - 1 + 2 * r)
           ⟨cutoff i - 2 * m i - 1, by omega⟩).total star z) =
       polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
         tensorVacuumDecodeLinear D Sc m cutoff L z ∧
     tensorVacuumDecodeLinear D Sc m cutoff L
-        ((rightwardUnitColumn D Sc m cutoff L i B (cutoff i - 2 * m i - 1 + (2 * r + 1))
+        ((rightwardUnitColumn ((adjunction K).unit.app V)
+          (evaluatedPostDot D Sc m cutoff bound i H) B (cutoff i - 2 * m i - 1 + (2 * r + 1))
           ⟨cutoff i - 2 * m i - 1, by omega⟩).total star z) =
-      ((-1 : k) ^ (cutoff i + 1) •
-          coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) *
+      coefficientPowerQuotientMap D cutoff L
+          ((-1 : k) ^ (cutoff i + 1) • SKM.SYM.delta D k ⟨i, hi⟩) *
         (polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
           tensorVacuumDecodeLinear D Sc m cutoff L z) :=

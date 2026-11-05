@@ -15,9 +15,9 @@ odd colour), leftward data satisfying the negative inverse equations give an
 entrywise inverse `(j, B)` of the native cup window of the evaluated A6 bend
 (`vacuumRightwardCupInverse_bubbleEntries`). Its products with the native unit rows
 are the conjugated evaluated right bubble entries `η xᴺ ≫ dcap n`, and the extreme
-column has the decoded moments of `tensorVacuumNegativeCap_odd_moments_even/odd`:
+column has the decoded moments of `rightwardUnitColumn_odd_moments_even/odd`:
 the coefficients of `(1 + w)^M / C(-w)`, the odd ones multiplied by the normalized odd
-coefficient (`tensorVacuum_rightward_odd_moments`). No inverse, moment or bubble value
+coefficient. No inverse, moment or bubble value
 is assumed.
 -/
 
@@ -78,14 +78,14 @@ theorem tensorVacuum_rightward_odd_bubbleEntries (hi : D.parity i = 1)
     (cc : (P).CrossCoeff) :
     ∃ (c : _ ≅ V) (j : _ ⟶ shiftedPreSourceObject D (parameterTwist D Sc) m
         (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i H)
-      (B : Fin (cutoff i - 2 * m i) →
-        ((BalancedInduction.induction K ⋙ BalancedInduction.restriction K).obj V ⟶ V)),
+      (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V)),
       ProbeWindow.IsCupInverse (evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP H)
         (fun n => (adjunction K).unit.app V ≫
           (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ n.val)) j B ∧
       (∃ h, c.hom = eqToHom h) ∧
       (∀ (n : Fin (cutoff i - 2 * m i)) (N : ℕ),
-        rightwardUnitColumn D (parameterTwist D Sc) m cutoff L i B N n =
+        rightwardUnitColumn ((adjunction K).unit.app V)
+          (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H) B N n =
         c.inv ≫ (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).map
           ((P).etaEntry cc i N ν₀ (.nil _) q₀ Z ≫ dc n q₀ (.nil _)) ≫ c.hom) := by
   have hlen : (-D.h i ν₀).toNat = cutoff i - 2 * m i := by
@@ -98,62 +98,5 @@ theorem tensorVacuum_rightward_odd_bubbleEntries (hi : D.parity i = 1)
     tensorOutputAt_empty D (parameterTwist D Sc) m cutoff L ΛR, hlen] at hex
   simp only [unitDotColumn_eq_restrictedDotEnd, Category.assoc] at hex
   exact hex
-
-include sy hc in
-/-- **Odd moments of the rightward vacuum bubble entries.** For an odd colour with
-`0 < 2 M < N`, leftward data satisfying the negative inverse equations at the tensor
-vacuum give an entrywise inverse `(j, B)` of the native cup window of the tensor
-vacuum bend such that every unit column `unit ≫ xᴺ ≫ B n` (`rightwardUnitColumn`) is the evaluated right bubble
-entry `η xᴺ ≫ dcap n` conjugated by one isomorphism `c` (an `eqToHom`), and the last column has the
-decoded moments: the shift `N - 2M - 1 + 2r` gives the `r`-th coefficient of
-`(1 + w)^M / C(-w)`, the shift `N - 2M - 1 + (2r + 1)` that coefficient times the
-normalized odd coefficient. -/
-theorem tensorVacuum_rightward_odd_moments (hi : D.parity i = 1)
-    (hP : 0 < probeCutoff D m i) (hPN : 2 * m i < cutoff i)
-    (Z : (P).H ((0, 0) : Sector I))
-    (hZ : Z = tensorSectorInput D Sc m cutoff L ΛR ΛP hcP hcR)
-    (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
-        ((0, 0) : Sector I))
-      (p : SPath (SKM.wd D ν₀ [SKM.up i, SKM.dn i]) ((0, 0) : Sector I) ((0, 0) : Sector I)),
-      ((P).pathFunctor _q).obj Z ⟶ ((P).pathFunctor p).obj Z)
-    (dc : ℕ → ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
-        ((0, 0) : Sector I))
-      (r : SPath (SKM.wd D ν₀ []) ((0, 0) : Sector I) ((0, 0) : Sector I)),
-      ((P).pathFunctor _q).obj Z ⟶ ((P).pathFunctor r).obj Z)
-    (HN : (P).NegInverseAt (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ν₀
-      ((0, 0) : Sector I) ((0, 0) : Sector I) Z lc dc)
-    (cc : (P).CrossCoeff) :
-    ∃ (c : _ ≅ V) (j : _ ⟶ shiftedPreSourceObject D (parameterTwist D Sc) m
-        (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i H)
-      (B : Fin (cutoff i - 2 * m i) →
-        ((BalancedInduction.induction K ⋙ BalancedInduction.restriction K).obj V ⟶ V)),
-      ProbeWindow.IsCupInverse (evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP H)
-        (fun n => (adjunction K).unit.app V ≫
-          (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ n.val)) j B ∧
-      (∃ h, c.hom = eqToHom h) ∧
-      (∀ (n : Fin (cutoff i - 2 * m i)) (N : ℕ),
-        rightwardUnitColumn D (parameterTwist D Sc) m cutoff L i B N n =
-        c.inv ≫ (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).map
-          ((P).etaEntry cc i N ν₀ (.nil _) q₀ Z ≫ dc n q₀ (.nil _)) ≫ c.hom) ∧
-      ∀ (r : ℕ) (z : (V).obj star),
-        tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
-            ((rightwardUnitColumn D (parameterTwist D Sc) m cutoff L i B
-              (cutoff i - 2 * m i - 1 + 2 * r) ⟨cutoff i - 2 * m i - 1, by omega⟩).total star z) =
-          polynomialToPower D cutoff L (PowerSeries.coeff r
-              (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
-            tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z ∧
-        tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
-            ((rightwardUnitColumn D (parameterTwist D Sc) m cutoff L i B
-              (cutoff i - 2 * m i - 1 + (2 * r + 1)) ⟨cutoff i - 2 * m i - 1, by omega⟩).total star z) =
-          ((-1 : k) ^ (cutoff i + 1) •
-              coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) *
-            (polynomialToPower D cutoff L (PowerSeries.coeff r
-              (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
-              tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) := by
-  obtain ⟨c, j, B, hB, hceq, hcup⟩ := tensorVacuum_rightward_odd_bubbleEntries D Sc m cutoff L
-    ΛP ΛR hcP hcR sy hc i hi hP Z hZ lc dc HN cc
-  exact ⟨c, j, B, hB, hceq, hcup, fun r z =>
-    rightwardUnitColumn_odd_moments D (parameterTwist D Sc) m cutoff L sy
-      (parameterTwist_homogeneous D Sc hc) i hi hP hPN j B hB r z⟩
 
 end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
