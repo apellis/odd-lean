@@ -174,6 +174,6 @@ theorem vacuumEntry_odd_neg (N' : I → ℕ) (i : {i : I // D.parity i = 1})
     (by rw [hhe] at hh; omega) _ _
     (by rw [hhe]; omega) _ (fun c B z hm => ?_)
   rw [(hm 0 z).2, AdjunctionBubbleSeries.coeff_zero_momentSeries, map_one, one_mul,
-    ELVOld.rightwardOddScalar, map_smul, hN']
+    ELVOld.rightwardOddScalar_eq, hN']
 
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
