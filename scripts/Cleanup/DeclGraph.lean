@@ -13,11 +13,11 @@ def kindOf : ConstantInfo → String
   | .opaqueInfo _ => "opaque" | .quotInfo _ => "quot" | .inductInfo _ => "induct"
   | .ctorInfo _ => "ctor" | .recInfo _ => "rec"
 
-unsafe def withModule (m : Name) (k : ModuleData → IO Unit) : IO Unit := do
+unsafe def withModule (m : Name) (k : ModuleData → IO Unit) (free : Bool := true) : IO Unit := do
   let path ← findOLean m
   let (d, region) ← readModuleData path
   k d
-  region.free
+  if free then region.free
 
 unsafe def main (args : List String) : IO Unit := do
   let [listFile, out] := args | throw (IO.userError "usage: <module list> <output>")
@@ -25,7 +25,7 @@ unsafe def main (args : List String) : IO Unit := do
   let mods := (← IO.FS.lines listFile).filter (· ≠ "") |>.map String.toName
   let known ← IO.mkRef ({} : Std.HashSet String)
   for m in mods do
-    withModule m fun d => known.modify fun s => d.constNames.foldl (fun s n => s.insert n.toString) s
+    withModule m fun d => known.modify fun s => d.constNames.foldl (fun s n => s.insert n.toString) s) (free := false
   let known ← known.get
   let h ← IO.FS.Handle.mk out .write
   for m in mods do
