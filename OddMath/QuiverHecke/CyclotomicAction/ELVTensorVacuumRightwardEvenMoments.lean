@@ -239,7 +239,7 @@ theorem tensorVacuum_rightward_even_bubbleEntries (hi : D.parity i = 0)
       even_probeCutoff_right D m i hi]
   have hex := vacuumRightwardCupInverse_bubbleEntries_even D Sc m cutoff bound ΛP ΛR hcP hcR
     (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) sy hc i Z
-    (hZ.trans (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hcP hcR).symm) lc dc HN cc
+    hZ lc dc HN cc
     hP hi
   rw [show vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR
       (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) = H from
