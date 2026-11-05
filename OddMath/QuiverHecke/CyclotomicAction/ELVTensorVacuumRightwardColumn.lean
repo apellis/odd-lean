@@ -142,7 +142,7 @@ def rightwardLastColumnDecode (hPN : 2 * m i < cutoff i)
 
 /-- The normalized odd coefficient `(-1)^(N+1) δ_i` in the coefficient power quotient. -/
 def rightwardOddScalar (hi : D.parity i = 1) : CoefficientPowerQuotient (k := k) D cutoff L :=
-  coefficientPowerQuotientMap D cutoff L ((-1 : k) ^ (cutoff i + 1) • SKM.SYM.delta D k ⟨i, hi⟩)
+  (-1 : k) ^ (cutoff i + 1) • coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)
 
 include sy hc in
 /-- `rightwardUnitColumn_odd_moments_even` for `rightwardLastColumnDecode`. -/
@@ -180,7 +180,6 @@ theorem rightwardLastColumnDecode_odd
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
           tensorVacuumDecodeLinear D Sc m cutoff L z) := by
   unfold rightwardLastColumnDecode rightwardOddScalar
-  rw [map_smul]
   exact tensorVacuumNegativeCap_odd_moments_odd D Sc m cutoff L sy hc i hi hP
     (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
 
