@@ -149,6 +149,7 @@ theorem vacuumRightwardCupInverse_bubbleEntries_even (Z : (P).H ((0, 0) : Sector
               (0 : Multiset I) i)
             ((vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H).obj
               (probeOldVacuumRegular D (parameterTwist D Sc) m)) n) j B ∧
+      (∃ h, c.hom = eqToHom h) ∧
       ∀ (n : Fin (-D.h i ν₀).toNat) (N : ℕ),
         unitDotColumn (contentAppend D (parameterTwist D Sc) cutoff bound (0 : Multiset I) [i])
             (canonicalAppendDot_supernatural D (parameterTwist D Sc) cutoff bound
@@ -161,6 +162,7 @@ theorem vacuumRightwardCupInverse_bubbleEntries_even (Z : (P).H ((0, 0) : Sector
   obtain ⟨j, hj⟩ := vacuumRightwardCupInverse_native_even D Sc m cutoff bound ΛP ΛR hcP hcR H
     sy hc i _ rfl lc dc HN hP hi
   exact ⟨paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H, j, _, hj,
+    paddedVacuumCapTargetIso_hom_eq_eqToHom D Sc m cutoff bound ΛP ΛR hcP hcR H,
     fun n N => vacuumRightwardColumn_unit D Sc m cutoff bound ΛP ΛR hcP hcR H i cc dc n N⟩
 
 end Native
@@ -224,6 +226,7 @@ theorem tensorVacuum_rightward_even_bubbleEntries (hi : D.parity i = 0)
       ProbeWindow.IsCupInverse (evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP H)
         (fun n => (adjunction K).unit.app V ≫
           (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ n.val)) j B ∧
+      (∃ h, c.hom = eqToHom h) ∧
       (∀ (n : Fin (cutoff i - m i)) (N : ℕ),
         (adjunction K).unit.app V ≫
           (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ N) ≫ B n =
@@ -271,8 +274,8 @@ include sy hc in
 `0 < M < N`, leftward data satisfying the negative inverse equations at the tensor
 vacuum give an entrywise inverse `(j, B)` of the native cup window of the tensor
 vacuum bend such that every product `unit ≫ xᴺ ≫ B n` is the evaluated right bubble
-entry `η xᴺ ≫ dcap n` conjugated by one isomorphism `c`, and the last column has the
-decoded moments: the shift `N - M - 1 + l` gives the `l`-th coefficient of
+entry `η xᴺ ≫ dcap n` conjugated by one isomorphism `c` (an `eqToHom`), and the last
+column has the decoded moments: the shift `N - M - 1 + l` gives the `l`-th coefficient of
 `momentSeries (probeSeriesInv)` at `i`. -/
 theorem tensorVacuum_rightward_even_moments (hi : D.parity i = 0)
     (hP : 0 < probeCutoff D m i) (hPN : m i < cutoff i)
@@ -295,6 +298,7 @@ theorem tensorVacuum_rightward_even_moments (hi : D.parity i = 0)
       ProbeWindow.IsCupInverse (evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP H)
         (fun n => (adjunction K).unit.app V ≫
           (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ n.val)) j B ∧
+      (∃ h, c.hom = eqToHom h) ∧
       (∀ (n : Fin (cutoff i - m i)) (N : ℕ),
         (adjunction K).unit.app V ≫
           (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ N) ≫ B n =
@@ -309,9 +313,9 @@ theorem tensorVacuum_rightward_even_moments (hi : D.parity i = 0)
           polynomialToPower D cutoff L (PowerSeries.coeff l
               (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
             tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z := by
-  obtain ⟨c, j, B, hB, hcup⟩ := tensorVacuum_rightward_even_bubbleEntries D Sc m cutoff L
+  obtain ⟨c, j, B, hB, hceq, hcup⟩ := tensorVacuum_rightward_even_bubbleEntries D Sc m cutoff L
     ΛP ΛR hcP hcR sy hc i hi hP Z hZ lc dc HN cc
-  exact ⟨c, j, B, hB, hcup, fun l z =>
+  exact ⟨c, j, B, hB, hceq, hcup, fun l z =>
     tensorVacuum_rightward_even_extreme_moments D Sc m cutoff L sy hc i hi hP hPN j B hB l z⟩
 
 end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
