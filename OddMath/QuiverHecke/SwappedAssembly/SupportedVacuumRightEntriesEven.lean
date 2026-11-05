@@ -60,7 +60,20 @@ local notation "star" =>
   (⟨⟨[]⟩, rfl⟩ : ContentCategory D (parameterTwist D Sc) cutoff N 0)
 local notation "dec" => tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
 local notation "Z" => (tensorTargetFamily D Sc m cutoff ΛP ΛR L (0,0)).obj
+local notation "Zt" => (tensorVacuum D Sc m cutoff L ΛP ΛR).obj
 local notation "gens" => ProbeReservoir.swappedGens (P) cc lw
+
+include sy hc in
+/-- Conjugating the vacuum entry of a closed diagram along an equality of inputs. -/
+private theorem conj_compDiag_even_of_eq {Z₁ Z₂ : (P).H ((0, 0) : Sector I)} (h : Z₁ = Z₂)
+    (c : (E).obj Z₂ ≅ V) (μ : X) (M : List (SKM.LayerData I)) (hM : SKM.SChain [] M []) :
+    (eqToIso (congrArg (E).obj h) ≪≫ c).inv ≫ (E).map (ProbeReservoir.compDiag gens
+        (SKM.mkD D μ M hM) (SPath.nil (0,0)) (SPath.nil (0,0)) Z₁) ≫
+      (eqToIso (congrArg (E).obj h) ≪≫ c).hom =
+    c.inv ≫ (E).map (ProbeReservoir.compDiag gens
+        (SKM.mkD D μ M hM) (SPath.nil (0,0)) (SPath.nil (0,0)) Z₂) ≫ c.hom := by
+  subst h
+  simp
 
 omit [Fintype I] in
 private theorem even_probeCutoff_eq (i : I) (hi : D.parity i = 0) :
@@ -87,16 +100,18 @@ private theorem vacuumNegEven_decode (i : I) (hi : D.parity i = 0)
   have hPN : m i < cutoff i := by omega
   have hnZ : (n : ℤ) < -D.h i ν₀ := by rw [hhe, hn]; omega
   have hd : ¬StepValid (dn i) true ((0, 0) : Sector I) := by simp [StepValid]
-  obtain ⟨c, j, B, hB, hceq, hcup⟩ := tensorVacuum_rightward_even_bubbleEntries D Sc m cutoff L
-    ΛP ΛR hP hR sy hc i hi hP0 Z
-    ((congrArg (fun Y => Y.obj) (tensorTargetFamily_zero D Sc m cutoff ΛP ΛR L)).trans
-      (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hP hR).symm)
-    (fun q p => (lw).lcrossSame i ν₀ q p Z)
-    (fun n q r => (lw).dcap i n ν₀ q r Z)
+  have hZ : Z = Zt := by rw [tensorTargetFamily_zero]
+  obtain ⟨c, j, B, hB, ⟨h0', hc0⟩, hcup⟩ := tensorVacuum_rightward_even_bubbleEntries D Sc m
+    cutoff L ΛP ΛR hP hR sy hc i hi hP0 Zt
+    (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hP hR).symm
+    (fun q p => (lw).lcrossSame i ν₀ q p Zt)
+    (fun n q r => (lw).dcap i n ν₀ q r Zt)
     (centralPointwiseLeftward_negInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
-      (Ys (0,0)) hh) cc
-  refine ⟨c, hceq, fun z => ?_⟩
-  rw [ProbeReservoir.compDiag_etaL_dcapL_swappedGens (P) _ _ i e n ν₀ hnZ (0,0) Z hd]
+      (tensorVacuum D Sc m cutoff L ΛP ΛR) hh) cc
+  refine ⟨eqToIso (congrArg (E).obj hZ) ≪≫ c, ⟨(congrArg (E).obj hZ).trans h0', by
+    rw [Iso.trans_hom, eqToIso.hom, hc0, eqToHom_trans]⟩, fun z => ?_⟩
+  rw [conj_compDiag_even_of_eq D Sc m cutoff ΛP ΛR L hP hR sy hc hZ c]
+  rw [ProbeReservoir.compDiag_etaL_dcapL_swappedGens (P) _ _ i e n ν₀ hnZ (0,0) Zt hd]
   subst hn he
   have hcol := hcup ⟨cutoff i - m i - 1, by omega⟩ (cutoff i - m i - 1 + s)
   have hm := tensorVacuum_rightward_even_extreme_moments D Sc m cutoff L sy hc i hi hP0
