@@ -314,15 +314,7 @@ private theorem dotRawHom_heq :
         TensorHomContexts.context D Tw cutoff L ΛR (PowerWordWeight.wordWeight D ΛR (νR ++ [i])) ηL) :=
   TensorDotObservation.rawHom_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i edge
 
-private theorem dotRaw_heq (a : (P).CrossCoeff) :
-    HEq (tensorLayerDotRaw D Sc m cutoff L ΛP ΛR hP hR ν u v i hv pL hl pR hr a)
-      ((TensorVacuumWords.wordHom D Tw m cutoff L ΛP ΛR νR ◁
-        (W).dot i (PowerWordWeight.wordWeight_append D ΛR νR i)) ▷
-        TensorHomContexts.context D Tw cutoff L ΛR (PowerWordWeight.wordWeight D ΛR (νR ++ [i])) ηL) :=
-  (heq_of_eq (tensorLayerDotRaw_eq D Sc m cutoff L ΛP ΛR hP hR ν u v i hv pL hl pR hr a)).trans
-    (TensorDotObservation.raw_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i edge)
-
-include hl hr in
+include hv pL hl pR hr in
 /-- **Dot layer on the quotient observation.** The literal dot layer of the full
 chosen action multiplies the canonical observed class on the right by the
 original affine dot, in the outer contexts read off the layer. -/
@@ -407,7 +399,7 @@ theorem tensorMatrixQuotientObservation_dot
   have hsq := TensorLayerClasses.dot_class_square D Sc cutoff L m ΛP ΛR νR ηL i S' f s
     ⟨β₀.1, β₀.2.trans e⟩ rfl z' y hy'
   -- the output class
-  have hR := dotRaw_heq D Sc m cutoff ΛP ΛR L hP hR s ν u v i hv pL hl pR hr a
+  have hRaw := TensorDotObservation.raw_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i edge
   have hout : HEq (tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).cod) hEnd p hp
         (((Q ((P).swappedGens a leftward)).res (Aℓ).cod)
           ((Q ((P).swappedGens a leftward)).op (Aℓ)
@@ -415,8 +407,8 @@ theorem tensorMatrixQuotientObservation_dot
       (f ≫ ((TensorVacuumWords.wordHom D Tw m cutoff L ΛP ΛR νR ◁
         (W).dot i (PowerWordWeight.wordWeight_append D ΛR νR i)) ▷
         TensorHomContexts.context D Tw cutoff L ΛR (PowerWordWeight.wordWeight D ΛR (νR ++ [i])) ηL)) := by
-    rw [hE, hL]
-    exact TensorDotObservation.comp_heq D Sc m cutoff L ΛP ΛR e hS hM h₁ h₂ entry f hf _ _ hR
+    rw [hE, hL, tensorLayerDotRaw_eq D Sc m cutoff L ΛP ΛR hP hR ν u v i hv pL hl pR hr a]
+    exact TensorDotObservation.comp_heq D Sc m cutoff L ΛP ΛR e hS hM h₁ h₂ entry f hf _ _ hRaw
   have hV := (TensorDotObservation.eval_heq D Sc m cutoff L ΛP ΛR e hS hF _ _ hout hw
     (tensorPathValueChart D Sc m cutoff ΛP ΛR L p hp).hom
     (TensorHomContexts.dotChart D Tw m cutoff L ΛP ΛR νR ηL i).hom hpath β₀ o₀

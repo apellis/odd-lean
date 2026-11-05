@@ -214,7 +214,7 @@ private theorem samePathWord :
   rw [PowerWordContexts.extendedWord_eq]
   simp
 
-include hl hr in
+include hv hw pL hl pR hr in
 /-- **Equal-colour crossing on the quotient observation.** The literal
 equal-colour crossing layer of the full chosen action multiplies the
 canonical observed class on the right by the original affine crossing,
@@ -261,13 +261,13 @@ theorem tensorMatrixQuotientObservation_sameCross
           eqToHom h₂.symm := by
     rw [hE]
     exact congrArg _ hT
-  have hRaw := (heq_of_eq (tensorLayerSameCrossRaw_eq D Sc m cutoff L ΛP ΛR hP hR
-    ν u v i hv hw pL hl pR hr a)).trans
-      (crossCell_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i i _ _ _ _)
+  rw [tensorLayerSameCrossRaw_eq D Sc m cutoff L ΛP ΛR hP hR
+    ν u v i hv hw pL hl pR hr a] at hout
   exact TensorDotObservation.pair_observation D Sc m cutoff L ΛP ΛR νR ηL i i
     (ReservoirContexts.word_weight D ΛR pL hl) _ _ h₁ h₂ _ hout
     (crossFunctor_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i i _ _)
-    (crossFunctor_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i i _ _) hRaw _ _
+    (crossFunctor_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i i _ _)
+    (crossCell_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i i _ _ _ _) _ _
     (samePathWord D ν u v i) (samePathWord D ν u v i) _ _
     (tensorPathValueChart_pair_heq D Sc m cutoff ΛP ΛR L p hp νR ηL i i _ _
       ((samePathWord D ν u v i).trans (PowerWordContexts.extendedWord_eq _ _)))
@@ -335,7 +335,7 @@ private theorem crossTargetPathWord :
   rw [PowerWordContexts.extendedWord_eq]
   simp
 
-include hl hr in
+include hv₁ hv₂ hw₁ hw₂ hs pL hl pR hr in
 /-- **Distinct-colour crossing on the quotient observation.** The literal
 distinct-colour crossing layer of the full chosen action multiplies the
 canonical observed class on the right by the original affine crossing,
@@ -385,13 +385,13 @@ theorem tensorMatrixQuotientObservation_cross (hij : i ≠ j)
           pL hl pR hr a ≫ eqToHom h₂.symm := by
     rw [hE]
     exact congrArg _ hT
-  have hRaw := (heq_of_eq (tensorLayerCrossRaw_eq D Sc m cutoff L ΛP ΛR hP hR
-    ν u v i j hv₁ hv₂ hw₁ hw₂ hs pL hl pR hr a hij)).trans
-      (crossCell_heq D Sc m cutoff L ΛP ΛR pL hl _ hr i j _ _ _ _)
+  rw [tensorLayerCrossRaw_eq D Sc m cutoff L ΛP ΛR hP hR
+    ν u v i j hv₁ hv₂ hw₁ hw₂ hs pL hl pR hr a hij] at hout
   exact TensorDotObservation.pair_observation D Sc m cutoff L ΛP ΛR νR ηL i j
     (ReservoirContexts.word_weight D ΛR pL hl) _ _ h₁ h₂ _ hout
     (crossFunctor_heq D Sc m cutoff L ΛP ΛR pL hl _ hr i j _ _)
-    (crossFunctor_heq D Sc m cutoff L ΛP ΛR pL hl _ hr j i _ _) hRaw _ _
+    (crossFunctor_heq D Sc m cutoff L ΛP ΛR pL hl _ hr j i _ _)
+    (crossCell_heq D Sc m cutoff L ΛP ΛR pL hl _ hr i j _ _ _ _) _ _
     (crossSourcePathWord D ν u v i j) (crossTargetPathWord D ν u v i j) _ _
     (tensorPathValueChart_pair_heq D Sc m cutoff ΛP ΛR L p hp νR ηL i j _ _
       ((crossSourcePathWord D ν u v i j).trans (PowerWordContexts.extendedWord_eq _ _)))
