@@ -92,30 +92,24 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
       (∀ (r : ℕ) (z : (V).obj (⟨⟨[]⟩, rfl⟩ :
           ContentCategory D (parameterTwist D Sc) cutoff N 0)),
         tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
-            (((BalancedInduction.adjunction
-                (contentAppend D (parameterTwist D Sc) cutoff N (0 : Multiset I) [i])).unit.app V ≫
-              (ProbeVacuumCap.evaluatedPostDot D (parameterTwist D Sc) m cutoff N i H ^
-                (cutoff i - 2 * m i - 1 + 2 * r)) ≫
-                B ⟨cutoff i - 2 * m i - 1, by omega⟩).total ⟨⟨[]⟩, rfl⟩ z) =
+            ((ELVOld.rightwardUnitColumn D (parameterTwist D Sc) m cutoff L i B
+              (cutoff i - 2 * m i - 1 + 2 * r)
+              ⟨cutoff i - 2 * m i - 1, by omega⟩).total ⟨⟨[]⟩, rfl⟩ z) =
           polynomialToPower D cutoff L (PowerSeries.coeff r
               (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
             tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z ∧
         tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
-            (((BalancedInduction.adjunction
-                (contentAppend D (parameterTwist D Sc) cutoff N (0 : Multiset I) [i])).unit.app V ≫
-              (ProbeVacuumCap.evaluatedPostDot D (parameterTwist D Sc) m cutoff N i H ^
-                (cutoff i - 2 * m i - 1 + (2 * r + 1))) ≫
-                B ⟨cutoff i - 2 * m i - 1, by omega⟩).total ⟨⟨[]⟩, rfl⟩ z) =
+            ((ELVOld.rightwardUnitColumn D (parameterTwist D Sc) m cutoff L i B
+              (cutoff i - 2 * m i - 1 + (2 * r + 1))
+              ⟨cutoff i - 2 * m i - 1, by omega⟩).total ⟨⟨[]⟩, rfl⟩ z) =
           ((-1 : k) ^ (cutoff i + 1) •
               coefficientPowerQuotientMap D cutoff L (SYM.delta D k ⟨i, hi⟩)) *
             (polynomialToPower D cutoff L (PowerSeries.coeff r
               (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
               tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z)) →
       tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
-          (((BalancedInduction.adjunction
-              (contentAppend D (parameterTwist D Sc) cutoff N (0 : Multiset I) [i])).unit.app V ≫
-            (ProbeVacuumCap.evaluatedPostDot D (parameterTwist D Sc) m cutoff N i H ^ e) ≫
-              B ⟨cutoff i - 2 * m i - 1, by omega⟩).total ⟨⟨[]⟩, rfl⟩ z) =
+          ((ELVOld.rightwardUnitColumn D (parameterTwist D Sc) m cutoff L i B e
+              ⟨cutoff i - 2 * m i - 1, by omega⟩).total ⟨⟨[]⟩, rfl⟩ z) =
         coefficientPowerQuotientMap D cutoff L a *
           tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) :
     VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀
