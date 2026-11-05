@@ -124,7 +124,7 @@ def scalars : Scalars D (MvPolynomial Unit k) where
   t i j := Units.map (C : k →+* MvPolynomial Unit k).toMonoidHom (Sc.t i j)
   t_self i := by rw [Sc.t_self, map_one]
   t_symm_of_d_eq_zero i j h := by rw [Sc.t_symm_of_d_eq_zero i j h]
-  s i j p q := C (Sc.s i j p q) * X () ^ (coefficientDegree sy i j p q).toNat
+  s i j p q := C (Sc.s i j p q) * MvPolynomial.X () ^ (coefficientDegree sy i j p q).toNat
   s_symm i j p q := by rw [Sc.s_symm, coefficientDegree_symm]
   s_eq_zero i j p q h := by rw [Sc.s_eq_zero i j p q h, map_zero, zero_mul]
   two_isUnit h := by
@@ -149,7 +149,8 @@ theorem gradedHomogeneous {Sc : Scalars D k} (hl : Sc.LowerDegree sy) :
       exact hs (by simp [scalars, h0])
     refine ⟨(coefficientDegree sy i j p q).toNat,
       Int.toNat_of_nonneg (hl i j p q hp hp' hq hq' hs'), ?_⟩
-    exact (mem_homogeneousSubmodule _ _).mpr (isHomogeneous_C_mul_X_pow _ _ _)
+    exact (mem_homogeneousSubmodule _ _).mpr
+      (isHomogeneous_C_mul_X_pow (Sc.s i j p q) () _)
 
 /-- Evaluation at `h = 1`. -/
 abbrev specialize : MvPolynomial Unit k →+* k := eval fun _ => (1 : k)
@@ -173,7 +174,7 @@ theorem nondegeneracyConjecture_of_lowerDegree {sy : Symmetrizer D}
     (hG : GradedCoefficientNondegeneracy.{u, v, w} D sy) (h₂ : IsUnit (2 : k))
     {Sc : Scalars D k} (hl : Sc.LowerDegree sy) (cs : CScalars Sc) :
     NondegeneracyConjecture cs := by
-  letI : GradedRing (MvPolynomial.homogeneousSubmodule Unit k) := MvPolynomial.gradedAlgebra
+  let _ : GradedRing (MvPolynomial.homogeneousSubmodule Unit k) := MvPolynomial.gradedAlgebra
   have h₂' : IsUnit (2 : MvPolynomial Unit k) := by
     convert h₂.map (MvPolynomial.C : k →+* MvPolynomial Unit k) using 1
     exact (map_ofNat _ 2).symm
@@ -184,6 +185,7 @@ theorem nondegeneracyConjecture_of_lowerDegree {sy : Symmetrizer D}
   refine nondegeneracyConjecture_congr (ReesParameters.scalarChange_specialize sy Sc) _ cs
     ?_ hS
   intro μ i
+  ext
   simp [ScalarChange.cScalars, ReesParameters.cScalars]
 
 /-- Consistency with the homogeneous case: the graded-coefficient statement implies the
