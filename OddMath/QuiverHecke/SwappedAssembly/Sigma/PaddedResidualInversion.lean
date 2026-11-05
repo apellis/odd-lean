@@ -26,22 +26,84 @@ local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR
 local instance paddedResidualHomPi (A B : PiSCat.{u,u,u+1} k) :
     PiSupercategory k (A ⟶ B) := PiTwoSupercategory.homPiLeft A B
 
-/-- Every output-content component of the prescribed padded central
-matrix is invertible, in both signs and at every pair of local heights. -/
-theorem centralFactorMatrix_content_isIso
-    (sy : Symmetrizer D) (hc : Sc.Homogeneous) (i : I) (t : Sector I)
+/-- The reservoir closures and off-window contractions of every output
+content lie in the first level of one coefficient ideal of that content,
+whose zeroth level contains every morphism. -/
+def ReservoirWindowIdeal : Prop :=
+  ∀ (i : I) (t : Sector I) (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
+    (β : WeightBlocks D ΛR ((P).muM t)) (c : (P).CrossCoeff),
+    ∃ J : CoefficientIdeal ((P).T.obj (-((P).muP t)) ⟶
+        contentModuleTarget D (parameterTwist D Sc) cutoff bound β.1),
+      (∀ {A B : (P).T.obj (-((P).muP t)) ⟶
+          contentModuleTarget D (parameterTwist D Sc) cutoff bound β.1} (f : A ⟶ B),
+        J.mem 0 f) ∧
+      (∀ (hh : 0 ≤ D.h i ((P).muM t)) (r s : ℕ), J.mem 1
+        ((P).centralPaddedUnit i t Z.obj (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β)
+            false r ≫
+          (reservoirCapInverseData D Sc m cutoff bound ΛP ΛR hP hR i t Z
+            (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) c hh).principal ≫
+          (P).centralPaddedCap i t Z.obj (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β)
+            false s)) ∧
+      (∀ (hh : D.h i ((P).muM t) ≤ 0) (r s : ℕ), J.mem 1
+        ((P).centralPaddedUnit i t Z.obj (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β)
+            false r ≫
+          (reservoirCupInverseData D Sc m cutoff bound ΛP ΛR hP hR i t Z
+            (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) c hh).principal ≫
+          (P).centralPaddedCap i t Z.obj (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β)
+            false s)) ∧
+      (∀ (hh : 0 ≤ D.h i ((P).muM t)) (j : Fin (D.h i ((P).muM t)).toNat) (r : ℕ),
+        (j : ℕ) < r → J.mem 1
+          ((reservoirCapInverseData D Sc m cutoff bound ΛP ΛR hP hR i t Z
+              (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) c hh).window j ≫
+            (P).centralPaddedCap i t Z.obj
+              (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) false r)) ∧
+      (∀ (hh : D.h i ((P).muM t) ≤ 0) (j : Fin (-D.h i ((P).muM t)).toNat) (r : ℕ),
+        (j : ℕ) < r → J.mem 1
+          ((P).centralPaddedUnit i t Z.obj
+              (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) false r ≫
+            (reservoirCupInverseData D Sc m cutoff bound ΛP ΛR hP hR i t Z
+              (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) c hh).window j))
+
+/-- Over a field-type base with homogeneous scalars, the content coefficient
+ideal carries every reservoir window. -/
+theorem reservoirWindowIdeal (sy : Symmetrizer D) (hc : Sc.Homogeneous) :
+    ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR := by
+  intro i t Z β c
+  refine ⟨contentModuleCoefficientIdeal D (parameterTwist D Sc) cutoff bound β.1 sy
+    (parameterTwist_homogeneous D Sc hc) ((P).T.obj (-((P).muP t))), ?_, ?_, ?_, ?_, ?_⟩
+  · intro A B f
+    exact mem_coeffIdeal_zero
+      (Gr := contentModuleCoeffGrading D (parameterTwist D Sc) cutoff bound β.1 sy
+        (parameterTwist_homogeneous D Sc hc)) f
+  · intro hh r s
+    exact reservoirCapInverseData_closure_mem D Sc m cutoff bound ΛP ΛR hP hR sy hc i t Z β c hh r s
+  · intro hh r s
+    exact reservoirCupInverseData_closure_mem D Sc m cutoff bound ΛP ΛR hP hR sy hc i t Z β c hh r s
+  · intro hh j r hjr
+    exact reservoirCapInverseData_boundary_mem D Sc m cutoff bound ΛP ΛR hP hR sy hc i t Z β c hh
+      j r hjr
+  · intro hh j r hjr
+    exact reservoirCupInverseData_boundary_mem D Sc m cutoff bound ΛP ΛR hP hR sy hc i t Z β c hh
+      j r hjr
+
+/-- Every output-content component of the padded central matrix with the
+coefficient chosen from appended-dot nilpotence is invertible, in both
+signs and at every pair of local heights, once the reservoir windows lie
+in a coefficient ideal. -/
+theorem centralFactorMatrix_content_isIsoOf
+    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
+    (hwin : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR) (i : I) (t : Sector I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
     (β : WeightBlocks D ΛR ((P).muM t)) :
     (0 ≤ D.h i ((P).wt t) → IsIso ((P).augPosFactorMatrix
-      (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc) i ((P).wt t) t Z.obj
+      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot) i ((P).wt t) t Z.obj
         (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β))) ∧
     (D.h i ((P).wt t) ≤ 0 → IsIso ((P).augNegFactorMatrix
-      (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc) i ((P).wt t) t Z.obj
+      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot) i ((P).wt t) t Z.obj
         (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β))) := by
   let E := reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β
-  let c := elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc
-  let J := contentModuleCoefficientIdeal D (parameterTwist D Sc) cutoff bound β.1 sy
-    (parameterTwist_homogeneous D Sc hc) ((P).T.obj (-((P).muP t)))
+  let c := elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot
+  obtain ⟨J, hJ0, hclCap, hclCup, hbdCap, hbdCup⟩ := hwin i t Z β c
   let x := probeWindowX D Sc m cutoff bound ΛP ΛR hP hR i t Z E
   let y := probeWindowY D Sc m cutoff bound ΛP ΛR hP hR i t Z E
   let v := (P).centralPaddedCap i t Z.obj E true 0
@@ -59,18 +121,11 @@ theorem centralFactorMatrix_content_isIso
     change D.cd.coroot i ((P).muP t + (P).muM t) =
       D.cd.coroot i ((P).muM t) + -D.cd.coroot i (-((P).muP t))
     rw [map_add, map_neg, neg_neg, add_comm]
-  have hJ0 {A B : (P).T.obj (-((P).muP t)) ⟶
-      contentModuleTarget D (parameterTwist D Sc) cutoff bound β.1} (f : A ⟶ B) :
-      J.mem 0 f := mem_coeffIdeal_zero
-        (Gr := contentModuleCoeffGrading D (parameterTwist D Sc) cutoff bound β.1 sy
-          (parameterTwist_homogeneous D Sc hc)) f
   have hslide : sP ≫ y.hom - q • (x.hom ≫ sP) = v ≫ u :=
     probe_slide D Sc m cutoff bound ΛP ΛR hP hR c i t Z E
   have hq : q * q = 1 := koszulSign_mul_self _ _
   obtain ⟨N, hN, hDx, hCx⟩ := elvProbe_content_padded_central_separated_windows_above
-    D Sc m cutoff bound ΛP ΛR hP hR i t Z.obj β
-    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-      (parameterTwist_homogeneous D Sc hc) bound) (max r.toNat (-r).toNat)
+    D Sc m cutoff bound ΛP ΛR hP hR i t Z.obj β hdot (max r.toNat (-r).toNat)
   change Dx = -∑ a ∈ Finset.range N,
     q ^ (a + 1) • ((x ^ (-(a : ℤ) - 1)).hom ≫ v ≫ uR a) at hDx
   change Cx = ∑ a ∈ Finset.range N,
@@ -78,17 +133,15 @@ theorem centralFactorMatrix_content_isIso
   have hRcap (hr : 0 ≤ r) : ReservoirCapConditions J sR vR uR r.toNat := by
     let V := reservoirCapInverseData D Sc m cutoff bound ΛP ΛR hP hR i t Z E c hr
     refine ⟨V.principal, V.window, V.isInverse, ?_, ?_⟩
-    · exact reservoirCapInverseData_closure_mem D Sc m cutoff bound ΛP ΛR hP hR sy hc i t Z β c hr
+    · exact hclCap hr
     · intro n a ha
-      exact reservoirCapInverseData_boundary_mem D Sc m cutoff bound ΛP ΛR hP hR sy hc i t Z β c hr n a
-        (lt_of_lt_of_le n.isLt ha)
+      exact hbdCap hr n a (lt_of_lt_of_le n.isLt ha)
   have hRcup (hr : r ≤ 0) : ReservoirCupConditions J sR vR uR (-r).toNat := by
     let V := reservoirCupInverseData D Sc m cutoff bound ΛP ΛR hP hR i t Z E c hr
     refine ⟨V.principal, V.window, V.isInverse, ?_, ?_⟩
-    · exact reservoirCupInverseData_closure_mem D Sc m cutoff bound ΛP ΛR hP hR sy hc i t Z β c hr
+    · exact hclCup hr
     · intro n a ha
-      exact reservoirCupInverseData_boundary_mem D Sc m cutoff bound ΛP ΛR hP hR sy hc i t Z β c hr n a
-        (lt_of_lt_of_le n.isLt ha)
+      exact hbdCup hr n a (lt_of_lt_of_le n.isLt ha)
   have hPcap (hp : 0 ≤ p) : ∃ j A, IsCapInverse sP
       (fun n : Fin p.toNat => (x ^ (n : ℤ)).hom ≫ v) j A := by
     have hp' : D.h i (-((P).muP t)) ≤ 0 := by change 0 ≤ -_ at hp; omega
@@ -143,17 +196,35 @@ theorem centralFactorMatrix_content_isIso
     rw [he]
     exact H'
 
+/-- Every output-content component of the padded central matrix with the
+coefficient chosen from homogeneous scalars is invertible. -/
+theorem centralFactorMatrix_content_isIso
+    (sy : Symmetrizer D) (hc : Sc.Homogeneous) (i : I) (t : Sector I)
+    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
+    (β : WeightBlocks D ΛR ((P).muM t)) :
+    (0 ≤ D.h i ((P).wt t) → IsIso ((P).augPosFactorMatrix
+      (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc) i ((P).wt t) t Z.obj
+        (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β))) ∧
+    (D.h i ((P).wt t) ≤ 0 → IsIso ((P).augNegFactorMatrix
+      (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc) i ((P).wt t) t Z.obj
+        (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β))) :=
+  centralFactorMatrix_content_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)
+    (reservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR sy hc) i t Z β
+
 /-- Component inverses assemble on the literal augmented matrices. Each
 content may use its own coefficient-ideal bound and its own finite bend
 length; the entire input superfunctor is retained. -/
-theorem centralAugmentedMatrix_isIso
-    (sy : Symmetrizer D) (hc : Sc.Homogeneous) (i : I) (t : Sector I)
+theorem centralAugmentedMatrix_isIsoOf
+    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
+    (hwin : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR) (i : I) (t : Sector I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t) :
     (0 ≤ D.h i ((P).wt t) → IsIso ((P).augPosMat
-      (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc) i ((P).wt t) t t Z.obj)) ∧
+      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot) i ((P).wt t) t t Z.obj)) ∧
     (D.h i ((P).wt t) ≤ 0 → IsIso ((P).augNegMat
-      (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc) i ((P).wt t) t t Z.obj)) := by
-  let c := elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc
+      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot) i ((P).wt t) t t Z.obj)) := by
+  let c := elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot
   constructor
   · intro hh
     apply RegularReservoir.isIso_of_eval
@@ -163,7 +234,7 @@ theorem centralAugmentedMatrix_isIso
     let E := reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β
     exact isIso_of_comp_eq_comp ((P).augPosSourceIso i ((P).wt t) t Z.obj E).hom _ _
       ((P).augPosTargetIso i ((P).wt t) t Z.obj E).hom inferInstance
-      ((centralFactorMatrix_content_isIso D Sc m cutoff bound ΛP ΛR hP hR sy hc i t Z β).1 hh)
+      ((centralFactorMatrix_content_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i t Z β).1 hh)
       inferInstance ((P).augPosFactorMatrix_square c i ((P).wt t) t Z.obj E)
   · intro hh
     apply RegularReservoir.isIso_of_eval
@@ -173,7 +244,21 @@ theorem centralAugmentedMatrix_isIso
     let E := reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β
     exact isIso_of_comp_eq_comp ((P).augNegSourceIso i ((P).wt t) t Z.obj E).hom _ _
       ((P).augNegTargetIso i ((P).wt t) t Z.obj E).hom inferInstance
-      ((centralFactorMatrix_content_isIso D Sc m cutoff bound ΛP ΛR hP hR sy hc i t Z β).2 hh)
+      ((centralFactorMatrix_content_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i t Z β).2 hh)
       inferInstance ((P).augNegFactorMatrix_square c i ((P).wt t) t Z.obj E)
+
+/-- Component inverses assemble on the literal augmented matrices for the
+coefficient chosen from homogeneous scalars. -/
+theorem centralAugmentedMatrix_isIso
+    (sy : Symmetrizer D) (hc : Sc.Homogeneous) (i : I) (t : Sector I)
+    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t) :
+    (0 ≤ D.h i ((P).wt t) → IsIso ((P).augPosMat
+      (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc) i ((P).wt t) t t Z.obj)) ∧
+    (D.h i ((P).wt t) ≤ 0 → IsIso ((P).augNegMat
+      (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc) i ((P).wt t) t t Z.obj)) :=
+  centralAugmentedMatrix_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)
+    (reservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR sy hc) i t Z
 
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
