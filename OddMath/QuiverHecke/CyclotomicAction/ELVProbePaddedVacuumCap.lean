@@ -173,14 +173,6 @@ def capPullbackSelfIso :
   subst b'
   exact Iso.refl _
 
-omit [TwoSupercategory k B] [(a b : B) → PiSupercategory k (a ⟶ b)] in
-/-- The pulled-back return isomorphism is an `eqToHom`. -/
-theorem capPullbackSelfIso_hom_eq_eqToHom :
-    ∃ h, (capPullbackSelfIso T W ha hb Z').hom = eqToHom h := by
-  subst a'
-  subst b'
-  exact ⟨rfl, rfl⟩
-
 /-- The dotted reservoir cap on a pulled-back input is the cap on the
 normalized input, through the source pullback chart and the return chart. -/
 theorem homReservoirCap_weight_pullback_square (i : I) {c : X}
@@ -242,21 +234,6 @@ def paddedVacuumCapTargetIso :=
           (elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR) (-ΛR) H)) ≪≫
     (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H).toFunctor.mapIso
       (eqToIso (emptyProbe_regular D (parameterTwist D Sc) m ΛP))
-
-/-- The cap target comparison is an `eqToHom`: both of its factors are images of
-`eqToHom`s. -/
-theorem paddedVacuumCapTargetIso_hom_eq_eqToHom :
-    ∃ h, (paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H).hom = eqToHom h := by
-  obtain ⟨h₁, e₁⟩ := capPullbackSelfIso_hom_eq_eqToHom (P).T (P).W
-    (capProbeWeight_zero D Sc m cutoff bound ΛP ΛR hcP hcR)
-    (capReservoirWeight_zero D Sc m cutoff bound ΛP ΛR hcP hcR)
-    (preCapInput D (parameterTwist D Sc) m ΛP hcP
-      (elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR) (-ΛR) H)
-  refine ⟨(congrArg (capVacuumEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).obj h₁).trans
-    (congrArg (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H).toFunctor.obj
-      (emptyProbe_regular D (parameterTwist D Sc) m ΛP)), ?_⟩
-  simp only [paddedVacuumCapTargetIso, Iso.trans_hom, Functor.mapIso_hom, eqToIso.hom, e₁,
-    eqToHom_map, eqToHom_trans]
 
 /-- The prescribed padded reservoir cap row `n` at the vacuum sector is the
 native `x ^ n ≫ v` of the output block, through the same source chart as the
