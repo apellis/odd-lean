@@ -23,13 +23,14 @@ coefficient weight at least `vacuumCutoff t d`; so the ideal lies in the vacuum 
 * `swappedCoordinateField sy : CoordinateField (swappedRouteBases sy)`, and
 * `swappedChartField sy : ChartField (swappedRouteBases sy) (swappedCoordinateField sy)`,
 
-with no hypothesis beyond the route index.
+with no hypothesis beyond the route index; `nondegeneracy_of_swapped_bubble_fields`
+reduces the conjecture to the two bubble fields of these bases.
 -/
 
 noncomputable section
 namespace OddMath.QuiverHecke
 open CategoryTheory StringDiagrams
-universe u
+universe u w
 
 variable {I X : Type u} [AddCommGroup X] {D : SKM.Datum I X}
 
@@ -99,5 +100,20 @@ theorem swappedChartField (sy : SKM.Symmetrizer D) :
     ChartField (swappedRouteBases sy) (swappedCoordinateField sy) :=
   fun ι => (ι.swappedCornerEvaluation sy).chartCoherence ι.t' ι.d
     (ι.swappedCornerEvaluation_ideal_le sy)
+
+/-- **The conjecture from the two bubble fields of the swapped bases** (Brundan–Ellis,
+arXiv:1701.04133v2, §8, in the research scope of `FieldScopeBoundary.md`): the
+coordinate and chart fields of `swappedRouteBases sy` are discharged, so the
+positive- and nonpositive-height bubble fields of these bases give the conjecture over
+every commutative ring with `2` invertible, for homogeneous scalars. Intermediate: the
+two bubble fields are open. -/
+theorem nondegeneracy_of_swapped_bubble_fields (sy : SKM.Symmetrizer D)
+    (hp : PositiveBubbleField (swappedRouteBases sy))
+    (hn : NonpositiveBubbleField (swappedRouteBases sy))
+    {R : Type w} [CommRing R] (h₂ : IsUnit (2 : R))
+    {Sc : SKM.Scalars D R} (hh : Sc.Homogeneous) (cs : SKM.CScalars Sc) :
+    SKM.NondegeneracyConjecture cs :=
+  nondegeneracy_of_vacuum_route_fields (sy := sy) (swappedRouteBases sy) hp hn
+    (swappedCoordinateField sy) (swappedChartField sy) h₂ hh cs
 
 end OddMath.QuiverHecke
