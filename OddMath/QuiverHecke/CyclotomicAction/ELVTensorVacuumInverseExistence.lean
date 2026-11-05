@@ -109,7 +109,7 @@ theorem tensorVacuum_rightward_even_moments_of_inverse (hi : D.parity i = 0)
       even_probeCutoff_exist D m i hi]
     omega
   obtain ⟨lc, dc, HN⟩ := tensorVacuum_negInverseAt D Sc m cutoff L ΛP ΛR hcP hcR sy hc i hh
-  obtain ⟨-, j, B, hB, -, hm⟩ := tensorVacuum_rightward_even_moments D Sc m cutoff L ΛP ΛR
+  obtain ⟨-, j, B, hB, -, -, hm⟩ := tensorVacuum_rightward_even_moments D Sc m cutoff L ΛP ΛR
     hcP hcR sy hc i hi hP hPN Zt rfl lc dc HN
     (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc)
   exact ⟨j, B, hB, hm⟩
