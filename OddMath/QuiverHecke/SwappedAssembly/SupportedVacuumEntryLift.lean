@@ -87,7 +87,7 @@ include sy hc in
 of the tensor target family is faithful and the coefficient action of `a` decodes to
 left multiplication by `a`, a closed diagram whose vacuum entry decodes to left
 multiplication by `a` satisfies `VacuumEntry`. -/
-theorem vacuumEntry_of_decode (μ : X) (M : List (LayerData I)) (hM : SChain [] M [])
+theorem vacuumEntry_of_decode (μ : X) (M : List (SKM.LayerData I)) (hM : SKM.SChain [] M [])
     (a : SYM D k)
     (c : (E).obj (tensorTargetFamily D Sc m cutoff ΛP ΛR L (0,0)).obj ≅ V)
     (hfaith : VacuumDecodeFaithful D Sc m cutoff ΛP ΛR L hP hR _ c)
@@ -97,7 +97,7 @@ theorem vacuumEntry_of_decode (μ : X) (M : List (LayerData I)) (hM : SChain [] 
     (hf : ∀ z, dec ((c.inv ≫ (E).map (ProbeReservoir.compDiag
         (ProbeReservoir.swappedGens (P) (elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc)
           (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc))
-        (mkD D μ M hM) (SPath.nil (0,0)) (SPath.nil (0,0))
+        (SKM.mkD D μ M hM) (SPath.nil (0,0)) (SPath.nil (0,0))
         (tensorTargetFamily D Sc m cutoff ΛP ΛR L (0,0)).obj) ≫ c.hom).total star z) =
       coefficientPowerQuotientMap D cutoff L a * dec z) :
     VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc μ M hM a :=
