@@ -67,9 +67,10 @@ theorem rightwardUnitColumn_odd_moments_even
       polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
         tensorVacuumDecodeLinear D Sc m cutoff L z := by
+  have h := tensorVacuumNegativeCap_odd_moments_even D Sc m cutoff L sy hc i hi hP
+    (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
   unfold rightwardUnitColumn
-  exact tensorVacuumNegativeCap_odd_moments_even D Sc m cutoff L sy hc i hi hP (by omega) hPN
-    j B hB r z
+  exact h
 
 include sy hc in
 /-- **Odd colour, negative height: odd moments of the last unit column.** Under the
@@ -93,9 +94,10 @@ theorem rightwardUnitColumn_odd_moments_odd
         (polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
           tensorVacuumDecodeLinear D Sc m cutoff L z) := by
+  have h := tensorVacuumNegativeCap_odd_moments_odd D Sc m cutoff L sy hc i hi hP
+    (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
   unfold rightwardUnitColumn
-  exact tensorVacuumNegativeCap_odd_moments_odd D Sc m cutoff L sy hc i hi hP (by omega) hPN
-    j B hB r z
+  exact h
 
 include sy hc in
 /-- **Odd colour, negative height: the last unit column.** Both moment identities of
