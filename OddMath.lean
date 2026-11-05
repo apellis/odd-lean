@@ -1651,6 +1651,7 @@ import OddMath.QuiverHecke.SwappedAssembly.Generators.CrossCoeffExistence
 import OddMath.QuiverHecke.SwappedAssembly.Generators.Leftward
 import OddMath.QuiverHecke.SwappedAssembly.Generators
 import OddMath.QuiverHecke.SwappedAssembly.WhiskerReduction
+import OddMath.QuiverHecke.SwappedAssembly.WhiskerEvaluation
 import OddMath.QuiverHecke.SwappedAssembly.WindowZero
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.Windows
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.CapWindows
@@ -2764,6 +2765,8 @@ import OddMath.SKM.PairingExtensionPresentation
 import OddMath.QuiverHecke.PairingExtensionAction
 import OddMath.QuiverHecke.SwappedAssembly.SupportedActionAlphaLayers
 import OddMath.QuiverHecke.SwappedAssembly.SupportedActionLayers
+import OddMath.QuiverHecke.SwappedAssembly.SupportedClosedAction
+import OddMath.QuiverHecke.SwappedAssembly.SupportedClosedCoefficients
 import OddMath.SKM.PairingExtensionBubbles
 import OddMath.QuiverHecke.PairingExtensionAffine
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumBendSeries
