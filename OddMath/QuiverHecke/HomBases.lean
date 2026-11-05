@@ -146,6 +146,7 @@ theorem homBasisOfSymmetrizer_apply (sy : Symmetrizer D) (h₂ : IsUnit (2 : k))
       bubAt D Sc μ a (betaSYM cs μ (SYM.coefficientBasis D k η)) ≫ xev cs μ a b (F.layers t) :=
   F.homBasis_apply_eq cs μ _ t η
 
+include F in
 /-- `Hom(E_a 1_λ, E_b 1_λ)` is a free module over the ground ring. -/
 theorem free_hom (sy : Symmetrizer D) (h₂ : IsUnit (2 : k)) (hc : Sc.Homogeneous)
     (cs : CScalars Sc) (hab : wt D 0 a = wt D 0 b) (μ : X) :
@@ -185,8 +186,8 @@ theorem wordHomComponent_finrank_eq_sum {a b : List (SKM.Letter I)} (F : SKM.Mat
     Module.finrank k (SKM.wordHomComponent sy Sc μ a b z) =
       ∑ t : F.boundedLabels sy μ z.1,
         Module.finrank k (SKM.SYM.component sy k (z - F.labelBidegree sy μ t.val)) :=
-  F.wordHomComponent_finrank_of_nondegeneracy sy cs μ hc hf
-    (nondegeneracy_of_symmetrizer sy (IsUnit.mk0 _ h₂) hc cs) hab z
+  SKM.wordHomComponent_finrank F sy cs μ hc hf
+    (nondegeneracy_of_symmetrizer sy (IsUnit.mk0 _ h₂) hc cs a b hab μ F) z
 
 /-- **The graded superdimension of `Hom(E_a 1_λ, E_b 1_λ)`, coefficientwise**: for a sign
 `σ` with `σ² = 1`, the coefficient of `q^n` is `Σ_σ' σ^{par σ'} S_{n - deg σ'}`, over the
