@@ -1561,6 +1561,7 @@ import OddMath.CoveringQuantum.FiniteWeightDualityExamples
 import OddMath.CoveringQuantum.UDot.FiniteWeightAlgebra
 import OddMath.CoveringQuantum.UDot.FiniteWeightAlgebraExamples
 import OddMath.CoveringQuantum.UDot.FiniteWeightForm
+import OddMath.CoveringQuantum.UDot.WindowForm
 import OddMath.CoveringQuantum.UDot.FiniteWeightFormExamples
 import OddMath.SKM.MatchingChoiceTransition
 import OddMath.SKM.RightClosure
