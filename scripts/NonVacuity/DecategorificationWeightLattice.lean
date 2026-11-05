@@ -52,7 +52,7 @@ def cartan : SuperCartanDatum ℕ where
   even_of_odd i j _ := by by_cases hij : i = j <;> simp [hij]
 
 theorem cartan_eval (i j : ℕ) : alpha j (h i) = (cartan.a i j : ℂ) := by
-  by_cases hij : i = j <;> simp [alpha, h, cartan, Finsupp.single_apply, hij, eq_comm]
+  by_cases hij : i = j <;> simp [alpha, h, cartan, hij, eq_comm]
 
 theorem coroots_independent : LinearIndependent ℂ h :=
   Finsupp.basisSingleOne.linearIndependent
@@ -87,8 +87,9 @@ theorem homogeneousP : scalarsP.Homogeneous :=
   fun _ _ _ _ _ _ _ _ h ↦ absurd rfl h
 
 theorem locallyFiniteP : datumP.skmSymmetrizer.DegreeLocallyFinite := fun N ↦
-  (Set.finite_Iic N).subset fun i (hi : i + 1 ≤ N) ↦ by
-    change i ≤ N
+  (Set.finite_Iic N).subset fun i hi ↦ by
+    have hi' : ((i + 1 : ℕ) : ℤ) ≤ N := hi
+    simp only [Set.mem_Iic]
     omega
 
 /-- `γ` is bijective on BE2's weight lattice with infinitely many odd colours over `ℚ`. -/
