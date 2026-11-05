@@ -102,14 +102,14 @@ windows are the native probe caps `centralPaddedCap true n`.
 
 `ELVProbePaddedVacuumCap.lean` identifies the prescribed padded cap rows
 `centralPaddedCap true n` at the vacuum sector with the native `x^n ≫ v`
-of the output block (`paddedVacuumCap_native`), through the same source
+of the output block (`paddedVacuumCap_eq`), through the same source
 chart as the padded Dx entry and the target chart
-`paddedVacuumCapTargetIso`. `vacuumPreReservoirCap_native` does this on the
+`paddedVacuumCapTargetIso`. `vacuumPreReservoirCap_eq` does this on the
 regular probe for every dotted reservoir cap, without parity.
 
 `ELVProbePaddedVacuumCapInverse.lean` transports `vacuumCapInverseData`
 entrywise (`IsCapInverse.map`, `.coordinates`, `.target`) to the native
-chart: `vacuumCapInverse_native_odd` is a cap inverse of
+chart: `vacuumCapInverse_odd` is a cap inverse of
 `[evaluatedMixedBend; x^n ≫ v]_(n < h)` for the vacuum bend block of any
 input equal to the supported vacuum input.
 
@@ -153,8 +153,8 @@ Checked on `research/positive-bubble-field`:
   (`Sigma/PointwiseBubbleEntry`): the swapped-generator entry of
   `dcupL i n ++ epsL i N` on empty paths is `dcup ≫ epsEntry`, and its evaluation
   is the leftward column composed with the padded cap.
-- `vacuumLeftwardColumn`, `vacuumLeftwardCapInverse_native_odd`,
-  `vacuumLeftwardColumn_cap_native` (`ELVProbeLeftwardVacuumCapInverse`): at the
+- `vacuumLeftwardColumn`, `vacuumLeftwardCapInverse_odd`,
+  `vacuumLeftwardColumn_cap_eq` (`ELVProbeLeftwardVacuumCapInverse`): at the
   vacuum sector input these columns are a cap inverse of the native mixed bend,
   and `column ≫ dot^N ≫ cap` is the conjugated evaluation of the bubble entry.
 - `vacuumLeftwardCapInverse_bubbleEntries`, `tensorVacuum_leftward_odd_moments`

@@ -181,7 +181,7 @@ def vacuumPostTarget :
 
 /-- At the empty reservoir block, the actual shifted post-cup becomes
 the raw native unit/dot column, with the regular-input cast retained. -/
-theorem vacuumBendPostCup_native (r : ℕ) :
+theorem vacuumBendPostCup_eq (r : ℕ) :
     ((SKM.homContentPostCup ((probeOldRouquierFamily D Sc m ΛP hcP)).obj (elvRouquierFamily D Sc cutoff bound ΛR hcR) i β ΛP edgeR r (preCapInput D Sc m ΛP hcP (elvWeightSpace D Sc cutoff bound ΛR) (-ΛR) H)).total (regularProbe D Sc m ΛP)) (emptyBlock D ΛR) ≫
       (vacuumPostTarget D Sc m cutoff bound ΛP ΛR hcP hcR i edgeR β H).hom =
     ((H.comp (elvBlockEval D Sc cutoff bound ΛR (emptyBlock D ΛR)))).map (eqToHom (emptyProbe_regular D Sc m ΛP)) ≫
@@ -255,7 +255,7 @@ private theorem negativeCap_block (n : ℕ) :
 
 /-- Each prescribed negative pre-cap followed by a dotted post-unit is
 the corresponding raw vacuum bend monomial, with no compatibility premise. -/
-theorem vacuumBendMonomial_native (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1)
+theorem vacuumBendMonomial_eq (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1)
     (n r : ℕ) :
     ((SKM.homPreNegativeCap (probeOldRouquierFamily D Sc m ΛP hcP) (elvWeightSpace D Sc cutoff bound ΛR) i (-ΛR) edgeP n (preCapInput D Sc m ΛP hcP (elvWeightSpace D Sc cutoff bound ΛR) (-ΛR) H) ≫
       SKM.homContentPostCup ((probeOldRouquierFamily D Sc m ΛP hcP)).obj (elvRouquierFamily D Sc cutoff bound ΛR hcR) i β ΛP edgeR r (preCapInput D Sc m ΛP hcP (elvWeightSpace D Sc cutoff bound ΛR) (-ΛR) H)).total (regularProbe D Sc m ΛP)) (emptyBlock D ΛR) ≫
@@ -265,8 +265,8 @@ theorem vacuumBendMonomial_native (hP : 0 < probeCutoff D m i) (hi : D.parity i 
         ProbeVacuumCap.shiftedPreCap D Sc m (contentModuleTarget D Sc cutoff bound (0 : Multiset I)) i hP (H.comp (elvBlockEval D Sc cutoff bound ΛR (emptyBlock D ΛR))) ≫
           (adjunction (contentAppend D Sc cutoff bound (0 : Multiset I) [i])).unit.app (((H.comp (elvBlockEval D Sc cutoff bound ΛR (emptyBlock D ΛR)))).obj (probeOldVacuumRegular D Sc m)) ≫
             restrictedDotEnd (contentAppend D Sc cutoff bound (0 : Multiset I) [i]) (canonicalAppendDot_supernatural D Sc cutoff bound (0 : Multiset I) i) (((H.comp (elvBlockEval D Sc cutoff bound ΛR (emptyBlock D ΛR)))).obj (probeOldVacuumRegular D Sc m)) ^ r := by
-  have hp := vacuumBendPostCup_native D Sc m cutoff bound ΛP ΛR hcP hcR i edgeR β H r
-  have hn := vacuumPreNegativeCap_native D Sc m ΛP hcP (fun _ => (contentModuleTarget D Sc cutoff bound (0 : Multiset I))) (-ΛR) i edgeP (H.comp (elvBlockEval D Sc cutoff bound ΛR (emptyBlock D ΛR))) hP hi n
+  have hp := vacuumBendPostCup_eq D Sc m cutoff bound ΛP ΛR hcP hcR i edgeR β H r
+  have hn := vacuumPreNegativeCap_eq D Sc m ΛP hcP (fun _ => (contentModuleTarget D Sc cutoff bound (0 : Multiset I))) (-ΛR) i edgeP (H.comp (elvBlockEval D Sc cutoff bound ΛR (emptyBlock D ΛR))) hP hi n
   have hc : ((SKM.homPreNegativeCap (probeOldRouquierFamily D Sc m ΛP hcP) (elvWeightSpace D Sc cutoff bound ΛR) i (-ΛR) edgeP n (preCapInput D Sc m ΛP hcP (elvWeightSpace D Sc cutoff bound ΛR) (-ΛR) H)).total (regularProbe D Sc m ΛP)) (emptyBlock D ΛR) ≫
       ((H.comp (elvBlockEval D Sc cutoff bound ΛR (emptyBlock D ΛR)))).map (eqToHom (emptyProbe_regular D Sc m ΛP)) =
       (vacuumPreBlockSourceIso D Sc m cutoff bound ΛP ΛR hcP i edgeP H).hom ≫
@@ -285,7 +285,7 @@ theorem vacuumBendMonomial_native (hP : 0 < probeCutoff D m i) (hi : D.parity i 
 
 /-- Even colour: each prescribed negative pre-cap followed by a dotted post-unit is
 the corresponding raw vacuum bend monomial, with no compatibility premise. -/
-theorem vacuumBendMonomial_native_even (hP : 0 < probeCutoff D m i) (hi : D.parity i = 0)
+theorem vacuumBendMonomial_even (hP : 0 < probeCutoff D m i) (hi : D.parity i = 0)
     (n r : ℕ) :
     ((SKM.homPreNegativeCap (probeOldRouquierFamily D Sc m ΛP hcP) (elvWeightSpace D Sc cutoff bound ΛR) i (-ΛR) edgeP n (preCapInput D Sc m ΛP hcP (elvWeightSpace D Sc cutoff bound ΛR) (-ΛR) H) ≫
       SKM.homContentPostCup ((probeOldRouquierFamily D Sc m ΛP hcP)).obj (elvRouquierFamily D Sc cutoff bound ΛR hcR) i β ΛP edgeR r (preCapInput D Sc m ΛP hcP (elvWeightSpace D Sc cutoff bound ΛR) (-ΛR) H)).total (regularProbe D Sc m ΛP)) (emptyBlock D ΛR) ≫
@@ -295,8 +295,8 @@ theorem vacuumBendMonomial_native_even (hP : 0 < probeCutoff D m i) (hi : D.pari
         ProbeVacuumCap.shiftedPreCap D Sc m (contentModuleTarget D Sc cutoff bound (0 : Multiset I)) i hP (H.comp (elvBlockEval D Sc cutoff bound ΛR (emptyBlock D ΛR))) ≫
           (adjunction (contentAppend D Sc cutoff bound (0 : Multiset I) [i])).unit.app (((H.comp (elvBlockEval D Sc cutoff bound ΛR (emptyBlock D ΛR)))).obj (probeOldVacuumRegular D Sc m)) ≫
             restrictedDotEnd (contentAppend D Sc cutoff bound (0 : Multiset I) [i]) (canonicalAppendDot_supernatural D Sc cutoff bound (0 : Multiset I) i) (((H.comp (elvBlockEval D Sc cutoff bound ΛR (emptyBlock D ΛR)))).obj (probeOldVacuumRegular D Sc m)) ^ r := by
-  have hp := vacuumBendPostCup_native D Sc m cutoff bound ΛP ΛR hcP hcR i edgeR β H r
-  have hn := vacuumPreNegativeCap_native_even D Sc m ΛP hcP (fun _ => (contentModuleTarget D Sc cutoff bound (0 : Multiset I))) (-ΛR) i edgeP (H.comp (elvBlockEval D Sc cutoff bound ΛR (emptyBlock D ΛR))) hP hi n
+  have hp := vacuumBendPostCup_eq D Sc m cutoff bound ΛP ΛR hcP hcR i edgeR β H r
+  have hn := vacuumPreNegativeCap_even D Sc m ΛP hcP (fun _ => (contentModuleTarget D Sc cutoff bound (0 : Multiset I))) (-ΛR) i edgeP (H.comp (elvBlockEval D Sc cutoff bound ΛR (emptyBlock D ΛR))) hP hi n
   have hc : ((SKM.homPreNegativeCap (probeOldRouquierFamily D Sc m ΛP hcP) (elvWeightSpace D Sc cutoff bound ΛR) i (-ΛR) edgeP n (preCapInput D Sc m ΛP hcP (elvWeightSpace D Sc cutoff bound ΛR) (-ΛR) H)).total (regularProbe D Sc m ΛP)) (emptyBlock D ΛR) ≫
       ((H.comp (elvBlockEval D Sc cutoff bound ΛR (emptyBlock D ΛR)))).map (eqToHom (emptyProbe_regular D Sc m ΛP)) =
       (vacuumPreBlockSourceIso D Sc m cutoff bound ΛP ΛR hcP i edgeP H).hom ≫

@@ -41,43 +41,43 @@ abbrev probeOldBlockInnerDot (β : WeightBlocks D Λ x₀) :
   Superfunctor.whiskerRight (probeOldBlockDot D Sc m i Λ h₁ β)
     (probeOldBlockInd D Sc m i Λ h₂ (blockSucc D Λ i h₁ β))
 
-theorem probeOldBlockOuterDot_native_app (β : WeightBlocks D Λ x₀)
+theorem probeOldBlockOuterDot_app (β : WeightBlocks D Λ x₀)
     (p : ZMod 2) (M : ProbeCanonicalModules D Sc m β.1) :
     ((probeOldBlockOuterDot D Sc m i Λ h₁ h₂ β).app p M).hom =
       (Superfunctor.whiskerLeft (inductionModuleCell (k := k) (J β))
         (inductionModuleDot (K β) (hd₂ β))).app p M.obj := by
   change ((probeOldBlockDot D Sc m i Λ h₂ (blockSucc D Λ i h₁ β)).app p
     ((probeOldBlockInd D Sc m i Λ h₁ β).obj M)).hom = _
-  rw [probeOldBlockDot_native_app]
+  rw [probeOldBlockDot_app]
   rfl
 
-theorem probeOldBlockInnerDot_native_app (β : WeightBlocks D Λ x₀)
+theorem probeOldBlockInnerDot_app (β : WeightBlocks D Λ x₀)
     (p : ZMod 2) (M : ProbeCanonicalModules D Sc m β.1) :
     ((probeOldBlockInnerDot D Sc m i Λ h₁ h₂ β).app p M).hom =
       (Superfunctor.whiskerRight (inductionModuleDot (J β) (hd₁ β))
         (inductionModuleCell (k := k) (K β))).app p M.obj := by
   change (induction (K β)).map (((probeOldBlockDot D Sc m i Λ h₁ β).app p M).hom) = _
-  rw [probeOldBlockDot_native_app]
+  rw [probeOldBlockDot_app]
   rfl
 
-theorem probeOldBlockOuterDot_native_total (β : WeightBlocks D Λ x₀)
+theorem probeOldBlockOuterDot_total (β : WeightBlocks D Λ x₀)
     (M : ProbeCanonicalModules D Sc m β.1) :
     ((probeOldBlockOuterDot D Sc m i Λ h₁ h₂ β).total M).hom =
       (Superfunctor.whiskerLeft (inductionModuleCell (k := k) (J β))
         (inductionModuleDot (K β) (hd₂ β))).total M.obj := by
   change ((probeOldBlockOuterDot D Sc m i Λ h₁ h₂ β).app 0 M).hom +
     ((probeOldBlockOuterDot D Sc m i Λ h₁ h₂ β).app 1 M).hom = _
-  rw [probeOldBlockOuterDot_native_app, probeOldBlockOuterDot_native_app]
+  rw [probeOldBlockOuterDot_app, probeOldBlockOuterDot_app]
   rfl
 
-theorem probeOldBlockInnerDot_native_total (β : WeightBlocks D Λ x₀)
+theorem probeOldBlockInnerDot_total (β : WeightBlocks D Λ x₀)
     (M : ProbeCanonicalModules D Sc m β.1) :
     ((probeOldBlockInnerDot D Sc m i Λ h₁ h₂ β).total M).hom =
       (Superfunctor.whiskerRight (inductionModuleDot (J β) (hd₁ β))
         (inductionModuleCell (k := k) (K β))).total M.obj := by
   change ((probeOldBlockInnerDot D Sc m i Λ h₁ h₂ β).app 0 M).hom +
     ((probeOldBlockInnerDot D Sc m i Λ h₁ h₂ β).app 1 M).hom = _
-  rw [probeOldBlockInnerDot_native_app, probeOldBlockInnerDot_native_app]
+  rw [probeOldBlockInnerDot_app, probeOldBlockInnerDot_app]
   rfl
 
 /-- The entire chosen outer dot uses the same selected coordinate as the crossing. -/
@@ -156,8 +156,8 @@ theorem probeOldBlockEqualCross_slideLeft (β : WeightBlocks D Λ x₀) :
     (koszulSign (D.parity i) (D.parity i) : ℤ) •
       (((probeOldBlockEqualCross D Sc m i Λ h₁ h₂ β).total M).hom ≫
         ((probeOldBlockInnerDot D Sc m i Λ h₁ h₂ β).total M).hom) = 𝟙 _
-  rw [probeOldBlockOuterDot_native_total, probeOldBlockEqualCross_native_total,
-    probeOldBlockInnerDot_native_total]
+  rw [probeOldBlockOuterDot_total, probeOldBlockEqualCross_total,
+    probeOldBlockInnerDot_total]
   exact hr
 
 /-- The same chosen block generators satisfy the right signed slide. -/
@@ -190,8 +190,8 @@ theorem probeOldBlockEqualCross_slideRight (β : WeightBlocks D Λ x₀) :
     (koszulSign (D.parity i) (D.parity i) : ℤ) •
       (((probeOldBlockInnerDot D Sc m i Λ h₁ h₂ β).total M).hom ≫
         ((probeOldBlockEqualCross D Sc m i Λ h₁ h₂ β).total M).hom) = 𝟙 _
-  rw [probeOldBlockOuterDot_native_total, probeOldBlockEqualCross_native_total,
-    probeOldBlockInnerDot_native_total]
+  rw [probeOldBlockOuterDot_total, probeOldBlockEqualCross_total,
+    probeOldBlockInnerDot_total]
   exact hr
 
 end OddMath.QuiverHecke

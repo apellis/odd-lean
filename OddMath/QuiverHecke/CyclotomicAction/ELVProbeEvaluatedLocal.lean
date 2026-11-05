@@ -292,13 +292,13 @@ private theorem identity_closed
     (N : Superfunctor k (OldContentCategory D Sc cut (i :: ν)) (SVec k)) (hN : P₁ N) :
     P₁ N := hN
 
-private theorem dot_native_app (q : ZMod 2) (N : ProbeEvaluatedModules D Sc m ν) :
+private theorem dot_app (q : ZMod 2) (N : ProbeEvaluatedModules D Sc m ν) :
     ((x₀).app q N).hom = (inductionModuleDot J hDotJ).app q N.obj := by
   change (if q = D.parity i then probeEvaluatedDotComponent D Sc m ν i N else 0).hom =
     if q = D.parity i then transformComponent hDotJ N.obj else 0
   split_ifs <;> rfl
 
-private theorem power_native_app (n : ℕ) (q : ZMod 2)
+private theorem power_app (n : ℕ) (q : ZMod 2)
     (N : ProbeEvaluatedModules D Sc m ν) :
     ((evaluatedDotPower D Sc m ν i n).app q N).hom =
       (oldDotPower D Sc m ν i n).app q N.obj := by
@@ -312,7 +312,7 @@ private theorem power_native_app (n : ℕ) (q : ZMod 2)
         ((evaluatedDotPower D Sc m ν i n).app 1 N).hom ≫ ((x₀).app (q + 1) N).hom =
       (oldDotPower D Sc m ν i n).app 0 N.obj ≫ (inductionModuleDot J hDotJ).app q N.obj +
         (oldDotPower D Sc m ν i n).app 1 N.obj ≫ (inductionModuleDot J hDotJ).app (q + 1) N.obj
-    rw [ih 0, ih 1, dot_native_app, dot_native_app]
+    rw [ih 0, ih 1, dot_app, dot_app]
 
 private theorem mate_restriction :
     evaluatedMate D Sc m ν i =
@@ -350,7 +350,7 @@ private theorem unit_row_restriction (n : ℕ) :
   change (adjunction K).unit.app N.obj ≫
       (restriction K).map (((evaluatedDotPower D Sc m (i :: ν) i n).app q N).hom) =
     (adjunction K).unit.app N.obj ≫ (restriction K).map ((oldDotPower D Sc m (i :: ν) i n).app q N.obj)
-  rw [power_native_app]
+  rw [power_app]
 
 private theorem cap_row_restriction (n : ℕ) :
     evaluatedCapRow D Sc m ν i n =
@@ -374,7 +374,7 @@ private theorem cap_row_restriction (n : ℕ) :
   change (((evaluatedDotPower D Sc m ν i n).app q ((probeEvaluatedRestriction D Sc m ν i).obj N)).hom) ≫
       (adjunction J).counit.app N.obj =
     (oldDotPower D Sc m ν i n).app q ((restriction J).obj N.obj) ≫ (adjunction J).counit.app N.obj
-  rw [power_native_app]
+  rw [power_app]
   rfl
 private theorem outer_restriction :
     evaluatedOuterDot D Sc m ν i =
@@ -385,7 +385,7 @@ private theorem outer_restriction :
   apply InducedCategory.hom_ext
   change ((x₁).app q ((probeEvaluatedInduction D Sc m ν i).obj N)).hom =
     (inductionModuleDot K hDotK).app q ((probeEvaluatedInduction D Sc m ν i).obj N).obj
-  exact dot_native_app D Sc m (i :: ν) i q ((probeEvaluatedInduction D Sc m ν i).obj N)
+  exact dot_app D Sc m (i :: ν) i q ((probeEvaluatedInduction D Sc m ν i).obj N)
 
 private theorem inner_restriction :
     evaluatedInnerDot D Sc m ν i =
@@ -396,7 +396,7 @@ private theorem inner_restriction :
   apply InducedCategory.hom_ext
   change (induction K).map (((x₀).app q N).hom) =
     (induction K).map ((inductionModuleDot J hDotJ).app q N.obj)
-  rw [dot_native_app]
+  rw [dot_app]
 
 private theorem cross_restriction :
     t = restrictionTrans P₀ P₂ (F := oldDoubleFunctor D Sc m ν i) (G := oldDoubleFunctor D Sc m ν i)
@@ -404,7 +404,7 @@ private theorem cross_restriction :
   apply Superfunctor.hom_ext
   intro q N
   apply InducedCategory.hom_ext
-  exact probeEvaluatedEqualCross_native_app D Sc m ν i q N
+  exact probeEvaluatedEqualCross_app D Sc m ν i q N
 
 private theorem evaluated_slide_left :
     evaluatedOuterDot D Sc m ν i ≫ t -

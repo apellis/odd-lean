@@ -169,7 +169,7 @@ theorem probeOldBlockDistinctCross_mem (β : WeightBlocks D Λ x₀) (ε : Weigh
         (hc β ε hε)).toSuperNatTrans_isHomogeneous)
 
 /-- Each parity component retains the literal OLD positive rectangular crossing. -/
-theorem probeOldBlockDistinctCross_native_app (β : WeightBlocks D Λ x₀)
+theorem probeOldBlockDistinctCross_app (β : WeightBlocks D Λ x₀)
     (ε : WeightBlocks D Λ xu) (hε : blockSucc₂ D i j Λ h₁ h₂ β = ε)
     (p : ZMod 2) (N : ProbeCanonicalModules D Sc m β.1) :
     ((probeOldBlockDistinctCross D Sc m i j Λ h₁ h₂ h₃ h₄ β ε hε).app p N).hom =

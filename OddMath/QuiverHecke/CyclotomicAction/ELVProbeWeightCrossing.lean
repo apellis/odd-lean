@@ -113,7 +113,7 @@ theorem probeOldBlockEqualCross_mem (β : WeightBlocks D Λ x₀) :
         (inductionModuleCross_mem (J β) (K β) (hc β))))
 
 /-- Forgetting only scalar-evaluation certificates retains the literal OLD crossing. -/
-theorem probeOldBlockEqualCross_native_total (β : WeightBlocks D Λ x₀)
+theorem probeOldBlockEqualCross_total (β : WeightBlocks D Λ x₀)
     (M : ProbeCanonicalModules D Sc m β.1) :
     ((probeOldBlockEqualCross D Sc m i Λ h₁ h₂ β).total M).hom =
       (inductionModuleCross (J β) (K β) (hc β)).total M.obj := rfl
@@ -128,7 +128,7 @@ theorem probeOldBlockEqualCross_square (β : WeightBlocks D Λ x₀) :
   apply InducedCategory.hom_ext
   change ((probeOldBlockEqualCross D Sc m i Λ h₁ h₂ β).total M).hom ≫
     ((probeOldBlockEqualCross D Sc m i Λ h₁ h₂ β).total M).hom = 0
-  simp only [probeOldBlockEqualCross_native_total]
+  simp only [probeOldBlockEqualCross_total]
   rw [← Superfunctor.comp_total, inductionModuleCross_square (J β) (K β) (hc β)
     (fun s => oldContentEqualCross_square D Sc (probeCutoff D m) β.1.toList i s)]
   rfl

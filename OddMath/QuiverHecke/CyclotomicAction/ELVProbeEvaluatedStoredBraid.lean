@@ -94,7 +94,7 @@ def probeStoredBraidRight (N : ProbeEvaluatedModules D Sc' m ν) :
     probeAppendToCrossComponent D Sc' m νi l j hIJ hIL hTopL hTopJ ((EAi).obj N))
 
 /-- The first evaluated path retains the entire OLD module map. -/
-theorem probeStoredBraidLeft_native (N : ProbeEvaluatedModules D Sc' m ν) :
+theorem probeStoredBraidLeft_eq (N : ProbeEvaluatedModules D Sc' m ν) :
     (probeStoredBraidLeft D Sc m ν i j l hI hJ hL hIJ hJI hJL hLJ hTopL hTopI N).hom =
       probeOldStoredBraidLeft D Sc m ν i j l hI hJ hL hIJ hJI hJL hLJ hTopL hTopI N.obj := by
   simp only [probeStoredBraidLeft, appendTo_obj_obj]
@@ -109,7 +109,7 @@ theorem probeStoredBraidLeft_native (N : ProbeEvaluatedModules D Sc' m ν) :
         (rectangle_degree_congr Ai Aj Bij_i Bij_j (mul_comm (D.parity j) (D.parity i)) _ _ _)
 
 /-- The second evaluated path retains the same independent OLD arrows. -/
-theorem probeStoredBraidRight_native (N : ProbeEvaluatedModules D Sc' m ν) :
+theorem probeStoredBraidRight_eq (N : ProbeEvaluatedModules D Sc' m ν) :
     (probeStoredBraidRight D Sc m ν i j l hI hL hIJ hIL hLI hLJ hTopL hTopJ hTopI N).hom =
       probeOldStoredBraidRight D Sc m ν i j l hI hL hIJ hIL hLI hLJ hTopL hTopJ hTopI N.obj := by
   simp only [probeStoredBraidRight, appendTo_obj_obj]
@@ -128,7 +128,7 @@ theorem probeStoredBraid (hb : ¬ (i = l ∧ i ≠ j)) (N : ProbeEvaluatedModule
     probeStoredBraidLeft D Sc m ν i j l hI hJ hL hIJ hJI hJL hLJ hTopL hTopI N =
       probeStoredBraidRight D Sc m ν i j l hI hL hIJ hIL hLI hLJ hTopL hTopJ hTopI N := by
   apply InducedCategory.hom_ext
-  rw [probeStoredBraidLeft_native, probeStoredBraidRight_native]
+  rw [probeStoredBraidLeft_eq, probeStoredBraidRight_eq]
   exact probeOldStoredBraid D Sc m ν i j l hI hJ hL hIJ hJI hIL hLI hJL hLJ hTopL hTopJ hTopI hb N.obj
 
 end OddMath.QuiverHecke

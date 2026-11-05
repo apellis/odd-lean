@@ -54,7 +54,7 @@ theorem probeEvaluatedEqualCross_mem :
       (Superfunctor.mem_parity_iff_isHomogeneous.mp (inductionModuleCross_mem J K hCross)))
 
 /-- Each parity component is the identical chosen OLD component. -/
-theorem probeEvaluatedEqualCross_native_app (q : ZMod 2)
+theorem probeEvaluatedEqualCross_app (q : ZMod 2)
     (N : ProbeEvaluatedModules D Sc m ν) :
     ((probeEvaluatedEqualCross D Sc m ν i).app q N).hom =
       (inductionModuleCross J K hCross).app q N.obj := rfl
