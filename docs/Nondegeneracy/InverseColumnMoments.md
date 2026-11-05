@@ -198,8 +198,16 @@ Still open:
    comparison `c : E Z ≅ V`, injectivity of
    `f ↦ tensorVacuumEndDecode (c.inv ≫ E.map f ≫ c.hom)` on endomorphisms of the
    vacuum object `Z` of the tensor target family, `E = vacuumSectorEvaluation`.
-   Remaining for item 1: evaluate the vacuum entry through this reading and compare
-   with the moment identity.
+   The coefficient reading is checked (`SupportedVacuumCoefficientDecode.lean`):
+   `SupportedSectors.vacuumDecode_tensorTargetCoefficient` shows that for every
+   comparison `c : E Z ≅ V` whose forward map is an `eqToHom`, the vacuum coefficient
+   `tensorTargetFamilyCoefficientAction (0,0) a` decodes to left multiplication by
+   `coefficientPowerQuotientMap a` (the `hcoef` hypothesis of
+   `vacuumEntry_of_decode`). Its core is
+   `VacuumTensorCoefficientMaps.selectedVacuum_coefficient_endDecode`, from
+   `sourceCoefficientAction_tensorVector` at the vacuum block.
+   Remaining for item 1: show that the comparison of the leftward odd moment
+   identity is an `eqToHom`, then evaluate the vacuum entry and compare.
 2. The odd bubble `oddBubble` at positive height, the same way.
 3. Even colours need an even moment result; nonpositive height is handled
    separately.
