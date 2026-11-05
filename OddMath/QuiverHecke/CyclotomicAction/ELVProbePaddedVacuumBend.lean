@@ -262,4 +262,97 @@ theorem paddedVacuumDx_odd (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1) :
   exact paddedVacuumDx_odd_at D Sc m cutoff bound ΛP ΛR hcP hcR H i sy hc hP hi n hb'
     (((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).centralPaddedDx_separated i (((0, 0) : Sector I)) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) (factorDotIso D Sc m cutoff bound ΛP ΛR hcP hcR i) (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) (2 * n) hD)
 
+
+private theorem paddedVacuumDx_even_at
+    (hP : 0 < probeCutoff D m i) (hi : D.parity i = 0) (n : ℕ)
+    (hn : ProbeVacuumCap.diagonalPostDot D (parameterTwist D Sc) m cutoff bound i (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) ^ n = 0)
+    (hDx : ((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).CentralPaddedDxSeparatedAt i (((0, 0) : Sector I)) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) (factorDotIso D Sc m cutoff bound ΛP ΛR hcP hcR i) (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) n) :
+    ((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).centralPaddedSigma (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i (((0, 0) : Sector I)) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) true false ≫
+        (paddedVacuumTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).hom =
+      (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).hom ≫
+        ProbeVacuumCap.evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) := by
+  classical
+  let P := elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR
+  let E := vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR
+  let E₀ := normalVacuumEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR
+  let Z := vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H
+  let Z₀ := preCapInput D (parameterTwist D Sc) m ΛP hcP
+    (elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR) (-ΛR) H
+  let ha := probeWeight_zero D Sc m cutoff bound ΛP ΛR hcP hcR
+  let hb := reservoirWeight_zero D Sc m cutoff bound ΛP ΛR hcP hcR
+  let ep := P.muP_preE i (0, 0)
+  let er := P.muM_postF i (0, 0)
+  let ep₀ := (congrArg (fun x : X => -x + D.α i) ha).symm.trans ep
+  let er₀ := (congrArg (fun x : X => x + D.α i) hb).symm.trans er
+  let : E.Additive := vacuumSectorEvaluation_additive D Sc m cutoff bound ΛP ΛR hcP hcR
+  let := factorDotIso D Sc m cutoff bound ΛP ΛR hcP hcR i ep
+  let := factorDotIso D Sc m cutoff bound ΛP ΛR hcP hcR i ep₀
+  let s := P.centralSourceCornerIso i (0, 0) Z E ⟨true, by trivial⟩
+  let t := P.centralTargetCornerIso i (0, 0) Z E ⟨false, by trivial⟩
+  let u := E₀.mapIso (SKM.homPreWeightPullbackIso P.T P.W ha hb i ep Z₀)
+  let v := E₀.mapIso (SKM.homPostWeightPullbackIso P.T P.W ha hb i er 0 Z₀)
+  let e := vacuumPreBlockSourceIso D (parameterTwist D Sc) m cutoff bound ΛP ΛR hcP i ep₀ H
+  let f := vacuumPostTarget D (parameterTwist D Sc) m cutoff bound ΛP ΛR hcP hcR i er₀ 0 H
+  let a (r : ℕ) := E.map (SKM.homPreNegativeCap P.T P.W.obj i (P.muM (0, 0)) ep (r + 1) Z ≫
+    SKM.homContentPostCup P.T.obj P.W i 0 (P.muP (0, 0)) er r Z)
+  let b (r : ℕ) := E₀.map (SKM.homPreNegativeCap P.T P.W.obj i (-ΛR) ep₀ (r + 1) Z₀ ≫
+    SKM.homContentPostCup P.T.obj P.W i 0 ΛP er₀ r Z₀)
+  have hw (r : ℕ) : a r ≫ v.hom = u.hom ≫ b r := by
+    have h := SKM.homCapCup_weight_pullback_square P.T P.W ha hb i ep er 0 Z₀
+      (factorDotIso D Sc m cutoff bound ΛP ΛR hcP hcR i) (r + 1) r
+    have hm := mapped_square E₀ _ _ h
+    simpa only [a, b, u, v, E, Z, Z₀, vacuumSectorEvaluation, vacuumSectorInput,
+      Functor.comp_map] using hm
+  have hn := vacuumBendWordSum_even D (parameterTwist D Sc) m cutoff bound ΛP ΛR hcP hcR
+    i ep₀ er₀ 0 H hP hi n hn
+  have hn' : (-∑ r ∈ Finset.range n, (koszulSign (D.parity i) (D.parity i)) ^ (r + 1) • b r) ≫
+      f.hom = e.hom ≫ ProbeVacuumCap.evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP
+        (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) := by
+    have hsum : (-∑ r ∈ Finset.range n, (koszulSign (D.parity i) (D.parity i)) ^ (r + 1) • b r) =
+        vacuumBendWordSum D (parameterTwist D Sc) m cutoff bound ΛP ΛR hcP hcR
+          i ep₀ er₀ 0 H n := by
+      dsimp only [vacuumBendWordSum]
+      apply finite_weighted_sum_congr
+      intro r
+      dsimp only [b, E₀]
+      exact normalVacuumEvaluation_map D Sc m cutoff bound ΛP ΛR hcP hcR _
+    rw [hsum]
+    exact hn
+  have hs := finite_series_charts_attach s t u v e f a b
+    (koszulSign (D.parity i) (D.parity i)) n hw _ hn' _
+    (P.centralPaddedDx_word_series i (0, 0) Z E
+      (factorDotIso D Sc m cutoff bound ΛP ΛR hcP hcR i)
+      (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) n hDx)
+  simpa only [s, t, u, v, e, f, E, E₀, Z, Z₀, P,
+    paddedVacuumSourceIso, paddedVacuumTargetIso] using hs
+
+/-- Even colour: the prescribed padded Dx entry at the vacuum sector is the
+evaluated even vacuum bend through its displayed source and target charts.
+Both finite-series bounds are constructed from homogeneous symmetrizable
+reservoir parameters; no endpoint, moment or bend compatibility is assumed. -/
+theorem paddedVacuumDx_even (hP : 0 < probeCutoff D m i) (hi : D.parity i = 0) :
+    ((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).centralPaddedSigma (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i (((0, 0) : Sector I)) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) true false ≫
+        (paddedVacuumTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).hom =
+      (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).hom ≫
+        ProbeVacuumCap.evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) := by
+  let := (factorDotIso D Sc m cutoff bound ΛP ΛR hcP hcR i) (((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).muP_preE i (((0, 0) : Sector I)))
+  have hA := elvProbeDxOuterDot_isNilpotent D Sc m cutoff bound ΛP ΛR hcP hcR i (((0, 0) : Sector I)) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
+    (sectorRegular D Sc m cutoff bound ΛP ΛR hcP hcR)
+    (sectorEmpty D Sc m cutoff bound ΛP ΛR hcP hcR) sy hc
+  simp only [probeToReservoirBendCoefficientEvaluation, RingHom.comp_apply] at hA
+  let : (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).Additive :=
+    vacuumSectorEvaluation_additive D Sc m cutoff bound ΛP ΛR hcP hcR
+  have hA' := bendFunctorEnd_nilpotent_congr
+    (vacuumSectorEvaluation_eq D Sc m cutoff bound ΛP ΛR hcP hcR).symm _ hA
+  obtain ⟨nA, hnA⟩ := hA' 
+  obtain ⟨nB, _positive, hnB⟩ := ProbeVacuumCap.diagonalPostDot_pow_zero D (parameterTwist D Sc) m cutoff bound
+    sy (parameterTwist_homogeneous D Sc hc) i
+  let n := max nA nB
+  have ha' := pow_eq_zero_of_le (Nat.le_max_left nA nB) hnA
+  have hb' := pow_eq_zero_of_le (Nat.le_max_right nA nB) (hnB (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H))
+  have hD := probeToReservoirBend_even_separated ((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)) i (((0, 0) : Sector I)) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc)
+    (elvProbeCrossCoeff_isInverse D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) hi n ha'
+  exact paddedVacuumDx_even_at D Sc m cutoff bound ΛP ΛR hcP hcR H i sy hc hP hi n hb'
+    (((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).centralPaddedDx_separated i (((0, 0) : Sector I)) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) (factorDotIso D Sc m cutoff bound ΛP ΛR hcP hcR i) (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) n hD)
+
 end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
