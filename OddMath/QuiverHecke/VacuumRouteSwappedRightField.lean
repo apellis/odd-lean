@@ -88,7 +88,8 @@ theorem vacuumRightEntries_of_negative
 end SwappedAssembly.SupportedSectors
 
 /-- **The right vacuum entries of the probe reservoirs** from their entries at negative height.
-Intermediate: the negative-height families are open. -/
+The negative-height families are proved (`SupportedSectors.vacuumRightNegativeEntries`), which
+gives `rightVacuumEntrySupply`. -/
 theorem rightVacuumEntrySupply_of_negative
     (h : ∀ {J Y k : Type u} [AddCommGroup Y] [CommRing k] [Fintype J]
       (E : SKM.Datum J Y) (Sc : SKM.Scalars E k) (m cutoff : J → ℕ) (ΛP ΛR : Y)

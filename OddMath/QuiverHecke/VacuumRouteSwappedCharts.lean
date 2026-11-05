@@ -105,8 +105,10 @@ theorem swappedChartField (sy : SKM.Symmetrizer D) :
 arXiv:1701.04133v2, §8, in the research scope of `FieldScopeBoundary.md`): the
 coordinate and chart fields of `swappedRouteBases sy` are discharged, so the
 positive- and nonpositive-height bubble fields of these bases give the conjecture over
-every commutative ring with `2` invertible, for homogeneous scalars. Intermediate: the
-two bubble fields are open. -/
+every commutative ring with `2` invertible, for homogeneous scalars. A reduction step:
+the bubble fields are proved (`positiveBubbleField_swappedRouteBases` and
+`nonpositiveBubbleField_of_entries`), and the resulting theorem is
+`nondegeneracy_of_symmetrizer`. -/
 theorem nondegeneracy_of_swapped_bubble_fields (sy : SKM.Symmetrizer D)
     (hp : PositiveBubbleField (swappedRouteBases sy))
     (hn : NonpositiveBubbleField (swappedRouteBases sy))

@@ -67,8 +67,8 @@ theorem swappedRightEntriesField_of_supply (h : RightVacuumEntrySupply.{u})
   rw [ι.weight_difference] at e
   exact e
 
-/-- **The conjecture from the right vacuum entries of the probe reservoirs.** Intermediate: the
-supply is open. -/
+/-- **The conjecture from the right vacuum entries of the probe reservoirs.** The supply is
+proved (`rightVacuumEntrySupply`), which gives `nondegeneracy_of_symmetrizer`. -/
 theorem nondegeneracy_of_rightVacuumEntrySupply (h : RightVacuumEntrySupply.{u})
     (sy : SKM.Symmetrizer D) {R : Type w} [CommRing R] (h₂ : IsUnit (2 : R))
     {Sc : SKM.Scalars D R} (hh : Sc.Homogeneous) (cs : SKM.CScalars Sc) :
