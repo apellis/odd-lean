@@ -176,6 +176,15 @@ Still open:
    multiplication by the image of `a`, and an endomorphism of `tensorVacuum` is
    determined by its decoded evaluation at the regular probe object
    (faithfulness of the vacuum sector evaluation on that endomorphism space).
+   The generic Yoneda step is checked (`ELVVacuumTensorFaithful.lean`):
+   `VacuumTensor.hom_ext_of_generating` and `hom_ext_of_generating_total` show
+   that a transformation out of the tensor vacuum `M ↦ W ⊗ M(a)` is determined by
+   its component at one module `Y₀`, when every homogeneous vector of every `M(a)`
+   is the image of a fixed `y₀ ∈ Y₀(a)` under a homogeneous morphism of the same
+   parity. Remaining for faithfulness: supply these morphisms out of the regular
+   probe (its value at the empty object is the scalar line on
+   `probeOldVacuumVector`), and pass through the weight-block product
+   `WeightTensorVacuum.hom` and the input-weight transport of `tensorHomAt`.
 2. The odd bubble `oddBubble` at positive height, the same way.
 3. Even colours need an even moment result; nonpositive height is handled
    separately.
