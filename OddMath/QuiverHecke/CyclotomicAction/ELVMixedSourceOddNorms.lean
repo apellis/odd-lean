@@ -112,7 +112,7 @@ variable (i : I) {y : X} (h : x + D.α i = y)
   (H : B ⟶ elvWeightSpace D Sc cutoff bound Λ y)
 
 private theorem elvMixedSource_oddNorms [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (hi : D.parity i = 1)
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (hi : D.parity i = 1)
     (a : End E) (ha : a ∈ parity (R := k) _ _ 1) (hu : IsUnit a) :
     IsUnit (SKM.mixedPostSourcePreDot (k := k) E κ H
         (F' := elvF D Sc cutoff bound i Λ h) a ^ 2 -
@@ -133,7 +133,7 @@ private theorem elvMixedSource_oddNorms [Finite I]
   have hn : ∀ (M : B.carrier) (δ : WeightBlocks D Λ x), IsNilpotent (show End ((F.obj M) δ) from t.app 1 M δ) := by
     intro M δ
     obtain ⟨n, _, hn⟩ :=
-      elvActionDotTranspose_component_pow_zero D Sc cutoff bound i Λ h sy hc δ
+      elvActionDotTranspose_component_pow_zero D Sc cutoff bound i Λ h hdot δ
     refine ⟨n, ?_⟩
     change (show End (((elvF D Sc cutoff bound i Λ h).obj (K.obj M)) δ) from
       (elvActionDotTranspose D Sc cutoff bound i Λ h).app 1 (K.obj M) δ) ^ n = 0
@@ -147,26 +147,26 @@ private theorem elvMixedSource_oddNorms [Finite I]
 
 /-- The literal odd source square difference is a unit without a whole-fibre exponent. -/
 theorem elvMixedSource_square_difference_isUnit [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (hi : D.parity i = 1)
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (hi : D.parity i = 1)
     (a : End E) (ha : a ∈ parity (R := k) _ _ 1) (hu : IsUnit a) :
     IsUnit (SKM.mixedPostSourcePreDot (k := k) E κ H
         (F' := elvF D Sc cutoff bound i Λ h) a ^ 2 -
       SKM.mixedPostSourcePostDot (k := k) E κ H
         (elvActionAdjunction D Sc cutoff bound i Λ h)
         (elvActionDot D Sc cutoff bound i Λ h) ^ 2) := by
-  have hh := elvMixedSource_oddNorms D Sc cutoff bound Λ x i h E κ H sy hc hi a ha hu
+  have hh := elvMixedSource_oddNorms D Sc cutoff bound Λ x i h E κ H hdot hi a ha hu
   exact hh.1
 
 /-- The literal odd source square sum is a unit without a whole-fibre exponent. -/
 theorem elvMixedSource_square_sum_isUnit [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (hi : D.parity i = 1)
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (hi : D.parity i = 1)
     (a : End E) (ha : a ∈ parity (R := k) _ _ 1) (hu : IsUnit a) :
     IsUnit (SKM.mixedPostSourcePreDot (k := k) E κ H
         (F' := elvF D Sc cutoff bound i Λ h) a ^ 2 +
       SKM.mixedPostSourcePostDot (k := k) E κ H
         (elvActionAdjunction D Sc cutoff bound i Λ h)
         (elvActionDot D Sc cutoff bound i Λ h) ^ 2) := by
-  have hh := elvMixedSource_oddNorms D Sc cutoff bound Λ x i h E κ H sy hc hi a ha hu
+  have hh := elvMixedSource_oddNorms D Sc cutoff bound Λ x i h E κ H hdot hi a ha hu
   exact hh.2
 
 end OddMath.QuiverHecke.ELVOld

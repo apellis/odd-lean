@@ -124,7 +124,12 @@ def actionAt (sy : SKM.Symmetrizer D) (w : X × (ι.J → ℤ)) :
     UpwardModuleAction.{u, u + 1} ι.datum ι.scalars w :=
   SwappedAssembly.SupportedSectors.pointwiseUpwardModuleAction ι.datum ι.scalars ι.exponent
     ι.level ι.bound ι.probeHW ι.reservoirHW ι.probe_pairing ι.reservoir_pairing
-    (ι.symmetrizer sy) ι.scalars_homogeneous
+    (ELVOld.truncatedAppendDotNilpotent ι.datum (parameterTwist ι.datum ι.scalars) ι.level
+      (ι.symmetrizer sy) (parameterTwist_homogeneous ι.datum ι.scalars ι.scalars_homogeneous)
+      ι.bound)
+    (SwappedAssembly.SupportedSectors.reservoirWindowIdeal ι.datum ι.scalars ι.exponent
+      ι.level ι.bound ι.probeHW ι.reservoirHW ι.probe_pairing ι.reservoir_pairing
+      (ι.symmetrizer sy) ι.scalars_homogeneous)
     (SwappedAssembly.SupportedSectors.tensorSourceFamily ι.datum ι.scalars ι.exponent ι.level
       ι.probeHW ι.reservoirHW ι.power ι.t)
     (SwappedAssembly.SupportedSectors.tensorTargetFamily ι.datum ι.scalars ι.exponent ι.level

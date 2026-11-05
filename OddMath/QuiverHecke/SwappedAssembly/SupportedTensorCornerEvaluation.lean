@@ -171,7 +171,10 @@ local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR
 local notation "leftward" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
         (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
           (parameterTwist_homogeneous D Sc hc) N)
-local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff N ΛP ΛR hP hR sy hc
+local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N)
+        (SupportedSectors.reservoirWindowIdeal D Sc m cutoff N ΛP ΛR hP hR sy hc)
   (tensorSourceFamily D Sc m cutoff ΛP ΛR L s) (tensorTargetFamily D Sc m cutoff ΛP ΛR L)
 
 /-- The generator square of the corner evaluation on one presented layer. -/

@@ -212,12 +212,12 @@ private theorem elvTranspose_total_power_zero
 /-- One exponent at each source-content block works for every target module
 after transposing the chosen dot, with its odd reversal sign retained. -/
 theorem elvActionDotTranspose_component_pow_zero [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (β : WeightBlocks D Λ x) :
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (β : WeightBlocks D Λ x) :
     ∃ e : ℕ, 0 < e ∧ ∀ N : ELVWeightProduct D Sc cutoff bound Λ y,
       (show End (((elvF D Sc cutoff bound i Λ h).obj N) β) from
         (elvActionDotTranspose D Sc cutoff bound i Λ h).app (D.parity i) N β) ^ e = 0 := by
   obtain ⟨e, he, hp⟩ := elvWeightDotComponent_pow_zero D Sc cutoff bound i Λ h
-    (truncatedAppendDotNilpotent D Sc cutoff sy hc bound)
+    (hdot)
     (blockSucc D Λ i h β)
   refine ⟨e, he, fun N => ?_⟩
   have hz := elvDot_total_power_zero D Sc cutoff bound i Λ h

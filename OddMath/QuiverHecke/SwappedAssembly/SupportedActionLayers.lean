@@ -31,7 +31,10 @@ local notation "leftward" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR h
           (parameterTwist_homogeneous D Sc hc) bound)
 local notation "gens" => ProbeReservoir.swappedGens (P) c leftward
 local notation "Q" => interpretation D Sc m cutoff bound ΛP ΛR hP hR Gs Ys gens
-local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff bound ΛP ΛR hP hR sy hc Gs Ys
+local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff bound ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) bound)
+        (reservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR sy hc) Gs Ys
 attribute [local irreducible] elvProbeCrossCoeffOf
 
 /-- The complete action of a presented layer is the actual supported
@@ -44,7 +47,10 @@ theorem pointwiseUpwardModuleAction_act_layer (μ : X) (t t' : List I)
       (Q).res (SKM.ob D μ (upWord t')) ∘ₗ (Q).op A ∘ₗ
         (Q).ext (SKM.ob D μ (upWord t)) := by
   change ((functorOfObligations D Sc m cutoff bound ΛP ΛR hP hR Gs Ys gens
-    (pointwiseObligations D Sc m cutoff bound ΛP ΛR hP hR sy hc Gs Ys)).map
+    (pointwiseObligations D Sc m cutoff bound ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) bound)
+        (reservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR sy hc) Gs Ys)).map
       ((SKM.pres D Sc).diag (Diagram.layer A hA hdom hcod))).hom = _
   unfold functorOfObligations
   rw [Presentation.lift_diag]

@@ -64,7 +64,10 @@ local notation "leftward" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR h
         (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
           (parameterTwist_homogeneous D Sc hc) bound)
 local notation "gens" => ProbeReservoir.swappedGens (P) c leftward
-local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff bound ΛP ΛR hP hR sy hc Gs Ys
+local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff bound ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) bound)
+        (reservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR sy hc) Gs Ys
 local notation "E" => matrixEquiv D Sc m cutoff bound ΛP ΛR hP hR Gs Ys
 attribute [local irreducible] elvProbeCrossCoeffOf
 
@@ -89,7 +92,10 @@ theorem pointwiseUpwardModuleAction_act_bubAt_cl (μ : X) (t : List I)
     simpa only [List.append_nil] using hM.whisk (upWord t) []
   rw [SKM.bubAt_cl, SKM.cl_of hw]
   change E _ (((functorOfObligations D Sc m cutoff bound ΛP ΛR hP hR Gs Ys gens
-    (pointwiseObligations D Sc m cutoff bound ΛP ΛR hP hR sy hc Gs Ys)).map
+    (pointwiseObligations D Sc m cutoff bound ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) bound)
+        (reservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR sy hc) Gs Ys)).map
       ((SKM.pres D Sc).diag (SKM.mkD D μ _ hw))).hom x) s τ p = _
   unfold functorOfObligations
   rw [Presentation.lift_diag]

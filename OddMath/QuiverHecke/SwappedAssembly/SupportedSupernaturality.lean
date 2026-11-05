@@ -42,14 +42,12 @@ instance retainedInclusion_super (s : Sector I) :
     IsSuperfunctor k (retainedInclusion D Sc m cutoff bound ΛP ΛR hP hR s) where
   map_mem hf := hf
 
-variable [Finite I] (sy : Symmetrizer D) (hc : Sc.Homogeneous)
-local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
-    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-      (parameterTwist_homogeneous D Sc hc) bound)
-local notation "L" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR
-        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-          (parameterTwist_homogeneous D Sc hc) bound)
+variable [Finite I] (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
+  (hwin : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR)
+local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot
+local notation "L" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR hdot
 
+include hwin in
 /-- The chosen equal-colour crossing is supernatural on every retained input. -/
 theorem pointwiseLeftward_lcrossSame_supernatural (i : I) (ν : X) {t s : Sector I}
     (q : SPath (wd D ν [dn i,up i]) t s) (p : SPath (wd D ν [up i,dn i]) t s) :
@@ -59,25 +57,24 @@ theorem pointwiseLeftward_lcrossSame_supernatural (i : I) (ν : X) {t s : Sector
       (fun Z => (L).lcrossSame i ν q p Z.obj) := by
   by_cases hw : (P).wt s = ν
   · have hC := elvProbeCrossCoeffOf_isSupernatural D Sc m cutoff bound ΛP ΛR hP hR
-    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-      (parameterTwist_homogeneous D Sc hc) bound)
+    hdot
     by_cases hh : 0 ≤ D.h i ν
     · exact (leftward_supernatural_of_posInverseAt_comp c L hC i ν t s
         (retainedInclusion D Sc m cutoff bound ΛP ΛR hP hR s)
         (fun Z => pointwiseLeftward_posInverseAt D Sc m cutoff bound ΛP ΛR hP hR
-          sy hc i ν t s Z hw hh)).1 q p
+          hdot hwin i ν t s Z hw hh)).1 q p
     · exact (leftward_supernatural_of_negInverseAt_comp c L hC i ν t s
         (retainedInclusion D Sc m cutoff bound ΛP ΛR hP hR s)
         (fun Z => pointwiseLeftward_negInverseAt D Sc m cutoff bound ΛP ΛR hP hR
-          sy hc i ν t s Z hw (not_le.mp hh))).1 q p
+          hdot hwin i ν t s Z hw (not_le.mp hh))).1 q p
   · have he (Z : (Q s).FullSubcategory) : (L).lcrossSame i ν q p Z.obj = 0 :=
       (pointwiseLeftwardData_vanishesOffWeight D Sc m cutoff bound ΛP ΛR hP hR
-        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-          (parameterTwist_homogeneous D Sc hc) bound)).1
+        hdot).1
         i ν q p Z.obj hw
     simp only [he]
     exact isSupernatural_zero _
 
+include hwin in
 /-- The chosen diamond cups have the required homogeneous naturality on retained inputs. -/
 theorem pointwiseLeftward_dcup_supernatural (i : I) (n : ℕ) (ν : X)
     (hn : (n : ℤ) < D.h i ν) {t s : Sector I}
@@ -89,21 +86,20 @@ theorem pointwiseLeftward_dcup_supernatural (i : I) (n : ℕ) (ν : X)
   by_cases hw : (P).wt s = ν
   · have hh : 0 ≤ D.h i ν := by omega
     have hC := elvProbeCrossCoeffOf_isSupernatural D Sc m cutoff bound ΛP ΛR hP hR
-    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-      (parameterTwist_homogeneous D Sc hc) bound)
+    hdot
     exact IsSupernatural.of_parity_eq
       ((leftward_supernatural_of_posInverseAt_comp c L hC i ν t s
         (retainedInclusion D Sc m cutoff bound ΛP ΛR hP hR s)
         (fun Z => pointwiseLeftward_posInverseAt D Sc m cutoff bound ΛP ΛR hP hR
-          sy hc i ν t s Z hw hh)).2 ⟨n,Int.lt_toNat.mpr hn⟩ r p) (mul_comm _ _)
+          hdot hwin i ν t s Z hw hh)).2 ⟨n,Int.lt_toNat.mpr hn⟩ r p) (mul_comm _ _)
   · have he (Z : (Q s).FullSubcategory) : (L).dcup i n ν r p Z.obj = 0 :=
       (pointwiseLeftwardData_vanishesOffWeight D Sc m cutoff bound ΛP ΛR hP hR
-        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-          (parameterTwist_homogeneous D Sc hc) bound)).2.1
+        hdot).2.1
         i n ν r p Z.obj hw
     simp only [he]
     exact isSupernatural_zero _
 
+include hwin in
 /-- The chosen diamond caps have the required homogeneous naturality on retained inputs. -/
 theorem pointwiseLeftward_dcap_supernatural (i : I) (n : ℕ) (ν : X)
     (hn : (n : ℤ) < -D.h i ν) {t s : Sector I}
@@ -115,29 +111,27 @@ theorem pointwiseLeftward_dcap_supernatural (i : I) (n : ℕ) (ν : X)
   by_cases hw : (P).wt s = ν
   · have hh : D.h i ν < 0 := by omega
     have hC := elvProbeCrossCoeffOf_isSupernatural D Sc m cutoff bound ΛP ΛR hP hR
-    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-      (parameterTwist_homogeneous D Sc hc) bound)
+    hdot
     exact IsSupernatural.of_parity_eq
       ((leftward_supernatural_of_negInverseAt_comp c L hC i ν t s
         (retainedInclusion D Sc m cutoff bound ΛP ΛR hP hR s)
         (fun Z => pointwiseLeftward_negInverseAt D Sc m cutoff bound ΛP ΛR hP hR
-          sy hc i ν t s Z hw hh)).2 ⟨n,Int.lt_toNat.mpr hn⟩ q r) (mul_comm _ _)
+          hdot hwin i ν t s Z hw hh)).2 ⟨n,Int.lt_toNat.mpr hn⟩ q r) (mul_comm _ _)
   · have he (Z : (Q s).FullSubcategory) : (L).dcap i n ν q r Z.obj = 0 :=
       (pointwiseLeftwardData_vanishesOffWeight D Sc m cutoff bound ΛP ΛR hP hR
-        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-          (parameterTwist_homogeneous D Sc hc) bound)).2.2
+        hdot).2.2
         i n ν q r Z.obj hw
     simp only [he]
     exact isSupernatural_zero _
 
+include hwin in
 /-- All chosen swapped generators are supernatural after the retained full inclusions. -/
 theorem pointwiseLeftward_generatorsSupernaturalOn
     (hσ : ∀ i j : I, i ≠ j → ∀ ν : X, (P).SigmaPermutation c i j ν) :
     GeneratorsSupernaturalOn Q ((P).swappedGens c L) := by
   rintro ⟨g,ν⟩ t s p p'
   have hC := elvProbeCrossCoeffOf_isSupernatural D Sc m cutoff bound ΛP ΛR hP hR
-    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-      (parameterTwist_homogeneous D Sc hc) bound)
+    hdot
   let J := retainedInclusion D Sc m cutoff bound ΛP ΛR hP hR s
   cases g with
   | dot i => exact ((P).dotImage_supernatural i ν p p').whiskerLeft J
@@ -151,7 +145,7 @@ theorem pointwiseLeftward_generatorsSupernaturalOn
           ((P).swappedGens c L).image (.lcross i i,ν) p p' Z.obj =
             (L).lcrossSame i ν p p' Z.obj := (P).swappedGens_lcross_self c L i ν p p' Z.obj
       simp only [he]
-      exact pointwiseLeftward_lcrossSame_supernatural D Sc m cutoff bound ΛP ΛR hP hR sy hc i ν p p'
+      exact pointwiseLeftward_lcrossSame_supernatural D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i ν p p'
     · have he (Z : (Q s).FullSubcategory) :
           ((P).swappedGens c L).image (.lcross i j,ν) p p' Z.obj =
             (P).lcrossNeImage c i j ν p p' Z.obj := (P).swappedGens_lcross_of_ne c L hij ν p p' Z.obj
@@ -168,7 +162,7 @@ theorem pointwiseLeftward_generatorsSupernaturalOn
           ((P).swappedGens c L).image (.dcup i n,ν) p p' Z.obj =
             (L).dcup i n ν p p' Z.obj := (P).swappedGens_dcup_of_lt c L i n ν (not_le.mp hn) p p' Z.obj
       simp only [he]
-      exact pointwiseLeftward_dcup_supernatural D Sc m cutoff bound ΛP ΛR hP hR sy hc i n ν
+      exact pointwiseLeftward_dcup_supernatural D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i n ν
         (not_le.mp hn) p p'
   | dcap i n =>
     by_cases hn : -D.h i ν ≤ n
@@ -181,9 +175,10 @@ theorem pointwiseLeftward_generatorsSupernaturalOn
           ((P).swappedGens c L).image (.dcap i n,ν) p p' Z.obj =
             (L).dcap i n ν p p' Z.obj := (P).swappedGens_dcap_of_lt c L i n ν (not_le.mp hn) p p' Z.obj
       simp only [he]
-      exact pointwiseLeftward_dcap_supernatural D Sc m cutoff bound ΛP ΛR hP hR sy hc i n ν
+      exact pointwiseLeftward_dcap_supernatural D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i n ν
         (not_le.mp hn) p p'
 
+include hwin in
 /-- The original native layer representation satisfies interchange on the
 chosen supported inputs, with only the unequal-colour permutation input explicit. -/
 theorem pointwiseLeftward_interchangeLaw
@@ -193,6 +188,6 @@ theorem pointwiseLeftward_interchangeLaw
       ((P).swappedGens c L)) :=
   ProbeReservoir.interchangeLaw_on Q (retainedInput_path D Sc m cutoff bound ΛP ΛR hP hR)
     (fun s => (Gs s).obj) (fun s => (Ys s).obj) (fun s => (Ys s).property)
-    (pointwiseLeftward_generatorsSupernaturalOn D Sc m cutoff bound ΛP ΛR hP hR sy hc hσ)
+    (pointwiseLeftward_generatorsSupernaturalOn D Sc m cutoff bound ΛP ΛR hP hR hdot hwin hσ)
 
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
