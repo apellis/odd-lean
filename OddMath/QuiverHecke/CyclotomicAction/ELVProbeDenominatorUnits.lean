@@ -81,8 +81,8 @@ theorem elvProbeMixedPostDot_isNilpotent [Finite I]
     (M : (P).T.obj (-(P).muP t)) (δ : WeightBlocks D ΛR ((P).muM t)) :
     IsNilpotent (elvProbeMixedEndEvaluation D Sc m cutoff bound ΛP ΛR hP hR i t hv Z M δ
       ((P).rpPostDot i t hv Z)) :=
-  elvShiftedPostEndEvaluation_dot_isNilpotent D Sc' cutoff bound i ΛR h F sy
-    (parameterTwist_homogeneous D Sc hc) κ M δ
+  elvShiftedPostEndEvaluation_dot_isNilpotent D Sc' cutoff bound i ΛR h F
+    (truncatedAppendDotNilpotent D Sc' cutoff sy (parameterTwist_homogeneous D Sc hc) bound) κ M δ
 
 /-- The selected inner dot remains a unit at the same component. -/
 theorem elvProbeMixedInnerDot_isUnit [Finite I]
@@ -94,27 +94,62 @@ theorem elvProbeMixedInnerDot_isUnit [Finite I]
 
 end Mixed
 
-/-- Both mixed denominators are units on the specified complete factor pair. -/
-theorem elvProbeCrossDenominatorUnits [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) : (P).CrossDenominatorUnits where
+/-- Both mixed denominators are units on the specified complete factor pair, given
+nilpotence of the appended dot for the twisted parameters. -/
+theorem elvProbeCrossDenominatorUnitsOf [Finite I]
+    (hdot : TruncatedAppendDotNilpotent D Sc' cutoff bound) : (P).CrossDenominatorUnits where
   even i hi t hv Z := by
     change IsUnit (probeELVMixedOuterDot (D := D) (Sc := Sc) (m := m) (cutoff := cutoff) (bound := bound)
       (ΛP := ΛP) (ΛR := ΛR) (i := i) (β := t.1) (h := (P).muM_postE i hv) (Z := Z) (SKM.homContentShift D i t.1) -
       probeELVMixedInnerDot (D := D) (Sc := Sc) (m := m) (cutoff := cutoff) (bound := bound)
       (ΛP := ΛP) (ΛR := ΛR) (i := i) (β := t.1) (h := (P).muM_postE i hv) (Z := Z) (SKM.homContentShift D i t.1))
     exact probeELVMixed_difference_isUnit (D := D) (Sc := Sc) (m := m) (cutoff := cutoff) (bound := bound)
-      (ΛP := ΛP) (ΛR := ΛR) (i := i) (β := t.1) (h := (P).muM_postE i hv) (Z := Z) sy hc (SKM.homContentShift D i t.1) hi
+      (ΛP := ΛP) (ΛR := ΛR) (i := i) (β := t.1) (h := (P).muM_postE i hv) (Z := Z) hdot (SKM.homContentShift D i t.1) hi
   odd i hi t hv Z := by
     change IsUnit (probeELVMixedInnerDot (D := D) (Sc := Sc) (m := m) (cutoff := cutoff) (bound := bound)
       (ΛP := ΛP) (ΛR := ΛR) (i := i) (β := t.1) (h := (P).muM_postE i hv) (Z := Z) (SKM.homContentShift D i t.1) ^ 2 -
       probeELVMixedOuterDot (D := D) (Sc := Sc) (m := m) (cutoff := cutoff) (bound := bound)
       (ΛP := ΛP) (ΛR := ΛR) (i := i) (β := t.1) (h := (P).muM_postE i hv) (Z := Z) (SKM.homContentShift D i t.1) ^ 2)
     exact probeELVMixed_square_difference_isUnit (D := D) (Sc := Sc) (m := m) (cutoff := cutoff) (bound := bound)
-      (ΛP := ΛP) (ΛR := ΛR) (i := i) (β := t.1) (h := (P).muM_postE i hv) (Z := Z) sy hc (SKM.homContentShift D i t.1) hi
+      (ΛP := ΛP) (ΛR := ΛR) (i := i) (β := t.1) (h := (P).muM_postE i hv) (Z := Z) hdot (SKM.homContentShift D i t.1) hi
+
+/-- Both mixed denominators are units on the specified complete factor pair. -/
+theorem elvProbeCrossDenominatorUnits [Finite I]
+    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) : (P).CrossDenominatorUnits :=
+  elvProbeCrossDenominatorUnitsOf D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D Sc' cutoff sy (parameterTwist_homogeneous D Sc hc) bound)
+
+/-- The coefficient chosen from the constructed mixed denominator units, given nilpotence of
+the appended dot for the twisted parameters. -/
+def elvProbeCrossCoeffOf [Finite I] (hdot : TruncatedAppendDotNilpotent D Sc' cutoff bound) :
+    (P).CrossCoeff Sc :=
+  (P).crossCoeffOfDenominatorUnits (elvProbeCrossDenominatorUnitsOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
+
+/-- This coefficient has both prescribed even and odd inverse identities. -/
+theorem elvProbeCrossCoeffOf_isInverse [Finite I]
+    (hdot : TruncatedAppendDotNilpotent D Sc' cutoff bound) :
+    (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot).IsInverse :=
+  (P).crossCoeffOfDenominatorUnits_isInverse _
+
+/-- This coefficient is supernatural at its prescribed parity. -/
+theorem elvProbeCrossCoeffOf_isSupernatural [Finite I]
+    (hdot : TruncatedAppendDotNilpotent D Sc' cutoff bound) :
+    (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot).IsSupernatural :=
+  ProbeReservoir.CrossCoeff.isSupernatural_of_isInverse (P)
+    (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
+    (elvProbeCrossCoeffOf_isInverse D Sc m cutoff bound ΛP ΛR hP hR hdot)
+    (elvProbeCrossDenominatorUnitsOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
 
 /-- The actual coefficient chosen from the constructed mixed denominator units. -/
 def elvProbeCrossCoeff [Finite I] (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) : (P).CrossCoeff Sc :=
   (P).crossCoeffOfDenominatorUnits (elvProbeCrossDenominatorUnits D Sc m cutoff bound ΛP ΛR hP hR sy hc)
+
+/-- The coefficient does not depend on the proof of the denominator units. -/
+theorem elvProbeCrossCoeff_eq_of [Finite I] (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
+    (hdot : TruncatedAppendDotNilpotent D Sc' cutoff bound) :
+    elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc =
+      elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot :=
+  rfl
 
 /-- The chosen coefficient has both prescribed even and odd inverse identities. -/
 theorem elvProbeCrossCoeff_isInverse [Finite I] (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) :

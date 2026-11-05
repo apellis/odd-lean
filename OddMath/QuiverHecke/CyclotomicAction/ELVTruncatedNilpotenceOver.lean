@@ -156,4 +156,11 @@ theorem truncatedAppendDot_pow_zeroOver [Finite I] (b : ℤ)
   have := sy.pos i
   omega
 
+include sy 𝒜 hP in
+/-- Over a base ring graded in degrees `0, …, b`, coefficient-graded homogeneous parameters give
+nilpotence of the appended dot. -/
+theorem truncatedAppendDotNilpotentOver [Finite I] (b : ℤ)
+    (h𝒜 : ∀ m, m ∉ Set.Icc (0 : ℤ) b → 𝒜 m = ⊥) : TruncatedAppendDotNilpotent D Sc cutoff N :=
+  truncatedAppendDot_pow_zeroOver D sy 𝒜 Sc hP cutoff N b h𝒜
+
 end OddMath.QuiverHecke.ELVOld

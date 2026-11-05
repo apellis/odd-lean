@@ -29,7 +29,8 @@ theorem elvContentDotTo_pow_zero [Finite I] (sy : SKM.Symmetrizer D)
         (elvContentDotTo D Sc cutoff bound i β γ hγ).app (D.parity i) M) ^ e = 0 := by
   classical
   subst γ
-  have hp := contentInductionDot_module_pow_zero D Sc cutoff sy hc bound β.toList i
+  have hp := contentInductionDot_module_pow_zero D Sc cutoff bound
+    (truncatedAppendDotNilpotent D Sc cutoff sy hc bound) β.toList i
   rw [Multiset.coe_toList] at hp
   exact hp
 

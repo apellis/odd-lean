@@ -104,14 +104,14 @@ theorem elvShiftedPostEndEvaluation_one (M : A) (δ : WeightBlocks D Λ y) (f : 
 
 /-- The chosen content shift preserves the already proved local reservoir-dot bound. -/
 theorem elvShiftedPostEndEvaluation_dot_isNilpotent [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound)
     (κ : ZMod 2) (M : A) (δ : WeightBlocks D Λ y) :
     IsNilpotent (elvShiftedPostEndEvaluation D Sc cutoff bound i Λ h F κ M δ (Ys κ)) := by
   rcases parity_eq_zero_or_one κ with rfl | rfl
   · rw [elvShiftedPostDot, elvShiftedPostEndEvaluation_zero]
-    exact elvPostEndEvaluation_dot_isNilpotent D Sc cutoff bound i Λ h F sy hc M δ
+    exact elvPostEndEvaluation_dot_isNilpotent D Sc cutoff bound i Λ h F hdot M δ
   · rw [elvShiftedPostDot, elvShiftedPostEndEvaluation_one]
-    exact (elvPostEndEvaluation_dot_isNilpotent D Sc cutoff bound i Λ h F sy hc M δ).map
+    exact (elvPostEndEvaluation_dot_isNilpotent D Sc cutoff bound i Λ h F hdot M δ).map
       (productPiEndComponent (k := k) (fun β : WeightBlocks D Λ y => ContentModules D Sc cutoff bound β.1)
         ((G).obj M) δ)
 
@@ -145,7 +145,7 @@ theorem elvShiftedPostProbe_even_comm (α : End F)
 this shifted output block. Its inverse identity is an intermediate input,
 to be supplied by the chosen crossing coefficient's `IsInverse` proof. -/
 theorem elvShiftedPostCoefficient_even_expansion [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (hp : D.parity i = 0)
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (hp : D.parity i = 0)
     (α : End F) (hα : α ∈ parity (R := k) _ _ (D.parity i)) (hu : IsUnit α)
     (κ : ZMod 2) (a : End (Gs κ))
     (ha : a * ((Ys κ) - elvShiftedPostEnd D Sc cutoff bound i Λ h F
@@ -160,7 +160,7 @@ theorem elvShiftedPostCoefficient_even_expansion [Finite I]
   let φ := elvShiftedPostEndEvaluation D Sc cutoff bound i Λ h F κ M δ
   let X := elvShiftedPostEnd D Sc cutoff bound i Λ h F
     (elvPostProbeDot D Sc cutoff bound i Λ h F α) κ
-  obtain ⟨n, hn⟩ := elvShiftedPostEndEvaluation_dot_isNilpotent D Sc cutoff bound i Λ h F sy hc κ M δ
+  obtain ⟨n, hn⟩ := elvShiftedPostEndEvaluation_dot_isNilpotent D Sc cutoff bound i Λ h F hdot κ M δ
   exact ⟨n, hn, SwappedAssembly.mixedCoefficient_even_map_expansion φ.toRingHom X (Ys κ) a
     (elvShiftedPostEndEvaluation_probe_isUnit D Sc cutoff bound i Λ h F α hu κ M δ)
     (elvShiftedPostProbe_even_comm D Sc cutoff bound i Λ h F α (hp ▸ hα) κ) ha n hn⟩

@@ -303,7 +303,8 @@ reservoir dot at every regular-probe Hom object. -/
 theorem diagonalPostDot_pow_zero (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (i : I) :
     ∃ n : ℕ, 0 < n ∧ ∀ H : modulePiCategory D Sc m ⟶ R₀,
       diagonalPostDot D Sc m reservoirCutoff bound i H ^ n = 0 := by
-  obtain ⟨n, hn, hp⟩ := contentInductionDot_module_pow_zero D Sc reservoirCutoff sy hc bound [] i
+  obtain ⟨n, hn, hp⟩ := contentInductionDot_module_pow_zero D Sc reservoirCutoff bound
+    (truncatedAppendDotNilpotent D Sc reservoirCutoff sy hc bound) [] i
   refine ⟨n, hn, fun H => ?_⟩
   have h := hp (shiftedPreSourceObject D Sc m R₀ i H)
   rw [contentInductionDot_component] at h
@@ -316,7 +317,8 @@ exponent at this fixed content, on every regular-probe Hom object. -/
 theorem evaluatedPostDot_pow_zero (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (i : I) :
     ∃ n : ℕ, 0 < n ∧ ∀ H : modulePiCategory D Sc m ⟶ R₀,
       evaluatedPostDot D Sc m reservoirCutoff bound i H ^ n = 0 := by
-  obtain ⟨n, hn, hp⟩ := contentInductionDot_module_pow_zero D Sc reservoirCutoff sy hc bound [] i
+  obtain ⟨n, hn, hp⟩ := contentInductionDot_module_pow_zero D Sc reservoirCutoff bound
+    (truncatedAppendDotNilpotent D Sc reservoirCutoff sy hc bound) [] i
   refine ⟨n, hn, fun H => ?_⟩
   have h := hp (H.obj N₀)
   rw [contentInductionDot_component] at h
