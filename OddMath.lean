@@ -1640,6 +1640,7 @@ import OddMath.QuiverHecke.UpwardModuleAction
 import OddMath.QuiverHecke.SwappedAssembly.Interpretation
 import OddMath.QuiverHecke.SwappedAssembly.Sectors
 import OddMath.QuiverHecke.SwappedAssembly.VacuumPaths
+import OddMath.QuiverHecke.SwappedAssembly.VacuumPathSplit
 import OddMath.QuiverHecke.SwappedAssembly.ReservoirPaths
 import OddMath.QuiverHecke.SwappedAssembly.Matrices
 import OddMath.QuiverHecke.SwappedAssembly.Generators.Dot
@@ -1824,6 +1825,7 @@ import OddMath.QuiverHecke.SwappedConditionalNondegeneracy
 import OddMath.QuiverHecke.GlobalFactorNondegeneracy
 import OddMath.QuiverHecke.SwappedVacuum.LayerAction
 import OddMath.QuiverHecke.SwappedVacuum.TransformedIdeal
+import OddMath.QuiverHecke.SwappedVacuum.CornerLayerSquare
 import OddMath.QuiverHecke.CyclotomicAction.ELVScalarPolynomial
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCoefficients
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeSpecialization

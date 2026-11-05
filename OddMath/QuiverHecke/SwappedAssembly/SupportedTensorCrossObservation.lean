@@ -26,6 +26,10 @@ noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM BicategoryStruct
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
 open CyclotomicAction ELVOld
+
+local notation "colApp" =>
+  @HAppend.hAppend (List (Col I X)) (List (Col I X)) (List (Col I X)) instHAppendOfAppend
+
 universe u
 local instance tensorCrossObservationHomPi {k : Type u} [CommRing k]
     (A C : PiSCat.{u,u,u + 1} k) :
@@ -191,21 +195,21 @@ omit [CommRing k] [Fintype I] in
 /-- The literal equal-colour crossing layer word, read through its outer contexts. -/
 theorem tensorSameCrossLayer_domWord :
     PowerWordLayerClasses.domWord νR ηL (.cross i i) =
-      ((((Aℓ).left : List (Col I X)) ++ [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up i]),
-        Col.mk (up i) (SKM.wt D ν v)]) ++ ((Aℓ).right : List (Col I X))).map (fun a => a.l.2) := by
+      (colApp (colApp (Aℓ).left [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up i]),
+        Col.mk (up i) (SKM.wt D ν v)]) (Aℓ).right).map (fun a => a.l.2) := by
   simp [PowerWordLayerClasses.domWord, Shape.dom]
 
 omit [CommRing k] [Fintype I] in
 theorem tensorSameCrossLayer_codWord :
     PowerWordLayerClasses.codWord νR ηL (.cross i i) =
-      ((((Aℓ).left : List (Col I X)) ++ [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up i]),
-        Col.mk (up i) (SKM.wt D ν v)]) ++ ((Aℓ).right : List (Col I X))).map (fun a => a.l.2) := by
+      (colApp (colApp (Aℓ).left [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up i]),
+        Col.mk (up i) (SKM.wt D ν v)]) (Aℓ).right).map (fun a => a.l.2) := by
   simp [PowerWordLayerClasses.codWord, Shape.cod]
 
 omit [CommRing k] [Fintype I] in
 private theorem samePathWord :
-    (((((Aℓ).left : List (Col I X)) ++ [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up i]),
-        Col.mk (up i) (SKM.wt D ν v)]) ++ ((Aℓ).right : List (Col I X))).map (fun a => a.l.2)).reverse =
+    ((colApp (colApp (Aℓ).left [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up i]),
+        Col.mk (up i) (SKM.wt D ν v)]) (Aℓ).right).map (fun a => a.l.2)).reverse =
       PowerWordContexts.extendedWord ((νR ++ [i]) ++ [i]) ηL := by
   rw [PowerWordContexts.extendedWord_eq]
   simp
@@ -303,30 +307,30 @@ omit [CommRing k] [Fintype I] in
 /-- The literal distinct-colour crossing source word. -/
 theorem tensorCrossLayer_domWord :
     PowerWordLayerClasses.domWord νR ηL (.cross i j) =
-      ((((Aℓ).left : List (Col I X)) ++ [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up j]),
-        Col.mk (up j) (SKM.wt D ν v)]) ++ ((Aℓ).right : List (Col I X))).map (fun a => a.l.2) := by
+      (colApp (colApp (Aℓ).left [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up j]),
+        Col.mk (up j) (SKM.wt D ν v)]) (Aℓ).right).map (fun a => a.l.2) := by
   simp [PowerWordLayerClasses.domWord, Shape.dom]
 
 omit [CommRing k] [Fintype I] in
 /-- The literal distinct-colour crossing target word. -/
 theorem tensorCrossLayer_codWord :
     PowerWordLayerClasses.codWord νR ηL (.cross i j) =
-      ((((Aℓ).left : List (Col I X)) ++ [Col.mk (up j) (SKM.wt D (SKM.wt D ν v) [up i]),
-        Col.mk (up i) (SKM.wt D ν v)]) ++ ((Aℓ).right : List (Col I X))).map (fun a => a.l.2) := by
+      (colApp (colApp (Aℓ).left [Col.mk (up j) (SKM.wt D (SKM.wt D ν v) [up i]),
+        Col.mk (up i) (SKM.wt D ν v)]) (Aℓ).right).map (fun a => a.l.2) := by
   simp [PowerWordLayerClasses.codWord, Shape.cod]
 
 omit [CommRing k] [Fintype I] in
 private theorem crossSourcePathWord :
-    (((((Aℓ).left : List (Col I X)) ++ [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up j]),
-        Col.mk (up j) (SKM.wt D ν v)]) ++ ((Aℓ).right : List (Col I X))).map (fun a => a.l.2)).reverse =
+    ((colApp (colApp (Aℓ).left [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up j]),
+        Col.mk (up j) (SKM.wt D ν v)]) (Aℓ).right).map (fun a => a.l.2)).reverse =
       PowerWordContexts.extendedWord ((νR ++ [j]) ++ [i]) ηL := by
   rw [PowerWordContexts.extendedWord_eq]
   simp
 
 omit [CommRing k] [Fintype I] in
 private theorem crossTargetPathWord :
-    (((((Aℓ).left : List (Col I X)) ++ [Col.mk (up j) (SKM.wt D (SKM.wt D ν v) [up i]),
-        Col.mk (up i) (SKM.wt D ν v)]) ++ ((Aℓ).right : List (Col I X))).map (fun a => a.l.2)).reverse =
+    ((colApp (colApp (Aℓ).left [Col.mk (up j) (SKM.wt D (SKM.wt D ν v) [up i]),
+        Col.mk (up i) (SKM.wt D ν v)]) (Aℓ).right).map (fun a => a.l.2)).reverse =
       PowerWordContexts.extendedWord ((νR ++ [i]) ++ [j]) ηL := by
   rw [PowerWordContexts.extendedWord_eq]
   simp
