@@ -418,4 +418,16 @@ theorem smul_mem_presentedPart {r : R} (hr : r ∈ 𝒜 0) {x : P.obj a ⟶ P.ob
   change r * f.toFinsupp g ∈ _
   simpa using SetLike.GradedMul.mul_mem hr (hf g)
 
+/-- Multiplication by a homogeneous scalar of degree `e` shifts the homogeneous parts by `e`. -/
+theorem smul_mem_presentedPart_add {r : R} {e : A} (hr : r ∈ 𝒜 e) {x : P.obj a ⟶ P.obj b}
+    {d : A} (hx : x ∈ presentedPart 𝒜 deg P a b d) :
+    r • x ∈ presentedPart 𝒜 deg P a b (e + d) := by
+  obtain ⟨f, hf, rfl⟩ := mem_presentedPart_iff.mp hx
+  rw [← P.lin_smul]
+  refine lin_mem_presentedPart ?_
+  intro g
+  change r * f.toFinsupp g ∈ _
+  have h := SetLike.GradedMul.mul_mem hr (hf g)
+  rwa [add_sub_assoc]
+
 end OddMath.Diagrams.CoefficientGrading
