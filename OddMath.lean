@@ -1537,6 +1537,7 @@ import OddMath.SKM.ScalarChangeBubbleFamily
 import OddMath.SKM.ScalarChangeMatchingFamily
 import OddMath.SKM.ScalarChangeExamples
 import OddMath.SKM.ScalarChangeCoefficientBasis
+import OddMath.SKM.GradedParameters
 import OddMath.SKM.GroundRingNondegeneracy
 import OddMath.QuiverHecke.GrothendieckIsomorphism
 import OddMath.SKM.Presentation
@@ -2814,6 +2815,7 @@ import OddMath.QuiverHecke.VacuumRouteSwappedNonpositiveField
 import OddMath.QuiverHecke.VacuumRouteSwappedRightField
 import OddMath.QuiverHecke.VacuumRouteSwappedRightNegative
 import OddMath.QuiverHecke.HomBases
+import OddMath.QuiverHecke.Decategorification
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumDecodeFaithful
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumZeroHeightEntries
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumRightEntriesEven
