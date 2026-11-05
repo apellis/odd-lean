@@ -151,15 +151,17 @@ theorem tensorCornerEv_eq (t : List I)
   have h : SPath.wordContent (tensorSourceLabels D ΛP ΛR t) + 0 = cS :=
     (SPath.content_eq p (tensorSourceLabels_up D ΛP ΛR t) rfl).symm
   unfold tensorCornerEv
-  rw [dite_cond_eq_true (eq_true h)]
-  exact tensorWordQuotientObservation_path_independent D Sc cutoff L m ΛP ΛR hP hR s t _ _
+  split
+  · exact tensorWordQuotientObservation_path_independent D Sc cutoff L m ΛP ΛR hP hR s t _ _
 
 /-- Off the content of `s` the corner evaluation vanishes. -/
 theorem tensorCornerEv_of_ne (t : List I)
     (h : ¬ SPath.wordContent (tensorSourceLabels D ΛP ΛR t) + 0 = cS) :
     tensorCornerEv D Sc m cutoff ΛP ΛR L hP hR s t = 0 := by
   unfold tensorCornerEv
-  rw [dite_cond_eq_false (eq_false h)]
+  split
+  · exact absurd ‹_› h
+  · rfl
 
 variable (sy : Symmetrizer D) (hc : Sc.Homogeneous)
 local notation "c" => elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc
@@ -201,8 +203,6 @@ theorem tensorCornerEv_layer (G : Layer (QuiverHecke.sig D)) (hv : G.Valid)
       exact tensorMatrixQuotientObservation_dot_of_eq D Sc m cutoff ΛP ΛR L hP hR s c leftward
         (ΛP - ΛR) (upWord left) (upWord right) i
         (lay_left_colours D _ left right _) (lay_right_colours D _ left right _)
-        (A := SKM.ob D (ΛP - ΛR) (upWord (left ++ [i] ++ right)))
-        (B := SKM.ob D (ΛP - ΛR) (upWord (left ++ [i] ++ right)))
         ((QuiverHecke.label D (ΛP - ΛR)).dom_eq hv) ((QuiverHecke.label D (ΛP - ΛR)).cod_eq hv)
         (tensorWordVacuumEndpoint D ΛP ΛR _) (tensorWordVacuumEndpoint D ΛP ΛR _)
         pA (tensorSourceLabels_up D ΛP ΛR _) pB (tensorSourceLabels_up D ΛP ΛR _)
@@ -213,8 +213,6 @@ theorem tensorCornerEv_layer (G : Layer (QuiverHecke.sig D)) (hv : G.Valid)
         exact tensorMatrixQuotientObservation_sameCross_of_eq D Sc m cutoff ΛP ΛR L hP hR s c
           leftward (ΛP - ΛR) (upWord left) (upWord right) i
           (lay_left_colours D _ left right _) (lay_right_colours D _ left right _)
-          (A := SKM.ob D (ΛP - ΛR) (upWord (left ++ [i, i] ++ right)))
-          (B := SKM.ob D (ΛP - ΛR) (upWord (left ++ [i, i] ++ right)))
           ((QuiverHecke.label D (ΛP - ΛR)).dom_eq hv) ((QuiverHecke.label D (ΛP - ΛR)).cod_eq hv)
           (tensorWordVacuumEndpoint D ΛP ΛR _) (tensorWordVacuumEndpoint D ΛP ΛR _)
           pA (tensorSourceLabels_up D ΛP ΛR _) pB (tensorSourceLabels_up D ΛP ΛR _)
@@ -222,18 +220,16 @@ theorem tensorCornerEv_layer (G : Layer (QuiverHecke.sig D)) (hv : G.Valid)
       · exact tensorMatrixQuotientObservation_cross_of_eq D Sc m cutoff ΛP ΛR L hP hR s c
           leftward (ΛP - ΛR) (upWord left) (upWord right) i j hij
           (lay_left_colours D _ left right _) (lay_right_colours D _ left right _)
-          (A := SKM.ob D (ΛP - ΛR) (upWord (left ++ [i, j] ++ right)))
-          (B := SKM.ob D (ΛP - ΛR) (upWord (left ++ [j, i] ++ right)))
           ((QuiverHecke.label D (ΛP - ΛR)).dom_eq hv) ((QuiverHecke.label D (ΛP - ΛR)).cod_eq hv)
           (tensorWordVacuumEndpoint D ΛP ΛR _) (tensorWordVacuumEndpoint D ΛP ΛR _)
           pA (tensorSourceLabels_up D ΛP ΛR _) pB (tensorSourceLabels_up D ΛP ΛR _)
           (tensorSourceLabels_colors D ΛP ΛR _) (tensorSourceLabels_colors D ΛP ΛR _) v y hy
   · have h' : ¬ SPath.wordContent (tensorSourceLabels D ΛP ΛR G.cod.word) + 0 = cS := by
       rw [hcont]; exact h
-    rw [tensorCornerEv_of_ne D Sc m cutoff ΛP ΛR L hP hR s _ h, LinearMap.zero_apply] at hy
-    rw [tensorCornerEv_of_ne D Sc m cutoff ΛP ΛR L hP hR s _ h', LinearMap.zero_apply]
+    rw [tensorCornerEv_of_ne D Sc m cutoff ΛP ΛR L hP hR s G.dom.word h, LinearMap.zero_apply] at hy
+    rw [tensorCornerEv_of_ne D Sc m cutoff ΛP ΛR L hP hR s G.cod.word h', LinearMap.zero_apply]
     have hy0 : y ∈ PowerWordQuotientCoordinates.kernel D Sc cutoff L s G.dom.word :=
-      (Submodule.Quotient.mk_eq_zero _).mp hy.symm
+      (Submodule.Quotient.mk_eq_zero _).mp (by rw [Submodule.mkQ_apply] at hy; exact hy.symm)
     exact ((Submodule.Quotient.mk_eq_zero _).mpr (TransformedIdeal.comp_mem D Sc hy0 _)).symm
 
 /-- **The corner evaluation of the swapped action** at the source word `s`, for the
