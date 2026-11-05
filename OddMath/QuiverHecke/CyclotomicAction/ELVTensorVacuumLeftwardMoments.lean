@@ -3,7 +3,9 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeLeftwardVacuumCapInverse
-import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumCapInverseAttach
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumCapInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumColumnMoments
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumWholeInput
 
 /-! # Odd moments of the leftward vacuum bubble entries
 

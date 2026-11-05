@@ -3,7 +3,13 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumMomentMaps
-import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumPrincipalCap
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumCap
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCentralSlide
+import OddMath.QuiverHecke.SwappedVacuum.NegativeCapMoments
+import Mathlib.Algebra.Polynomial.Expand
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCentralSlide
+import OddMath.QuiverHecke.SwappedVacuum.NegativeCapMoments
+import Mathlib.Algebra.Polynomial.Expand
 import OddMath.QuiverHecke.SwappedVacuum.InverseColumnOddSeries
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.CapWindows
 

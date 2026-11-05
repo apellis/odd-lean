@@ -1,4 +1,6 @@
-import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordDistinctCrossing
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordPairCrossing
+import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctModuleMate
+import OddMath.Algebra.FiniteSupermoduleFunctor
 
 /-! # Selected word comparison and induction of signed old-Hom maps
 

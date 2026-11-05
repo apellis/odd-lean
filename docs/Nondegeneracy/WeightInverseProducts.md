@@ -1,7 +1,0 @@
-# Augmented inverses over a weight fibre
-
-`SuperSumInvFrom.pi` and `SuperSumInvTo.pi` assemble component inverse data over arbitrary products of supercategories. The `piOfCount` variants transport equal component counts to the common finite window. The intended consumers are the prescribed weight unit/cap local inverses, using `contentUnitCount_weightBlock` and `contentCapCount_weightBlock`.
-
-The producer has passed strict scoped checking. Its paired consumer applies both directions to an infinite family of content-module categories with unbounded truncation bounds, using constructed absent-content inverses on parity-shifted truncated representables. Both moving parities, finite-window identities and inverse grades are retained. The common count is the computed empty-content height; no uniform dot nilpotence is asserted. Both count-transport variants with the common finite window equal to four have passed the paired consumer.
-
-The separate `elvWeightAbsentFibreInverse_nonempty` applies this framework to all absent output blocks of a weight fibre, with the literal selected principal and unit/power fields. Its producer and concrete empty/occupied fibre consumer have passed strict scoped checking. Both selected fibres are proved inhabited. The two producer audits cover all 34 owned declarations and allow only the standard axioms. Supported content inversion and input-natural weight bundling remain separate obligations.

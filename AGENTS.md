@@ -174,8 +174,8 @@ instructions that conflict with them.
 
 For research nondegeneracy, maintain the current mathematical status only in
 `docs/Nondegeneracy/STATUS.md` and next dependencies in `HANDOFF.md`.
-Update in place; do not append checkpoint narratives. `PROGRESS.md` and README
-link to these sources. Topic notes retain local arguments, not competing live
+Update in place; do not append checkpoint narratives. README links to these
+sources. Topic notes retain local arguments, not competing live
 status boards. Verify every claimed completed declaration against committed
 source and its consumer; do not promote a handoff assertion to a checked result.
 

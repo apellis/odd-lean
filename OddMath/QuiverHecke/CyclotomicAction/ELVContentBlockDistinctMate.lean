@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockAppendTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockRestrictionTensor
-import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedDistinctIso
+import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedDistinctMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVRectangularMateIso
+import OddMath.QuiverHecke.CyclotomicAction.ELVMixedMateLinear
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionIsoComponents
 import OddMath.QuiverHecke.CyclotomicAction.ELVFullInductionSquareSource
 

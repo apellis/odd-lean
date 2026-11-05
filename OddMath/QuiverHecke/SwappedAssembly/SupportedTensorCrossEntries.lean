@@ -1,5 +1,6 @@
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorDotEntries
-import OddMath.QuiverHecke.SwappedAssembly.ReservoirDistinctContextCoordinates
+import OddMath.QuiverHecke.SwappedAssembly.ReservoirContextCoordinates
+import OddMath.QuiverHecke.SwappedAssembly.ReservoirLayerDistinctCrossings
 
 /-! # Chosen crossing matrix entries in the selected tensor Hom
 

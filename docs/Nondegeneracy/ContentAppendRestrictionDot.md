@@ -1,9 +1,0 @@
-# The chosen dot after restricting content append extension
-
-The canonical `oldContentAppendRestrictionIso` identifies content append induction with restriction of old append induction on the canonical extended input module. The fixed-content matrix inverse attachment in DeformedActionAssembly §5 needs compatibility with the chosen generator maps under this exact isomorphism.
-
-`oldContentAppendRestrictionLinear` fixes the raw coend carriers of its literal component. `oldContentAppendInclusionUnitLinear` is the existing inclusion unit on the same carriers. `oldContentAppendRestrictionLinear_eq` proves that the selected comparison is the selected append-extension linear component composed with this unit. This uses the actual fully-faithful unit isomorphism, rather than selecting another pointwise inverse.
-
-The inclusion unit intertwines every homogeneous induced module map: its coefficient arrow is an identity, so the parity twist leaves that arrow fixed. Apply this naturality to `oldContentInductionDotComponent` and combine it with `oldContentAppendExtensionIso_dot`. Associativity of linear-map composition then gives `oldContentAppendRestrictionIso_dot` on every whole coend. Both moving parities use the same argument, with no homogeneity premise on module vectors or kernel coefficients.
-
-The producer and paired mixed-colour representable consumer pass strict scoped checks with warnings as errors and the pinned compatibility options. Both moving parities exercise the selected-unit factorization, whole dot identity and pointwise coend evaluation. All eleven owned declarations, including private/generated declarations, pass the three-axiom allowlist audit. Full CI is pending. Crossing and adjunction generator compatibility, weighted transport and the final content/weight matrix identification remain separate.

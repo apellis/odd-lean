@@ -1,5 +1,6 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumBendSeries
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeSeparatedBends
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeFiniteBends
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendWindowEquations
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCentralBend
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PaddedBendWordSeries
 import OddMath.SKM.RouquierHomWeightCoordinates

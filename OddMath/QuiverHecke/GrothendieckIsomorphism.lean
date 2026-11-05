@@ -58,6 +58,16 @@ theorem gammaInt_bijective (hN : SKM.NondegeneracyConjecture cs)
     Function.Bijective (gammaInt Q hS cs hf) :=
   ⟨theorem_12_1 Q hS cs hf hN hα hh, theorem_11_7_surjective Q hS cs hf⟩
 
+omit [Finite I] [Module.Free ℤ X] [Module.Finite ℤ X] in
+/-- **BE2 Theorems 11.7 and 12.1, form version**: given the Nondegeneracy Conjecture and
+nondegeneracy of the form of Theorem 10.1, `γ` is bijective. No finiteness of the colour set or
+of the weight lattice is assumed. -/
+theorem gammaInt_bijective_of_nondegenerate (hN : SKM.NondegeneracyConjecture cs)
+    (hnd : ∀ x : modified Q Coefficients.q Coefficients.pi,
+      (∀ y, GenericTensor.sesquilinearForm Q x y = 0) → x = 0) :
+    Function.Bijective (gammaInt Q hS cs hf) :=
+  ⟨theorem_12_1_of_nondegenerate Q hS cs hf hN hnd, theorem_11_7_surjective Q hS cs hf⟩
+
 /-- **`K₀(𝔘̇(𝔤)) ≅ U̇_{q,π}(𝔤)_ℒ`** (BE2 Theorems 11.7 and 12.1), as a ring isomorphism,
 given the Nondegeneracy Conjecture. It is `ℒ`-linear (`gammaIntEquiv_smul`). -/
 def gammaIntEquiv (hN : SKM.NondegeneracyConjecture cs)

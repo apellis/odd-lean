@@ -1,5 +1,5 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightModules
-import OddMath.QuiverHecke.CyclotomicAction.ELVModuleCentreDegree
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleCentre
 
 /-! # Exact-content components of a whole-weight supercentral map
 

@@ -1,4 +1,4 @@
-import OddMath.QuiverHecke.CyclotomicAction.ELVTensorHomEntries
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumWords
 
 /-! # Outer E contexts on surviving tensor-Hom entries
 
