@@ -1539,6 +1539,7 @@ import OddMath.SKM.ScalarChangeBubbleFamily
 import OddMath.SKM.ScalarChangeMatchingFamily
 import OddMath.SKM.ScalarChangeExamples
 import OddMath.SKM.ScalarChangeCoefficientBasis
+import OddMath.SKM.ScalarChangeIntegral
 import OddMath.SKM.GradedParameters
 import OddMath.SKM.GroundRingNondegeneracy
 import OddMath.QuiverHecke.GrothendieckIsomorphism
