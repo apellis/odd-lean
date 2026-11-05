@@ -30,6 +30,9 @@ open CategoryTheory StringDiagrams Supercategory OddMath.SKM
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
 open CyclotomicAction ELVOld ELVOld.PowerVacuumCoefficient ELVOld.WeightTensorVacuum
 universe u
+local instance supportedVacuumEntryLiftHomPi {k : Type u} [CommRing k]
+    (A C : PiSCat.{u,u,u+1} k) : PiSupercategory k (A ⟶ C) :=
+  PiTwoSupercategory.homPiLeft A C
 
 section Lift
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
