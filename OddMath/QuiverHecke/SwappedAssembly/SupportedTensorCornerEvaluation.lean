@@ -41,20 +41,20 @@ theorem content_eq {w : List (Col I X)} {s t : Sector I} (p : SPath w s t)
     (hw : ∀ c ∈ w, c.l.1 = true) (ht : t.1 = 0) : s.2 = wordContent w + t.2 := by
   induction p with
   | nil s => simp [wordContent]
-  | cons c side s hv p ih =>
+  | @cons w t c side s hv p ih =>
     have hc := hw c List.mem_cons_self
-    have hw' : ∀ d ∈ _, d.l.1 = true := fun d hd => hw d (List.mem_cons_of_mem _ hd)
+    have hw' : ∀ d ∈ w, d.l.1 = true := fun d hd => hw d (List.mem_cons_of_mem _ hd)
     have ih := ih hw' ht
     rcases c with ⟨⟨b, i⟩, r⟩
     cases b with
     | false => cases hc
     | true =>
       obtain rfl := side_eq_false_of_upward_probe_zero i side p hw' ht
-      change 1 ≤ s.2 i at hv
-      change s.2 - Finsupp.single i 1 = wordContent _ + t.2 at ih
-      have hle : Finsupp.single i 1 ≤ s.2 := Finsupp.single_le_iff.mpr hv
-      change s.2 = Finsupp.single i 1 + wordContent _ + t.2
-      rw [add_assoc, ← ih, add_tsub_cancel_of_le hle]
+      have hv' : 1 ≤ s.2 i := hv
+      have ih' : s.2 - Finsupp.single i 1 = wordContent w + t.2 := ih
+      have hle : Finsupp.single i 1 ≤ s.2 := Finsupp.single_le_iff.mpr hv'
+      show s.2 = Finsupp.single i 1 + wordContent w + t.2
+      rw [add_assoc, ← ih', add_tsub_cancel_of_le hle]
 
 /-- The formal content depends only on the colours of the word. -/
 theorem wordContent_eq_sum (w : List (Col I X)) :
@@ -104,8 +104,7 @@ theorem layer_word_perm (G : Layer (QuiverHecke.sig D)) : G.dom.word.Perm G.cod.
   cases gen with
   | dot i => exact List.Perm.refl _
   | cross i j =>
-    show (left ++ [i, j] ++ right).Perm (left ++ [j, i] ++ right)
-    exact ((List.Perm.swap j i []).append_left left).append_right right
+    exact List.Perm.append_right _ (List.Perm.append_left _ (List.Perm.swap _ _ _))
 
 end Colours
 
@@ -152,7 +151,7 @@ theorem tensorCornerEv_eq (t : List I)
   have h : SPath.wordContent (tensorSourceLabels D ΛP ΛR t) + 0 = cS :=
     (SPath.content_eq p (tensorSourceLabels_up D ΛP ΛR t) rfl).symm
   unfold tensorCornerEv
-  rw [dif_pos h]
+  rw [dite_cond_eq_true (eq_true h)]
   exact tensorWordQuotientObservation_path_independent D Sc cutoff L m ΛP ΛR hP hR s t _ _
 
 /-- Off the content of `s` the corner evaluation vanishes. -/
@@ -160,7 +159,7 @@ theorem tensorCornerEv_of_ne (t : List I)
     (h : ¬ SPath.wordContent (tensorSourceLabels D ΛP ΛR t) + 0 = cS) :
     tensorCornerEv D Sc m cutoff ΛP ΛR L hP hR s t = 0 := by
   unfold tensorCornerEv
-  rw [dif_neg h]
+  rw [dite_cond_eq_false (eq_false h)]
 
 variable (sy : Symmetrizer D) (hc : Sc.Homogeneous)
 local notation "c" => elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc
@@ -185,7 +184,7 @@ theorem tensorCornerEv_layer (G : Layer (QuiverHecke.sig D)) (hv : G.Valid)
   rw [pointwiseUpwardModuleAction_act_ofLayer D Sc m cutoff N ΛP ΛR hP hR sy hc
       (tensorSourceFamily D Sc m cutoff ΛP ΛR L s) (tensorTargetFamily D Sc m cutoff ΛP ΛR L)
       (ΛP - ΛR) G hv,
-    coefficientHom_one_ofLayer D Sc G hv, LinearMap.comp_apply, LinearMap.comp_apply]
+    coefficientHom_one_ofLayer D Sc G hv]
   have hcont := tensorSourceLabels_content_layer D ΛP ΛR G
   by_cases h : SPath.wordContent (tensorSourceLabels D ΛP ΛR G.dom.word) + 0 = cS
   · have h' : SPath.wordContent (tensorSourceLabels D ΛP ΛR G.cod.word) + 0 = cS := by
