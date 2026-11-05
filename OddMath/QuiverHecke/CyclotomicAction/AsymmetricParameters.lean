@@ -1,6 +1,7 @@
 import OddMath.SKM.SerrePolynomial
 import OddMath.SKM.Grading
-import OddMath.QuiverHecke.CyclotomicAction.LocalRelationExamples
+import OddMath.Diagrams.OddNilHecke.DotTranslation
+import OddMath.QuiverHecke.CyclotomicAction.SignedMultipliers
 
 /-!
 # An asymmetric odd Cartan quadratic requires a parameter comparison

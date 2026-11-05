@@ -2,7 +2,17 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeSpecialization
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModule
 import OddMath.QuiverHecke.CyclotomicAction.ELVParabolicSpan
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeight
-import OddMath.QuiverHecke.CyclotomicAction.AppendContentCorner
+import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyTarget
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerGrading
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerTargetDot
+import Mathlib.Algebra.BigOperators.Finsupp.Basic
+import Mathlib.Algebra.SkewPolynomial.Basic
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerGrading
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerTargetDot
+import Mathlib.Algebra.BigOperators.Finsupp.Basic
+import Mathlib.Algebra.SkewPolynomial.Basic
+import Mathlib.Algebra.Polynomial.Module.TensorProduct
+import Mathlib.Algebra.Ring.TransferInstance
 
 /-! # Scalar probe specialization of the untruncated ELV content ring
 This supplies the ring input for the probe-factor base change of

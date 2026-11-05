@@ -4,7 +4,23 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.PrefixQPRepeated
 import OddMath.QuiverHecke.CyclotomicAction.PrefixQPDistinct
-import OddMath.QuiverHecke.CyclotomicAction.LinearDotCancellation
+import OddMath.QuiverHecke.CyclotomicAction.PrependMatrix
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerGrading
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerTargetDot
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerGrading
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerTargetDot
+import Mathlib.Algebra.BigOperators.Finsupp.Basic
+import Mathlib.Algebra.SkewPolynomial.Basic
+import Mathlib.Algebra.Polynomial.Module.TensorProduct
+import Mathlib.Algebra.Ring.TransferInstance
+import Mathlib.RingTheory.Idempotents
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerGrading
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerTargetDot
+import Mathlib.Algebra.BigOperators.Finsupp.Basic
+import Mathlib.Algebra.SkewPolynomial.Basic
+import Mathlib.Algebra.Polynomial.Module.TensorProduct
+import Mathlib.Algebra.Ring.TransferInstance
+import Mathlib.RingTheory.Idempotents
 
 /-!
 # Annihilators in the prescribed prepend target

@@ -2,9 +2,17 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightAdjunction
+import OddMath.QuiverHecke.CyclotomicAction.GlobalHeight
+import OddMath.QuiverHecke.CyclotomicAction.GlobalProduct
+import OddMath.QuiverHecke.CyclotomicAction.GlobalSupport
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightInduction
-import OddMath.QuiverHecke.CyclotomicAction.ActionSupercategory
+import OddMath.QuiverHecke.CyclotomicAction.Slides
+import StringDiagrams.Super.Functor
+import OddMath.SKM.RouquierData
+import StringDiagrams.Super.SCat
+import StringDiagrams.Super.TwoSCat
 
 /-!
 # The induction–restriction adjunction on cyclotomic weight spaces

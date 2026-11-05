@@ -1,4 +1,10 @@
-import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordWhiskering
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordAppendDot
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentWhiskering
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentComparisonCoherence
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldModuleAdjunction
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionCrossTensor
+import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctModuleMate
+import OddMath.Algebra.FiniteSupermoduleFunctor
 
 /-! # Right contexts for the chosen regular-power word action
 

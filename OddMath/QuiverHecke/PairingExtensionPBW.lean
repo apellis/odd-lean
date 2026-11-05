@@ -1,4 +1,8 @@
-import OddMath.QuiverHecke.PairingExtensionObservation
+import OddMath.SKM.PairingExtensionPresentation
+import OddMath.QuiverHecke.UpwardModuleAction
+import OddMath.QuiverHecke.PairingExtensionAffine
+import OddMath.SKM.PairingExtensionBubbles
+import OddMath.SKM.BubbleCoefficientBasis
 import OddMath.QuiverHecke.WeightedCoefficientSeparation
 
 /-! # Pairing extension on affine and coefficient PBW coordinates

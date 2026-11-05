@@ -1,4 +1,4 @@
-import OddMath.QuiverHecke.CyclotomicAction.ELVModuleCentreDegree
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleCentre
 
 /-! # Total representable evaluation and source coefficient degree
 

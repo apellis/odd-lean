@@ -2,8 +2,15 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.CyclotomicAction.AppendContentBoundary
-import OddMath.QuiverHecke.CyclotomicAction.IntertwinerContent
+import OddMath.QuiverHecke.CyclotomicAction.AppendContentShortWord
+import OddMath.QuiverHecke.CyclotomicAction.AppendContentCosets
+import OddMath.QuiverHecke.CyclotomicAction.AppendContentCosets
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerGrading
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerTargetDot
+import Mathlib.Algebra.BigOperators.Finsupp.Basic
+import Mathlib.Algebra.SkewPolynomial.Basic
+import Mathlib.Algebra.Polynomial.Module.TensorProduct
+import Mathlib.Algebra.Ring.TransferInstance
 import OddMath.QuiverHecke.AppendShuffleRuns
 
 /-!

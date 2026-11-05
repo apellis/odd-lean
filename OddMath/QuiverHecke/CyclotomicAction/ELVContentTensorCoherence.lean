@@ -1,5 +1,5 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentTripleRelations
-import OddMath.QuiverHecke.CyclotomicAction.ELVInductionAssociativity
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionWhiskering
 
 /-! # Balanced tensor formulas for content comparison coherence
 

@@ -1,4 +1,4 @@
-import OddMath.SKM.RouquierMateCoordinates
+import OddMath.SKM.RouquierMate
 
 /-!
 # Mate projection coordinates from sector summands

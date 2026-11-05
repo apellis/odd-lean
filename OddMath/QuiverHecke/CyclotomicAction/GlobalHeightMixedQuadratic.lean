@@ -2,8 +2,41 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightMixedSlides
-import OddMath.QuiverHecke.CyclotomicAction.MixedComparison
+import OddMath.QuiverHecke.CyclotomicAction.GlobalHeight
+import OddMath.QuiverHecke.CyclotomicAction.GlobalProduct
+import OddMath.QuiverHecke.CyclotomicAction.GlobalSupport
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
+import OddMath.QuiverHecke.CyclotomicAction.Slides
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
+import StringDiagrams.Super.MonoidalEnvelope
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
+import StringDiagrams.Super.Functor
+import OddMath.QuiverHecke.CyclotomicAction.GlobalHeight
+import OddMath.QuiverHecke.CyclotomicAction.Slides
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
+import StringDiagrams.Super.Functor
+import OddMath.QuiverHecke.Centre
+import OddMath.QuiverHecke.CyclotomicAction.GlobalHeight
+import OddMath.QuiverHecke.CyclotomicAction.GlobalProduct
+import OddMath.QuiverHecke.CyclotomicAction.GlobalSupport
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
+import OddMath.QuiverHecke.CyclotomicAction.Slides
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
+import StringDiagrams.Super.MonoidalEnvelope
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
+import StringDiagrams.Super.Functor
+import OddMath.QuiverHecke.CyclotomicAction.GlobalHeight
+import OddMath.QuiverHecke.CyclotomicAction.Slides
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
+import StringDiagrams.Super.Functor
+import OddMath.QuiverHecke.Centre
+import OddMath.QuiverHecke.CyclotomicAction.Braid
 import OddMath.QuiverHecke.CyclotomicAction.AppendCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.MoveHomSnoc
 

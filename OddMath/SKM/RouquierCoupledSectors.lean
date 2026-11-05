@@ -1,4 +1,5 @@
-import OddMath.SKM.RouquierCoupledMate
+import OddMath.SKM.RouquierCoupled
+import OddMath.SKM.RouquierCurl
 import OddMath.QuiverHecke.ReservoirFusedSectors
 
 /-!

@@ -2,7 +2,8 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.ReservoirCoverage
+import OddMath.QuiverHecke.ReservoirSourceCoordinates
+import OddMath.QuiverHecke.ReservoirWeights
 import OddMath.QuiverHecke.ReservoirVacuumDetection
 
 /-! # Fused vacuum word modules and their regular coordinates

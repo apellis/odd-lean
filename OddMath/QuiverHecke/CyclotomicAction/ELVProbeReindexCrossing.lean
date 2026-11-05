@@ -1,4 +1,4 @@
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexPair
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvaluatedDistinctCrossing
 
 /-! # The chosen OLD crossing under pair representative changes

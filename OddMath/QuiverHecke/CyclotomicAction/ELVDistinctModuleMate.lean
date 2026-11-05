@@ -4,7 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldModuleAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionMixedMateTensor
-import OddMath.QuiverHecke.CyclotomicAction.ELVSCatRectangularMate
+import OddMath.SKM.RouquierMixedMate
+import StringDiagrams.Super.SCat
 
 /-! # The old two-colour crossing and its prescribed mate
 

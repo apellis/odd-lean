@@ -1,5 +1,7 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentCoefficientCaps
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeExtensionParity
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVUnitCoefficientRows
+import OddMath.QuiverHecke.CyclotomicAction.ELVFullyFaithfulInduction
 
 /-! # Inverse-defined caps on the regular vacuum probe
 

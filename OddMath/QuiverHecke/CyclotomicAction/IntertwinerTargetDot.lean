@@ -2,7 +2,9 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.CyclotomicAction.IntertwinerRightDot
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerParity
+import OddMath.QuiverHecke.CyclotomicAction.Slides
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
 
 /-!
 # First-dot action on the parity-shifted moving-strand target

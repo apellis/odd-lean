@@ -1,9 +1,17 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContent
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockAppendTensor
 import OddMath.Algebra.FiniteSupermoduleFunctor
-import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordPairCrossing
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordAppendDot
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentWhiskering
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentComparisonCoherence
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldModuleAdjunction
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionCrossTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendDot
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedDoubleAppend
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendTensors
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendCrossing
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionTransform
+import Mathlib.CategoryTheory.EqToHom
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionComp
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentSingleLetterRelations
 
 /-! # The chosen content dot on scheduled regular-power words

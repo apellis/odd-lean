@@ -2,8 +2,19 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.CyclotomicAction.AppendContentMackeyMap
-import OddMath.QuiverHecke.CyclotomicAction.PrependTwistCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyTarget
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerGrading
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerTargetDot
+import Mathlib.Algebra.BigOperators.Finsupp.Basic
+import Mathlib.Algebra.SkewPolynomial.Basic
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerGrading
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerTargetDot
+import Mathlib.Algebra.BigOperators.Finsupp.Basic
+import Mathlib.Algebra.SkewPolynomial.Basic
+import Mathlib.Algebra.Polynomial.Module.TensorProduct
+import Mathlib.Algebra.Ring.TransferInstance
+import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyRho
+import OddMath.QuiverHecke.CyclotomicAction.PrependMatrix
 import Mathlib.Logic.Equiv.Fin.Rotate
 
 /-!

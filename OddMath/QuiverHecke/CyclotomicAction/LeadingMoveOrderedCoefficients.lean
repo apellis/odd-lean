@@ -3,7 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.LeadingMoveProduct
-import OddMath.QuiverHecke.CyclotomicAction.LeadingMoveCoefficients
+import OddMath.QuiverHecke.CyclotomicAction.LeadingMovePolynomial
 import OddMath.QuiverHecke.HnBasis
 
 /-!

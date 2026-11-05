@@ -1,4 +1,4 @@
-import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.VacuumWindow
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowInverseData
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PaddedResidualInversion
 
 /-! # The chosen unit inverse on the supported vacuum sector

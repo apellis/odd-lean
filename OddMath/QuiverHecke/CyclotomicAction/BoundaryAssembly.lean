@@ -2,7 +2,8 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.CyclotomicAction.BoundaryWindow
+import OddMath.QuiverHecke.CyclotomicAction.BoundaryDivision
+import Mathlib.Tactic.Abel
 
 /-!
 # From the Mackey boundary to the window matrix

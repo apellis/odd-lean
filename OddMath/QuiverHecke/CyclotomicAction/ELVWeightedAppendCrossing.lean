@@ -1,5 +1,8 @@
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedPairAppend
-import OddMath.QuiverHecke.CyclotomicAction.ELVInductionSquareComposition
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendTensors
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendCrossing
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionTransform
+import Mathlib.CategoryTheory.EqToHom
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionComp
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentCompositeComparison
 
 /-! # The equal-colour crossing through the weighted quotient

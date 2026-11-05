@@ -3,7 +3,8 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.AppendBasis
-import OddMath.QuiverHecke.CyclotomicAction.LastDot
+import OddMath.QuiverHecke.CyclotomicAction.Slides
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
 import OddMath.QuiverHecke.MixedRelations
 
 /-!

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModuleAction
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentSupport
-import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ModuleCoefficients
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ReservoirCoefficients
+import StringDiagrams.Super.GSBim
+import StringDiagrams.Super.FunctorCategory
 
 /-! # Coefficient image on exact-content ELV supermodules
 

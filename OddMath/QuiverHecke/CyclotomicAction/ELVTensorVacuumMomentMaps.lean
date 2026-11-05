@@ -1,5 +1,9 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumCap
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedPolynomialCaps
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedPowerMomentMaps
+import OddMath.QuiverHecke.CyclotomicAction.ELVUnitDotComponents
+import OddMath.QuiverHecke.CyclotomicAction.ELVEndEvaluation
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerMomentMaps
+import Mathlib.Data.Nat.Choose.Sum
 
 /-! # All-power moments on the prescribed tensor vacuum
 

@@ -1,5 +1,6 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionMateTensor
-import OddMath.QuiverHecke.CyclotomicAction.ELVOldMateTensors
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldModuleAdjunction
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionCrossTensor
 
 /-! # The actual signed crossing mate on balanced generators
 

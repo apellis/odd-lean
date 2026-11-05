@@ -1,4 +1,6 @@
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvaluatedDistinctMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCanonicalContent
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentDistinctMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVRectangularMateIso
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendToAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVPiSCatRectangularMate
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCrossMate

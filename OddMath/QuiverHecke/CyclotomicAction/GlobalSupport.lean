@@ -2,8 +2,11 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.CyclotomicAction.ContentSupport
-import OddMath.QuiverHecke.CyclotomicAction.SuperDot
+import OddMath.QuiverHecke.CyclotomicAction.ContentBlocks
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
+import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
+import OddMath.QuiverHecke.CyclotomicAction.Slides
+import StringDiagrams.Super.Functor
 
 /-!
 # Supercategories on cyclotomic content blocks

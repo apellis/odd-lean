@@ -2,7 +2,9 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightAbsentUnitFamily
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightAbsentUnitInverse
+import OddMath.SKM.AugmentedInverseNaturality
+import OddMath.SKM.RouquierLeftCupCap
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCapRowFamily
 
 /-! # Prescribed cap inversion at absent zero-height blocks

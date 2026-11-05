@@ -1,4 +1,5 @@
-import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumRepresentable
+import OddMath.QuiverHecke.CyclotomicAction.ELVCategoryCoefficientFaithful
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionTransform
 
 /-! # Graded coordinates of morphisms between content representables
 

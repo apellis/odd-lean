@@ -2,8 +2,8 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.SpectatorSeparation
-import OddMath.SKM.ReservoirBubbleCoordinates
+import OddMath.QuiverHecke.SpectatorDetection
+import OddMath.SKM.CoupledBubbleEvaluation
 
 /-! # Reservoir-vacuum detection at a prescribed weight
 

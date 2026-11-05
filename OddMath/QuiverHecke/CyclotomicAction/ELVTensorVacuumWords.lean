@@ -1,5 +1,5 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTensorVacuum
-import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordHomCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordCoefficients
 
 /-! # Word contexts on the tensor-vacuum Hom
 

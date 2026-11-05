@@ -1,4 +1,7 @@
-import OddMath.QuiverHecke.CyclotomicAction.ELVCapCoordinateTransport
+import OddMath.QuiverHecke.CyclotomicAction.ELVBoundaryInputDefect
+import OddMath.QuiverHecke.CyclotomicAction.ELVSourceSplitting
+import OddMath.QuiverHecke.CyclotomicAction.ELVBoundaryPolynomial
+import OddMath.QuiverHecke.CyclotomicAction.ELVCyclotomicCrossCoordinates
 
 /-! # The input moving dot on the prescribed crossing source
 
