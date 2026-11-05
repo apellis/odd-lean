@@ -1,5 +1,9 @@
 # Coupled bubble evaluation: source normalization and a finite calculation
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 Research progress, 2026-10-25. This separates a native diagrammatic identity,
 a checked finite action calculation, and the remaining general coupling law.
 

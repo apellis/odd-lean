@@ -1,5 +1,9 @@
 # The content-shifted probe matrix
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: principal equality (B), natural-power dotted identities (9), and
 whole augmented inverses (10)–(13) proved in Lean, including supernatural
 transformation packaging in SCat. Negative powers and a full Hom Rouquier

@@ -1,5 +1,9 @@
 # Cofinal bounded observations for the swapped action
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: proposed written construction, not a Lean theorem.** Working from
 the full deformed factor inputs of `SwappedActionAssembly.md` F1, this note
 chooses its remaining data and constructs a detecting observation for each

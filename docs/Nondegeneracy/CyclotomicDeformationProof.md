@@ -1,5 +1,9 @@
 # Cyclotomic deformation and lifting the local map
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: proposed mathematical arguments, not Lean theorems.** This resolves
 which deformation statement can be asked in A0-deform of
 NondegeneracyProof.md §4.2. Its unrestricted homogeneous-polynomial version is

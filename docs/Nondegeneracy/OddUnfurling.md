@@ -1,5 +1,9 @@
 # Odd unfurling: a Grassmannian–spectral synthesis
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 Research note, 2026-10-25. This records a proposed construction and its explicit
 obligations, not a proof of general odd nondegeneracy. No new Lean theorem is
 claimed here. Repository baseline: `5b698faee17e176c871cd07ee272b89585148617`;

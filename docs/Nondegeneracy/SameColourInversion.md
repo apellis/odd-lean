@@ -1,5 +1,9 @@
 # Finite-quotient same-colour augmented inversion
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: written conditional finite-quotient inversion; not a Lean theorem.** The conclusion
 is a two-sided inverse of the specified same-colour augmented mixed map
 on the parity-completed, content-shifted Hom construction, at every pair

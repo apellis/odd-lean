@@ -1,5 +1,9 @@
 # Separated-sector fusion
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 ## Status and scope
 
 This is a **proposed, incomplete proof** of node A2 of

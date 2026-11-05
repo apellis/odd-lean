@@ -1,5 +1,9 @@
 # Super coefficient cyclotomic towers: mixed inversion and connected transfer
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 Research toward Brundan–Ellis §8. These are written algebraic arguments and
 finite diagnostics, not checked Lean theorems or a constructed SKM action.
 The source for the mixed argument is Kang–Kashiwara–Oh,

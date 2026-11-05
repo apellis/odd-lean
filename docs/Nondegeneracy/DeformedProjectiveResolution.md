@@ -1,5 +1,9 @@
 # Deformed intertwiner transport and the square-variable resolution
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: proposed written proof, not a Lean theorem.** The result proved below
 is the signed transport of the full cyclotomic relation through an arbitrary
 intertwiner chain, including its repeated-odd cancellation step. The complete

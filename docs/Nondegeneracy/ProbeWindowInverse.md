@@ -1,5 +1,9 @@
 # Inverting the negative-power probe windows
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 **Status: written proof, not a Lean theorem.** The headline is an
 explicit inverse algorithm for both tables in `HomResidualWindows.md`, at
 every pair of heights. Its concrete use is the leading residual inversion

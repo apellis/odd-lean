@@ -1,5 +1,9 @@
 # Odd cutoffs and exterior translation
 
+> The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
+> [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
+> proved among that theorem's dependencies or belong to routes it does not use.
+
 Status: **proposed**. This proves a reduction of the odd-cutoff extension to
 the unshifted odd-cutoff action. It does not fill the presentation-comparison
 gap recorded in ActionReview.md, nor claim a new Lean action theorem.
