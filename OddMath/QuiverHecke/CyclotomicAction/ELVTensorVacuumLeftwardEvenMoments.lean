@@ -92,8 +92,9 @@ section Tensor
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) [Fintype I]
   (m : I → ℕ) (cutoff : I → ℕ) (L : I × ℕ → ℕ)
-  (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
 local notation "bound" => SKM.SYM.elvPowerWeightBound D cutoff L + 1
+
+variable (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound)
 local notation "W₀" => Functor.obj (restriction (contentInclusion D Sc cutoff bound (0 : Multiset I)))
   (weightedVacuum D Sc cutoff L)
 local notation "H" => VacuumTensor.probeFunctor D Sc m cutoff bound W₀
@@ -106,7 +107,7 @@ local notation "AQ" => CoefficientPowerQuotient (k := k) D cutoff L
 variable (i : I)
 local notation "K" => contentAppend D Sc cutoff bound (0 : Multiset I) [i]
 
-include sy hc in
+include hdot in
 /-- **Even-colour column moments on the tensor vacuum.** For a column `a`
 killed by the actual A6 bend with the column window of height `h`, where
 `h + cutoff i = m i`, the decoded column moments `a ≫ x^(h-1+s) ≫ v` are the
@@ -136,7 +137,7 @@ theorem tensorVacuumColumn_even_moments
     ((adjunction K).unit.app V) (shiftedPreCap D Sc m R₀ i hP H)
     (tensorPowerVacuumCap D Sc m cutoff L i hN) a
     (evaluatedMixedBend_even_slide_sub D Sc m cutoff L
-      (truncatedAppendDotNilpotent D Sc cutoff sy hc _) i hi hP) has
+      hdot i hi hP) has
     (by rw [hhN]; exact shiftedPreDot_even_capPolynomial D Sc m cutoff L i hi) hcol hwin
     (tensorVacuum_even_reservoir_series D Sc m cutoff L i hi hN) s
   have e1 := tensorVacuumEndDecode_apply D Sc m cutoff L
@@ -144,7 +145,7 @@ theorem tensorVacuumColumn_even_moments
   rw [hmom, capCoefficientLmul_apply] at e1
   exact e1.symm
 
-include sy hc in
+include hdot in
 /-- **Chosen inverse column, even colour.** If the cap window `[bend; x^n ≫ v]_(n < h)` of
 the actual A6 bend has an entrywise inverse `(j, A)`, its last padded column `A (h - 1)` has
 the substituted-series moments of `tensorVacuumColumn_even_moments`. -/
@@ -176,7 +177,7 @@ theorem tensorVacuumCapInverse_even_moments
     · have hf : ¬((⟨h - 1, by omega⟩ : Fin h) = ⟨j, hj⟩) := fun e => hj' (by
         rw [Fin.ext_iff] at e; dsimp only at e; omega)
       simp only [hf, hj', ↓reduceIte]
-  exact tensorVacuumColumn_even_moments D Sc m cutoff L sy hc i hi hP hN h hh hhN
+  exact tensorVacuumColumn_even_moments D Sc m cutoff L hdot i hi hP hN h hh hhN
     (A ⟨h - 1, by omega⟩) (hA.2.1 _) hcol s z
 
 end Tensor
@@ -210,11 +211,11 @@ local notation "ν₀" => (P).wt ((0, 0) : Sector I)
 
 variable (H : ProbeVacuumCap.modulePiCategory D (parameterTwist D Sc) m ⟶
   elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR (-ΛR))
-variable (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (i : I)
+variable (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound) (i : I)
 local notation "p₀" => SPath.centralUpDn i (SKM.wt D ν₀ [SKM.dn i]) ν₀ ((0, 0) : Sector I)
   ⟨true, trivial⟩
 
-include sy hc in
+include hdot in
 /-- **The leftward vacuum cap inverse in the native chart (even colour).** Leftward
 data satisfying the positive inverse equations at the vacuum sector give an
 entrywise inverse of the native cap window `[bend; x ^ n ≫ v]_(n < h)` of the
@@ -228,7 +229,7 @@ theorem vacuumLeftwardCapInverse_native_even (Z : (P).H ((0, 0) : Sector I))
     (dc : ℕ → ∀ (_r : SPath (SKM.wd D ν₀ []) ((0, 0) : Sector I) ((0, 0) : Sector I))
       (p : SPath (SKM.wd D ν₀ [SKM.up i, SKM.dn i]) ((0, 0) : Sector I) ((0, 0) : Sector I)),
       ((P).pathFunctor _r).obj Z ⟶ ((P).pathFunctor p).obj Z)
-    (HP : (P).PosInverseAt (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ν₀
+    (HP : (P).PosInverseAt (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) i ν₀
       ((0, 0) : Sector I) ((0, 0) : Sector I) Z lc dc)
     (hP : 0 < probeCutoff D m i) (hi : D.parity i = 0) :
     ∃ j, ProbeWindow.IsCapInverse
@@ -247,22 +248,21 @@ theorem vacuumLeftwardCapInverse_native_even (Z : (P).H ((0, 0) : Sector I))
   have hd : ¬StepValid (SKM.dn i) true ((0, 0) : Sector I) := by
     simp [StepValid]
   have h₁ := (P).isCapInverse_centralPadded_of_posInverseAt
-    (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ν₀ ((0, 0) : Sector I)
+    (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) i ν₀ ((0, 0) : Sector I)
     (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) lc dc HP hu hd
   have h₃ := (h₁.coordinates (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).symm
     (paddedVacuumTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).symm).target
       (paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H)
   have hs : (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).inv ≫
-      (P).centralPaddedSigma (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i
+      (P).centralPaddedSigma (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) i
         ((0, 0) : Sector I) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
         (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) true false ≫
       (paddedVacuumTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).hom =
       ProbeVacuumCap.evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP
         (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) :=
     (Iso.inv_comp_eq _).2 (paddedVacuumDx_even D Sc m cutoff bound ΛP ΛR hcP hcR H i
-      (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-        (parameterTwist_homogeneous D Sc hc) bound) hP hi)
+      hdot hP hi)
   have hw : ∀ n : ℕ, (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).inv ≫
       (P).centralPaddedCap i ((0, 0) : Sector I)
         (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
@@ -278,7 +278,7 @@ theorem vacuumLeftwardCapInverse_native_even (Z : (P).H ((0, 0) : Sector I))
   simp only [Iso.symm_hom, Iso.symm_inv, Category.assoc, hs, hw] at h₃
   exact ⟨_, h₃⟩
 
-include sy hc in
+include hdot in
 /-- **Leftward vacuum cap inverse with bubble-entry columns.** For leftward data
 satisfying the positive inverse equations at an input equal to the vacuum sector
 input, the native cap window of the evaluated A6 bend has an entrywise inverse
@@ -293,7 +293,7 @@ theorem vacuumLeftwardCapInverse_bubbleEntries_even (Z : (P).H ((0, 0) : Sector 
     (dc : ℕ → ∀ (_r : SPath (SKM.wd D ν₀ []) ((0, 0) : Sector I) ((0, 0) : Sector I))
       (p : SPath (SKM.wd D ν₀ [SKM.up i, SKM.dn i]) ((0, 0) : Sector I) ((0, 0) : Sector I)),
       ((P).pathFunctor _r).obj Z ⟶ ((P).pathFunctor p).obj Z)
-    (HP : (P).PosInverseAt (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ν₀
+    (HP : (P).PosInverseAt (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) i ν₀
       ((0, 0) : Sector I) ((0, 0) : Sector I) Z lc dc)
     (cc : (P).CrossCoeff) (hP : 0 < probeCutoff D m i) (hi : D.parity i = 0) :
     ∃ (c : _ ≅ _) (j : _) (A : Fin (D.h i ν₀).toNat → _),
@@ -317,7 +317,7 @@ theorem vacuumLeftwardCapInverse_bubbleEntries_even (Z : (P).H ((0, 0) : Sector 
           (dc n (.nil _) p₀ ≫ (P).epsEntry cc i N ν₀ p₀ (.nil _) Z) ≫ c.hom := by
   subst hZ
   obtain ⟨j, hj⟩ := vacuumLeftwardCapInverse_native_even D Sc m cutoff bound ΛP ΛR hcP hcR H
-    sy hc i _ rfl lc dc HP hP hi
+    hdot i _ rfl lc dc HP hP hi
   exact ⟨paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H, j, _,
     paddedVacuumCapTargetIso_hom_eq_eqToHom D Sc m cutoff bound ΛP ΛR hcP hcR H, hj,
     fun n N => vacuumLeftwardColumn_cap_native D Sc m cutoff bound ΛP ΛR hcP hcR H i dc cc hP
@@ -332,9 +332,10 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (L : I × ℕ → ℕ) (ΛP ΛR : X)
   (hcP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
   (hcR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
-  (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (i : I)
+  (i : I)
 local notation "bound" => PowerWordContent.powerBound D cutoff L
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR
+variable (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
 local notation "ν₀" => (P).wt ((0, 0) : Sector I)
 local notation "Zt" => (SupportedSectors.tensorVacuum D Sc m cutoff L ΛP ΛR).obj
 local notation "H" => VacuumTensor.probeFunctor D (parameterTwist D Sc) m cutoff bound
@@ -352,7 +353,7 @@ omit [Fintype I] in
 private theorem even_probeCutoff' (hi : D.parity i = 0) : probeCutoff D m i = m i := by
   simp [probeCutoff, probeDotExponent, hi]
 
-include sy hc in
+include hdot in
 /-- **Even moments of the leftward vacuum bubble entries.** For an even colour with
 `0 < N_i < P_i` and `h = P_i - N_i`, leftward data satisfying the positive inverse
 equations at the tensor vacuum give an entrywise inverse `(j, A)` of the native cap
@@ -370,7 +371,7 @@ theorem tensorVacuum_leftward_even_moments (hi : D.parity i = 0)
     (dc : ℕ → ∀ (_r : SPath (SKM.wd D ν₀ []) ((0, 0) : Sector I) ((0, 0) : Sector I))
       (p : SPath (SKM.wd D ν₀ [SKM.up i, SKM.dn i]) ((0, 0) : Sector I) ((0, 0) : Sector I)),
       ((P).pathFunctor _r).obj Zt ⟶ ((P).pathFunctor p).obj Zt)
-    (HP : (P).PosInverseAt (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ν₀
+    (HP : (P).PosInverseAt (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) i ν₀
       ((0, 0) : Sector I) ((0, 0) : Sector I) Zt lc dc)
     (cc : (P).CrossCoeff) :
     ∃ (c : _ ≅ V) (j : _) (A : Fin (probeCutoff D m i - cutoff i) →
@@ -410,7 +411,7 @@ theorem tensorVacuum_leftward_even_moments (hi : D.parity i = 0)
   have hlen := SupportedSectors.vacuum_positive_window_length D Sc m cutoff bound ΛP ΛR
     hcP hcR i
   have hex := vacuumLeftwardCapInverse_bubbleEntries_even D Sc m cutoff bound ΛP ΛR hcP hcR
-    (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) sy hc i Zt
+    (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) hdot i Zt
     (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hcP hcR).symm lc dc HP cc hP hi
   rw [show vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR
       (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) = H from
@@ -420,8 +421,8 @@ theorem tensorVacuum_leftward_even_moments (hi : D.parity i = 0)
     rw [← even_probeCutoff' D m i hi]
     omega
   exact ⟨c, j, A, hceq, hA, hcap, fun s z =>
-    tensorVacuumCapInverse_even_moments D (parameterTwist D Sc) m cutoff L sy
-      (parameterTwist_homogeneous D Sc hc) i hi hP hN _ (by omega) hhN j A hA s z⟩
+    tensorVacuumCapInverse_even_moments D (parameterTwist D Sc) m cutoff L hdot i hi hP hN _
+      (by omega) hhN j A hA s z⟩
 
 end Tensor
 

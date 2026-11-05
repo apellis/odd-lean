@@ -71,7 +71,7 @@ local notation "ν₀" => (P).wt ((0, 0) : Sector I)
 
 variable (H : ProbeVacuumCap.modulePiCategory D (parameterTwist D Sc) m ⟶
   elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR (-ΛR))
-variable (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (i : I)
+variable (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound) (i : I)
 local notation "q₀" => SPath.centralDnUp i (SKM.wt D ν₀ [SKM.up i]) ν₀ ((0, 0) : Sector I)
   ⟨false, trivial⟩
 
@@ -95,7 +95,7 @@ def vacuumRightwardColumn (Z : (P).H ((0, 0) : Sector I))
           dc n q₀ (.nil _))) ≫
     (paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H).hom
 
-include sy hc in
+include hdot in
 /-- **The rightward vacuum cup inverse in the native chart (odd colour).** Leftward
 data satisfying the negative inverse equations at the vacuum sector give an
 entrywise inverse of the native cup window `[bend, unit ≫ xⁿ]_(n < -h)` of the
@@ -111,7 +111,7 @@ theorem vacuumRightwardCupInverse_native_odd (Z : (P).H ((0, 0) : Sector I))
         ((0, 0) : Sector I))
       (r : SPath (SKM.wd D ν₀ []) ((0, 0) : Sector I) ((0, 0) : Sector I)),
       ((P).pathFunctor _q).obj Z ⟶ ((P).pathFunctor r).obj Z)
-    (HN : (P).NegInverseAt (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ν₀
+    (HN : (P).NegInverseAt (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) i ν₀
       ((0, 0) : Sector I) ((0, 0) : Sector I) Z lc dc)
     (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1) :
     ∃ j, ProbeWindow.IsCupInverse
@@ -130,22 +130,21 @@ theorem vacuumRightwardCupInverse_native_odd (Z : (P).H ((0, 0) : Sector I))
   have hd : ¬StepValid (SKM.dn i) true ((0, 0) : Sector I) := by
     simp [StepValid]
   have h₁ := (P).isCupInverse_centralPadded_of_negInverseAt
-    (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ν₀ ((0, 0) : Sector I)
+    (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) i ν₀ ((0, 0) : Sector I)
     (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) lc dc HN hu hd
   have h₃ := (h₁.coordinates (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).symm
     (paddedVacuumTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).symm).target
       (paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H)
   have hs : (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).inv ≫
-      (P).centralPaddedSigma (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i
+      (P).centralPaddedSigma (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) i
         ((0, 0) : Sector I) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
         (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) true false ≫
       (paddedVacuumTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).hom =
       ProbeVacuumCap.evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP
         (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) :=
     (Iso.inv_comp_eq _).2 (paddedVacuumDx_odd D Sc m cutoff bound ΛP ΛR hcP hcR H i
-      (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-        (parameterTwist_homogeneous D Sc hc) bound) hP hi)
+      hdot hP hi)
   have hw : ∀ n : ℕ, (paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H).inv ≫
       (P).centralPaddedUnit i ((0, 0) : Sector I)
         (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
@@ -211,7 +210,7 @@ theorem vacuumRightwardColumn_unit (cc : (P).CrossCoeff)
       (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) (dc n q₀ (.nil _)) N]
   simp only [Category.assoc, Iso.hom_inv_id_assoc]
 
-include sy hc in
+include hdot in
 /-- **Rightward vacuum cup inverse with bubble-entry columns.** For leftward data
 satisfying the negative inverse equations at an input equal to the vacuum sector
 input, the native cup window of the evaluated A6 bend has an entrywise inverse
@@ -227,7 +226,7 @@ theorem vacuumRightwardCupInverse_bubbleEntries (Z : (P).H ((0, 0) : Sector I))
         ((0, 0) : Sector I))
       (r : SPath (SKM.wd D ν₀ []) ((0, 0) : Sector I) ((0, 0) : Sector I)),
       ((P).pathFunctor _q).obj Z ⟶ ((P).pathFunctor r).obj Z)
-    (HN : (P).NegInverseAt (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ν₀
+    (HN : (P).NegInverseAt (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) i ν₀
       ((0, 0) : Sector I) ((0, 0) : Sector I) Z lc dc)
     (cc : (P).CrossCoeff) (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1) :
     ∃ (c : _ ≅ _) (j : _) (B : Fin (-D.h i ν₀).toNat → _),
@@ -251,7 +250,7 @@ theorem vacuumRightwardCupInverse_bubbleEntries (Z : (P).H ((0, 0) : Sector I))
           ((P).etaEntry cc i N ν₀ (.nil _) q₀ Z ≫ dc n q₀ (.nil _)) ≫ c.hom := by
   subst hZ
   obtain ⟨j, hj⟩ := vacuumRightwardCupInverse_native_odd D Sc m cutoff bound ΛP ΛR hcP hcR H
-    sy hc i _ rfl lc dc HN hP hi
+    hdot i _ rfl lc dc HN hP hi
   exact ⟨paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H, j, _, hj,
     paddedVacuumCapTargetIso_hom_eq_eqToHom D Sc m cutoff bound ΛP ΛR hcP hcR H,
     fun n N => vacuumRightwardColumn_unit D Sc m cutoff bound ΛP ΛR hcP hcR H i cc dc n N⟩

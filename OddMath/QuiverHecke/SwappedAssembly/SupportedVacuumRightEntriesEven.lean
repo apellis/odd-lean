@@ -111,7 +111,9 @@ private theorem vacuumNegEven_column (i : I) (hi : D.parity i = 0)
       coefficientPowerQuotientMap D cutoff L (SYM.polynomialInclude D k
         (PowerSeries.coeff s (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i))) *
         dec z := by
-  have hm := tensorVacuum_rightward_even_extreme_moments D Sc m cutoff L sy hc i hi hP0 hPN
+  have hm := tensorVacuum_rightward_even_extreme_moments D Sc m cutoff L i
+      (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+        (parameterTwist_homogeneous D Sc hc) _) hi hP0 hPN
     j B hB s z
   have e : ∀ p, polynomialToPower (k := k) D cutoff L p =
       coefficientPowerQuotientMap D cutoff L (SYM.polynomialInclude D k p) := fun _ => rfl
@@ -142,7 +144,9 @@ private theorem vacuumNegEven_bubble (i : I) (hi : D.parity i = 0)
           (lw).dcap i n ν₀ (SPath.centralDnUp i (SKM.wt D ν₀ [SKM.up i]) ν₀ ((0, 0) : Sector I) ⟨false, trivial⟩)
             (.nil _) Zt) ≫ c.hom) :=
   tensorVacuum_rightward_even_bubbleEntries D Sc m
-    cutoff L ΛP ΛR hP hR sy hc i hi hP0 Zt
+    cutoff L ΛP ΛR hP hR i
+      (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+        (parameterTwist_homogeneous D Sc hc) _) hi hP0 Zt
     (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hP hR).symm
     (fun q p => (lw).lcrossSame i ν₀ q p Zt)
     (fun n q r => (lw).dcap i n ν₀ q r Zt)

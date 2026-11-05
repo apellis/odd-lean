@@ -89,7 +89,9 @@ theorem vacuumLeftOdd_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
   have hlt : cutoff i < probeCutoff D m i := by omega
   have hZ : Z = (tensorVacuum D Sc m cutoff L ΛP ΛR).obj := by rw [tensorTargetFamily_zero]
   obtain ⟨c, j, A, ⟨h0, hc0⟩, -, hcol, hmom⟩ :=
-    tensorVacuum_leftward_odd_moments D Sc m cutoff L ΛP ΛR hP hR sy hc i hi hN hlt
+    tensorVacuum_leftward_odd_moments D Sc m cutoff L ΛP ΛR hP hR i
+      (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+        (parameterTwist_homogeneous D Sc hc) _) hi hN hlt
       (fun q p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc).lcrossSame i ν₀ q p
         (tensorVacuum D Sc m cutoff L ΛP ΛR).obj)
       (fun n r p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc).dcup i n ν₀ r p
@@ -142,7 +144,9 @@ theorem vacuumOddBubble_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
   have hlt : cutoff i < probeCutoff D m i := by omega
   have hZ : Z = (tensorVacuum D Sc m cutoff L ΛP ΛR).obj := by rw [tensorTargetFamily_zero]
   obtain ⟨c, j, A, ⟨h0, hc0⟩, -, hcol, hmom⟩ :=
-    tensorVacuum_leftward_odd_moments D Sc m cutoff L ΛP ΛR hP hR sy hc i hi hN hlt
+    tensorVacuum_leftward_odd_moments D Sc m cutoff L ΛP ΛR hP hR i
+      (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+        (parameterTwist_homogeneous D Sc hc) _) hi hN hlt
       (fun q p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc).lcrossSame i ν₀ q p
         (tensorVacuum D Sc m cutoff L ΛP ΛR).obj)
       (fun n r p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc).dcup i n ν₀ r p
@@ -197,7 +201,9 @@ theorem vacuumLeftEven_decode (i : I) (hi : D.parity i = 0) (hN : 0 < cutoff i)
   have hlt : cutoff i < probeCutoff D m i := by omega
   have hZ : Z = (tensorVacuum D Sc m cutoff L ΛP ΛR).obj := by rw [tensorTargetFamily_zero]
   obtain ⟨c, j, A, ⟨h0, hc0⟩, -, hcol, hmom⟩ :=
-    tensorVacuum_leftward_even_moments D Sc m cutoff L ΛP ΛR hP hR sy hc i hi hN hlt
+    tensorVacuum_leftward_even_moments D Sc m cutoff L ΛP ΛR hP hR i
+      (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+        (parameterTwist_homogeneous D Sc hc) _) hi hN hlt
       (fun q p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc).lcrossSame i ν₀ q p
         (tensorVacuum D Sc m cutoff L ΛP ΛR).obj)
       (fun n r p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc).dcup i n ν₀ r p
