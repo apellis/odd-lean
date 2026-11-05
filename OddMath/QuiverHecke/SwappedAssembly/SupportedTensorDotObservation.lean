@@ -284,8 +284,8 @@ local notation "pg" => SPath.cons (Col.mk (up i) (SKM.wt D ν v)) false (0,c) hv
 local notation "p" => SPath.append (SPath.append pL pg) pR
 local notation "edge" => ProbeReservoir.reservoirVacuumEdge (P) i c hv
 local notation "Aℓ" => SKM.lay D ν u (SKM.Shape.dot i) v
-local notation "νR" => (List.reverse (List.map (fun (a : SKM.Col I X) => a.l.2) (Layer.right (SKM.lay D ν u (SKM.Shape.dot i) v))))
-local notation "ηL" => (List.reverse (List.map (fun (a : SKM.Col I X) => a.l.2) (Layer.left (SKM.lay D ν u (SKM.Shape.dot i) v))))
+local notation "νR" => (List.reverse (List.map (fun (a : SKM.Col I X) => Prod.snd (SKM.Col.l a)) (Layer.right (SKM.lay D ν u (SKM.Shape.dot i) v))))
+local notation "ηL" => (List.reverse (List.map (fun (a : SKM.Col I X) => Prod.snd (SKM.Col.l a)) (Layer.left (SKM.lay D ν u (SKM.Shape.dot i) v))))
 
 omit [CommRing k] [Fintype I] in
 /-- The literal dot layer source word, read through its outer contexts. -/

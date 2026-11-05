@@ -29,8 +29,8 @@ theorem split_three {l m r : List (Col I X)} {cS : I →₀ ℕ}
   have hr : ∀ c ∈ r, c.l.1 = true := fun c hc => hw c (List.mem_append_right _ hc)
   have hm : ∀ c ∈ m, c.l.1 = true := fun c hc =>
     hw c (List.mem_append_left _ (List.mem_append_right _ hc))
-  have h₂ : t₂.1 = 0 := le_antisymm (probe_le_of_upward pr hr) (Nat.zero_le _)
-  have h₁ : t₁.1 = 0 := le_antisymm ((probe_le_of_upward pm hm).trans h₂.le) (Nat.zero_le _)
+  have h₂ : t₂.1 = 0 := le_antisymm (probe_le_of_upward pr hr) zero_le
+  have h₁ : t₁.1 = 0 := le_antisymm ((probe_le_of_upward pm hm).trans h₂.le) zero_le
   obtain ⟨a₁, c⟩ := t₁
   obtain ⟨a₂, c'⟩ := t₂
   simp only at h₁ h₂
