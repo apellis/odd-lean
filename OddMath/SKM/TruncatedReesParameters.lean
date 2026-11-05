@@ -65,15 +65,15 @@ open Polynomial
 variable (K : Type w) [CommRing K]
 
 /-- The truncation `K[h]/(h^N)`. -/
-abbrev TruncRing (N : ℕ) := K[X] ⧸ Ideal.span {(X : K[X]) ^ N}
+abbrev TruncRing (N : ℕ) := K[X] ⧸ Ideal.span {(Polynomial.X : K[X]) ^ N}
 
 /-- The truncation map from the Rees ring `K[h] = MvPolynomial Unit K`. -/
 def trunc (N : ℕ) : MvPolynomial Unit K →+* TruncRing K N :=
-  (Ideal.Quotient.mk _).comp (MvPolynomial.pUnitAlgEquiv K).toRingEquiv.toRingHom
+  (Ideal.Quotient.mk _).comp (MvPolynomial.uniqueAlgEquiv K Unit).toRingEquiv.toRingHom
 
 /-- The truncations jointly detect zero. -/
 theorem trunc_separate (r : MvPolynomial Unit K) (h : ∀ N, trunc K N r = 0) : r = 0 := by
-  apply (MvPolynomial.pUnitAlgEquiv K).injective
+  apply (MvPolynomial.uniqueAlgEquiv K Unit).injective
   rw [map_zero]
   ext d
   have hd := h (d + 1)
