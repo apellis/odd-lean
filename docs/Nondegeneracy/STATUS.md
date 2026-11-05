@@ -59,9 +59,11 @@ The ground-ring descent to characteristic-zero fields, finite-colour
 restriction and pairing-extension recovery used by the route are the checked
 reductions described below.
 
-The earlier conditional end theorem `QuiverHecke.nondegeneracy_of_vacuum_route`
-(#1056) remains conditional on `VacuumRouteHypotheses D sy`; it is superseded
-by the swapped route and its hypotheses are not discharged. On purely even
+The swapped route enters through the vacuum route of #1056:
+`QuiverHecke.nondegeneracy_of_vacuum_route` proves the conjecture from
+`VacuumRouteHypotheses D sy`, and `nondegeneracy_of_vacuum_route_fields`
+builds those hypotheses from the bubble fields (`VacuumRouteHypotheses.of_fields`),
+so they hold for every symmetrizable datum. On purely even
 data with Khovanov–Lauda scalars and finitely many colours, the conclusion
 matches the checked even theorem (#1059); this compares conclusions only.
 Phase 2 (target stated in #1101, see the remaining critical chain) and the
@@ -143,7 +145,8 @@ each declaration carries its exact hypotheses.
 | Ground ring: every commutative ring with `2` invertible reduces to characteristic-zero fields | `SKM.nondegeneracyConjecture_of_charZeroField`, `nondegeneracyConjecture_scalarChange` | [GroundRingNondegeneracy](../../OddMath/SKM/GroundRingNondegeneracy.lean) |
 | Orientation: full nondegeneracy is upward independence at every weight | `nondegeneracy_iff_upward_independence` | [UpwardNondegeneracyReduction](../../OddMath/SKM/UpwardNondegeneracyReduction.lean) |
 | Colours: finite-colour restrictions suffice | `nondegeneracy_of_restrictColours_upward` | [FiniteColourNondegeneracy](../../OddMath/QuiverHecke/FiniteColourNondegeneracy.lean) |
-| Recovery from vacuum evaluations of an upward module action | `nondegeneracy_of_vacuum_evaluations` | [SwappedVacuumRecovery](../../OddMath/QuiverHecke/SwappedVacuumRecovery.lean) |
+| Vacuum route: nondegeneracy from route sectors on the pairing extensions of finite-colour restrictions | `nondegeneracy_of_vacuum_route_sectors`, `nondegeneracy_of_vacuum_route` | [VacuumRouteNondegeneracy](../../OddMath/QuiverHecke/VacuumRouteNondegeneracy.lean) |
+| Vacuum-route hypotheses from the bubble fields | `VacuumRouteHypotheses.of_fields`, `nondegeneracy_of_vacuum_route_fields` | [VacuumRouteFields](../../OddMath/QuiverHecke/VacuumRouteFields.lean) |
 | Reduction to the bubble fields on the swapped route bases | `nondegeneracy_of_swapped_bubble_fields` | [VacuumRouteSwappedCharts](../../OddMath/QuiverHecke/VacuumRouteSwappedCharts.lean) |
 | Positive-height bubble field, through the left vacuum entries | `swappedLeftEntriesField`, `positiveBubbleField_swappedRouteBases` | [VacuumRouteSwappedPositiveField](../../OddMath/QuiverHecke/VacuumRouteSwappedPositiveField.lean) |
 | Nonpositive-height bubble field, through the right vacuum entries | `SwappedRightEntriesField`, `RightVacuumEntrySupply`, `VacuumRightNegativeEntries` | [VacuumRouteSwappedNonpositiveField](../../OddMath/QuiverHecke/VacuumRouteSwappedNonpositiveField.lean), [VacuumRouteSwappedRightField](../../OddMath/QuiverHecke/VacuumRouteSwappedRightField.lean) |
@@ -223,8 +226,8 @@ the branch are those of [FieldScopeBoundary](FieldScopeBoundary.md):
 The audit of the formal statement against Brundan–Ellis §8, and the precise
 scope of the even specialization, are in [StatementAudit](StatementAudit.md).
 
-The conditional `VacuumRouteSector` inputs of the earlier vacuum route are no
-longer on the critical path.
+The sector inputs of the vacuum route are supplied by the swapped bubble fields
+(`VacuumRouteHypotheses.of_fields`).
 
 ## Verification
 
