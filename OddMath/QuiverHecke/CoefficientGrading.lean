@@ -146,10 +146,10 @@ theorem isHomogeneous_coefficientGraded (Sc : SKM.Scalars D k)
           Nat.cast_sub (by omega), SKM.coefficientDegree]
         push_cast; ring
 
+omit [SetLike.GradedMonoid 𝒜] in
 /-- **Graded Hom groups.** Under the graded parameter conditions, each Hom group of the quiver
 Hecke supercategory is the internal direct sum of its homogeneous parts for the coefficient
 grading. -/
-omit [SetLike.GradedMonoid 𝒜] in
 theorem iSupIndep_coefficientGraded [GradedAlgebra 𝒜] (Sc : SKM.Scalars D k)
     (ht : ∀ i j, ((Sc.t i j : kˣ) : k) ∈ 𝒜 0)
     (hs : ∀ i j (p q : ℕ), 0 < p → (p : ℤ) < D.d i j → 0 < q → (q : ℤ) < D.d j i →
