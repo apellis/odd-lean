@@ -25,7 +25,7 @@ unsafe def main (args : List String) : IO Unit := do
   let mods := (← IO.FS.lines listFile).filter (· ≠ "") |>.map String.toName
   let known ← IO.mkRef ({} : Std.HashSet String)
   for m in mods do
-    withModule m fun d => known.modify fun s => d.constNames.foldl (fun s n => s.insert n.toString) s) (free := false
+    withModule m (fun d => known.modify fun s => d.constNames.foldl (fun s n => s.insert n.toString) s) (free := false)
   let known ← known.get
   let h ← IO.FS.Handle.mk out .write
   for m in mods do
