@@ -262,11 +262,12 @@ which declarations prove them.
 
 ## Not done
 
-* Names: the prefix "actual" was dropped from 67 declaration names. About 75 names still
-  carry "actual" or "native" as a suffix or infix (for example `capRowNative_mem`), and
-  many module names in `QuiverHecke/CyclotomicAction/` carry the construction label
-  `ELV`/`ELVOld`. Renaming these touches several hundred files and conflicts with open
-  pull requests; it is left for after the merge decision.
+* Names: the prefix "actual" was dropped from 67 declaration names, and "native" or
+  "actual" was dropped from 66 more (a trailing `_native` became `_eq`, for statements
+  that evaluate a construction). 15 names keep the word because dropping it would clash
+  with an existing name (for example `capRowNative`, `nativeStep`). Many module names in
+  `QuiverHecke/CyclotomicAction/` carry the construction label `ELV`/`ELVOld`; renaming
+  them touches several hundred files and conflicts with open pull requests.
 * Inlining single-use wrappers and merging duplicate statements inside the retained
   route: not attempted beyond the removal of unused declarations.
 

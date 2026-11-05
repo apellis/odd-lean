@@ -84,7 +84,7 @@ def vacuumCapSourceIso [Fintype I] :
 /-- The normalized whole-weight left counit at the regular probe is the
 prescribed native vacuum cap under the actual FE source chart. The
 nontrivial diagonal parity factor is retained explicitly. -/
-theorem vacuumLeftCounit_native [Fintype I]
+theorem vacuumLeftCounit_eq [Fintype I]
     (hc : ∀ j, (probeCutoff D m j : ℤ) = D.h j Λ) (hP : 0 < probeCutoff D m i) :
     koszulSign (SKM.leftAdjParity D i (-Λ)) (SKM.leftAdjParity D i (-Λ)) •
       ((emptyProbe D Sc m Λ).map

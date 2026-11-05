@@ -195,7 +195,7 @@ def oldContentDistinctSourceNativeLinear
         (BalancedInduction.induced Qj N)).toFunctor t.obj :=
   (oldContentDistinctSourceIso D Sc cutoff ν i j N).hom.total t
 
-private theorem oldContentDistinctSourceNativeLinear_apply
+private theorem oldContentDistinctSourceLinear_apply
     (N : Superfunctor k (OldContentCategory D Sc cutoff (j :: ν)) (SVec k))
     (t : OldContentCategory D Sc cutoff (i :: ν))
     (z : BalancedInduction.Obj K ((BalancedInduction.restriction J).obj N).toFunctor t) :
@@ -226,7 +226,7 @@ theorem oldContentDistinctSourceNativeLinear_tensor
       BalancedInduction.tensor A ((BalancedInduction.restriction B).obj
         (BalancedInduction.induced Qj N)).toFunctor s.obj g
         (BalancedInduction.tensor Qj N.toFunctor ((J).obj s) (𝟙 ((B).obj s.obj)) b) := by
-  rw [oldContentDistinctSourceNativeLinear_apply]
+  rw [oldContentDistinctSourceLinear_apply]
   have h₁ := oldContentAppendRestrictionLinear_tensor D Sc cutoff ν i
     ((BalancedInduction.restriction J).obj N) s t g b
   have hStep := congrArg (BalancedInduction.mapComponent A

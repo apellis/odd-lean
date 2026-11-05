@@ -37,7 +37,7 @@ theorem all_source_exchanges : SourceExchangeDescent cs := source_exchange_desce
 
 /-- The actual finite source column admits unrestricted abstract coefficients;
 contexts and the residual decorated label are both nonempty. -/
-theorem actual_source_column (m : ℤ) (d : SYM D ℚ) :
+theorem source_column (m : ℤ) (d : SYM D ℚ) :
     frame.swapped.expansion cs (fun _ => m) (frame.swappedPairedInclusion
       (MatchingTransition.rightColumn (k := ℚ)
         (frame.capResidualColumn 3 (Finsupp.single label 1))
@@ -49,5 +49,5 @@ theorem actual_source_column (m : ℤ) (d : SYM D ℚ) :
   frame.capResidualColumn_eval cs (fun _ => m) 3 (Finsupp.single label 1) 1 d
 
 #print axioms all_source_exchanges
-#print axioms actual_source_column
+#print axioms source_column
 end OddMath.SKM.SameColourSourceFrameExamples

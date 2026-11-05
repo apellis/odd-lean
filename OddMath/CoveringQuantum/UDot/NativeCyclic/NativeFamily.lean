@@ -53,7 +53,7 @@ theorem finite_span_cyclic_fixed_difference
 omit [Finite I] in
 /-- The actual native action on the vacuum is the cyclic image of the right
 coordinate. The regular representation is used only to reconstruct coordinates. -/
-theorem cyclic_coordinate_eq_native_vacuum (Λ Μ : X) (s : Bool)
+theorem cyclic_coordinate_eq_vacuum (Λ Μ : X) (s : Bool)
     (x : modified D Coefficients.q pi) :
     cyclic D Λ Μ s (triangularCoordinates D x (Λ - Μ)) =
       tensorModifiedRepresentation D Λ Μ s x
@@ -74,7 +74,7 @@ theorem cyclic_coordinate_fixed_difference (ζ ξ : X) (n : ℕ) (s : Bool)
         (toIntegrable D (ζ + n • ξ) 1 ⊗ₜ[Coefficients.Ring]
           toIntegrable D (n • ξ) 1) := by
   simpa only [add_sub_cancel_right] using
-    cyclic_coordinate_eq_native_vacuum D (ζ + n • ξ) (n • ξ) s x
+    cyclic_coordinate_eq_vacuum D (ζ + n • ξ) (n • ξ) s x
 
 /-- Kernel zero for each native coproduct along actual dominant members of the
 fixed-difference families. The input is an arbitrary original modified element. -/

@@ -89,7 +89,7 @@ theorem centralPaddedDx_separated (c : P.CrossCoeff) (N : ℕ)
   simpa only [CentralPaddedDxSeparatedAt, centralPaddedSigma, centralPaddedUnit,
     dite_eq_left (show StepValid (up i) true t from by trivial),
     dite_eq_left (show StepValid (dn i) false t from by trivial), centralFactorSigma,
-    centralFactorUnit, centralPaddedProbeX, nativeProbeDotAut, centralSourceFactor,
+    centralFactorUnit, centralPaddedProbeX, probeDotAut, centralSourceFactor,
     P.centralPaddedProbeCap_zero i t Z E] using H'
 
 omit [E.Additive] in
@@ -112,7 +112,7 @@ theorem centralPaddedCx_separated (c : P.CrossCoeff)
     (P.centralTargetCornerIso i t Z E ⟨true, hb⟩)
   simpa only [CentralPaddedCxSeparatedAt, centralPaddedSigma, centralPaddedCap,
     dite_eq_left hv, dite_eq_left hb, centralFactorSigma, centralFactorCap,
-    centralPaddedProbeY, nativeProbeDotAut, centralTargetFactor,
+    centralPaddedProbeY, probeDotAut, centralTargetFactor,
     P.centralPaddedProbeUnit_zero i t Z E hb] using H'
 
 omit [E.Additive] in

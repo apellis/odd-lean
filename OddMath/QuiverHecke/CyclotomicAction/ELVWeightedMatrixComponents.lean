@@ -80,14 +80,14 @@ private def homogeneousMate (M : Superfunctor k C (SVec k)) (q : ZMod 2) (hp : p
 private def unitColumnNative {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
     (hδ : IsSupernatural k q δ) (M : Superfunctor k C (SVec k)) (n : ℕ) :
     M ⟶ (restriction A).obj (induced A M) := unitDotColumn A hδ M n
-private theorem unitColumnNative_mem {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
+private theorem unitColumn_mem {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
     (hδ : IsSupernatural k q δ) (M : Superfunctor k C (SVec k)) (n : ℕ) :
     unitColumnNative A hδ M n ∈ parity (R := k) _ _ (n • q) :=
   unitDotColumn_mem A hδ M n
 private def capRowNative {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
     (hδ : IsSupernatural k q δ) (M : Superfunctor k C (SVec k)) (n : ℕ) :
     induced A ((restriction A).obj M) ⟶ M := capDotRow A hδ M n
-private theorem capRowNative_mem {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
+private theorem capRow_mem {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
     (hδ : IsSupernatural k q δ) (M : Superfunctor k C (SVec k)) (n : ℕ) :
     capRowNative A hδ M n ∈ parity (R := k) _ _ (n • q) :=
   capDotRow_mem A hδ M n
@@ -107,8 +107,8 @@ private def inductionMatrixDatum {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
   source := induced A ((restriction A).obj M)
   target := (restriction A).obj (induced A M)
   mate := homogeneousMate A hα M q hq
-  columns n := ⟨unitColumnNative A hδ M n, unitColumnNative_mem A hδ M n⟩
-  rows n := ⟨capRowNative A hδ M n, capRowNative_mem A hδ M n⟩
+  columns n := ⟨unitColumnNative A hδ M n, unitColumn_mem A hδ M n⟩
+  rows n := ⟨capRowNative A hδ M n, capRow_mem A hδ M n⟩
 
 /-- The given matrix datum retains the entire ordered mate before the
 functor and module parameters are specialized. -/

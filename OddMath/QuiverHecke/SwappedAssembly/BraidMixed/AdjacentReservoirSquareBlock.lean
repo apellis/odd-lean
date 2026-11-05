@@ -106,7 +106,7 @@ private lemma square {C : Type*} [Category C] [Preadditive C]
   rw [← Category.assoc J.hom f, ← Category.assoc a (J.hom ≫ f), ha']
   simp only [Category.assoc]
 
-lemma square_native
+lemma square_eq
     (hs0 : nextSector (true, j) false (nextSector (true, i) false s) =
       nextSector (true, i) false (nextSector (true, j) false s))
     (c : P.CrossCoeff Sc) (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
@@ -169,7 +169,7 @@ lemma square_braid_entry (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
   have hl := comp_common_grid_heq hn rfl rfl (comp_common_grid_heq hn ha rfl hl₁ hl₂) hl₃
   have hr := comp_common_grid_heq hn rfl rfl (comp_common_grid_heq hn hb rfl hr₁ hr₂) hr₃
   exact eq_of_heq (hl.trans ((heq_of_eq
-    (square_native P i j s hi hj hj0 hi0 hs Y hs0 c hc h hij)).trans hr.symm))
+    (square_eq P i j s hi hj hj0 hi0 hs Y hs0 c hc h hij)).trans hr.symm))
 
 lemma square_braid_entry_transport (ν : X) {t : Sector I}
     (e : nextSector (true, j) false (nextSector (true, i) false (nextSector (true, i) true s)) = t)

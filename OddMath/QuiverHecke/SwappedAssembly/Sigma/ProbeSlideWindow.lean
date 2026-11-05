@@ -50,7 +50,7 @@ variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
 
 /-- The native probe automorphism uses the specified dot and its actual
 inverse, before an output or corner chart is selected. -/
-def nativeProbeDotAut (i : I)
+def probeDotAut (i : I)
     (hdot : ∀ {a b : X} (h : a + D.α i = b), IsIso (P.T.dot i h))
     {a b m : X} (h : -b + D.α i = -a) (Z : homWeightSector P.T.obj P.W.obj a m) :
     Aut ((homContentPreE P.T P.W.obj i m h).obj Z) :=
@@ -66,7 +66,7 @@ source, evaluated and transported to the literal padded probe corner. -/
 def centralPaddedProbeX : Aut (sectorFamilyCorner (fun a => StepValid (up i) a t)
     (fun a => E.obj (P.centralSourceFactor i t Z a)) true) :=
   ProbeWindow.cornerAut (P.centralSourceCornerIso i t Z E ⟨true, by trivial⟩)
-    (Functor.mapAut _ E (P.nativeProbeDotAut i hdot (P.muP_preE i t)
+    (Functor.mapAut _ E (P.probeDotAut i hdot (P.muP_preE i t)
       ((homContentPreF P.T P.W.obj i (P.muM t) (P.muP_preE i t)).obj Z)))
 
 /-- The target dot passes through the actual normalized right adjoint.
@@ -77,7 +77,7 @@ def centralPaddedProbeY : Aut (sectorFamilyCorner (fun a => StepValid (dn i) a t
     ProbeWindow.cornerAut (P.centralTargetCornerIso i t Z E ⟨true, hb⟩)
       (Functor.mapAut _ E (Functor.mapAut _
         (homContentPreF P.T P.W.obj i (P.muM t) (P.muP_preF i hb))
-        (P.nativeProbeDotAut i hdot (P.muP_preF i hb) Z)))
+        (P.probeDotAut i hdot (P.muP_preF i hb) Z)))
   else Iso.refl _
 
 omit [Preadditive C] [E.Additive] in
@@ -101,7 +101,7 @@ theorem centralPaddedProbeY_hom (hb : StepValid (dn i) true t) :
 
 omit [E.Additive] in
 /-- The actual padded principal has the prescribed native mate coordinate. -/
-theorem centralPaddedProbeSigma_native (c : P.CrossCoeff) (hb : StepValid (dn i) true t) :
+theorem centralPaddedProbeSigma_eq (c : P.CrossCoeff) (hb : StepValid (dn i) true t) :
     P.centralPaddedSigma c i t Z E true true =
       (P.centralSourceCornerIso i t Z E ⟨true, by trivial⟩).hom ≫
         E.map (homContentPreMate P.T P.W.obj i (P.muM t)
@@ -145,7 +145,7 @@ theorem centralPaddedProbe_cap_power (n : ℕ) :
   simpa only [centralPaddedCap, dite_eq_left (show StepValid (up i) true t from by trivial),
     centralFactorCap, centralPaddedProbeX, ProbeWindow.cornerAut_zpow_hom,
     map_aut_zpow_hom, Functor.map_comp, centralSourceFactor,
-    Category.assoc, Iso.inv_hom_id_assoc, nativeProbeDotAut] using H
+    Category.assoc, Iso.inv_hom_id_assoc, probeDotAut] using H
 
 omit [E.Additive] in
 /-- Every nonnegative padded unit column uses the same target
@@ -161,7 +161,7 @@ theorem centralPaddedProbe_unit_power (n : ℕ) :
     simpa only [centralPaddedUnit, dite_eq_left hb, centralFactorUnit,
       centralPaddedProbeY, ProbeWindow.cornerAut_zpow_hom, map_aut_zpow_hom,
       Functor.map_comp, centralTargetFactor, Functor.comp_obj,
-      Category.assoc, Iso.inv_hom_id_assoc, nativeProbeDotAut] using H
+      Category.assoc, Iso.inv_hom_id_assoc, probeDotAut] using H
   · have hz : Limits.IsZero (sectorFamilyCorner (fun a => StepValid (dn i) a t)
         (fun a => E.obj (P.centralTargetFactor i t Z a)) true) := by
       simpa only [sectorFamilyCorner, dite_eq_right hb] using Limits.isZero_zero C
@@ -181,7 +181,7 @@ theorem centralPaddedProbe_slide (c : P.CrossCoeff) :
         (P.muP_preE i t) (P.muP_preF i hb) E Z)
       (P.centralSourceCornerIso i t Z E ⟨true, ha⟩)
       (P.centralTargetCornerIso i t Z E ⟨true, hb⟩)
-    simp only [P.centralPaddedProbeSigma_native i t Z E c hb,
+    simp only [P.centralPaddedProbeSigma_eq i t Z E c hb,
       P.centralPaddedProbeX_hom i t Z E hdot, P.centralPaddedProbeY_hom i t Z E hdot hb,
       P.centralPaddedProbeCap_zero i t Z E, P.centralPaddedProbeUnit_zero i t Z E hb]
     exact H

@@ -55,7 +55,7 @@ abbrev probeOldBlockPairInnerDotTo (β : WeightBlocks D Λ x₀) (ε : WeightBlo
 local notation "K" => probeOldBlockAppend D Sc m j Λ h₁
 local notation "U" => probeOldPairUpperAppend D Sc m i j Λ h₁ h₂
 
-theorem probeOldBlockPairOuterDotTo_native_total
+theorem probeOldBlockPairOuterDotTo_total
     (β : WeightBlocks D Λ x₀) (ε : WeightBlocks D Λ xu)
     (hε : blockSucc₂ D i j Λ h₁ h₂ β = ε) (N : ProbeCanonicalModules D Sc m β.1) :
     ((probeOldBlockPairOuterDotTo D Sc m i j Λ h₁ h₂ β ε hε).total N).hom =
@@ -67,7 +67,7 @@ theorem probeOldBlockPairOuterDotTo_native_total
   rw [probeAppendToInductionDot_total]
   rfl
 
-theorem probeOldBlockPairInnerDotTo_native_total
+theorem probeOldBlockPairInnerDotTo_total
     (β : WeightBlocks D Λ x₀) (ε : WeightBlocks D Λ xu)
     (hε : blockSucc₂ D i j Λ h₁ h₂ β = ε) (N : ProbeCanonicalModules D Sc m β.1) :
     ((probeOldBlockPairInnerDotTo D Sc m i j Λ h₁ h₂ β ε hε).total N).hom =
@@ -77,7 +77,7 @@ theorem probeOldBlockPairInnerDotTo_native_total
     (induction (U β ε hε)).map (((probeOldBlockDot D Sc m j Λ h₁ β).app 1 N).hom) = _
   rw [← Functor.map_add]
   change (induction (U β ε hε)).map (((probeOldBlockDot D Sc m j Λ h₁ β).total N).hom) = _
-  rw [probeOldBlockDot_native_total, inductionModuleDot_total]
+  rw [probeOldBlockDot_total, inductionModuleDot_total]
 end Pair
 
 section Crossing
@@ -91,14 +91,14 @@ local notation "L" => (fun β ε hε => probeOldPairUpperAppend D Sc m j i Λ h�
 local notation "U" => probeOldPairUpperAppend D Sc m i j Λ h₁ h₂
 local notation "hc" => probeOldBlockDistinctCrossArrow_supernatural D Sc m i j Λ h₁ h₂ h₃ h₄
 
-theorem probeOldBlockDistinctCross_native_total
+theorem probeOldBlockDistinctCross_total
     (β : WeightBlocks D Λ x₀) (ε : WeightBlocks D Λ xu)
     (hε : blockSucc₂ D i j Λ h₁ h₂ β = ε) (N : ProbeCanonicalModules D Sc m β.1) :
     ((probeOldBlockDistinctCross D Sc m i j Λ h₁ h₂ h₃ h₄ β ε hε).total N).hom =
       rectangularCrossComponent (J β) (K β) (L β ε hε) (U β ε hε) (hc β ε hε) N.obj := by
   change ((probeOldBlockDistinctCross D Sc m i j Λ h₁ h₂ h₃ h₄ β ε hε).app 0 N).hom +
     ((probeOldBlockDistinctCross D Sc m i j Λ h₁ h₂ h₃ h₄ β ε hε).app 1 N).hom = _
-  rw [probeOldBlockDistinctCross_native_app, probeOldBlockDistinctCross_native_app]
+  rw [probeOldBlockDistinctCross_app, probeOldBlockDistinctCross_app]
   exact OddMath.HomogeneousSuperfunctorIso.homogeneous_total
     (F := ⟨(induction (K β)).comp (induction (U β ε hε))⟩)
     (G := ⟨(induction (J β)).comp (induction (L β ε hε))⟩)
@@ -122,8 +122,8 @@ theorem probeOldBlockDistinctCross_slide_inner (hij : i ≠ j)
     sign k (D.parity i * D.parity j) •
       (((probeOldBlockPairOuterDotTo D Sc m i j Λ h₁ h₂ β ε hε).total N).hom ≫
         ((probeOldBlockDistinctCross D Sc m i j Λ h₁ h₂ h₃ h₄ β ε hε).total N).hom)
-  rw [probeOldBlockDistinctCross_native_total, probeOldBlockPairInnerDotTo_native_total,
-    probeOldBlockPairOuterDotTo_native_total]
+  rw [probeOldBlockDistinctCross_total, probeOldBlockPairInnerDotTo_total,
+    probeOldBlockPairOuterDotTo_total]
   have hr := rectangularCrossComponent_slide_inner_outer (J β) (K β) (L β ε hε) (U β ε hε)
     (hc β ε hε) (probeOldBlockDotArrow_supernatural D Sc m i Λ h₃ β)
     (probeAppendToDot_supernatural D Sc m (blockSucc D Λ j h₁ β).1.toList i ε.1.toList
@@ -150,8 +150,8 @@ theorem probeOldBlockDistinctCross_slide_outer (hij : i ≠ j)
     sign k (D.parity i * D.parity j) •
       (((probeOldBlockPairInnerDotTo D Sc m i j Λ h₁ h₂ β ε hε).total N).hom ≫
         ((probeOldBlockDistinctCross D Sc m i j Λ h₁ h₂ h₃ h₄ β ε hε).total N).hom)
-  rw [probeOldBlockDistinctCross_native_total, probeOldBlockPairOuterDotTo_native_total,
-    probeOldBlockPairInnerDotTo_native_total]
+  rw [probeOldBlockDistinctCross_total, probeOldBlockPairOuterDotTo_total,
+    probeOldBlockPairInnerDotTo_total]
   have hr := rectangularCrossComponent_slide_outer_inner (J β) (K β) (L β ε hε) (U β ε hε)
     (hc β ε hε)
     (probeAppendToDot_supernatural D Sc m (blockSucc D Λ i h₃ β).1.toList j ε.1.toList

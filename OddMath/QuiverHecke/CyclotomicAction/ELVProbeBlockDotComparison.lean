@@ -32,7 +32,7 @@ theorem probeOldBlockDotArrow_supernatural (β : WeightBlocks D Λ x) :
   naturality hf := (CyclotomicCrossingTensor.oldAppendDot_supernatural D Sc (probeCutoff D m) i).naturality hf
 
 /-- Every chosen block-dot component is the literal OLD induction-grid dot. -/
-theorem probeOldBlockDot_native_app (β : WeightBlocks D Λ x)
+theorem probeOldBlockDot_app (β : WeightBlocks D Λ x)
     (p : ZMod 2) (M : ProbeCanonicalModules D Sc m β.1) :
     ((probeOldBlockDot D Sc m i Λ h β).app p M).hom =
       (inductionModuleDot (probeOldBlockAppend D Sc m i Λ h β)
@@ -42,14 +42,14 @@ theorem probeOldBlockDot_native_app (β : WeightBlocks D Λ x)
   split_ifs <;> rfl
 
 /-- Total evaluation also retains the exact signed OLD grid dot. -/
-theorem probeOldBlockDot_native_total (β : WeightBlocks D Λ x)
+theorem probeOldBlockDot_total (β : WeightBlocks D Λ x)
     (M : ProbeCanonicalModules D Sc m β.1) :
     ((probeOldBlockDot D Sc m i Λ h β).total M).hom =
       (inductionModuleDot (probeOldBlockAppend D Sc m i Λ h β)
         (probeOldBlockDotArrow_supernatural D Sc m i Λ h β)).total M.obj := by
   change ((probeOldBlockDot D Sc m i Λ h β).app 0 M).hom +
     ((probeOldBlockDot D Sc m i Λ h β).app 1 M).hom = _
-  rw [probeOldBlockDot_native_app, probeOldBlockDot_native_app]
+  rw [probeOldBlockDot_app, probeOldBlockDot_app]
   rfl
 
 end OddMath.QuiverHecke

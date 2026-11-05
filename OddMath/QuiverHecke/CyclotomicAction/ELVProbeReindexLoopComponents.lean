@@ -23,7 +23,7 @@ local notation "lowerIso" => probeReindexLowerLoopSuperIso D Sc m ν i h₁
 local notation "upperIso" => probeReindexUpperLoopSuperIso D Sc m ν i h₁ h₂
 
 /-- Forgetting the evaluated lower comparison retains the selected OLD map. -/
-theorem probeReindexLowerLoopSuperIso_hom_total_native
+theorem probeReindexLowerLoopSuperIso_hom_total_eq
     (N : ProbeEvaluatedModules D Sc m ν₁) :
     ((lowerIso).hom.total N).hom = oldReindexLowerLoopModuleHom D Sc cut ν i h₁
       ((reindexInv).obj N).obj := by
@@ -32,7 +32,7 @@ theorem probeReindexLowerLoopSuperIso_hom_total_native
   rfl
 
 /-- Forgetting the evaluated upper comparison retains the selected OLD map. -/
-theorem probeReindexUpperLoopSuperIso_hom_total_native
+theorem probeReindexUpperLoopSuperIso_hom_total_eq
     (N : ProbeEvaluatedModules D Sc m ν₁) :
     ((upperIso).hom.total N).hom = oldReindexUpperLoopModuleHom D Sc cut ν i h₁ h₂
       ((reindexInv).obj N).obj := by

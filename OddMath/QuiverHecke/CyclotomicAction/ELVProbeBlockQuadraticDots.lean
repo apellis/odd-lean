@@ -61,11 +61,11 @@ private theorem pairDots_supernatural (hij : i ≠ j)
   simpa only [probeOldBlockPairQuadraticArrow_pairDots] using h
 
 /-- The selected flattening transports the source polynomial to the independent module dots. -/
-theorem probeOldBlockPairQuadraticNative_pairDots (hij : i ≠ j)
+theorem probeOldBlockPairQuadratic_pairDots (hij : i ≠ j)
     (β : WeightBlocks D Λ x₀) (ε : WeightBlocks D Λ xu)
     (hε : blockSucc₂ D i j Λ h₁ h₂ β = ε)
     (N : Superfunctor k (OldContentCategory D Sc' (probeCutoff D m) β.1.toList) (SVec k)) :
-    probeOldBlockPairQuadraticNative D Sc m i j Λ h₁ h₂ h₃ h₄ hij β ε hε N =
+    probeOldBlockPairQuadratic D Sc m i j Λ h₁ h₂ h₃ h₄ hij β ε hε N =
       orderedPairOperatorPolynomial (R := End (induced (U β ε hε) (induced (K β) N))) D Sc j i
         ((induction (U β ε hε)).map (dotEnd (K β) (hd₁ β) N))
         (dotEnd (U β ε hε) (hd₂ β ε hε) ((induction (K β)).obj N)) := by
@@ -73,7 +73,7 @@ theorem probeOldBlockPairQuadraticNative_pairDots (hij : i ≠ j)
   have he := transformComponent_congr_pointwise ((K β) ⋙ (U β ε hε))
     (probeOldBlockPairQuadraticArrow_supernatural D Sc m i j Λ h₁ h₂ h₃ h₄ hij β ε hε) hP
     (probeOldBlockPairQuadraticArrow_pairDots D Sc m i j Λ h₁ h₂ β ε hε) N
-  unfold probeOldBlockPairQuadraticNative
+  unfold probeOldBlockPairQuadratic
   rw [he]
   exact inductionComp_pairPolynomial D Sc j i (K β) (U β ε hε) (hd₁ β) (hd₂ β ε hε) hij.symm hP N
 
@@ -87,7 +87,7 @@ theorem probeOldBlockDistinctCross_quadratic_dots (hij : i ≠ j)
       orderedPairOperatorPolynomial (R := End (induced (U β ε hε) (induced (K β) N.obj))) D Sc j i
         (((probeOldBlockPairInnerDotTo D Sc' m i j Λ h₁ h₂ β ε hε).total N).hom)
         (((probeOldBlockPairOuterDotTo D Sc' m i j Λ h₁ h₂ β ε hε).total N).hom) := by
-  rw [probeOldBlockDistinctCross_quadratic_native,
-    probeOldBlockPairInnerDotTo_native_total, probeOldBlockPairOuterDotTo_native_total]
-  exact probeOldBlockPairQuadraticNative_pairDots D Sc m i j Λ h₁ h₂ h₃ h₄ hij β ε hε N.obj
+  rw [probeOldBlockDistinctCross_quadratic_eq,
+    probeOldBlockPairInnerDotTo_total, probeOldBlockPairOuterDotTo_total]
+  exact probeOldBlockPairQuadratic_pairDots D Sc m i j Λ h₁ h₂ h₃ h₄ hij β ε hε N.obj
 end OddMath.QuiverHecke

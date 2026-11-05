@@ -34,7 +34,7 @@ private theorem oddPositiveCoordinates_apply (j : {j : I // D.parity j = 1})
   change unitFamilyComponentEquiv D Sc cutoff 0 j v t m hm
     ((unitFamilyPlainCoordinates D Sc cutoff j.1 v t m).symm
       (positiveKernelCoordinates D Sc cutoff j.1 m (op ⟨v⟩) ⟨t⟩ z)) = _
-  rw [unitFamilyComponentEquiv_actual]
+  rw [unitFamilyComponentEquiv_eq]
   simp only [LinearEquiv.apply_symm_apply]
   rw [mateKernelComponent_row]
   apply congrArg₂ (fun x y => x + y)
@@ -67,7 +67,7 @@ private theorem oddNegativeCoordinates_apply (j : {j : I // D.parity j = 1})
   change capFamilyComponentCoordinates D Sc cutoff j.1 v t m
       (capFamilyComponentEquiv D Sc cutoff 0 j v t m hm
         (kernelSourceCoordinates D Sc cutoff j.1 (op ⟨v⟩) ⟨t⟩ z)) = _
-  rw [capFamilyComponentEquiv_actual]
+  rw [capFamilyComponentEquiv_eq]
   apply Prod.ext
   · rw [negativeKernelCoordinates_fst, negativeKernelMap_none,
       mateKernelComponent_row]
@@ -103,7 +103,7 @@ private theorem evenPositiveCoordinates_apply (j : {j : I // D.parity j = 0})
   change evenUnitFamilyComponentEquiv D Sc cutoff 0 j v t m hm
     ((unitFamilyPlainCoordinates D Sc cutoff j.1 v t m).symm
       (positiveKernelCoordinates D Sc cutoff j.1 m (op ⟨v⟩) ⟨t⟩ z)) = _
-  rw [evenUnitFamilyComponentEquiv_actual]
+  rw [evenUnitFamilyComponentEquiv_eq]
   simp only [LinearEquiv.apply_symm_apply]
   rw [mateKernelComponent_row]
   apply congrArg₂ (fun x y => x + y)
@@ -136,7 +136,7 @@ private theorem evenNegativeCoordinates_apply (j : {j : I // D.parity j = 0})
   change capFamilyComponentCoordinates D Sc cutoff j.1 v t m
       (evenCapFamilyComponentEquiv D Sc cutoff 0 j v t m hm
         (kernelSourceCoordinates D Sc cutoff j.1 (op ⟨v⟩) ⟨t⟩ z)) = _
-  rw [evenCapFamilyComponentEquiv_actual]
+  rw [evenCapFamilyComponentEquiv_eq]
   apply Prod.ext
   · rw [negativeKernelCoordinates_fst, negativeKernelMap_none,
       mateKernelComponent_row]

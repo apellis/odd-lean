@@ -54,7 +54,7 @@ theorem matrixMateRow_apply (j : {j : I // D.parity j = 1}) (v t : List I)
   exact matrixMateComponent_firstRow D Sc cutoff j v t z
 
 /-- The positive component inverse has the actual ordered mate and unscaled ordinary unit columns. -/
-theorem unitFamilyComponentEquiv_actual (p : ZMod 2) (j : {j : I // D.parity j = 1})
+theorem unitFamilyComponentEquiv_eq (p : ZMod 2) (j : {j : I // D.parity j = 1})
     (v t : List I) (m : ℕ)
     (hm : endpointQPDegree D cutoff j.1 v = outputSDegree D j.1 v + m)
     (x : (a : Option (Fin m)) →
@@ -69,7 +69,7 @@ theorem unitFamilyComponentEquiv_actual (p : ZMod 2) (j : {j : I // D.parity j =
   rw [matrixMateRow_apply, unitFamilyComponentEquiv_apply]
 
 /-- The negative component inverse has the actual ordered mate and ordinary module cap rows. -/
-theorem capFamilyComponentEquiv_actual (p : ZMod 2) (j : {j : I // D.parity j = 1})
+theorem capFamilyComponentEquiv_eq (p : ZMod 2) (j : {j : I // D.parity j = 1})
     (v t : List I) (m : ℕ)
     (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m)
     (z : (unshiftedSourceModule D Sc cutoff j.1 v).obj
@@ -116,7 +116,7 @@ theorem matrixMateRow_even_apply (i : {i : I // D.parity i = 0}) (v t : List I)
   exact evenModuleMate_firstRow D Sc cutoff i v t z
 
 /-- Even positive components use the fixed actual mate and unscaled ordinary unit columns. -/
-theorem evenUnitFamilyComponentEquiv_actual (p : ZMod 2) (i : {i : I // D.parity i = 0})
+theorem evenUnitFamilyComponentEquiv_eq (p : ZMod 2) (i : {i : I // D.parity i = 0})
     (v t : List I) (m : ℕ)
     (hm : endpointQPDegree D cutoff i.1 v = outputSDegree D i.1 v + m)
     (x : (a : Option (Fin m)) →
@@ -131,7 +131,7 @@ theorem evenUnitFamilyComponentEquiv_actual (p : ZMod 2) (i : {i : I // D.parity
   rw [matrixMateRow_even_apply, evenUnitFamilyComponentEquiv_apply]
 
 /-- Even negative components use the actual mate and ordinary unscaled module cap rows. -/
-theorem evenCapFamilyComponentEquiv_actual (p : ZMod 2) (i : {i : I // D.parity i = 0})
+theorem evenCapFamilyComponentEquiv_eq (p : ZMod 2) (i : {i : I // D.parity i = 0})
     (v t : List I) (m : ℕ)
     (hm : outputSDegree D i.1 v = endpointQPDegree D cutoff i.1 v + m)
     (z : (unshiftedSourceModule D Sc cutoff i.1 v).obj

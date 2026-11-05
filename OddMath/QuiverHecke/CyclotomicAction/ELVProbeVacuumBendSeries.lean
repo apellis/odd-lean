@@ -54,7 +54,7 @@ theorem vacuumBendWordSum_odd (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1)
     ← Finset.sum_neg_distrib]
   apply Finset.sum_congr rfl
   intro r hr
-  rw [vacuumBendMonomial_native D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H hP hi (r + 1) r]
+  rw [vacuumBendMonomial_eq D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H hP hi (r + 1) r]
   have hs : -((koszulSign (D.parity i) (D.parity i)) ^ (r + 1)) = (-1 : ℤ) ^ r := by
     rw [hi, odd_coefficient]
   rw [← neg_zsmul, hs]
@@ -75,7 +75,7 @@ theorem vacuumBendWordSum_even (hP : 0 < probeCutoff D m i) (hi : D.parity i = 0
     ← Finset.sum_neg_distrib]
   apply Finset.sum_congr rfl
   intro r hr
-  rw [vacuumBendMonomial_native_even D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H hP hi (r + 1) r]
+  rw [vacuumBendMonomial_even D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H hP hi (r + 1) r]
   have hs : -((koszulSign (D.parity i) (D.parity i)) ^ (r + 1)) = (-1 : ℤ) := by
     rw [hi, koszulSign_zero_left, one_pow]
   rw [← neg_zsmul, hs]

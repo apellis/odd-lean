@@ -117,7 +117,7 @@ theorem probeOldBlockDistinctCross_mixed_eq :
   apply HomogeneousSuperfunctorIso.total_ext (F := F) (G := G)
   intro N
   apply InducedCategory.hom_ext
-  have hb := probeOldBlockDistinctCross_native_total D Sc m j i Λ h₃ h₄ h₁ h₂ β ε rfl N
+  have hb := probeOldBlockDistinctCross_total D Sc m j i Λ h₃ h₄ h₁ h₂ β ε rfl N
   have hg := probeAppendToCross_native_total D Sc m β.1.toList i j hj hi hL hU N
   have hblock : IsSupernatural k (D.parity j * D.parity i)
       (oldAppendToCross D Sc (probeCutoff D m) β.1.toList i j hj hi hL hU) :=
