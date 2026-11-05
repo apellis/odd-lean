@@ -52,17 +52,11 @@ implies the lower-degree ungraded statement
 (`SKM.nondegeneracyConjecture_of_lowerDegree`). Next targets, in order
 ([Phase2Plan](Phase2Plan.md)): the reduction to the universal ring, to
 characteristic-zero fields and to the truncated Rees parameters over
-`K[h]/(h^N)` is checked; what remains is
-`TruncatedRees.TruncatedReesNondegeneracy D sy`. Grade the KLR category over
-`K[h]/(h^N)` as a `K`-linear supercategory with `h` in degree one (design in
-Phase2Plan, step 2: coefficient-graded presentations and restriction of
-scalars, `GradedSupercategory` unchanged; items 1–3 are checked:
-`Diagrams.CoefficientGrading`, `QuiverHecke.isHomogeneous_coefficientGraded`,
-`QuiverHecke.isHomogeneous_rees`, `Diagrams.Supercategory.restrictScalars`,
-bundled as `Diagrams.CoefficientGrading.gradedSupercategory` and
-`QuiverHecke.reesGradedSupercategory`, and over the truncations
-`QuiverHecke.truncatedReesGradedSupercategory`);
-rerun the nilpotence, kernel-degree and inverse-degree arguments of the field
-route over such bases. The associated graded gives only spanning and is not
-a route to independence. The missing pure monomials `u^r`, `v^s` of BWW are a
-recorded open statement decision; `Scalars` is not enlarged.
+`K[h]/(h^N)` is checked, and the truncated case
+`TruncatedRees.TruncatedReesNondegeneracy D sy` is proved
+(`QuiverHecke.truncatedReesNondegeneracy`, over a graded base
+`QuiverHecke.nondegeneracy_of_graded_base`), so the target holds for BE2's
+parameter shape (`QuiverHecke.gradedCoefficientNondegeneracy`). Next: the
+enlarged parameter shape of [BWWParameters](BWWParameters.md) (`BWWScalars` with a
+comparison map from `Scalars`), then the all-even comparison. The encoding keeps the
+Phase 1 statements unchanged.
