@@ -440,7 +440,7 @@ private theorem odd_negative_decoded
 
 /-- The carrier `res (ind V)` of the restricted reservoir dot on the tensor vacuum value,
 written as in `evaluatedPostDot`. -/
-abbrev unitColumnCarrier := (restriction K).obj ((induction K).obj (H.obj N₀))
+abbrev unitColumnCarrier := (restriction K).obj ((induction K).obj ((H).obj N₀))
 
 /-- The unit column `η ≫ xᵉ ≫ B n` of a family `B` of maps into the tensor vacuum value. -/
 abbrev rightwardUnitColumn {w : ℕ} (B : Fin w → (unitColumnCarrier D Sc m cutoff L i ⟶ V))
