@@ -80,17 +80,18 @@ private theorem even_probeCutoff_eq (i : I) (hi : D.parity i = 0) :
     probeCutoff D m i = m i := by
   simp [probeCutoff, probeDotExponent, hi]
 
-local notation "q₀" => SPath.centralDnUp i (SKM.wt D ν₀ [SKM.up i]) ν₀ ((0, 0) : Sector I)
-  ⟨false, trivial⟩
-
 include sy hc in
 /-- The decoded vacuum entry of `η x^(N - M - 1 + s)` followed by `dcap (N - M - 1)` on the
 tensor vacuum object, at an even colour with negative vacuum height. -/
 private theorem vacuumNegEven_tensorDecode (i : I) (hi : D.parity i = 0)
     (hP0 : 0 < probeCutoff D m i) (hh : D.h i ν₀ < 0) (hPN : m i < cutoff i) (s : ℕ) :
     ∃ c : (E).obj Zt ≅ V, (∃ h, c.hom = eqToHom h) ∧ ∀ z,
-      dec ((c.inv ≫ (E).map ((P).etaEntry cc i (cutoff i - m i - 1 + s) ν₀ (.nil _) q₀ Zt ≫
-        (lw).dcap i (cutoff i - m i - 1) ν₀ q₀ (.nil _) Zt) ≫ c.hom).total star z) =
+      dec ((c.inv ≫ (E).map ((P).etaEntry cc i (cutoff i - m i - 1 + s) ν₀ (.nil _)
+          (SPath.centralDnUp i (SKM.wt D ν₀ [SKM.up i]) ν₀ ((0, 0) : Sector I) ⟨false, trivial⟩)
+          Zt ≫
+        (lw).dcap i (cutoff i - m i - 1) ν₀
+          (SPath.centralDnUp i (SKM.wt D ν₀ [SKM.up i]) ν₀ ((0, 0) : Sector I) ⟨false, trivial⟩)
+          (.nil _) Zt) ≫ c.hom).total star z) =
       coefficientPowerQuotientMap D cutoff L (SYM.polynomialInclude D k
         (PowerSeries.coeff s (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i))) *
         dec z := by
@@ -105,7 +106,9 @@ private theorem vacuumNegEven_tensorDecode (i : I) (hi : D.parity i = 0)
   have hcol := hcup ⟨cutoff i - m i - 1, by omega⟩ (cutoff i - m i - 1 + s)
   have hm := tensorVacuum_rightward_even_extreme_moments D Sc m cutoff L sy hc i hi hP0
     hPN j B hB s z
-  rw [hcol] at hm
+  have e : ∀ p, polynomialToPower (k := k) D cutoff L p =
+      coefficientPowerQuotientMap D cutoff L (SYM.polynomialInclude D k p) := fun _ => rfl
+  rw [hcol, e] at hm
   exact hm
 
 include sy hc in
