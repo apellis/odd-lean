@@ -1,34 +1,36 @@
 import Lean
 
-/-! Dump the declaration-level dependency graph of the `OddMath` declarations of the current
-environment. Run with a header importing every `OddMath` module. Output: one line per declaration,
-`id<TAB>module<TAB>kind<TAB>name<TAB>dep ids` (dependencies restricted to `OddMath` declarations;
-type and value both count). -/
+/-! Dump the declaration-level dependency graph of the `OddMath` modules from their `.olean` files,
+without building an environment (so modules with clashing names can be read together).
+Usage: `lake env lean --run scripts/Cleanup/DeclGraph.lean <module list> <output>`.
+Output: one line per declaration, `module<TAB>kind<TAB>name<TAB>deps` with dependencies
+restricted to declarations of the listed modules (type and value both count). -/
 
-open Lean Elab Command
+open Lean
 
 def kindOf : ConstantInfo → String
   | .axiomInfo _ => "axiom" | .defnInfo _ => "def" | .thmInfo _ => "thm"
   | .opaqueInfo _ => "opaque" | .quotInfo _ => "quot" | .inductInfo _ => "induct"
   | .ctorInfo _ => "ctor" | .recInfo _ => "rec"
 
-set_option maxHeartbeats 0 in
-run_cmd do
-  let env ← getEnv
-  let moduleNames := env.header.moduleNames
-  let mut ids : Std.HashMap Name Nat := {}
-  let mut decls : Array (Name × Name × ConstantInfo) := #[]
-  for (name, info) in env.constants.toList do
-    if let some idx := env.getModuleIdxFor? name then
-      let owner := moduleNames[idx.toNat]!
-      if owner.getRoot == `OddMath then
-        ids := ids.insert name decls.size
-        decls := decls.push (name, owner, info)
-  let some out ← IO.getEnv "ODD_DECL_GRAPH" | throwError "set ODD_DECL_GRAPH"
+unsafe def withModule (m : Name) (k : ModuleData → IO Unit) : IO Unit := do
+  let path ← findOLean m
+  let (d, region) ← readModuleData path
+  k d
+  region.free
+
+unsafe def main (args : List String) : IO Unit := do
+  let [listFile, out] := args | throw (IO.userError "usage: <module list> <output>")
+  initSearchPath (← findSysroot)
+  let mods := (← IO.FS.lines listFile).filter (· ≠ "") |>.map String.toName
+  let known ← IO.mkRef ({} : NameSet)
+  for m in mods do
+    withModule m fun d => known.modify fun s => d.constNames.foldl NameSet.insert s
+  let known ← known.get
   let h ← IO.FS.Handle.mk out .write
-  for i in [0:decls.size] do
-    let (name, owner, info) := decls[i]!
-    let deps := info.getUsedConstantsAsSet.toList.filterMap (fun n => ids[n]?)
-    h.putStrLn s!"{i}\t{owner}\t{kindOf info}\t{name}\t{String.intercalate " " (deps.map toString)}"
+  for m in mods do
+    withModule m fun d => do
+      for c in d.constants do
+        let deps := c.getUsedConstantsAsSet.toList.filter known.contains
+        h.putStrLn s!"{m}\t{kindOf c}\t{c.name}\t{String.intercalate " " (deps.map toString)}"
   h.flush
-  logInfo m!"Wrote {decls.size} declarations"

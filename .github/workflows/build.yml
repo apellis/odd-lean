@@ -144,12 +144,9 @@ jobs:
         if: steps.scope.outputs.docs_only != 'true'
         run: |
           mkdir -p analysis
-          { find OddMath -name '*.lean' | sort | sed 's|\.lean$||; s|/|.|g; s|^|import |'
-            grep -v '^import Lean$' scripts/Cleanup/DeclGraph.lean; } > analysis/All.lean
-          sed -i '0,/^\/-!/s//import Lean\n\/-!/' analysis/All.lean
-          ODD_DECL_GRAPH=analysis/decl-graph.tsv lake env lean \
-            -Dbackward.isDefEq.respectTransparency=false \
-            -Dbackward.isDefEq.respectTransparency.types=false analysis/All.lean
+          find OddMath -name '*.lean' | sort | sed 's|\.lean$||; s|/|.|g' > analysis/modules.txt
+          lake env lean --run scripts/Cleanup/DeclGraph.lean analysis/modules.txt analysis/decl-graph.tsv
+          wc -l analysis/decl-graph.tsv
           gzip -9 analysis/decl-graph.tsv
       - uses: actions/upload-artifact@v4
         if: steps.scope.outputs.docs_only != 'true'
