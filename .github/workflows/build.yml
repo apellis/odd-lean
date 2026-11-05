@@ -140,6 +140,22 @@ jobs:
       - name: Axiom audit
         if: steps.scope.outputs.docs_only != 'true'
         run: lake env lean -DwarningAsError=true scripts/AxiomAudit.lean
+      - name: Declaration graph (cleanup analysis)
+        if: steps.scope.outputs.docs_only != 'true'
+        run: |
+          mkdir -p analysis
+          { find OddMath -name '*.lean' | sort | sed 's|\.lean$||; s|/|.|g; s|^|import |'
+            grep -v '^import Lean$' scripts/Cleanup/DeclGraph.lean; } > analysis/All.lean
+          sed -i '0,/^\/-!/s//import Lean\n\/-!/' analysis/All.lean
+          ODD_DECL_GRAPH=analysis/decl-graph.tsv lake env lean \
+            -Dbackward.isDefEq.respectTransparency=false \
+            -Dbackward.isDefEq.respectTransparency.types=false analysis/All.lean
+          gzip -9 analysis/decl-graph.tsv
+      - uses: actions/upload-artifact@v4
+        if: steps.scope.outputs.docs_only != 'true'
+        with:
+          name: decl-graph
+          path: analysis/decl-graph.tsv.gz
       # The checks form the library `NonVacuity` (see `lakefile.lean`), so their `.olean` files are
       # cached with the build and only checks whose imports changed are elaborated again.
       - name: Non-vacuity checks
