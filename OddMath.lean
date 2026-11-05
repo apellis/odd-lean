@@ -106,6 +106,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVInductionMateTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldMateEvaluation
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldMateFirstRow
 import OddMath.QuiverHecke.CyclotomicAction.ELVHomGrading
+import OddMath.QuiverHecke.CyclotomicAction.ELVHomGradingOver
 import OddMath.SKM.BubbleELVPolynomialGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldCyclotomicTarget
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldBalancedTensor
@@ -734,7 +735,11 @@ import OddMath.Diagrammatics.Even.Fixtures
 import OddMath.Diagrammatics.Even
 import OddMath.Diagrammatics.OddDots
 import OddMath.Diagrams.CoefficientGradedSupercategory
+import OddMath.Diagrams.BasisGrading
+import OddMath.Diagrams.BoxProductCoefficientGraded
+import OddMath.Diagrams.SuperalgebraGradedBase
 import OddMath.Diagrams.CoefficientGrading
+import OddMath.Diagrams.GradedTensor
 import OddMath.Diagrams.RestrictScalars
 import OddMath.Diagrams.OddNilHecke.Action
 import OddMath.Diagrams.OddNilHecke.Basic
@@ -1507,6 +1512,7 @@ import OddMath.SKM.BubbleCoefficientBasis
 import OddMath.SKM.SymComponentBasis
 import OddMath.SKM.SymProductFormula
 import OddMath.SKM.BubbleCoefficientGrading
+import OddMath.SKM.BubbleCoefficientGradedBase
 import OddMath.QuiverHecke.CoefficientExtension
 import OddMath.SKM.UpwardWordTransport
 import OddMath.SKM.ClosureCoefficientExpansion

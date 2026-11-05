@@ -53,9 +53,11 @@ def oddExteriorBasis : Module.Basis (Finset {i : I // D.parity i = 1}) k
     (Set.powersetCard.ofCard (rfl : s.card = s.card))
     (Set.powersetCard.ofCard (rfl : t.card = t.card)) h
 
- theorem oddExteriorBasis_mul_scalar {s t : Finset {i : I // D.parity i = 1}}
-    (h : Disjoint s t) : ∃ c : k,
-      oddExteriorBasis D k s * oddExteriorBasis D k t = c • oddExteriorBasis D k (s ∪ t) := by
+ /-- The product of two exterior basis vectors with disjoint supports is an integer (a sign)
+times a basis vector. -/
+ theorem oddExteriorBasis_mul_int {s t : Finset {i : I // D.parity i = 1}}
+    (h : Disjoint s t) : ∃ c : ℤ,
+      oddExteriorBasis D k s * oddExteriorBasis D k t = (c : k) • oddExteriorBasis D k (s ∪ t) := by
   let : LinearOrder {i : I // D.parity i = 1} := WellOrderingRel.isWellOrder.linearOrder
   let ss := Set.powersetCard.ofCard (rfl : s.card = s.card)
   let tt := Set.powersetCard.ofCard (rfl : t.card = t.card)
@@ -65,20 +67,34 @@ def oddExteriorBasis : Module.Basis (Finset {i : I // D.parity i = 1}) k
   simpa only [oddExteriorBasis, ss, tt, Set.powersetCard.disjUnion, Set.powersetCard.ofCard,
     Finset.disjUnion_eq_union, Units.smul_def, Int.cast_smul_eq_zsmul] using he
 
+ theorem oddExteriorBasis_mul_scalar {s t : Finset {i : I // D.parity i = 1}}
+    (h : Disjoint s t) : ∃ c : k,
+      oddExteriorBasis D k s * oddExteriorBasis D k t = c • oddExteriorBasis D k (s ∪ t) :=
+  let ⟨c, hc⟩ := oddExteriorBasis_mul_int D k h
+  ⟨c, hc⟩
+
  theorem coefficientBasis_mul_zero {a b : CoefficientIndex D} (h : ¬Disjoint a.2 b.2) :
     coefficientBasis D k a * coefficientBasis D k b = 0 := by
   apply (polynomialExteriorEquiv D k).injective
   simp only [map_mul, coefficientBasis_projection, Algebra.TensorProduct.tmul_mul_tmul,
     oddExteriorBasis_mul_zero D k h, TensorProduct.tmul_zero, map_zero]
 
- theorem coefficientBasis_mul_scalar {a b : CoefficientIndex D} (h : Disjoint a.2 b.2) :
-    ∃ c : k, coefficientBasis D k a * coefficientBasis D k b =
-      c • coefficientBasis D k (a.1 + b.1, a.2 ∪ b.2) := by
-  obtain ⟨c, hc⟩ := oddExteriorBasis_mul_scalar D k h
+ /-- The product of two coefficient basis vectors with disjoint exterior parts is an integer
+(a sign) times a basis vector. -/
+ theorem coefficientBasis_mul_int {a b : CoefficientIndex D} (h : Disjoint a.2 b.2) :
+    ∃ c : ℤ, coefficientBasis D k a * coefficientBasis D k b =
+      (c : k) • coefficientBasis D k (a.1 + b.1, a.2 ∪ b.2) := by
+  obtain ⟨c, hc⟩ := oddExteriorBasis_mul_int D k h
   refine ⟨c, ?_⟩
   apply (polynomialExteriorEquiv D k).injective
   simp only [map_mul, map_smul, coefficientBasis_projection, Algebra.TensorProduct.tmul_mul_tmul,
     MvPolynomial.monomial_mul_monomial, one_mul, hc, TensorProduct.tmul_smul]
+
+ theorem coefficientBasis_mul_scalar {a b : CoefficientIndex D} (h : Disjoint a.2 b.2) :
+    ∃ c : k, coefficientBasis D k a * coefficientBasis D k b =
+      c • coefficientBasis D k (a.1 + b.1, a.2 ∪ b.2) :=
+  let ⟨c, hc⟩ := coefficientBasis_mul_int D k h
+  ⟨c, hc⟩
 
 /-- Dot weight of an elementary coefficient. Odd-colour elementary generators
 represent even powers of the odd dot. -/

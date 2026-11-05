@@ -44,6 +44,15 @@ theorem Linear.restrictScalars_smul {X Y : C} (r : K) (f : X ⟶ Y) :
     r • f = algebraMap K R r • f :=
   rfl
 
+/-- The restricted and the original scalar actions on a Hom module form a scalar tower. -/
+theorem Linear.isScalarTower_restrictScalars (X Y : C) :
+    letI := Linear.restrictScalars K R C
+    IsScalarTower K R (X ⟶ Y) :=
+  letI := Linear.restrictScalars K R C
+  ⟨fun r s f => by
+    change (r • s) • f = algebraMap K R r • s • f
+    rw [Algebra.smul_def, mul_smul]⟩
+
 /-- A supercategory over `R` is a supercategory over `K` by restriction of scalars, with the
 same parity decompositions. -/
 @[reducible]
@@ -51,10 +60,7 @@ def Supercategory.restrictScalars [Supercategory R C] :
     letI := Linear.restrictScalars K R C
     Supercategory K C :=
   letI := Linear.restrictScalars K R C
-  letI : ∀ X Y : C, IsScalarTower K R (X ⟶ Y) := fun _ _ =>
-    ⟨fun r s f => by
-      change (r • s) • f = algebraMap K R r • s • f
-      rw [Algebra.smul_def, mul_smul]⟩
+  letI : ∀ X Y : C, IsScalarTower K R (X ⟶ Y) := Linear.isScalarTower_restrictScalars K R C
   { parity := fun X Y p => (Supercategory.parity (R := R) X Y p).restrictScalars K
     isInternal := fun X Y => by
       have h := Supercategory.isInternal (R := R) (C := C) X Y

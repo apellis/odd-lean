@@ -151,6 +151,22 @@ example :
       (QuiverHecke.H datum (QuiverHecke.truncatedReesScalars datum symmetrizer scalars 3)) :=
   QuiverHecke.truncatedReesGradedSupercategory datum symmetrizer lowerDegree 3
 
+/-- The ELV coefficient category over `ℚ[h]/(h³)` with the truncated Rees parameters and
+cutoff `2` is a graded supercategory over `ℚ`. -/
+example :
+    letI := OddMath.Diagrams.Linear.restrictScalars ℚ (TruncatedRees.TruncRing ℚ 3)
+      (QuiverHecke.ELVCoefficientCategory datum
+        (QuiverHecke.truncatedReesScalars datum symmetrizer scalars 3) fun _ => 2)
+    letI := OddMath.Diagrams.Supercategory.restrictScalars ℚ (TruncatedRees.TruncRing ℚ 3)
+      (QuiverHecke.ELVCoefficientCategory datum
+        (QuiverHecke.truncatedReesScalars datum symmetrizer scalars 3) fun _ => 2)
+    GradedSupercategory ℚ (QuiverHecke.ELVCoefficientCategory datum
+      (QuiverHecke.truncatedReesScalars datum symmetrizer scalars 3) fun _ => 2) :=
+  letI := QuiverHecke.truncGradedAlgebra ℚ 3
+  QuiverHecke.elvHomGradingOver datum symmetrizer (QuiverHecke.truncGrading ℚ 3) _
+    (QuiverHecke.isHomogeneous_truncatedRees datum symmetrizer lowerDegree 3) _
+
+#print axioms OddMath.QuiverHecke.elvHomGradingOver
 #print axioms OddMath.QuiverHecke.isHomogeneous_rees
 #print axioms OddMath.Diagrams.CoefficientGrading.iSupIndep_presentedPart
 #print axioms OddMath.QuiverHecke.reesGradedSupercategory
