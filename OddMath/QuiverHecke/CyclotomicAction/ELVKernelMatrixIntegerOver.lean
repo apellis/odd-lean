@@ -3,7 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelEntryDegreesOver
-import OddMath.QuiverHecke.CyclotomicAction.ELVKernelMatrixInteger
+import OddMath.QuiverHecke.CyclotomicAction.ELVKernelClosureDegree
 
 /-!
 # Integer degrees of the represented matrix inverses over a graded base ring
@@ -13,7 +13,8 @@ Over a commutative `K`-algebra `R` graded by `𝒜`, the Hom modules of the old 
 carry `IndResKernel.integerDegreeOver`. The finite unit/cap matrices have degree zero after the
 prescribed coordinate shifts (`actualPositiveKernelMap_degreeOver`,
 `actualNegativeKernelMap_degreeOver`), so their proved bijectivity gives homogeneous inverses,
-with principal inverse degree `+2 dᵢ`. The comparison only uses the additive structure
+with principal inverse degree `+2 dᵢ`, and the unit-inverse-cap closures have degree
+`2 dᵢ (r + s + 1)` (`positiveKernelClosure_degreeOver`, `negativeKernelClosure_degreeOver`). The comparison only uses the additive structure
 (`IntegerMatrix.Coordinates.toInt`), since the matrices are `R`-linear and the degrees are
 `K`-linear.
 
@@ -206,5 +207,31 @@ theorem negativeKernelPrincipalInverse_degreeOver (i : I) (v t : OldCategory D S
       (contentCapCount D cutoff i (t.word : Multiset I)) t a).obj (op v)) (some r) ∈ _
     rw [Pi.single_eq_of_ne (by simp)]
     exact Submodule.zero_mem _
+
+/-- The positive represented closure has degree `2 dᵢ (r + s + 1)`, over a graded base. -/
+theorem positiveKernelClosure_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
+    (hh : 0 ≤ contentCrossingHeight D cutoff i (t.word : Multiset I)) (r s : ℕ)
+    {n : ℤ} {b : v ⟶ t} (hb : b ∈ oldDegreeOver D sy 𝒜 Sc hP cutoff v t n) :
+    positiveKernelClosure D Sc cutoff i v t hh r s b ∈
+      oldDegreeOver D sy 𝒜 Sc hP cutoff v t (n + 2 * sy.d i * (r + s + 1 : ℕ)) := by
+  have h := actualCapKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t s
+    (positiveKernelPrincipalInverse_degreeOver D sy 𝒜 Sc hP cutoff i v t hh
+      (actualUnitKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t r hb))
+  have he : n + 2 * sy.d i * r + 2 * sy.d i + 2 * sy.d i * s =
+      n + 2 * sy.d i * (r + s + 1 : ℕ) := by push_cast; ring
+  simpa only [positiveKernelClosure, LinearMap.comp_apply, he] using h
+
+/-- The negative represented closure has the same degree, over a graded base. -/
+theorem negativeKernelClosure_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
+    (hh : contentCrossingHeight D cutoff i (t.word : Multiset I) ≤ 0) (r s : ℕ)
+    {n : ℤ} {b : v ⟶ t} (hb : b ∈ oldDegreeOver D sy 𝒜 Sc hP cutoff v t n) :
+    negativeKernelClosure D Sc cutoff i v t hh r s b ∈
+      oldDegreeOver D sy 𝒜 Sc hP cutoff v t (n + 2 * sy.d i * (r + s + 1 : ℕ)) := by
+  have h := actualCapKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t s
+    (negativeKernelPrincipalInverse_degreeOver D sy 𝒜 Sc hP cutoff i v t hh
+      (actualUnitKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t r hb))
+  have he : n + 2 * sy.d i * r + 2 * sy.d i + 2 * sy.d i * s =
+      n + 2 * sy.d i * (r + s + 1 : ℕ) := by push_cast; ring
+  simpa only [negativeKernelClosure, LinearMap.comp_apply, he] using h
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
