@@ -23,7 +23,7 @@ variable {k A C : Type u} [CommRing k]
   [Category.{u} A] [Preadditive A] [Linear k A] [Supercategory k A]
   [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
 
-variable {P : Type u} [Category.{u} P] [Preadditive P] [Linear k P] [Supercategory k P]
+variable {P : Type*} [Category P] [Preadditive P] [Linear k P] [Supercategory k P]
 
 /-- The signed naturality of a transformation out of `G` followed by the tensor
 vacuum, evaluated on `v ⊗ y` along a morphism `f` of parity `q`. -/
