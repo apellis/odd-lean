@@ -83,6 +83,22 @@ def truncGrading (N : ℕ) : ℤ → Submodule K (SKM.TruncatedRees.TruncRing K 
 def truncGradedAlgebra (N : ℕ) : GradedAlgebra (truncGrading K N) :=
   SKM.GradedImage.gradedAlgebra _ _ (truncAlg_surjective K N) (isHomogeneous_ker_truncAlg K N)
 
+/-- `K[h]` has no negative degrees. -/
+theorem reesGrading_eq_bot_of_neg {m : ℤ} (hm : m < 0) : reesGrading K m = ⊥ := by
+  refine eq_bot_iff.2 fun p hp => (Submodule.mem_bot K).2 ?_
+  rw [MvPolynomial.mem_weightedHomogeneousSubmodule] at hp
+  ext d
+  by_contra h
+  have hw := hp h
+  rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)] at hw
+  simp at hw
+  omega
+
+/-- `K[h]/(h^N)` has no negative degrees. -/
+theorem truncGrading_eq_bot_of_neg (N : ℕ) {m : ℤ} (hm : m < 0) : truncGrading K N m = ⊥ := by
+  change (reesGrading K m).map (truncAlg K N).toLinearMap = ⊥
+  rw [reesGrading_eq_bot_of_neg K hm, Submodule.map_bot]
+
 variable {K}
 
 /-- The truncated Rees parameters. -/

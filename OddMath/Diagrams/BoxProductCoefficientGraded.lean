@@ -199,6 +199,22 @@ variable {𝒜}
   (hD : ∀ {X Y : D} {a n : ℤ} {r : R} {f : X ⟶ Y}, r ∈ 𝒜 a → f ∈ degree (R := K) X Y n →
     r • f ∈ degree (R := K) X Y (a + n))
 
+omit [Decomposition 𝒜] in
+include hC in
+/-- Multiplying by a scalar of degree `a` raises degrees by `a`. -/
+theorem smul_mem_homDegree {X Y : BoxProd R C D} {a n : ℤ} {r : R} {y : X ⟶ Y}
+    (hr : r ∈ 𝒜 a) (hy : y ∈ homDegree (K := K) X Y n) :
+    r • y ∈ homDegree (K := K) X Y (a + n) := by
+  refine homDegree_induction (motive := fun y => r • y ∈ homDegree (K := K) X Y (a + n))
+    ?_ (fun y y' hy hy' => ?_) (fun c y hy => ?_) (fun p q hpq f hf g hg => ?_) hy
+  · rw [smul_zero]; exact zero_mem _
+  · rw [smul_add]; exact add_mem hy hy'
+  · rw [smul_comm]; exact algebraMap_smul_mem_homDegree c hy
+  · have e : r • tmulHom (X := X) (Y := Y) f g = tmulHom (r • f) g :=
+      TensorProduct.smul_tmul' r f g
+    rw [e, ← hpq, ← add_assoc]
+    exact tmulHom_mem_homDegree (hC hr hf) hg
+
 include hC hD in
 /-- The degree parts form an internal direct sum decomposition of each Hom module. -/
 theorem isInternal_homDegree (X Y : BoxProd R C D) :

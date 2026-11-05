@@ -155,6 +155,7 @@ theorem smul_basis_mem_basisPart {i : ι} {e : ℤ} {r : R} (hr : r ∈ 𝒜 e) 
   exact single_mem_part hr
 
 omit [Decomposition 𝒜] in
+omit [Decomposition 𝒜] in
 /-- Multiplication by a homogeneous scalar shifts the degree. -/
 theorem smul_mem_basisPart [SetLike.GradedMul 𝒜] {e n : ℤ} {r : R} (hr : r ∈ 𝒜 e) {x : M}
     (hx : x ∈ basisPart 𝒜 δ b n) : r • x ∈ basisPart 𝒜 δ b (e + n) := by
@@ -238,5 +239,55 @@ theorem eq_bot_of_span_lower_bound [Decomposition 𝒜] {𝒢 : ℤ → Submodul
   exact (Submodule.disjoint_def.1 (h𝒢 d)) x hx (hle (hall x)) ▸ zero_mem _
 
 end LowerBound
+
+section Span
+
+variable {M : Type*} [AddCommGroup M] [Module R M] [Module K M] (𝒢 : ℤ → Submodule K M)
+  [Decomposition 𝒢]
+
+omit [Decomposition 𝒜] in
+/-- Multiplication by a homogeneous scalar of degree `e` shifts homogeneous components by
+`e`. -/
+theorem decompose_smul_of_mem
+    (hsmul : ∀ {e n : ℤ} {r : R} {y : M}, r ∈ 𝒜 e → y ∈ 𝒢 n → r • y ∈ 𝒢 (e + n))
+    {e : ℤ} {r : R} (hr : r ∈ 𝒜 e) (y : M) (n : ℤ) :
+    (decompose 𝒢 (r • y) n : M) = r • (decompose 𝒢 y (n - e) : M) := by
+  induction y using DirectSum.Decomposition.inductionOn 𝒢 with
+  | zero => simp
+  | add y z hy hz => rw [smul_add, decompose_add, add_apply, Submodule.coe_add, hy, hz,
+      decompose_add, add_apply, Submodule.coe_add, smul_add]
+  | @homogeneous m y =>
+    by_cases h : e + m = n
+    · subst h
+      rw [decompose_of_mem_same 𝒢 (hsmul hr y.2), add_sub_cancel_left,
+        decompose_of_mem_same 𝒢 y.2]
+    · rw [decompose_of_mem_ne 𝒢 (hsmul hr y.2) h, decompose_of_mem_ne 𝒢 y.2 (by omega),
+        smul_zero]
+
+/-- **Homogeneous spans over a graded base.** If every homogeneous component of each generator
+of an `R`-submodule `I` lies in `I`, then so does every homogeneous component of every element
+of `I`. -/
+theorem decompose_mem_span
+    (hsmul : ∀ {e n : ℤ} {r : R} {y : M}, r ∈ 𝒜 e → y ∈ 𝒢 n → r • y ∈ 𝒢 (e + n))
+    {S : Set M} (hS : ∀ g ∈ S, ∀ n, (decompose 𝒢 g n : M) ∈ Submodule.span R S)
+    {f : M} (hf : f ∈ Submodule.span R S) (n : ℤ) :
+    (decompose 𝒢 f n : M) ∈ Submodule.span R S := by
+  induction hf using Submodule.span_induction generalizing n with
+  | mem g hg => exact hS g hg n
+  | zero => simp
+  | add f g _ _ hf hg =>
+    rw [decompose_add, add_apply, Submodule.coe_add]
+    exact add_mem (hf n) (hg n)
+  | smul c f _ hf =>
+    induction c using DirectSum.Decomposition.inductionOn 𝒜 with
+    | zero => simp
+    | add c c' hc hc' =>
+      rw [add_smul, decompose_add, add_apply, Submodule.coe_add]
+      exact add_mem hc hc'
+    | @homogeneous e c =>
+      rw [decompose_smul_of_mem 𝒜 𝒢 hsmul c.2]
+      exact Submodule.smul_mem _ _ (hf _)
+
+end Span
 
 end OddMath.Diagrams.BasisGrading
