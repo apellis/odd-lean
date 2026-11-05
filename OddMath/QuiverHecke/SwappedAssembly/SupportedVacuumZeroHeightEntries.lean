@@ -432,11 +432,8 @@ theorem vacuumOddZero_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
     (parameterTwist_homogeneous D Sc hc) i hi hP' hN hcut (Iso.mk _ j hj1 hj2) rfl 0 z
   rw [Nat.mul_zero, AdjunctionBubbleSeries.coeff_zero_momentSeries,
     map_one, one_mul] at hm
-  trace_state
-  refine Eq.trans ?_ (hm.trans ?_)
-  · rfl
-  · rw [map_smul]
-    rfl
+  rw [map_smul]
+  convert hm using 6
 
 include sy hc in
 /-- **Odd bubble entry of the vacuum sector at zero height.** -/
