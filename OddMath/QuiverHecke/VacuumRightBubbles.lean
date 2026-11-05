@@ -108,8 +108,7 @@ private theorem right_zero (i : I) :
 private theorem raw_substituted_zero (i : I) :
     raw (SKM.SYM.polynomialInclude D k (PowerSeries.coeff 0
       (VacuumSeries.substitutedSeries k (SKM.SYM.probeSeries D k M) i))) = 1 := by
-  rw [PowerSeries.coeff_zero_eq_constantCoeff_apply,
-    VacuumSeries.coeff_zero_substitutedSeries k (SKM.SYM.constantCoeff_probeSeries D k M),
+  rw [VacuumSeries.coeff_zero_substitutedSeries k (SKM.SYM.constantCoeff_probeSeries D k M),
     map_one, map_one]
 
 /-- **Left even bubbles from the right moments.** -/
@@ -123,7 +122,7 @@ theorem left_even (h : VacuumRightBubblesNonpositiveHeight cs A t raw M N) (i : 
     (K := fun s : ℕ => A.closedAct t ((cs.c μ i : k) • SKM.bubRs cs i μ s))
     (y := fun s => raw (SKM.SYM.polynomialInclude D k (PowerSeries.coeff s
         (VacuumSeries.substitutedSeries k (SKM.SYM.probeSeries D k M) i))))
-    (right_zero i) (left_zero i) raw_substituted_zero ?_ ?_ s
+    (right_zero i) (left_zero i) (raw_substituted_zero i) ?_ ?_ s
   · intro n hn
     simp only [normalized_left]
     rw [← map_sum]
@@ -149,7 +148,7 @@ theorem left_odd (h : VacuumRightBubblesNonpositiveHeight cs A t raw M N) (i : I
     (K := fun s : ℕ => A.closedAct t ((cs.c μ i : k) • SKM.bubRs cs i μ (2 * s)))
     (y := fun s => raw (SKM.SYM.polynomialInclude D k (PowerSeries.coeff s
         (VacuumSeries.substitutedSeries k (SKM.SYM.probeSeries D k M) i))))
-    ?_ ?_ raw_substituted_zero ?_ ?_ s
+    ?_ ?_ (raw_substituted_zero i) ?_ ?_ s
   · simpa only [Nat.cast_zero, mul_zero] using right_zero (A := A) (t := t) (cs := cs) i
   · simpa only [Nat.cast_zero, mul_zero] using left_zero (A := A) (t := t) (cs := cs) i
   · intro n hn
