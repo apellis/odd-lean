@@ -316,11 +316,13 @@ private theorem even_reservoir_coefficient (hi : D.parity i = 0) (hN : 0 < cutof
           tensorPowerVacuumCap D Sc m cutoff L i hN) =
       (capCoefficientLmul D cutoff L).toRingHom (PowerSeries.coeff l
         (PowerSeries.invOfUnit (PowerSeries.rescale (-1) (SKM.SYM.generatorSeries k i)) 1)) := by
+  have hm := fun z => (tensorPowerVacuumCap_moment_apply D Sc m cutoff L i hN
+    (cutoff i - 1 + l) z).trans (congrArg (· * tensorVacuumDecodeLinear D Sc m cutoff L z)
+      (even_colour_signedMoment D Sc cutoff L i hi hN l))
   refine tensorVacuumEndDecode_eq_of D Sc m cutoff L _ _ fun z => ?_
   rw [unit_cap_moment D Sc m cutoff L i hN, capCoefficientLmul_ringHom_apply]
   show _ = completeCoefficient D cutoff L i l * _
-  rw [← even_colour_signedMoment D Sc cutoff L i hi hN l]
-  convert tensorPowerVacuumCap_moment_apply D Sc m cutoff L i hN (cutoff i - 1 + l) z using 3
+  convert hm z using 3
 
 /-- The reservoir series of the tensor vacuum at an even colour, in the decode
 chart: `T(z) = 1/E(-z)`, the complete coefficients. -/
@@ -386,6 +388,46 @@ private theorem even_slide (hi : D.parity i = 0) (hP : 0 < probeCutoff D m i) :
   simpa only [hi, koszulSign_zero_left, one_smul] using hs
 
 include sy hc in
+/-- The decoded endomorphism form of both odd negative-height moment identities. -/
+private theorem odd_negative_decoded
+    (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) (hN : 0 < cutoff i)
+    (hPN : 2 * m i < cutoff i)
+    (j : _ ⟶ shiftedPreSourceObject D Sc m R₀ i H)
+    (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
+    (hB : SwappedAssembly.ProbeWindow.IsCupInverse
+      (evaluatedMixedBend D Sc m cutoff bound i hP H)
+      (fun n => (adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ n.val))
+      j B)
+    (r : ℕ) :
+    tensorVacuumEndDecode D Sc m cutoff L ((adjunction K).unit.app V ≫
+        (evaluatedPostDot D Sc m cutoff bound i H ^ (cutoff i - 2 * m i - 1 + 2 * r)) ≫
+          B ⟨cutoff i - 2 * m i - 1, by omega⟩) =
+        capCoefficientLmul D cutoff L (PowerSeries.coeff r
+          (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) ∧
+      tensorVacuumEndDecode D Sc m cutoff L ((adjunction K).unit.app V ≫
+        (evaluatedPostDot D Sc m cutoff bound i H ^ (cutoff i - 2 * m i - 1 + (2 * r + 1))) ≫
+          B ⟨cutoff i - 2 * m i - 1, by omega⟩) =
+        Algebra.lmul k AQ ((-1 : k) ^ (cutoff i + 1) •
+          coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) *
+        capCoefficientLmul D cutoff L (PowerSeries.coeff r
+          (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) := by
+  have hwin : ∀ a < cutoff i, (adjunction K).unit.app V ≫
+      (evaluatedPostDot D Sc m cutoff bound i H ^ a) ≫ tensorPowerVacuumCap D Sc m cutoff L i hN =
+      if a + 1 = cutoff i then 𝟙 V else 0 :=
+    fun a ha => tensorPowerVacuumCap_window D Sc m cutoff L i hN a ha
+  have h := odd_negative_cap_moments_of_slide D (capCoefficientLmul D cutoff L)
+    (tensorVacuumEndDecode D Sc m cutoff L) m i hi (shiftedPreDot D Sc m R₀ i H)
+    (evaluatedPostDot D Sc m cutoff bound i H) (evaluatedMixedBend D Sc m cutoff bound i hP H)
+    ((adjunction K).unit.app V) (shiftedPreCap D Sc m R₀ i hP H)
+    (tensorPowerVacuumCap D Sc m cutoff L i hN) (cutoff i) hPN
+    (Algebra.lmul k AQ ((-1 : k) ^ (cutoff i + 1) •
+      coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)))
+    (fun p => (delta_commute D cutoff L i hi p).map (Algebra.lmul k AQ))
+    (odd_slide D Sc m cutoff L sy hc i hi hP) hwin (odd_probe_polynomial D Sc m cutoff L i hi)
+    j B hB (odd_reservoir_series D Sc m cutoff L i hi hN) r
+  exact h
+
+include sy hc in
 /-- **Odd colour, negative height, on the tensor vacuum: even moments.** For
 probe exponent `M = m i` and reservoir cutoff `N = cutoff i` with `2M < N`, and
 any entrywise inverse `[j; B]` of the cup window of the A6 bend with the
@@ -408,20 +450,7 @@ theorem tensorVacuumNegativeCap_odd_moments_even
       polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
         tensorVacuumDecodeLinear D Sc m cutoff L z := by
-  have hwin : ∀ a < cutoff i, (adjunction K).unit.app V ≫
-      (evaluatedPostDot D Sc m cutoff bound i H ^ a) ≫ tensorPowerVacuumCap D Sc m cutoff L i hN =
-      if a + 1 = cutoff i then 𝟙 V else 0 :=
-    fun a ha => tensorPowerVacuumCap_window D Sc m cutoff L i hN a ha
-  have h := odd_negative_cap_moments_of_slide D (capCoefficientLmul D cutoff L)
-    (tensorVacuumEndDecode D Sc m cutoff L) m i hi (shiftedPreDot D Sc m R₀ i H)
-    (evaluatedPostDot D Sc m cutoff bound i H) (evaluatedMixedBend D Sc m cutoff bound i hP H)
-    ((adjunction K).unit.app V) (shiftedPreCap D Sc m R₀ i hP H)
-    (tensorPowerVacuumCap D Sc m cutoff L i hN) (cutoff i) hPN
-    (Algebra.lmul k AQ ((-1 : k) ^ (cutoff i + 1) •
-      coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)))
-    (fun p => (delta_commute D cutoff L i hi p).map (Algebra.lmul k AQ))
-    (odd_slide D Sc m cutoff L sy hc i hi hP) hwin (odd_probe_polynomial D Sc m cutoff L i hi)
-    j B hB (odd_reservoir_series D Sc m cutoff L i hi hN) r
+  have h := odd_negative_decoded D Sc m cutoff L sy hc i hi hP hN hPN j B hB r
   have e1 := LinearMap.congr_fun h.1 (tensorVacuumDecodeLinear D Sc m cutoff L z)
   rw [tensorVacuumEndDecode_apply, capCoefficientLmul_apply] at e1
   exact e1
@@ -450,20 +479,7 @@ theorem tensorVacuumNegativeCap_odd_moments_odd
         (polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
           tensorVacuumDecodeLinear D Sc m cutoff L z) := by
-  have hwin : ∀ a < cutoff i, (adjunction K).unit.app V ≫
-      (evaluatedPostDot D Sc m cutoff bound i H ^ a) ≫ tensorPowerVacuumCap D Sc m cutoff L i hN =
-      if a + 1 = cutoff i then 𝟙 V else 0 :=
-    fun a ha => tensorPowerVacuumCap_window D Sc m cutoff L i hN a ha
-  have h := odd_negative_cap_moments_of_slide D (capCoefficientLmul D cutoff L)
-    (tensorVacuumEndDecode D Sc m cutoff L) m i hi (shiftedPreDot D Sc m R₀ i H)
-    (evaluatedPostDot D Sc m cutoff bound i H) (evaluatedMixedBend D Sc m cutoff bound i hP H)
-    ((adjunction K).unit.app V) (shiftedPreCap D Sc m R₀ i hP H)
-    (tensorPowerVacuumCap D Sc m cutoff L i hN) (cutoff i) hPN
-    (Algebra.lmul k AQ ((-1 : k) ^ (cutoff i + 1) •
-      coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)))
-    (fun p => (delta_commute D cutoff L i hi p).map (Algebra.lmul k AQ))
-    (odd_slide D Sc m cutoff L sy hc i hi hP) hwin (odd_probe_polynomial D Sc m cutoff L i hi)
-    j B hB (odd_reservoir_series D Sc m cutoff L i hi hN) r
+  have h := odd_negative_decoded D Sc m cutoff L sy hc i hi hP hN hPN j B hB r
   have e2 := LinearMap.congr_fun h.2 (tensorVacuumDecodeLinear D Sc m cutoff L z)
   rw [tensorVacuumEndDecode_apply, cap_end_mul_apply, cap_lmul_apply,
     capCoefficientLmul_apply] at e2
