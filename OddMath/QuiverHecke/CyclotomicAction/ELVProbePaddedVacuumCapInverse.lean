@@ -85,13 +85,14 @@ theorem centralPadded_capInverse_comp (c : P.CrossCoeff) (i : I) (t : Sector I)
   have h' := (h.map G).coordinates s r
   have hσ : s.hom ≫ G.map (P.centralPaddedSigma c i t Z E a b) ≫ r.inv =
       P.centralPaddedSigma c i t Z (E ⋙ G) a b := by
-    simp only [centralPaddedSigma, dif_pos ha, dif_pos hb, s, r, Iso.trans_hom, Iso.trans_inv,
+    simp only [centralPaddedSigma, dite_eq_left_of_eq_true (eq_true ha),
+      dite_eq_left_of_eq_true (eq_true hb), s, r, Iso.trans_hom, Iso.trans_inv,
       Iso.symm_hom, Iso.symm_inv, Functor.mapIso_hom, Functor.mapIso_inv, Functor.map_comp,
-      Functor.comp_map, Category.assoc, Iso.map_inv_hom_id_assoc, Iso.map_hom_inv_id_assoc]
+      Functor.comp_map, Category.assoc, Iso.map_inv_hom_id_assoc]
   have hcap : ∀ n : Fin N, s.hom ≫ G.map (P.centralPaddedCap i t Z E a n) =
       P.centralPaddedCap i t Z (E ⋙ G) a n := by
     intro n
-    simp only [centralPaddedCap, dif_pos ha, s, Iso.trans_hom, Iso.symm_hom,
+    simp only [centralPaddedCap, dite_eq_left_of_eq_true (eq_true ha), s, Iso.trans_hom, Iso.symm_hom,
       Functor.mapIso_inv, Functor.map_comp, Functor.comp_map, Category.assoc,
       Iso.map_inv_hom_id_assoc]
   rw [hσ] at h'
@@ -124,7 +125,6 @@ private instance paddedVacuumCapInverseZero (β : Multiset I) :
 
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR
 
-omit [Fintype I] in
 /-- Evaluating the whole-output projection at the regular probe is the
 vacuum bend evaluation. -/
 theorem reservoirOutputEval_comp_total :
@@ -133,7 +133,7 @@ theorem reservoirOutputEval_comp_total :
       homTotalEvaluation (k := k) (sectorRegular D Sc m cutoff bound ΛP ΛR hcP hcR) =
     vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR := by
   rw [vacuumSectorEvaluation_eq]
-  exact Functor.ext (fun _ => rfl) (fun _ _ _ => by
+  exact CategoryTheory.Functor.ext (fun _ => rfl) (fun _ _ _ => by
     simp only [eqToHom_refl, Category.comp_id, Category.id_comp]
     rfl)
 
@@ -161,6 +161,9 @@ theorem vacuumCapInverse_native_odd
           ProbeVacuumCap.shiftedPreCap D (parameterTwist D Sc) m
             (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i hP
             (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H)) j A := by
+  have : (homTotalEvaluation (k := k)
+      (B := ContentModules D (parameterTwist D Sc) cutoff bound (0 : Multiset I))
+      (sectorRegular D Sc m cutoff bound ΛP ΛR hcP hcR)).Additive := inferInstance
   obtain ⟨j, A, h₁⟩ := (P).centralPadded_capInverse_comp
     (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ((0, 0) : Sector I)
     Z.obj _ hZ
