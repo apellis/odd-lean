@@ -20,7 +20,7 @@ open scoped TensorProduct
 universe u v w w'
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X}
   {R : Type w} {S : Type w'} [CommRing R] [CommRing S] (f : R →+* S)
-  {Sc : Scalars D R} (cs : CScalars Sc)
+  {Sc : IntegralScalars D R} [ZTransport f D Sc] (cs : CScalars Sc)
 
 /-- Horizontal placement respects coefficient change, including incompatible boundaries. -/
 theorem homMap_plcL (μ : X) (u v s t : List (Letter I))

@@ -27,7 +27,7 @@ open scoped TensorProduct
 universe u v w w'
 
 variable {R : Type w} {S : Type w'} [CommRing R] [CommRing S] (f : R →+* S)
-  {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X) (Sc : Scalars D R)
+  {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X) (Sc : IntegralScalars D R)
 
 /-- Extend the diagramwise tensor evaluation linearly over the target ring. -/
 def tensorLin (a b : Obj (sig D)) :
@@ -64,28 +64,6 @@ theorem tensorLin_coeff {a b : Obj (sig D)} (x : LinDiagram R a b) :
     change f r ⊗ₜ[R] (pres D Sc).diag g = (f r * 1) ⊗ₜ[R] (pres D Sc).diag g
     rw [mul_one]
 
-/-- The forward comparison is the scalar extension of the proved semilinear Hom map. -/
-def fromTensor (a b : Obj (sig D)) :
-    letI := f.toAlgebra
-    S ⊗[R] ((pres D Sc).obj a ⟶ (pres D Sc).obj b) →ₗ[S]
-      ((pres D (scalars D f Sc)).obj a ⟶ (pres D (scalars D f Sc)).obj b) := by
-  let := f.toAlgebra
-  let H := (pres D (scalars D f Sc)).obj a ⟶ (pres D (scalars D f Sc)).obj b
-  letI : Module R H := Module.compHom H f
-  letI : IsScalarTower R S H := ⟨fun r s x => mul_smul (f r) s x⟩
-  let m : ((pres D Sc).obj a ⟶ (pres D Sc).obj b) →ₗ[R] H :=
-    { toFun := homMap f D Sc a b
-      map_add' := (homMap f D Sc a b).map_add
-      map_smul' := (homMap f D Sc a b).map_smulₛₗ }
-  exact m.liftBaseChange S
-
-@[simp] theorem fromTensor_tmul {a b : Obj (sig D)} (s : S)
-    (x : (pres D Sc).obj a ⟶ (pres D Sc).obj b) :
-    letI := f.toAlgebra
-    fromTensor f D Sc a b (s ⊗ₜ[R] x) = s • homMap f D Sc a b x := by
-  let := f.toAlgebra
-  rfl
-
 private theorem source_whisk_witness (r : (pres D Sc).AllRel)
     (x : LinDiagram S r.dom r.cod) (hx : coeff f r.rel = x)
     (l : Obj (sig D)) (v : List (sig D).Colour) (h : r.dom.WhiskerOK l v) :
@@ -101,7 +79,19 @@ theorem exists_source_whiskRel (r : (pres D (scalars D f Sc)).AllRel)
       z ∈ (pres D Sc).ideal _ _ ∧ coeff f z = LinDiagram.whisker r.rel l v h := by
   cases r with
   | user r =>
-    exact source_whisk_witness f D Sc (.user r) _ (coeff_relation f D Sc r) l v h
+    by_cases hr : IsUnit (2 : R) ∨ ¬IsUnit (2 : S)
+    · exact source_whisk_witness f D Sc (.user r) _ (coeff_relation f D Sc r hr) l v h
+    · by_cases hz : ∃ b, r = .zInt b
+      · obtain ⟨b, rfl⟩ := hz
+        refine ⟨0, Submodule.zero_mem _, ?_⟩
+        have hS : IsUnit (2 : S) := by
+          by_contra hS
+          exact hr (.inr hS)
+        rw [coeff_zero]
+        change 0 = LinDiagram.whisker (relation D (scalars D f Sc) (.zInt b)) l v h
+        cases b <;> simp only [relation, zGate_of_isUnit D _ _ hS, LinDiagram.whisker_zero]
+      · exact source_whisk_witness f D Sc (.user r) _
+          (coeff_relation_of_ne f D Sc r fun b e => hz ⟨b, e⟩) l v h
   | interchange x hx =>
     exact source_whisk_witness f D Sc (.interchange x hx) _ (coeff_interchange f x hx) l v h
 
@@ -198,6 +188,30 @@ def toTensor (a b : Obj (sig D)) :
       1 ⊗ₜ[R] (pres D Sc).diag g :=
   letI := f.toAlgebra
   tensorLin_of f D Sc g
+
+variable [ZTransport f D Sc]
+
+/-- The forward comparison is the scalar extension of the proved semilinear Hom map. -/
+def fromTensor (a b : Obj (sig D)) :
+    letI := f.toAlgebra
+    S ⊗[R] ((pres D Sc).obj a ⟶ (pres D Sc).obj b) →ₗ[S]
+      ((pres D (scalars D f Sc)).obj a ⟶ (pres D (scalars D f Sc)).obj b) := by
+  let := f.toAlgebra
+  let H := (pres D (scalars D f Sc)).obj a ⟶ (pres D (scalars D f Sc)).obj b
+  letI : Module R H := Module.compHom H f
+  letI : IsScalarTower R S H := ⟨fun r s x => mul_smul (f r) s x⟩
+  let m : ((pres D Sc).obj a ⟶ (pres D Sc).obj b) →ₗ[R] H :=
+    { toFun := homMap f D Sc a b
+      map_add' := (homMap f D Sc a b).map_add
+      map_smul' := (homMap f D Sc a b).map_smulₛₗ }
+  exact m.liftBaseChange S
+
+@[simp] theorem fromTensor_tmul {a b : Obj (sig D)} (s : S)
+    (x : (pres D Sc).obj a ⟶ (pres D Sc).obj b) :
+    letI := f.toAlgebra
+    fromTensor f D Sc a b (s ⊗ₜ[R] x) = s • homMap f D Sc a b x := by
+  let := f.toAlgebra
+  rfl
 
 /-- The inverse evaluated on any source Hom class is its canonical tensor. -/
 @[simp] theorem toTensor_homMap {a b : Obj (sig D)}

@@ -54,22 +54,26 @@ theorem oddBubble_mem (i : I) (μ : X) : oddBubble cs i μ ∈ closedPar D Sc μ
 
 /-! ## The relations of the integral form when `2` is not a unit -/
 
+theorem isUnit_zsign (p : ZMod 2) : IsUnit (zsign k p) := by
+  unfold zsign
+  split_ifs <;> simp
+
 theorem epsP_eq_smul (i : I) (μ : X) :
-    ∃ e : k, epsP cs i μ = e • cl D Sc μ [dn i, up i] [] (rPostL D i μ) := by
+    ∃ e : k, IsUnit e ∧ epsP cs i μ = e • cl D Sc μ [dn i, up i] [] (rPostL D i μ) := by
   unfold epsP rPostL
   split_ifs
-  · exact ⟨_, rfl⟩
-  · exact ⟨_, rfl⟩
+  · exact ⟨_, Units.isUnit _, rfl⟩
+  · exact ⟨_, ((isUnit_zsign _).mul (Units.isUnit _)).neg, rfl⟩
 
 theorem etaP_eq_smul (i : I) (μ : X) :
-    ∃ e : k, etaP cs i μ = e • cl D Sc μ [] [up i, dn i] (lPreL D i μ) := by
+    ∃ e : k, IsUnit e ∧ etaP cs i μ = e • cl D Sc μ [] [up i, dn i] (lPreL D i μ) := by
   unfold etaP lPreL
   split_ifs
-  · exact ⟨_, rfl⟩
-  · exact ⟨_, rfl⟩
+  · exact ⟨_, Units.isUnit _, rfl⟩
+  · exact ⟨_, (isUnit_zsign _).mul (Units.isUnit _), rfl⟩
 
 /-- The relation (5.9) of the integral form, as an identity of layer classes. -/
-theorem cl_zRight (i : I) (μ : X) (hi : D.parity i = 1) (h2 : ¬IsUnit (2 : k)) (n : ℕ)
+theorem cl_zRight_of_not_isUnit (i : I) (μ : X) (hi : D.parity i = 1) (h2 : ¬IsUnit (2 : k)) (n : ℕ)
     (hn : (2 : ℤ) ∣ n + D.h i μ + 1) :
     cl D Sc μ [] [] (etaL i (n + 1) ++ rPostL D i μ) =
       zsign k (oddPar D i μ) • cl D Sc μ [] [] (etaL i n ++ rPostL D i μ ++ oddL D i μ) := by
@@ -79,7 +83,7 @@ theorem cl_zRight (i : I) (μ : X) (hi : D.parity i = 1) (h2 : ¬IsUnit (2 : k))
   exact hz
 
 /-- The relation (5.10) of the integral form, as an identity of layer classes. -/
-theorem cl_zLeft (i : I) (μ : X) (hi : D.parity i = 1) (h2 : ¬IsUnit (2 : k)) (n : ℕ)
+theorem cl_zLeft_of_not_isUnit (i : I) (μ : X) (hi : D.parity i = 1) (h2 : ¬IsUnit (2 : k)) (n : ℕ)
     (hn : (2 : ℤ) ∣ n + D.h i μ + 1) :
     cl D Sc μ [] [] (lPreL D i μ ++ epsL i (n + 1)) =
       zsign k (oddPar D i μ) • cl D Sc μ [] [] (oddL D i μ ++ lPreL D i μ ++ epsL i n) := by
@@ -105,14 +109,14 @@ theorem eq_5_9 (i : I) (μ : X) (hi : D.parity i = 1) (n : ℕ)
         generalize (n : ZMod 2) = x
         revert x y; decide
       exact_mod_cast (ZMod.intCast_zmod_eq_zero_iff_dvd _ 2).mp h'
-    obtain ⟨e, he⟩ := epsP_eq_smul cs i μ
+    obtain ⟨e, -, he⟩ := epsP_eq_smul cs i μ
     rw [show (n : ℤ) + 1 = ((n + 1 : ℕ) : ℤ) by push_cast; ring, bubR_nat, bubR_nat, he,
       oddBubble_eq_cl]
     simp only [Linear.smul_comp, Linear.comp_smul, smul_smul]
     rw [cl_comp (sChain_etaL i (n + 1)) (sChain_rPostL D i μ),
       cl_comp (sChain_etaL i n) (sChain_rPostL D i μ),
       cl_comp ((sChain_etaL i n).append (sChain_rPostL D i μ)) (sChain_oddL D i μ),
-      cl_zRight i μ hi h2 n hn, smul_smul, mul_comm]
+      cl_zRight_of_not_isUnit i μ hi h2 n hn, smul_smul, mul_comm]
   have hR : bubR cs i μ ((n : ℤ) + 1) = hLM D Sc i μ n ≫ uRM D Sc i μ ≫ epsP cs i μ := by
     rw [show (n : ℤ) + 1 = ((n + 1 : ℕ) : ℤ) by push_cast; ring, bubR_nat, ← Category.assoc,
       hL_uR]
@@ -293,14 +297,14 @@ theorem eq_5_10_pos (i : I) (μ : X) (hi : D.parity i = 1) (n : ℕ)
     bubL cs i μ ((n : ℤ) + 1) = oddBubble cs i μ ≫ bubL cs i μ n := by
   by_cases h2 : IsUnit (2 : k)
   swap
-  · obtain ⟨e, he⟩ := etaP_eq_smul cs i μ
+  · obtain ⟨e, -, he⟩ := etaP_eq_smul cs i μ
     rw [show (n : ℤ) + 1 = ((n + 1 : ℕ) : ℤ) by push_cast; ring, bubL_nat, bubL_nat, he,
       oddBubble_eq_cl]
     simp only [Linear.smul_comp, Linear.comp_smul, smul_smul]
     rw [cl_comp (sChain_lPreL D i μ) (sChain_epsL i (n + 1)),
       cl_comp (sChain_lPreL D i μ) (sChain_epsL i n),
       cl_comp (sChain_oddL D i μ) ((sChain_lPreL D i μ).append (sChain_epsL i n)),
-      ← List.append_assoc, cl_zLeft i μ hi h2 n hpar, smul_smul, mul_comm]
+      ← List.append_assoc, cl_zLeft_of_not_isUnit i μ hi h2 n hpar, smul_smul, mul_comm]
   have key : bubL cs i μ ((n : ℤ) + 1) = etaP cs i μ ≫ uLM D Sc i μ ≫ eLM D Sc i μ n := by
     rw [show (n : ℤ) + 1 = ((n + 1 : ℕ) : ℤ) by push_cast; ring, bubL_nat, uL_eL]
   rw [← Category.assoc, lemma41_eq4_one_odd cs i μ hi, Preadditive.add_comp, Linear.smul_comp,
@@ -639,5 +643,64 @@ theorem eq_5_6 (i : I) (μ : X) (hi : D.parity i = 1) (t : ℕ) (ht : 0 < t) :
   refine sum_congr rfl fun r hr => ?_
   rw [isg_congr _ (n := 0) ⟨r, by push_cast; ring⟩, isg_zero, one_smul]
   congr 2; push_cast; ring
+
+/-! ## The relations of the integral form hold in every presentation -/
+
+include cs in
+/-- **The relation (5.9) of the integral form holds over every ring**: when `2` is invertible it
+follows from Brundan–Ellis (5.9) (`eq_5_9`). -/
+theorem cl_zRight (i : I) (μ : X) (hi : D.parity i = 1) (n : ℕ)
+    (hn : (2 : ℤ) ∣ n + D.h i μ + 1) :
+    cl D Sc μ [] [] (etaL i (n + 1) ++ rPostL D i μ) =
+      zsign k (oddPar D i μ) • cl D Sc μ [] [] (etaL i n ++ rPostL D i μ ++ oddL D i μ) := by
+  by_cases h2 : IsUnit (2 : k)
+  swap
+  · exact cl_zRight_of_not_isUnit i μ hi h2 n hn
+  have hpar : ((((n : ℤ) + 1) + D.h i μ + 1 : ℤ) : ZMod 2) = 1 := by
+    obtain ⟨m, hm⟩ := hn
+    rw [show ((n : ℤ) + 1) + D.h i μ + 1 = 2 * m + 1 by linarith]
+    push_cast
+    rw [show (2 : ZMod 2) = 0 from rfl, zero_mul, zero_add]
+  have E := eq_5_9 cs i μ hi n hpar
+  obtain ⟨e, he, hE⟩ := epsP_eq_smul cs i μ
+  rw [show (n : ℤ) + 1 = ((n + 1 : ℕ) : ℤ) by push_cast; ring, bubR_nat, bubR_nat, hE,
+    oddBubble_eq_cl] at E
+  simp only [Linear.smul_comp, Linear.comp_smul, smul_smul] at E
+  rw [cl_comp (sChain_etaL i (n + 1)) (sChain_rPostL D i μ),
+    cl_comp (sChain_etaL i n) (sChain_rPostL D i μ),
+    cl_comp ((sChain_etaL i n).append (sChain_rPostL D i μ)) (sChain_oddL D i μ)] at E
+  refine he.smul_left_cancel.mp ?_
+  rw [E, smul_smul, mul_comm]
+
+include cs in
+/-- **The relation (5.10) of the integral form holds over every ring**: when `2` is invertible
+it follows from Brundan–Ellis (5.10) (`eq_5_10_pos`). -/
+theorem cl_zLeft (i : I) (μ : X) (hi : D.parity i = 1) (n : ℕ)
+    (hn : (2 : ℤ) ∣ n + D.h i μ + 1) :
+    cl D Sc μ [] [] (lPreL D i μ ++ epsL i (n + 1)) =
+      zsign k (oddPar D i μ) • cl D Sc μ [] [] (oddL D i μ ++ lPreL D i μ ++ epsL i n) := by
+  by_cases h2 : IsUnit (2 : k)
+  swap
+  · exact cl_zLeft_of_not_isUnit i μ hi h2 n hn
+  have E := eq_5_10_pos cs i μ hi n hn
+  obtain ⟨e, he, hE⟩ := etaP_eq_smul cs i μ
+  rw [show (n : ℤ) + 1 = ((n + 1 : ℕ) : ℤ) by push_cast; ring, bubL_nat, bubL_nat, hE,
+    oddBubble_eq_cl] at E
+  simp only [Linear.smul_comp, Linear.comp_smul, smul_smul] at E
+  rw [cl_comp (sChain_lPreL D i μ) (sChain_epsL i (n + 1)),
+    cl_comp (sChain_lPreL D i μ) (sChain_epsL i n),
+    cl_comp (sChain_oddL D i μ) ((sChain_lPreL D i μ).append (sChain_epsL i n)),
+    ← List.append_assoc] at E
+  refine he.smul_left_cancel.mp ?_
+  rw [E, smul_smul, mul_comm]
+
+include cs in
+/-- **The relation (1.24) of the integral form holds over every ring** (`oddBubble_sq`). -/
+theorem cl_zSq (i : I) (μ : X) (hi : D.parity i = 1) :
+    cl D Sc μ [] [] (oddL D i μ ++ oddL D i μ) = 0 := by
+  have E := oddBubble_sq cs i μ hi
+  rw [oddBubble_eq_cl, Linear.smul_comp, Linear.comp_smul, smul_smul,
+    cl_comp (sChain_oddL D i μ) (sChain_oddL D i μ)] at E
+  exact ((isUnit_zsign _).mul (isUnit_zsign _)).smul_eq_zero.mp E
 
 end OddMath.SKM
