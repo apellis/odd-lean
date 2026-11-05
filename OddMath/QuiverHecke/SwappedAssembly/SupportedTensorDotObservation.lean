@@ -254,6 +254,73 @@ theorem raw_heq {l r : List (SKM.Col I X)} {cL cM cR : I →₀ ℕ}
     (context_input_heq D Sc cutoff L ΛR hy ((l.map (fun a => a.l.2)).reverse))
   exact whisker_heq D Sc m cutoff L ΛP ΛR hy (endWeight D ΛR pL hl pR hr i h) hm hm hk ha
 
+/-- **Generic dot observation.** An output entry that factors through an
+equality-transport conjugate of a cell heterogeneously equal to the contextual
+dot multiplies the observed class by the original affine dot. -/
+theorem dot_observation (ν η : List I) (i : I) {x : X}
+    (e : x = PowerWordWeightContexts.contextWeight D (PowerWordWeight.wordWeight D ΛR (ν ++ [i])) η)
+    {S Fp A : Hx x} (g out : S ⟶ Fp) (h₁t h₂t : Fp = A) (Raw : A ⟶ A)
+    (hout : out = g ≫ eqToHom h₁t ≫ Raw ≫ eqToHom h₂t.symm)
+    (hA : HEq A (TensorVacuumWords.wordHom D Tw m cutoff L ΛP ΛR ν ≫
+      (W).E i (PowerWordWeight.wordWeight_append D ΛR ν i) ≫
+      TensorHomContexts.context D Tw cutoff L ΛR (PowerWordWeight.wordWeight D ΛR (ν ++ [i])) η))
+    (hRaw : HEq Raw ((TensorVacuumWords.wordHom D Tw m cutoff L ΛP ΛR ν ◁
+      (W).dot i (PowerWordWeight.wordWeight_append D ΛR ν i)) ▷
+      TensorHomContexts.context D Tw cutoff L ΛR (PowerWordWeight.wordWeight D ΛR (ν ++ [i])) η))
+    (td tc : List I)
+    (hwp : td.reverse = PowerWordContexts.extendedWord (ν ++ [i]) η)
+    (hwq : tc.reverse = PowerWordContexts.extendedWord (ν ++ [i]) η)
+    (χp : Fp.obj R₀ ⟶ PowerWordWeight.wordFamily D Tw cutoff L ΛR x td.reverse)
+    (χq : Fp.obj R₀ ⟶ PowerWordWeight.wordFamily D Tw cutoff L ΛR x tc.reverse)
+    (hχp : HEq χp (TensorHomContexts.dotChart D Tw m cutoff L ΛP ΛR ν η i).hom)
+    (hχq : HEq χq (TensorHomContexts.dotChart D Tw m cutoff L ΛP ΛR ν η i).hom)
+    (htd : PowerWordLayerClasses.domWord ν η (.dot i) = td)
+    (htc : PowerWordLayerClasses.codWord ν η (.dot i) = tc)
+    (s : List I) (β₀ : WeightBlocks D ΛR x) (hs : (s.reverse : Multiset I) = β₀.1)
+    (z₀ : ((S.obj R₀) β₀).obj (⟨⟨s.reverse⟩, hs⟩ : ContentCategory D Tw cutoff N β₀.1))
+    (y : coefficientObj D Sc s ⟶
+      coefficientObj D Sc (PowerWordLayerClasses.domWord ν η (.dot i)))
+    (hy : PowerWordQuotientCoordinates.coordinate D Sc cutoff L s td
+        ((χp β₀).total (⟨⟨s.reverse⟩, hs⟩ : ContentCategory D Tw cutoff N β₀.1)
+          (((g.total R₀) β₀).total (⟨⟨s.reverse⟩, hs⟩ : ContentCategory D Tw cutoff N β₀.1) z₀)) =
+      tensorTargetWordQuotientEquiv D Sc cutoff L s htd
+        ((PowerWordQuotientCoordinates.kernel D Sc cutoff L s
+          (PowerWordLayerClasses.domWord ν η (.dot i))).mkQ y)) :
+    PowerWordQuotientCoordinates.coordinate D Sc cutoff L s tc
+        ((χq β₀).total (⟨⟨s.reverse⟩, hs⟩ : ContentCategory D Tw cutoff N β₀.1)
+          (((out.total R₀) β₀).total (⟨⟨s.reverse⟩, hs⟩ : ContentCategory D Tw cutoff N β₀.1) z₀)) =
+      tensorTargetWordQuotientEquiv D Sc cutoff L s htc
+        ((PowerWordQuotientCoordinates.kernel D Sc cutoff L s
+          (PowerWordLayerClasses.codWord ν η (.dot i))).mkQ
+            (y ≫ sourceCoefficientHom D Sc 1
+              (ContextualOldGenerators.layerDiagram D Sc η.reverse (.dot i) ν.reverse))) := by
+  obtain ⟨S', f, hS, hf⟩ := exists_transport D Sc m cutoff L ΛP ΛR e hA (g ≫ eqToHom h₁t)
+  obtain ⟨z', hz⟩ := exists_vector D Sc m cutoff L ΛP ΛR e hS β₀ _ z₀
+  have hFp := (heq_of_eq h₁t).trans hA
+  have hin := (eval_heq D Sc m cutoff L ΛP ΛR e hS hFp g f
+    ((comp_eqToHom_heq' D Sc m cutoff L ΛP ΛR g h₁t).symm.trans hf) hwp χp _ hχp β₀ _ z₀ z' hz).trans
+      (dotVector_heq D Sc m cutoff L ΛP ΛR ν η i S' f s ⟨β₀.1, β₀.2.trans e⟩ hs z').symm
+  have hy' : PowerWordQuotientCoordinates.coordinate D Sc cutoff L s
+      (PowerWordLayerClasses.domWord ν η (.dot i))
+      (TensorLayerClasses.dotVector D Sc cutoff L m ΛP ΛR ν η i S' f s
+        ⟨β₀.1, β₀.2.trans e⟩ hs z') =
+      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s
+        (PowerWordLayerClasses.domWord ν η (.dot i))).mkQ y := by
+    apply (tensorTargetWordQuotientEquiv D Sc cutoff L s htd).injective
+    exact (coordinate_heq D Sc cutoff L s htd.symm _ _ hin).symm.trans hy
+  have hsq := TensorLayerClasses.dot_class_square D Sc cutoff L m ΛP ΛR ν η i S' f s
+    ⟨β₀.1, β₀.2.trans e⟩ hs z' y hy'
+  have hout' : HEq out (f ≫ ((TensorVacuumWords.wordHom D Tw m cutoff L ΛP ΛR ν ◁
+      (W).dot i (PowerWordWeight.wordWeight_append D ΛR ν i)) ▷
+      TensorHomContexts.context D Tw cutoff L ΛR (PowerWordWeight.wordWeight D ΛR (ν ++ [i])) η)) := by
+    rw [hout]
+    exact comp_heq D Sc m cutoff L ΛP ΛR e hS hA h₁t h₂t g f hf Raw _ hRaw
+  have hV := (eval_heq D Sc m cutoff L ΛP ΛR e hS hFp out _ hout' hwq χq _ hχq β₀ _ z₀ z' hz).trans
+    (dotVector_heq D Sc m cutoff L ΛP ΛR ν η i S' _ s ⟨β₀.1, β₀.2.trans e⟩ hs z').symm
+  have hc := coordinate_heq D Sc cutoff L s htc.symm _ _ hV
+  rw [hsq] at hc
+  exact hc
+
 end Generic
 
 end TensorDotObservation
@@ -307,13 +374,6 @@ private theorem dotPathWord :
       (νR ++ [i]) ++ ηL := by
   simp
 
-private theorem dotRawHom_heq :
-    HEq (ReservoirLayerCells.dotRawHom D Sc m cutoff L ΛP ΛR pL hl pR hr i edge)
-      (TensorVacuumWords.wordHom D Tw m cutoff L ΛP ΛR νR ≫
-        (W).E i (PowerWordWeight.wordWeight_append D ΛR νR i) ≫
-        TensorHomContexts.context D Tw cutoff L ΛR (PowerWordWeight.wordWeight D ΛR (νR ++ [i])) ηL) :=
-  TensorDotObservation.rawHom_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i edge
-
 include hv pL hl pR hr in
 /-- **Dot layer on the quotient observation.** The literal dot layer of the full
 chosen action multiplies the canonical observed class on the right by the
@@ -343,7 +403,6 @@ theorem tensorMatrixQuotientObservation_dot
             (y ≫ sourceCoefficientHom D Sc 1
               (ContextualOldGenerators.layerDiagram D Sc (List.reverse ηL) (.dot i) (List.reverse νR)))) := by
   have hA := SKM.lay_valid D ν u (.dot i) v
-  -- the literal layer entry, and its equality-transport form
   have hE := tensorOriginalWordEntry_layer D Sc m cutoff ΛP ΛR L hP hR s
     ((P).swappedGens a leftward) (Aℓ) hA hEnd p p hp hp x
   obtain ⟨h₁, h₂, hT⟩ := tensorOriginalWordLayer_dot_transport D Sc m cutoff ΛP ΛR L hP hR
@@ -351,74 +410,28 @@ theorem tensorMatrixQuotientObservation_dot
     (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom) p hp)
     (tensorRowTargetIso_hom_eqToHom D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom) p hp)
     a leftward
-  have hL : tensorOriginalWordLayer D Sc m cutoff ΛP ΛR L hP hR s ((P).swappedGens a leftward)
-      (Aℓ) p p hp hp = eqToHom h₁ ≫
-        tensorLayerDotRaw D Sc m cutoff L ΛP ΛR hP hR ν u v i hv pL hl pR hr a ≫ eqToHom h₂.symm :=
-    hT
-  -- transport to the contextual weight of the local dot chart
-  have e : ReservoirWord.weight D ΛR cS = PowerWordWeightContexts.contextWeight D
-      (PowerWordWeight.wordWeight D ΛR (νR ++ [i])) ηL :=
-    TensorDotObservation.endWeight D ΛR pL hl pR hr i edge
-  have hM := dotRawHom_heq D Sc m cutoff ΛP ΛR L hP hR s ν u v i hv pL hl pR hr
-  let entry := tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom)
-    (hEnd.trans hA.endR_eq) p hp x
-  obtain ⟨S', f, hS, hf⟩ := TensorDotObservation.exists_transport D Sc m cutoff L ΛP ΛR e hM
-    (entry ≫ eqToHom h₁)
-  let β₀ := tensorSourceWordBlock D ΛP ΛR s
-  let o₀ := PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl
-  obtain ⟨z', hz⟩ := TensorDotObservation.exists_vector D Sc m cutoff L ΛP ΛR e hS β₀ o₀
-    (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)
-  have hpath := (tensorPathValueChart_dot_heq D Sc m cutoff ΛP ΛR L p hp νR ηL i
-    (dotPathWord D ν u v i))
-  have hw : ((colApp (colApp (Aℓ).left [Col.mk (up i) (SKM.wt D ν v)]) (Aℓ).right).map
-      (fun a => a.l.2)).reverse = PowerWordContexts.extendedWord (νR ++ [i]) ηL :=
-    (dotPathWord D ν u v i).trans (PowerWordContexts.extendedWord_eq _ _).symm
-  have hF : HEq (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hp)
-      (TensorVacuumWords.wordHom D Tw m cutoff L ΛP ΛR νR ≫
-        (W).E i (PowerWordWeight.wordWeight_append D ΛR νR i) ≫
-        TensorHomContexts.context D Tw cutoff L ΛR (PowerWordWeight.wordWeight D ΛR (νR ++ [i])) ηL) :=
-    (heq_of_eq h₁).trans hM
-  -- the input class, read at the local dot chart
-  have hin := TensorDotObservation.eval_heq D Sc m cutoff L ΛP ΛR e hS hF entry f
-    ((TensorDotObservation.comp_eqToHom_heq' D Sc m cutoff L ΛP ΛR entry h₁).symm.trans hf) hw
-    (tensorPathValueChart D Sc m cutoff ΛP ΛR L p hp).hom
-    (TensorHomContexts.dotChart D Tw m cutoff L ΛP ΛR νR ηL i).hom hpath β₀ o₀
-    (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s) z' hz
-  have hin' := hin.trans (TensorDotObservation.dotVector_heq D Sc m cutoff L ΛP ΛR νR ηL i S' f s
-    ⟨β₀.1, β₀.2.trans e⟩ rfl z').symm
-  have hy' : PowerWordQuotientCoordinates.coordinate D Sc cutoff L s
-      (PowerWordLayerClasses.domWord νR ηL (.dot i))
-      (TensorLayerClasses.dotVector D Sc cutoff L m ΛP ΛR νR ηL i S' f s
-        ⟨β₀.1, β₀.2.trans e⟩ rfl z') =
-      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s
-        (PowerWordLayerClasses.domWord νR ηL (.dot i))).mkQ y := by
-    apply (tensorTargetWordQuotientEquiv D Sc cutoff L s
-      (tensorDotLayer_domWord D ν u v i)).injective
-    exact (TensorDotObservation.coordinate_heq D Sc cutoff L s
-      (tensorDotLayer_domWord D ν u v i).symm _ _ hin').symm.trans hy
-  have hsq := TensorLayerClasses.dot_class_square D Sc cutoff L m ΛP ΛR νR ηL i S' f s
-    ⟨β₀.1, β₀.2.trans e⟩ rfl z' y hy'
-  -- the output class
-  have hRaw := TensorDotObservation.raw_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i edge
-  have hout : HEq (tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).cod) hEnd p hp
+  have hout : tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).cod) hEnd p hp
         (((Q ((P).swappedGens a leftward)).res (Aℓ).cod)
           ((Q ((P).swappedGens a leftward)).op (Aℓ)
-            ((Q ((P).swappedGens a leftward)).ext (Aℓ).dom x))))
-      (f ≫ ((TensorVacuumWords.wordHom D Tw m cutoff L ΛP ΛR νR ◁
-        (W).dot i (PowerWordWeight.wordWeight_append D ΛR νR i)) ▷
-        TensorHomContexts.context D Tw cutoff L ΛR (PowerWordWeight.wordWeight D ΛR (νR ++ [i])) ηL)) := by
-    rw [hE, hL, tensorLayerDotRaw_eq D Sc m cutoff L ΛP ΛR hP hR ν u v i hv pL hl pR hr a]
-    exact TensorDotObservation.comp_heq D Sc m cutoff L ΛP ΛR e hS hM h₁ h₂ entry f hf _ _ hRaw
-  have hV := (TensorDotObservation.eval_heq D Sc m cutoff L ΛP ΛR e hS hF _ _ hout hw
-    (tensorPathValueChart D Sc m cutoff ΛP ΛR L p hp).hom
-    (TensorHomContexts.dotChart D Tw m cutoff L ΛP ΛR νR ηL i).hom hpath β₀ o₀
-    (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s) z' hz).trans
-      (TensorDotObservation.dotVector_heq D Sc m cutoff L ΛP ΛR νR ηL i S' _ s
-        ⟨β₀.1, β₀.2.trans e⟩ rfl z').symm
-  have hc := TensorDotObservation.coordinate_heq D Sc cutoff L s
-    (tensorDotLayer_codWord D ν u v i).symm _ _ hV
-  rw [hsq] at hc
-  exact hc
+            ((Q ((P).swappedGens a leftward)).ext (Aℓ).dom x))) =
+      tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom)
+        (hEnd.trans hA.endR_eq) p hp x ≫ eqToHom h₁ ≫
+        tensorLayerDotRaw D Sc m cutoff L ΛP ΛR hP hR ν u v i hv pL hl pR hr a ≫
+          eqToHom h₂.symm := by
+    rw [hE]
+    exact congrArg _ hT
+  rw [tensorLayerDotRaw_eq D Sc m cutoff L ΛP ΛR hP hR ν u v i hv pL hl pR hr a] at hout
+  exact TensorDotObservation.dot_observation D Sc m cutoff L ΛP ΛR νR ηL i
+    (TensorDotObservation.endWeight D ΛR pL hl pR hr i edge) _ _ h₁ h₂ _ hout
+    (TensorDotObservation.rawHom_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i edge)
+    (TensorDotObservation.raw_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i edge) _ _
+    ((dotPathWord D ν u v i).trans (PowerWordContexts.extendedWord_eq _ _).symm)
+    ((dotPathWord D ν u v i).trans (PowerWordContexts.extendedWord_eq _ _).symm) _ _
+    (tensorPathValueChart_dot_heq D Sc m cutoff ΛP ΛR L p hp νR ηL i (dotPathWord D ν u v i))
+    (tensorPathValueChart_dot_heq D Sc m cutoff ΛP ΛR L p hp νR ηL i (dotPathWord D ν u v i))
+    (tensorDotLayer_domWord D ν u v i) (tensorDotLayer_codWord D ν u v i)
+    s (tensorSourceWordBlock D ΛP ΛR s) rfl
+    (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s) y hy
 
 end Dot
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
