@@ -318,7 +318,8 @@ private theorem even_reservoir_coefficient (hi : D.parity i = 0) (hN : 0 < cutof
         (PowerSeries.invOfUnit (PowerSeries.rescale (-1) (SKM.SYM.generatorSeries k i)) 1)) := by
   have hm := fun z => (tensorPowerVacuumCap_moment_apply D Sc m cutoff L i hN
     (cutoff i - 1 + l) z).trans (congrFun (congrArg HMul.hMul
-      (even_colour_signedMoment D Sc cutoff L i hi hN l)) (tensorVacuumDecodeLinear D Sc m cutoff L z))
+      (even_colour_signedMoment D Sc cutoff L i hi hN l))
+        (tensorVacuumDecodeLinear D Sc m cutoff L z))
   refine tensorVacuumEndDecode_eq_of D Sc m cutoff L _ _ fun z => ?_
   rw [unit_cap_moment D Sc m cutoff L i hN, capCoefficientLmul_ringHom_apply]
   show _ = completeCoefficient D cutoff L i l * _
