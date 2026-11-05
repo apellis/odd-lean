@@ -81,6 +81,16 @@ private theorem even_probeCutoff_eq (i : I) (hi : D.parity i = 0) :
   simp [probeCutoff, probeDotExponent, hi]
 
 include sy hc in
+/-- The negative inverse equations of the pointwise leftward data at the tensor vacuum
+object. -/
+private theorem vacuumNegEven_negInverseAt (i : I) (hh : D.h i ν₀ < 0) :
+    (P).NegInverseAt cc i ν₀ ((0, 0) : Sector I) ((0, 0) : Sector I) Zt
+      (fun q p => (lw).lcrossSame i ν₀ q p Zt)
+      (fun n q r => (lw).dcap i n ν₀ q r Zt) :=
+  centralPointwiseLeftward_negInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
+    (tensorVacuum D Sc m cutoff L ΛP ΛR) hh
+
+include sy hc in
 /-- The decoded vacuum entry of `η x^(N - M - 1 + s)` followed by `dcap (N - M - 1)` on the
 tensor vacuum object, at an even colour with negative vacuum height. -/
 private theorem vacuumNegEven_tensorDecode (i : I) (hi : D.parity i = 0)
@@ -100,8 +110,7 @@ private theorem vacuumNegEven_tensorDecode (i : I) (hi : D.parity i = 0)
     (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hP hR).symm
     (fun q p => (lw).lcrossSame i ν₀ q p Zt)
     (fun n q r => (lw).dcap i n ν₀ q r Zt)
-    (centralPointwiseLeftward_negInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
-      (tensorVacuum D Sc m cutoff L ΛP ΛR) hh) cc
+    (vacuumNegEven_negInverseAt D Sc m cutoff ΛP ΛR L hP hR sy hc i hh) cc
   refine ⟨c, hceq, fun z => ?_⟩
   have hcol := hcup ⟨cutoff i - m i - 1, by omega⟩ (cutoff i - m i - 1 + s)
   have hm := tensorVacuum_rightward_even_extreme_moments D Sc m cutoff L sy hc i hi hP0
