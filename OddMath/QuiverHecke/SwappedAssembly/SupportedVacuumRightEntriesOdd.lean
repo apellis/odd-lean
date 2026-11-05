@@ -83,20 +83,25 @@ for an odd colour at negative height: `e = N - 2M - 1 + 2s` gives the `s`-th mom
 private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cutoff ΛP ΛR L hP hR)
     (i : I) (hi : D.parity i = 1) (hP0 : 0 < probeCutoff D m i)
     (hh : D.h i ν₀ < 0) (e n : ℕ) (hn : n = cutoff i - 2 * m i - 1) (a : SYM D k)
-    (hmom : ∀ (c : (E).obj (Ys (0,0)).obj ≅ V) (B : Fin (cutoff i - 2 * m i) →
-        (ELVOld.unitColumnCarrier D (parameterTwist D Sc) m cutoff L i ⟶ V))
+    (hmom : ∀ (c : (E).obj (Ys (0,0)).obj ≅ V) (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
       (z : (V).obj (⟨⟨[]⟩, rfl⟩ : ContentCategory D (parameterTwist D Sc) cutoff N 0)),
       (∀ (r : ℕ) (z : (V).obj (⟨⟨[]⟩, rfl⟩ :
           ContentCategory D (parameterTwist D Sc) cutoff N 0)),
         tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
-            ((ELVOld.rightwardUnitColumn D (parameterTwist D Sc) m cutoff L i B
+            ((ELVOld.rightwardUnitColumn
+              ((BalancedInduction.adjunction (contentAppend D (parameterTwist D Sc) cutoff N
+                (0 : Multiset I) [i])).unit.app V)
+              (ProbeVacuumCap.evaluatedPostDot D (parameterTwist D Sc) m cutoff N i H) B
               (cutoff i - 2 * m i - 1 + 2 * r)
               ⟨cutoff i - 2 * m i - 1, by omega⟩).total ⟨⟨[]⟩, rfl⟩ z) =
           polynomialToPower D cutoff L (PowerSeries.coeff r
               (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
             tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z ∧
         tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
-            ((ELVOld.rightwardUnitColumn D (parameterTwist D Sc) m cutoff L i B
+            ((ELVOld.rightwardUnitColumn
+              ((BalancedInduction.adjunction (contentAppend D (parameterTwist D Sc) cutoff N
+                (0 : Multiset I) [i])).unit.app V)
+              (ProbeVacuumCap.evaluatedPostDot D (parameterTwist D Sc) m cutoff N i H) B
               (cutoff i - 2 * m i - 1 + (2 * r + 1))
               ⟨cutoff i - 2 * m i - 1, by omega⟩).total ⟨⟨[]⟩, rfl⟩ z) =
           ((-1 : k) ^ (cutoff i + 1) •
@@ -105,7 +110,10 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
               (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
               tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z)) →
       tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
-          ((ELVOld.rightwardUnitColumn D (parameterTwist D Sc) m cutoff L i B e
+          ((ELVOld.rightwardUnitColumn
+              ((BalancedInduction.adjunction (contentAppend D (parameterTwist D Sc) cutoff N
+                (0 : Multiset I) [i])).unit.app V)
+              (ProbeVacuumCap.evaluatedPostDot D (parameterTwist D Sc) m cutoff N i H) B e
               ⟨cutoff i - 2 * m i - 1, by omega⟩).total ⟨⟨[]⟩, rfl⟩ z) =
         coefficientPowerQuotientMap D cutoff L a *
           tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) :
