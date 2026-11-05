@@ -166,6 +166,8 @@ section Rees
 
 open MvPolynomial
 
+attribute [local instance] MvPolynomial.WeightedHomogeneousSubmodule.gradedMonoid
+
 /-- The grading of `K[h] = MvPolynomial Unit K` with `h` in degree `1`, indexed by `ℤ`. -/
 abbrev reesGrading (K : Type*) [CommRing K] : ℤ → Submodule K (MvPolynomial Unit K) :=
   weightedHomogeneousSubmodule K (fun _ : Unit => (1 : ℤ))
