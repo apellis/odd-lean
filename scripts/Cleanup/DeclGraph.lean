@@ -23,14 +23,14 @@ unsafe def main (args : List String) : IO Unit := do
   let [listFile, out] := args | throw (IO.userError "usage: <module list> <output>")
   initSearchPath (← findSysroot)
   let mods := (← IO.FS.lines listFile).filter (· ≠ "") |>.map String.toName
-  let known ← IO.mkRef ({} : NameSet)
+  let known ← IO.mkRef ({} : Std.HashSet String)
   for m in mods do
-    withModule m fun d => known.modify fun s => d.constNames.foldl NameSet.insert s
+    withModule m fun d => known.modify fun s => d.constNames.foldl (fun s n => s.insert n.toString) s
   let known ← known.get
   let h ← IO.FS.Handle.mk out .write
   for m in mods do
     withModule m fun d => do
       for c in d.constants do
-        let deps := c.getUsedConstantsAsSet.toList.filter known.contains
-        h.putStrLn s!"{m}\t{kindOf c}\t{c.name}\t{String.intercalate " " (deps.map toString)}"
+        let deps := c.getUsedConstantsAsSet.toList.map toString |>.filter known.contains
+        h.putStrLn s!"{m}\t{kindOf c}\t{c.name}\t{String.intercalate " " deps}"
   h.flush
