@@ -38,7 +38,7 @@ a removed module.
 | | `OddMath` modules | lines | non-vacuity files | lines |
 |---|---|---|---|---|
 | research tip before cleanup | 3102 | 643,236 | 1382 | 116,274 |
-| after removing unused modules | 2798 | 596,648 | 100 | 4,274 |
+| after removing unused modules | 2800 | 596,776 | 101 | 4,415 |
 | `master` | 1321 | | 90 | |
 
 The Phase 1 theorem alone uses declarations from 1584 modules; the remaining research
@@ -47,10 +47,10 @@ declarations.
 
 ## Removed modules
 
-304 `OddMath` modules (47,128 lines) contribute no declaration to
+302 `OddMath` modules (47,000 lines) contribute no declaration to
 any retained result: earlier routes (cyclotomic-action content and append constructions,
 earlier Rouquier mate and inverse constructions, earlier swapped-assembly variants) and
-their example files. 1281 research non-vacuity files (112,000 lines)
+their example files. 1280 research non-vacuity files (about 111,900 lines)
 exercised intermediate lemmas only and are removed with them. Git history keeps all of them.
 
 <details><summary>Removed `OddMath` modules (lines)</summary>
@@ -312,7 +312,6 @@ exercised intermediate lemmas only and are removed with them. Git history keeps 
 | `OddMath/QuiverHecke/GlobalFactorNondegeneracy.lean` | 116 |
 | `OddMath/QuiverHecke/HalfTurn/BoundedDetection.lean` | 59 |
 | `OddMath/QuiverHecke/HalfTurn/QuotientEquivalence.lean` | 46 |
-| `OddMath/QuiverHecke/NondegeneracyIndependentRoots.lean` | 48 |
 | `OddMath/QuiverHecke/PairingExtensionAction.lean` | 42 |
 | `OddMath/QuiverHecke/PairingExtensionObservation.lean` | 79 |
 | `OddMath/QuiverHecke/ReservoirCoordinates.lean` | 68 |
@@ -334,7 +333,6 @@ exercised intermediate lemmas only and are removed with them. Git history keeps 
 | `OddMath/SKM/AdaptedSameColourChoicesExamples.lean` | 36 |
 | `OddMath/SKM/BubbleSpecialization.lean` | 134 |
 | `OddMath/SKM/BubbleTruncation.lean` | 135 |
-| `OddMath/SKM/CScalarsExistence.lean` | 80 |
 | `OddMath/SKM/CupCompletedChoiceExamples.lean` | 34 |
 | `OddMath/SKM/FiniteColourRelationsExamples.lean` | 101 |
 | `OddMath/SKM/JointScalarDescent.lean` | 59 |
