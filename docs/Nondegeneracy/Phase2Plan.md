@@ -208,3 +208,37 @@ truncated parameters give a `GradedSupercategory K`, then audit which Phase 1 st
 the base is a field (rather than only that the degree-zero part is one), and only then
 thread item 4.
 
+
+## Step 2, item 4: where `hc` is consumed
+
+**Measured closure.** The axiom closure of `QuiverHecke.nondegeneracy_of_symmetrizer` has
+24836 constants; 255 of them mention `Scalars.Homogeneous`, in 80 modules. Their roots fall
+into two kinds:
+
+- the grading itself: `isHomogeneous_gdeg`, feeding `gradedSupercategory D sy Sc hc` and,
+  through `elvHomGrading`, the ELV coefficient grading;
+- transport of homogeneity along changes of the parameter system (parameter twists,
+  restriction of colours, pairing-extension scalars, scalar change, universal polynomial
+  parameters) and the structure fields that store it (`VacuumRouteIndex`,
+  `VacuumRouteHypotheses`).
+
+So `hc` is used only to build gradings. Each transport root needs one graded analogue
+(`Sc.GradedHomogeneous sy 𝒜` is preserved by the same operation), proved once, not per file.
+
+**ELV grading over a graded base.** `elvHomGrading` is a box product over `k` of the
+coefficient grading of a quotient of `SYM` with the quiver Hecke grading. Over a graded base
+`R` both factors are `R`-modules graded by `K`-submodules, and the box product needs the
+tensor grading over `R`. This is the generic lemma `OddMath/Diagrams/GradedTensor.lean`
+(`GradedTensor.isInternal_part`): the tensor product over a graded ring of compatibly graded
+modules is graded by the `K`-spans of homogeneous pure tensors, with no flatness hypothesis,
+because the balancing relations are homogeneous. With `R` trivially graded it is the existing
+tensor grading; with `K` trivially graded it grades `SYM_R ≅ R ⊗_K SYM_K`.
+
+**Field-only steps, read over `K`.** The uses of the grading in the deformed reservoir
+argument are: finite dimension of each graded piece over the degree-zero field, finite
+support of the weight spaces, positive closure degree `2dᵢ(r + s + 1)` (joint nilpotence),
+and degree zero of the reflection operators. All hold with `K` as the degree-zero field and
+`R = K[h]/(h^N)` finite over `K`. The one splitting step of the swapped nondegeneracy argument
+is a `K`-linear splitting and runs over `K`. For the conclusion: a family `b` of Hom elements
+is `R`-linearly independent if and only if the family `h^j b` (`j < N`) is `K`-linearly
+independent, so the `K`-linear count gives the `R`-linear statement.
