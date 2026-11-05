@@ -34,10 +34,14 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR
 variable [Finite I] (sy : Symmetrizer D) (hc : Sc.Homogeneous)
 local notation "c" =>
-  elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc
+  elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)
 local notation "L" =>
-  pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR sy hc
-attribute [local irreducible] elvProbeCrossCoeff
+  pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) bound)
+attribute [local irreducible] elvProbeCrossCoeffOf
 
 private theorem pointwiseQuad
     (Gs Ys : ∀ s, H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s) :
@@ -52,7 +56,9 @@ private theorem pointwiseSlide
       ((P).swappedGens c L)) :=
   ProbeReservoir.slideRelations («P» := P) (Gs := fun s => (Gs s).obj)
     (Ys := fun s => (Ys s).obj) ((P).swappedGens_crossSlide c
-      (elvProbeCrossCoeff_isInverse D Sc m cutoff bound ΛP ΛR hP hR sy hc)
+      (elvProbeCrossCoeffOf_isInverse D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound))
       (elvProbeCrossDenominatorUnits D Sc m cutoff bound ΛP ΛR hP hR sy hc) L)
 
 private theorem pointwiseBraid
@@ -61,7 +67,9 @@ private theorem pointwiseBraid
       ((P).swappedGens c L)) :=
   (P).braidRelationsOfDenominatorUnits c L
     (Gs := fun s => (Gs s).obj) (Ys := fun s => (Ys s).obj)
-    (elvProbeCrossCoeff_isInverse D Sc m cutoff bound ΛP ΛR hP hR sy hc)
+    (elvProbeCrossCoeffOf_isInverse D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound))
     (elvProbeCrossDenominatorUnits D Sc m cutoff bound ΛP ΛR hP hR sy hc)
 
 private theorem pointwiseZigzag

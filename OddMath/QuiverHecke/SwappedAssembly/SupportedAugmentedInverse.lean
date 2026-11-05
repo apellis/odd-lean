@@ -25,10 +25,14 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR
 variable [Finite I] (sy : Symmetrizer D) (hc : Sc.Homogeneous)
 local notation "c" =>
-  elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc
+  elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)
 local notation "L" =>
-  pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR sy hc
-attribute [local irreducible] elvProbeCrossCoeff
+  pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) bound)
+attribute [local irreducible] elvProbeCrossCoeffOf
 
 /-- Both signs of the actual augmented matrix are invertible at every
 outer sector of a supported, weight-matched input. -/

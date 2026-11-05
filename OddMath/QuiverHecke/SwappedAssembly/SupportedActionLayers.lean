@@ -23,12 +23,16 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   [Finite I] (sy : Symmetrizer D) (hc : Sc.Homogeneous)
   (Gs Ys : ∀ s, H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s)
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR
-local notation "c" => elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc
-local notation "leftward" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR sy hc
+local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)
+local notation "leftward" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) bound)
 local notation "gens" => ProbeReservoir.swappedGens (P) c leftward
 local notation "Q" => interpretation D Sc m cutoff bound ΛP ΛR hP hR Gs Ys gens
 local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff bound ΛP ΛR hP hR sy hc Gs Ys
-attribute [local irreducible] elvProbeCrossCoeff
+attribute [local irreducible] elvProbeCrossCoeffOf
 
 /-- The complete action of a presented layer is the actual supported
 local operator, with no remaining presentation-obligation premise. -/

@@ -54,8 +54,12 @@ local notation "H" => VacuumTensor.probeFunctor D (parameterTwist D Sc) m cutoff
 local notation "V" => Superfunctor.obj H (probeOldVacuumRegular D (parameterTwist D Sc) m)
 local notation "ν₀" => (P).wt ((0, 0) : Sector I)
 local notation "Ys" => tensorTargetFamily D Sc m cutoff ΛP ΛR L
-local notation "cc" => elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc
-local notation "lw" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc
+local notation "cc" => elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) N)
+local notation "lw" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N)
 
 /-- The decoded value of the coefficient action at the vacuum object of the tensor target
 family is left multiplication, for every comparison with the tensor vacuum value that is
@@ -117,7 +121,10 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
       (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hP hR).symm)
     (fun q p => (lw).lcrossSame i ν₀ q p (Ys (0,0)).obj)
     (fun n q r => (lw).dcap i n ν₀ q r (Ys (0,0)).obj)
-    (centralPointwiseLeftward_negInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
+    (centralPointwiseLeftward_negInverseAt D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N)
+        (reservoirWindowIdeal D Sc m cutoff N ΛP ΛR hP hR sy hc) i (0,0)
       (Ys (0,0)) hh) cc
   apply vacuumEntry_of_decode D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀ _ _ a c
     (vacuumDecodeFaithful_tensorTarget D Sc m cutoff ΛP ΛR L hP hR c) (hcoef c hceq a)

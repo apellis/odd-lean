@@ -98,8 +98,12 @@ theorem vacuumEntry_of_decode (μ : X) (M : List (SKM.LayerData I)) (hM : SKM.SC
       (tensorTargetFamilyCoefficientAction D Sc m cutoff L ΛP ΛR (0,0) a).hom =
       LinearMap.mulLeft k (coefficientPowerQuotientMap D cutoff L a))
     (hf : ∀ z, dec ((c.inv ≫ (E).map (ProbeReservoir.compDiag
-        (ProbeReservoir.swappedGens (P) (elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc)
-          (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc))
+        (ProbeReservoir.swappedGens (P) (elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) N))
+          (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N)))
         (SKM.mkD D μ M hM) (SPath.nil (0,0)) (SPath.nil (0,0))
         (tensorTargetFamily D Sc m cutoff ΛP ΛR L (0,0)).obj) ≫ c.hom).total star z) =
       coefficientPowerQuotientMap D cutoff L a * dec z) :

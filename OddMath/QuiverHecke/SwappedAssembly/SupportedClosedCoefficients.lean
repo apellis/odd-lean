@@ -76,11 +76,15 @@ theorem entryEquiv_comp_map {w : List (Col I X)} {s t : Sector I} (p : SPath w s
 
 variable [Finite I] (sy : Symmetrizer D) (hc : Sc.Homogeneous)
   (Gs Ys : ∀ s, H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s)
-local notation "c" => elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc
-local notation "leftward" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR sy hc
+local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)
+local notation "leftward" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) bound)
 local notation "gens" => ProbeReservoir.swappedGens (P) c leftward
 local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff bound ΛP ΛR hP hR sy hc Gs Ys
-attribute [local irreducible] elvProbeCrossCoeff
+attribute [local irreducible] elvProbeCrossCoeffOf
 
 /-- **A closed diagram with supported sector entries.** If the entry of the closed diagram
 `cl M` at every rightmost sector `t` is the supported endomorphism `f t` of `Ys t`, then
@@ -109,13 +113,17 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (sy : Symmetrizer D) (hc : Sc.Homogeneous) (sw : List I)
 local notation "N" => PowerWordContent.powerBound D cutoff L
 local notation "P" => elvProbeReservoir D Sc m cutoff N ΛP ΛR hP hR
-local notation "c" => elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc
-local notation "leftward" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc
+local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) N)
+local notation "leftward" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N)
 local notation "gens" => ProbeReservoir.swappedGens (P) c leftward
 local notation "Ys" => tensorTargetFamily D Sc m cutoff ΛP ΛR L
 local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff N ΛP ΛR hP hR sy hc
   (tensorSourceFamily D Sc m cutoff ΛP ΛR L sw) Ys
-attribute [local irreducible] elvProbeCrossCoeff
+attribute [local irreducible] elvProbeCrossCoeffOf
 
 /-- **A closed diagram acting as a source coefficient.** In the complete supported action on
 the tensor families, the closed diagram `cl M`, placed to the right of the upward word of

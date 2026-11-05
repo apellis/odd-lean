@@ -28,7 +28,9 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR
 variable [Finite I] (sy : Symmetrizer D) (hc : Sc.Homogeneous)
-local notation "c" => elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc
+local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)
 attribute [local irreducible] elvProbeReservoir ProbeReservoir.sigmaEntry
 
 /-- Intermediate distinct-colour permutation assembly with the two pure

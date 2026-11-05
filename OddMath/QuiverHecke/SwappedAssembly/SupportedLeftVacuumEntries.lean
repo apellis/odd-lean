@@ -59,8 +59,12 @@ local notation "Z" => (tensorTargetFamily D Sc m cutoff ΛP ΛR L (0,0)).obj
 
 variable (sy : Symmetrizer D) (hc : Sc.Homogeneous)
 local notation "gens" => ProbeReservoir.swappedGens (P)
-  (elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc)
-  (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc)
+  (elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) N))
+  (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N))
 
 /-- Conjugating the vacuum entry of a closed diagram along an equality of inputs. -/
 private theorem conj_compDiag_of_eq {Z₁ Z₂ : (P).H ((0, 0) : Sector I)} (h : Z₁ = Z₂)
@@ -92,13 +96,22 @@ theorem vacuumLeftOdd_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
     tensorVacuum_leftward_odd_moments D Sc m cutoff L ΛP ΛR hP hR i
       (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
         (parameterTwist_homogeneous D Sc hc) _) hi hN hlt
-      (fun q p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc).lcrossSame i ν₀ q p
+      (fun q p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N)).lcrossSame i ν₀ q p
         (tensorVacuum D Sc m cutoff L ΛP ΛR).obj)
-      (fun n r p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc).dcup i n ν₀ r p
+      (fun n r p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N)).dcup i n ν₀ r p
         (tensorVacuum D Sc m cutoff L ΛP ΛR).obj)
-      (centralPointwiseLeftward_posInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
+      (centralPointwiseLeftward_posInverseAt D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N)
+        (reservoirWindowIdeal D Sc m cutoff N ΛP ΛR hP hR sy hc) i (0,0)
         (tensorVacuum D Sc m cutoff L ΛP ΛR) hpos.le)
-      (elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc)
+      (elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) N))
   refine ⟨eqToIso (congrArg (E).obj hZ) ≪≫ c, ⟨(congrArg (E).obj hZ).trans h0, by
     rw [Iso.trans_hom, eqToIso.hom, hc0, eqToHom_trans]⟩, fun z => ?_⟩
   rw [conj_compDiag_of_eq D Sc m cutoff ΛP ΛR L hP hR sy hc hZ c]
@@ -147,13 +160,22 @@ theorem vacuumOddBubble_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
     tensorVacuum_leftward_odd_moments D Sc m cutoff L ΛP ΛR hP hR i
       (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
         (parameterTwist_homogeneous D Sc hc) _) hi hN hlt
-      (fun q p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc).lcrossSame i ν₀ q p
+      (fun q p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N)).lcrossSame i ν₀ q p
         (tensorVacuum D Sc m cutoff L ΛP ΛR).obj)
-      (fun n r p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc).dcup i n ν₀ r p
+      (fun n r p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N)).dcup i n ν₀ r p
         (tensorVacuum D Sc m cutoff L ΛP ΛR).obj)
-      (centralPointwiseLeftward_posInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
+      (centralPointwiseLeftward_posInverseAt D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N)
+        (reservoirWindowIdeal D Sc m cutoff N ΛP ΛR hP hR sy hc) i (0,0)
         (tensorVacuum D Sc m cutoff L ΛP ΛR) hpos.le)
-      (elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc)
+      (elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) N))
   refine ⟨eqToIso (congrArg (E).obj hZ) ≪≫ c, ⟨(congrArg (E).obj hZ).trans h0, by
     rw [Iso.trans_hom, eqToIso.hom, hc0, eqToHom_trans]⟩, fun z => ?_⟩
   rw [conj_compDiag_of_eq D Sc m cutoff ΛP ΛR L hP hR sy hc hZ c]
@@ -204,13 +226,22 @@ theorem vacuumLeftEven_decode (i : I) (hi : D.parity i = 0) (hN : 0 < cutoff i)
     tensorVacuum_leftward_even_moments D Sc m cutoff L ΛP ΛR hP hR i
       (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
         (parameterTwist_homogeneous D Sc hc) _) hi hN hlt
-      (fun q p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc).lcrossSame i ν₀ q p
+      (fun q p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N)).lcrossSame i ν₀ q p
         (tensorVacuum D Sc m cutoff L ΛP ΛR).obj)
-      (fun n r p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc).dcup i n ν₀ r p
+      (fun n r p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N)).dcup i n ν₀ r p
         (tensorVacuum D Sc m cutoff L ΛP ΛR).obj)
-      (centralPointwiseLeftward_posInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
+      (centralPointwiseLeftward_posInverseAt D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N)
+        (reservoirWindowIdeal D Sc m cutoff N ΛP ΛR hP hR sy hc) i (0,0)
         (tensorVacuum D Sc m cutoff L ΛP ΛR) hpos.le)
-      (elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc)
+      (elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) N))
   refine ⟨eqToIso (congrArg (E).obj hZ) ≪≫ c, ⟨(congrArg (E).obj hZ).trans h0, by
     rw [Iso.trans_hom, eqToIso.hom, hc0, eqToHom_trans]⟩, fun z => ?_⟩
   rw [conj_compDiag_of_eq D Sc m cutoff ΛP ΛR L hP hR sy hc hZ c]

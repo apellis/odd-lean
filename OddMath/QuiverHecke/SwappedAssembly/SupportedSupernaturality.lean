@@ -43,8 +43,12 @@ instance retainedInclusion_super (s : Sector I) :
   map_mem hf := hf
 
 variable [Finite I] (sy : Symmetrizer D) (hc : Sc.Homogeneous)
-local notation "c" => elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc
-local notation "L" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR sy hc
+local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)
+local notation "L" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) bound)
 
 /-- The chosen equal-colour crossing is supernatural on every retained input. -/
 theorem pointwiseLeftward_lcrossSame_supernatural (i : I) (ν : X) {t s : Sector I}
@@ -54,7 +58,9 @@ theorem pointwiseLeftward_lcrossSame_supernatural (i : I) (ν : X) {t s : Sector
       (G := retainedInclusion D Sc m cutoff bound ΛP ΛR hP hR s ⋙ (P).pathFunctor p)
       (fun Z => (L).lcrossSame i ν q p Z.obj) := by
   by_cases hw : (P).wt s = ν
-  · have hC := elvProbeCrossCoeff_isSupernatural D Sc m cutoff bound ΛP ΛR hP hR sy hc
+  · have hC := elvProbeCrossCoeffOf_isSupernatural D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)
     by_cases hh : 0 ≤ D.h i ν
     · exact (leftward_supernatural_of_posInverseAt_comp c L hC i ν t s
         (retainedInclusion D Sc m cutoff bound ΛP ΛR hP hR s)
@@ -65,7 +71,9 @@ theorem pointwiseLeftward_lcrossSame_supernatural (i : I) (ν : X) {t s : Sector
         (fun Z => pointwiseLeftward_negInverseAt D Sc m cutoff bound ΛP ΛR hP hR
           sy hc i ν t s Z hw (not_le.mp hh))).1 q p
   · have he (Z : (Q s).FullSubcategory) : (L).lcrossSame i ν q p Z.obj = 0 :=
-      (pointwiseLeftwardData_vanishesOffWeight D Sc m cutoff bound ΛP ΛR hP hR sy hc).1
+      (pointwiseLeftwardData_vanishesOffWeight D Sc m cutoff bound ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) bound)).1
         i ν q p Z.obj hw
     simp only [he]
     exact isSupernatural_zero _
@@ -80,14 +88,18 @@ theorem pointwiseLeftward_dcup_supernatural (i : I) (n : ℕ) (ν : X)
       (fun Z => (L).dcup i n ν r p Z.obj) := by
   by_cases hw : (P).wt s = ν
   · have hh : 0 ≤ D.h i ν := by omega
-    have hC := elvProbeCrossCoeff_isSupernatural D Sc m cutoff bound ΛP ΛR hP hR sy hc
+    have hC := elvProbeCrossCoeffOf_isSupernatural D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)
     exact IsSupernatural.of_parity_eq
       ((leftward_supernatural_of_posInverseAt_comp c L hC i ν t s
         (retainedInclusion D Sc m cutoff bound ΛP ΛR hP hR s)
         (fun Z => pointwiseLeftward_posInverseAt D Sc m cutoff bound ΛP ΛR hP hR
           sy hc i ν t s Z hw hh)).2 ⟨n,Int.lt_toNat.mpr hn⟩ r p) (mul_comm _ _)
   · have he (Z : (Q s).FullSubcategory) : (L).dcup i n ν r p Z.obj = 0 :=
-      (pointwiseLeftwardData_vanishesOffWeight D Sc m cutoff bound ΛP ΛR hP hR sy hc).2.1
+      (pointwiseLeftwardData_vanishesOffWeight D Sc m cutoff bound ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) bound)).2.1
         i n ν r p Z.obj hw
     simp only [he]
     exact isSupernatural_zero _
@@ -102,14 +114,18 @@ theorem pointwiseLeftward_dcap_supernatural (i : I) (n : ℕ) (ν : X)
       (fun Z => (L).dcap i n ν q r Z.obj) := by
   by_cases hw : (P).wt s = ν
   · have hh : D.h i ν < 0 := by omega
-    have hC := elvProbeCrossCoeff_isSupernatural D Sc m cutoff bound ΛP ΛR hP hR sy hc
+    have hC := elvProbeCrossCoeffOf_isSupernatural D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)
     exact IsSupernatural.of_parity_eq
       ((leftward_supernatural_of_negInverseAt_comp c L hC i ν t s
         (retainedInclusion D Sc m cutoff bound ΛP ΛR hP hR s)
         (fun Z => pointwiseLeftward_negInverseAt D Sc m cutoff bound ΛP ΛR hP hR
           sy hc i ν t s Z hw hh)).2 ⟨n,Int.lt_toNat.mpr hn⟩ q r) (mul_comm _ _)
   · have he (Z : (Q s).FullSubcategory) : (L).dcap i n ν q r Z.obj = 0 :=
-      (pointwiseLeftwardData_vanishesOffWeight D Sc m cutoff bound ΛP ΛR hP hR sy hc).2.2
+      (pointwiseLeftwardData_vanishesOffWeight D Sc m cutoff bound ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) bound)).2.2
         i n ν q r Z.obj hw
     simp only [he]
     exact isSupernatural_zero _
@@ -119,7 +135,9 @@ theorem pointwiseLeftward_generatorsSupernaturalOn
     (hσ : ∀ i j : I, i ≠ j → ∀ ν : X, (P).SigmaPermutation c i j ν) :
     GeneratorsSupernaturalOn Q ((P).swappedGens c L) := by
   rintro ⟨g,ν⟩ t s p p'
-  have hC := elvProbeCrossCoeff_isSupernatural D Sc m cutoff bound ΛP ΛR hP hR sy hc
+  have hC := elvProbeCrossCoeffOf_isSupernatural D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)
   let J := retainedInclusion D Sc m cutoff bound ΛP ΛR hP hR s
   cases g with
   | dot i => exact ((P).dotImage_supernatural i ν p p').whiskerLeft J

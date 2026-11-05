@@ -47,8 +47,12 @@ local notation "N" => PowerWordContent.powerBound D cutoff L
 local notation "P" => elvProbeReservoir D Sc m cutoff N ΛP ΛR hP hR
 local notation "ν₀" => (P).wt ((0, 0) : Sector I)
 local notation "Ys" => tensorTargetFamily D Sc m cutoff ΛP ΛR L
-local notation "cc" => elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc
-local notation "lw" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc
+local notation "cc" => elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) N)
+local notation "lw" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N)
 
 local notation "E" => vacuumSectorEvaluation D Sc m cutoff N ΛP ΛR hP hR
 local notation "Hv" => VacuumTensor.probeFunctor D (parameterTwist D Sc) m cutoff N
@@ -87,7 +91,10 @@ private theorem vacuumNegEven_negInverseAt (i : I) (hh : D.h i ν₀ < 0) :
     (P).NegInverseAt cc i ν₀ ((0, 0) : Sector I) ((0, 0) : Sector I) Zt
       (fun q p => (lw).lcrossSame i ν₀ q p Zt)
       (fun n q r => (lw).dcap i n ν₀ q r Zt) :=
-  centralPointwiseLeftward_negInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
+  centralPointwiseLeftward_negInverseAt D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N)
+        (reservoirWindowIdeal D Sc m cutoff N ΛP ΛR hP hR sy hc) i (0,0)
     (tensorVacuum D Sc m cutoff L ΛP ΛR) hh
 
 local notation "Kc" => contentAppend D (parameterTwist D Sc) cutoff N (0 : Multiset I)

@@ -203,10 +203,14 @@ theorem centralFactorMatrix_content_isIso
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
     (β : WeightBlocks D ΛR ((P).muM t)) :
     (0 ≤ D.h i ((P).wt t) → IsIso ((P).augPosFactorMatrix
-      (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc) i ((P).wt t) t Z.obj
+      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)) i ((P).wt t) t Z.obj
         (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β))) ∧
     (D.h i ((P).wt t) ≤ 0 → IsIso ((P).augNegFactorMatrix
-      (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc) i ((P).wt t) t Z.obj
+      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)) i ((P).wt t) t Z.obj
         (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β))) :=
   centralFactorMatrix_content_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR
     (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
@@ -253,9 +257,13 @@ theorem centralAugmentedMatrix_isIso
     (sy : Symmetrizer D) (hc : Sc.Homogeneous) (i : I) (t : Sector I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t) :
     (0 ≤ D.h i ((P).wt t) → IsIso ((P).augPosMat
-      (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc) i ((P).wt t) t t Z.obj)) ∧
+      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)) i ((P).wt t) t t Z.obj)) ∧
     (D.h i ((P).wt t) ≤ 0 → IsIso ((P).augNegMat
-      (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc) i ((P).wt t) t t Z.obj)) :=
+      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)) i ((P).wt t) t t Z.obj)) :=
   centralAugmentedMatrix_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR
     (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
       (parameterTwist_homogeneous D Sc hc) bound)

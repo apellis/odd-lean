@@ -57,12 +57,16 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   [Finite I] (sy : Symmetrizer D) (hc : Sc.Homogeneous)
   (Gs Ys : ∀ s, H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s)
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR
-local notation "c" => elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc
-local notation "leftward" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR sy hc
+local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)
+local notation "leftward" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) bound)
 local notation "gens" => ProbeReservoir.swappedGens (P) c leftward
 local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff bound ΛP ΛR hP hR sy hc Gs Ys
 local notation "E" => matrixEquiv D Sc m cutoff bound ΛP ΛR hP hR Gs Ys
-attribute [local irreducible] elvProbeCrossCoeff
+attribute [local irreducible] elvProbeCrossCoeffOf
 
 /-- **A closed diagram beside the strands, entry by entry.** In the complete supported
 upward module action, the closed diagram `cl M` of the rightmost region `μ`, placed to the

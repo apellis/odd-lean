@@ -72,10 +72,16 @@ theorem ELVProbeCrossTransposeNormUnits [Finite I]
 /-- Every off-central swapping entry of the chosen mixed coefficient is invertible. -/
 theorem elvProbeSwappingInvertible [Finite I]
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) :
-    (P).SwappingInvertible (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc) :=
+    (P).SwappingInvertible (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)) :=
   (P).swappingInvertible_of_units
-    (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc)
-    (elvProbeCrossCoeff_isInverse D Sc m cutoff bound ΛP ΛR hP hR sy hc)
+    (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound))
+    (elvProbeCrossCoeffOf_isInverse D Sc m cutoff bound ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound))
     (elvProbeCrossDenominatorUnits D Sc m cutoff bound ΛP ΛR hP hR sy hc)
     (ELVProbeCrossTransposeNormUnits D Sc m cutoff bound ΛP ΛR hP hR sy hc)
 

@@ -165,8 +165,12 @@ theorem tensorCornerEv_of_ne (t : List I)
   · rfl
 
 variable (sy : Symmetrizer D) (hc : Sc.Homogeneous)
-local notation "c" => elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc
-local notation "leftward" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc
+local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) N)
+local notation "leftward" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N)
 local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff N ΛP ΛR hP hR sy hc
   (tensorSourceFamily D Sc m cutoff ΛP ΛR L s) (tensorTargetFamily D Sc m cutoff ΛP ΛR L)
 

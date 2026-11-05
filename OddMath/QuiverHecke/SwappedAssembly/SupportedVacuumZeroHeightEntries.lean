@@ -203,7 +203,9 @@ local notation "Ev" => vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hc
 variable (H : ProbeVacuumCap.modulePiCategory D (parameterTwist D Sc) m ⟶
   elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR (-ΛR))
 variable (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (i : I)
-local notation "cc" => elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc
+local notation "cc" => elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound)
 local notation "p₀" => SPath.centralUpDn i (SKM.wt D ν₀ [SKM.dn i]) ν₀ ((0, 0) : Sector I)
   ⟨true, trivial⟩
 local notation "q₀" => SPath.centralDnUp i (SKM.wt D ν₀ [SKM.up i]) ν₀ ((0, 0) : Sector I)
@@ -308,9 +310,15 @@ local notation "Zt" => (tensorVacuum D Sc m cutoff L ΛP ΛR).obj
 
 variable (sy : Symmetrizer D) (hc : Sc.Homogeneous)
 local notation "gens" => ProbeReservoir.swappedGens (P)
-  (elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc)
-  (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc)
-local notation "LD" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc
+  (elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) N))
+  (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N))
+local notation "LD" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N)
 
 /-- Conjugating the vacuum entry of a closed diagram along an equality of inputs. -/
 private theorem conj_compDiag_of_eq {Z₁ Z₂ : (P).H ((0, 0) : Sector I)} (h : Z₁ = Z₂)
@@ -327,11 +335,16 @@ include sy hc in
 /-- The zero-height inverse data at the tensor vacuum: the leftward data satisfies
 the negative inverse identities there. -/
 private theorem zeroHeight_negInverseAt (i : I) (h0 : D.h i ν₀ = 0) :
-    (P).NegInverseAt (elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc) i ν₀
+    (P).NegInverseAt (elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) N)) i ν₀
       ((0, 0) : Sector I) ((0, 0) : Sector I) Zt
       (fun q p => (LD).lcrossSame i ν₀ q p Zt) (fun _ _ _ => 0) :=
   ProbeReservoir.negInverseAt_of_posInverseAt_of_eq_zero (P) _ i ν₀ _ _ Zt _ h0
-    (centralPointwiseLeftward_posInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
+    (centralPointwiseLeftward_posInverseAt D Sc m cutoff N ΛP ΛR hP hR
+        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+          (parameterTwist_homogeneous D Sc hc) N)
+        (reservoirWindowIdeal D Sc m cutoff N ΛP ΛR hP hR sy hc) i (0,0)
       (tensorVacuum D Sc m cutoff L ΛP ΛR) h0.ge)
 
 include sy hc in
