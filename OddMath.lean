@@ -2808,4 +2808,5 @@ import OddMath.QuiverHecke.VacuumRouteSwappedCharts
 import OddMath.QuiverHecke.VacuumRouteSwappedNonpositiveBubbles
 import OddMath.QuiverHecke.VacuumRouteSwappedPositiveBubbles
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumDecodeFaithful
+import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumCoefficientDecode
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumRightEntriesOdd

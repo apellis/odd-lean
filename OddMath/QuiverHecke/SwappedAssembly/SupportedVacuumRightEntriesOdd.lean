@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumEntryLift
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumDecodeFaithful
+import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumCoefficientDecode
 import OddMath.QuiverHecke.SwappedAssembly.SupportedPointwiseLeftwardInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumRightwardMoments
 import OddMath.QuiverHecke.SwappedVacuumAdjunctionBubbles
@@ -24,8 +25,8 @@ target family are the coefficient actions of the `s`-th coefficient of
 The proof reads the entries on the tensor vacuum value through the cup inverse of
 `tensorVacuum_rightward_odd_moments`, whose extreme column has the required decoded
 moments, and lifts the decoded equality with `vacuumEntry_of_decode`; faithfulness of
-the decoded reading is `vacuumDecodeFaithful_tensorTarget`. The decoded value of the
-coefficient action (`hcoef`) is a hypothesis.
+the decoded reading is `vacuumDecodeFaithful_tensorTarget`, and the decoded value of the
+coefficient action is `vacuumDecode_tensorTargetCoefficient`.
 -/
 
 noncomputable section
@@ -64,6 +65,11 @@ def VacuumCoefficientDecode : Prop :=
     vacuumDecode D Sc m cutoff ΛP ΛR L hP hR _ c
       (tensorTargetFamilyCoefficientAction D Sc m cutoff L ΛP ΛR (0,0) a).hom =
     LinearMap.mulLeft k (coefficientPowerQuotientMap D cutoff L a)
+
+/-- The decoded coefficient action holds: every `eqToHom` comparison reads the
+coefficient action of `a` as left multiplication by the class of `a`. -/
+theorem vacuumCoefficientDecode_holds : VacuumCoefficientDecode D Sc m cutoff ΛP ΛR L hP hR :=
+  fun c hc a => vacuumDecode_tensorTargetCoefficient D Sc m cutoff ΛP ΛR L hP hR c hc a
 
 omit [Fintype I] in
 private theorem odd_probeCutoff_eq (i : I) (hi : D.parity i = 1) :
@@ -140,9 +146,8 @@ include sy hc in
 /-- **Odd right bubbles at negative height, moments.** For an odd colour `i` with
 `0 < probeCutoff` and negative vacuum height `h`, the vacuum entry of
 `η x^(2s - h - 1) ≫ dcap (-h - 1)` of the tensor target family is the coefficient action
-of the `s`-th coefficient of `(1 + w)^M / C(-w)`, given the decoded coefficient action. -/
-theorem vacuumEntry_neg_odd (hcoef : VacuumCoefficientDecode D Sc m cutoff ΛP ΛR L hP hR)
-    (i : I) (hi : D.parity i = 1) (hP0 : 0 < probeCutoff D m i)
+of the `s`-th coefficient of `(1 + w)^M / C(-w)`. -/
+theorem vacuumEntry_neg_odd (i : I) (hi : D.parity i = 1) (hP0 : 0 < probeCutoff D m i)
     (hh : D.h i ν₀ < 0) (s : ℕ) :
     VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀
       (etaL i (((2 * s : ℕ) : ℤ) - D.h i ν₀ - 1).toNat ++ dcapL i (-D.h i ν₀ - 1).toNat)
@@ -154,17 +159,17 @@ theorem vacuumEntry_neg_odd (hcoef : VacuumCoefficientDecode D Sc m cutoff ΛP �
   have he : (((2 * s : ℕ) : ℤ) - D.h i ν₀ - 1).toNat = cutoff i - 2 * m i - 1 + 2 * s := by
     rw [hhe]; omega
   rw [he]
-  refine vacuumEntry_odd_shift D Sc m cutoff ΛP ΛR L hP hR sy hc hcoef i hi hP0 hh _ _
+  refine vacuumEntry_odd_shift D Sc m cutoff ΛP ΛR L hP hR sy hc
+    (vacuumCoefficientDecode_holds D Sc m cutoff ΛP ΛR L hP hR) i hi hP0 hh _ _
     (by rw [hhe]; omega) _ (fun c B z hm => (hm s z).1)
 
 include sy hc in
 /-- **Odd right bubbles at negative height, odd coefficient.** For an odd colour `i` with
 `0 < probeCutoff` and negative vacuum height `h`, the vacuum entry of
 `η x^(1 - h - 1) ≫ dcap (-h - 1)` of the tensor target family is the coefficient action
-of `σ δ_i`, for any sign `σ = probeSign N' i` equal to `(-1)^(cutoff i + 1)`, given the
-decoded coefficient action. -/
-theorem vacuumEntry_odd_neg (hcoef : VacuumCoefficientDecode D Sc m cutoff ΛP ΛR L hP hR)
-    (N' : I → ℕ) (i : {i : I // D.parity i = 1}) (hP0 : 0 < probeCutoff D m i.1)
+of `σ δ_i`, for any sign `σ = probeSign N' i` equal to `(-1)^(cutoff i + 1)`. -/
+theorem vacuumEntry_odd_neg (N' : I → ℕ) (i : {i : I // D.parity i = 1})
+    (hP0 : 0 < probeCutoff D m i.1)
     (hh : D.h i.1 ν₀ < 0) (hN' : SYM.probeSign D k N' i = (-1) ^ (cutoff i.1 + 1)) :
     VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀
       (etaL i.1 (((1 : ℕ) : ℤ) - D.h i.1 ν₀ - 1).toNat ++ dcapL i.1 (-D.h i.1 ν₀ - 1).toNat)
@@ -175,7 +180,8 @@ theorem vacuumEntry_odd_neg (hcoef : VacuumCoefficientDecode D Sc m cutoff ΛP �
   have he : (((1 : ℕ) : ℤ) - D.h i.1 ν₀ - 1).toNat = cutoff i.1 - 2 * m i.1 - 1 + (2 * 0 + 1) := by
     rw [hhe]; omega
   rw [he]
-  refine vacuumEntry_odd_shift D Sc m cutoff ΛP ΛR L hP hR sy hc hcoef i.1 i.2 hP0 hh _ _
+  refine vacuumEntry_odd_shift D Sc m cutoff ΛP ΛR L hP hR sy hc
+    (vacuumCoefficientDecode_holds D Sc m cutoff ΛP ΛR L hP hR) i.1 i.2 hP0 hh _ _
     (by rw [hhe]; omega) _ (fun c B z hm => ?_)
   rw [(hm 0 z).2, AdjunctionBubbleSeries.coeff_zero_momentSeries, map_one, one_mul, map_smul, hN']
 

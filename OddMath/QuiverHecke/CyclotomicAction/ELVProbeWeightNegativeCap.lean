@@ -1,6 +1,7 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightPreDot
 import Mathlib.RingTheory.Nilpotent.Basic
 import OddMath.SKM.RouquierHomPreNegativePowers
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvenVacuumPolynomial
 
 /-! # The actual negative pre-cap at the regular probe
 
@@ -108,6 +109,37 @@ theorem vacuumPreNegativeCap_native (hP : 0 < probeCutoff D m i)
   rw [SKM.homPreNegativeCap, Superfunctor.comp_total, Category.assoc,
     vacuumPreCounit_native D Sc m Λ hc W muM i h H hP,
     ← Category.assoc, vacuumPreInverseDot_source D Sc m Λ hc W muM i h H hP hi n,
+    Category.assoc]
+
+/-- Even colour: all inverse powers are those of the actual whole-weight raw dot. -/
+theorem vacuumPreInverseDot_source_even (hP : 0 < probeCutoff D m i)
+    (hi : D.parity i = 0) (n : ℕ) :
+    ((SKM.homPreDotInverse T W i muM h ((SKM.homContentPreF T W i muM h).obj Z)) ^ n).total N₀ ≫
+      (vacuumPreSourceIso D Sc m Λ hc W muM i h H).hom =
+    (vacuumPreSourceIso D Sc m Λ hc W muM i h H).hom ≫
+      Ring.inverse (ProbeVacuumCap.shiftedPreDot D Sc m (W muM) i H) ^ n := by
+  let a := (totalEvaluation N₀).mapIso (rawPreDotAut D Sc m Λ hc W muM i h H)
+  let xi := (totalEvaluation N₀).mapEnd _
+    (SKM.homPreDotInverse T W i muM h ((SKM.homContentPreF T W i muM h).obj Z))
+  have hh := inverse_power_square a (vacuumPreSourceIso D Sc m Λ hc W muM i h H)
+    xi rfl (ProbeVacuumCap.shiftedPreDot D Sc m (W muM) i H)
+    (ProbeVacuumCap.shiftedPreDot_even_isUnit D Sc m (W muM) i hi H)
+    (vacuumPreDot_source D Sc m Λ hc W muM i h H hP) n
+  rw [total_pow]
+  exact hh
+
+/-- Even colour: every actual normalized negative pre-cap has the native
+inverse-dot and cap coordinates. No moment or cap compatibility hypothesis is used. -/
+theorem vacuumPreNegativeCap_native_even (hP : 0 < probeCutoff D m i)
+    (hi : D.parity i = 0) (n : ℕ) :
+    (SKM.homPreNegativeCap T W i muM h n Z).total N₀ ≫
+      H.map (eqToHom (emptyProbe_regular D Sc m Λ)) =
+    (vacuumPreSourceIso D Sc m Λ hc W muM i h H).hom ≫
+      (Ring.inverse (ProbeVacuumCap.shiftedPreDot D Sc m (W muM) i H) ^ n) ≫
+        ProbeVacuumCap.shiftedPreCap D Sc m (W muM) i hP H := by
+  rw [SKM.homPreNegativeCap, Superfunctor.comp_total, Category.assoc,
+    vacuumPreCounit_native D Sc m Λ hc W muM i h H hP,
+    ← Category.assoc, vacuumPreInverseDot_source_even D Sc m Λ hc W muM i h H hP hi n,
     Category.assoc]
 
 end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
