@@ -2462,6 +2462,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernelIntegerOver
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCentreBlocks
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirClosures
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelEntryDegrees
+import OddMath.QuiverHecke.CyclotomicAction.ELVKernelEntryDegreesOver
 import OddMath.Algebra.IntegerMatrixGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelMatrixInteger
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentPrincipalInverseCoordinates
