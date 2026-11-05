@@ -120,7 +120,8 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
   have hd : ¬StepValid (dn i) true ((0, 0) : Sector I) := by simp [StepValid]
   obtain ⟨c, j, B, -, hcup, hm⟩ := tensorVacuum_rightward_odd_moments D Sc m cutoff L ΛP ΛR
     hP hR sy hc i hi (by rw [odd_probeCutoff_eq D m i hi]; omega) hPN (Ys (0,0)).obj
-    (congrArg (fun Y => Y.obj) (tensorTargetFamily_zero D Sc m cutoff ΛP ΛR L))
+    ((congrArg (fun Y => Y.obj) (tensorTargetFamily_zero D Sc m cutoff ΛP ΛR L)).trans
+      (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hP hR).symm)
     (fun q p => (lw).lcrossSame i ν₀ q p (Ys (0,0)).obj)
     (fun n q r => (lw).dcap i n ν₀ q r (Ys (0,0)).obj)
     (centralPointwiseLeftward_negInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
