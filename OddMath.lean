@@ -2511,6 +2511,7 @@ import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowInverseData
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendSeriesAlgebra
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendWindowMonomials
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirClosureDegree
+import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirClosureDegreeOver
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirClosureIdeal
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorVacuum
 import OddMath.QuiverHecke.CyclotomicAction.ELVAbsentWindowInverseCoordinates
