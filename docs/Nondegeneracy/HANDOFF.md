@@ -500,6 +500,18 @@ the all-even specialization against the cited even benchmark. No proof route
 for nonsymmetrizable data is to be developed. See
 [FieldScopeBoundary](FieldScopeBoundary.md).
 
+Phase 2 target: `SKM.GradedCoefficientNondegeneracy D sy`
+([GradedParameters](../../OddMath/SKM/GradedParameters.lean)). It already
+implies the lower-degree ungraded statement
+(`SKM.nondegeneracyConjecture_of_lowerDegree`). Next targets, in order
+([Phase2Plan](Phase2Plan.md)): reduce the target to the universal graded
+parameter ring and its Artinian truncations over characteristic-zero fields;
+let the grading of the supercategory give positive degree to ring elements;
+rerun the nilpotence, kernel-degree and inverse-degree arguments of the field
+route over such bases. The associated graded gives only spanning and is not
+a route to independence. The missing pure monomials `u^r`, `v^s` of BWW are a
+recorded open statement decision; `Scalars` is not enlarged.
+
 The selected vacuum values, evaluated local/braid records, representative
 tensor/dot/loop comparisons, rectangular slides and probe generator data
 passed the full build, global axiom audit and all consumers in

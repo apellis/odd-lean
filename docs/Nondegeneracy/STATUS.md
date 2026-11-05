@@ -50,9 +50,9 @@ The earlier conditional end theorem `QuiverHecke.nondegeneracy_of_vacuum_route`
 by the swapped route and its hypotheses are not discharged. On purely even
 data with Khovanov–Lauda scalars and finitely many colours, the conclusion
 matches the checked even theorem (#1059); this compares conclusions only.
-Phase 2 and the full all-even comparison of
-[FieldScopeBoundary](FieldScopeBoundary.md) remain open, so the branch is
-not complete.
+Phase 2 (target stated in #1101, see the remaining critical chain) and the
+full all-even comparison of [FieldScopeBoundary](FieldScopeBoundary.md)
+remain open, so the branch is not complete.
 
 **Consequences: Hom bases, `β_λ` and graded dimensions.**
 [HomBases](../../OddMath/QuiverHecke/HomBases.lean) (note: [HomBases](HomBases.md))
@@ -885,7 +885,21 @@ the branch are those of [FieldScopeBoundary](FieldScopeBoundary.md):
    the graded-coefficient generality of Brundan–Wang–Webster,
    arXiv:2505.22929v2, Theorem 5.6, and its underlying ungraded basis
    statement. Neither the present homogeneous proof nor its ground-ring
-   reduction is known to supply this.
+   reduction is known to supply this. The target is stated as
+   `SKM.GradedCoefficientNondegeneracy D sy`
+   ([GradedParameters](../../OddMath/SKM/GradedParameters.lean), #1101):
+   nondegeneracy for parameters over `ℕ`-graded rings with `2` invertible
+   whose coefficient `sᵢⱼ^{pq}` lies in degree `2(dᵢdᵢⱼ - dᵢp - dⱼq)`.
+   `SKM.nondegeneracyConjecture_of_lowerDegree` proves that it implies the
+   conjecture for every lower-degree (in particular every homogeneous)
+   parameter system over a commutative ring with `2` invertible, through the
+   Rees family over `k[h]` specialized at `h = 1`; consumer
+   [GradedParameters](../../scripts/NonVacuity/GradedParameters.lean), on
+   inhomogeneous parameters `u³ + uv + v³`. Open decision: BE2's `Scalars`
+   has no coefficients for the monomials `u^r` (`0 < r < dᵢⱼ`) and `v^s`
+   alone, which Brundan–Wang–Webster allow, so the target covers their
+   class only on BE2's parameter shape. Plan and comparison:
+   [Phase2Plan](Phase2Plan.md).
 2. **All-even comparison.** A checked comparison at parity identically zero
    recovering the benchmark's ordinary basis theorem: presentations,
    normalizations, decorated matching families and bubble coefficients, and
