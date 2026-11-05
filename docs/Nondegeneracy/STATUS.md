@@ -54,6 +54,22 @@ Phase 2 and the full all-even comparison of
 [FieldScopeBoundary](FieldScopeBoundary.md) remain open, so the branch is
 not complete.
 
+**Consequences: Hom bases, `β_λ` and graded dimensions.**
+[HomBases](../../OddMath/QuiverHecke/HomBases.lean) (note: [HomBases](HomBases.md))
+applies `nondegeneracy_of_symmetrizer` under its hypotheses (symmetrizer,
+`IsUnit (2 : k)`, homogeneous parameters). `QuiverHecke.betaSYM_bijective`
+and `betaSYMEquiv`: `β_λ : SYM ≃ End(1_λ)` (surjectivity is Theorem 8.1 on the
+empty boundary, `endOne_mem_bubbleSpan`, now over every commutative ring).
+`MatchingBasisChoice.expansionEquiv` (right `SYM`-linear by
+`expansion_mapRange_mul`), `homBasisOfSymmetrizer` with
+`homBasisOfSymmetrizer_apply` (basis `f(σ, λ) β_λ(p)`, `p` a monomial of
+`SYM.coefficientBasis`), `free_hom` and the graded form `componentEquiv`.
+Over a field with `2 ≠ 0` and `DegreeLocallyFinite`:
+`wordHomComponent_finrank_eq_sum`, `homDimension_coeff_eq_sum`, and
+`homDimension_eq_form_mul_symDimension`, BE2 Theorem 12.1 (dum) without the
+Nondegeneracy Conjecture as a premise. Consumer:
+[HomBases](../../scripts/NonVacuity/HomBases.lean).
+
 **Graded components of `SYM`.** The monomials of `SYM.coefficientBasis` of bidegree `z`
 form a basis of the homogeneous component `SYM_z` over every commutative ring
 (`SYM.componentBasis`, `OddMath/SKM/SymComponentBasis.lean`), so `dim SYM_z` is the number of
@@ -875,9 +891,16 @@ the branch are those of [FieldScopeBoundary](FieldScopeBoundary.md):
    normalizations, decorated matching families and bubble coefficients, and
    the grading. #1059 compares conclusions only, for Khovanov–Lauda scalars
    and finitely many colours.
-3. **Normalizations.** `CScalars` is supplied; recovering every benchmark
-   datum requires supplying compatible normalizations under its realization
-   hypotheses or a change-of-normalization comparison.
+3. **Normalizations.** `CScalars` is supplied to the end theorem. A choice
+   exists whenever the simple roots are linearly independent over `ℤ` in the
+   weight group (`SKM.CScalars.nonempty_of_linearIndependent`, combined with
+   the end theorem in `QuiverHecke.exists_nondegeneracy_of_linearIndependent`),
+   which includes Brundan–Ellis's setting. Benchmark realizations with
+   dependent roots still need compatible normalizations or a
+   change-of-normalization comparison.
+
+The audit of the formal statement against Brundan–Ellis §8, and the precise
+scope of the even specialization, are in [StatementAudit](StatementAudit.md).
 
 The conditional `VacuumRouteSector` inputs of the earlier vacuum route are no
 longer on the critical path.

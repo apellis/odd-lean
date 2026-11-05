@@ -97,7 +97,8 @@ theorem ι_eq_coefficientBasis (g : SYMGen D) : ι D k g = coefficientBasis D k 
 
 /-- The words in the generators span `SYM`. -/
 theorem span_range_word : Submodule.span k (Set.range (word (D := D) k)) = ⊤ := by
-  refine eq_top_iff.mpr fun x _ => ?_
+  rw [eq_top_iff]
+  rintro x -
   obtain ⟨x, rfl⟩ := RingQuot.mkAlgHom_surjective k (SYMRel D k) x
   induction x using FreeAlgebra.induction with
   | grade0 r =>
@@ -125,7 +126,7 @@ theorem coefficientBasis_mul_mem {η : CoefficientIndex D} {y : SYM D k} {z : �
   induction hy using Submodule.span_induction with
   | mem x hx =>
       obtain ⟨θ, hθ, rfl⟩ := hx
-      simp only [Set.mem_setOf_eq] at hθ
+      simp only [Set.mem_ofPred_eq] at hθ
       by_cases h : Disjoint η.2 θ.2
       · obtain ⟨c, hc⟩ := coefficientBasis_mul_scalar D k h
         rw [hc]
@@ -187,7 +188,7 @@ theorem coefficientBasis_mem_component (η : CoefficientIndex D) :
   have hW : ∀ w, w ≠ z → component sy k w ≤ W := fun w hw =>
     (component_le_coefficientSpan sy k w).trans (Submodule.span_mono (Set.image_mono
       fun θ hθ => by
-        simp only [Set.mem_setOf_eq] at hθ ⊢
+        simp only [Set.mem_ofPred_eq] at hθ ⊢
         rw [hθ]
         exact hw))
   have hrest : (f.erase z).sum (fun _ x => x) ∈ W := by

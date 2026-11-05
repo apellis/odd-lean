@@ -1530,6 +1530,8 @@ import OddMath.SKM.PitchforkCap
 import OddMath.SKM.PitchforkCup
 import OddMath.SKM.PitchforkRot
 import OddMath.SKM.MoreGenerators
+import OddMath.SKM.CScalarsExistence
+import OddMath.QuiverHecke.NondegeneracyIndependentRoots
 import OddMath.SKM.ScalarChange
 import OddMath.SKM.ScalarChangePresentation
 import OddMath.SKM.ScalarChangeBaseChange
@@ -2815,6 +2817,7 @@ import OddMath.QuiverHecke.VacuumRouteSwappedPositiveField
 import OddMath.QuiverHecke.VacuumRouteSwappedNonpositiveField
 import OddMath.QuiverHecke.VacuumRouteSwappedRightField
 import OddMath.QuiverHecke.VacuumRouteSwappedRightNegative
+import OddMath.QuiverHecke.HomBases
 import OddMath.QuiverHecke.Decategorification
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumDecodeFaithful
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumZeroHeightEntries

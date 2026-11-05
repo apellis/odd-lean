@@ -36,7 +36,9 @@ open StringDiagrams.Chord (Move Fits run Iso Reduced)
 
 universe u v w
 
-variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [Field k]
+section CommRing
+
+variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
   {Sc : Scalars D k} (cs : CScalars Sc)
 
 /-- Placing an endomorphism of `1_μ` with no strands around it does nothing. -/
@@ -68,6 +70,11 @@ theorem endOne_mem_bubbleSpan (μ : X)
   rintro _ ⟨C, ⟨E, rfl, n, rfl⟩, β, hβ, rfl⟩
   simp only [dmLay, xev_nil_eq_id, bubAt_nil, LinearMap.id_apply, Category.id_comp]
   exact hβ
+
+end CommRing
+
+variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [Field k]
+  {Sc : Scalars D k} (cs : CScalars Sc)
 
 variable (sy : Symmetrizer D)
 
