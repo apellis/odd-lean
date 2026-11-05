@@ -2377,6 +2377,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVRouquierMixedBraidEquation
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedRelation
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerVacuumContentRows
 import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumTensorCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumTensorFaithful
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumCap
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumPolynomialCap
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumPrincipalCap
