@@ -329,7 +329,7 @@ private theorem even_reservoir_coefficient (hi : D.parity i = 0) (hN : 0 < cutof
   refine tensorVacuumEndDecode_eq_of D Sc m cutoff L _ _ fun z => ?_
   rw [unit_cap_moment D Sc m cutoff L i hN, capCoefficientLmul_ringHom_apply]
   show _ = completeCoefficient D cutoff L i l * _
-  exact even_moment_apply D Sc m cutoff L i hi hN l z
+  convert even_moment_apply D Sc m cutoff L i hi hN l z using 3
 
 /-- The reservoir series of the tensor vacuum at an even colour, in the decode
 chart: `T(z) = 1/E(-z)`, the complete coefficients. -/
@@ -446,7 +446,9 @@ theorem tensorVacuumNegativeCap_odd_moments
   rw [tensorVacuumEndDecode_apply, capCoefficientLmul_apply] at e1
   rw [tensorVacuumEndDecode_apply, cap_end_mul_apply, cap_lmul_apply,
     capCoefficientLmul_apply] at e2
-  exact ⟨e1, e2⟩
+  constructor
+  · convert e1 using 3
+  · convert e2 using 3
 
 include sy hc in
 /-- **Odd colour, zero height, on the tensor vacuum.** For `cutoff i = 2 M`,
@@ -569,6 +571,6 @@ theorem tensorVacuumZeroHeightCap_even_moments
     (even_reservoir_series D Sc m cutoff L i hi hN) l
   have e1 := LinearMap.congr_fun h1 (tensorVacuumDecodeLinear D Sc m cutoff L z)
   rw [tensorVacuumEndDecode_apply, capCoefficientLmul_apply] at e1
-  exact e1
+  convert e1 using 3
 
 end OddMath.QuiverHecke.ELVOld
