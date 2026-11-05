@@ -59,6 +59,47 @@ private theorem odd_probeCutoff_right (hi : D.parity i = 1) : probeCutoff D m i 
   simp [probeCutoff, probeDotExponent, hi]
 
 include sy hc in
+/-- The rightward vacuum bubble entries of `vacuumRightwardCupInverse_bubbleEntries`,
+restated on the tensor vacuum value: window length `N - 2M` and the tensor probe functor. -/
+theorem tensorVacuum_rightward_odd_bubbleEntries (hi : D.parity i = 1)
+    (hP : 0 < probeCutoff D m i)
+    (Z : (P).H ((0, 0) : Sector I))
+    (hZ : Z = tensorSectorInput D Sc m cutoff L ΛR ΛP hcP hcR)
+    (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
+        ((0, 0) : Sector I))
+      (p : SPath (SKM.wd D ν₀ [SKM.up i, SKM.dn i]) ((0, 0) : Sector I) ((0, 0) : Sector I)),
+      ((P).pathFunctor _q).obj Z ⟶ ((P).pathFunctor p).obj Z)
+    (dc : ℕ → ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
+        ((0, 0) : Sector I))
+      (r : SPath (SKM.wd D ν₀ []) ((0, 0) : Sector I) ((0, 0) : Sector I)),
+      ((P).pathFunctor _q).obj Z ⟶ ((P).pathFunctor r).obj Z)
+    (HN : (P).NegInverseAt (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ν₀
+      ((0, 0) : Sector I) ((0, 0) : Sector I) Z lc dc)
+    (cc : (P).CrossCoeff) :
+    ∃ (c : _ ≅ V) (j : _ ⟶ shiftedPreSourceObject D (parameterTwist D Sc) m
+        (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i H)
+      (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V)),
+      ProbeWindow.IsCupInverse (evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP H)
+        (fun n => (adjunction K).unit.app V ≫
+          (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ n.val)) j B ∧
+      (∃ h, c.hom = eqToHom h) ∧
+      (∀ (n : Fin (cutoff i - 2 * m i)) (N : ℕ),
+        (adjunction K).unit.app V ≫
+          (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ N) ≫ B n =
+        c.inv ≫ (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).map
+          ((P).etaEntry cc i N ν₀ (.nil _) q₀ Z ≫ dc n q₀ (.nil _)) ≫ c.hom) := by
+  have hlen : (-D.h i ν₀).toNat = cutoff i - 2 * m i := by
+    rw [SupportedSectors.vacuum_negative_window_length D Sc m cutoff bound ΛP ΛR hcP hcR i,
+      odd_probeCutoff_right D m i hi]
+  have hex := vacuumRightwardCupInverse_bubbleEntries D Sc m cutoff bound ΛP ΛR hcP hcR
+    (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) sy hc i Z hZ lc dc HN cc hP hi
+  rw [show vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR
+      (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) = H from
+    tensorOutputAt_empty D (parameterTwist D Sc) m cutoff L ΛR, hlen] at hex
+  simp only [unitDotColumn_eq_restrictedDotEnd, Category.assoc] at hex
+  exact hex
+
+include sy hc in
 /-- **Odd moments of the rightward vacuum bubble entries.** For an odd colour with
 `0 < 2 M < N`, leftward data satisfying the negative inverse equations at the tensor
 vacuum give an entrywise inverse `(j, B)` of the native cup window of the tensor
@@ -113,19 +154,8 @@ theorem tensorVacuum_rightward_odd_moments (hi : D.parity i = 1)
             (polynomialToPower D cutoff L (PowerSeries.coeff r
               (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
               tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) := by
-  classical
-  have hlen : (-D.h i ν₀).toNat = cutoff i - 2 * m i := by
-    rw [SupportedSectors.vacuum_negative_window_length D Sc m cutoff bound ΛP ΛR hcP hcR i,
-      odd_probeCutoff_right D m i hi]
-  have hex := vacuumRightwardCupInverse_bubbleEntries D Sc m cutoff bound ΛP ΛR hcP hcR
-    (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) sy hc i Z
-    hZ lc dc HN cc
-    hP hi
-  rw [show vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR
-      (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) = H from
-    tensorOutputAt_empty D (parameterTwist D Sc) m cutoff L ΛR, hlen] at hex
-  simp only [unitDotColumn_eq_restrictedDotEnd, Category.assoc] at hex
-  obtain ⟨c, j, B, hB, hceq, hcup⟩ := hex
+  obtain ⟨c, j, B, hB, hceq, hcup⟩ := tensorVacuum_rightward_odd_bubbleEntries D Sc m cutoff L
+    ΛP ΛR hcP hcR sy hc i hi hP Z hZ lc dc HN cc
   have hN : 0 < cutoff i := by omega
   exact ⟨c, j, B, hB, hceq, hcup, fun r z =>
     ⟨tensorVacuumNegativeCap_odd_moments_even D (parameterTwist D Sc) m cutoff L sy
