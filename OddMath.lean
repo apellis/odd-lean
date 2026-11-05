@@ -809,6 +809,7 @@ import OddMath.Diagrammatics.Even.Cancellation
 import OddMath.Diagrammatics.Even.Fixtures
 import OddMath.Diagrammatics.Even
 import OddMath.Diagrammatics.OddDots
+import OddMath.Diagrams.CoefficientGrading
 import OddMath.Diagrams.OddNilHecke.Action
 import OddMath.Diagrams.OddNilHecke.Basic
 import OddMath.Diagrams.OddNilHecke.Comparison

@@ -149,6 +149,13 @@ as it is and grade the `R`-linear KLR category as a `K`-linear supercategory:
    For the trivial grading (`𝒜 0 = ⊤`, `K = R`) these are `homDeg`, `IsHomogeneous`,
    `isInternal_homDeg`; prove that agreement once so that the Phase 1 statements are
    recovered.
+   *Checked* (`OddMath/Diagrams/CoefficientGrading.lean`, as additive subgroups):
+   `CoefficientGrading.part`, `component`, `IsHomogeneous`, `component_mem_ideal` (the tensor
+   ideal of a coefficient-graded homogeneous presentation is homogeneous),
+   `presentedPart`, `iSup_presentedPart`, `iSupIndep_presentedPart` (each Hom group of the
+   presented category is the internal direct sum of its homogeneous parts) and
+   `smul_mem_presentedPart` (closure under `𝒜 0`). Open in item 1: the `K`-submodule form
+   (needs item 2) and the comparison with the trivial grading.
 2. *Restriction of scalars for supercategories*: `Linear K C` and `Supercategory K C` from
    `Supercategory R C` and `Algebra K R` (parity projections are `R`-linear, hence
    `K`-linear). New file, about 100 lines; no existing file changes.
