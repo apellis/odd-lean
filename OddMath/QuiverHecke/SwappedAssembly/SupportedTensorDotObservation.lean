@@ -188,6 +188,72 @@ theorem coordinate_heq (s : List I) {t t' : List I} (ht : t = t')
   obtain rfl := eq_of_heq hV
   rfl
 
+omit [Fintype I] in
+/-- The middle weight of a two-word dot, read from its right word. -/
+theorem midWeight {r : List (SKM.Col I X)} {cR cM : I →₀ ℕ}
+    (pR : SPath r (0,cR) (0,0)) (hr : ∀ a ∈ r, a.l.1 = true) (i : I)
+    (h : ReservoirWord.weight D ΛR cR + D.α i = ReservoirWord.weight D ΛR cM) :
+    ReservoirWord.weight D ΛR cM =
+      PowerWordWeight.wordWeight D ΛR ((r.map (fun a => a.l.2)).reverse ++ [i]) :=
+  h.symm.trans ((congrArg (fun x => x + D.α i) (TensorReservoirWords.path_weight D ΛR pR hr)).trans
+    (PowerWordWeight.wordWeight_append D ΛR ((r.map (fun a => a.l.2)).reverse) i))
+
+omit [Fintype I] in
+/-- The endpoint weight of a two-word dot, in contextual form. -/
+theorem endWeight {l r : List (SKM.Col I X)} {cL cM cR : I →₀ ℕ}
+    (pL : SPath l (0,cL) (0,cM)) (hl : ∀ a ∈ l, a.l.1 = true)
+    (pR : SPath r (0,cR) (0,0)) (hr : ∀ a ∈ r, a.l.1 = true) (i : I)
+    (h : ReservoirWord.weight D ΛR cR + D.α i = ReservoirWord.weight D ΛR cM) :
+    ReservoirWord.weight D ΛR cL = PowerWordWeightContexts.contextWeight D
+      (PowerWordWeight.wordWeight D ΛR ((r.map (fun a => a.l.2)).reverse ++ [i]))
+      ((l.map (fun a => a.l.2)).reverse) :=
+  (ReservoirContexts.word_weight D ΛR pL hl).trans
+    (congrArg (fun x => PowerWordWeightContexts.contextWeight D x ((l.map (fun a => a.l.2)).reverse))
+      (midWeight D ΛR pR hr i h))
+
+/-- The raw two-word dot Hom is the contextual dot Hom. -/
+theorem rawHom_heq {l r : List (SKM.Col I X)} {cL cM cR : I →₀ ℕ}
+    (pL : SPath l (0,cL) (0,cM)) (hl : ∀ a ∈ l, a.l.1 = true)
+    (pR : SPath r (0,cR) (0,0)) (hr : ∀ a ∈ r, a.l.1 = true) (i : I)
+    (h : ReservoirWord.weight D ΛR cR + D.α i = ReservoirWord.weight D ΛR cM) :
+    HEq (ReservoirLayerCells.dotRawHom D Sc m cutoff L ΛP ΛR pL hl pR hr i h)
+      (TensorVacuumWords.wordHom D Tw m cutoff L ΛP ΛR ((r.map (fun a => a.l.2)).reverse) ≫
+        (W).E i (PowerWordWeight.wordWeight_append D ΛR ((r.map (fun a => a.l.2)).reverse) i) ≫
+        TensorHomContexts.context D Tw cutoff L ΛR
+          (PowerWordWeight.wordWeight D ΛR ((r.map (fun a => a.l.2)).reverse ++ [i]))
+          ((l.map (fun a => a.l.2)).reverse)) := by
+  have hm := postE_heq D Sc m cutoff L ΛP ΛR i (TensorReservoirWords.path_weight D ΛR pR hr)
+    (midWeight D ΛR pR hr i h) h
+    (PowerWordWeight.wordWeight_append D ΛR ((r.map (fun a => a.l.2)).reverse) i)
+    (TensorReservoirWords.pathHom_heq D Tw m cutoff L ΛP ΛR pR hr)
+  have hk := (ReservoirContexts.word_heq D Tw cutoff L ΛR pL hl).trans
+    (context_input_heq D Sc cutoff L ΛR (midWeight D ΛR pR hr i h)
+      ((l.map (fun a => a.l.2)).reverse))
+  exact compose_heq D Sc m cutoff L ΛP ΛR (midWeight D ΛR pR hr i h)
+    (endWeight D ΛR pL hl pR hr i h) hm hk
+
+/-- The raw two-word dot cell is the contextual dot cell. -/
+theorem raw_heq {l r : List (SKM.Col I X)} {cL cM cR : I →₀ ℕ}
+    (pL : SPath l (0,cL) (0,cM)) (hl : ∀ a ∈ l, a.l.1 = true)
+    (pR : SPath r (0,cR) (0,0)) (hr : ∀ a ∈ r, a.l.1 = true) (i : I)
+    (h : ReservoirWord.weight D ΛR cR + D.α i = ReservoirWord.weight D ΛR cM) :
+    HEq (ReservoirLayerCells.dotRaw D Sc m cutoff L ΛP ΛR pL hl pR hr i h)
+      ((TensorVacuumWords.wordHom D Tw m cutoff L ΛP ΛR ((r.map (fun a => a.l.2)).reverse) ◁
+        (W).dot i (PowerWordWeight.wordWeight_append D ΛR ((r.map (fun a => a.l.2)).reverse) i)) ▷
+        TensorHomContexts.context D Tw cutoff L ΛR
+          (PowerWordWeight.wordWeight D ΛR ((r.map (fun a => a.l.2)).reverse ++ [i]))
+          ((l.map (fun a => a.l.2)).reverse)) := by
+  have hp := TensorReservoirWords.pathHom_heq D Tw m cutoff L ΛP ΛR pR hr
+  have hx := TensorReservoirWords.path_weight D ΛR pR hr
+  have hy := midWeight D ΛR pR hr i h
+  have hm := postE_heq D Sc m cutoff L ΛP ΛR i hx hy h
+    (PowerWordWeight.wordWeight_append D ΛR ((r.map (fun a => a.l.2)).reverse) i) hp
+  have ha := postDot_heq D Sc m cutoff L ΛP ΛR i hx hy h
+    (PowerWordWeight.wordWeight_append D ΛR ((r.map (fun a => a.l.2)).reverse) i) hp
+  have hk := (ReservoirContexts.word_heq D Tw cutoff L ΛR pL hl).trans
+    (context_input_heq D Sc cutoff L ΛR hy ((l.map (fun a => a.l.2)).reverse))
+  exact whisker_heq D Sc m cutoff L ΛP ΛR hy (endWeight D ΛR pL hl pR hr i h) hm hm hk ha
+
 end Generic
 
 end TensorDotObservation
@@ -218,8 +284,8 @@ local notation "pg" => SPath.cons (Col.mk (up i) (SKM.wt D ν v)) false (0,c) hv
 local notation "p" => SPath.append (SPath.append pL pg) pR
 local notation "edge" => ProbeReservoir.reservoirVacuumEdge (P) i c hv
 local notation "Aℓ" => SKM.lay D ν u (SKM.Shape.dot i) v
-local notation "νR" => (List.reverse (List.map (fun a => Prod.snd (SKM.Col.l a)) (Layer.right (SKM.lay D ν u (SKM.Shape.dot i) v))))
-local notation "ηL" => (List.reverse (List.map (fun a => Prod.snd (SKM.Col.l a)) (Layer.left (SKM.lay D ν u (SKM.Shape.dot i) v))))
+local notation "νR" => (List.reverse (List.map (fun (a : SKM.Col I X) => a.l.2) (Layer.right (SKM.lay D ν u (SKM.Shape.dot i) v))))
+local notation "ηL" => (List.reverse (List.map (fun (a : SKM.Col I X) => a.l.2) (Layer.left (SKM.lay D ν u (SKM.Shape.dot i) v))))
 
 omit [CommRing k] [Fintype I] in
 /-- The literal dot layer source word, read through its outer contexts. -/
@@ -241,37 +307,18 @@ private theorem dotPathWord :
       (νR ++ [i]) ++ ηL := by
   simp
 
-include hv pR hr in
-private theorem dotMidWeight :
-    ReservoirWord.weight D ΛR c = PowerWordWeight.wordWeight D ΛR (νR ++ [i]) := by
-  rw [← PowerWordWeight.wordWeight_append, ← TensorReservoirWords.path_weight D ΛR pR hr]
-  simp only [ReservoirWord.weight]
-  rw [add_assoc, contentWeight_sub_single hv]
-
 include hv pL hl pR hr in
 private theorem dotEndWeight :
     ReservoirWord.weight D ΛR cS = PowerWordWeightContexts.contextWeight D
       (PowerWordWeight.wordWeight D ΛR (νR ++ [i])) ηL :=
-  (ReservoirContexts.word_weight D ΛR pL hl).trans
-    (congrArg (fun x => PowerWordWeightContexts.contextWeight D x ηL)
-      (dotMidWeight D ΛR ν u v i hv pR hr))
+  TensorDotObservation.endWeight D ΛR pL hl pR hr i edge
 
 private theorem dotRawHom_heq :
     HEq (ReservoirLayerCells.dotRawHom D Sc m cutoff L ΛP ΛR pL hl pR hr i edge)
       (TensorVacuumWords.wordHom D Tw m cutoff L ΛP ΛR νR ≫
         (W).E i (PowerWordWeight.wordWeight_append D ΛR νR i) ≫
-        TensorHomContexts.context D Tw cutoff L ΛR (PowerWordWeight.wordWeight D ΛR (νR ++ [i])) ηL) := by
-  have hm := TensorDotObservation.postE_heq D Sc m cutoff L ΛP ΛR i
-    (TensorReservoirWords.path_weight D ΛR pR hr)
-    (dotMidWeight D ΛR ν u v i hv pR hr) edge
-    (PowerWordWeight.wordWeight_append D ΛR νR i)
-    (TensorReservoirWords.pathHom_heq D Tw m cutoff L ΛP ΛR pR hr)
-  have hk := (ReservoirContexts.word_heq D Tw cutoff L ΛR pL hl).trans
-    (TensorDotObservation.context_input_heq D Sc cutoff L ΛR
-      (dotMidWeight D ΛR ν u v i hv pR hr) ηL)
-  exact TensorDotObservation.compose_heq D Sc m cutoff L ΛP ΛR
-    (dotMidWeight D ΛR ν u v i hv pR hr)
-    (dotEndWeight D ΛP ΛR s ν u v i hv pL hl pR hr) hm hk
+        TensorHomContexts.context D Tw cutoff L ΛR (PowerWordWeight.wordWeight D ΛR (νR ++ [i])) ηL) :=
+  TensorDotObservation.rawHom_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i edge
 
 private theorem dotRaw_heq (a : (P).CrossCoeff) :
     HEq (tensorLayerDotRaw D Sc m cutoff L ΛP ΛR hP hR ν u v i hv pL hl pR hr a)
@@ -279,17 +326,7 @@ private theorem dotRaw_heq (a : (P).CrossCoeff) :
         (W).dot i (PowerWordWeight.wordWeight_append D ΛR νR i)) ▷
         TensorHomContexts.context D Tw cutoff L ΛR (PowerWordWeight.wordWeight D ΛR (νR ++ [i])) ηL) := by
   rw [tensorLayerDotRaw_eq]
-  have hp := TensorReservoirWords.pathHom_heq D Tw m cutoff L ΛP ΛR pR hr
-  have hx := TensorReservoirWords.path_weight D ΛR pR hr
-  have hy := dotMidWeight D ΛR ν u v i hv pR hr
-  have hm := TensorDotObservation.postE_heq D Sc m cutoff L ΛP ΛR i hx hy edge
-    (PowerWordWeight.wordWeight_append D ΛR νR i) hp
-  have ha := TensorDotObservation.postDot_heq D Sc m cutoff L ΛP ΛR i hx hy edge
-    (PowerWordWeight.wordWeight_append D ΛR νR i) hp
-  have hk := (ReservoirContexts.word_heq D Tw cutoff L ΛR pL hl).trans
-    (TensorDotObservation.context_input_heq D Sc cutoff L ΛR hy ηL)
-  exact TensorDotObservation.whisker_heq D Sc m cutoff L ΛP ΛR hy
-    (dotEndWeight D ΛP ΛR s ν u v i hv pL hl pR hr) hm hm hk ha
+  exact TensorDotObservation.raw_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i edge
 
 include hv pL hl pR hr in
 /-- **Dot layer on the quotient observation.** The literal dot layer of the full

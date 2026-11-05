@@ -188,8 +188,8 @@ local notation "pg" => SPath.cons (Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up i
   false (0,c) hv (SPath.cons (Col.mk (up i) (SKM.wt D ν v)) false _ hw (SPath.nil _))
 local notation "p" => SPath.append (SPath.append pL pg) pR
 local notation "Aℓ" => SKM.lay D ν u (SKM.Shape.cross i i) v
-local notation "νR" => (List.reverse (List.map (fun a => Prod.snd (SKM.Col.l a)) (Layer.right (SKM.lay D ν u (SKM.Shape.cross i i) v))))
-local notation "ηL" => (List.reverse (List.map (fun a => Prod.snd (SKM.Col.l a)) (Layer.left (SKM.lay D ν u (SKM.Shape.cross i i) v))))
+local notation "νR" => (List.reverse (List.map (fun (a : SKM.Col I X) => a.l.2) (Layer.right (SKM.lay D ν u (SKM.Shape.cross i i) v))))
+local notation "ηL" => (List.reverse (List.map (fun (a : SKM.Col I X) => a.l.2) (Layer.left (SKM.lay D ν u (SKM.Shape.cross i i) v))))
 
 omit [CommRing k] [Fintype I] in
 /-- The literal equal-colour crossing layer word, read through its outer contexts. -/
@@ -300,8 +300,8 @@ local notation "pt" => SPath.two (c₁ := Col.mk (up j) (SKM.wt D (SKM.wt D ν v
 local notation "p" => SPath.append (SPath.append pL ps) pR
 local notation "q" => SPath.append (SPath.append pL pt) pR
 local notation "Aℓ" => SKM.lay D ν u (SKM.Shape.cross i j) v
-local notation "νR" => (List.reverse (List.map (fun a => Prod.snd (SKM.Col.l a)) (Layer.right (SKM.lay D ν u (SKM.Shape.cross i j) v))))
-local notation "ηL" => (List.reverse (List.map (fun a => Prod.snd (SKM.Col.l a)) (Layer.left (SKM.lay D ν u (SKM.Shape.cross i j) v))))
+local notation "νR" => (List.reverse (List.map (fun (a : SKM.Col I X) => a.l.2) (Layer.right (SKM.lay D ν u (SKM.Shape.cross i j) v))))
+local notation "ηL" => (List.reverse (List.map (fun (a : SKM.Col I X) => a.l.2) (Layer.left (SKM.lay D ν u (SKM.Shape.cross i j) v))))
 
 omit [CommRing k] [Fintype I] in
 /-- The literal distinct-colour crossing source word. -/
