@@ -50,10 +50,62 @@ local notation "Ys" => tensorTargetFamily D Sc m cutoff ΛP ΛR L
 local notation "cc" => elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc
 local notation "lw" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc
 
+local notation "E" => vacuumSectorEvaluation D Sc m cutoff N ΛP ΛR hP hR
+local notation "Hv" => VacuumTensor.probeFunctor D (parameterTwist D Sc) m cutoff N
+  ((BalancedInduction.restriction
+    (contentInclusion D (parameterTwist D Sc) cutoff N (0 : Multiset I))).obj
+    (PowerVacuumCoefficient.weightedVacuum D (parameterTwist D Sc) cutoff L))
+local notation "V" => Superfunctor.obj Hv (probeOldVacuumRegular D (parameterTwist D Sc) m)
+local notation "star" =>
+  (⟨⟨[]⟩, rfl⟩ : ContentCategory D (parameterTwist D Sc) cutoff N 0)
+local notation "dec" => tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
+local notation "Z" => (tensorTargetFamily D Sc m cutoff ΛP ΛR L (0,0)).obj
+local notation "gens" => ProbeReservoir.swappedGens (P) cc lw
+
 omit [Fintype I] in
 private theorem even_probeCutoff_eq (i : I) (hi : D.parity i = 0) :
     probeCutoff D m i = m i := by
   simp [probeCutoff, probeDotExponent, hi]
+
+include sy hc in
+/-- The decoded vacuum entry of `η x^e ≫ dcap n` at an even colour with negative vacuum
+height, at the shifts `n = N - M - 1`, `e = n + s` read off the extreme moment column. -/
+private theorem vacuumNegEven_decode (i : I) (hi : D.parity i = 0)
+    (hP0 : 0 < probeCutoff D m i) (hh : D.h i ν₀ < 0) (s e n : ℕ)
+    (hn : n = cutoff i - m i - 1) (he : e = cutoff i - m i - 1 + s) :
+    ∃ c : (E).obj Z ≅ V, (∃ h, c.hom = eqToHom h) ∧ ∀ z,
+      dec ((c.inv ≫ (E).map (ProbeReservoir.compDiag gens
+        (SKM.mkD D ν₀ (etaL i e ++ dcapL i n) ((sChain_etaL i e).append (sChain_dcapL i n)))
+        (SPath.nil (0,0)) (SPath.nil (0,0)) Z) ≫ c.hom).total star z) =
+      coefficientPowerQuotientMap D cutoff L (SYM.polynomialInclude D k
+        (PowerSeries.coeff s (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i))) *
+        dec z := by
+  have hhe := vacuum_height_eq D Sc m cutoff N ΛP ΛR hP hR i
+  rw [even_probeCutoff_eq D m i hi] at hhe
+  have hh' := hh
+  rw [hhe] at hh'
+  have hPN : m i < cutoff i := by omega
+  have hnZ : (n : ℤ) < -D.h i ν₀ := by rw [hhe, hn]; omega
+  have hd : ¬StepValid (dn i) true ((0, 0) : Sector I) := by simp [StepValid]
+  obtain ⟨c, j, B, hB, hceq, hcup⟩ := tensorVacuum_rightward_even_bubbleEntries D Sc m cutoff L
+    ΛP ΛR hP hR sy hc i hi hP0 Z
+    ((congrArg (fun Y => Y.obj) (tensorTargetFamily_zero D Sc m cutoff ΛP ΛR L)).trans
+      (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hP hR).symm)
+    (fun q p => (lw).lcrossSame i ν₀ q p Z)
+    (fun n q r => (lw).dcap i n ν₀ q r Z)
+    (centralPointwiseLeftward_negInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
+      (Ys (0,0)) hh) cc
+  refine ⟨c, hceq, fun z => ?_⟩
+  rw [ProbeReservoir.compDiag_etaL_dcapL_swappedGens (P) _ _ i e n ν₀ hnZ (0,0) Z hd]
+  subst hn he
+  have hcol := hcup ⟨cutoff i - m i - 1, by omega⟩ (cutoff i - m i - 1 + s)
+  have hm := tensorVacuum_rightward_even_extreme_moments D Sc m cutoff L sy hc i hi hP0
+    hPN j B hB s z
+  rw [hcol] at hm
+  have hpt : ∀ p, polynomialToPower (k := k) D cutoff L p =
+      coefficientPowerQuotientMap D cutoff L (SYM.polynomialInclude D k p) := fun _ => rfl
+  rw [hpt] at hm
+  exact hm
 
 include sy hc in
 /-- **Even right bubbles at negative height.** For an even colour `i` with
@@ -69,30 +121,13 @@ theorem vacuumEntry_neg_even (i : I) (hi : D.parity i = 0) (hP0 : 0 < probeCutof
         (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i))) := by
   have hhe := vacuum_height_eq D Sc m cutoff N ΛP ΛR hP hR i
   rw [even_probeCutoff_eq D m i hi] at hhe
-  have hPN : m i < cutoff i := by rw [hhe] at hh; omega
-  have he : ((s : ℤ) - D.h i ν₀ - 1).toNat = cutoff i - m i - 1 + s := by
-    rw [hhe]; omega
-  have hn : (-D.h i ν₀ - 1).toNat = cutoff i - m i - 1 := by rw [hhe]; omega
-  rw [he, hn]
-  have hnZ : ((cutoff i - m i - 1 : ℕ) : ℤ) < -D.h i ν₀ := by rw [hhe]; omega
-  have hd : ¬StepValid (dn i) true ((0, 0) : Sector I) := by simp [StepValid]
-  obtain ⟨c, j, B, hB, hceq, hcup⟩ := tensorVacuum_rightward_even_bubbleEntries D Sc m cutoff L
-    ΛP ΛR hP hR sy hc i hi hP0 (Ys (0,0)).obj
-    ((congrArg (fun Y => Y.obj) (tensorTargetFamily_zero D Sc m cutoff ΛP ΛR L)).trans
-      (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hP hR).symm)
-    (fun q p => (lw).lcrossSame i ν₀ q p (Ys (0,0)).obj)
-    (fun n q r => (lw).dcap i n ν₀ q r (Ys (0,0)).obj)
-    (centralPointwiseLeftward_negInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
-      (Ys (0,0)) hh) cc
-  apply vacuumEntry_of_decode D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀ _ _ _ c
+  have hh' := hh
+  rw [hhe] at hh'
+  obtain ⟨c, hc', hf⟩ := vacuumNegEven_decode D Sc m cutoff ΛP ΛR L hP hR sy hc i hi hP0 hh s
+    ((s : ℤ) - D.h i ν₀ - 1).toNat (-D.h i ν₀ - 1).toNat (by rw [hhe]; omega)
+    (by rw [hhe]; omega)
+  exact vacuumEntry_of_decode D Sc m cutoff ΛP ΛR L hP hR sy hc _ _ _ _ c
     (vacuumDecodeFaithful_tensorTarget D Sc m cutoff ΛP ΛR L hP hR c)
-    (vacuumDecode_tensorTargetCoefficient D Sc m cutoff ΛP ΛR L hP hR c hceq _)
-  intro z
-  rw [ProbeReservoir.compDiag_etaL_dcapL_swappedGens (P) cc lw i _ _ ν₀ hnZ (0,0) _ hd]
-  refine (congrArg (fun f => tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
-    (f.total ⟨⟨[]⟩, rfl⟩ z)) (hcup ⟨cutoff i - m i - 1, by omega⟩ _).symm).trans ?_
-  refine (tensorVacuum_rightward_even_extreme_moments D Sc m cutoff L sy hc i hi hP0
-    hPN j B hB s z).trans ?_
-  rfl
+    (vacuumDecode_tensorTargetCoefficient D Sc m cutoff ΛP ΛR L hP hR c hc' _) hf
 
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
