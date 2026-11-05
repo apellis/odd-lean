@@ -159,6 +159,9 @@ as it is and grade the `R`-linear KLR category as a `K`-linear supercategory:
 2. *Restriction of scalars for supercategories*: `Linear K C` and `Supercategory K C` from
    `Supercategory R C` and `Algebra K R` (parity projections are `R`-linear, hence
    `K`-linear). New file, about 100 lines; no existing file changes.
+   *Checked* (`OddMath/Diagrams/RestrictScalars.lean`): `Linear.restrictScalars` and
+   `Supercategory.restrictScalars`, as definitions (not instances) to avoid diamonds at
+   `K = R`.
 3. *KLR grading* (`OddMath/QuiverHecke/Grading.lean`): `isGradedHomogeneous_gdeg` from
    `Sc.GradedHomogeneous sy 𝒜` (the same case split; `hc` replaced by membership of
    `sᵢⱼ^{pq}` in `𝒜 (coefficientDegree)` and of `tᵢⱼ` in `𝒜 0`), then

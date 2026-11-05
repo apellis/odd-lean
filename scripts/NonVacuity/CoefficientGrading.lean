@@ -111,6 +111,15 @@ example (a b : Obj (QuiverHecke.sig datum)) :
       (QuiverHecke.pres datum (ReesParameters.scalars symmetrizer scalars)) a b) :=
   iSupIndep_presentedPart (QuiverHecke.isHomogeneous_rees datum symmetrizer lowerDegree) a b
 
+
+/-- The quiver Hecke supercategory over `ℚ[h]` is a supercategory over `ℚ` by restriction of
+scalars. -/
+example :
+    letI := OddMath.Diagrams.Linear.restrictScalars ℚ Rees
+      (QuiverHecke.H datum (ReesParameters.scalars symmetrizer scalars))
+    Supercategory ℚ (QuiverHecke.H datum (ReesParameters.scalars symmetrizer scalars)) :=
+  OddMath.Diagrams.Supercategory.restrictScalars ℚ Rees _
+
 #print axioms OddMath.QuiverHecke.isHomogeneous_rees
 #print axioms OddMath.Diagrams.CoefficientGrading.iSupIndep_presentedPart
 
