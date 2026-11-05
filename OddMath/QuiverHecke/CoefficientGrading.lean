@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.Grading
 import OddMath.SKM.GradedParameters
-import OddMath.Diagrams.CoefficientGrading
+import OddMath.Diagrams.CoefficientGradedSupercategory
 
 /-!
 # The quiver Hecke presentation with graded parameters
@@ -149,6 +149,7 @@ theorem isHomogeneous_coefficientGraded (Sc : SKM.Scalars D k)
 /-- **Graded Hom groups.** Under the graded parameter conditions, each Hom group of the quiver
 Hecke supercategory is the internal direct sum of its homogeneous parts for the coefficient
 grading. -/
+omit [SetLike.GradedMonoid 𝒜] in
 theorem iSupIndep_coefficientGraded [GradedAlgebra 𝒜] (Sc : SKM.Scalars D k)
     (ht : ∀ i j, ((Sc.t i j : kˣ) : k) ∈ 𝒜 0)
     (hs : ∀ i j (p q : ℕ), 0 < p → (p : ℤ) < D.d i j → 0 < q → (q : ℤ) < D.d j i →
@@ -173,26 +174,55 @@ abbrev reesGrading (K : Type*) [CommRing K] : ℤ → Submodule K (MvPolynomial 
   weightedHomogeneousSubmodule K (fun _ : Unit => (1 : ℤ))
 
 theorem C_mul_X_pow_mem_reesGrading (a : K) (n : ℕ) {d : ℤ} (hd : (n : ℤ) = d) :
-    C a * X () ^ n ∈ reesGrading K d := by
+    C a * MvPolynomial.X () ^ n ∈ reesGrading K d := by
   rw [mem_weightedHomogeneousSubmodule]
   have := (isWeightedHomogeneous_C (fun _ : Unit => (1 : ℤ)) a).mul
     ((isWeightedHomogeneous_X K (fun _ : Unit => (1 : ℤ)) ()).pow n)
   simpa [← hd] using this
+
+theorem C_mem_reesGrading (a : K) : (C a : MvPolynomial Unit K) ∈ reesGrading K 0 := by
+  rw [mem_weightedHomogeneousSubmodule]
+  exact isWeightedHomogeneous_C _ a
+
+theorem rees_t_mem (Sc : SKM.Scalars D K) (i j : I) :
+    (((SKM.ReesParameters.scalars sy Sc).t i j : (MvPolynomial Unit K)ˣ) : MvPolynomial Unit K) ∈
+      reesGrading K 0 :=
+  C_mem_reesGrading ((Sc.t i j : Kˣ) : K)
+
+theorem rees_s_mem {Sc : SKM.Scalars D K} (hl : Sc.LowerDegree sy) (i j : I) (p q : ℕ)
+    (hp : 0 < p) (hp' : (p : ℤ) < D.d i j) (hq : 0 < q) (hq' : (q : ℤ) < D.d j i)
+    (hs : (SKM.ReesParameters.scalars sy Sc).s i j p q ≠ 0) :
+    (SKM.ReesParameters.scalars sy Sc).s i j p q ∈
+      reesGrading K (SKM.coefficientDegree sy i j p q) := by
+  have hs' : Sc.s i j p q ≠ 0 := by
+    intro h0
+    apply hs
+    change C (Sc.s i j p q) * MvPolynomial.X () ^ _ = 0
+    rw [h0, map_zero, zero_mul]
+  exact C_mul_X_pow_mem_reesGrading _ _ (Int.toNat_of_nonneg (hl i j p q hp hp' hq hq' hs'))
 
 /-- **Rees parameters.** For lower-degree parameters over `K`, the quiver Hecke presentation
 with the Rees parameters `sᵢⱼ^{pq} h^{deg}` over `K[h]` is coefficient-graded homogeneous for
 `h` in degree `1`. -/
 theorem isHomogeneous_rees {Sc : SKM.Scalars D K} (hl : Sc.LowerDegree sy) :
     CoefficientGrading.IsHomogeneous (reesGrading K) (gdeg D sy)
-      (pres D (SKM.ReesParameters.scalars sy Sc)) := by
-  refine isHomogeneous_coefficientGraded D sy (reesGrading K) _ (fun i j => ?_)
-    (fun i j p q hp hp' hq hq' hs => ?_)
-  · have := C_mul_X_pow_mem_reesGrading (((Sc.t i j : Kˣ) : K)) 0 (d := 0) rfl
-    simpa [SKM.ReesParameters.scalars] using this
-  · have hs' : Sc.s i j p q ≠ 0 := by
-      intro h0
-      exact hs (by simp [SKM.ReesParameters.scalars, h0])
-    exact C_mul_X_pow_mem_reesGrading _ _ (Int.toNat_of_nonneg (hl i j p q hp hp' hq hq' hs'))
+      (pres D (SKM.ReesParameters.scalars sy Sc)) :=
+  isHomogeneous_coefficientGraded D sy (reesGrading K) _ (rees_t_mem D sy Sc)
+    (rees_s_mem D sy hl)
+
+attribute [local instance] MvPolynomial.weightedGradedAlgebra
+
+/-- **Graded quiver Hecke supercategory over `K[h]`.** For lower-degree parameters over `K`,
+the quiver Hecke supercategory with the Rees parameters over `K[h]`, viewed as `K`-linear, is
+a graded supercategory with `h` in degree `1`. -/
+@[instance_reducible]
+def reesGradedSupercategory {Sc : SKM.Scalars D K} (hl : Sc.LowerDegree sy) :
+    letI := Diagrams.Linear.restrictScalars K (MvPolynomial Unit K)
+      (H D (SKM.ReesParameters.scalars sy Sc))
+    letI := Diagrams.Supercategory.restrictScalars K (MvPolynomial Unit K)
+      (H D (SKM.ReesParameters.scalars sy Sc))
+    GradedSupercategory K (H D (SKM.ReesParameters.scalars sy Sc)) :=
+  CoefficientGrading.gradedSupercategory (isParityHomogeneous D _) (isHomogeneous_rees D sy hl)
 
 end Rees
 

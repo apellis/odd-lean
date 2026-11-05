@@ -810,6 +810,7 @@ import OddMath.Diagrammatics.Even.Cancellation
 import OddMath.Diagrammatics.Even.Fixtures
 import OddMath.Diagrammatics.Even
 import OddMath.Diagrammatics.OddDots
+import OddMath.Diagrams.CoefficientGradedSupercategory
 import OddMath.Diagrams.CoefficientGrading
 import OddMath.Diagrams.RestrictScalars
 import OddMath.Diagrams.OddNilHecke.Action

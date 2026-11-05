@@ -881,9 +881,20 @@ the branch are those of [FieldScopeBoundary](FieldScopeBoundary.md):
    (`gradedCoefficientNondegeneracy_of_charZeroField`) and to the Rees
    parameters truncated to `K[h]/(h^N)`
    (`gradedCoefficientNondegeneracy_of_truncated`), whose remaining
-   hypothesis `TruncatedRees.TruncatedReesNondegeneracy D sy` is open. Plan,
-   comparison and the grading design for that case:
-   [Phase2Plan](Phase2Plan.md).
+   hypothesis `TruncatedRees.TruncatedReesNondegeneracy D sy` is open.
+   Grading infrastructure for that case (Phase2Plan, step 2, items 1–3):
+   coefficient-graded parts of presented Hom groups
+   (`Diagrams.CoefficientGrading.presentedPart`, independence and spanning
+   for homogeneous presentations), homogeneity of the quiver Hecke
+   presentation with graded parameters
+   (`QuiverHecke.isHomogeneous_coefficientGraded`, Rees case
+   `QuiverHecke.isHomogeneous_rees`) and restriction of scalars
+   (`Diagrams.Supercategory.restrictScalars`), bundled as a
+   `GradedSupercategory K` (`Diagrams.CoefficientGrading.gradedSupercategory`;
+   the quiver Hecke case over `K[h]`: `QuiverHecke.reesGradedSupercategory`);
+   consumer [CoefficientGrading](../../scripts/NonVacuity/CoefficientGrading.lean).
+   Open: the grading of the truncations `K[h]/(h^N)` and the field-route
+   arguments over these bases (step 2, item 4). Plan, comparison and design: [Phase2Plan](Phase2Plan.md).
 2. **All-even comparison.** A checked comparison at parity identically zero
    recovering the benchmark's ordinary basis theorem: presentations,
    normalizations, decorated matching families and bubble coefficients, and

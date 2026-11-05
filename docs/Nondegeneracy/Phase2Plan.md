@@ -171,9 +171,15 @@ as it is and grade the `R`-linear KLR category as a `K`-linear supercategory:
    (the quiver Hecke presentation is coefficient-graded homogeneous when the `tᵢⱼ` lie in
    `𝒜 0` and each nonzero `sᵢⱼ^{pq}` lies in `𝒜 (coefficientDegree)`, indexed by `ℤ`),
    `iSupIndep_coefficientGraded`, and `isHomogeneous_rees` (the Rees parameters of a
-   lower-degree system over `K[h]`, `h` in degree `1`). Open: the bundled
-   `GradedSupercategory K` structure (needs item 2) and the truncations `K[h]/(h^N)`
-   (needs the coefficient grading of the quotient ring).
+   lower-degree system over `K[h]`, `h` in degree `1`). Bundled
+   (`OddMath/Diagrams/CoefficientGradedSupercategory.lean`): for a parity homogeneous and
+   coefficient-graded homogeneous presentation over a `ℤ`-graded `K`-algebra, the degree
+   parts are `K`-submodules (`presentedSubmodule`), parity components preserve them
+   (`presented_homogeneousComponent_mem`, `proj_eq_homogeneousComponent`), and
+   `gradedSupercategory` is a `GradedSupercategory K` of the presented category with the
+   restricted supercategory structure; its quiver Hecke case over `K[h]` is
+   `QuiverHecke.reesGradedSupercategory`. Open: the truncations `K[h]/(h^N)` (needs the
+   coefficient grading of the quotient ring) and the monoidal version.
 4. *Downstream threading*: the ELV coefficient grading (`ELVHomGrading`, `ELVOldGrading`,
    `ELVOldCategoryGrading`, `ELVLowerDegree`, `ELVKernelDegree`, `ELVKernelBoundaryDegrees`,
    `ELVWeightedKernelBoundaryCoordinates`, `ELVTruncatedNilpotence` and the other files

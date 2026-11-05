@@ -112,15 +112,36 @@ example (a b : Obj (QuiverHecke.sig datum)) :
   iSupIndep_presentedPart (QuiverHecke.isHomogeneous_rees datum symmetrizer lowerDegree) a b
 
 
-/-- The quiver Hecke supercategory over `ℚ[h]` is a supercategory over `ℚ` by restriction of
-scalars. -/
+/-- The quiver Hecke supercategory over `ℚ[h]` with the Rees parameters is a graded
+supercategory over `ℚ`. -/
+abbrev HRees := QuiverHecke.H datum (ReesParameters.scalars symmetrizer scalars)
+
 example :
-    letI := OddMath.Diagrams.Linear.restrictScalars ℚ Rees
-      (QuiverHecke.H datum (ReesParameters.scalars symmetrizer scalars))
-    Supercategory ℚ (QuiverHecke.H datum (ReesParameters.scalars symmetrizer scalars)) :=
-  OddMath.Diagrams.Supercategory.restrictScalars ℚ Rees _
+    letI := OddMath.Diagrams.Linear.restrictScalars ℚ Rees HRees
+    letI := OddMath.Diagrams.Supercategory.restrictScalars ℚ Rees HRees
+    GradedSupercategory ℚ HRees :=
+  QuiverHecke.reesGradedSupercategory datum symmetrizer lowerDegree
+
+/-- `h` times an identity has degree `1`. -/
+example (a : Obj (QuiverHecke.sig datum)) :
+    letI := OddMath.Diagrams.Linear.restrictScalars ℚ Rees HRees
+    letI := OddMath.Diagrams.Supercategory.restrictScalars ℚ Rees HRees
+    letI := QuiverHecke.reesGradedSupercategory datum symmetrizer lowerDegree
+    (MvPolynomial.X () : Rees) • 𝟙 ((QuiverHecke.pres datum
+        (ReesParameters.scalars symmetrizer scalars)).obj a) ∈
+      GradedSupercategory.degree (R := ℚ) (C := HRees) _ _ 1 := by
+  change _ ∈ presentedPart reesGrading deg
+    (QuiverHecke.pres datum (ReesParameters.scalars symmetrizer scalars)) a a 1
+  rw [← Presentation.lin_id, ← Presentation.lin_smul]
+  refine lin_mem_presentedPart ?_
+  have hX : (MvPolynomial.X () : Rees) ∈ reesGrading 1 :=
+    (MvPolynomial.mem_weightedHomogeneousSubmodule _ _ _ _).mpr
+      (MvPolynomial.isWeightedHomogeneous_X ℚ _ ())
+  simpa using smul_mem_part hX (of_mem_part' (𝒜 := reesGrading) (deg := deg) (𝟙 a)
+    (Diagram.degree_id _ _))
 
 #print axioms OddMath.QuiverHecke.isHomogeneous_rees
 #print axioms OddMath.Diagrams.CoefficientGrading.iSupIndep_presentedPart
+#print axioms OddMath.QuiverHecke.reesGradedSupercategory
 
 end NonVacuity.CoefficientGrading
