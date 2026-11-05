@@ -2793,6 +2793,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumCapInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeLeftwardVacuumCapInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumCapInverseAttach
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumLeftwardMoments
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumLeftwardEvenMoments
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumRightwardMoments
 import OddMath.QuiverHecke.PairingExtensionPBW
 import OddMath.QuiverHecke.PairingExtensionRecovery
@@ -2809,3 +2810,4 @@ import OddMath.QuiverHecke.VacuumRouteSwappedNonpositiveBubbles
 import OddMath.QuiverHecke.VacuumRouteSwappedPositiveBubbles
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumDecodeFaithful
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumCoefficientDecode
+import OddMath.QuiverHecke.SwappedAssembly.SupportedLeftVacuumEntries

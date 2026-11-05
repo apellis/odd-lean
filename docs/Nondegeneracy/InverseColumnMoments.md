@@ -206,8 +206,17 @@ Still open:
    `vacuumEntry_of_decode`). Its core is
    `VacuumTensorCoefficientMaps.selectedVacuum_coefficient_endDecode`, from
    `sourceCoefficientAction_tensorVector` at the vacuum block.
-   Remaining for item 1: show that the comparison of the leftward odd moment
-   identity is an `eqToHom`, then evaluate the vacuum entry and compare.
+   The leftward odd moment identity now returns its comparison as an `eqToHom`
+   (`tensorVacuum_leftward_odd_moments`, #1090). Item 1 is then assembled in
+   `SupportedLeftVacuumEntries.lean`: `SupportedSectors.vacuumLeftOdd_decode`
+   evaluates the vacuum entry of `dcupL i (h-1) ++ epsL i (2s+h-1)` through
+   `compDiag_dcupL_epsL_swappedGens` and the moments, and
+   `SupportedSectors.vacuumEntry_left_odd` gives the `VacuumEntry` with coefficient
+   `coeff s (substitutedSeries (probeSeries m) i)`, for odd `i`, `0 < cutoff i` and
+   `0 < h = ⟨hᵢ, ν₀⟩`. Item 2 is in the same module:
+   `SupportedSectors.vacuumEntry_oddBubble` gives the entry of
+   `dcupL i (h-1) ++ epsL i h` with coefficient `probeSign cutoff i • δᵢ`. Both use the
+   cutoff of the tensor target family as `N`; the route transport identifies it.
 2. The odd bubble `oddBubble` at positive height, the same way.
 3. Even colours need an even moment result; nonpositive height is handled
    separately.
