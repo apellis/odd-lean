@@ -434,6 +434,7 @@ theorem vacuumOddZero_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
     map_one, one_mul] at hm
   rw [map_smul]
   convert hm using 6
+  rfl
 
 include sy hc in
 /-- **Odd bubble entry of the vacuum sector at zero height.** -/
