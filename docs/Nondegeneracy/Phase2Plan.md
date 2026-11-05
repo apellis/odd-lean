@@ -178,8 +178,12 @@ as it is and grade the `R`-linear KLR category as a `K`-linear supercategory:
    (`presented_homogeneousComponent_mem`, `proj_eq_homogeneousComponent`), and
    `gradedSupercategory` is a `GradedSupercategory K` of the presented category with the
    restricted supercategory structure; its quiver Hecke case over `K[h]` is
-   `QuiverHecke.reesGradedSupercategory`. Open: the truncations `K[h]/(h^N)` (needs the
-   coefficient grading of the quotient ring) and the monoidal version.
+   `QuiverHecke.reesGradedSupercategory`. The truncations `K[h]/(h^N)` are graded by the
+   images of the homogeneous parts (`SKM.GradedImage.gradedAlgebra`: the image of a graded
+   algebra under a surjection with homogeneous kernel; `QuiverHecke.ker_truncAlg`,
+   `QuiverHecke.truncGradedAlgebra`), and the truncated Rees parameters give
+   `QuiverHecke.isHomogeneous_truncatedRees` and
+   `QuiverHecke.truncatedReesGradedSupercategory`. Open: the monoidal version.
 4. *Downstream threading*: the ELV coefficient grading (`ELVHomGrading`, `ELVOldGrading`,
    `ELVOldCategoryGrading`, `ELVLowerDegree`, `ELVKernelDegree`, `ELVKernelBoundaryDegrees`,
    `ELVWeightedKernelBoundaryCoordinates`, `ELVTruncatedNilpotence` and the other files

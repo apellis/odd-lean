@@ -514,7 +514,8 @@ scalars, `GradedSupercategory` unchanged; items 1–3 are checked:
 `Diagrams.CoefficientGrading`, `QuiverHecke.isHomogeneous_coefficientGraded`,
 `QuiverHecke.isHomogeneous_rees`, `Diagrams.Supercategory.restrictScalars`,
 bundled as `Diagrams.CoefficientGrading.gradedSupercategory` and
-`QuiverHecke.reesGradedSupercategory`; next, grade the truncations);
+`QuiverHecke.reesGradedSupercategory`, and over the truncations
+`QuiverHecke.truncatedReesGradedSupercategory`);
 rerun the nilpotence, kernel-degree and inverse-degree arguments of the field
 route over such bases. The associated graded gives only spanning and is not
 a route to independence. The missing pure monomials `u^r`, `v^s` of BWW are a
