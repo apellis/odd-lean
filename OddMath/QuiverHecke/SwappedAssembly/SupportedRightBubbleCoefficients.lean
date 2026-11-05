@@ -207,12 +207,17 @@ def VacuumEntry (μ : X) (M : List (SKM.LayerData I)) (hM : SKM.SChain [] M []) 
   ProbeReservoir.compDiag gens (SKM.mkD D μ M hM) (SPath.nil (0,0)) (SPath.nil (0,0))
     (Ys (0,0)).obj = (tensorTargetFamilyCoefficientAction D Sc m cutoff L ΛP ΛR (0,0) a).hom
 
+/-- The raw coefficient action at the source word `upWord t`, as a coefficient action on the
+spaces of the supported action. -/
+def supportedRaw (μ : X) (t : List I) : SYM D k →ₐ[k] Module.End k ((action μ).V t) :=
+  tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L sw (SKM.ob D μ (upWord t))
+
 /-- A closed diagram whose vacuum entry is the coefficient action of `a` acts as `a`. -/
 theorem closedAct_cl_eq_coefficient (μ : X) (t : List I) (M : List (SKM.LayerData I))
     (hM : SKM.SChain [] M []) (a : SYM D k)
     (h : VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc μ M hM a) :
     (action μ).closedAct t (SKM.cl D Sc μ [] [] M) =
-      tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L sw (SKM.ob D μ (upWord t)) a :=
+      supportedRaw D Sc m cutoff ΛP ΛR L hP hR sy hc sw μ t a :=
   pointwiseUpwardModuleAction_act_bubAt_cl_eq_coefficient D Sc m cutoff ΛP ΛR L hP hR sy hc sw
     μ t M hM a h
 
@@ -264,9 +269,9 @@ of the route for the raw coefficient action. -/
 theorem vacuumRightBubbles_of_entries (cs : SKM.CScalars Sc) (μ : X) (t : List I)
     (M N' : I → ℕ) (hE : VacuumRightEntries D Sc m cutoff ΛP ΛR L hP hR sy hc μ M N') :
     VacuumRightBubblesNonpositiveHeight cs (action μ) t
-      (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L sw (SKM.ob D μ (upWord t))) M N' :=
+      (supportedRaw D Sc m cutoff ΛP ΛR L hP hR sy hc sw μ t) M N' :=
   VacuumRightBubblesNonpositiveHeight.of_closed cs (action μ) t
-    (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L sw (SKM.ob D μ (upWord t))) M N'
+    (supportedRaw D Sc m cutoff ΛP ΛR L hP hR sy hc sw μ t) M N'
     (fun i hi h s => closedAct_cl_eq_coefficient D Sc m cutoff ΛP ΛR L hP hR sy hc sw μ t _ _ _
       (hE.neg_even i hi h s))
     (fun i hi h s => closedAct_cl_eq_coefficient D Sc m cutoff ΛP ΛR L hP hR sy hc sw μ t _ _ _
