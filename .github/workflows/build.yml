@@ -149,6 +149,7 @@ jobs:
           lake env lean --run scripts/Cleanup/DeclGraph.lean analysis/modules.txt analysis/decl-graph.tsv
           wc -l analysis/decl-graph.tsv
           gzip -9 analysis/decl-graph.tsv
+          echo BEGIN-DECL-GRAPH; base64 -w 8000 analysis/decl-graph.tsv.gz; echo END-DECL-GRAPH
       - uses: actions/upload-artifact@v4
         if: steps.scope.outputs.docs_only != 'true'
         with:
