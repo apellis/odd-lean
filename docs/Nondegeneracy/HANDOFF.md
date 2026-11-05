@@ -510,7 +510,11 @@ characteristic-zero fields and to the truncated Rees parameters over
 `TruncatedRees.TruncatedReesNondegeneracy D sy`. Grade the KLR category over
 `K[h]/(h^N)` as a `K`-linear supercategory with `h` in degree one (design in
 Phase2Plan, step 2: coefficient-graded presentations and restriction of
-scalars, `GradedSupercategory` unchanged);
+scalars, `GradedSupercategory` unchanged; items 1–3 are checked:
+`Diagrams.CoefficientGrading`, `QuiverHecke.isHomogeneous_coefficientGraded`,
+`QuiverHecke.isHomogeneous_rees`, `Diagrams.Supercategory.restrictScalars`,
+bundled as `Diagrams.CoefficientGrading.gradedSupercategory` and
+`QuiverHecke.reesGradedSupercategory`; next, grade the truncations);
 rerun the nilpotence, kernel-degree and inverse-degree arguments of the field
 route over such bases. The associated graded gives only spanning and is not
 a route to independence. The missing pure monomials `u^r`, `v^s` of BWW are a

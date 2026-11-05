@@ -1,5 +1,6 @@
 import OddMath.SKM.ELVScalarSpecialization
 import OddMath.SKM.ELVScalarParity
+import OddMath.QuiverHecke.CoefficientGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVScalarSpecializationFunctor
 import OddMath.QuiverHecke.CyclotomicAction.ELVBoundaryRowLeading
 import OddMath.QuiverHecke.CyclotomicAction.ELVBoundaryRowDivision
@@ -809,6 +810,9 @@ import OddMath.Diagrammatics.Even.Cancellation
 import OddMath.Diagrammatics.Even.Fixtures
 import OddMath.Diagrammatics.Even
 import OddMath.Diagrammatics.OddDots
+import OddMath.Diagrams.CoefficientGradedSupercategory
+import OddMath.Diagrams.CoefficientGrading
+import OddMath.Diagrams.RestrictScalars
 import OddMath.Diagrams.OddNilHecke.Action
 import OddMath.Diagrams.OddNilHecke.Basic
 import OddMath.Diagrams.OddNilHecke.Comparison

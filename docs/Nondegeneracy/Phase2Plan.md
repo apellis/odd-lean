@@ -149,14 +149,37 @@ as it is and grade the `R`-linear KLR category as a `K`-linear supercategory:
    For the trivial grading (`𝒜 0 = ⊤`, `K = R`) these are `homDeg`, `IsHomogeneous`,
    `isInternal_homDeg`; prove that agreement once so that the Phase 1 statements are
    recovered.
+   *Checked* (`OddMath/Diagrams/CoefficientGrading.lean`, as additive subgroups):
+   `CoefficientGrading.part`, `component`, `IsHomogeneous`, `component_mem_ideal` (the tensor
+   ideal of a coefficient-graded homogeneous presentation is homogeneous),
+   `presentedPart`, `iSup_presentedPart`, `iSupIndep_presentedPart` (each Hom group of the
+   presented category is the internal direct sum of its homogeneous parts) and
+   `smul_mem_presentedPart` (closure under `𝒜 0`). Open in item 1: the `K`-submodule form
+   (needs item 2) and the comparison with the trivial grading.
 2. *Restriction of scalars for supercategories*: `Linear K C` and `Supercategory K C` from
    `Supercategory R C` and `Algebra K R` (parity projections are `R`-linear, hence
    `K`-linear). New file, about 100 lines; no existing file changes.
+   *Checked* (`OddMath/Diagrams/RestrictScalars.lean`): `Linear.restrictScalars` and
+   `Supercategory.restrictScalars`, as definitions (not instances) to avoid diamonds at
+   `K = R`.
 3. *KLR grading* (`OddMath/QuiverHecke/Grading.lean`): `isGradedHomogeneous_gdeg` from
    `Sc.GradedHomogeneous sy 𝒜` (the same case split; `hc` replaced by membership of
    `sᵢⱼ^{pq}` in `𝒜 (coefficientDegree)` and of `tᵢⱼ` in `𝒜 0`), then
    `gradedSupercategoryOf 𝒜 : GradedSupercategory K (H D Sc)` and its monoidal version, with
    `gradedSupercategory D sy Sc hc` the special case `K = R`, trivial grading.
+   *Checked* (`OddMath/QuiverHecke/CoefficientGrading.lean`): `isHomogeneous_coefficientGraded`
+   (the quiver Hecke presentation is coefficient-graded homogeneous when the `tᵢⱼ` lie in
+   `𝒜 0` and each nonzero `sᵢⱼ^{pq}` lies in `𝒜 (coefficientDegree)`, indexed by `ℤ`),
+   `iSupIndep_coefficientGraded`, and `isHomogeneous_rees` (the Rees parameters of a
+   lower-degree system over `K[h]`, `h` in degree `1`). Bundled
+   (`OddMath/Diagrams/CoefficientGradedSupercategory.lean`): for a parity homogeneous and
+   coefficient-graded homogeneous presentation over a `ℤ`-graded `K`-algebra, the degree
+   parts are `K`-submodules (`presentedSubmodule`), parity components preserve them
+   (`presented_homogeneousComponent_mem`, `proj_eq_homogeneousComponent`), and
+   `gradedSupercategory` is a `GradedSupercategory K` of the presented category with the
+   restricted supercategory structure; its quiver Hecke case over `K[h]` is
+   `QuiverHecke.reesGradedSupercategory`. Open: the truncations `K[h]/(h^N)` (needs the
+   coefficient grading of the quotient ring) and the monoidal version.
 4. *Downstream threading*: the ELV coefficient grading (`ELVHomGrading`, `ELVOldGrading`,
    `ELVOldCategoryGrading`, `ELVLowerDegree`, `ELVKernelDegree`, `ELVKernelBoundaryDegrees`,
    `ELVWeightedKernelBoundaryCoordinates`, `ELVTruncatedNilpotence` and the other files
