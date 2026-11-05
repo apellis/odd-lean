@@ -504,9 +504,13 @@ Phase 2 target: `SKM.GradedCoefficientNondegeneracy D sy`
 ([GradedParameters](../../OddMath/SKM/GradedParameters.lean)). It already
 implies the lower-degree ungraded statement
 (`SKM.nondegeneracyConjecture_of_lowerDegree`). Next targets, in order
-([Phase2Plan](Phase2Plan.md)): reduce the target to the universal graded
-parameter ring and its Artinian truncations over characteristic-zero fields;
-let the grading of the supercategory give positive degree to ring elements;
+([Phase2Plan](Phase2Plan.md)): the reduction to the universal ring, to
+characteristic-zero fields and to the truncated Rees parameters over
+`K[h]/(h^N)` is checked; what remains is
+`TruncatedRees.TruncatedReesNondegeneracy D sy`. Grade the KLR category over
+`K[h]/(h^N)` as a `K`-linear supercategory with `h` in degree one (design in
+Phase2Plan, step 2: coefficient-graded presentations and restriction of
+scalars, `GradedSupercategory` unchanged);
 rerun the nilpotence, kernel-degree and inverse-degree arguments of the field
 route over such bases. The associated graded gives only spanning and is not
 a route to independence. The missing pure monomials `u^r`, `v^s` of BWW are a

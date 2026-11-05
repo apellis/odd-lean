@@ -874,7 +874,15 @@ the branch are those of [FieldScopeBoundary](FieldScopeBoundary.md):
    inhomogeneous parameters `u³ + uv + v³`. Open decision: BE2's `Scalars`
    has no coefficients for the monomials `u^r` (`0 < r < dᵢⱼ`) and `v^s`
    alone, which Brundan–Wang–Webster allow, so the target covers their
-   class only on BE2's parameter shape. Plan and comparison:
+   class only on BE2's parameter shape. The target is reduced, by ring maps
+   that ignore grading, to its universal instance
+   (`LowerDegreeParameters.gradedCoefficientNondegeneracy_iff`), to
+   lower-degree parameters over characteristic-zero fields
+   (`gradedCoefficientNondegeneracy_of_charZeroField`) and to the Rees
+   parameters truncated to `K[h]/(h^N)`
+   (`gradedCoefficientNondegeneracy_of_truncated`), whose remaining
+   hypothesis `TruncatedRees.TruncatedReesNondegeneracy D sy` is open. Plan,
+   comparison and the grading design for that case:
    [Phase2Plan](Phase2Plan.md).
 2. **All-even comparison.** A checked comparison at parity identically zero
    recovering the benchmark's ordinary basis theorem: presentations,
