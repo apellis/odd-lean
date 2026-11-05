@@ -2611,6 +2611,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedContentKernelClosureCoord
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedContentKernelBoundaryCoordinates
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.FactorWindowInverse
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseCapInverse
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseBubbleEntry
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SupportedFactorWindowInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirBoundaries
 import OddMath.SKM.RouquierHomBendMonomials
@@ -2779,6 +2780,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumPolynomialWindow
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumBend
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumCap
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumCapInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeLeftwardVacuumCapInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumCapInverseAttach
 import OddMath.QuiverHecke.PairingExtensionPBW
 import OddMath.QuiverHecke.PairingExtensionRecovery
