@@ -124,6 +124,23 @@ inverse `(j, A)` and the substituted-series moments of its last padded column
 
 ## Remaining for item 2
 
-1. Identify the normalized presentation bubbles `c⁻¹·bubLs(2s)` with these
-   column moments to produce the `left_odd` field.
-2. Even colours and nonpositive height are handled separately.
+Checked on `research/positive-bubble-field`:
+
+- `ProbeReservoir.evalW_apply_whisker`,
+  `ProbeReservoir.res_opList_ext_whisker_apply` (`WhiskerEvaluation`): entries of
+  the native layer evaluation of a whiskered diagram, also up to equalities of
+  boundary objects.
+- `SPath.append_nil_nil_cast` and `pointwiseUpwardModuleAction_act_bubAt_cl`
+  (`SupportedClosedAction`): the supported action of `bubAt` of a closed diagram
+  on `ob μ (upWord t)` postcomposes each matrix entry with the path functor of
+  the closed diagram's `compDiag` on empty paths at the target sector.
+
+Still open:
+
+1. Off-vacuum sectors: the closed-diagram `compDiag` there is a map between zero
+   objects (`tensorTargetFamily_isZero`), so those entries vanish.
+2. Vacuum sector: identify the `compDiag` of `c⁻¹·bubLs(2s)` (and the odd
+   bubble) with the column moments of `tensorVacuum_chosenCapInverse_odd_moments`
+   via `tensorVacuumEndDecode_eq_of`, giving the `left_odd` field.
+3. Even colours need an even moment result; nonpositive height is handled
+   separately.
