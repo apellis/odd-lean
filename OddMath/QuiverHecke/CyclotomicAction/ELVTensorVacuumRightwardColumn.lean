@@ -70,7 +70,8 @@ theorem rightwardUnitColumn_odd_moments_even
       polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
         tensorVacuumDecodeLinear D Sc m cutoff L z :=
-  tensorVacuumNegativeCap_odd_moments_even D Sc m cutoff L sy hc i hi hP
+  tensorVacuumNegativeCap_odd_moments_even D Sc m cutoff L
+      (truncatedAppendDotNilpotent D Sc cutoff sy hc _) i hi hP
     (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
 
 include sy hc in
@@ -97,7 +98,8 @@ theorem rightwardUnitColumn_odd_moments_odd
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
           tensorVacuumDecodeLinear D Sc m cutoff L z) := by
   rw [map_smul]
-  exact tensorVacuumNegativeCap_odd_moments_odd D Sc m cutoff L sy hc i hi hP
+  exact tensorVacuumNegativeCap_odd_moments_odd D Sc m cutoff L
+      (truncatedAppendDotNilpotent D Sc cutoff sy hc _) i hi hP
     (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
 
 include sy hc in
@@ -166,7 +168,8 @@ theorem rightwardLastColumnDecode_even
       polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
         tensorVacuumDecodeLinear D Sc m cutoff L z := by
-  have h := tensorVacuumNegativeCap_odd_moments_even D Sc m cutoff L sy hc i hi hP
+  have h := tensorVacuumNegativeCap_odd_moments_even D Sc m cutoff L
+      (truncatedAppendDotNilpotent D Sc cutoff sy hc _) i hi hP
     (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
   rw [← he] at h
   unfold rightwardLastColumnDecode
@@ -189,7 +192,8 @@ theorem rightwardLastColumnDecode_odd
         (polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
           tensorVacuumDecodeLinear D Sc m cutoff L z) := by
-  have h := tensorVacuumNegativeCap_odd_moments_odd D Sc m cutoff L sy hc i hi hP
+  have h := tensorVacuumNegativeCap_odd_moments_odd D Sc m cutoff L
+      (truncatedAppendDotNilpotent D Sc cutoff sy hc _) i hi hP
     (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
   rw [← he] at h
   unfold rightwardLastColumnDecode

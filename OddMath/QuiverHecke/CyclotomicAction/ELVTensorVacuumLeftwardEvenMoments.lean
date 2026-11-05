@@ -135,7 +135,8 @@ theorem tensorVacuumColumn_even_moments
     (evaluatedPostDot D Sc m cutoff bound i H) (evaluatedMixedBend D Sc m cutoff bound i hP H)
     ((adjunction K).unit.app V) (shiftedPreCap D Sc m R₀ i hP H)
     (tensorPowerVacuumCap D Sc m cutoff L i hN) a
-    (evaluatedMixedBend_even_slide_sub D Sc m cutoff L sy hc i hi hP) has
+    (evaluatedMixedBend_even_slide_sub D Sc m cutoff L
+      (truncatedAppendDotNilpotent D Sc cutoff sy hc _) i hi hP) has
     (by rw [hhN]; exact shiftedPreDot_even_capPolynomial D Sc m cutoff L i hi) hcol hwin
     (tensorVacuum_even_reservoir_series D Sc m cutoff L i hi hN) s
   have e1 := tensorVacuumEndDecode_apply D Sc m cutoff L

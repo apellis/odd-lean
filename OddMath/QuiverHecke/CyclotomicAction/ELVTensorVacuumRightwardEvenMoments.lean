@@ -268,8 +268,9 @@ theorem tensorVacuum_rightward_even_extreme_moments (hi : D.parity i = 0)
       polynomialToPower D cutoff L (PowerSeries.coeff l
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
         tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z :=
-  tensorVacuumNegativeCap_even_moments D (parameterTwist D Sc) m cutoff L sy
-    (parameterTwist_homogeneous D Sc hc) i hi hP (by omega) hPN j B hB l z
+  tensorVacuumNegativeCap_even_moments D (parameterTwist D Sc) m cutoff L
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) _) i hi hP (by omega) hPN j B hB l z
 
 include sy hc in
 /-- **Even moments of the rightward vacuum bubble entries.** For an even colour with

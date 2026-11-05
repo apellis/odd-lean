@@ -222,7 +222,6 @@ end Generic
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) [Fintype I]
   (m : I → ℕ) (cutoff : I → ℕ) (L : I × ℕ → ℕ)
-  (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
 
 local notation "bound" => SKM.SYM.elvPowerWeightBound D cutoff L + 1
 local notation "W₀" => Functor.obj (restriction (contentInclusion D Sc cutoff bound (0 : Multiset I)))
@@ -233,6 +232,8 @@ local notation "N₀" => probeOldVacuumRegular D Sc m
 local notation "V" => Superfunctor.obj H N₀
 local notation "star" => (⟨⟨[]⟩, rfl⟩ : ContentCategory D Sc cutoff bound 0)
 local notation "AQ" => CoefficientPowerQuotient (k := k) D cutoff L
+
+variable (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound)
 
 variable (i : I)
 
@@ -380,25 +381,25 @@ theorem shiftedPreDot_even_capPolynomial (hi : D.parity i = 0) :
   simp only [map_pow, map_sub, Polynomial.aeval_X, map_one]
   exact shiftedPreDot_even_polynomial D Sc m R₀ i hi H
 
-include sy hc in
+include hdot in
 private theorem odd_slide (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) :
     evaluatedMixedBend D Sc m cutoff bound i hP H ≫ evaluatedPostDot D Sc m cutoff bound i H -
       (-1 : k) • (shiftedPreDot D Sc m R₀ i H ≫ evaluatedMixedBend D Sc m cutoff bound i hP H) =
       shiftedPreCap D Sc m R₀ i hP H ≫ (adjunction K).unit.app V := by
-  have hs := evaluatedMixedBend_odd_slide D Sc m cutoff bound sy hc i hi hP H
+  have hs := evaluatedMixedBend_odd_slideOf D Sc m cutoff bound hdot i hi hP H
   simpa only [hi, koszulSign_one_one, neg_one_zsmul, neg_one_smul] using hs
 
-include sy hc in
+include hdot in
 /-- The even-colour central slide of the A6 bend, with the unit Koszul sign made explicit. -/
 theorem evaluatedMixedBend_even_slide_sub (hi : D.parity i = 0) (hP : 0 < probeCutoff D m i) :
     evaluatedMixedBend D Sc m cutoff bound i hP H ≫ evaluatedPostDot D Sc m cutoff bound i H -
       (1 : k) • (shiftedPreDot D Sc m R₀ i H ≫ evaluatedMixedBend D Sc m cutoff bound i hP H) =
       shiftedPreCap D Sc m R₀ i hP H ≫ (adjunction K).unit.app V := by
-  have hs := evaluatedMixedBend_even_slide D Sc m cutoff bound sy hc i hi hP H
+  have hs := evaluatedMixedBend_even_slideOf D Sc m cutoff bound hdot i hi hP H
   rw [one_smul]
   simpa only [hi, koszulSign_zero_left, one_smul] using hs
 
-include sy hc in
+include hdot in
 /-- The decoded endomorphism form of both odd negative-height moment identities. -/
 private theorem odd_negative_decoded
     (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) (hN : 0 < cutoff i)
@@ -434,11 +435,11 @@ private theorem odd_negative_decoded
     (Algebra.lmul k AQ ((-1 : k) ^ (cutoff i + 1) •
       coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)))
     (fun p => (delta_commute D cutoff L i hi p).map (Algebra.lmul k AQ))
-    (odd_slide D Sc m cutoff L sy hc i hi hP) hwin (odd_probe_polynomial D Sc m cutoff L i hi)
+    (odd_slide D Sc m cutoff L hdot i hi hP) hwin (odd_probe_polynomial D Sc m cutoff L i hi)
     j B hB (odd_reservoir_series D Sc m cutoff L i hi hN) r
   exact h
 
-include sy hc in
+include hdot in
 /-- **Odd colour, negative height, on the tensor vacuum: even moments.** For
 probe exponent `M = m i` and reservoir cutoff `N = cutoff i` with `2M < N`, and
 any entrywise inverse `[j; B]` of the cup window of the A6 bend with the
@@ -461,12 +462,12 @@ theorem tensorVacuumNegativeCap_odd_moments_even
       polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
         tensorVacuumDecodeLinear D Sc m cutoff L z := by
-  have h := odd_negative_decoded D Sc m cutoff L sy hc i hi hP hN hPN j B hB r
+  have h := odd_negative_decoded D Sc m cutoff L hdot i hi hP hN hPN j B hB r
   have e1 := LinearMap.congr_fun h.1 (tensorVacuumDecodeLinear D Sc m cutoff L z)
   rw [tensorVacuumEndDecode_apply, capCoefficientLmul_apply] at e1
   exact e1
 
-include sy hc in
+include hdot in
 /-- **Odd colour, negative height, on the tensor vacuum: odd moments.** Under
 the hypotheses of `tensorVacuumNegativeCap_odd_moments_even`, the decoded odd
 moments carry the normalized odd coefficient `(-1)^(N+1) δ` in front of the
@@ -490,12 +491,12 @@ theorem tensorVacuumNegativeCap_odd_moments_odd
         (polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
           tensorVacuumDecodeLinear D Sc m cutoff L z) := by
-  have h := odd_negative_decoded D Sc m cutoff L sy hc i hi hP hN hPN j B hB r
+  have h := odd_negative_decoded D Sc m cutoff L hdot i hi hP hN hPN j B hB r
   have e2 := LinearMap.congr_fun h.2 (tensorVacuumDecodeLinear D Sc m cutoff L z)
   rw [tensorVacuumEndDecode_apply] at e2
   exact e2
 
-include sy hc in
+include hdot in
 /-- **Odd colour, zero height, on the tensor vacuum: even moments.** For
 `cutoff i = 2 M`, `M = m i`, and the A6 bend an isomorphism `s`, the decoded
 moment `u ≫ y^(2r) ≫ s⁻¹ ≫ v` is `δ · A_r`, where `A_r` is the `r`th
@@ -515,7 +516,7 @@ theorem tensorVacuumZeroHeightCap_odd_moments_even
         (polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
           tensorVacuumDecodeLinear D Sc m cutoff L z) := by
-  have hs := odd_slide D Sc m cutoff L sy hc i hi hP
+  have hs := odd_slide D Sc m cutoff L hdot i hi hP
   rw [← hsb] at hs
   have hwin : ∀ a < cutoff i, (adjunction K).unit.app V ≫
       (evaluatedPostDot D Sc m cutoff bound i H ^ a) ≫ tensorPowerVacuumCap D Sc m cutoff L i hN =
@@ -536,7 +537,7 @@ theorem tensorVacuumZeroHeightCap_odd_moments_even
   rw [tensorVacuumEndDecode_apply, cap_end_mul_apply, cap_lmul_apply, cap_lmul_apply] at e1
   convert e1 using 3
 
-include sy hc in
+include hdot in
 /-- **Odd colour, zero height, on the tensor vacuum: odd moments.** Under the
 hypotheses of `tensorVacuumZeroHeightCap_odd_moments_even`, the decoded moment
 `u ≫ y^(2r+1) ≫ s⁻¹ ≫ v` is `A_(r+1)`. -/
@@ -552,7 +553,7 @@ theorem tensorVacuumZeroHeightCap_odd_moments_odd
       polynomialToPower D cutoff L (PowerSeries.coeff (r + 1)
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
         tensorVacuumDecodeLinear D Sc m cutoff L z := by
-  have hs := odd_slide D Sc m cutoff L sy hc i hi hP
+  have hs := odd_slide D Sc m cutoff L hdot i hi hP
   rw [← hsb] at hs
   have hwin : ∀ a < cutoff i, (adjunction K).unit.app V ≫
       (evaluatedPostDot D Sc m cutoff bound i H ^ a) ≫ tensorPowerVacuumCap D Sc m cutoff L i hN =
@@ -573,7 +574,7 @@ theorem tensorVacuumZeroHeightCap_odd_moments_odd
 
 /-! ### Even colour -/
 
-include sy hc in
+include hdot in
 /-- **Even colour, negative height, on the tensor vacuum.** For probe exponent
 `M = m i` and reservoir cutoff `N = cutoff i` with `M < N`, and any entrywise
 inverse `[j; B]` of the cup window of the actual bend with the unit/post-dot
@@ -605,14 +606,14 @@ theorem tensorVacuumNegativeCap_even_moments
     (evaluatedPostDot D Sc m cutoff bound i H) (evaluatedMixedBend D Sc m cutoff bound i hP H)
     ((adjunction K).unit.app V) (shiftedPreCap D Sc m R₀ i hP H)
     (tensorPowerVacuumCap D Sc m cutoff L i hN) (cutoff i) hPN
-    (evaluatedMixedBend_even_slide_sub D Sc m cutoff L sy hc i hi hP) hwin
+    (evaluatedMixedBend_even_slide_sub D Sc m cutoff L hdot i hi hP) hwin
     (shiftedPreDot_even_capPolynomial D Sc m cutoff L i hi)
     j B hB (tensorVacuum_even_reservoir_series D Sc m cutoff L i hi hN) l
   have e1 := LinearMap.congr_fun h1 (tensorVacuumDecodeLinear D Sc m cutoff L z)
   rw [tensorVacuumEndDecode_apply, capCoefficientLmul_apply] at e1
   exact e1
 
-include sy hc in
+include hdot in
 /-- **Even colour, zero height, on the tensor vacuum.** For `cutoff i = M`,
 `M = m i`, and the bend an isomorphism `s`, the decoded moments of the
 principal inverse are `u ≫ y^l ≫ s⁻¹ ≫ v = A_(l+1)`, where `A_r` is the `r`th
@@ -629,7 +630,7 @@ theorem tensorVacuumZeroHeightCap_even_moments
       polynomialToPower D cutoff L (PowerSeries.coeff (l + 1)
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
         tensorVacuumDecodeLinear D Sc m cutoff L z := by
-  have hs := evaluatedMixedBend_even_slide_sub D Sc m cutoff L sy hc i hi hP
+  have hs := evaluatedMixedBend_even_slide_sub D Sc m cutoff L hdot i hi hP
   rw [← hsb] at hs
   have hwin : ∀ a < cutoff i, (adjunction K).unit.app V ≫
       (evaluatedPostDot D Sc m cutoff bound i H ^ a) ≫ tensorPowerVacuumCap D Sc m cutoff L i hN =

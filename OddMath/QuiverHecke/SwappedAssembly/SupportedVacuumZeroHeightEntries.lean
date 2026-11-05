@@ -373,8 +373,9 @@ theorem vacuumZeroOdd_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
     BalancedInduction.unitDotColumn_eq_restrictedDotEnd, Category.assoc]
   have e : ∀ p, polynomialToPower (k := k) D cutoff L p =
       coefficientPowerQuotientMap D cutoff L (SKM.SYM.polynomialInclude D k p) := fun _ => rfl
-  have hm := tensorVacuumZeroHeightCap_odd_moments_odd D (parameterTwist D Sc) m cutoff L sy
-    (parameterTwist_homogeneous D Sc hc) i hi hP' hN hcut (Iso.mk _ j hj1 hj2) rfl s z
+  have hm := tensorVacuumZeroHeightCap_odd_moments_odd D (parameterTwist D Sc) m cutoff L
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) _) i hi hP' hN hcut (Iso.mk _ j hj1 hj2) rfl s z
   rw [e] at hm
   convert hm using 6
 
@@ -428,8 +429,9 @@ theorem vacuumOddZero_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
   rw [ProbeReservoir.compDiag_etaL_lcrossL_epsL_swappedGens (P) _ _ i _ _ _ _ hu hd,
     hcol, zeroHeight_neg_total_apply, map_neg, map_neg, neg_mul, neg_inj,
     BalancedInduction.unitDotColumn_eq_restrictedDotEnd, Category.assoc]
-  have hm := tensorVacuumZeroHeightCap_odd_moments_even D (parameterTwist D Sc) m cutoff L sy
-    (parameterTwist_homogeneous D Sc hc) i hi hP' hN hcut (Iso.mk _ j hj1 hj2) rfl 0 z
+  have hm := tensorVacuumZeroHeightCap_odd_moments_even D (parameterTwist D Sc) m cutoff L
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) _) i hi hP' hN hcut (Iso.mk _ j hj1 hj2) rfl 0 z
   rw [Nat.mul_zero, AdjunctionBubbleSeries.coeff_zero_momentSeries,
     map_one, one_mul] at hm
   rw [map_smul]
@@ -488,8 +490,9 @@ theorem vacuumZeroEven_decode (i : I) (hi : D.parity i = 0) (hN : 0 < cutoff i)
     BalancedInduction.unitDotColumn_eq_restrictedDotEnd, Category.assoc]
   have e : ∀ p, polynomialToPower (k := k) D cutoff L p =
       coefficientPowerQuotientMap D cutoff L (SKM.SYM.polynomialInclude D k p) := fun _ => rfl
-  have hm := tensorVacuumZeroHeightCap_even_moments D (parameterTwist D Sc) m cutoff L sy
-    (parameterTwist_homogeneous D Sc hc) i hi hP' hN hcut (Iso.mk _ j hj1 hj2) rfl s z
+  have hm := tensorVacuumZeroHeightCap_even_moments D (parameterTwist D Sc) m cutoff L
+    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) _) i hi hP' hN hcut (Iso.mk _ j hj1 hj2) rfl s z
   rw [e] at hm
   convert hm using 6
 
