@@ -52,13 +52,67 @@ theorem oddBubble_mem (i : I) (μ : X) : oddBubble cs i μ ∈ closedPar D Sc μ
     convert this using 2
     simp
 
+/-! ## The relations of the integral form when `2` is not a unit -/
+
+theorem epsP_eq_smul (i : I) (μ : X) :
+    ∃ e : k, epsP cs i μ = e • cl D Sc μ [dn i, up i] [] (rPostL D i μ) := by
+  unfold epsP rPostL
+  split_ifs
+  · exact ⟨_, rfl⟩
+  · exact ⟨_, rfl⟩
+
+theorem etaP_eq_smul (i : I) (μ : X) :
+    ∃ e : k, etaP cs i μ = e • cl D Sc μ [] [up i, dn i] (lPreL D i μ) := by
+  unfold etaP lPreL
+  split_ifs
+  · exact ⟨_, rfl⟩
+  · exact ⟨_, rfl⟩
+
+/-- The relation (5.9) of the integral form, as an identity of layer classes. -/
+theorem cl_zRight (i : I) (μ : X) (hi : D.parity i = 1) (h2 : ¬IsUnit (2 : k)) (n : ℕ)
+    (hn : (2 : ℤ) ∣ n + D.h i μ + 1) :
+    cl D Sc μ [] [] (etaL i (n + 1) ++ rPostL D i μ) =
+      zsign k (oddPar D i μ) • cl D Sc μ [] [] (etaL i n ++ rPostL D i μ ++ oddL D i μ) := by
+  have hz := lin_relation Sc (.zInt (.right i μ n hn))
+  simp only [relation, Rel.ν, ZBase.ν, Rel.dom, Rel.cod, zGate_of_not_isUnit D i _ hi h2,
+    lin_sub, lin_smul, lin_dg, sub_eq_zero] at hz
+  exact hz
+
+/-- The relation (5.10) of the integral form, as an identity of layer classes. -/
+theorem cl_zLeft (i : I) (μ : X) (hi : D.parity i = 1) (h2 : ¬IsUnit (2 : k)) (n : ℕ)
+    (hn : (2 : ℤ) ∣ n + D.h i μ + 1) :
+    cl D Sc μ [] [] (lPreL D i μ ++ epsL i (n + 1)) =
+      zsign k (oddPar D i μ) • cl D Sc μ [] [] (oddL D i μ ++ lPreL D i μ ++ epsL i n) := by
+  have hz := lin_relation Sc (.zInt (.left i μ n hn))
+  simp only [relation, Rel.ν, ZBase.ν, Rel.dom, Rel.cod, zGate_of_not_isUnit D i _ hi h2,
+    lin_sub, lin_smul, lin_dg, sub_eq_zero] at hz
+  exact hz
+
 /-- **Brundan–Ellis, (5.9)**: for odd `i`, `N = n + 1 > 0` and `N + ⟨hᵢ, λ⟩ + 1` odd, the bubble
 with `N` dots on its right (upward) side is the bubble with `N - 1` dots followed by the odd
 bubble. -/
 theorem eq_5_9 (i : I) (μ : X) (hi : D.parity i = 1) (n : ℕ)
     (hpar : ((((n : ℤ) + 1) + D.h i μ + 1 : ℤ) : ZMod 2) = 1) :
     bubR cs i μ ((n : ℤ) + 1) = bubR cs i μ n ≫ oddBubble cs i μ := by
-  have h2 : IsUnit (2 : k) := Sc.two_isUnit ⟨i, hi⟩
+  by_cases h2 : IsUnit (2 : k)
+  swap
+  · have hn : (2 : ℤ) ∣ n + D.h i μ + 1 := by
+      have h' : (((n : ℤ) + D.h i μ + 1 : ℤ) : ZMod 2) = 0 := by
+        have h'' := hpar
+        push_cast at h'' ⊢
+        revert h''
+        generalize ((D.h i μ : ℤ) : ZMod 2) = y
+        generalize (n : ZMod 2) = x
+        revert x y; decide
+      exact_mod_cast (ZMod.intCast_zmod_eq_zero_iff_dvd _ 2).mp h'
+    obtain ⟨e, he⟩ := epsP_eq_smul cs i μ
+    rw [show (n : ℤ) + 1 = ((n + 1 : ℕ) : ℤ) by push_cast; ring, bubR_nat, bubR_nat, he,
+      oddBubble_eq_cl]
+    simp only [Linear.smul_comp, Linear.comp_smul, smul_smul]
+    rw [cl_comp (sChain_etaL i (n + 1)) (sChain_rPostL D i μ),
+      cl_comp (sChain_etaL i n) (sChain_rPostL D i μ),
+      cl_comp ((sChain_etaL i n).append (sChain_rPostL D i μ)) (sChain_oddL D i μ),
+      cl_zRight i μ hi h2 n hn, smul_smul, mul_comm]
   have hR : bubR cs i μ ((n : ℤ) + 1) = hLM D Sc i μ n ≫ uRM D Sc i μ ≫ epsP cs i μ := by
     rw [show (n : ℤ) + 1 = ((n + 1 : ℕ) : ℤ) by push_cast; ring, bubR_nat, ← Category.assoc,
       hL_uR]
@@ -237,7 +291,16 @@ bubble with `N` dots on its left (upward) side is the odd bubble followed by the
 theorem eq_5_10_pos (i : I) (μ : X) (hi : D.parity i = 1) (n : ℕ)
     (hpar : (2 : ℤ) ∣ (n : ℤ) + D.h i μ + 1) :
     bubL cs i μ ((n : ℤ) + 1) = oddBubble cs i μ ≫ bubL cs i μ n := by
-  have h2 : IsUnit (2 : k) := Sc.two_isUnit ⟨i, hi⟩
+  by_cases h2 : IsUnit (2 : k)
+  swap
+  · obtain ⟨e, he⟩ := etaP_eq_smul cs i μ
+    rw [show (n : ℤ) + 1 = ((n + 1 : ℕ) : ℤ) by push_cast; ring, bubL_nat, bubL_nat, he,
+      oddBubble_eq_cl]
+    simp only [Linear.smul_comp, Linear.comp_smul, smul_smul]
+    rw [cl_comp (sChain_lPreL D i μ) (sChain_epsL i (n + 1)),
+      cl_comp (sChain_lPreL D i μ) (sChain_epsL i n),
+      cl_comp (sChain_oddL D i μ) ((sChain_lPreL D i μ).append (sChain_epsL i n)),
+      ← List.append_assoc, cl_zLeft i μ hi h2 n hpar, smul_smul, mul_comm]
   have key : bubL cs i μ ((n : ℤ) + 1) = etaP cs i μ ≫ uLM D Sc i μ ≫ eLM D Sc i μ n := by
     rw [show (n : ℤ) + 1 = ((n + 1 : ℕ) : ℤ) by push_cast; ring, bubL_nat, uL_eL]
   rw [← Category.assoc, lemma41_eq4_one_odd cs i μ hi, Preadditive.add_comp, Linear.smul_comp,
@@ -404,7 +467,13 @@ theorem eq_5_9_all (i : I) (μ : X) (hi : D.parity i = 1) (N : ℤ) (hpar : (2 :
 /-- **Brundan–Ellis, (1.24)**: the odd bubble squares to zero (`i` odd). -/
 theorem oddBubble_sq (i : I) (μ : X) (hi : D.parity i = 1) :
     oddBubble cs i μ ≫ oddBubble cs i μ = 0 := by
-  have h2 : IsUnit (2 : k) := Sc.two_isUnit ⟨i, hi⟩
+  by_cases h2 : IsUnit (2 : k)
+  swap
+  · have hz := lin_relation Sc (.zInt (.sq i μ))
+    simp only [relation, Rel.ν, ZBase.ν, Rel.dom, Rel.cod, zGate_of_not_isUnit D i _ hi h2,
+      lin_dg] at hz
+    rw [oddBubble_eq_cl, Linear.smul_comp, Linear.comp_smul, smul_smul,
+      cl_comp (sChain_oddL D i μ) (sChain_oddL D i μ), hz, smul_zero]
   have E := comm_of_mem (oddBubble_mem cs i μ) (oddBubble_mem cs i μ)
   rw [hi, show (1 : ZMod 2) * 1 = 1 from rfl, show zsign k 1 = -1 by simp [zsign],
     neg_one_smul, eq_neg_iff_add_eq_zero, ← two_smul k] at E

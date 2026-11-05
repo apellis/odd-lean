@@ -1028,7 +1028,8 @@ theorem oddBubble_comp_self (i : I) (μ : X) (hi : D.parity i = 1) :
   by_cases h2 : IsUnit (2 : k)
   swap
   · have hz := lin_relation Sc (.zInt (.sq i μ))
-    simp only [relation, zGate_of_not_isUnit D i _ hi h2, lin_dg] at hz
+    simp only [relation, Rel.ν, ZBase.ν, Rel.dom, Rel.cod, zGate_of_not_isUnit D i _ hi h2,
+      lin_dg] at hz
     rw [oddBubble_eq_cl, Linear.smul_comp, Linear.comp_smul, smul_smul, zsign_mul_self, one_smul,
       cl_comp (sChain_oddL D i μ) (sChain_oddL D i μ)]
     exact hz

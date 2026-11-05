@@ -91,10 +91,11 @@ theorem oddBubble_eq_cl (i : I) (μ : X) :
       simp only [hp, hne, ↓reduceIte, zsign_zero, one_smul, Linear.smul_comp, smul_smul,
         Units.inv_mul, cl_comp (sChain_dcupL i _) (sChain_epsL i _)]
     · have he : D.h i μ = 0 := by omega
-      simp only [hp, he, ↓reduceIte, Linear.smul_comp, smul_smul,
-        cl_comp ((sChain_etaL i _).append (sChain_lcrossL i i)) (sChain_epsL i _)]
+      rw [ite_eq_right hp, ite_eq_right hp, ite_eq_left he, Linear.smul_comp,
+        cl_comp ((sChain_etaL i _).append (sChain_lcrossL i i)) (sChain_epsL i _), smul_smul]
       congr 1
-      rw [mul_left_comm, Units.inv_mul, mul_one, ipar, he, Int.cast_zero, zero_add, mul_one]
+      rw [mul_left_comm, Units.inv_mul, mul_one]
+      simp [ipar, he]
   · have hn : D.h i μ < 0 := by omega
     have hne : D.h i μ ≠ 0 := by omega
     have hn' : 0 ≤ -D.h i μ := by omega

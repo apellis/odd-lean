@@ -625,9 +625,6 @@ theorem omega_invM₁ (i : I) (ν : X) (hh : D.h i ν ≤ 0) :
   rw [coroot_neg] at key
   rw [← key, sub_self]
 
-/-! ## The Chevalley involution -/
-
-/-- The image of every defining relation of `𝔘(𝔤)` vanishes. -/
 /-! ## The relations of the integral form under `ω`
 
 `ω` maps (1.24) at `ν` to (1.24) at `-ν`, and exchanges (5.9) at `ν` with (5.10) at `-ν`, up to
@@ -701,7 +698,8 @@ theorem omegaCl_lPreL (ν : X) (i : I) (hp : D.parity i = 1) :
     rw [omegaCl_dcupL, hp, one_mul, natCast_toNat_zmod2 (by omega)]
     congr 1
     push_cast
-    generalize (D.h i ν : ZMod 2) = a; revert a; decide
+    generalize (D.h i ν : ZMod 2) = a
+    fin_cases a <;> simp (config := {decide := true}) [zsign]
   · have h' : ¬ -D.h i ν < 0 := by omega
     simp only [h, h', ↓reduceIte]
     rw [omegaCl_append ν (sChain_etaL i _) (sChain_lcrossL i i), omegaCl_lcrossL, omegaCl_etaL,
@@ -724,7 +722,8 @@ theorem omegaCl_rPostL (ν : X) (i : I) (hp : D.parity i = 1) :
     rw [omegaCl_dcapL, hp, one_mul, natCast_toNat_zmod2 (by omega)]
     congr 1
     push_cast
-    generalize (D.h i ν : ZMod 2) = a; revert a; decide
+    generalize (D.h i ν : ZMod 2) = a
+    fin_cases a <;> simp (config := {decide := true}) [zsign]
   · have h' : ¬ 0 < -D.h i ν := by omega
     simp only [h, h', ↓reduceIte, neg_neg]
     rw [omegaCl_append ν (sChain_lcrossL i i) (sChain_epsL i _), omegaCl_lcrossL, omegaCl_epsL,
@@ -746,8 +745,8 @@ theorem omegaCl_oddL (ν : X) (i : I) (hp : D.parity i = 1) :
     have e2 : etaL i (D.h i ν).toNat ++ rPostL D i (-ν) = oddL D i (-ν) := by
       by_cases h0 : D.h i ν = 0
       · simp [oddL, lPreL, rPostL, coroot_neg, h0]
-      · have h1 : ¬ 0 ≤ -D.h i ν := by omega
-        simp [oddL, coroot_neg, h1]
+      · unfold oddL
+        rw [coroot_neg, neg_neg, ite_eq_right (show ¬ (0 ≤ -D.h i ν) by omega)]
     rw [e2]
     congr 1
     rw [parsum_lPreL i ν hp, parsum_epsL, hp, natCast_toNat_zmod2 h]
@@ -758,8 +757,8 @@ theorem omegaCl_oddL (ν : X) (i : I) (hp : D.parity i = 1) :
       omegaCl_rPostL ν i hp, Linear.smul_comp, smul_smul,
       cl_comp (sChain_lPreL D i (-ν)) (sChain_epsL i _)]
     have e2 : lPreL D i (-ν) ++ epsL i (-D.h i ν).toNat = oddL D i (-ν) := by
-      have h1 : 0 ≤ -D.h i ν := by omega
-      simp [oddL, coroot_neg, h1]
+      unfold oddL
+      rw [coroot_neg, ite_eq_left (show 0 ≤ -D.h i ν by omega)]
     rw [e2]
     congr 1
     rw [parsum_rPostL i ν hp, parsum_etaL, hp, natCast_toNat_zmod2 (by omega)]
@@ -802,19 +801,18 @@ theorem omega_zRight (i : I) (ν : X) (n : ℕ) (hn : (2 : ℤ) ∣ n + D.h i ν
   have hz := lin_relation Sc (.zInt (.left i (-ν) n hn'))
   simp only [relation, Rel.ν, ZBase.ν, Rel.dom, Rel.cod, zGate_of_not_isUnit D i _ hp h2,
     lin_sub, lin_smul, lin_dg, oddPar_neg, sub_eq_zero] at hz
-  rw [omegaCl_append ν (sChain_etaL i _) (sChain_rPostL D i ν),
-    omegaCl_append ν (sChain_etaL i _) ((sChain_rPostL D i ν).append (sChain_oddL D i ν)),
-    omegaCl_append ν (sChain_rPostL D i ν) (sChain_oddL D i ν),
+  rw [omegaCl_append ν (sChain_etaL i (n + 1)) (sChain_rPostL D i ν),
+    omegaCl_append ν ((sChain_etaL i n).append (sChain_rPostL D i ν)) (sChain_oddL D i ν),
+    omegaCl_append ν (sChain_etaL i n) (sChain_rPostL D i ν),
     omegaCl_etaL, omegaCl_etaL, omegaCl_rPostL ν i hp, omegaCl_oddL ν i hp]
-  simp only [Linear.smul_comp, Linear.comp_smul, smul_smul, Category.assoc]
+  simp only [Linear.smul_comp, Linear.comp_smul, smul_smul]
   rw [cl_comp (sChain_lPreL D i (-ν)) (sChain_epsL i (n + 1)),
     cl_comp (sChain_lPreL D i (-ν)) (sChain_epsL i n),
-    cl_comp (sChain_oddL D i (-ν)) ((sChain_lPreL D i (-ν)).append (sChain_epsL i n)), hz,
-    smul_smul, ← sub_smul]
-  convert zero_smul k _ using 1
+    cl_comp (sChain_oddL D i (-ν)) ((sChain_lPreL D i (-ν)).append (sChain_epsL i n)),
+    ← List.append_assoc, hz, smul_smul, ← sub_smul]
+  refine (congrArg (· • _) ?_).trans (zero_smul k _)
   have hn2 := dvd_two_zmod hn
-  rw [parsum_etaL, parsum_etaL, parsum_rPostL i ν hp, parsum_append, parsum_rPostL i ν hp,
-    parsum_oddL i ν hp, hp]
+  simp only [parsum_etaL, parsum_append, parsum_rPostL i ν hp, parsum_oddL i ν hp, hp]
   push_cast
   revert hn2
   generalize (D.h i ν : ZMod 2) = a
@@ -835,19 +833,18 @@ theorem omega_zLeft (i : I) (ν : X) (n : ℕ) (hn : (2 : ℤ) ∣ n + D.h i ν 
   have hz := lin_relation Sc (.zInt (.right i (-ν) n hn'))
   simp only [relation, Rel.ν, ZBase.ν, Rel.dom, Rel.cod, zGate_of_not_isUnit D i _ hp h2,
     lin_sub, lin_smul, lin_dg, oddPar_neg, sub_eq_zero] at hz
-  rw [omegaCl_append ν (sChain_lPreL D i ν) (sChain_epsL i _),
-    omegaCl_append ν (sChain_oddL D i ν) ((sChain_lPreL D i ν).append (sChain_epsL i _)),
-    omegaCl_append ν (sChain_lPreL D i ν) (sChain_epsL i _),
+  rw [omegaCl_append ν (sChain_lPreL D i ν) (sChain_epsL i (n + 1)),
+    omegaCl_append ν ((sChain_oddL D i ν).append (sChain_lPreL D i ν)) (sChain_epsL i n),
+    omegaCl_append ν (sChain_oddL D i ν) (sChain_lPreL D i ν),
     omegaCl_epsL, omegaCl_epsL, omegaCl_lPreL ν i hp, omegaCl_oddL ν i hp]
-  simp only [Linear.smul_comp, Linear.comp_smul, smul_smul, Category.assoc]
+  simp only [Linear.smul_comp, Linear.comp_smul, smul_smul]
   rw [cl_comp (sChain_etaL i (n + 1)) (sChain_rPostL D i (-ν)),
     cl_comp (sChain_rPostL D i (-ν)) (sChain_oddL D i (-ν)),
-    cl_comp (sChain_etaL i n) ((sChain_rPostL D i (-ν)).append (sChain_oddL D i (-ν))), hz,
-    smul_smul, ← sub_smul]
-  convert zero_smul k _ using 1
+    cl_comp (sChain_etaL i n) ((sChain_rPostL D i (-ν)).append (sChain_oddL D i (-ν))),
+    ← List.append_assoc, hz, smul_smul, ← sub_smul]
+  refine (congrArg (· • _) ?_).trans (zero_smul k _)
   have hn2 := dvd_two_zmod hn
-  rw [parsum_epsL, parsum_epsL, parsum_lPreL i ν hp, parsum_append, parsum_lPreL i ν hp,
-    parsum_oddL i ν hp, hp]
+  simp only [parsum_epsL, parsum_append, parsum_lPreL i ν hp, parsum_oddL i ν hp, hp]
   push_cast
   revert hn2
   generalize (D.h i ν : ZMod 2) = a
@@ -855,6 +852,9 @@ theorem omega_zLeft (i : I) (ν : X) (n : ℕ) (hn : (2 : ℤ) ∣ n + D.h i ν 
   generalize oddPar D i ν = c
   fin_cases a <;> fin_cases b <;> fin_cases c <;> simp (config := {decide := true}) [zsign]
 
+/-! ## The Chevalley involution -/
+
+/-- The image of every defining relation of `𝔘(𝔤)` vanishes. -/
 theorem omega_relation (r : Rel D) :
     (freeLift k (SOpMap.functor (chevMap D) (chevImg D Sc))).map ((pres D Sc).rel r) = 0 := by
   apply eq_zero_of_omegaLin

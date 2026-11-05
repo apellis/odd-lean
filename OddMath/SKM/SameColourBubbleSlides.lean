@@ -179,7 +179,6 @@ private theorem same_triangle_reindex {M : Type*} [AddCommMonoid M]
   · intro x _
     rfl
 
-include Sc in
 private theorem same_slide_coefficient (i : I) (n t : ℕ) (ht : t < n) :
     (∑ a ∈ range (t + 1), zsign k (D.parity i * (t : ZMod 2) * ((n - a : ℕ) : ZMod 2))) =
       if D.parity i * (t : ZMod 2) = 0 then (t + 1 : k) else 0 := by
@@ -194,22 +193,20 @@ private theorem same_slide_coefficient (i : I) (n t : ℕ) (ht : t < n) :
     rcases zmod2_cases (t : ZMod 2) with h | h
     · simp [h] at hp
     · exact h
-  have hf (a : ℕ) (ha : a ∈ range (t + 1)) :
-      zsign k (D.parity i * (t : ZMod 2) * ((n - (t + 1 - 1 - a) : ℕ) : ZMod 2)) =
-        -zsign k (D.parity i * (t : ZMod 2) * ((n - a : ℕ) : ZMod 2)) := by
-    have ha' : a ≤ t := by have := mem_range.mp ha; omega
-    simp only [Nat.add_sub_cancel, hi, ht', one_mul]
-    rw [Nat.cast_sub (by omega : t - a ≤ n), Nat.cast_sub ha', Nat.cast_sub (by omega : a ≤ n), ht']
-    have he : (n : ZMod 2) - (1 - a) = 1 + ((n : ZMod 2) - a) := by
-      generalize (n : ZMod 2) = b
-      generalize (a : ZMod 2) = c
-      revert b c
-      decide
-    rw [he, zsign_add, zsign_one', neg_one_mul]
-  have H := sum_range_reflect
-    (fun a => zsign k (D.parity i * (t : ZMod 2) * ((n - a : ℕ) : ZMod 2))) (t + 1)
-  rw [sum_congr rfl hf, sum_neg_distrib, neg_eq_iff_add_eq_zero, ← two_mul] at H
-  exact (Sc.two_isUnit ⟨i, hi⟩).mul_left_cancel (by simpa using H)
+  obtain ⟨m, rfl⟩ := ZMod.natCast_eq_one_iff_odd.mp ht'
+  have key : ∀ j, j ≤ m + 1 → ∑ a ∈ range (2 * j),
+      zsign k (D.parity i * ((2 * m + 1 : ℕ) : ZMod 2) * ((n - a : ℕ) : ZMod 2)) = 0 := by
+    intro j hj
+    induction j with
+    | zero => simp
+    | succ j ih =>
+      rw [show 2 * (j + 1) = 2 * j + 1 + 1 by ring, sum_range_succ, sum_range_succ,
+        ih (by omega), zero_add]
+      simp only [hi, ht', one_mul]
+      rw [show n - 2 * j = (n - (2 * j + 1)) + 1 by omega, Nat.cast_succ, zsign_add, zsign_one']
+      ring
+  rw [show 2 * m + 1 + 1 = 2 * (m + 1) by ring]
+  exact key (m + 1) le_rfl
 
 private theorem bubbleL_same_shift_nonneg (i : I) (μ : X) (hh : 0 ≤ D.h i μ) (N : ℕ) :
     lbub i μ (bubLs cs i (wt D μ [up i]) N) =
@@ -262,7 +259,7 @@ private theorem bubbleL_same_shift_nonneg (i : I) (μ : X) (hh : 0 ≤ D.h i μ)
   apply sum_congr rfl
   intro t ht
   dsimp only [f]
-  rw [← sum_smul, same_slide_coefficient (Sc := Sc) i n t (by
+  rw [← sum_smul, same_slide_coefficient (k := k) (D := D) i n t (by
     have := mem_range.mp ht
     omega)]
 
@@ -306,7 +303,6 @@ private theorem same_slide_R_term (i : I) (μ : X) (a s r : ℕ) :
   revert p a' s' r' h
   decide
 
-include Sc in
 private theorem same_slide_coefficient_add (i : I) (t : ℕ) (b : ZMod 2) :
     (∑ a ∈ range (t + 1), zsign k (D.parity i * (t : ZMod 2) * (b + a))) =
       if D.parity i * (t : ZMod 2) = 0 then (t + 1 : k) else 0 := by
@@ -322,7 +318,7 @@ private theorem same_slide_coefficient_add (i : I) (t : ℕ) (b : ZMod 2) :
     generalize (a : ZMod 2) = y
     revert p q x y b
     decide
-  rw [sum_congr rfl he, ← mul_sum, same_slide_coefficient (Sc := Sc) i (t + 1) t (by omega)]
+  rw [sum_congr rfl he, ← mul_sum, same_slide_coefficient (k := k) (D := D) i (t + 1) t (by omega)]
   split_ifs with hp
   · simp only [hp, zero_mul, zsign_zero, one_mul]
   · exact mul_zero _
@@ -395,7 +391,7 @@ private theorem bubbleR_same_shift_nonpos (i : I) (μ : X) (hh : D.h i μ ≤ -1
     intro s hs
     dsimp only [F]
     rw [Nat.add_sub_of_le (by have := mem_range.mp hs; omega : s ≤ t)]
-  rw [hinner, same_slide_coefficient_add (Sc := Sc)]
+  rw [hinner, same_slide_coefficient_add (k := k) (D := D)]
 
 private def sameColourCoefficient (i : I) (r : ℕ) : k :=
   if D.parity i * (r : ZMod 2) = 0 then (r + 1 : k) else 0
