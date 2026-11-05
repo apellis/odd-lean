@@ -288,6 +288,60 @@ theorem decompose_mem_span
       rw [decompose_smul_of_mem 𝒜 𝒢 hsmul c.2]
       exact Submodule.smul_mem _ _ (hf _)
 
+omit [Decomposition 𝒢] in
+/-- **Degree support of an `R`-span.** If the base is supported in degrees `B` and the generators
+of an `R`-span lie in the degree parts indexed by `T`, then the span lies in the degree parts
+indexed by any `U` containing `B + T`. -/
+theorem mem_iSup_of_mem_span
+    (hsmul : ∀ {e n : ℤ} {r : R} {y : M}, r ∈ 𝒜 e → y ∈ 𝒢 n → r • y ∈ 𝒢 (e + n))
+    {B T U : Set ℤ} (h𝒜 : ∀ m, m ∉ B → 𝒜 m = ⊥) (hBT : ∀ b ∈ B, ∀ t ∈ T, b + t ∈ U)
+    {S : Set M} (hS : ∀ g ∈ S, g ∈ ⨆ n ∈ T, 𝒢 n) {f : M} (hf : f ∈ Submodule.span R S) :
+    f ∈ ⨆ n ∈ U, 𝒢 n := by
+  have key : ∀ {e : ℤ} {r : R}, r ∈ 𝒜 e → ∀ {g : M}, g ∈ ⨆ n ∈ T, 𝒢 n →
+      r • g ∈ ⨆ n ∈ U, 𝒢 n := by
+    intro e r hr g hg
+    by_cases he : e ∈ B
+    · refine Submodule.iSup_induction (fun n => ⨆ (_ : n ∈ T), 𝒢 n)
+        (motive := fun g => r • g ∈ ⨆ n ∈ U, 𝒢 n) hg ?_ ?_ ?_
+      · intro n g hg
+        by_cases hn : n ∈ T
+        · rw [iSup_pos hn] at hg
+          exact Submodule.mem_iSup_of_mem (e + n)
+            (Submodule.mem_iSup_of_mem (hBT e he n hn) (hsmul hr hg))
+        · rw [iSup_neg hn] at hg
+          rw [(Submodule.mem_bot K).1 hg, smul_zero]
+          exact zero_mem _
+      · rw [smul_zero]
+        exact zero_mem _
+      · intro x y hx hy
+        rw [smul_add]
+        exact add_mem hx hy
+    · rw [h𝒜 e he] at hr
+      rw [(Submodule.mem_bot K).1 hr, zero_smul]
+      exact zero_mem _
+  let P : Submodule R M :=
+    { carrier := {f | ∀ r : R, r • f ∈ ⨆ n ∈ U, 𝒢 n}
+      add_mem' := fun ha hb r => by
+        rw [smul_add]
+        exact add_mem (ha r) (hb r)
+      zero_mem' := fun r => by
+        rw [smul_zero]
+        exact zero_mem _
+      smul_mem' := fun c f hf r => by
+        rw [smul_smul]
+        exact hf _ }
+  have hSP : S ⊆ P := by
+    intro g hg r
+    induction r using DirectSum.Decomposition.inductionOn 𝒜 with
+    | zero =>
+      rw [zero_smul]
+      exact zero_mem _
+    | add r r' hr hr' =>
+      rw [add_smul]
+      exact add_mem hr hr'
+    | @homogeneous e r => exact key r.2 (hS g hg)
+  simpa using (Submodule.span_le.2 hSP hf) 1
+
 end Span
 
 end OddMath.Diagrams.BasisGrading
