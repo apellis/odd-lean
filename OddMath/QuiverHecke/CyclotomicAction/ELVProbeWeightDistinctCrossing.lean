@@ -1,5 +1,10 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightPairInduction
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvaluatedDistinctCrossing
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCanonicalContent
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentDistinctMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVRectangularMateIso
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendToAdjunction
+import OddMath.QuiverHecke.CyclotomicAction.ELVPiSCatRectangularMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCrossMate
 
 /-! # Positive distinct crossings on OLD probe weight spaces
 

@@ -3,7 +3,9 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.GlobalSupport
-import OddMath.QuiverHecke.CyclotomicAction.CrossingTransformation
+import OddMath.QuiverHecke.CyclotomicAction.InductionFunctorComparison
+import OddMath.QuiverHecke.CyclotomicAction.SuperCrossing
+import StringDiagrams.Super.Functor
 import OddMath.QuiverHecke.CyclotomicAction.Square
 
 /-!

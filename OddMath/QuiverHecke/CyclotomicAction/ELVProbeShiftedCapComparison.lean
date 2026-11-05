@@ -1,5 +1,16 @@
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapRowComparison
-import OddMath.QuiverHecke.CyclotomicAction.ELVParityRestrictionComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMateTensors
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendTensors
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridComposition
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOrdinaryAppendDot
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeQuotientInduction
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendCrossing
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridComposition
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionDoubleTransform
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeRestrictionComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVOperatorPowerComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentParity
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleAdjunction
+import OddMath.SKM.RouquierNormalizedHomAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedMatrixRows
 
 /-! # Prescribed cap rows with their canonical parity targets

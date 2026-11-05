@@ -1,5 +1,6 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexCrossing
-import OddMath.QuiverHecke.CyclotomicAction.ELVContentDistinctIso
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentDistinctMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVRectangularMateIso
 
 /-! # The prescribed distinct mate at stored OLD contents
 

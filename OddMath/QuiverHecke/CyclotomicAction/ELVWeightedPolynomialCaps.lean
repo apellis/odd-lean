@@ -1,7 +1,7 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedPowerMomentMaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVUnitDotComponents
 import OddMath.QuiverHecke.CyclotomicAction.ELVEndEvaluation
-import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerNonpositiveCap
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerPolynomialCap
 
 /-! # Polynomial caps of the actual weighted power vacuum
 

@@ -1,7 +1,7 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapUniqueness
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapPreDotSigns
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightSuperAdjunction
-import OddMath.SKM.RouquierAdjacentLeftAdjunction
+import OddMath.SKM.RouquierFTriangle
 
 /-! # Comparing the inverse-defined Rouquier cap with the regular probe row
 

@@ -3,7 +3,9 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightAdjunction
-import OddMath.QuiverHecke.CyclotomicAction.CrossingTransformation
+import OddMath.QuiverHecke.CyclotomicAction.InductionFunctorComparison
+import OddMath.QuiverHecke.CyclotomicAction.SuperCrossing
+import StringDiagrams.Super.Functor
 
 /-!
 # The crossing on composed induction at every height

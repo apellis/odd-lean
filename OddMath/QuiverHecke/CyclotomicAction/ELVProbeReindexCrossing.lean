@@ -1,5 +1,10 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexPair
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvaluatedDistinctCrossing
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCanonicalContent
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentDistinctMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVRectangularMateIso
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendToAdjunction
+import OddMath.QuiverHecke.CyclotomicAction.ELVPiSCatRectangularMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCrossMate
 
 /-! # The chosen OLD crossing under pair representative changes
 

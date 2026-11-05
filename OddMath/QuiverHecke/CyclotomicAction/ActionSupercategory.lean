@@ -2,7 +2,7 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.CyclotomicAction.SuperAdjunction
+import OddMath.QuiverHecke.CyclotomicAction.CornerPairing
 import OddMath.QuiverHecke.CyclotomicAction.SuperDot
 import OddMath.SKM.RouquierData
 import StringDiagrams.Super.SCat
