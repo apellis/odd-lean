@@ -2425,6 +2425,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightDotWhiskering
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeBlockDotComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightDistinctCrossing
 import OddMath.QuiverHecke.SwappedAssembly.ReservoirWordFunctor
+import OddMath.QuiverHecke.SwappedAssembly.ReservoirWordFunctorStrict
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeBlockNilHecke
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexInduction
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridBraid
@@ -2770,6 +2771,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumCap
 import OddMath.QuiverHecke.PairingExtensionPBW
 import OddMath.QuiverHecke.PairingExtensionRecovery
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorEntryLayerCharts
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorLayerChartTransport
 import OddMath.QuiverHecke.VacuumRouteNondegeneracy
 import OddMath.QuiverHecke.VacuumRightBubbles
 import OddMath.QuiverHecke.VacuumRouteEvenComparison
