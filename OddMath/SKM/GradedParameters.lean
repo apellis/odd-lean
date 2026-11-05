@@ -24,7 +24,7 @@ With a symmetrizer `dᵢ` the dot on a strand of colour `i` has degree `2dᵢ`, 
   is therefore nonnegative. This is the parameter condition of Brundan–Wang–Webster §2.2,
   restricted to the monomials that occur in Brundan–Ellis (1.6), namely `0 < p < dᵢⱼ`,
   `0 < q < dⱼᵢ`.
-* `Scalars.LowerDegree`: over an arbitrary commutative ring, every nonzero `sᵢⱼ^{pq}` has
+* `ScalarData.LowerDegree`: over an arbitrary commutative ring, every nonzero `sᵢⱼ^{pq}` has
   nonnegative coefficient degree: `Qᵢⱼ` has no monomial above its leading terms.
 * `ScalarData.Homogeneous.coefficientDegree_eq_zero`: the homogeneity condition (1.31) says
   exactly that nonzero coefficients have coefficient degree zero.
@@ -75,7 +75,8 @@ def Scalars.GradedHomogeneous {σ : Type*} [SetLike σ k] (sy : Symmetrizer D) (
 
 /-- Lower-degree parameters: every nonzero `sᵢⱼ^{pq}` has nonnegative coefficient degree,
 i.e. `dᵢp + dⱼq ≤ dᵢdᵢⱼ`. No grading of `k` is involved. -/
-def Scalars.LowerDegree (sy : Symmetrizer D) (Sc : Scalars D k) : Prop :=
+def ScalarData.LowerDegree {Ptwo : Prop} (sy : Symmetrizer D) (Sc : ScalarData D k Ptwo) :
+    Prop :=
   ∀ i j (p q : ℕ), 0 < p → (p : ℤ) < D.d i j → 0 < q → (q : ℤ) < D.d j i →
     Sc.s i j p q ≠ 0 → 0 ≤ coefficientDegree sy i j p q
 

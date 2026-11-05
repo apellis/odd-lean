@@ -54,8 +54,9 @@ theorem Scalars.GradedHomogeneous.lowerDegree {k : Type w} [CommRing k] {σ : Ty
   exact Int.natCast_nonneg n
 
 /-- Lower-degree parameters stay lower-degree under every ring map. -/
-theorem Scalars.LowerDegree.scalarChange {R : Type w} {S : Type*} [CommRing R] [CommRing S]
-    (f : R →+* S) {sy : Symmetrizer D} {Sc : Scalars D R} (h : Sc.LowerDegree sy) :
+theorem ScalarData.LowerDegree.scalarChange {R : Type w} {S : Type*} [CommRing R]
+    [CommRing S] (f : R →+* S) {sy : Symmetrizer D} {Ptwo : Prop} {Sc : ScalarData D R Ptwo}
+    (h : Sc.LowerDegree sy) :
     (ScalarChange.scalars D f Sc).LowerDegree sy := by
   intro i j p q hp hp' hq hq' hs
   apply h i j p q hp hp' hq hq'
@@ -254,12 +255,11 @@ theorem nondegeneracyConjecture_of_universal
     {Sc : Scalars D R} (hl : Sc.LowerDegree sy) (cs : CScalars Sc) :
     NondegeneracyConjecture cs := by
   have hS := nondegeneracyConjecture_scalarChange (specialize sy h₂ cs) hU
-  refine nondegeneracyConjecture_congr ?_ _ cs ?_ hS
-  · apply Scalars.ext_t_s
-    · funext i j
-      exact specialize_t sy h₂ cs i j
-    · funext i j p q
-      exact specialize_coefficient sy h₂ cs hl ⟨i, j, p, q⟩
+  refine nondegeneracyConjecture_congr (eq_true h₂).symm ?_ ?_ _ cs ?_ hS
+  · funext i j
+    exact specialize_t sy h₂ cs i j
+  · funext i j p q
+    exact specialize_coefficient sy h₂ cs hl ⟨i, j, p, q⟩
   · intro μ i
     exact specialize_c sy h₂ cs μ i
 
@@ -325,11 +325,16 @@ theorem universal_nondegeneracy (hK : CharZeroFieldLowerDegreeNondegeneracy D sy
   have hpt (p : PrimeSpectrum (RationalParameters D sy)) :
       Finsupp.mapRange.addMonoidHom
         (ScalarChange.symMap (D := D) (point D sy p)).toAddMonoidHom z = 0 := by
+    have h2 : IsUnit (2 : primeFractionField (RationalParameters D sy) p) :=
+      isUnit_iff_ne_zero.2 two_ne_zero
     have hinj := (nondegeneracyConjecture_iff_injective _).1
-      (hK (primeFractionField (RationalParameters D sy) p)
-        (ScalarChange.scalars D (point D sy p) (scalars D sy))
-        ((lowerDegree D sy).scalarChange (point D sy p))
-        (ScalarChange.cScalars D (point D sy p) (normalizations D sy)))
+      (nondegeneracyConjecture_congr (eq_true h2) rfl rfl _
+        (ScalarChange.cScalars D (point D sy p) (normalizations D sy)) (fun _ _ => rfl)
+        (hK (primeFractionField (RationalParameters D sy) p)
+          ((ScalarChange.scalars D (point D sy p) (scalars D sy)).withProp fun _ => h2)
+          ((lowerDegree D sy).scalarChange (point D sy p))
+          ((ScalarChange.cScalars D (point D sy p) (normalizations D sy)).withProp
+            fun _ => h2)))
       a b hab μ F
     apply hinj
     rw [← ScalarChange.homMap_expansion, hz, map_zero, map_zero]

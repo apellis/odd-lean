@@ -84,11 +84,17 @@ theorem T_blockClass (μ ν : X) (s : List (Letter I)) (hs : wt D ν s = μ)
   induction n using Int.induction_on with
   | zero => simp
   | succ n ih =>
-    rw [show (n : ℤ) + 1 = 1 + n by omega, T_add, mul_smul, ih, q_blockClass]
-    congr 1; omega
+    have e : (T ((n : ℤ) + 1) : LaurentPolynomial Zπ) = T 1 * T (n : ℤ) := by
+      rw [← T_add]
+      exact congrArg T (by omega)
+    rw [e, mul_smul, ih, q_blockClass]
+    exact congrArg (fun e => blockClass Sc sy hc μ ν s hs e a) (by omega)
   | pred n ih =>
-    rw [show -(n : ℤ) - 1 = -1 + -(n : ℤ) by omega, T_add, mul_smul, ih, qinv_blockClass]
-    congr 1; omega
+    have e : (T (-(n : ℤ) - 1) : LaurentPolynomial Zπ) = T (-1) * T (-(n : ℤ)) := by
+      rw [← T_add]
+      exact congrArg T (by omega)
+    rw [e, mul_smul, ih, qinv_blockClass]
+    exact congrArg (fun e => blockClass Sc sy hc μ ν s hs e a) (by omega)
 
 /-- Iterated parity shift; the integer exponent is read modulo two. -/
 theorem pi_pow_blockClass (μ ν : X) (s : List (Letter I)) (hs : wt D ν s = μ)
