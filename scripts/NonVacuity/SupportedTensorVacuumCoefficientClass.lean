@@ -148,21 +148,12 @@ private abbrev observe := SupportedSectors.tensorWordQuotientObservation D origi
 vacuum and the concrete full mixed coefficient whose quotient class is nonzero. -/
 example : observe (action (1 + delta) vacuum) =
     (PowerWordQuotientCoordinates.kernel D originalSc cutoff L σ σ).mkQ
-      (sourceCoefficientHom D originalSc (1 + delta) (𝟙 _)) :=
-  SupportedSectors.tensorWordQuotientObservation_coefficient_vacuum D originalSc cutoff L m Λ Λ
-    probePairing reservoirPairing σ (1 + delta)
+      (sourceCoefficientHom D originalSc (1 + delta) (𝟙 _)) := by
+  rw [SupportedSectors.tensorWordQuotientObservation_coefficient_vacuum]
 
 example : observe (action (1 + delta) vacuum) ≠ 0 := by
   rw [SupportedSectors.tensorWordQuotientObservation_coefficient_vacuum]
   exact mixed_class_ne_zero
-
-example : action (1 + delta) vacuum ≠ 0 := by
-  intro hz
-  have h : observe (action (1 + delta) vacuum) ≠ 0 := by
-    rw [SupportedSectors.tensorWordQuotientObservation_coefficient_vacuum]
-    exact mixed_class_ne_zero
-  rw [hz,map_zero] at h
-  exact h rfl
 
 end NonVacuity.SupportedTensorVacuumCoefficientClass
 open Lean Elab Command in
