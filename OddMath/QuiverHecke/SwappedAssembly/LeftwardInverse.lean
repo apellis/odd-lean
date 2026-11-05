@@ -128,12 +128,6 @@ def AugmentedInvertible (c : P.CrossCoeff) : Prop :=
     (0 ≤ D.h i ν → ∃ lc dc, P.PosInverse c i ν t s lc dc) ∧
     (D.h i ν < 0 → ∃ lc dc, P.NegInverse c i ν t s lc dc)
 
-end Entries
-
-variable {P : ProbeReservoir k B D Sc}
-
-/-! ## Entries of the relation diagrams -/
-
 /-- **The leftward data (A7)** built from inverses of the augmented maps: the leftward
 crossing is minus the first component of the inverse of (1.13) for `⟨hᵢ, ν⟩ ≥ 0` and the first
 component of the inverse of (1.14) otherwise; the `♦`-cups and caps are the remaining
@@ -152,6 +146,12 @@ def leftwardOfInvertible (c : P.CrossCoeff) (h : P.AugmentedInvertible c) : P.Le
     if hw : P.wt s = ν then
       if hh : D.h i ν < 0 then ((h i ν t s hw).2 hh).choose_spec.choose n q r Z else 0
     else 0
+
+end Entries
+
+variable {P : ProbeReservoir k B D Sc}
+
+/-! ## Entries of the relation diagrams -/
 
 theorem compDiag_epsL_swappedGens (c : P.CrossCoeff) (L : P.LeftwardData) (i : I) (n : ℕ)
     (ν : X) {t s : Sector I} (p : SPath (wd D ν [up i, dn i]) t s) (r : SPath (wd D ν []) t s)
@@ -199,6 +199,8 @@ theorem compDiag_id_eq_famDelta (gens : P.Generators) {w : List (Letter I)} (ν 
   rw [compDiag_id]
   unfold famDelta
   split_ifs <;> rfl
+
+/-! ## The inversion relations from the inverses -/
 
 /-- **Leftward data inverting the augmented maps satisfy the inversion relations**: if, for
 `⟨hᵢ, ν⟩ ≥ 0`, the leftward crossing and `♦`-cups of `L` are the components of the inverse of
@@ -369,8 +371,6 @@ theorem leftwardOfInvertible_isInverse (c : P.CrossCoeff) (h : P.AugmentedInvert
       simp [leftwardOfInvertible, hw, hh]
     exact (congrArg₂ (P.NegInverse c i ν t s) e₁ e₂).mpr
       ((h i ν t s hw).2 hh).choose_spec.choose_spec
-
-/-! ## The inversion relations from the inverses -/
 
 end ProbeReservoir
 

@@ -373,7 +373,6 @@ theorem class_word_rep (i : I) (r : ℕ) :
 
 end DividedPowers
 
-
 omit [Field k] in
 private theorem smul_mul_three {R A : Type*} [CommMonoid R] [Mul A] [MulAction R A]
     [IsScalarTower R A A] [SMulCommClass R A A] (s c c' : R) (x y z : A) :

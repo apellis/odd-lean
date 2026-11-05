@@ -67,7 +67,6 @@ private theorem deleted (ε k j : Bool) : Iso (pairing₂ (a k j ++ b k j) (S k)
   · exact Iso.refl _
   · exact pair _ _ _ _
 
-
 private def q (k : Bool) (t : ℕ) : ℕ × ℕ :=
   if k then if t = 0 then (1, 0) else (0, 1) else (0, 0)
 private def r (_ : ℕ) : ℕ × ℕ := (0, 1)

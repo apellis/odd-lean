@@ -140,7 +140,6 @@ theorem separation (q r : ℕ →₀ M)
   refine ⟨hq0, ?_⟩
   simpa only [hq0, map_zero, zero_add] using h
 
-
 /-- A nonnegative degree shift has no low kernel. -/
 theorem injective (h : S ≤ Q) : Function.Injective A := by
   intro f g hfg

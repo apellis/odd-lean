@@ -37,4 +37,22 @@ instance (ν : List I) (i : I) (μ : List I) (h : (i :: ν).Perm μ) :
     IsSuperfunctor k (oldContentAppendTo D Sc cutoff ν i μ h) where
   map_mem := Supercategory.map_mem (CyclotomicCrossingTensor.append D Sc cutoff i)
 
+/-- Both orders of content indexing include into the identical old append functor. -/
+theorem oldContentAppendTo_inclusion (ν : List I) (i : I) (μ : List I) (h : (i :: ν).Perm μ) :
+    oldContentAppendTo D Sc cutoff ν i μ h ⋙ oldContentInclusion D Sc cutoff μ =
+      oldContentInclusion D Sc cutoff ν ⋙ CyclotomicCrossingTensor.append D Sc cutoff i := rfl
+
+/-- The chosen append-extension comparison also applies to a prescribed target index. -/
+def oldContentAppendToExtensionIso (ν : List I) (i : I) (μ : List I) (h : (i :: ν).Perm μ) :
+    BalancedInduction.induction (k := k) (oldContentAppendTo D Sc cutoff ν i μ h) ⋙
+        BalancedInduction.induction (oldContentInclusion D Sc cutoff μ) ≅
+      BalancedInduction.induction (oldContentInclusion D Sc cutoff ν) ⋙
+        BalancedInduction.induction (CyclotomicCrossingTensor.append D Sc cutoff i) :=
+  BalancedInduction.inductionComp (oldContentAppendTo D Sc cutoff ν i μ h)
+      (oldContentInclusion D Sc cutoff μ) ≪≫
+    BalancedInduction.inductionFunctorIsoOfEq _ _
+      (oldContentAppendTo_inclusion D Sc cutoff ν i μ h) ≪≫
+    (BalancedInduction.inductionComp (oldContentInclusion D Sc cutoff ν)
+      (CyclotomicCrossingTensor.append D Sc cutoff i)).symm
+
 end OddMath.QuiverHecke.ELVOld

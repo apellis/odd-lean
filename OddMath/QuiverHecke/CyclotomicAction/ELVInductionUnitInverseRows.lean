@@ -46,8 +46,6 @@ def unitColumnModuleInverseRow (r : Fin m) :
   OddMath.FiniteSupermodule.inverseCoordinateRow rIso e r
 
 include he in
-
-include he in
 /-- The finite ordinary unit columns and extracted inverse rows are dual. -/
 theorem unitDotColumn_inverseRow (a r : Fin m) :
     unitDotColumn J hα M a.val ≫ unitColumnModuleInverseRow J M m e r =

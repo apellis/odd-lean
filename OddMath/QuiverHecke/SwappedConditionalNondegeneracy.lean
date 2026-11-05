@@ -113,6 +113,16 @@ def SwappedVacuumObservation.toSwappedVacuumBlock {μ : X} {t t' : List I} {d : 
   SwappedVacuumBlock.ofCornerEvaluation cs O.action O.vacuum O.raw O.bubbles.vacuumMoments
     O.corner O.ideal_le
 
+end Observation
+
+section Field
+variable {I X k : Type u} [AddCommGroup X] [Field k]
+  (B : Type uB) [BicategoryStruct.{w, v} B]
+  [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
+  [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
+  [∀ a b : B, PiSupercategory k (a ⟶ b)]
+  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cs : SKM.CScalars Sc)
+
 /-- **Conditional field theorem from swapped vacuum observations.** If at every
 equal-weight pair of upward words, every external weight `μ` and every degree bound `d` there
 is a swapped vacuum observation in `B`, then the Nondegeneracy Conjecture holds for `cs`.
@@ -137,16 +147,6 @@ theorem nondegeneracy_of_restrictColours_swapped_vacuum_observations
     SKM.NondegeneracyConjecture cs :=
   nondegeneracy_of_restrictColours_vacuum_evaluations D Sc cs fun J tJ t'J hw μ d =>
     (h J tJ t'J hw μ d).map fun O => O.toSwappedVacuumBlock.toSwappedVacuumEvaluation
-
-end Observation
-
-section Field
-variable {I X k : Type u} [AddCommGroup X] [Field k]
-  (B : Type uB) [BicategoryStruct.{w, v} B]
-  [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
-  [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
-  [∀ a b : B, PiSupercategory k (a ⟶ b)]
-  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cs : SKM.CScalars Sc)
 
 end Field
 

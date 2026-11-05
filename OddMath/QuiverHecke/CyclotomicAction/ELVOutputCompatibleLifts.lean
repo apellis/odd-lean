@@ -282,4 +282,40 @@ private theorem corrected_changeInv_single (p : ZMod 2) (j : {j : I // D.parity 
     LinearMap.sub_apply, LinearMap.comp_apply, Finsupp.lsingle_apply, Nat.add_sub_cancel]
   exact ⟨trivial, trivial⟩
 
+/-- The corrected coordinates give a genuine automorphism of all finite rows. -/
+def outputCorrectedCoordinateEquiv (p : ZMod 2) (j : {j : I // D.parity j = 1}) (v : List I) :
+    (ℕ →₀ Old D Sc cutoff v v) ≃ₗ[k] (ℕ →₀ Old D Sc cutoff v v) where
+  toLinearMap := outputCorrectedChange D Sc cutoff p j v
+  invFun := outputCorrectedChangeInv D Sc cutoff p j v
+  left_inv f := by
+    change outputCorrectedChangeInv D Sc cutoff p j v
+      (outputCorrectedChange D Sc cutoff p j v f) = f
+    induction f using Finsupp.induction_linear with
+    | zero => simp only [map_zero]
+    | add f g hf hg => simp only [map_add, hf, hg]
+    | single m b =>
+      rcases (show ∃ q, m = 2 * q ∨ m = 2 * q + 1 from ⟨m / 2, by omega⟩) with ⟨q, h | h⟩
+      · subst m
+        rw [(corrected_change_single D Sc cutoff p j v q b).1,
+          (corrected_changeInv_single D Sc cutoff p j v q b).1]
+      · subst m
+        rw [(corrected_change_single D Sc cutoff p j v q b).2, map_add,
+          (corrected_changeInv_single D Sc cutoff p j v q _).2,
+          (corrected_changeInv_single D Sc cutoff p j v q _).1, oldTwist_twice, sub_add_cancel]
+  right_inv f := by
+    change outputCorrectedChange D Sc cutoff p j v
+      (outputCorrectedChangeInv D Sc cutoff p j v f) = f
+    induction f using Finsupp.induction_linear with
+    | zero => simp only [map_zero]
+    | add f g hf hg => simp only [map_add, hf, hg]
+    | single m b =>
+      rcases (show ∃ q, m = 2 * q ∨ m = 2 * q + 1 from ⟨m / 2, by omega⟩) with ⟨q, h | h⟩
+      · subst m
+        rw [(corrected_changeInv_single D Sc cutoff p j v q b).1,
+          (corrected_change_single D Sc cutoff p j v q b).1]
+      · subst m
+        rw [(corrected_changeInv_single D Sc cutoff p j v q b).2, map_sub,
+          (corrected_change_single D Sc cutoff p j v q _).2,
+          (corrected_change_single D Sc cutoff p j v q _).1, oldTwist_twice, add_sub_cancel_right]
+
 end OddMath.QuiverHecke.ELVOld

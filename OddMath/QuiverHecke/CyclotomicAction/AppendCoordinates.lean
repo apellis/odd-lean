@@ -55,8 +55,6 @@ def appendShuffleElement (i : I) {n : ℕ} (u : AppendShuffleAt n) : Hn D Sc (n 
   ∑ s : Word I n, FiniteHomMatrix.single (appendShuffleTarget i u s) (appendWord i s)
     (appendShuffleHom D Sc i u s)
 
-/-! ## Matrix entries -/
-
 /-- A coefficient acts first, followed by last-strand dots and the moving crossings. -/
 def appendPBWTerm (i : I) {n : ℕ} (u : AppendShuffleAt n) (m : ℕ)
     (b : Hn D Sc n) : Hn D Sc (n + 1) :=
@@ -72,6 +70,8 @@ def appendPBWCorner (i : I) {n : ℕ} (u : AppendShuffleAt n) (m : ℕ)
     (b : Hn D Sc n) :
     InductionAlong.Corner (appendAlgebra D Sc i n : Hn D Sc n →ₙ+* Hn D Sc (n + 1)) :=
   ⟨appendPBWTerm D Sc i u m b, appendPBWTerm_corner D Sc i u m b⟩
+
+/-! ## Matrix entries -/
 
 theorem affineLastDot_mul_single (i : I) {n : ℕ} (s t : Word I n)
     (f : wordObj D Sc (appendWord i s) ⟶ wordObj D Sc (appendWord i t)) :
@@ -111,8 +111,6 @@ theorem appendShuffleElement_mul_single (i : I) {n : ℕ} (u : AppendShuffleAt n
       (fun h => hb (appendWord_injective i n h)) _ _
   · simp
 
-omit [Fintype I] in
-
 /-- The coefficient morphism acts first, then the new dots, then the moving crossing. -/
 theorem appendPBWTerm_single (i : I) {n : ℕ} (u : AppendShuffleAt n) (m : ℕ)
     (s t : Word I n) (f : wordObj D Sc s ⟶ wordObj D Sc t) :
@@ -125,6 +123,7 @@ theorem appendPBWTerm_single (i : I) {n : ℕ} (u : AppendShuffleAt n) (m : ℕ)
   rw [appendLinear_single, mul_assoc, affineLastDot_pow_mul_single,
     appendShuffleElement_mul_single, Category.assoc]
 
+omit [Fintype I] in
 /-- The last dot is the positioned dot at the last strand. -/
 theorem inductionLastDot_eq_dotE (i : I) {n : ℕ} (s : Word I n) :
     inductionLastDot D Sc i s = dotE D Sc (s.1 ++ [i]) s.1.length := by

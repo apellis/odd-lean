@@ -29,16 +29,6 @@ def movingSignNormalize {M : Type*} [AddCommGroup M] (p : ZMod 2) :
   map_zero' := by ext m; simp
   map_add' f g := by ext m; simp [smul_add]
 
-universe u v
-variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
-  [CommRing k] (Sc : SKM.Scalars D k) [Fintype I]
-
-variable (a : I → _root_.Polynomial k) (n : ℕ) (β : Multiset I) (i : I)
-local notation "B" => CyclotomicContentCorner D Sc a n β
-local notation "eps" => appendContentParity D a β i
-local notation "p" => D.parity i * Multiset.sum (Multiset.map D.parity β)
-local notation "coord" => prependTwistCoordinates D Sc i n eps B
-
 @[simp] theorem movingSignNormalize_apply {M : Type*} [AddCommGroup M]
     (p : ZMod 2) (f : ℕ →₀ M) (m : ℕ) :
     movingSignNormalize p f m = (zsign ℤ p) ^ m • f m := rfl
@@ -72,6 +62,16 @@ def movingParityRaise {M : Type*} [AddCommGroup M] (θ : M →+ M) :
     movingParityRaise θ (Finsupp.single m b) = Finsupp.single (m + 1) (θ b) := by
   simp [movingParityRaise]
 
+universe u v
+variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
+  [CommRing k] (Sc : SKM.Scalars D k) [Fintype I]
+
+variable (a : I → _root_.Polynomial k) (n : ℕ) (β : Multiset I) (i : I)
+local notation "B" => CyclotomicContentCorner D Sc a n β
+local notation "eps" => appendContentParity D a β i
+local notation "p" => D.parity i * Multiset.sum (Multiset.map D.parity β)
+local notation "coord" => prependTwistCoordinates D Sc i n eps B
+
 /-- The normalized lift is the full moving PBW lift with its exact degreewise sign. -/
 def appendContentRhoLift : (ℕ →₀ B) →+ appendContentSource D Sc a n β i :=
   (appendContentLongLift D Sc a n β i).comp (movingSignNormalize p)
@@ -90,6 +90,9 @@ def appendContentRhoExtract : appendContentSource D Sc a n β i →+ (ℕ →₀
     appendContentRhoExtract D Sc a n β i (appendContentRhoLift D Sc a n β i f) = f := by
   simp [appendContentRhoExtract, appendContentRhoLift, appendContentLongExtract_lift]
 
+variable (ha : CyclotomicPolynomialParity D a)
+local notation "θ" => RingHom.toAddMonoidHom (contentCornerParity D Sc a n β i ha)
+
 /-- The parity raising operator has zero constant term. -/
 @[simp] theorem movingParityRaise_zero {M : Type*} [AddCommGroup M]
     (τ : M →+ M) (f : ℕ →₀ M) : movingParityRaise τ f 0 = 0 := by
@@ -100,8 +103,5 @@ def appendContentRhoExtract : appendContentSource D Sc a n β i →+ (ℕ →₀
     (τ : M →+ M) (f : ℕ →₀ M) (m : ℕ) :
     movingParityRaise τ f (m + 1) = τ (f m) :=
   Finsupp.embDomain_apply_self _ _ m
-
-variable (ha : CyclotomicPolynomialParity D a)
-local notation "θ" => RingHom.toAddMonoidHom (contentCornerParity D Sc a n β i ha)
 
 end OddMath.QuiverHecke

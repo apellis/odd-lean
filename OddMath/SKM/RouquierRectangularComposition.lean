@@ -151,7 +151,6 @@ private theorem rectangularPostLeft {a b c d : B} (L : a ⟶ b) (G : b ⟶ c)
   rw [← TwoSupercategory.associator_naturality_middle_assoc (R := k)]
   simp only [Iso.hom_inv_id, Category.comp_id]
 
-
 private theorem rectangularCapSuffix {C : Type u} [Bicategory.{w,v} C]
     {a b c d : C} (L : d ⟶ b) (E : a ⟶ b) (F : b ⟶ a) (G : b ⟶ c)
     (ε : F ≫ E ⟶ 𝟙 b) :

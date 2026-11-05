@@ -83,6 +83,12 @@ theorem fullSquareSourceIso_hom_mem (P : Superfunctor k B (SVec k)) (e : induced
     dsimp only [induction, Functor.comp_obj] at h0 ⊢
   simpa only [zero_add] using h0
 
+/-- The complete chosen source chart, with its final target isomorphism bound before data. -/
+def fullSquareSourceRetargetIso (P : Superfunctor k B (SVec k)) (e : induced Q M ≅ P)
+    (V : Superfunctor k E (SVec k)) (b : induced T P ≅ V) :
+    induced J M ≅ (restriction U).obj V :=
+  fullSquareSourceIso J U Q T h M P e ≪≫ (restriction U).mapIso b
+
 /-- The complete chosen target chart keeps its strict restriction square and final target comparison. -/
 def fullSquareTargetRetargetIso (P V : Superfunctor k B (SVec k))
     (a : (restriction J).obj ((restriction U).obj (induced T (induced Q M))) ≅ (restriction Q).obj P)

@@ -206,7 +206,6 @@ theorem coe_modifiedBaseChange [Module.Flat k k'] (t : k' ⊗[k] modified D q π
     modifiedBaseChange D hq hπ (c ⊗ₜ x) = c • mapModified D hq hπ x :=
   Subtype.ext (modifiedBaseChangeHom_tmul D hq hπ c x)
 
-
 /-! ### Extension of scalars of bilinear forms on the modified algebra -/
 
 /-- A bilinear identity `B (P x) (Q y) = B (P₂ x) (Q₂ y)` persists after extension of scalars. -/

@@ -412,6 +412,8 @@ def postcompositionAlgHom (A B : C) : End B →ₐ[k] Module.End k (A ⟶ B) :=
       intro f
       exact (Category.assoc f b a).symm)
 
+@[simp] theorem postcompositionAlgHom_apply (A B : C) (a : End B) (f : A ⟶ B) :
+    postcompositionAlgHom (k := k) A B a f = f ≫ a := rfl
 end Hom
 
 section Paths
@@ -421,9 +423,6 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (L : I × ℕ → ℕ) (ΛP ΛR : X)
 local notation "N" => PowerWordContent.powerBound D cutoff L
 local notation "Z" => WeightTensorVacuum.selectedHom D Sc m cutoff ΛP ΛR L
-
-@[simp] theorem postcompositionAlgHom_apply (A B : C) (a : End B) (f : A ⟶ B) :
-    postcompositionAlgHom (k := k) A B a f = f ≫ a := rfl
 
 /-- Source coefficients on a literal reservoir-path Hom are the full
 vacuum coefficient maps whiskered by that same path functor. -/

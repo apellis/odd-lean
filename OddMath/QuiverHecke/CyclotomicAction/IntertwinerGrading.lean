@@ -151,15 +151,6 @@ def balanceGraded : SVec.GradedSubmodule (tensorSpace V W) where
 
 /-- Total parity descended to the existing balanced tensor carrier. -/
 def balancedSpace : SVec k := SVec.quot (tensorSpace V W) (balanceGraded (B := B) V W 𝒜 hR hL)
-
-end Balance
-section Corner
-variable {A B : Type u} [Ring A] [Ring B] [Algebra k B]
-  (ℬ : ZMod 2 → Submodule k B) [GradedAlgebra ℬ]
-  (φ : A →ₙ+* B) (he : φ 1 ∈ ℬ 0)
-
-include he in
-
 theorem balanced_tmul_mem {p q : ZMod 2} {x : V} {y : W}
     (hx : x ∈ V.part p) (hy : y ∈ W.part q) :
     (BalancedTensor.tmul x y : BalancedTensor ℤ B A V W) ∈
@@ -198,7 +189,13 @@ theorem balanced_map_mem {U : SVec k} {d : ZMod 2}
         rw [SVec.proj_apply_of_mem_part _ (balanced_tmul_mem (B := B) V W 𝒜 hR hL hx hy),
           SVec.proj_apply_of_mem_part _ (hf p q x y hx hy)]
         simp only [add_left_inj, apply_ite f, map_zero]
+end Balance
+section Corner
+variable {A B : Type u} [Ring A] [Ring B] [Algebra k B]
+  (ℬ : ZMod 2 → Submodule k B) [GradedAlgebra ℬ]
+  (φ : A →ₙ+* B) (he : φ 1 ∈ ℬ 0)
 
+include he in
 /-- The corner is stable under every parity projection since its idempotent is even. -/
 theorem corner_proj_mem (p : ZMod 2) (x : InductionAlong.Corner φ) :
     SuperBimodule.algProj ℬ p x.val ∈ Categorification.lIdeal (φ 1) := by
@@ -259,7 +256,6 @@ theorem ind_tmul_mem {p q : ZMod 2} {x : InductionAlong.Corner φ} {y : W}
     (hx : x.val ∈ ℬ p) (hy : y ∈ W.part q) :
     InductionAlong.Ind.tmul x y ∈ (indSpace W 𝒜 ℬ φ hφ hW).part (p + q) :=
   balanced_tmul_mem (B := B) _ _ _ _ _ ((cornerSpace_mem ℬ φ _).mpr hx) hy
-
 /-- A homogeneous pure-tensor criterion for maps on the original induction quotient. -/
 theorem ind_map_mem {U : SVec k} {d : ZMod 2}
     (f : indSpace W 𝒜 ℬ φ hφ hW →ₗ[k] U)

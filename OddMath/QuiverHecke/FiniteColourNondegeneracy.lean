@@ -82,6 +82,12 @@ theorem nondegeneracy_of_finiteColour_upward
   nondegeneracy_of_restrictColours_upward D Sc cs fun J tJ t'J hw μ =>
     h J (D.restrictColours J) (Sc.restrictColours D J) (cs.restrictColours D J Sc) tJ t'J hw μ
 
+end CommRing
+
+section Field
+variable {I X k : Type u} [AddCommGroup X] [Field k]
+  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cs : SKM.CScalars Sc)
+
 /-- **Conditional field theorem, finite-colour form.** Over a field, vacuum evaluations of the
 swapped action at every finite-colour restriction of `D`, every equal-weight pair of upward
 words, every external weight and every degree bound imply the Nondegeneracy Conjecture for
@@ -95,12 +101,6 @@ theorem nondegeneracy_of_restrictColours_vacuum_evaluations
     SKM.NondegeneracyConjecture cs :=
   nondegeneracy_of_restrictColours_upward D Sc cs fun J tJ t'J hw μ =>
     upwardCoefficientMap_injective_of_vacuum_evaluations μ tJ t'J (h J tJ t'J hw μ)
-
-end CommRing
-
-section Field
-variable {I X k : Type u} [AddCommGroup X] [Field k]
-  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cs : SKM.CScalars Sc)
 
 end Field
 

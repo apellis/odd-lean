@@ -77,8 +77,6 @@ variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
   (adjd : homPre (k := k) (c := d) E ⊣ homPre (k := k) F ⋙ homParityShift (k := k) σ)
   (adjc : homPre (k := k) (c := c) E ⊣ homPre (k := k) F ⋙ homParityShift (k := k) σ)
 
-variable {E E' t u}
-
 /-- The mate `V = M(J ≫ S_u(Φ))` of `J` followed by an endomorphism `Φ` of the target. -/
 def homDistinctMixedPreMateDot (H : a ⟶ c)
     (Φ : (E ≫ (homParityShift (k := k) σ).obj (F ≫ H)) ≫ E' ⟶
@@ -100,6 +98,8 @@ theorem homDistinctMixedPreMateDot_congr (H : a ⟶ c)
     homDistinctMixedPreMateDot E E' t u adjd adjc H Φ =
       homDistinctMixedPreMateDot E E' t u adjd adjc H Ψ := by
   rw [homDistinctMixedPreMateDot, homDistinctMixedPreMateDot, h]
+
+variable {E E' t u}
 
 /-- The transport relation `J ≫ S_u(Φ) = E ◁ g ≫ J`. -/
 def MixedTransport {Z : b ⟶ c}
@@ -131,17 +131,6 @@ theorem MixedTransport.smul {Z : b ⟶ c} {g Φ} (h : MixedTransport (k := k) (E
   rw [Functor.map_smul, Linear.comp_smul, h, TwoSupercategory.whiskerLeft_smul (R := k),
     Linear.smul_comp]
 
-variable {adjd adjc}
-
-end Dots
-
-section Conjugate
-variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
-  [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
-  [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
-  [∀ a b : B, PiSupercategory k (a ⟶ b)]
-  {a b c : B} {E : a ⟶ b}
-
 /-- The even post dot transports to the source side. -/
 theorem mixedTransport_post (Z : b ⟶ c) {y : E' ⟶ E'} (hy : y ∈ parity (R := k) _ _ 0) :
     MixedTransport (k := k) (E := E) (E' := E') (t := t) (u := u) (Z := Z)
@@ -155,6 +144,8 @@ theorem mixedTransport_middle {Z : b ⟶ c} {f : Z ⟶ Z} (hf : f ∈ parity (R 
       ((homParityShift (k := k) t).map (f ▷ E')) ((E ◁ f) ▷ E') := by
   unfold MixedTransport
   rw [homMixedInterchange_naturality_even (k := k) E E' t u hf]
+
+variable {adjd adjc}
 
 /-- (13): when `Φ` transports to `g`, the dotted mate is `g` followed by the
 dotless mate `V₀`. -/
@@ -186,14 +177,20 @@ theorem homDistinctMixedPreMateDot_eq_comp_of_counit (H : a ⟶ c) {g Φ Ψ}
   rw [homDistinctMixedPreMateDot_congr E E' t u adjd adjc H h,
     homDistinctMixedPreMateDot_eq_comp H hΨ]
 
+end Dots
+
+section Conjugate
+variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
+  [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
+  [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
+  [∀ a b : B, PiSupercategory k (a ⟶ b)]
+  {a b c : B} {E : a ⟶ b}
+
 /-- An even dot on `E`, whiskered on the right, as a natural endomorphism of `homPre E`. -/
 def homPreDot (c : B) (x : E ⟶ E) (hx : x ∈ parity (R := k) E E 0) :
     homPre (k := k) (c := c) E ⟶ homPre (k := k) (c := c) E where
   app H := x ▷ H
   naturality _ _ g := (TwoSupercategory.whisker_exchange_of_even_left (R := k) hx g).symm
-
-variable {F : b ⟶ a} {σ : ZMod 2}
-  (adj : homPre (k := k) (c := c) E ⊣ homPre (k := k) F ⋙ homParityShift (k := k) σ)
 
 omit [∀ a b : B, PiSupercategory k (a ⟶ b)] in
 theorem homPreDot_comp (c : B) {x x' : E ⟶ E} (hx : x ∈ parity (R := k) E E 0)
@@ -209,20 +206,14 @@ theorem homPreDot_id (c : B) :
   ext H
   exact TwoSupercategory.id_whiskerRight (R := k) E H
 
+variable {F : b ⟶ a} {σ : ZMod 2}
+  (adj : homPre (k := k) (c := c) E ⊣ homPre (k := k) F ⋙ homParityShift (k := k) σ)
+
 /-- The conjugate `c(x)` of the dot `x ▷ (-)`: the cup–dot–cap word (10). -/
 def homPreDotConj (x : E ⟶ E) (hx : x ∈ parity (R := k) E E 0) :
     homPre (k := k) (c := c) F ⋙ homParityShift (k := k) σ ⟶
       homPre (k := k) (c := c) F ⋙ homParityShift (k := k) σ :=
   conjugateEquiv adj adj (homPreDot c x hx)
-
-end Conjugate
-
-section Inverse
-variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
-  [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
-  [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
-  [∀ a b : B, PiSupercategory k (a ⟶ b)]
-  {a b c d : B} {F : b ⟶ a} {σ : ZMod 2} (t u : ZMod 2) (H : a ⟶ c) (E' : c ⟶ d)
 
 /-- The pre dot followed by the counit equals the conjugate followed by the counit. -/
 theorem homPreDotConj_counit (x : E ⟶ E) (hx : x ∈ parity (R := k) E E 0) (H : a ⟶ c) :
@@ -250,6 +241,15 @@ theorem homPreDotConj_inv {x w : E ⟶ E} (hx : x ∈ parity (R := k) E E 0)
     congr
   · rw [← homPreDotConj_comp, ← homPreDotConj_id adj]
     congr
+
+end Conjugate
+
+section Inverse
+variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
+  [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
+  [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
+  [∀ a b : B, PiSupercategory k (a ⟶ b)]
+  {a b c d : B} {F : b ⟶ a} {σ : ZMod 2} (t u : ZMod 2) (H : a ⟶ c) (E' : c ⟶ d)
 
 /-- The explicit inverse (15) of the coordinate word of `V₀`. -/
 def homDistinctMixedPreMateInv :
@@ -356,6 +356,17 @@ theorem homDistinctMixedPreMateDot_isIso (A : ShiftedSuperAdjunction (k := k) F 
     ⟨⟨homDistinctMixedPreMateInv t u H E', h1, h2⟩⟩
   infer_instance
 
+end MateInverse
+
+section Monomial
+variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
+  [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
+  [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
+  [∀ a b : B, PiSupercategory k (a ⟶ b)]
+  {a b c d : B} {F : b ⟶ a} {E : a ⟶ b} {E' : c ⟶ d} {σ : ZMod 2} {t u : ZMod 2}
+  {adjd : homPre (k := k) (c := d) E ⊣ homPre (k := k) F ⋙ homParityShift (k := k) σ}
+  {adjc : homPre (k := k) (c := c) E ⊣ homPre (k := k) F ⋙ homParityShift (k := k) σ}
+
 /-- (13) for one supported monomial: the even pre dot `x` (through its conjugate (10))
 and the even post dot `y` move to the source side of `V₀`. -/
 theorem homDistinctMixedPreMateDot_monomial (H : a ⟶ c) {x : E ⟶ E}
@@ -375,6 +386,11 @@ theorem homDistinctMixedPreMateDot_monomial (H : a ⟶ c) {x : E ⟶ E}
   congr 2
   exact (homPreDotConj_counit adjc x hx H).symm
 
+end Monomial
+
+section Unit
+variable {C : Type*} [Category C] [Preadditive C]
+
 /-- (14): `A + N` is invertible when `A` is invertible and `N` is nilpotent in the
 endomorphism ring and commutes with `A`. -/
 theorem isIso_add_of_isNilpotent {X : C} {A N : X ⟶ X} [IsIso A]
@@ -383,22 +399,6 @@ theorem isIso_add_of_isNilpotent {X : C} {A N : X ⟶ X} [IsIso A]
   have hA : IsUnit (show End X from A) := (isUnit_iff_isIso _).mpr ‹_›
   have hc' : Commute (show End X from N) (show End X from A) := hc.symm
   exact (isUnit_iff_isIso (show End X from A + N)).mp (hN.isUnit_add_left_of_commute hA hc')
-
-end MateInverse
-
-section Monomial
-variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
-  [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
-  [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
-  [∀ a b : B, PiSupercategory k (a ⟶ b)]
-  {a b c d : B} {F : b ⟶ a} {E : a ⟶ b} {E' : c ⟶ d} {σ : ZMod 2} {t u : ZMod 2}
-  {adjd : homPre (k := k) (c := d) E ⊣ homPre (k := k) F ⋙ homParityShift (k := k) σ}
-  {adjc : homPre (k := k) (c := c) E ⊣ homPre (k := k) F ⋙ homParityShift (k := k) σ}
-
-end Monomial
-
-section Unit
-variable {C : Type*} [Category C] [Preadditive C]
 
 end Unit
 end OddMath.SKM

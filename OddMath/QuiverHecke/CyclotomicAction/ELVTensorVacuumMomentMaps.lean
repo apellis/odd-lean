@@ -38,6 +38,15 @@ private theorem transport_end_value
   have ht := hg (c.symm (e.hom.total w z))
   simpa only [LinearEquiv.apply_symm_apply] using ht
 
+private def endValueLinear
+    {k C U : Type u} [CommRing k] [Category.{u} C]
+    [Preadditive C] [Linear k C] [Supercategory k C]
+    [AddCommGroup U] [Module k U]
+    (F : Superfunctor k C (SVec k)) (w : C) (decode : F.obj w →ₗ[k] U) (z : F.obj w) :
+    End F →ₗ[k] U :=
+  decode.comp ((LinearMap.applyₗ (R := k) (M := F.obj w) (M₂ := F.obj w) z).comp
+    ((svecEndEvaluation (F.obj w)).toLinearMap.comp (supernaturalTotalLinearMap F F w)))
+
 private theorem column_input_even
     {k C A : Type u} [CommRing k] [Category.{u} C] [Category.{u} A]
     [Preadditive C] [Linear k C] [Supercategory k C]

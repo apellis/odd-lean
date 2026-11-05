@@ -68,6 +68,8 @@ theorem probeEvaluatedInductionDot_total (N : ProbeEvaluatedModules D Sc m ν) :
     (G := (⟨E⟩ : Superfunctor k (ProbeEvaluatedModules D Sc m ν) (ProbeEvaluatedModules D Sc m (i :: ν))))
     (probeEvaluatedDotComponent_supernatural D Sc m ν i) N
 
+variable [Fintype I]
+
 /-- Every evaluated old probe module has the prescribed dot isomorphism;
 the inverse comes from the actual scalar quotient, with no inverse premise. -/
 def probeEvaluatedDotModuleIso (N : ProbeEvaluatedModules D Sc m ν) :
@@ -106,7 +108,5 @@ def probeEvaluatedInductionDotIso :
 @[simp] theorem probeEvaluatedInductionDotIso_hom :
     (probeEvaluatedInductionDotIso D Sc m ν i).hom = probeEvaluatedInductionDot D Sc m ν i :=
   OddMath.HomogeneousSuperfunctorIso.ofHom_hom _ _ _ _
-
-variable [Fintype I]
 
 end OddMath.QuiverHecke

@@ -2,7 +2,7 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.CyclotomicAction.ELVAppendMovingSupport
+import OddMath.QuiverHecke.CyclotomicAction.ELVAppendSignedMovingSupport
 import OddMath.QuiverHecke.CyclotomicAction.ELVEndpointPolynomial
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendQPLeading
 /-! # Actual endpoint ELV highest coefficient and ordered numerator cancellation
@@ -106,7 +106,6 @@ theorem appendProjection_endpointELV_regular (i : I) (v w : List I)
   have H := congrArg (oldTwist D Sc cutoff (cutoff i • D.parity i) v q.representative.oldTarget) hz
   rw [oldTwist_twice, map_zero] at H
   exact (DFinsupp.mem_support_iff.mp hq) H
-
 /-- The literal polynomial never produces support above cutoff plus input degree. -/
 theorem endpointELV_above (i : I) (v w : List I)
     (h : hom D Sc cutoff (v ++ [i]) w) (x : AppendIdx i v w)

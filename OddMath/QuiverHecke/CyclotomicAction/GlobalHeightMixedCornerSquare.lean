@@ -84,6 +84,8 @@ private theorem half_succ_cast (m : ℕ) :
   push_cast at h'
   linear_combination h' - ((m / 2 : ℕ) : ZMod 2) * zmod_two_two
 
+/-! ### Powers of signed right multiplication -/
+
 /-- Vertical powers of an endomorphism, `f^{m+1} = f^m ≫ f` (the recursion of
 `SKM.rouquierPower`). -/
 def endoPower {𝒞 : Type*} [Category 𝒞] {Y : 𝒞} (f : Y ⟶ Y) : ℕ → (Y ⟶ Y)
@@ -103,6 +105,13 @@ theorem endoPower_succ' {𝒞 : Type*} [Category 𝒞] {Y : 𝒞} (f : Y ⟶ Y) 
     conv_lhs => rw [ih]
     rw [Category.assoc]
     rfl
+
+section Power
+variable {i j c : I} {a : I → _root_.Polynomial k} {ha : CyclotomicPolynomialParity D a}
+  {n : ℕ}
+
+local notation "C" => heightAlgebra D Sc a (n + 1 + 1)
+local notation "T" => heightCompositionCorner D Sc i j a ha n
 
 /-- **Powers of signed right multiplication**: the `m`-th power of signed right multiplication
 by `u` raises parity by `m|c|` and acts by `(-1)^{|c|(mp + ⌊m/2⌋)} x u^m`. -/
@@ -146,6 +155,25 @@ theorem heightTwoColourRightMul_pow_apply {u : C}
         (- (m : ZMod 2) * D.parity c) * zmod_two_two +
         (-(m : ZMod 2) * (D.parity c + 1)) * zmod_two_mul_self (D.parity c) +
         (D.parity c ^ 2 * (m : ZMod 2)) * zmod_two_two
+
+end Power
+
+/-! ### The corner square -/
+
+section CornerSquare
+variable {i j : I} (hij : i ≠ j) (a : I → _root_.Polynomial k)
+  (ha : CyclotomicPolynomialParity D a) (n : ℕ)
+include hij
+
+local notation "T" => heightCompositionCorner D Sc i j a ha n
+local notation "Cr" => heightCompositionSuperCrossing D Sc i j a ha n
+local notation "Cr'" => heightCompositionSuperCrossing D Sc j i a ha n
+local notation "Dr" => heightTwoColourRightMul D Sc i j i a ha n
+  (twoColourCornerMulData_lastDot D Sc i j a ha n)
+local notation "Dl" => heightTwoColourRightMul D Sc i j j a ha n
+  (twoColourCornerMulData_appendDot D Sc i j a ha n)
+local notation "A" => heightAppend D Sc a i (n + 1) (heightLastDot D Sc a j n)
+local notation "B" => heightLastDot D Sc a i (n + 1)
 
 /-- The composite of the two corner crossings on a homogeneous element. -/
 private theorem corner_square_apply {p : ZMod 2} (z : (T).toSVec) (hz : z ∈ (T).toSVec.part p) :
@@ -277,34 +305,6 @@ theorem heightCompositionCorner_square_zero (hd : D.d i j = 0) :
   unfold parameterSignExponent
   have h0 : D.dn i j = 0 := by simp [SKM.Datum.dn, hd]
   simp [h0]
-
-/-! ### Powers of signed right multiplication -/
-
-section Power
-variable {i j c : I} {a : I → _root_.Polynomial k} {ha : CyclotomicPolynomialParity D a}
-  {n : ℕ}
-
-local notation "C" => heightAlgebra D Sc a (n + 1 + 1)
-local notation "T" => heightCompositionCorner D Sc i j a ha n
-
-end Power
-
-/-! ### The corner square -/
-
-section CornerSquare
-variable {i j : I} (hij : i ≠ j) (a : I → _root_.Polynomial k)
-  (ha : CyclotomicPolynomialParity D a) (n : ℕ)
-include hij
-
-local notation "T" => heightCompositionCorner D Sc i j a ha n
-local notation "Cr" => heightCompositionSuperCrossing D Sc i j a ha n
-local notation "Cr'" => heightCompositionSuperCrossing D Sc j i a ha n
-local notation "Dr" => heightTwoColourRightMul D Sc i j i a ha n
-  (twoColourCornerMulData_lastDot D Sc i j a ha n)
-local notation "Dl" => heightTwoColourRightMul D Sc i j j a ha n
-  (twoColourCornerMulData_appendDot D Sc i j a ha n)
-local notation "A" => heightAppend D Sc a i (n + 1) (heightLastDot D Sc a j n)
-local notation "B" => heightLastDot D Sc a i (n + 1)
 
 end CornerSquare
 

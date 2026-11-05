@@ -39,6 +39,14 @@ theorem prependEntryCoefficients_long_eq_zero (i : I) (s : List I)
     simp
   · simp [h]
 
+/-- The finite matrix obtained by replacing each moving chain with its
+collected endpoint polynomial followed by the prescribed crossing chain. -/
+def collectedContentMove (i : I) (n : ℕ) (β : Multiset I) : Hn D Sc (n + 1) :=
+  ∑ s ∈ Finset.univ.filter (fun s : Word I n => wordContent s = β),
+    FiniteHomMatrix.single (appendWord i s) (prependWord i s)
+      (leadingMoveEndpointPolynomial D Sc i [] s.1 ≫
+        cl D Sc _ _ (cw (leadingMoveWord [] s.1)) (leadingMoveWord_sChain i [] s.1))
+
 /-- Entrywise comparison for the longest shuffle, retaining every old
 permutation and dot degree in the coefficient matrix. -/
 theorem prependWordCoefficients_moveHom_long (i : I) {n : ℕ} (s : Word I n) (m : ℕ) :

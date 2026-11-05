@@ -84,5 +84,4 @@ def toDiagramsOver (n : ℕ) : Presented n →+* End ((pres k).obj (strands (n +
 @[simp] theorem toDiagramsOver_crossing (n : ℕ) (i : Fin (n + 1)) :
     toDiagramsOver k n (crossing n i) = ψ k (n + 2) i := toDiagramsOverFree_crossing k n i
 
-
 end OddMath.Diagrams.OddNilHecke

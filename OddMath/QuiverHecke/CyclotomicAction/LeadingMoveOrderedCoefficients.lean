@@ -120,7 +120,11 @@ theorem endpointDotMonomial_separate (i : I) (ν : List I) (ps : List ℕ) :
         ← prependAlgebra_single', ih]
       simp only [sourceMovingDegree, sourceOldCoefficient, map_mul, mul_assoc]
 
-omit [Fintype I] in
+/-- The scalar-free old entry underlying the coefficient recurrence. -/
+def sourceOldHom (i : I) (ν : List I) : List ℕ → End (wordObj D Sc ⟨ν, rfl⟩)
+  | [] => 𝟙 _
+  | 0 :: ps => Supercategory.twist k (D.parity i) (sourceOldHom i ν ps)
+  | (p + 1) :: ps => wordPositionDot D Sc ⟨ν, rfl⟩ p ≫ sourceOldHom i ν ps
 
 /-- Concrete coordinates of any source dot monomial followed by a prescribed
 shuffle: one moving degree, and the explicitly computed old diagonal entry. -/

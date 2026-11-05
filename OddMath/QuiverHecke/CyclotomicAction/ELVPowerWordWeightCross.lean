@@ -21,7 +21,6 @@ private theorem crossing_paste {C : Type*} [Category* C] {A B E F S T : C}
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (L : I × ℕ → ℕ)
 
-
 /-- The existing whole append comparison at equal presentations of its weights. -/
 def appendIsoAtWeights (Λ : X) (ν : List I) (i : I) (x y : X)
     (hx : x = PowerWordWeight.wordWeight D Λ ν)
@@ -113,7 +112,6 @@ def recursivePairIso (Λ : X) (ν : List I) (i j : I) {x₀ xj xu : X}
       appendIsoAtWeights D Sc cutoff L Λ (ν ++ [j]) i xj xu
         (next_weight D Λ ν j hx h₁)
         (next_weight D Λ (ν ++ [j]) i (next_weight D Λ ν j hx h₁) h₂) h₂
-
 
 section Family
 variable (Λ : X) (ν : List I) (i j : I) {x₀ xj xu : X}

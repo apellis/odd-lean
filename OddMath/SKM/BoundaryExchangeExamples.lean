@@ -18,7 +18,6 @@ def B : List (Letter Bool) := [(false, false), (true, false), (false, false), (t
 def S : List (TMove (Letter Bool)) := [.cap 1, .cap 0]
 def R : List (TMove (Letter Bool)) := [.mv (.cross 0), .cap 1, .cap 0]
 
-
 theorem source_matching : IsMatching₂ A [] R := by
   refine ⟨⟨by change 5 < 8; decide, ?_⟩, rfl⟩
   refine ⟨⟨(6, (true, false)), (2, (false, false)), rfl, rfl, rfl, by decide⟩, ?_⟩

@@ -83,6 +83,18 @@ local notation "FP" => BalancedInduction.induced JP RM
 local notation "hFP" => pairInduced_killsWeightedCoefficients D Sc cutoff N i j RM
   (weightedRestriction_kills D Sc cutoff N M)
 
+/-- The same five canonical quotient/composition maps for the functor of
+successive appends. Both ends here use induction along a composed append
+functor; the iterated-induction comparison is attached subsequently. -/
+def pairWeightedModuleIso : weightedModule D Sc cutoff N FP hFP ≅
+    BalancedInduction.induced TP M :=
+  (quotientInducedWeightedModuleIso D Sc cutoff N FP hFP).symm ≪≫
+    (BalancedInduction.inductionComp JP Q).app RM ≪≫
+      BalancedInduction.inducedIsoOfFunctorEq (JP ⋙ Q) (Q ⋙ TP)
+        (pairAppend_truncate D Sc cutoff N i j) RM ≪≫
+      ((BalancedInduction.inductionComp Q TP).app RM).symm ≪≫
+        (BalancedInduction.induction TP).mapIso (quotientInductionCounitIso D Sc cutoff N M)
+
 private def pairQuotientCounit : (BalancedInduction.induction Q).obj RM ⟶ M :=
   (quotientInductionCounitIso D Sc cutoff N M).hom
 

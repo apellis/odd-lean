@@ -30,6 +30,32 @@ def unshiftedPreAdjunction :
       Functor.rightUnitor _
   (adj.ofNatIsoLeft eL).ofNatIsoRight (homParityShiftCommute (homPre (k := k) F) σ).symm
 
+/-- The prescribed unit retains the inverse cup and its output shift. -/
+theorem unshiftedPreAdjunction_unit_app (H : b ⟶ c) :
+    (unshiftedPreAdjunction A c).unit.app H =
+      (leftUnitor H).inv ≫ A.unit ▷ H ≫ (associator F E H).hom ≫
+        ((homParityShiftDatum (k := k) σ).iso (F ≫ E ≫ H)).inv := by
+  simp only [unshiftedPreAdjunction, Adjunction.ofNatIsoRight, Adjunction.ofNatIsoLeft,
+    NatTrans.comp_app, Functor.whiskerLeft_app, Functor.whiskerRight_app,
+    Adjunction.comp_unit_app]
+  simp only [Iso.trans_hom, Functor.isoWhiskerLeft_hom, NatTrans.comp_app,
+    Functor.whiskerLeft_app, Functor.associator_hom_app, Functor.rightUnitor_hom_app,
+    Category.id_comp, Functor.comp_map, Functor.comp_obj, Iso.symm_hom]
+  change ((homPreShiftUnitApp A _ H ≫
+    F ◁ (homParityShiftAdjunction (k := k) σ).unit.app
+      ((homParityShift (k := k) σ).obj (E ≫ H))) ≫
+      F ◁ (homParityShift (k := k) σ).map
+        ((homParityShiftSquare (k := k) σ).hom.app (E ≫ H) ≫ 𝟙 _)) ≫
+      (homParityShiftCommute (homPre (k := k) F) σ).inv.app (E ≫ H) = _
+  rw [Category.comp_id, ← homParityShiftAdjunction_counit_app]
+  simp only [Category.assoc]
+  rw [← Category.assoc (F ◁ _), ← TwoSupercategory.whiskerLeft_comp (R := k),
+    Adjunction.right_triangle_components, TwoSupercategory.whiskerLeft_id (R := k),
+    Category.id_comp, homParityShiftCommute_inv_app]
+  change homPreShiftUnitApp A _ H ≫ ((homPre (k := k) F).map _ ≫ _) = _
+  simp only [homPreShiftUnitApp, homPre, Category.assoc]
+  rw [TwoSupercategory.whiskerLeft_inv_hom_assoc (R := k)]
+
 private theorem unshiftedPreAdjunction_counit_expansion (H : a ⟶ c) :
     (unshiftedPreAdjunction A c).counit.app H =
       E ◁ (homParityShiftCommute (homPre (k := k) F) σ).hom.app H ≫
@@ -76,5 +102,37 @@ theorem unshiftedPreAdjunction_counit_app (H : a ⟶ c) :
     ← TwoSupercategory.whiskerLeft_comp (R := k), Iso.inv_hom_id,
     TwoSupercategory.whiskerLeft_id (R := k), TwoSupercategory.whiskerLeft_id (R := k),
     Category.id_comp, koszulSign_smul (R := k)]
+
+/-- The canonical shift comparisons evenize the given left unit. -/
+theorem unshiftedPreAdjunction_unit_mem (H : b ⟶ c) :
+    (unshiftedPreAdjunction A c).unit.app H ∈ parity (R := k) _ _ 0 := by
+  rw [unshiftedPreAdjunction_unit_app]
+  have hh := comp_mem (comp_mem (comp_mem
+    (inv_mem (leftUnitor H) (TwoSupercategory.leftUnitor_hom_mem (R := k) H))
+    (TwoSupercategory.whiskerRight_mem H A.unit_mem))
+    (TwoSupercategory.associator_hom_mem (R := k) _ _ _))
+    ((homParityShiftDatum (k := k) σ).inv_mem _)
+  simpa only [homPre, Functor.comp_obj, Functor.id_obj, zero_add, add_zero, zmod2_add_self, Category.assoc] using hh
+
+/-- The same input comparison evenizes the normalized counit. -/
+theorem unshiftedPreAdjunction_counit_mem (H : a ⟶ c) :
+    (unshiftedPreAdjunction A c).counit.app H ∈ parity (R := k) _ _ 0 := by
+  rw [unshiftedPreAdjunction_counit_app]
+  apply zsmul_mem
+  have hh := comp_mem (comp_mem (comp_mem
+    (TwoSupercategory.whiskerLeft_mem E ((homParityShiftDatum (k := k) σ).hom_mem _))
+    (inv_mem (associator E F H) (TwoSupercategory.associator_hom_mem (R := k) _ _ _)))
+    (TwoSupercategory.whiskerRight_mem H A.counit_mem))
+    (TwoSupercategory.leftUnitor_hom_mem (R := k) H)
+  simpa only [homPre, Functor.comp_obj, Functor.id_obj, add_zero, zmod2_add_self, Category.assoc] using hh
+
+/-- The normalized adjunction as exact two-morphisms on the full Hom
+supercategories, before choosing any whole factor family. -/
+def unshiftedPreSuperAdjunction : SuperAdjunction (k := k)
+    (show SCat.of k (b ⟶ c) ⟶ SCat.of k (a ⟶ c) from ⟨homPre (k := k) E⟩)
+    (show SCat.of k (a ⟶ c) ⟶ SCat.of k (b ⟶ c) from
+      ⟨homPre (k := k) F ⋙ homParityShift (k := k) σ⟩) :=
+  superAdjunctionOfEven (unshiftedPreAdjunction A c)
+    (unshiftedPreAdjunction_unit_mem A c) (unshiftedPreAdjunction_counit_mem A c)
 
 end OddMath.SKM

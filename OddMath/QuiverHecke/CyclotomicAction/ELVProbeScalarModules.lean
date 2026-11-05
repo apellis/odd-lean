@@ -129,6 +129,5 @@ theorem probeOldModule_evaluatesCoefficients :
   change ev c • M.lact (probeOldWordIdempotent D m Sc ν v) x.val = ev c • x.val
   rw [x.property]
 
-
 end OddMath.QuiverHecke
 

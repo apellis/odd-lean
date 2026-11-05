@@ -44,5 +44,4 @@ def ofIso (V : RouquierBoundary.Coefficients A x p n)
     (hx' : x' ∈ parity (R := k) _ _ p)
     (hcup : ∀ j, RouquierBoundary.cup A x j ≫ e.hom = RouquierBoundary.cup A' x' j) (j : ℕ) :
     (ofIso V A' x' e he hx' hcup).coeff j = e.inv ≫ V.coeff j := rfl
-
 end OddMath.SKM.RouquierBoundaryTransport

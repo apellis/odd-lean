@@ -41,8 +41,6 @@ def polynomialOpHom : (Polynomial R)ᵐᵒᵖ →+* Polynomial Rᵐᵒᵖ :=
     polynomialOpHom R (op Polynomial.X) = Polynomial.X := by
   simp [polynomialOpHom, Polynomial.eval₂RingHom']
 
-variable {R} {M : Type v} [AddCommGroup M] [Module Rᵐᵒᵖ M]
-
 @[simp] theorem polynomialOpHom_monomial (n : ℕ) (r : R) :
     polynomialOpHom R (op (Polynomial.monomial n r)) = Polynomial.monomial n (op r) := by
   rw [← Polynomial.C_mul_X_pow_eq_monomial]
@@ -56,6 +54,8 @@ variable {R} {M : Type v} [AddCommGroup M] [Module Rᵐᵒᵖ M]
   | monomial k r =>
       rw [polynomialOpHom_monomial]
       by_cases hk : k = n <;> simp [Polynomial.coeff_monomial, hk]
+
+variable {R} {M : Type v} [AddCommGroup M] [Module Rᵐᵒᵖ M]
 
 /-- A right module over the ordinary central polynomial ring. -/
 def RightCentralPolynomialModule (f : M →ₗ[Rᵐᵒᵖ] M) := CentralPolynomialModule f

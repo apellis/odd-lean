@@ -37,4 +37,22 @@ theorem doubleInduced_killsWeightedCoefficients :
       (weightedRestriction_kills D Sc cutoff N M))
 local notation "hFI" => doubleInduced_killsWeightedCoefficients D Sc cutoff N i j M
 
+/-- The old canonical induction flattening descends componentwise. -/
+def weightedInductionFlattening :
+    weightedModule D Sc cutoff N FI hFI ≅ weightedModule D Sc cutoff N FP hFP :=
+  weightedModuleIso D Sc cutoff N FI FP hFI hFP
+    ((BalancedInduction.inductionComp J K).app RM)
+
+private def pairFunctorIso : weightedModule D Sc cutoff N FP hFP ≅
+    (BalancedInduction.induction (T ⋙ U)).obj M :=
+  pairWeightedModuleIso D Sc cutoff N i j M
+
+/-- The selected comparison on the two iterated inductions. -/
+def doubleWeightedModuleIso :
+    weightedModule D Sc cutoff N FI hFI ≅
+      (BalancedInduction.induction T ⋙ BalancedInduction.induction U).obj M :=
+  weightedInductionFlattening D Sc cutoff N i j M ≪≫
+    pairFunctorIso D Sc cutoff N i j M ≪≫
+      ((BalancedInduction.inductionComp T U).app M).symm
+
 end OddMath.QuiverHecke.ELVOld

@@ -79,8 +79,6 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (N : ℕ)
 
 include sy hc in
-
-include sy hc in
 /-- The independently defined content dot is nilpotent as an endomorphism in
 the module supercategory, uniformly in the arbitrary input module. -/
 theorem contentInductionDot_module_pow_zero [Finite I] (ν : List I) (i : I) :
@@ -94,7 +92,5 @@ theorem contentInductionDot_module_pow_zero [Finite I] (ν : List I) (i : I) :
   intro v
   have hv : v.obj.word.Perm ν := Multiset.coe_eq_coe.mp v.content
   simpa only [truncatedAppendDot_app, contentAppendToComponent] using hp v.obj hv
-
-include sy hc in
 
 end OddMath.QuiverHecke.ELVOld

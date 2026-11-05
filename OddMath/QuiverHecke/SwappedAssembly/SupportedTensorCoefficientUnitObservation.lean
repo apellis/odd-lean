@@ -39,7 +39,6 @@ private theorem originalWordCoefficient_value {l : List (Col I X)}
   rw [Superfunctor.comp_total]
   rfl
 
-
 /-- Raw source coefficients act by postcomposition on the entire original
 row Hom; evaluation at every source vector has the same coefficient
 under the prescribed global path chart and quotient coordinate. -/

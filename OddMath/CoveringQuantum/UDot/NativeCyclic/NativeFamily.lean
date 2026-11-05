@@ -76,7 +76,6 @@ theorem cyclic_coordinate_fixed_difference (ζ ξ : X) (n : ℕ) (s : Bool)
   simpa only [add_sub_cancel_right] using
     cyclic_coordinate_eq_native_vacuum D (ζ + n • ξ) (n • ξ) s x
 
-
 /-- Kernel zero for each native coproduct along actual dominant members of the
 fixed-difference families. The input is an arbitrary original modified element. -/
 theorem cofinal_kernel_zero (ξ : X) (hξ : ∀ i, 0 < D.h i ξ) (s : Bool)

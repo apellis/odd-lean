@@ -101,6 +101,13 @@ theorem aeval_dotE_whiskerRight (w s : List I) (hw : 0 < w.length) (q : _root_.P
   rw [← whiskerWordAlgHom_apply, ← _root_.Polynomial.aeval_algHom_apply, whiskerWordAlgHom_apply,
     dotE_whiskerRight D Sc w s 0 hw]
 
+end Whisker
+
+variable [Fintype I] (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
+  (ha : CyclotomicPolynomialParity D a) (n : ℕ)
+
+section Killing
+
 /-- Precomposition by `1_i ⊗ g` kills as soon as the old matrix of `g` lies in the old
 cyclotomic kernel. -/
 theorem killE_whiskerLeft_comp {W t : Word I (n + 1)} (g : wordObj D Sc W ⟶ wordObj D Sc t)
@@ -167,13 +174,6 @@ theorem killE_relation_context (μ σ : List I) (hW : (μ ++ [i] ++ σ).length =
   rw [one_mul, cyclotomicGenerator, FiniteHomMatrix.single_mul_single,
     homMatrixTwist_single] at hg
   exact hg
-
-end Whisker
-
-variable [Fintype I] (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
-  (ha : CyclotomicPolynomialParity D a) (n : ℕ)
-
-section Killing
 
 end Killing
 

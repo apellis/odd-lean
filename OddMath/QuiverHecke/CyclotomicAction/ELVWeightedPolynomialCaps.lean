@@ -47,6 +47,19 @@ abbrev weightedModuleDot (i : I) :=
   restrictedDotEnd (truncatedAppend D Sc cutoff bound [i])
     (truncatedDot_supernatural D Sc cutoff bound i) WM
 
+/-- Apply a given native module endomorphism before the actual prescribed
+coefficient cap. The cap and both endpoints remain fixed. -/
+def weightedCapAfter (i : I) (hN : 0 < cutoff i)
+    (f : End ((restriction (truncatedAppend D Sc cutoff bound [i])).obj
+      ((induction (truncatedAppend D Sc cutoff bound [i])).obj WM))) :
+    (restriction Q₀).obj ((restriction (truncatedAppend D Sc cutoff bound [i])).obj
+      ((induction (truncatedAppend D Sc cutoff bound [i])).obj WM)) ⟶ (restriction Q₀).obj WM :=
+  (restriction Q₀).map f ≫ weightedCoefficientCap D Sc cutoff i L hN
+
+/-- The actual weighted module-cap polynomial lambda(D^2+1)^M. -/
+def weightedPolynomialCap (i : I) (hN : 0 < cutoff i) (M : ℕ) :=
+  weightedCapAfter D Sc cutoff L i hN ((weightedModuleDot D Sc cutoff L i ^ 2 + 1) ^ M)
+
 /-- Linear evaluation of the given cap after native module endomorphisms,
 with its prescribed n-th unit/dot column and original A/T coordinate. -/
 def weightedCapMomentLinear (i : I) (hN : 0 < cutoff i) (n : ℕ) :
@@ -67,8 +80,6 @@ def weightedCapMomentLinear (i : I) (hN : 0 < cutoff i) (n : ℕ) :
 /-- All dotted-unit closures of the actual plus-one polynomial module cap. -/
 def weightedPolynomialCapMoment (i : I) (hN : 0 < cutoff i) (M n : ℕ) : Module.End k AQ :=
   weightedCapMomentLinear D Sc cutoff L i hN n ((weightedModuleDot D Sc cutoff L i ^ 2 + 1) ^ M)
-
-omit [Fintype I] in
 
 end PowerVacuumCoefficient
 end OddMath.QuiverHecke.ELVOld

@@ -132,6 +132,8 @@ theorem elvProbeOldHom_rightContext (σ v w : List I) (f : ELVOld.Old D Sc cut v
   exact elvAffineScalarSpecialization_rightContext D Sc cut
     (probeScalarValues D m) (probeScalarValues_vanish D m) σ v w f
 
+variable [Fintype I]
+
 /-- The existing ordinary Hom quotient maps to its literal probe matrix entry. -/
 def probeCycHomWordEntry {n : ℕ} (s t : Word I (n+1)) :
     (((pres D Sc).obj (ob D s.val) ⟶ (pres D Sc).obj (ob D t.val)) ⧸
@@ -162,7 +164,5 @@ def elvProbeWordEntry {n : ℕ} (s t : Word I (n+1)) :
     (f : ELVOld.hom D Sc cut s.val t.val) :
     elvProbeWordEntry D m Sc s t ((ELVOld.ideal D Sc cut s.val t.val).mkQ f) =
       cyclotomicWordEntry D Sc a s t ((F).map f) := rfl
-
-variable [Fintype I]
 
 end OddMath.QuiverHecke

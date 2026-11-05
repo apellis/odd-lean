@@ -72,7 +72,6 @@ private theorem psi_positive_halfWord (a : List I) (μ : X) :
   rw [halfMap_monomial, psi_positive_halfWord]
   exact (halfMap_monomial D Coefficients.q pi true a μ).symm
 
-
 /-- Scalar conjugation on the positive half agrees with the original psi. -/
 theorem psiModified_positiveHalf (μ : X) (x : D.serreF Coefficients.q pi) :
     psiModified D (positiveHalf D Coefficients.q pi μ x) =

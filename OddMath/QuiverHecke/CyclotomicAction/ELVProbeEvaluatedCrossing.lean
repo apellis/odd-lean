@@ -34,6 +34,11 @@ private theorem doubleInduction_closed
     Q (((inductionModuleCell (k := k) J) ≫ inductionModuleCell (k := k) K).obj N) :=
   ((E ⋙ E').obj ⟨N, hN⟩).property
 
+/-- The prescribed negative crossing, with its full underlying module map. -/
+def probeEvaluatedEqualCrossComponent (N : ProbeEvaluatedModules D Sc m ν) :
+    (E ⋙ E').obj N ⟶ (E ⋙ E').obj N :=
+  ⟨(inductionModuleCross J K hCross).app (D.parity i) N.obj⟩
+
 /-- The homogeneous crossing on the actual evaluated double induction. -/
 def probeEvaluatedEqualCross :
     End (⟨E ⋙ E'⟩ : Superfunctor k (ProbeEvaluatedModules D Sc m ν)

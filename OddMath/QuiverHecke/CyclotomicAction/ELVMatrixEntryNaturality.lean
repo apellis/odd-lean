@@ -45,6 +45,20 @@ theorem moduleUnitColumn_supernatural (i : I) (n : ℕ) :
     ((inductionDotModule_power_supernatural D Sc cutoff i n).whiskerRight
       (BalancedInduction.restriction (append D Sc cutoff i)))
 
+/-- The ordinary dotted counit is supernatural in the input module. -/
+theorem moduleCapRow_supernatural (i : I) (n : ℕ) :
+    IsSupernatural k (n • D.parity i)
+      (F := BalancedInduction.restriction (append D Sc cutoff i) ⋙
+        BalancedInduction.induction (append D Sc cutoff i))
+      (G := 𝟭 (Superfunctor k (OldCategory D Sc cutoff) (SVec k)))
+      (fun M => moduleCapRow D Sc cutoff i M n) := by
+  have hc := isSupernatural_of_natTrans (R := k)
+    (BalancedInduction.adjunctionCounit (append D Sc cutoff i))
+    (BalancedInduction.adjunctionCounit_mem (append D Sc cutoff i))
+  simpa only [add_zero, moduleCapRow, BalancedInduction.adjunction] using
+    ((inductionDotModule_power_supernatural D Sc cutoff i n).whiskerLeft
+      (BalancedInduction.restriction (append D Sc cutoff i))).comp hc
+
 /-- The fixed cup-crossing-cap mate retains its prescribed supernatural parity. -/
 theorem matrixMateComponent_supernatural (i : I) :
     IsSupernatural k (D.parity i)
@@ -106,6 +120,15 @@ def unitMatrixEntryNatTrans (i : I) (m : ℕ) (a : Option (Fin m)) :
   | none => (SKM.IsSupernatural.shiftSource (matrixMateComponent_supernatural D Sc cutoff i)).toNatTrans
   | some r => (SKM.IsSupernatural.shiftSource (moduleUnitColumn_supernatural D Sc cutoff i r.val)).toNatTrans
 
+/-- Literal shifted cap entries are natural even along odd input-module maps. -/
+def capMatrixEntryNatTrans (i : I) (m : ℕ) (a : Option (Fin m)) :
+    BalancedInduction.restriction (append D Sc cutoff i) ⋙
+      BalancedInduction.induction (append D Sc cutoff i) ⟶
+        capMatrixSummandFunctor D Sc cutoff i m a :=
+  match a with
+  | none => (SKM.IsSupernatural.shiftTarget (matrixMateComponent_supernatural D Sc cutoff i)).toNatTrans
+  | some r => (SKM.IsSupernatural.shiftTarget (moduleCapRow_supernatural D Sc cutoff i r.val)).toNatTrans
+
 /-- The functorial unit coordinate has exactly the prescribed shifted module. -/
 theorem unitMatrixSummandFunctor_obj (i : I) (m : ℕ) (a : Option (Fin m))
     (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :
@@ -125,5 +148,13 @@ theorem unitMatrixEntryNatTrans_app (i : I) (m : ℕ) (a : Option (Fin m))
       eqToHom (unitMatrixSummandFunctor_obj D Sc cutoff i m a M) ≫
         unitMatrixEntry D Sc cutoff i M m a := by
   cases a <;> exact (Category.id_comp _).symm
+
+/-- Naturality uses the inverted cap entries, with only the explicit endpoint equality. -/
+theorem capMatrixEntryNatTrans_app (i : I) (m : ℕ) (a : Option (Fin m))
+    (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :
+    (capMatrixEntryNatTrans D Sc cutoff i m a).app M =
+      capMatrixEntry D Sc cutoff i M m a ≫
+        eqToHom (capMatrixSummandFunctor_obj D Sc cutoff i m a M).symm := by
+  cases a <;> exact (Category.comp_id _).symm
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

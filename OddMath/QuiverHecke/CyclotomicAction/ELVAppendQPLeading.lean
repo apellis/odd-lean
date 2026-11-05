@@ -108,7 +108,6 @@ theorem appendQP_qPoly_top (i j : I) (hij : i ≠ j) (v w : List I)
   rw [hl, hold, smul_zero, add_zero, zero_add]
   exact congrArg (fun y : Old D Sc cutoff v (q.representative.shift (D.dn i j)).oldTarget =>
     (Sc.t i j : k) • y) hm
-
 theorem appendQP_qPoly_above (i j : I) (v w : List I)
     (b : ℕ) (hb : b < v.length) (h : hom D Sc cutoff (v ++ [i]) w)
     (x : AppendIdx i v w)

@@ -74,7 +74,6 @@ theorem probeMixedCross_quadratic (pre post : List I) (i j : I)
   simp only [probeMixedCross, cl_comp']
   exact cross_cross_ne D Sc pre post hij hd _
 
-
 /-- The two literal dots obey the prescribed supercommutation sign. -/
 theorem probeMixedDots_slide (pre post : List I) (i j : I) :
     dotE D Sc (pre ++ [i,j] ++ post) (pre.length+1) *
@@ -127,7 +126,6 @@ theorem probeMixedCross_remainder_right (pre post : List I) (i j : I)
       (C + (Sc.t j i : k) • v^(D.dn j i-1)) * v
   rw [hQ, hs, add_mul, smul_mul_assoc, hp (D.dn j i) hdn]
   abel
-
 
 /-- Moving a dot past a power of the other dot records the explicit sign. -/
 theorem probeMixedDots_pow_slide (pre post : List I) (i j : I) (p : ℕ) :
@@ -200,6 +198,5 @@ theorem probeMixedCross_remainder_left (pre post : List I) (i j : I)
       v * (C + (Sc.t j i : k) • v^(D.dn j i-1))
   rw [hQ, hs, mul_add, mul_smul_comm, hp (D.dn j i) hdn]
   abel
-
 
 end OddMath.QuiverHecke

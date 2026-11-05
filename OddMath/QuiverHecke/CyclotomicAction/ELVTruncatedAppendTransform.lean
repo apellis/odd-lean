@@ -155,13 +155,13 @@ def truncatedAppendCross (i j : I) :
   simp only [truncatedAppendDot, truncatedAppendTransform,
     IsSupernatural.toSuperNatTrans, ↓reduceIte]
 
-variable (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
-
 @[simp] theorem truncatedAppendCross_app (i j : I) (v : TruncatedCategory D Sc cutoff N) :
     (truncatedAppendCross D Sc cutoff N i j).app (D.parity i * D.parity j) v =
       truncatedAppendComponent D Sc cutoff N (crossTwo D Sc i j) v := by
   simp only [truncatedAppendCross, truncatedAppendTransform,
     IsSupernatural.toSuperNatTrans, ↓reduceIte]
+
+variable (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
 
 theorem appendComponent_mem_degree {σ τ : List I} {n : ℤ}
     {h : (pres D Sc).obj (ob D σ) ⟶ (pres D Sc).obj (ob D τ)}

@@ -123,7 +123,6 @@ private theorem affineMulticolour_braid_correction (v : List I) (i j : I) (hij :
   exact positionalCorrection_braid D Sc v i j hij
     (t := v ++ [i] ++ [j] ++ [i]) (by simp [List.append_assoc]) _ _
 
-
 /-- The entire OLD source correction, retaining each interior coefficient. -/
 def tripleCorrection (i j : I) (s : OldCategory D Sc cutoff) :
     End (⟨s.word ++ [i] ++ [j] ++ [i]⟩ : OldCategory D Sc cutoff) :=

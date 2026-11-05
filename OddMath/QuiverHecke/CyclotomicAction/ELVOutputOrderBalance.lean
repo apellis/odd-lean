@@ -334,16 +334,6 @@ theorem outputLongCoordinate_outputOld (p : ZMod 2) (i : I) (v : List I)
   have hn := congrArg (fun f : ℕ →₀ Old D Sc cutoff v v => f n) ha
   exact hn.trans (coordinate_act_section D Sc cutoff p i v _ n g)
 
-end OddMath.QuiverHecke.ELVOld
-
-noncomputable section
-open CategoryTheory StringDiagrams Supercategory Categorification.TypeA
-open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
-universe u
-variable {I X k : Type u} [AddCommGroup X] [CommRing k]
-  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
-
 /-- Finite extraction after the actual output old arrow. -/
 def outputOldExtractionHom (p : ZMod 2) (i : I) (v : List I)
     (z : Target D Sc cutoff i v (v ++ [i])) :
@@ -386,6 +376,16 @@ def outputOldExtraction (p : ZMod 2) (i : I) (v : List I)
     outputOldExtraction D Sc cutoff p i v z ((ideal D Sc cutoff v v).mkQ g) =
       outputLongExtraction D Sc cutoff p i v
         (act D Sc cutoff i (appendInsert D Sc cutoff i v v g) z) := rfl
+
+end OddMath.QuiverHecke.ELVOld
+
+noncomputable section
+open CategoryTheory StringDiagrams Supercategory Categorification.TypeA
+open scoped TensorProduct
+namespace OddMath.QuiverHecke.ELVOld
+universe u
+variable {I X k : Type u} [AddCommGroup X] [CommRing k]
+  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
 
 theorem canonical_last_commute (i : I) (v : List I) (m : ℕ)
     (g : hom D Sc cutoff v v) :

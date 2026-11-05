@@ -41,6 +41,9 @@ def replaceOld (x : AppendIdx i v w) (y : NFIdx v x.oldTarget) : AppendIdx i v w
     simpa only [appendCrossingWord, cw_append, tgt_append, he, y.tgt_cw]
       using x.moving_target⟩
 
+theorem replaceOld_target (x : AppendIdx i v w) (y : NFIdx v x.oldTarget) :
+    (x.replaceOld y).oldTarget = x.oldTarget := y.tgt_cw
+
 theorem replaceOld_injective (x : AppendIdx i v w) : Function.Injective x.replaceOld := by
   intro y z h
   apply Subtype.ext

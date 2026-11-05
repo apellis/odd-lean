@@ -165,8 +165,6 @@ theorem boundaryPos_eq (hh : 0 ≤ h) (m n : ℕ) (hm : m < h.toNat) (hn : n < h
   (L.invPos hh).gg m n hm hn
 
 omit [TwoSupercategory k B] in
-
-omit [TwoSupercategory k B] in
 /-- At height two the two inverse columns are orthogonal, including for an odd colour. -/
 example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t p 2) :
     L.boundaryPos (by decide) 0 1 = 0 := by

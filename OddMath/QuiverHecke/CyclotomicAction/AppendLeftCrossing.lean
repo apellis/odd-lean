@@ -80,8 +80,6 @@ theorem appendShuffleHom_castSucc (i a : I) {n : ℕ} (j : Fin (n + 1)) (w : Wor
     cw_range'_succ (Nat.lt_succ_iff.mp j.2)]
   simp
 
-variable [Fintype I]
-
 /-- Words of length `n + 1` are the words `w ++ [a]`. -/
 theorem appendWord_pair_bijective (n : ℕ) :
     Function.Bijective (fun p : Word I n × I => appendWord p.2 p.1) := by
@@ -106,6 +104,8 @@ theorem appendWord_ne_of_ne {i a : I} (h : a ≠ i) {n : ℕ} (t t' : Word I n) 
   have := (List.append_inj' e' rfl).2
   simp only [List.cons.injEq, and_true] at this
   exact h this.symm
+
+variable [Fintype I]
 
 theorem appendAlgebra_appendAlgebra_one_eq_sum (i : I) (n : ℕ) :
     appendAlgebra D Sc i (n + 1) (appendAlgebra D Sc i n 1) =
@@ -172,8 +172,6 @@ theorem appendOne_mul_single (i : I) {n : ℕ} (t : Word I n) (s : Word I (n + 1
       (fun h => hb (appendWord_injective i n h)) _ _
   · simp
 
-/-! ## Sliding powers of the last dot through the last crossing -/
-
 theorem appendOne_mul_single_of_ne {i a : I} (h : a ≠ i) {n : ℕ} (t : Word I n)
     (s : Word I (n + 1)) (f : wordObj D Sc s ⟶ wordObj D Sc (appendWord a t)) :
     appendAlgebra D Sc i n 1 * FiniteHomMatrix.single (appendWord a t) s f = 0 := by
@@ -227,13 +225,13 @@ theorem appendOne_mul_appendShuffleElement_castSucc_eq (i : I) (n : ℕ) (j : Fi
         affineLastCrossing D Sc i i n := by
   rw [appendOne_mul_appendShuffleElement_castSucc, appendShuffleElement_castSucc_mul_corner]
 
+/-! ## Sliding powers of the last dot through the last crossing -/
+
 /-- Sums `Σ_b ψ(f_b) x^b` with the new dot `x` on the right of the old coefficient. -/
 def appendDotSum (i : I) (n : ℕ) : (ℕ →₀ Hn D Sc (n + 1)) →+ Hn D Sc (n + 1 + 1) :=
   Finsupp.liftAddHom fun b =>
     (AddMonoidHom.mulRight (affineLastDot D Sc i (n + 1) ^ b)).comp
       (appendLinear D Sc i (n + 1)).toAddMonoidHom
-
-/-! ## Spanning the two-sided corner -/
 
 theorem appendDotSum_single (i : I) (n b : ℕ) (c : Hn D Sc (n + 1)) :
     appendDotSum D Sc i n (Finsupp.single b c) =
@@ -299,6 +297,8 @@ theorem affineLastCrossing_mul_lastDot_pow (i : I) (n m : ℕ) :
     simp only [neg_smul, sub_eq_add_neg]
     abel
 
+/-! ## Spanning the two-sided corner -/
+
 /-- The moving crossing to the top position is the corner idempotent. -/
 theorem appendShuffleElement_last (i : I) (n : ℕ) :
     appendShuffleElement D Sc i (appendRun n (Fin.last n)) = appendAlgebra D Sc i n 1 := by
@@ -334,10 +334,6 @@ def appendPolySum (i : I) (n : ℕ) : (ℕ →₀ Hn D Sc (n + 1)) →+ Hn D Sc 
   Finsupp.liftAddHom fun m =>
     (AddMonoidHom.mulLeft (affineLastDot D Sc i (n + 1) ^ m)).comp
       (appendLinear D Sc i (n + 1)).toAddMonoidHom
-
-/-! ## Directness of the decomposition -/
-
-/-! ## Right multiplication by the new dot -/
 
 theorem appendPolySum_single (i : I) (n m : ℕ) (b : Hn D Sc (n + 1)) :
     appendPolySum D Sc i n (Finsupp.single m b) =
@@ -416,6 +412,8 @@ theorem mem_appendLeftSum_sup_appendPolySum (i : I) (n : ℕ) (y : Hn D Sc (n + 
     exact h.symm
   rw [← hl, hy, Finset.mul_sum]
   exact sum_mem fun q _ => appendOne_mul_appendPBWTerm_mem D Sc i n q.1 q.2 _
+
+/-! ## Directness of the decomposition -/
 
 theorem affineLastCrossing_mul_appendAppendOne (i : I) (n : ℕ) :
     affineLastCrossing D Sc i i n * appendAlgebra D Sc i (n + 1) (appendAlgebra D Sc i n 1) =
@@ -575,6 +573,8 @@ theorem appendLeftSum_add_appendPolySum_eq_zero (i : I) (n : ℕ)
   rw [← appendCoefficients_appendPolySum_last D Sc i n G k, h, map_zero, Finsupp.zero_apply,
     Finsupp.zero_apply]
 
+/-! ## Right multiplication by the new dot -/
+
 /-- The parity twist of the appended colour, coefficientwise. -/
 abbrev appendTwist (i : I) (n : ℕ) : Hn D Sc (n + 1) →+ Hn D Sc (n + 1) :=
   (homMatrixTwist D Sc (n + 1) (D.parity i)).toAddMonoidHom
@@ -637,6 +637,8 @@ theorem appendLeftSum_mul_lastDot (i : I) (n : ℕ) (F : (Fin (n + 1) × ℕ) �
     unfold appendLeftDegree
     simp only [Finsupp.liftAddHom_apply_single, AddMonoidHom.comp_apply, AddMonoidHom.coe_mulLeft]
     rfl
+
+/-! ## The two-sided corner as a direct sum -/
 
 /-- Left multiplication by `ψ'(1)` on left-crossing coordinates. -/
 def appendLeftProj (i : I) (n : ℕ) :
@@ -732,6 +734,8 @@ theorem appendCornerEquiv_apply (i : I) (n : ℕ)
     (appendCornerEquiv D Sc i n p : Hn D Sc (n + 1 + 1)) =
       appendLeftSum D Sc i n p.1 + appendPolySum D Sc i n p.2 := rfl
 
+/-! ## Right `ψ(Hn (n+1))`-linearity of the summand maps -/
+
 theorem appendLeftSum_mul_appendAlgebra (i : I) (n : ℕ)
     (F : (Fin (n + 1) × ℕ) →₀ Hn D Sc (n + 1)) (r : Hn D Sc (n + 1)) :
     appendLeftSum D Sc i n (Finsupp.mapRange.addMonoidHom (AddMonoidHom.mulRight r) F) =
@@ -754,9 +758,5 @@ theorem appendPolySum_mul_appendAlgebra (i : I) (n : ℕ) (G : ℕ →₀ Hn D S
   | single m b =>
     simp only [Finsupp.mapRange.addMonoidHom_apply, Finsupp.mapRange_single,
       AddMonoidHom.coe_mulRight, appendPolySum_single, map_mul, mul_assoc]
-
-/-! ## The two-sided corner as a direct sum -/
-
-/-! ## Right `ψ(Hn (n+1))`-linearity of the summand maps -/
 
 end OddMath.QuiverHecke

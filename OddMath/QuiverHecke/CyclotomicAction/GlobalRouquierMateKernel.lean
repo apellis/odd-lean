@@ -3,10 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierFamily
-import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightAdjunction
-import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightCrossing
-import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightDot
-import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightCrossing
+import OddMath.QuiverHecke.CyclotomicAction.RouquierKernelComparison
 
 /-!
 # The weight-level Rouquier mate, dotted units and dotted counits through the kernels
@@ -90,6 +87,7 @@ theorem scat_rouquierMate_app {a b c : SCat k} {E₁ : a ⟶ b} {F₁ : b ⟶ a}
   · simp [SKM.rouquierMate, hu, hc]
   · simp [SKM.rouquierMate, hu, hc]
 
+omit [Fintype I] [DecidableEq I] in
 /-- Components of a composite of homogeneous 2-morphisms in `𝔖ℭ𝔞𝔱`. -/
 theorem scat_comp_app_of_mem {F G H : A ⟶ B} {x : F ⟶ G} {y : G ⟶ H} {s t : ZMod 2}
     (hx : x ∈ parity (R := k) F G s) (hy : y ∈ parity (R := k) G H t) (Z : A.carrier) :
@@ -107,6 +105,8 @@ theorem scat_comp_app_of_mem {F G H : A ⟶ B} {x : F ⟶ G} {y : G ⟶ H} {s t 
     simp only [Pi.zero_apply] at h0
     simp only [h0, Limits.zero_comp, zero_add, e]
 
+end SCatEven
+
 omit [Fintype I] [DecidableEq I] in
 theorem natTrans_app_of_eq {C₁ C₂ : Type*} [Category C₁] [Category C₂] {F G : C₁ ⥤ C₂}
     (α : F ⟶ G) {Z Z' : C₁} (e : Z = Z') :
@@ -120,6 +120,9 @@ theorem eqToHom_map_id_eqToHom {C₁ C₂ : Type*} [Category C₁] [Category C�
     eqToHom e ≫ F.map (𝟙 Z) ≫ eqToHom e.symm = 𝟙 A := by
   subst e
   simp
+
+section Content
+variable (i : I)
 
 /-- The mate kernel `s ⊗ N` on a content block of height `|β| + 1`, between the induced
 restriction and the restricted induction. -/
@@ -200,6 +203,7 @@ theorem fullHomEquiv_apply' {C : Type*} [Category C] [Preadditive C] [Linear k C
     (P : ObjectProperty C) (M N : P.FullSubcategory) (f : M ⟶ N) :
     fullHomEquiv (k := k) P M N f = f.hom := rfl
 
+omit [DecidableEq I] in
 /-- The diagonal component of the height crossing, at the parity of its colour. -/
 theorem heightSuperInductionCrossing_app_self (n : ℕ)
     (Z : HeightModules D Sc a ha n) :
@@ -223,6 +227,7 @@ theorem heightContentCastCounit_app_self {m : ℕ} {γ : Multiset I} (hm : m = m
   cases hγ
   rfl
 
+omit [DecidableEq I] in
 /-- The mate on content blocks, without height transports. -/
 theorem heightContentMate_self (β₀ : Multiset I)
     (hm : (({i} : Multiset I) + β₀).card = β₀.card + 1)
@@ -257,6 +262,7 @@ theorem heightContentMate_self (β₀ : Multiset I)
   rw [contentMateKernel_hom]
   exact heightRouquierMate_eq D Sc i a ha β₀.card N.obj
 
+omit [DecidableEq I] in
 /-- **The mate on content blocks**: unit, crossing `ψ` and counit, with height transports, are
 minus the transported mate kernel. -/
 theorem heightContentMate (β₀ : Multiset I) {m₁ m₂ : ℕ} {γ₁ γ₂ : Multiset I}
@@ -296,6 +302,7 @@ theorem heightContentMate (β₀ : Multiset I) {m₁ m₂ : ℕ} {γ₁ γ₂ : 
     Category.comp_id, CategoryTheory.Functor.map_id, superfunctor_id_toFunctor_obj]
   exact heightContentMate_self D Sc a ha i β₀ _ _ N _ _ _ _ _ _ _ _
 
+omit [DecidableEq I] in
 /-- The target of the transported mate kernel is the composite of the transported restriction
 and induction. -/
 theorem heightContentCast_restriction_induction_obj (β₀ : Multiset I) {m₁ m₂ : ℕ}
@@ -314,6 +321,8 @@ theorem heightContentCast_restriction_induction_obj (β₀ : Multiset I) {m₁ m
   subst p₁ hγ₁ p₂ hγ₂
   simp only [heightContentCast_rfl, Superfunctor.id_comp, Superfunctor.comp_id]
   rfl
+
+/-! ### Dotted units and counits on content blocks -/
 
 /-- The `m`-th dot power on content induction, `x^m ⊗ Y` on `P ⊗ Y`. -/
 def contentDotPow (β₀ : Multiset I) (m : ℕ)
@@ -343,6 +352,7 @@ def contentCapKernel (β₀ : Multiset I) (m : ℕ)
     SuperBimodule.whiskerRight (rouquierCapKernel D Sc i a ha β₀.card m) N.obj ≫
     (SuperBimodule.leftUnitor N.obj).hom⟩
 
+omit [DecidableEq I] in
 /-- The unit followed by the dot power is `d_m` times the dotted cup. -/
 theorem contentUnit_dotPow (β₀ : Multiset I) (m : ℕ)
     (Y : ObjectProperty.FullSubcategory (heightContentSupported D Sc a ha β₀.card β₀)) :
@@ -354,6 +364,7 @@ theorem contentUnit_dotPow (β₀ : Multiset I) (m : ℕ)
   rw [map_smul]
   exact heightSuperUnit_dotPow D Sc i a ha β₀.card m Y.obj
 
+omit [DecidableEq I] in
 /-- The dot power followed by the counit is `d_m` times the dotted cap. -/
 theorem contentDotPow_counit (β₀ : Multiset I) (m : ℕ)
     (N : ObjectProperty.FullSubcategory
@@ -439,6 +450,11 @@ theorem heightContentCast_symm_map_map {m m' : ℕ} {γ γ' : Multiset I} (hm : 
   simp only [eqToHom_refl, Category.id_comp, Category.comp_id]
   rfl
 
+end Content
+
+section Weight
+variable (i : I) (Λ : X) {x₀ x₁ x₂ : X} (h₁ : x₀ + D.α i = x₁) (h₂ : x₁ + D.α i = x₂)
+
 theorem globalRouquierMate_app_blockSucc (M : WeightProduct D Sc a ha Λ x₁)
     (β : WeightBlocks D Λ x₀) :
     (SKM.rouquierMate (globalActionAdjunction D Sc a ha i Λ h₁)
@@ -512,6 +528,7 @@ theorem globalRouquierMate_app_blockSucc (M : WeightProduct D Sc a ha Λ x₁)
     (blockSucc_val D Λ i h₂ (blockSucc D Λ i h₁ β)).symm _ _
     (M (blockSucc D Λ i h₁ β)) _ _ _ _ _ _ _ _
 
+omit [DecidableEq I] in
 /-- The dot at a successor block is the transported content dot. -/
 theorem globalActionDot_app_blockSucc {x y : X} (h : x + D.α i = y) (q : ZMod 2)
     (Z : WeightProduct D Sc a ha Λ x) (β : WeightBlocks D Λ x) :
@@ -526,6 +543,7 @@ theorem globalActionDot_app_blockSucc {x y : X} (h : x + D.α i = y) (q : ZMod 2
   congr 2
   exact heightContentCastTrans_app D Sc a ha _ _ _ q (Z β)
 
+omit [DecidableEq I] in
 /-- Parity of the vertical powers of the weight-level dot. -/
 theorem globalActionDotPow_mem {x y : X} (h : x + D.α i = y) (m : ℕ) :
     SKM.rouquierPower (globalActionDot D Sc a ha i Λ h) m ∈
@@ -539,6 +557,7 @@ theorem globalActionDotPow_mem {x y : X} (h : x + D.α i = y) (m : ℕ) :
     rwa [show (m : ZMod 2) * D.parity i + D.parity i = ((m + 1 : ℕ) : ZMod 2) * D.parity i by
       push_cast; ring] at hc
 
+omit [DecidableEq I] in
 /-- The dot power at a successor block is the transported content dot power. -/
 theorem globalActionDotPow_app_blockSucc {x y : X} (h : x + D.α i = y) (m : ℕ)
     (Z : WeightProduct D Sc a ha Λ x) (β : WeightBlocks D Λ x) :
@@ -565,6 +584,7 @@ theorem globalActionDotPow_app_blockSucc {x y : X} (h : x + D.α i = y) (m : ℕ
     rw [ih, globalActionDot_app_blockSucc, contentDotPow_succ]
     simp
 
+omit [DecidableEq I] in
 /-- **The dotted counit at a successor block** is `d_m` times the transported dotted cap
 kernel `κ_m ⊗ N`. -/
 theorem globalDottedCounit_app_blockSucc (m : ℕ) (M : WeightProduct D Sc a ha Λ x₁)
@@ -597,6 +617,7 @@ theorem globalDottedCounit_app_blockSucc (m : ℕ) (M : WeightProduct D Sc a ha 
   rw [← Functor.map_comp_assoc]
   erw [contentDotPow_counit]
 
+omit [DecidableEq I] in
 /-- **The dotted unit at a block** is `d_m` times the dotted cup kernel `j_m ⊗ Z_δ`. -/
 theorem globalDottedUnit_app (m : ℕ) (Z : WeightProduct D Sc a ha Λ x₁)
     (δ : WeightBlocks D Λ x₁) :
@@ -628,42 +649,6 @@ theorem globalDottedUnit_app (m : ℕ) (Z : WeightProduct D Sc a ha Λ x₁)
     Functor.comp_map, Functor.map_comp, eqToHom_map, Category.assoc, hc, eqToHom_trans_assoc,
     eqToHom_refl, Category.id_comp]
   rw [eqToHom_trans, ← Category.assoc, contentUnit_dotPow, Linear.smul_comp]
-
-omit [Fintype I] [DecidableEq I] in
-
-end SCatEven
-
-section Content
-variable (i : I)
-
-omit [DecidableEq I] in
-
-omit [DecidableEq I] in
-
-omit [DecidableEq I] in
-
-omit [DecidableEq I] in
-
-/-! ### Dotted units and counits on content blocks -/
-
-omit [DecidableEq I] in
-
-omit [DecidableEq I] in
-
-end Content
-
-section Weight
-variable (i : I) (Λ : X) {x₀ x₁ x₂ : X} (h₁ : x₀ + D.α i = x₁) (h₂ : x₁ + D.α i = x₂)
-
-omit [DecidableEq I] in
-
-omit [DecidableEq I] in
-
-omit [DecidableEq I] in
-
-omit [DecidableEq I] in
-
-omit [DecidableEq I] in
 
 end Weight
 end OddMath.QuiverHecke.CyclotomicAction

@@ -336,7 +336,6 @@ theorem crossCoeff_diag (c : P.CrossCoeff Sc) (hc : c.IsInverse) (h : P.CrossDen
       simp [crossDenom, hi0, sub_eq_add_neg, add_comm, pow_two]
     exact SlideBlocks.slide_of_odd_identity _ hd hxy (hc.odd i hp t hv Z).2
 
-
 private theorem zsign_mul_self_smul {C : Type*} [Category C] [Preadditive C] [Linear k C]
     {A A' : C} (p : ZMod 2) (f : A ⟶ A') :
     zsign k (p * p) • f = koszulSign p p • f := by

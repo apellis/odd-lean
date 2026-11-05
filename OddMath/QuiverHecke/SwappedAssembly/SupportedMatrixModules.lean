@@ -23,6 +23,17 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 local notation "Sc'" => parameterTwist D Sc
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR
 
+/-- The full path-Hom inclusion in the computed chosen-factor charts. -/
+def pathHomEquiv {w v : List (Col I X)} {s t : Sector I}
+    (p : SPath w s t) (q : SPath v s t) (Z : H D Sc' m cutoff bound ΛP ΛR t) :
+    ((pathFunctor D Sc' m cutoff bound ΛP ΛR p).obj Z ⟶
+      (pathFunctor D Sc' m cutoff bound ΛP ΛR q).obj Z) ≃ₗ[k]
+    (((P).pathFunctor p).obj Z.obj ⟶ ((P).pathFunctor q).obj Z.obj) :=
+  (InducedCategory.homLinearEquiv (R := k)).trans
+    (Linear.homCongr k
+      (eqToIso (factor_path_obj D Sc m cutoff bound ΛP ΛR hP hR p Z))
+      (eqToIso (factor_path_obj D Sc m cutoff bound ΛP ΛR hP hR q Z)))
+
 /-- A supported matrix entry has the same Hom module as its chosen ambient entry. -/
 def entryEquiv {w : List (Col I X)} {s t : Sector I} (p : SPath w s t)
     (G : H D Sc' m cutoff bound ΛP ΛR s) (Z : H D Sc' m cutoff bound ΛP ΛR t) :

@@ -587,5 +587,19 @@ theorem expansion_injective_of_choice (F G : MatchingBasisChoice a b)
   apply hG
   simpa only [F.choiceTransition_evaluation cs μ G] using h
 
+/-- The same signed triangular transition is surjective by finite well-founded
+recursion; no uniform nilpotence exponent is required. -/
+theorem choiceTransition_surjective (F G : MatchingBasisChoice a b) :
+    Function.Surjective (F.choiceTransition cs μ G) := by
+  apply MatchingTransition.transition_surjective (F.labelsEquiv G)
+    (fun i j => ncr₂ i.1.val < ncr₂ j.1.val ∨
+      (ncr₂ i.1.val = ncr₂ j.1.val ∧ F.openDots i < F.openDots j))
+    (MatchingTransition.crossingDot_wellFounded (fun t => ncr₂ t.1.val) F.openDots)
+    (F.unitColumn cs μ G) (fun i => zsign k (F.columnData cs μ G i).1 • 1)
+    (F.unitColumn_lower cs μ G)
+  intro i
+  simp only [F.unitColumn_diagonal cs μ G i, smul_mul_assoc, one_mul,
+    smul_smul, zsign_mul_self', one_smul]
+
 end MatchingBasisChoice
 end OddMath.SKM

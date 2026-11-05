@@ -184,6 +184,7 @@ theorem cupD_capL (hh : h < 0) {n : ℕ} (hn : n < (-h).toNat) :
     L.cupD n ≫ L.capL = if n = (-h - 1).toNat then 𝟙 _ else 0 := by
   rw [capL_of_neg hh, cupD_capN hh.le hn (by omega)]
 
+omit [TwoSupercategory k B] in
 /-- Brundan (3.6), (3.8). -/
 theorem ccw_of_lt (hh : 0 < h) {k : ℤ} (hk : k < h - 1) : L.ccw k = 0 := by
   rcases lt_or_ge k 0 with hk0 | hk0
@@ -194,6 +195,7 @@ omit [TwoSupercategory k B] in
 theorem ccw_self (hh : 0 < h) : L.ccw (h - 1) = 𝟙 _ := by
   rw [ccw_of_nonneg (by omega), cupL_capD hh (by omega), ite_eq_left rfl]
 
+omit [TwoSupercategory k B] in
 /-- Brundan (3.7), (3.9). -/
 theorem cw_of_lt (hh : h < 0) {k : ℤ} (hk : k < -h - 1) : L.cw k = 0 := by
   rcases lt_or_ge k 0 with hk0 | hk0
@@ -203,10 +205,6 @@ theorem cw_of_lt (hh : h < 0) {k : ℤ} (hk : k < -h - 1) : L.cw k = 0 := by
 omit [TwoSupercategory k B] in
 theorem cw_self (hh : h < 0) : L.cw (-h - 1) = 𝟙 _ := by
   rw [cw_of_nonneg (by omega), cupD_capL hh (by omega), ite_eq_left rfl]
-
-omit [TwoSupercategory k B] in
-
-omit [TwoSupercategory k B] in
 
 end SuperRouquierLoc
 end OddMath.SKM

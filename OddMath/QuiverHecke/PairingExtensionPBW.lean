@@ -55,6 +55,13 @@ theorem affineEquiv_apply {s t : List I}
     rw [basisNF_apply, affineEquiv_nf, presentationFunctor_nf]
   exact LinearMap.congr_fun h f
 
+/-- Tensor transport before identifying the coefficient-extended Hom spaces. -/
+def sourceEquiv (s t : List I) :
+    (SKM.SYM D k ⊗[k] ((pres D Sc).obj (ob D s) ⟶ (pres D Sc).obj (ob D t))) ≃ₗ[k]
+      (SKM.SYM Dₑ k ⊗[k] ((pres Dₑ Scₑ).obj (ob Dₑ s) ⟶ (pres Dₑ Scₑ).obj (ob Dₑ t))) :=
+  TensorProduct.congr (SKM.PairingExtension.coefficientEquiv (k := k) D).toLinearEquiv
+    (affineEquiv D Sc s t)
+
 /-- The tensor equivalence transports the full source coefficient algebra. -/
 def coefficientHomEquiv (s t : List I) :
     (coefficientObj (k := k) D Sc s ⟶ coefficientObj (k := k) D Sc t) ≃ₗ[k]

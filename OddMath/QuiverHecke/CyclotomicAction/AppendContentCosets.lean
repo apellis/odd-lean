@@ -73,13 +73,6 @@ theorem prependShuffleTarget_long (i : I) {r : ℕ} (s : Word I r) :
     rw [List.getElem_append_right (by simp [s.2])]
     simp [s.2]
 
-variable (a : I → _root_.Polynomial k) (n : ℕ) (β : Multiset I) (i : I)
-local notation "B" => CyclotomicContentCorner D Sc a n β
-local notation "eps" => appendContentParity D a β i
-local notation "C" => (PrependShuffle (n + 1) × ℕ) →₀ B
-local notation "L" => Ind B (prependTwist D Sc i n eps)
-local notation "coord" => prependTwistCoordinates D Sc i n eps B
-
 /-- The append projector fixes the moving crossing matrix. -/
 theorem appendOne_mul_longPrependShuffleElement (i : I) (r : ℕ) :
     appendAlgebra D Sc i r 1 * prependShuffleElement D Sc i (longPrependShuffle r) =
@@ -98,6 +91,13 @@ theorem appendOne_mul_longPrependPBWTerm (i : I) (r m : ℕ) (b : Hn D Sc r) :
     appendAlgebra D Sc i r 1 * prependPBWTerm D Sc i (longPrependShuffle r) m b =
       prependPBWTerm D Sc i (longPrependShuffle r) m b := by
   simp only [prependPBWTerm, ← mul_assoc, appendOne_mul_longPrependShuffleElement]
+
+variable (a : I → _root_.Polynomial k) (n : ℕ) (β : Multiset I) (i : I)
+local notation "B" => CyclotomicContentCorner D Sc a n β
+local notation "eps" => appendContentParity D a β i
+local notation "C" => (PrependShuffle (n + 1) × ℕ) →₀ B
+local notation "L" => Ind B (prependTwist D Sc i n eps)
+local notation "coord" => prependTwistCoordinates D Sc i n eps B
 
 /-- Read the full moving-shuffle row of the balanced PBW coordinates.
 These are input-first-dot coordinates, before the corrected-ρ sign normalization. -/

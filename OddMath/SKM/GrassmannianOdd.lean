@@ -83,7 +83,6 @@ theorem eq_5_9 (i : I) (μ : X) (hi : D.parity i = 1) (n : ℕ)
     abel
   exact (h2.smul_left_cancel).mp this
 
-
 /-! ## Products of homogeneous closed 2-morphisms -/
 
 theorem comp_mem_closedPar {μ : X} {p q : ZMod 2} {f g : (pres D Sc).obj (ob D μ []) ⟶
@@ -139,7 +138,6 @@ theorem bubL_base_odd (i : I) (μ : X) (hi : D.parity i = 1) (hh : D.h i μ ≤ 
       simp only [zsign, ite_true, neg_neg, one_mul]
       rw [mul_assoc, Units.mul_inv, mul_one]
   · rw [oddBubble, ite_eq_left (show 0 ≤ D.h i μ by omega), smul_smul, Units.mul_inv, one_smul]
-
 
 theorem zcast_one_iff (x : ℤ) : ((x : ZMod 2) = 1) ↔ (2 : ℤ) ∣ x - 1 := by
   rw [← Int.cast_one, ZMod.intCast_eq_intCast_iff_dvd_sub]
@@ -230,7 +228,6 @@ theorem eq_5_10_step (i : I) (μ : X) (hi : D.parity i = 1) (N : ℤ) (hN0 : N �
       simp
   · intro hj; exfalso; exact hj (mem_range.2 (by omega))
 
-
 /-- **Brundan–Ellis, (5.10) for `N > 0`**: for odd `i`, `N = n + 1` and `N + ⟨hᵢ, λ⟩ + 1` odd, the
 bubble with `N` dots on its left (upward) side is the odd bubble followed by the bubble with
 `N - 1` dots; from Proposition 4.1 (4.4) at `n = 1` (`lemma41_eq4_one_odd`) and (2.3). -/
@@ -276,7 +273,6 @@ theorem eq_5_10 (i : I) (μ : X) (hi : D.parity i = 1) (N : ℤ) (hpar : (2 : �
   · subst heq; exact bubL_base_odd cs i μ hi hN
   · refine eq_5_10_step cs i μ hi N hN hgt hpar fun r hr hpr => ?_
     exact IH (r - D.h i μ + 2).toNat (by omega) r rfl hpr
-
 
 /-! ## (5.9) for all `N`, by the mirrored induction from (5.8) and (5.10) -/
 
@@ -398,7 +394,6 @@ theorem eq_5_9_all (i : I) (μ : X) (hi : D.parity i = 1) (N : ℤ) (hpar : (2 :
   · refine eq_5_9_step cs i μ hi N hgt hpar fun s hs hps => ?_
     exact IH (s + D.h i μ + 2).toNat (by omega) s rfl hps
 
-
 /-! ## (1.24), (5.7) -/
 
 /-- **Brundan–Ellis, (1.24)**: the odd bubble squares to zero (`i` odd). -/
@@ -438,7 +433,6 @@ theorem bubL_bubR_odd_odd (i : I) (μ : X) (hi : D.parity i = 1) (x y : ℤ)
     hi, one_mul, one_mul, (zcast_zero_iff (x - 1 + D.h i μ + 1)).2 (by omega),
     (zcast_zero_iff (y - 1 + D.h i μ + 1)).2 (by omega), add_zero, zero_mul, zsign_zero,
     one_smul, ← Category.assoc, oddBubble_sq cs i μ hi, Limits.zero_comp]
-
 
 /-! ## The key identity: `∑_{r+s=t} (-1)^{|i|r} bubRs(s) ≫ bubLs(r) = 0` -/
 

@@ -45,6 +45,20 @@ local notation "Q" => (homContentPostF T.obj W i β a hr).obj
 local notation "Q'" => (homContentPostF T.obj W i β a' hr').obj
   ((homContentPostE T.obj W i β a' hr').obj ((K).obj Z))
 
+/-- The source chart changes the weight presentations of the same
+normalized precomposition adjunction. -/
+def homPreWeightIso : (K).obj S ≅ S' := by
+  subst a'
+  subst b'
+  exact Iso.refl _
+
+/-- The target chart changes the weight presentations of the same
+shifted postcomposition pair. -/
+def homPostWeightIso : (K).obj Q ≅ Q' := by
+  subst a'
+  subst b'
+  exact Iso.refl _
+
 section Pullback
 variable (Z' : homWeightSector T.obj W.obj a' b')
 local notation "Zₚ" => (homWeightEquivalence T W ha hb).inverse.obj Z'

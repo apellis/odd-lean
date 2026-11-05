@@ -130,6 +130,23 @@ theorem element_identities :
 
 end OddTwo
 
+/-- An element anticommuting with `u`, `v` and `T` anticommutes with the odd intertwiner. -/
+theorem anticomm_phiOdd {u v T Y : B} (hu : Y * u = -(u * Y)) (hv : Y * v = -(v * Y))
+    (hT : Y * T = -(T * Y)) : Y * phiOdd u v T = -(phiOdd u v T * Y) := by
+  have hu' (r : B) : Y * (u * r) = -(u * (Y * r)) := by rw [← mul_assoc, hu, neg_mul, mul_assoc]
+  have hv' (r : B) : Y * (v * r) = -(v * (Y * r)) := by rw [← mul_assoc, hv, neg_mul, mul_assoc]
+  have hT' (r : B) : Y * (T * r) = -(T * (Y * r)) := by rw [← mul_assoc, hT, neg_mul, mul_assoc]
+  simp only [phiOdd, mul_sub, sub_mul, mul_assoc, mul_neg, hu', hv', hu, hv, hT, neg_neg]
+  noncomm_ring
+
+/-- An element commuting with `u`, `v` and `T` commutes with the even intertwiner. -/
+theorem comm_phiEven {u v T Y : B} (hu : Y * u = u * Y) (hv : Y * v = v * Y)
+    (hT : Y * T = T * Y) : Y * phiEven u v T = phiEven u v T * Y := by
+  have hu' (r : B) : Y * (u * r) = u * (Y * r) := by rw [← mul_assoc, hu, mul_assoc]
+  have hv' (r : B) : Y * (v * r) = v * (Y * r) := by rw [← mul_assoc, hv, mul_assoc]
+  simp only [phiEven, mul_add, add_mul, mul_sub, sub_mul, mul_assoc, mul_one, one_mul, hu', hv',
+    hT]
+
 namespace EvenTwo
 
 variable {u v T : B} (h : EvenTwo u v T)
@@ -189,23 +206,6 @@ theorem x_mul_gEven : u * gEven u v T = gEven u v T * v := by
 end EvenTwo
 
 /-! ### Positions of a signed nilHecke family -/
-
-/-- An element anticommuting with `u`, `v` and `T` anticommutes with the odd intertwiner. -/
-theorem anticomm_phiOdd {u v T Y : B} (hu : Y * u = -(u * Y)) (hv : Y * v = -(v * Y))
-    (hT : Y * T = -(T * Y)) : Y * phiOdd u v T = -(phiOdd u v T * Y) := by
-  have hu' (r : B) : Y * (u * r) = -(u * (Y * r)) := by rw [← mul_assoc, hu, neg_mul, mul_assoc]
-  have hv' (r : B) : Y * (v * r) = -(v * (Y * r)) := by rw [← mul_assoc, hv, neg_mul, mul_assoc]
-  have hT' (r : B) : Y * (T * r) = -(T * (Y * r)) := by rw [← mul_assoc, hT, neg_mul, mul_assoc]
-  simp only [phiOdd, mul_sub, sub_mul, mul_assoc, mul_neg, hu', hv', hu, hv, hT, neg_neg]
-  noncomm_ring
-
-/-- An element commuting with `u`, `v` and `T` commutes with the even intertwiner. -/
-theorem comm_phiEven {u v T Y : B} (hu : Y * u = u * Y) (hv : Y * v = v * Y)
-    (hT : Y * T = T * Y) : Y * phiEven u v T = phiEven u v T * Y := by
-  have hu' (r : B) : Y * (u * r) = u * (Y * r) := by rw [← mul_assoc, hu, mul_assoc]
-  have hv' (r : B) : Y * (v * r) = v * (Y * r) := by rw [← mul_assoc, hv, mul_assoc]
-  simp only [phiEven, mul_add, add_mul, mul_sub, sub_mul, mul_assoc, mul_one, one_mul, hu', hv',
-    hT]
 
 theorem neg_of_neg_one_smul {x y : B} (h : x * y = ((-1 : ℤˣ) : ℤ) • (y * x)) :
     x * y = -(y * x) := by

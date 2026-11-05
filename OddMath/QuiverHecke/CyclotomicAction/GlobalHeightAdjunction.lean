@@ -3,7 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightRestriction
-import OddMath.QuiverHecke.CyclotomicAction.CornerPairing
+import OddMath.QuiverHecke.CyclotomicAction.SuperAdjunction
 
 /-!
 # The induction-restriction adjunction at every height
@@ -68,6 +68,18 @@ def heightCornerPairingLinear : (tensor P Q).toSVec →ₗ[k] B :=
     heightCornerPairingLinear D Sc i a ha n (btmul P Q x y) = x.1 * y.1 :=
   tensorLift_btmul _ _ x y
 
+/-- Multiplication preserves total parity. -/
+theorem heightCornerPairing_mem :
+    SVec.ofHom (heightCornerPairingLinear D Sc i a ha n) ∈
+      SVec.parityHom (tensor P Q).toSVec (regular GB).toSVec 0 := by
+  apply tensor_mem_parity_of_btmul
+  intro p q x y hx hy
+  change heightCornerPairingLinear D Sc i a ha n (btmul P Q x y) ∈ (regularSVec GB).part (p + q + 0)
+  rw [heightCornerPairingLinear_btmul, add_zero, mem_regularSVec_part_iff]
+  exact SetLike.GradedMul.mul_mem
+    ((heightInductionCorner_mem_part_iff D Sc i a ha n).mp hx)
+    ((heightRestrictionCorner_mem_part_iff D Sc i a ha n).mp hy)
+
 /-- The even colour-cut idempotent in the induction bimodule. -/
 def heightInductionCornerIdempotent : (P).toSVec :=
   ⟨φ 1, by change φ 1 * φ 1 = φ 1; rw [← map_mul, mul_one]⟩
@@ -83,12 +95,6 @@ theorem heightInductionCornerIdempotent_mem :
   (heightInductionCorner_mem_part_iff D Sc i a ha n).mpr
     (heightAppend_parity D Sc a ha i n (SetLike.one_mem_graded GA))
 
-/-! ### From `SuperAdjunctionUnit` -/
-local notation "ep" => heightInductionCornerIdempotent D Sc i a ha n
-local notation "eq" => heightRestrictionCornerOf D Sc i a ha n 1
-local notation "F" => heightSuperInduction D Sc i a ha n
-local notation "E" => heightSuperRestriction D Sc i a ha n
-
 /-- The linear coevaluation `a ↦ φ(a) ⊗ e`. -/
 def heightCornerUnitLinear : A →ₗ[k] (tensor Q P).toSVec where
   toFun r := btmul Q P (heightRestrictionCornerOf D Sc i a ha n r)
@@ -99,6 +105,37 @@ def heightCornerUnitLinear : A →ₗ[k] (tensor Q P).toSVec where
 @[simp] theorem heightCornerUnitLinear_apply (r : A) :
     heightCornerUnitLinear D Sc i a ha n r = btmul Q P (heightRestrictionCornerOf D Sc i a ha n r)
       (heightInductionCornerIdempotent D Sc i a ha n) := rfl
+
+theorem heightCornerUnitLinear_lact (r s : A) :
+    heightCornerUnitLinear D Sc i a ha n (r * s) =
+      (tensor Q P).lact r (heightCornerUnitLinear D Sc i a ha n s) := by
+  rw [heightCornerUnitLinear_apply, heightCornerUnitLinear_apply, lact_btmul]
+  congr 1
+  apply Subtype.ext
+  exact map_mul φ r s
+
+theorem heightCornerUnitLinear_ract (r s : A) :
+    heightCornerUnitLinear D Sc i a ha n (r * s) =
+      (tensor Q P).ract s (heightCornerUnitLinear D Sc i a ha n r) := by
+  rw [heightCornerUnitLinear_apply, heightCornerUnitLinear_apply, ract_btmul]
+  have hm : heightRestrictionCornerOf D Sc i a ha n (r * s) =
+      (Q).ract (φ s) (heightRestrictionCornerOf D Sc i a ha n r) :=
+    Subtype.ext (map_mul φ r s)
+  rw [hm, btmul_ract_lact]
+  congr 1
+  apply Subtype.ext
+  change φ s * φ 1 = φ 1 * φ s
+  rw [← map_mul, ← map_mul, mul_one, one_mul]
+
+theorem heightCornerUnit_mem :
+    SVec.ofHom (heightCornerUnitLinear D Sc i a ha n) ∈
+      SVec.parityHom (regular GA).toSVec (tensor Q P).toSVec 0 := by
+  apply SVec.mem_parityHom_of_apply_mem
+  intro p r hr
+  apply btmul_mem_part
+  · apply (heightRestrictionCorner_mem_part_iff D Sc i a ha n).mpr
+    exact heightAppend_parity D Sc a ha i n ((mem_regularSVec_part_iff GA).mp hr)
+  · exact heightInductionCornerIdempotent_mem D Sc i a ha n
 
 /-- The first elementary triangular identity for the corner pairing. -/
 @[simp] theorem heightCornerPairing_right_unit (x : (P).toSVec) :
@@ -113,6 +150,12 @@ def heightCornerUnitLinear : A →ₗ[k] (tensor Q P).toSVec where
       (btmul P Q (heightInductionCornerIdempotent D Sc i a ha n) y) = y.1 := by
   rw [heightCornerPairingLinear_btmul]
   exact y.2
+
+/-! ### From `SuperAdjunctionUnit` -/
+local notation "ep" => heightInductionCornerIdempotent D Sc i a ha n
+local notation "eq" => heightRestrictionCornerOf D Sc i a ha n 1
+local notation "F" => heightSuperInduction D Sc i a ha n
+local notation "E" => heightSuperRestriction D Sc i a ha n
 
 /-- The two even colour idempotents give the linear unit. -/
 def heightSuperUnitLinear (M : HeightModules D Sc a ha n) :

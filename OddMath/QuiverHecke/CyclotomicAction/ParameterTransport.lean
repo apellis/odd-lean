@@ -2,10 +2,7 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.CyclotomicAction.Square
-import OddMath.QuiverHecke.CyclotomicAction.InductionFunctorComparison
-import OddMath.QuiverHecke.CyclotomicAction.SuperCrossing
-import StringDiagrams.Super.Functor
+import OddMath.QuiverHecke.CyclotomicAction.MixedComparison
 import OddMath.SKM.Grading
 import OddMath.QuiverHecke.CyclotomicAction.SignedMultipliers
 

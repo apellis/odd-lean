@@ -180,8 +180,6 @@ theorem homDistinctMixedMateDot_pow_mul_pow_comp {x : E ⟶ E} (hx : x ∈ parit
     homDistinctMixedMateDot_preDot_pow_comp E A κ τ H hx,
     homDistinctMixedMateDot_postDot_pow_comp E A κ τ H hy q Φ h₁ h₂, Category.assoc]
 
-end Mate
-
 /-- An admissible polynomial in front of the crossing moves to an admissible source
 polynomial. -/
 theorem exists_homDistinctMixedMateDot_comp_eq {x : E ⟶ E} (hx : x ∈ parity (R := k) E E 0)
@@ -270,6 +268,8 @@ theorem homDistinctMixedMateDot_isIso_of_comp {x : E ⟶ E} (hx : x ∈ parity (
   exact IsIso.of_isIso_comp_left
     ((c : k) • mixedPostSourcePreDot (k := k) E κ H (F' := F') x ^ d + Ψ :
       End (E ≫ ((homParityShift (k := k) κ).obj H ≫ F'))) _
+
+end Mate
 
 /-- Conjugation by an isomorphism, as a ring homomorphism of endomorphism rings. -/
 def isoConjRingHom {C : Type*} [Category C] [Preadditive C] {X Y : C} (α : X ≅ Y) :

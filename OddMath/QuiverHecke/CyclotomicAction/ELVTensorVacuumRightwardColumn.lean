@@ -50,11 +50,6 @@ abbrev rightwardUnitColumn {C : Type*} {_ : Category C} {Y Z : C} (u : Y ⟶ Z) 
   u ≫ (x ^ e) ≫ B n
 
 include sy hc in
-
-include sy hc in
-
-include sy hc in
-
 /-- **Odd colour, negative height: even moments of the last unit column.** For an
 entrywise inverse `(j, B)` of the cup window of the A6 bend with `0 < 2 M < N`, the shift
 `N - 2M - 1 + 2r` of the last unit column decodes to multiplication by the `r`-th
@@ -78,6 +73,7 @@ theorem rightwardUnitColumn_odd_moments_even
   tensorVacuumNegativeCap_odd_moments_even D Sc m cutoff L sy hc i hi hP
     (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
 
+include sy hc in
 /-- **Odd colour, negative height: odd moments of the last unit column.** Under the
 hypotheses of `rightwardUnitColumn_odd_moments_even`, the shift `N - 2M - 1 + (2r + 1)`
 decodes to the `r`-th coefficient of `(1 + w)^M / C(-w)` times the normalized odd
@@ -104,6 +100,7 @@ theorem rightwardUnitColumn_odd_moments_odd
   exact tensorVacuumNegativeCap_odd_moments_odd D Sc m cutoff L sy hc i hi hP
     (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
 
+include sy hc in
 /-- **Odd colour, negative height: the last unit column.** Both moment identities of
 `rightwardUnitColumn_odd_moments_even` and `rightwardUnitColumn_odd_moments_odd`. -/
 theorem rightwardUnitColumn_odd_moments

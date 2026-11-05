@@ -92,7 +92,6 @@ theorem appendLinear_tensor (s w : OldCategory D Sc cutoff)
   unfold appendLinear powerWordAppendIso powerWordModule
   exact hh
 
-
 private theorem transform_component_tensor {C B : Type u} [Category.{u} C] [Category.{u} B]
     [Preadditive C] [Linear k C] [Supercategory k C]
     [Preadditive B] [Linear k B] [Supercategory k B]

@@ -2,7 +2,7 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.CyclotomicAction.CornerPairing
+import OddMath.QuiverHecke.CyclotomicAction.SuperAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.SuperDot
 import OddMath.SKM.RouquierData
 import StringDiagrams.Super.SCat
@@ -50,5 +50,15 @@ def cyclotomicActionRestriction :
 
 local notation "F" => cyclotomicActionInduction D Sc a ha n i
 local notation "E" => cyclotomicActionRestriction D Sc a ha n i
+
+/-- The cyclotomic unit as an even supernatural transformation. -/
+def cyclotomicActionUnit : 𝟙 (cyclotomicActionObject D Sc a ha n) ⟶ F ≫ E :=
+  SuperNatTrans.ofNatTrans (cyclotomicSuperUnit D Sc i a ha n)
+    (superUnitComponent_mem D Sc i a ha n)
+
+/-- The cyclotomic counit as an even supernatural transformation. -/
+def cyclotomicActionCounit : E ≫ F ⟶ 𝟙 (cyclotomicActionObject D Sc a ha (n + 1)) :=
+  SuperNatTrans.ofNatTrans (cyclotomicSuperCounit D Sc i a ha n)
+    (superCounitComponent_mem D Sc i a ha n)
 
 end OddMath.QuiverHecke

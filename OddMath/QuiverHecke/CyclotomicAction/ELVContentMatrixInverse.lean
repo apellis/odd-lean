@@ -177,6 +177,15 @@ theorem contentUnitMatrixIso_hom_total (i : I) (ν : List I)
   change (contentUnitMatrixComponentIso D Sc cutoff M i ν hh t).hom + 0 = _
   rw [add_zero, contentUnitMatrixComponentIso_hom]
 
+/-- The content supermodule isomorphism has exactly the prescribed cap components. -/
+theorem contentCapMatrixIso_hom_total (i : I) (ν : List I)
+    (hh : contentCrossingHeight D cutoff i (ν : Multiset I) ≤ 0)
+    (t : OldContentCategory D Sc cutoff ν) :
+    (contentCapMatrixIso D Sc cutoff M i ν hh).hom.total t =
+      capMatrixComponent D Sc cutoff i M (contentCapCount D cutoff i (ν : Multiset I)) t.obj := by
+  change (contentCapMatrixComponentIso D Sc cutoff M i ν hh t).hom + 0 = _
+  rw [add_zero, contentCapMatrixComponentIso_hom]
+
 /-- Both directions preserve parity as module morphisms, not only pointwise. -/
 theorem contentUnitMatrixIso_even (i : I) (ν : List I)
     (hh : 0 ≤ contentCrossingHeight D cutoff i (ν : Multiset I)) :

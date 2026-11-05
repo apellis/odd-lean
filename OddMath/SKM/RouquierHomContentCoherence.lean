@@ -112,5 +112,11 @@ instance (T : X → B) (W : RouquierFamily (k := k) (B := B) D)
   unfold homContentPostFOut
   infer_instance
 
+/-- Move the previously constructed right adjoint's Π coherently to its output. -/
+def homContentPostFOutIso (T : X → B) (W : RouquierFamily (k := k) (B := B) D)
+    (i : I) (betaP : I →₀ ℕ) (muP : X) {muM nuM : X} (h : muM + D.α i = nuM) :
+    homContentPostF T W i betaP muP h ≅ homContentPostFOut T W i betaP muP h :=
+  (homParityShiftCommute (homPost (k := k) (W.F i h)) (homContentShift D i betaP)).symm
+
 end Sectors
 end OddMath.SKM

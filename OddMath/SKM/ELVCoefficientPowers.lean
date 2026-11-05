@@ -119,8 +119,4 @@ theorem coefficientBasis_mem_elv_sup_power (cutoff : I → ℕ) (L : I × ℕ �
   have ho : b.2.card ≤ Fintype.card {i : I // D.parity i = 1} := Finset.card_le_univ _
   exact (Nat.not_lt_of_ge (Nat.add_le_add hp ho)) hb
 
-omit [Fintype I] in
-
-omit [Fintype I] in
-
 end OddMath.SKM.SYM

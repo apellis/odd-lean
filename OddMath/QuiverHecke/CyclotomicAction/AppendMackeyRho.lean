@@ -105,16 +105,6 @@ theorem zsign_lastDot_append (ν : List I) (x : I) :
     List.sum_cons, List.sum_nil]
   ring
 
-end LastDot
-
-/-! ## Matrix form -/
-
-section Matrix
-variable [Fintype I] (a : I → _root_.Polynomial k) (i : I) (n : ℕ)
-
-local notation "ψ" =>
-  (appendAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))
-
 theorem appendW_mem_cycHom (ν : List I) :
     appendW D Sc a i ν ∈ cycHom D Sc a (ν ++ [i]) (i :: ν) :=
   Submodule.subset_span ⟨i, ν, lastToFirstHom D Sc i ν, 𝟙 _, by rw [Category.comp_id]; rfl⟩
@@ -183,6 +173,16 @@ theorem lastDot_comp_appendW_mem (ha : CyclotomicPolynomialParity D a) (ν : Lis
         ← appendW_append, smul_add, smul_smul, add_sub_cancel_right]
       exact Submodule.smul_mem _ _ (crossLast_comp_mem_appendKill D Sc ha x ih)
 
+end LastDot
+
+/-! ## Matrix form -/
+
+section Matrix
+variable [Fintype I] (a : I → _root_.Polynomial k) (i : I) (n : ℕ)
+
+local notation "ψ" =>
+  (appendAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))
+
 omit [Fintype I] in
 theorem homMatrixTwist_comm (p q : ZMod 2) (z : Hn D Sc n) :
     homMatrixTwist D Sc n p (homMatrixTwist D Sc n q z) =
@@ -236,6 +236,11 @@ theorem single_append_mul_affineLastDot (s : Word I (n + 1)) {r : Word I (n + 1 
 /-- The constant sign `(-1)^(ε + N p(i))` of the last-dot slide on words with `q_t = ε`. -/
 def appendSourceSign (ε : ZMod 2) : ZMod 2 := ε - (a i).natDegree • D.parity i
 
+theorem zsign_int_smul {M : Type*} [AddCommGroup M] [Module k M] (q : ZMod 2) (m : M) :
+    zsign ℤ q • m = zsign k q • m := by
+  unfold zsign
+  split_ifs <;> simp
+
 end Matrix
 
 section Vanishing
@@ -244,18 +249,6 @@ variable [Fintype I] {a : I → _root_.Polynomial k} {i : I} {n : ℕ} {ε : ZMo
 
 local notation "ψ" =>
   (appendAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))
-
-end Vanishing
-
-/-! ## The source right dot on the induced module -/
-
-section Source
-variable [Fintype I] (i : I) (n : ℕ) (ε : ZMod 2)
-
-theorem zsign_int_smul {M : Type*} [AddCommGroup M] [Module k M] (q : ZMod 2) (m : M) :
-    zsign ℤ q • m = zsign k q • m := by
-  unfold zsign
-  split_ifs <;> simp
 
 /-- **Matrix form of `P ∘ ρ = c • R_t ∘ P`**: `c • X₁ W - W X_last` vanishes in `Ind_ψ N`. -/
 theorem affineFirstDot_mul_appendMoveMatrix_sub_mem (ha : CyclotomicPolynomialParity D a)
@@ -285,6 +278,13 @@ theorem affineFirstDot_mul_appendMoveMatrix_sub_mem (ha : CyclotomicPolynomialPa
         Category.id_comp]
     rw [e]
     exact mul_append_mem_appendVanishing D Sc s _ (hpar s hq)
+
+end Vanishing
+
+/-! ## The source right dot on the induced module -/
+
+section Source
+variable [Fintype I] (i : I) (n : ℕ) (ε : ZMod 2)
 
 /-- Right multiplication by the first dot on the corner of `φ_ε`. -/
 def sourceDotCorner :

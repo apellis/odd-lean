@@ -293,9 +293,6 @@ variable (P : ProbeReservoir k B D Sc) {sy : Symmetrizer D}
   (G : RouquierGrading P.W sy)
 
 omit [TwoSupercategory k B] in
-
-omit [TwoSupercategory k B] in
-
 /-- The vanishing degree of `End(𝟙)` at the reservoir weight `μ`, from `BoundedAbove`. -/
 theorem exists_degree_eq_zero (hG : G.BoundedAbove) (μ : X) :
     ∃ M : ℕ, ∀ m : ℤ, (M : ℤ) ≤ m → ∀ c, c ∈ G.deg (𝟙 (P.W.obj μ)) (𝟙 (P.W.obj μ)) m →
@@ -303,6 +300,7 @@ theorem exists_degree_eq_zero (hG : G.BoundedAbove) (μ : X) :
   obtain ⟨M, hM⟩ := hG μ
   exact ⟨M.toNat + 1, fun m hm c hc => hM m (by omega) c hc⟩
 
+omit [TwoSupercategory k B] in
 /-- The coefficient grading of the reservoir object `W(μ)` given by `G`. -/
 def coeffGrading (μ : X) : CoeffGrading k (P.W.obj μ) :=
   letI := G.graded μ μ

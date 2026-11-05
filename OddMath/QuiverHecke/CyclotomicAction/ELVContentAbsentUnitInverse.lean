@@ -75,6 +75,4 @@ theorem contentAbsentUnitInverse_nonempty :
     simpa only [Functor.id_map, Category.assoc, Iso.hom_inv_id, Category.comp_id] using he.symm
   simpa only [hf, hg] using H
 
-include hi in
-
 end OddMath.QuiverHecke.ELVOld

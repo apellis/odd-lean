@@ -109,6 +109,22 @@ theorem inductionCompOfEq_assoc
     Functor.isoWhiskerLeft_hom, Functor.whiskerRight_app, Functor.whiskerLeft_app,
     Functor.associator_hom_app, Category.id_comp]
   exact inductionCompOfEq_assoc_hom J K L P Q R eP eQ eR eS M
+end OddMath.QuiverHecke.ELVOld
+
+namespace OddMath.QuiverHecke.ELVOld
+section Content
+variable {I X k : Type u} [AddCommGroup X] [CommRing k]
+  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
+variable (β : Multiset I) (i j : I)
+local notation "δ₁" => (β + ([i] : Multiset I))
+local notation "δ₂" => ((β + ([i] : Multiset I)) + ([j] : Multiset I))
+local notation "J" => contentAppend D Sc cutoff N β [i]
+local notation "K" => contentAppend D Sc cutoff N δ₁ [j]
+variable (τ : List I) (γ : Multiset I)
+  (hγ : ((β + ([i] : Multiset I)) + ([j] : Multiset I)) + (τ : Multiset I) = γ)
+  (hs : (β + ([i] : Multiset I)) + (([j] ++ τ : List I) : Multiset I) = γ)
+  (h : β + (([i,j] ++ τ : List I) : Multiset I) = γ)
+local notation "L" => contentAppendTo D Sc cutoff N δ₂ τ γ hγ
 
 /-- Pair-first and suffix-first content comparisons agree as natural isomorphisms. -/
 theorem contentInductionComp_assoc :
@@ -143,23 +159,6 @@ theorem contentETripleComparison_assoc (l : I) (γ : Multiset I)
           (by rw [add_assoc, add_assoc]; exact h) hs) ≪≫
       contentInductionComp D Sc cutoff N β [i] [j,l] γ hs h :=
   contentInductionComp_assoc D Sc cutoff N β i j [l] γ _ hs h
-
-end OddMath.QuiverHecke.ELVOld
-
-namespace OddMath.QuiverHecke.ELVOld
-section Content
-variable {I X k : Type u} [AddCommGroup X] [CommRing k]
-  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
-variable (β : Multiset I) (i j : I)
-local notation "δ₁" => (β + ([i] : Multiset I))
-local notation "δ₂" => ((β + ([i] : Multiset I)) + ([j] : Multiset I))
-local notation "J" => contentAppend D Sc cutoff N β [i]
-local notation "K" => contentAppend D Sc cutoff N δ₁ [j]
-variable (τ : List I) (γ : Multiset I)
-  (hγ : ((β + ([i] : Multiset I)) + ([j] : Multiset I)) + (τ : Multiset I) = γ)
-  (hs : (β + ([i] : Multiset I)) + (([j] ++ τ : List I) : Multiset I) = γ)
-  (h : β + (([i,j] ++ τ : List I) : Multiset I) = γ)
-local notation "L" => contentAppendTo D Sc cutoff N δ₂ τ γ hγ
 
 end Content
 end OddMath.QuiverHecke.ELVOld

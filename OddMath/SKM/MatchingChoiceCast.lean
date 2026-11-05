@@ -22,14 +22,14 @@ def castLabelsEquiv (F : MatchingBasisChoice a b) (ha : a = a') (hb : b = b') :
   subst a' b'
   rfl
 
-variable {X : Type v} [AddCommGroup X] {D : Datum I X}
-  {k : Type w} [CommRing k] {Sc : Scalars D k} (cs : CScalars Sc) (μ : X)
-
 @[simp] theorem cast_openDots (F : MatchingBasisChoice a b) (ha : a = a') (hb : b = b')
     (t : F.Labels) :
     (F.cast ha hb).openDots (F.castLabelsEquiv ha hb t) = F.openDots t := by
   subst a' b'
   rfl
+
+variable {X : Type v} [AddCommGroup X] {D : Datum I X}
+  {k : Type w} [CommRing k] {Sc : Scalars D k} (cs : CScalars Sc) (μ : X)
 
 theorem cast_expansion_injective_iff (F : MatchingBasisChoice a b)
     (ha : a = a') (hb : b = b') :

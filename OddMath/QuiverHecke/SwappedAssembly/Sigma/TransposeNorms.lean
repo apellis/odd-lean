@@ -25,7 +25,6 @@ variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
   (A : SuperAdjunction (k := k) E' F') (κ : ZMod 2) (H : b ⟶ d)
 
 omit [∀ a b : B, PiSupercategory k (a ⟶ b)] in
-
 /-- Signed reversal preserves nilpotence of a homogeneous endomorphism. -/
 theorem isNilpotent_rightTranspose_of_mem {p : ZMod 2} {y : End E'}
     (hy : y ∈ parity (R := k) _ _ p) (hn : IsNilpotent y) :

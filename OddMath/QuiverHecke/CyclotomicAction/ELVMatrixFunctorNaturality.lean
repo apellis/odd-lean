@@ -140,6 +140,15 @@ def unitMatrixModuleMap (i : I) (m : ℕ)
   FiniteSupermodule.columnsHom (unitMatrixEntry D Sc cutoff i M m)
     (unitMatrixEntry_mem D Sc cutoff i M m)
 
+/-- The literal finite cap matrix as an even module map. -/
+def capMatrixModuleMap (i : I) (m : ℕ)
+    (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :
+    (BalancedInduction.restriction (append D Sc cutoff i) ⋙
+      BalancedInduction.induction (append D Sc cutoff i)).obj M ⟶
+        (capMatrixTargetFunctor D Sc cutoff i m).obj M :=
+  FiniteSupermodule.rowsHom (capMatrixEntry D Sc cutoff i M m)
+    (capMatrixEntry_mem D Sc cutoff i M m)
+
 /-- The whole finite unit matrix is natural in arbitrary input-module maps. -/
 def unitMatrixModuleNatTrans (i : I) (m : ℕ) :
     unitMatrixSourceFunctor D Sc cutoff i m ⟶
@@ -154,5 +163,21 @@ def unitMatrixModuleNatTrans (i : I) (m : ℕ) :
         (unitMatrixEntryNatTrans D Sc cutoff i m none).naturality f
     | some r => simpa [unitMatrixCoordinateMap, unitMatrixEntryNatTrans_app] using
         (unitMatrixEntryNatTrans D Sc cutoff i m (some r)).naturality f
+
+/-- The whole finite cap matrix is natural in arbitrary input-module maps. -/
+def capMatrixModuleNatTrans (i : I) (m : ℕ) :
+    BalancedInduction.restriction (append D Sc cutoff i) ⋙
+      BalancedInduction.induction (append D Sc cutoff i) ⟶
+        capMatrixTargetFunctor D Sc cutoff i m where
+  app := capMatrixModuleMap D Sc cutoff i m
+  naturality M N f := by
+    symm
+    apply FiniteSupermodule.rowsHom_productMap
+    intro a
+    cases a with
+    | none => simpa [capMatrixCoordinateMap, capMatrixEntryNatTrans_app] using
+        ((capMatrixEntryNatTrans D Sc cutoff i m none).naturality f).symm
+    | some r => simpa [capMatrixCoordinateMap, capMatrixEntryNatTrans_app] using
+        ((capMatrixEntryNatTrans D Sc cutoff i m (some r)).naturality f).symm
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

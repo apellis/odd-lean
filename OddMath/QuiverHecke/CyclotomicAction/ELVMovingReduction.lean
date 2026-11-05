@@ -105,5 +105,4 @@ theorem movingDot_pow_mem_bounded_old_span (i : I) (v : List I) (n : ℕ) :
   | add b c _ _ hb hc => simpa only [map_add] using Submodule.add_mem _ hb hc
   | smul r b _ hb => simpa only [map_smul] using Submodule.smul_mem _ r hb
 
-
 end OddMath.QuiverHecke.ELVOld

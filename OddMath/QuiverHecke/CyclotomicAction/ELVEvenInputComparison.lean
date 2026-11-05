@@ -94,7 +94,6 @@ theorem evenSourceInputDot_eq (i : {i : I // D.parity i = 0}) (v t : List I) :
   obtain ⟨a, rfl⟩ := q_surjective D Sc cutoff i.1 v t z
   rw [evenSourceInputDot_q, evenCrossingInputDot_q]
 
-
 /-- The canonical source comparison intertwines the ordinary actual dot.
 There is no parity conjugation or higher-row scalar for an even colour. -/
 theorem evenSourceInputDot_sourceEquiv (i : {i : I // D.parity i = 0})
@@ -128,7 +127,6 @@ theorem evenSourceInputDot_sourceEquiv (i : {i : I // D.parity i = 0})
       (Y := (⟨t⟩ : OldCategory D Sc cutoff)) g = g := by
     rw [i.property, twist_zero]
   rw [hg, evenSourceEquiv_tensor]
-
 
 theorem evenSourceInputDot_iterate_sourceEquiv (i : {i : I // D.parity i = 0})
     (v t : List I) (n : ℕ) (z : (((BalancedInduction.restriction (append D Sc cutoff i.1) ⋙

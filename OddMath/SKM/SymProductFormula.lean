@@ -165,7 +165,6 @@ theorem sum_ofMonomial (η : (E →₀ ℕ) × Finset O) :
   congr 1
   exact Finset.sum_congr rfl fun o ho => by simp [ho]
 
-
 /-- The coefficient sequences of the factors: `[dE e ∣ k]` for an even generator, and
 `1, σ` in degrees `0, dO o` for an odd generator. -/
 def factorCoeff (σ : R) : E ⊕ O → ℕ → R :=
@@ -226,7 +225,6 @@ theorem prod_factorCoeff (σ : R) (S : Finset (E ⊕ O)) (l : (E ⊕ O) →₀ �
   apply Finset.inter_eq_right.mpr
   intro o ho
   exact mem_toRight.mpr (hl (mem_toRight.mp ho))
-
 
 theorem le_ofMonomial (η : (E →₀ ℕ) × Finset O) (g : E ⊕ O)
     (hg : ofMonomial dE dO η g ≠ 0) : Sum.elim dE dO g ≤ ofMonomial dE dO η g := by

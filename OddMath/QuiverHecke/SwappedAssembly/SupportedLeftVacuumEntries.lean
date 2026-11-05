@@ -28,7 +28,6 @@ arXiv:1701.04133v2, bubble generating functions of the super Kac–Moody 2-categ
   `dcupL i (h-1) ++ epsL i h` acts by `(-1)^(cutoff i + 1) δᵢ`, from the shift-`h` moment.
 -/
 
-
 noncomputable section
 set_option quotPrecheck false
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
@@ -178,7 +177,6 @@ theorem vacuumEntry_oddBubble (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
   exact vacuumEntry_of_decode D Sc m cutoff ΛP ΛR L hP hR sy hc _ _ _ _ c
     (vacuumDecodeFaithful_tensorTarget D Sc m cutoff ΛP ΛR L hP hR c)
     (vacuumDecode_tensorTargetCoefficient D Sc m cutoff ΛP ΛR L hP hR c hc' _) hf
-
 
 include sy hc in
 /-- The decoded vacuum entry of the even left bubble of degree `s`. -/

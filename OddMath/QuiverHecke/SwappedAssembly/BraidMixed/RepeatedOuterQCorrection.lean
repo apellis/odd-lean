@@ -143,6 +143,4 @@ theorem qExpr_correction (A x y z : End V) (i j : I)
           b c (supported_outer_even Sc i j b c hs) (supported_inner_even Sc i j b c hs)
           (Sc.s i j b c)
 
-omit [Preadditive C] [Linear k C] in
-
 end OddMath.QuiverHecke.SwappedAssembly.RepeatedOuterQCorrection

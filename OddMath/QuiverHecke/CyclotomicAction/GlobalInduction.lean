@@ -241,11 +241,10 @@ def heightContentCast {m m' : ℕ} {γ γ' : Multiset I} (hm : m = m') (hγ : γ
   subst hγ
   exact Superfunctor.id k _
 
-omit [Fintype I] in
-
 @[simp] theorem heightContentCast_rfl (m : ℕ) (γ : Multiset I) :
     heightContentCast D Sc a ha (rfl : m = m) (rfl : γ = γ) = Superfunctor.id k _ := rfl
 
+omit [Fintype I] in
 /-- Adding one colour raises the height by one. -/
 theorem card_of_add {β δ : Multiset I} (h : {i} + β = δ) : β.card + 1 = δ.card := by
   subst h

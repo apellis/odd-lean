@@ -39,10 +39,10 @@ def homMatrixTwistRingHom : Hn D Sc n →+* Hn D Sc n :=
   { (homMatrixTwistAlgebra D Sc n p : Hn D Sc n →ₙ+* Hn D Sc n) with
     map_one' := homMatrixTwist_one D Sc n p }
 
-variable (N : Type w) [AddCommGroup N] [Module (Hn D Sc n) N]
-
 @[simp] theorem homMatrixTwistRingHom_apply (r : Hn D Sc n) :
     homMatrixTwistRingHom D Sc n p r = homMatrixTwist D Sc n p r := rfl
+
+variable (N : Type w) [AddCommGroup N] [Module (Hn D Sc n) N]
 
 /-- `N` with the action precomposed by the parity twist `tw_p`. -/
 @[nolint unusedArguments]

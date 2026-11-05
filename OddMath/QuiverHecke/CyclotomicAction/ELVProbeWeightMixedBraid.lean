@@ -341,7 +341,6 @@ private theorem mixed_left_last_coordinate
   probeOldWeightCrossPrefix_via_total D Sc' m i i j Λ haf hab hfc hbc hcd
     β δj δi δij ε rfl rfl (mixed_middle_support D i j Λ hab haf hbc hfc β) rfl rfl M
 
-
 private theorem mixed_right_raw_path
     (M : ProbeOldWeightProduct D Sc' m Λ a) :
     (a₀).total M ε ≫ (a₁).total M ε ≫ (a₂).total M ε =

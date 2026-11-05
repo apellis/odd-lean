@@ -148,7 +148,6 @@ theorem blockSym_tau (hab : a + b = n+2) {F : SkewPolynomial (a+b)} (hF : F ∈ 
     rw [map_mul, map_mul, AllRankDivided.divided_mul, hf, hg, ThickDecomposition.skew_zero_mul,
       ThickDecomposition.skew_mul_zero, add_zero]
 
-
 /-! ## `rev(ŝ_β)` is `± s̃_β` placed on the window of `y` -/
 
 /-- Ellis–Qi's `s̃̂_β` is EKL's dual Schur polynomial `ŝ_β` (Definition 4.10). -/
@@ -263,7 +262,6 @@ theorem sum_box_hat {M : Type*} [AddCommMonoid M] (f : (Fin b → ℕ) → M) :
   · exact mem_box.2 ⟨hat_antitone, hat_le⟩
   · exact ThickBubble.hat_hat (mem_box.1 hα).1 (mem_box.1 hα).2
   · exact ThickBubble.hat_hat (mem_box.1 hμ).1 (mem_box.1 hμ).2
-
 
 /-! ## Degenerate ranks `a + b ≤ 1` -/
 

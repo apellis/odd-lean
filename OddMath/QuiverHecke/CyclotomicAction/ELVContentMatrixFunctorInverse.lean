@@ -26,6 +26,16 @@ theorem unitMatrixModuleMap_total (i : I) (m : ℕ)
   ext x
   exact FiniteSupermodule.columnsHom_total_apply _ _ _ _
 
+theorem capMatrixModuleMap_total (i : I) (m : ℕ)
+    (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
+    (t : OldCategory D Sc cutoff) :
+    (capMatrixModuleMap D Sc cutoff i m M).total t =
+      capMatrixComponent D Sc cutoff i M m t := by
+  apply LinearMap.ext
+  intro x
+  funext a
+  exact FiniteSupermodule.rowsHom_total_apply _ _ _ _ _
+
 /-- The restricted forward unit map is the existing literal content isomorphism. -/
 theorem contentUnitMatrixIso_hom_eq (i : I) (ν : List I)
     (hh : 0 ≤ contentCrossingHeight D cutoff i (ν : Multiset I))
@@ -40,6 +50,21 @@ theorem contentUnitMatrixIso_hom_eq (i : I) (ν : List I)
     (unitMatrixModuleMap D Sc cutoff i
       (contentUnitCount D cutoff i (ν : Multiset I)) M).total t.obj
   rw [contentUnitMatrixIso_hom_total, unitMatrixModuleMap_total]
+
+/-- The restricted forward cap map is the existing literal content isomorphism. -/
+theorem contentCapMatrixIso_hom_eq (i : I) (ν : List I)
+    (hh : contentCrossingHeight D cutoff i (ν : Multiset I) ≤ 0)
+    (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :
+    (contentCapMatrixIso D Sc cutoff M i ν hh).hom =
+      (BalancedInduction.restriction (oldContentInclusion D Sc cutoff ν)).map
+        (capMatrixModuleMap D Sc cutoff i
+          (contentCapCount D cutoff i (ν : Multiset I)) M) := by
+  apply FiniteSupermodule.hom_ext_total
+  intro t
+  change (contentCapMatrixIso D Sc cutoff M i ν hh).hom.total t =
+    (capMatrixModuleMap D Sc cutoff i
+      (contentCapCount D cutoff i (ν : Multiset I)) M).total t.obj
+  rw [contentCapMatrixIso_hom_total, capMatrixModuleMap_total]
 
 /-- The output-content restricted unit matrix, natural in the input module. -/
 def contentUnitMatrixFunctorNatIso (i : I) (ν : List I)

@@ -92,7 +92,5 @@ variable {k : Type u} [CommRing k]
   {p : ZMod 2} {α : ∀ v, J.obj v ⟶ K.obj v} {β : ∀ v, T.obj v ⟶ S.obj v}
   (hα : IsSupernatural k p α) (hβ : IsSupernatural k p β)
 
-omit [J.Linear k] [IsSuperfunctor k J] [T.Linear k] [IsSuperfunctor k T] in
-
 end Transform
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

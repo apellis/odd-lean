@@ -72,4 +72,27 @@ def vacuumCupInverseData [Finite I]
   · have hn : ¬StepValid (dn i) true ((0,0) : Sector I) := by simp [StepValid]
     simpa only [sectorFamilyCorner, dite_eq_right hn] using Limits.isZero_zero _
 
+/-- At zero fused height the same chosen principal is the inverse of
+positive `Dx`; this is the principal used in the normalized odd bubble. -/
+def vacuumPrincipalIso [Finite I]
+    (sy : Symmetrizer D) (hc : Sc.Homogeneous) (i : I)
+    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR (0,0))
+    (β : WeightBlocks D ΛR ((P).muM (0,0)))
+    (hh : D.h i ((P).wt (0,0)) = 0) :
+    sectorFamilyCorner (fun a => StepValid (up i) a (0,0))
+      (fun a => (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR (0,0) β).obj
+        ((P).centralSourceFactor i (0,0) Z.obj a)) true ≅
+    sectorFamilyCorner (fun b => StepValid (dn i) b (0,0))
+      (fun b => (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR (0,0) β).obj
+        ((P).centralTargetFactor i (0,0) Z.obj b)) false where
+  hom := (P).centralPaddedSigma (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc)
+    i (0,0) Z.obj (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR (0,0) β) true false
+  inv := (vacuumCupInverseData D Sc m cutoff bound ΛP ΛR hP hR sy hc i Z β hh.le).principal
+  hom_inv_id := (vacuumCupInverseData D Sc m cutoff bound ΛP ΛR hP hR sy hc i Z β hh.le).isInverse.1
+  inv_hom_id := by
+    have h := (vacuumCupInverseData D Sc m cutoff bound ΛP ΛR hP hR sy hc i Z β hh.le).isInverse.2.2.2.2
+    have hn : (-D.h i ((P).wt (0,0))).toNat = 0 := by omega
+    let : IsEmpty (Fin (-D.h i ((P).wt (0,0))).toNat) := by rw [hn]; infer_instance
+    simpa only [Fintype.sum_empty, add_zero] using h
+
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

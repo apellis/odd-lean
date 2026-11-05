@@ -3,9 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.GlobalSupport
-import OddMath.QuiverHecke.CyclotomicAction.InductionFunctorComparison
-import OddMath.QuiverHecke.CyclotomicAction.SuperCrossing
-import StringDiagrams.Super.Functor
+import OddMath.QuiverHecke.CyclotomicAction.CrossingTransformation
 import OddMath.QuiverHecke.CyclotomicAction.Square
 
 /-!
@@ -31,8 +29,6 @@ variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
   (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a)
   (i j : I) (n : ℕ) (β δ : Multiset I)
 
-omit [Fintype I] in
-
 /-- Two inductions land in the sum content, with the displayed strand order. -/
 theorem contentSupported_induction₂ (h : {i} + ({j} + β) = δ)
     (M : CyclotomicSupermodules D Sc a ha n) (hM : ContentSupported D Sc a ha n β M) :
@@ -51,6 +47,7 @@ def globalBlockInduction₂ (h : {i} + ({j} + β) = δ) :
     ⟨cyclotomicSuperInduction D Sc j a ha n ⋙ cyclotomicSuperInduction D Sc i a ha (n + 1)⟩
     (contentSupported_induction₂ D Sc a ha i j n β δ h)
 
+omit [Fintype I] in
 /-- The two orders have the same target content. -/
 theorem swapped_content (h : {i} + ({j} + β) = δ) : {j} + ({i} + β) = δ :=
   (add_left_comm _ _ _).trans h

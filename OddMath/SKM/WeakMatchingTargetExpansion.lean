@@ -26,7 +26,6 @@ def targetExpansion : (F.Labels →₀ SYM D k) →ₗ[k]
       xev cs μ a b (W.layers t) ≫ bubAt D Sc μ b (betaSYM cs μ p) :=
   Finsupp.lsum_single k (W.targetCoefficientMap cs μ) t p
 
-
 theorem expansion_injective_iff_target :
     Function.Injective (W.expansion cs μ) ↔ Function.Injective (W.targetExpansion cs μ) := by
   apply source_target_expansion_injective_iff cs μ

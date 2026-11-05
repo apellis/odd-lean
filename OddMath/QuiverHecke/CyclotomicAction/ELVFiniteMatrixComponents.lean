@@ -174,5 +174,44 @@ theorem capMatrixEntry_none_apply (i : I)
   rw [capMatrixEntry_none_unshifted] at h
   exact h
 
+private def matrixUpperCoordinates (i : I) (v t : List I) :
+    (((BalancedInduction.restriction (append D Sc cutoff i)).obj
+      ((BalancedInduction.induction (append D Sc cutoff i)).obj
+        (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)))).obj
+          (⟨t⟩ : OldCategory D Sc cutoff)) →ₗ[k] Old D Sc cutoff (v ++ [i]) (t ++ [i]) :=
+  (OldInductionRepresentable.upperHomEquiv D Sc cutoff i
+    (⟨v⟩ : OldCategory D Sc cutoff) (⟨t⟩ : OldCategory D Sc cutoff)).toLinearMap
+
+/-- Literal Old quotient coordinates for the actual assembled unit matrix. -/
+def unitMatrixComponentRow (i : I) (v t : List I) (m : ℕ) :
+    unitMatrixSourceSpace D Sc cutoff i
+      (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)) m ⟨t⟩ →ₗ[k]
+        Old D Sc cutoff (v ++ [i]) (t ++ [i]) :=
+  (matrixUpperCoordinates D Sc cutoff i v t).comp
+    (SVec.toLinearMap (unitMatrixComponent D Sc cutoff i
+      (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)) m ⟨t⟩))
+
+/-- The actual odd unit matrix component is an isomorphism on representables. -/
+def unitMatrixComponentIso (p : ZMod 2) (j : {j : I // D.parity j = 1})
+    (v t : List I) (m : ℕ)
+    (hm : endpointQPDegree D cutoff j.1 v = outputSDegree D j.1 v + m) :
+    (unitMatrixSourceSpace D Sc cutoff j.1 (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)) m ⟨t⟩) ≅
+    (((BalancedInduction.restriction (append D Sc cutoff j.1)).obj
+      ((BalancedInduction.induction (append D Sc cutoff j.1)).obj (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)))).obj ⟨t⟩) :=
+  SVec.isoOfLinearEquiv ((unitFamilyComponentEquiv D Sc cutoff p j v t m hm).trans
+      (OldInductionRepresentable.upperHomEquiv D Sc cutoff j.1
+        (⟨v⟩ : OldCategory D Sc cutoff) (⟨t⟩ : OldCategory D Sc cutoff)).symm)
+
+/-- The actual even unit matrix component is an isomorphism on representables. -/
+def evenUnitMatrixComponentIso (p : ZMod 2) (i : {i : I // D.parity i = 0})
+    (v t : List I) (m : ℕ)
+    (hm : endpointQPDegree D cutoff i.1 v = outputSDegree D i.1 v + m) :
+    (unitMatrixSourceSpace D Sc cutoff i.1 (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)) m ⟨t⟩) ≅
+    (((BalancedInduction.restriction (append D Sc cutoff i.1)).obj
+      ((BalancedInduction.induction (append D Sc cutoff i.1)).obj (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)))).obj ⟨t⟩) :=
+  SVec.isoOfLinearEquiv ((evenUnitFamilyComponentEquiv D Sc cutoff p i v t m hm).trans
+      (OldInductionRepresentable.upperHomEquiv D Sc cutoff i.1
+        (⟨v⟩ : OldCategory D Sc cutoff) (⟨t⟩ : OldCategory D Sc cutoff)).symm)
+
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
 

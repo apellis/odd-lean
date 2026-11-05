@@ -67,7 +67,6 @@ theorem closure_decorated_coefficient {l r : List I} {a b : List (Letter I)}
     hm, xev_map_ofL, ← he, xev_map_ofL]
   exact hz
 
-
 /-- Closure proves independence of the literal weak family, then finite
 surjective normalization transfers it to the strict target choice. The two
 extra top-serializer premises are discharged by `atTopSplit` below. -/
@@ -120,7 +119,6 @@ theorem strict_injective_of_top_data {l r : List I} {a b : List (Letter I)}
     have hs : E (Finsupp.single t p) = Finsupp.single (e t) p := by simp [E]
     rw [hs, U.targetExpansion_single]
     exact hz
-
 
 /-- Full upward independence, with exactly the equal-weight restriction in
 BE2's nondegeneracy conjecture and unrestricted abstract-SYM coefficients. -/

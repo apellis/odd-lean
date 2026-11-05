@@ -69,4 +69,151 @@ def coefficientParityHom (a : I → _root_.Polynomial k)
         ((cyclotomicSuperspace D Sc a ha n).sgn ((l.toAdd : ZMod 2) * D.parity i) b)
     rw [← LinearMap.comp_apply, SVec.sgn_comp_sgn, Nat.cast_add, add_mul]
 
+/-- The exponent action is the corresponding total parity sign. -/
+theorem coefficientParityAction_smul (i : I) (a : I → _root_.Polynomial k)
+    (ha : CyclotomicPolynomialParity D a) (n m : ℕ) (c : CyclotomicAlgebra D Sc a n) :
+    letI := coefficientParityAction D Sc i a ha n
+    Multiplicative.ofAdd m • c =
+      coefficientParityHom D Sc a ha n ((m : ZMod 2) * D.parity i) c := rfl
+
+/-- The coefficient right action, valued in the ordinary opposite ring. -/
+def sourceRightCoefficientRing (i : I) (a : I → _root_.Polynomial k)
+    (ha : CyclotomicPolynomialParity D a) (n : ℕ) :
+    CyclotomicAlgebra D Sc a n →+* (Module.End k (qSourceSpace D Sc i a ha n))ᵐᵒᵖ where
+  toFun c := MulOpposite.op (sourceRightCoefficientLinear D Sc i a ha n c)
+  map_zero' := by
+    apply MulOpposite.unop_injective
+    ext z
+    exact LinearMap.congr_fun (sourceRightCoefficient_zero D Sc i a n) z
+  map_add' b c := by
+    apply MulOpposite.unop_injective
+    ext z
+    exact LinearMap.congr_fun (sourceRightCoefficient_add D Sc i a n b c) z
+  map_one' := by
+    apply MulOpposite.unop_injective
+    ext z
+    exact LinearMap.congr_fun (sourceRightCoefficient_one D Sc i a n) z
+  map_mul' b c := by
+    apply MulOpposite.unop_injective
+    ext z
+    exact LinearMap.congr_fun (sourceRightCoefficient_mul D Sc i a n b c) z
+
+/-- The single-dot skew relation, with coefficient parity twisting. -/
+theorem sourceRightCoefficientRing_twist (i : I) (a : I → _root_.Polynomial k)
+    (ha : CyclotomicPolynomialParity D a) (n : ℕ) (c : CyclotomicAlgebra D Sc a n) :
+    sourceRightCoefficientRing D Sc i a ha n (coefficientParityHom D Sc a ha n (D.parity i) c) *
+        MulOpposite.op (sourceRightDotLinear D Sc i a ha n) =
+      MulOpposite.op (sourceRightDotLinear D Sc i a ha n) * sourceRightCoefficientRing D Sc i a ha n c := by
+  induction c using SuperBimodule.alg_induction_on (cyclotomicParity D Sc a ha n) with
+  | zero => simp
+  | add b c hb hc => simp only [map_add, add_mul, mul_add, hb, hc]
+  | hom q c hc =>
+    have hs : coefficientParityHom D Sc a ha n (D.parity i) c =
+        sign k (D.parity i * q) • c := by
+      exact (SVec.sgn_apply_of_mem (D.parity i) hc).trans (by rw [mul_comm])
+    have h := sourceRightDot_coefficient D Sc i a ha n q c hc
+    rcases parity_eq_zero_or_one (D.parity i * q) with he | he
+    · simp only [he, sign_zero, one_smul] at hs h
+      rw [hs]
+      exact MulOpposite.unop_injective (by exact h)
+    · simp only [he, sign_one, neg_one_smul] at hs h
+      rw [hs, map_neg]
+      apply MulOpposite.unop_injective
+      change sourceRightDotLinear D Sc i a ha n * (-sourceRightCoefficientLinear D Sc i a ha n c) = _
+      rw [mul_neg, Module.End.mul_eq_comp, h, neg_neg]
+      rfl
+
+/-- The coefficient right action, valued in the ordinary opposite ring. -/
+def targetRightCoefficientRing (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
+    (ha : CyclotomicPolynomialParity D a) (n : ℕ) :
+    CyclotomicAlgebra D Sc a n →+* (Module.End k (qTargetSpace D Sc i β a ha n))ᵐᵒᵖ where
+  toFun c := MulOpposite.op (targetRightCoefficientLinear D Sc i β a ha n c)
+  map_zero' := by
+    apply MulOpposite.unop_injective
+    ext z
+    exact LinearMap.congr_fun (targetRightCoefficient_zero D Sc i β a ha n) z
+  map_add' b c := by
+    apply MulOpposite.unop_injective
+    ext z
+    exact LinearMap.congr_fun (targetRightCoefficient_add D Sc i β a ha n b c) z
+  map_one' := by
+    apply MulOpposite.unop_injective
+    ext z
+    exact LinearMap.congr_fun (targetRightCoefficient_one D Sc i β a ha n) z
+  map_mul' b c := by
+    apply MulOpposite.unop_injective
+    ext z
+    exact LinearMap.congr_fun (targetRightCoefficient_mul D Sc i β a ha n b c) z
+
+/-- The single-dot skew relation, with coefficient parity twisting. -/
+theorem targetRightCoefficientRing_twist (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
+    (ha : CyclotomicPolynomialParity D a) (n : ℕ) (c : CyclotomicAlgebra D Sc a n) :
+    targetRightCoefficientRing D Sc i β a ha n (coefficientParityHom D Sc a ha n (D.parity i) c) *
+        MulOpposite.op (targetRightDotLinear D Sc i β a ha n) =
+      MulOpposite.op (targetRightDotLinear D Sc i β a ha n) * targetRightCoefficientRing D Sc i β a ha n c := by
+  induction c using SuperBimodule.alg_induction_on (cyclotomicParity D Sc a ha n) with
+  | zero => simp
+  | add b c hb hc => simp only [map_add, add_mul, mul_add, hb, hc]
+  | hom q c hc =>
+    have hs : coefficientParityHom D Sc a ha n (D.parity i) c =
+        sign k (D.parity i * q) • c := by
+      exact (SVec.sgn_apply_of_mem (D.parity i) hc).trans (by rw [mul_comm])
+    have h := targetRightDot_coefficient D Sc i β a ha n q c hc
+    rcases parity_eq_zero_or_one (D.parity i * q) with he | he
+    · simp only [he, sign_zero, one_smul] at hs h
+      rw [hs]
+      exact MulOpposite.unop_injective (by exact h)
+    · simp only [he, sign_one, neg_one_smul] at hs h
+      rw [hs, map_neg]
+      apply MulOpposite.unop_injective
+      change targetRightDotLinear D Sc i β a ha n * (-targetRightCoefficientLinear D Sc i β a ha n c) = _
+      rw [mul_neg, Module.End.mul_eq_comp, h, neg_neg]
+      rfl
+
+private theorem skew_power_relation {A B : Type*} [Ring A] [Ring B]
+    [MulSemiringAction (Multiplicative ℕ) A] (f : A →+* B) (T : B)
+    (h : ∀ c, f (Multiplicative.ofAdd 1 • c) * T = T * f c) (m : ℕ) (c : A) :
+    f (Multiplicative.ofAdd m • c) * T ^ m = T ^ m * f c := by
+  induction m generalizing c with
+  | zero => simp
+  | succ m ih =>
+    have hm : Multiplicative.ofAdd (m + 1) =
+        Multiplicative.ofAdd m * Multiplicative.ofAdd 1 := rfl
+    rw [hm, mul_smul, pow_succ, ← mul_assoc, ih, mul_assoc, h, ← mul_assoc]
+
+private def dotPowers {B : Type*} [Monoid B] (T : B) : Multiplicative ℕ →* B where
+  toFun m := T ^ m.toAdd
+  map_one' := pow_zero T
+  map_mul' m l := pow_add T m.toAdd l.toAdd
+
+/-- Multiplication-preserving right representation of the parity-skew polynomial ring. -/
+def sourceRightSkew (i : I) (a : I → _root_.Polynomial k)
+    (ha : CyclotomicPolynomialParity D a) (n : ℕ) :
+    letI := coefficientParityAction D Sc i a ha n
+    _root_.SkewPolynomial (CyclotomicAlgebra D Sc a n) →+*
+      (Module.End k (qSourceSpace D Sc i a ha n))ᵐᵒᵖ := by
+  let := coefficientParityAction D Sc i a ha n
+  refine SkewMonoidAlgebra.liftNCRingHom (sourceRightCoefficientRing D Sc i a ha n)
+    (dotPowers (MulOpposite.op (sourceRightDotLinear D Sc i a ha n))) ?_
+  intro c m
+  apply skew_power_relation
+  intro b
+  simpa only [coefficientParityAction_smul, Nat.cast_one, one_mul] using
+    sourceRightCoefficientRing_twist D Sc i a ha n b
+
+/-- Multiplication-preserving right representation of the parity-skew polynomial ring. -/
+def targetRightSkew (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
+    (ha : CyclotomicPolynomialParity D a) (n : ℕ) :
+    letI := coefficientParityAction D Sc i a ha n
+    _root_.SkewPolynomial (CyclotomicAlgebra D Sc a n) →+*
+      (Module.End k (qTargetSpace D Sc i β a ha n))ᵐᵒᵖ := by
+  let := coefficientParityAction D Sc i a ha n
+  refine SkewMonoidAlgebra.liftNCRingHom (targetRightCoefficientRing D Sc i β a ha n)
+    (dotPowers (MulOpposite.op (targetRightDotLinear D Sc i β a ha n))) ?_
+  intro c m
+  apply skew_power_relation
+  intro b
+  simpa only [coefficientParityAction_smul, Nat.cast_one, one_mul] using
+    targetRightCoefficientRing_twist D Sc i β a ha n b
+
 end OddMath.QuiverHecke

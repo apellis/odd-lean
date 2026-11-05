@@ -171,22 +171,6 @@ local notation "Er" => heightTwoColourRightMul D Sc j i j a ha n
 local notation "El" => heightTwoColourRightMul D Sc i j j a ha n
   (twoColourCornerMulData_appendDot D Sc i j a ha n)
 
-end CornerSlides
-
-/-! ### Transport along the comparison -/
-
-section Transport
-variable (i j : I) (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
-
-local notation "T" => heightCompositionCorner D Sc i j a ha n
-local notation "Pc" => heightInductionCorner D Sc i a ha (n + 1)
-local notation "Qc" => heightInductionCorner D Sc j a ha n
-local notation "iso" => heightInductionCompositionIso D Sc i j a ha n
-local notation "Dr" => heightTwoColourRightMul D Sc i j i a ha n
-  (twoColourCornerMulData_lastDot D Sc i j a ha n)
-local notation "Dl" => heightTwoColourRightMul D Sc i j j a ha n
-  (twoColourCornerMulData_appendDot D Sc i j a ha n)
-
 /-- **Left slide on the corners**, distinct colours: `y_i ψ = ε ψ φⱼ(y_i)` in diagrammatic
 order. -/
 theorem heightCompositionCorner_slide_left_ne : Dr ≫ Cr = ε • (Cr ≫ Dl) := by
@@ -240,6 +224,22 @@ theorem heightCompositionCorner_slide_right_ne : Cr ≫ Er = ε • (El ≫ Cr) 
   generalize D.parity i = e
   generalize D.parity j = f
   revert p e f; decide
+
+end CornerSlides
+
+/-! ### Transport along the comparison -/
+
+section Transport
+variable (i j : I) (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
+
+local notation "T" => heightCompositionCorner D Sc i j a ha n
+local notation "Pc" => heightInductionCorner D Sc i a ha (n + 1)
+local notation "Qc" => heightInductionCorner D Sc j a ha n
+local notation "iso" => heightInductionCompositionIso D Sc i j a ha n
+local notation "Dr" => heightTwoColourRightMul D Sc i j i a ha n
+  (twoColourCornerMulData_lastDot D Sc i j a ha n)
+local notation "Dl" => heightTwoColourRightMul D Sc i j j a ha n
+  (twoColourCornerMulData_appendDot D Sc i j a ha n)
 
 /-- The outer dot becomes `y_i` on the two-colour corner. -/
 theorem heightTwoColourComposition_dot_outer :
@@ -347,6 +347,19 @@ theorem heightTwoColourComparisonInv_conj (M : HeightModules D Sc a ha n)
     _ = whiskerRight A M ≫ heightTwoColourComparisonInv D Sc i j a ha n M := by
         rw [heightTwoColourComparisonInv_hom, Category.id_comp]
 
+end Transport
+
+/-! ### The slides on the induction functors -/
+
+section InductionSlides
+variable {i j : I} (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
+
+local notation "Hij" => heightTwoColourComparisonHom D Sc i j a ha n
+local notation "Hji" => heightTwoColourComparisonHom D Sc j i a ha n
+local notation "Iji" => heightTwoColourComparisonInv D Sc j i a ha n
+local notation "Tij" => heightCompositionCorner D Sc i j a ha n
+local notation "Tji" => heightCompositionCorner D Sc j i a ha n
+
 private theorem twoColour_comparison_slide_left (M : HeightModules D Sc a ha n)
     {X₂ X₁ : _} {A : Tij ⟶ Tij} {B : Tji ⟶ Tji} {C : Tij ⟶ Tji}
     (c : ℤ) (h₂ : X₂ ≫ Hij M = Hij M ≫ whiskerRight A M)
@@ -417,19 +430,6 @@ theorem heightInduction_slide_right_ne (hij : i ≠ j) (M : HeightModules D Sc a
     (heightTwoColourComparison_dot_inner_app D Sc i j a ha n M)
     (heightTwoColourComparison_dot_outer_app D Sc j i a ha n M)
     (heightCompositionCorner_slide_right_ne D Sc hij a ha n)
-
-end Transport
-
-/-! ### The slides on the induction functors -/
-
-section InductionSlides
-variable {i j : I} (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
-
-local notation "Hij" => heightTwoColourComparisonHom D Sc i j a ha n
-local notation "Hji" => heightTwoColourComparisonHom D Sc j i a ha n
-local notation "Iji" => heightTwoColourComparisonInv D Sc j i a ha n
-local notation "Tij" => heightCompositionCorner D Sc i j a ha n
-local notation "Tji" => heightCompositionCorner D Sc j i a ha n
 
 end InductionSlides
 

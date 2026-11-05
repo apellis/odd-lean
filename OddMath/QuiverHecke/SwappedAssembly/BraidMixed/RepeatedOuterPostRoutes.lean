@@ -323,6 +323,5 @@ lemma braidRight_coefficient (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
 
 end Transport
 
-
 end RepeatedOuterPost
 end OddMath.QuiverHecke.SwappedAssembly

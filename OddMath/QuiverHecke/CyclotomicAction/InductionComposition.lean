@@ -312,4 +312,9 @@ theorem inductionCompositionIso_hom_mem :
     (inductionCompositionIso D Sc i j a ha n).hom ∈ Supercategory.parity (R := k) _ _ 0 :=
   mem_parity_iff.mpr (compositionCornerLinear_mem D Sc i j a ha n)
 
+/-- The inverse comparison is an even map. -/
+theorem inductionCompositionIso_inv_mem :
+    (inductionCompositionIso D Sc i j a ha n).inv ∈ Supercategory.parity (R := k) _ _ 0 :=
+  mem_parity_iff.mpr (compositionCornerInverseLinear_mem D Sc i j a ha n)
+
 end OddMath.QuiverHecke

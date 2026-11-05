@@ -66,6 +66,18 @@ theorem oldTarget_eq_of_tailKey_eq (x z : PrependIdx i v w)
     simpa [q] using hc
   exact List.cons.inj hh |>.2
 
+/-- A representative for the same tail is obtained by replacing only its old index. -/
+theorem eq_replaceOld_of_tailKey_eq (x z : PrependIdx i v w)
+    (h : x.tailKey = z.tailKey) :
+    z = x.replaceOld ((x.oldTarget_eq_of_tailKey_eq z h).symm ▸ z.old) := by
+  apply Subtype.ext
+  have hn := congrArg Prod.fst h
+  have hd := congrArg Prod.snd h
+  have hv {t t' : List I} (e : t = t') (b : NFIdx v t) :
+      (e ▸ b : NFIdx v t').val = b.val := by cases e; rfl
+  simp only [replaceOld, hv]
+  exact Prod.ext hn.symm (Prod.ext rfl (Prod.ext rfl hd.symm))
+
 /-- Moving tails that occur in the existing prepend basis, forgetting the old index. -/
 def Tail (i : I) (v w : List I) : Type :=
   ↥(Set.range (tailKey (i := i) (v := v) (w := w)))
@@ -78,6 +90,27 @@ def representative (q : Tail i v w) : PrependIdx i v w := q.property.choose
     q.representative.tailKey = q.val := q.property.choose_spec
 end Tail
 
+/-- Regroup existing prepend indices by their moving tail and old normal form. -/
+def regroupEquiv : PrependIdx i v w ≃
+    Σ q : Tail i v w, NFIdx v q.representative.oldTarget where
+  toFun x := ⟨⟨x.tailKey, ⟨x, rfl⟩⟩,
+    (oldTarget_eq_of_tailKey_eq
+      (Tail.representative ⟨x.tailKey, ⟨x, rfl⟩⟩) x
+      (Tail.representative_tailKey ⟨x.tailKey, ⟨x, rfl⟩⟩)).symm ▸ x.old⟩
+  invFun x := x.1.representative.replaceOld x.2
+  left_inv x := (eq_replaceOld_of_tailKey_eq _ x (Tail.representative_tailKey _)).symm
+  right_inv q := by
+    rcases q with ⟨q, y⟩
+    apply Sigma.ext
+    · apply Subtype.ext
+      exact q.representative_tailKey
+    · have ht (x : PrependIdx i v w) (y : NFIdx v x.oldTarget) :
+          HEq ((x.replaceOld y).old) y := by
+        apply (Subtype.heq_iff_coe_eq (by
+          intro b
+          rw [x.replaceOld_target y])).mpr
+        rfl
+      exact (eqRec_heq _ _).trans (ht _ _)
 end PrependIdx
 namespace ELVOld
 

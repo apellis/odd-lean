@@ -174,10 +174,4 @@ theorem appendOutputPolynomial_precomp (i : I) (v s t : List I)
     simp only [Finsupp.lsum_single, LinearMap.comp_apply, Linear.leftComp_apply,
       Finsupp.lsingle_apply, appendOutputPolynomial_single, rightContext_comp, Category.assoc]
 
-open Categorification.TypeA in
-
-open Categorification.TypeA in
-
-open Categorification.TypeA in
-
 end OddMath.QuiverHecke.ELVOld

@@ -122,7 +122,6 @@ theorem sourceInputDot_q (j : {j : I // D.parity j = 1}) (v t : List I)
         ((ideal D Sc cutoff v (s.word ++ [j.1])).mkQ (twist k (D.parity j.1) r))
   simp [j.property, SKM.zsign]
 
-
 /-- Equality with the specified input contraction, proved on all balanced classes. -/
 theorem sourceInputContraction_eq (j : {j : I // D.parity j = 1}) (v t : List I) :
     sourceInputContraction D Sc cutoff j v t =

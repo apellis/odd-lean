@@ -29,7 +29,6 @@ variable (P : ProbeReservoir k B D Sc) (ν : X) (i j : I) (s : Sector I)
     nextSector (true, j) true (nextSector (true, i) true (nextSector (true, i) false s)))
   (Z : P.H (nextSector (true, j) true (nextSector (true, i) true (nextSector (true, i) false s))))
 
-
 /-- The source diag entry in the common grid. -/
 theorem adjacentReverse_source_diag_heq :
     HEq (crossEntry (P.swappedGens c L) ν [up j] i i []

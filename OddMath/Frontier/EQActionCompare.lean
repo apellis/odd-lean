@@ -391,7 +391,6 @@ theorem zabT_constraint
 
 end Constraint
 
-
 /-! ### Witnesses for `a = b = 2` -/
 
 section Witness
@@ -670,7 +669,6 @@ theorem no_indEquiv_swap_yRev :
   norm_num at hk
 
 end NoGo
-
 
 /-- The grade involution `x_i ↦ -x_i` does not commute with `d` (`d x = x²`): sign twists of the variables
 do not give dg ring endomorphisms. -/

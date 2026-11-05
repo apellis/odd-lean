@@ -271,6 +271,7 @@ theorem tensorVacuum_rightward_even_extreme_moments (hi : D.parity i = 0)
   tensorVacuumNegativeCap_even_moments D (parameterTwist D Sc) m cutoff L sy
     (parameterTwist_homogeneous D Sc hc) i hi hP (by omega) hPN j B hB l z
 
+include sy hc in
 /-- **Even moments of the rightward vacuum bubble entries.** For an even colour with
 `0 < M < N`, leftward data satisfying the negative inverse equations at the tensor
 vacuum give an entrywise inverse `(j, B)` of the native cup window of the tensor
@@ -318,7 +319,5 @@ theorem tensorVacuum_rightward_even_moments (hi : D.parity i = 0)
     ΛP ΛR hcP hcR sy hc i hi hP Z hZ lc dc HN cc
   exact ⟨c, j, B, hB, hceq, hcup, fun l z =>
     tensorVacuum_rightward_even_extreme_moments D Sc m cutoff L sy hc i hi hP hPN j B hB l z⟩
-
-include sy hc in
 
 end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum

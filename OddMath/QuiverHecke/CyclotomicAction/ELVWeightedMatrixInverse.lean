@@ -47,6 +47,13 @@ private theorem equiv_hom_apply {k V W : Type u} [CommRing k]
     (e : V ≃ₗ[k] W) (f : V →ₗ[k] W) (h : e.toLinearMap = f) (x : V) :
     e x = f x := LinearMap.congr_fun h x
 
+private def superspaceIsoLinearEquiv {k : Type u} [CommRing k] {V W : SVec k}
+    (e : V ≅ W) : V ≃ₗ[k] W where
+  toLinearMap := e.hom
+  invFun := e.inv
+  left_inv x := congrArg (fun f : V ⟶ V => f x) e.hom_inv_id
+  right_inv x := congrArg (fun f : W ⟶ W => f x) e.inv_hom_id
+
 section FiniteCharts
 variable {k : Type u} [CommRing k] {ι : Type} [Fintype ι]
   (V V' : ι → SVec k) (W W' : SVec k)

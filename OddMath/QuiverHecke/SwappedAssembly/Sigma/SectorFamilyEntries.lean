@@ -23,10 +23,6 @@ variable {C : Type*} [Category C] [Preadditive C] [Limits.HasZeroObject C]
   (v : ∀ a, V a ≅ X (e.symm (.inl a))) (w : ∀ n, O ≅ X (e.symm (.inr n)))
 
 omit [Preadditive C] in
-
-omit [Preadditive C] in
-
-omit [Preadditive C] in
 /-- Normalize the enumeration at an arbitrary classified index before
 substituting a factor object. -/
 theorem sectorFamilyComponentIso_at (z : Sum {a : Bool // p a} ι) :

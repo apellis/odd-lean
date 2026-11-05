@@ -27,6 +27,19 @@ structure CupInverseData {X Y O : C} {n : ℕ} (s : X ⟶ Y) (u : Fin n → (O �
   window : Fin n → (Y ⟶ O)
   isInverse : IsCupInverse s u principal window
 
+/-- Negating the principal entries retains the specified cap columns. -/
+def CapInverseData.negPrincipal {X Y O : C} {n : ℕ} {s : X ⟶ Y}
+    {v : Fin n → (X ⟶ O)} (J : CapInverseData s v) : CapInverseData (-s) v where
+  principal := -J.principal
+  window := J.window
+  isInverse := J.isInverse.neg_principal
+
+/-- Negating the principal entries retains the specified unit rows. -/
+def CupInverseData.negPrincipal {X Y O : C} {n : ℕ} {s : X ⟶ Y}
+    {u : Fin n → (O ⟶ Y)} (J : CupInverseData s u) : CupInverseData (-s) u where
+  principal := -J.principal
+  window := J.window
+  isInverse := J.isInverse.neg_principal
 end ProbeWindow
 
 namespace ProbeReservoir

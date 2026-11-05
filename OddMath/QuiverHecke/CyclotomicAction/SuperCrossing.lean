@@ -98,4 +98,8 @@ theorem compositionCrossingLinear_isHom :
 def compositionSuperCrossing : P ⟶ Q :=
   ⟨compositionCrossingLinear D Sc i j a ha n, compositionCrossingLinear_isHom D Sc i j a ha n⟩
 
+theorem compositionSuperCrossing_parity :
+    compositionSuperCrossing D Sc i j a ha n ∈ parity (R := k) P Q d :=
+  SuperBimodule.mem_parity_iff.2 (compositionCrossingLinear_parity D Sc i j a ha n)
+
 end OddMath.QuiverHecke

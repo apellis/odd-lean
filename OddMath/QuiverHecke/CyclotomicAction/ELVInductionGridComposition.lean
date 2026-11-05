@@ -23,8 +23,6 @@ variable {C₀ C₁ C₂ D₀ D₁ D₂ : Type u}
   (T : D₀ ⥤ D₁) (S : D₁ ⥤ D₂)
   (hJ : J ⋙ Q₁ = Q₀ ⋙ T) (hK : K ⋙ Q₂ = Q₁ ⋙ S)
 
-include hJ hK in
-
 end Squares
 
 section Coefficients

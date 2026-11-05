@@ -3,10 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightMixedSlides
-import OddMath.QuiverHecke.CyclotomicAction.Square
-import OddMath.QuiverHecke.CyclotomicAction.InductionFunctorComparison
-import OddMath.QuiverHecke.CyclotomicAction.SuperCrossing
-import StringDiagrams.Super.Functor
+import OddMath.QuiverHecke.CyclotomicAction.MixedComparison
 import OddMath.QuiverHecke.CyclotomicAction.AppendCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.MoveHomSnoc
 
@@ -43,24 +40,16 @@ def pairQuadPoly {R : Type*} [Ring R] [Algebra k R] (i j : I) (A B : R) : R :=
       Sc.s i j p q • (A ^ p * B ^ q) +
       ((Sc.t i j : k) • A ^ D.dn i j + (Sc.t j i : k) • B ^ D.dn j i)
 
-variable [Fintype I]
-
-section PairDiag
-variable (i j : I) (n : ℕ)
-
-variable {i j n}
-
-variable (i j n)
-
-omit [Fintype I] in
-
-omit [Fintype I] in
-
 theorem map_pairQuadPoly {R S : Type*} [Ring R] [Algebra k R] [Ring S] [Algebra k S]
     (f : R →ₐ[k] S) (i j : I) (A B : R) :
     f (pairQuadPoly D Sc i j A B) = pairQuadPoly D Sc i j (f A) (f B) := by
   unfold pairQuadPoly
   split_ifs <;> simp [map_add, map_sum, map_smul, map_mul, map_pow]
+
+variable [Fintype I]
+
+section PairDiag
+variable (i j : I) (n : ℕ)
 
 /-- Diagonal matrices supported on the words `w j i`. -/
 def pairDiag : (∀ w : Word I n, End (wordObj D Sc (appendWord i (appendWord j w)))) →ₗ[k]
@@ -78,6 +67,8 @@ def pairDiag : (∀ w : Word I n, End (wordObj D Sc (appendWord i (appendWord j 
 theorem pairDiag_apply (F : ∀ w : Word I n, End (wordObj D Sc (appendWord i (appendWord j w)))) :
     pairDiag D Sc i j n F = ∑ w : Word I n, FiniteHomMatrix.single
       (appendWord i (appendWord j w)) (appendWord i (appendWord j w)) (F w) := rfl
+
+variable {i j n}
 
 omit [Fintype I] in
 private theorem pairWord_injective {w v : Word I n}
@@ -112,6 +103,8 @@ theorem pairDiag_mul_affineLastDot
     exact hb (appendWord_injective i (n + 1) h).symm
   · simp
 
+variable (i j n)
+
 /-- The two-colour idempotent `φᵢφⱼ(1)` is the diagonal identity on the words `w j i`. -/
 theorem appendAlgebra_appendAlgebra_one_eq_pairDiag :
     appendAlgebra D Sc i (n + 1) (appendAlgebra D Sc j n 1) = pairDiag D Sc i j n 1 := by
@@ -134,6 +127,7 @@ theorem appendAlgebra_affineLastDot_eq_pairDiag :
   rw [affineLastDot, map_sum, pairDiag_apply]
   exact Finset.sum_congr rfl fun w _ => appendLinear_single D Sc i _ _ _
 
+omit [Fintype I] in
 /-- The appended dot is the positioned dot on the strand of colour `j`. -/
 theorem appendHom_inductionLastDot_eq_dotE (w : Word I n) :
     appendHom D Sc i _ _ (inductionLastDot D Sc j w) =
@@ -142,6 +136,7 @@ theorem appendHom_inductionLastDot_eq_dotE (w : Word I n) :
   rw [inductionLastDot_eq_dotE]
   exact dotE_whiskerRight D Sc _ [i] _ (by simp)
 
+omit [Fintype I] in
 /-- The new last dot is the positioned dot on the strand of colour `i`. -/
 theorem inductionLastDot_appendWord_eq_dotE (w : Word I n) :
     inductionLastDot D Sc i (appendWord j w) =
@@ -184,6 +179,8 @@ private theorem pairDiag_monomial (p q : ℕ) :
     funext w
     rw [inductionLastDot_appendWord_eq_dotE, pow_succ, mul_assoc]
 
+variable {i j}
+
 /-- **The mixed crossing square in the affine algebra** as a polynomial in the two dots:
 `c_{ij} c_{ji} = φᵢφⱼ(1) Q_{ji}(φᵢ(y_j), y_i)`. -/
 theorem affineLastCrossing_mul_mixed (hij : i ≠ j) :
@@ -212,6 +209,12 @@ theorem affineLastCrossing_mul_mixed (hij : i ≠ j) :
     congr 1
     funext w
     simp only [Finset.sum_apply, Pi.add_apply, Pi.smul_apply]
+
+end PairDiag
+
+section Height
+open CyclotomicAction
+variable (a : I → _root_.Polynomial k) {i j : I}
 
 /-- **The mixed crossing square at every height** of the extended tower:
 `c_{ij} c_{ji} = φᵢφⱼ(1) Q_{ji}(φᵢ(y_j), y_i)`. -/
@@ -245,14 +248,6 @@ theorem heightLastCrossing_mul_mixed (hij : i ≠ j) (n : ℕ) :
           (cyclotomicMk D Sc a (n + 1 + 1) (affineLastDot D Sc i (n + 1 + 1)))
     rw [← map_pairQuadPoly, ← map_mul, ← map_mul,
       affineLastCrossing_mul_mixed D Sc (n + 1) hij]
-
-variable {i j}
-
-end PairDiag
-
-section Height
-open CyclotomicAction
-variable (a : I → _root_.Polynomial k) {i j : I}
 
 end Height
 

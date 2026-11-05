@@ -46,8 +46,6 @@ private theorem append_weight (ν : List I) (i : I) (x : X)
     x + D.α i = PowerWordWeight.wordWeight D Λ (ν ++ [i]) :=
   (congrArg (fun y => y + D.α i) hx).trans (PowerWordWeight.wordWeight_append D Λ ν i)
 
-omit [Fintype I] in
-
 /-- Only the existing whole append comparisons are composed. -/
 def contextIso (ν : List I) (x : X) (hx : x = PowerWordWeight.wordWeight D Λ ν) :
     (η : List I) → (contextFunctor D Sc cutoff L Λ x η).obj (PowerWordWeight.wordFamily D Sc cutoff L Λ x ν) ≅

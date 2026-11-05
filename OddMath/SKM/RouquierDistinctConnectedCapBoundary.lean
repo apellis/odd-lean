@@ -117,7 +117,6 @@ theorem distinctMixedBraidLeft_cap_of_zero (hh : D.h i b = 0) :
   · exact T.distinctMixedBraidLeft_cap_of_zero_connected M hne
       hab haf hbc hbe hfc hcd hed hh hd
 
-
 /-- The inverse-crossing side of the same principal test reduces to
 the unscaled right counit at height zero. -/
 theorem distinctCapRight_principal_of_zero (hh : D.h i b = 0) :

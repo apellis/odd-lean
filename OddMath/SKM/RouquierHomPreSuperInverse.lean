@@ -71,8 +71,6 @@ theorem homContentPreMate_supernatural :
     (homContentSuperAdjunction T W i muM h₂)
     (homContentCrossing T W i muM h h₂)).isSupernatural (D.parity i)
 
-omit [∀ a b : B, PiSupercategory k (a ⟶ b)] in
-
 /-- The specified mate as a homogeneous transformation on the full Hom space. -/
 def homContentPreSuperMate :
     homContentSuperF T W i muM h ≫ homContentSuperE T W i muM h ⟶

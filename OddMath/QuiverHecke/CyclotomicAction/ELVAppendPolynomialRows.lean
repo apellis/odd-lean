@@ -27,6 +27,21 @@ abbrev AppendPolynomialIndex (i : I) (ν : List I) (d : ℕ) := AppendTailIndex 
 abbrev AppendPolynomialCoefficients (i : I) (ν : List I) (d : ℕ) :=
   ⨁ q : AppendPolynomialIndex i ν d × ℕ, OldContentRow D Sc cutoff ν q.1.1.1.val
 
+/-- Regroup the coefficient carrier as a finite family of genuine row polynomials
+`ℕ →₀ OldContentRow`. This is the coefficient form of the finite row decomposition. -/
+def appendPolynomialCoefficientEquiv (i : I) (ν : List I) (d : ℕ) :
+    AppendPolynomialCoefficients D Sc cutoff i ν d ≃ₗ[(ContentRing D Sc cutoff ν)ᵐᵒᵖ]
+      (∀ q : AppendPolynomialIndex i ν d, ℕ →₀ OldContentRow D Sc cutoff ν q.1.1.val) :=
+  (DirectSum.lequivCongrLeft (ContentRing D Sc cutoff ν)ᵐᵒᵖ
+    (Equiv.sigmaEquivProd (AppendPolynomialIndex i ν d) ℕ).symm).trans
+    ((DirectSum.sigmaLcurryEquiv (ContentRing D Sc cutoff ν)ᵐᵒᵖ
+      (δ := fun (q : AppendPolynomialIndex i ν d) (_ : ℕ) =>
+        OldContentRow D Sc cutoff ν q.1.1.val)).trans
+      ((DirectSum.linearEquivFunOnFintype (ContentRing D Sc cutoff ν)ᵐᵒᵖ _ _).trans
+        (LinearEquiv.piCongrRight fun q : AppendPolynomialIndex i ν d =>
+          (finsuppLequivDFinsupp (ContentRing D Sc cutoff ν)ᵐᵒᵖ
+            (M := OldContentRow D Sc cutoff ν q.1.1.val)).symm)))
+
 /-- Split `m = d * q + δ`, preserving the entire old row. -/
 def appendRowsSplit (i : I) (ν : List I) (d : ℕ) (hd : 0 < d) :
     AppendRows D Sc cutoff i ν →ₗ[(ContentRing D Sc cutoff ν)ᵐᵒᵖ]

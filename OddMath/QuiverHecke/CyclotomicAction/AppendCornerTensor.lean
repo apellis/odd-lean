@@ -90,6 +90,10 @@ theorem appendFamilyTensor_fixed (hl : ∀ x, appendAlgebra D Sc i (n + 1) 1 * �
     congr 1
     exact Subtype.ext (hl _)
 
+end Family
+
+/-! ## The two summand families -/
+
 theorem appendLeftSum_mul_appendOne
     (F : (Fin (n + 1) × ℕ) →₀ Hn D Sc (n + 1)) :
     appendLeftSum D Sc i n F * appendAlgebra D Sc i (n + 1) 1 = appendLeftSum D Sc i n F :=
@@ -139,6 +143,8 @@ def appendTensorFixed : AddSubgroup T where
   neg_mem' {t} ht := by
     simp only [Set.mem_ofPred_eq] at *
     rw [smul_neg, ht]
+
+/-! ## Coordinates of a corner element -/
 
 theorem appendOne_mul_corner_mem (z : C) :
     appendAlgebra D Sc i (n + 1) 1 * z.1 ∈ appendTwoSidedCorner D Sc i n :=
@@ -206,6 +212,8 @@ theorem appendCornerCoords_polySum (m : ℕ) :
   change appendAlgebra D Sc i (n + 1) 1 * appendPolySum D Sc i n (Finsupp.single m 1) = _
   rw [(appendPolySum_mem_appendTwoSidedCorner D Sc i n _).1]
   simp
+
+/-! ## The descent -/
 
 /-- Coordinate extraction on the induced module, `z ⊗ y ↦ (F(ψ(1) z) y, G(ψ(1) z) y)`. -/
 def appendTensorCornerBackward : T →+ ((Fin (n + 1) × ℕ) →₀ M) × (ℕ →₀ M) :=
@@ -326,13 +334,5 @@ theorem appendTensorCornerEquiv_apply
     (x : appendTensorLeftCoordinates D Sc i n M × (ℕ →₀ M)) :
     (appendTensorCornerEquiv D Sc i n M x : T) =
       appendLeftTensor D Sc i n M x.1 + appendPolyTensor D Sc i n M x.2 := rfl
-
-end Family
-
-/-! ## The two summand families -/
-
-/-! ## Coordinates of a corner element -/
-
-/-! ## The descent -/
 
 end OddMath.QuiverHecke

@@ -71,5 +71,25 @@ theorem contentInductionDot_component (β : Multiset I) (i : I)
     (BalancedInduction.transformComponent_supernatural
       (contentAppendTo_supernatural D Sc cutoff N rfl rfl (firstDot_parity D Sc i [])))) M
 
+/-- The first single-letter dot, acted on by the actual second induction functor. -/
+def contentEPairInnerDot (β : Multiset I) (i j : I)
+    (M : ContentModules D Sc cutoff N β)
+    (w : ContentCategory D Sc cutoff N (β + ([i,j] : Multiset I))) :
+    Module.End k (ContentEPairSpace D Sc cutoff N β i j _ rfl M w) :=
+  ((contentInductionTo D Sc cutoff N (β + ([i] : Multiset I)) [j]
+      (β + ([i,j] : Multiset I)) (contentPair_sum β i j).symm).map
+    ((contentInductionDot D Sc cutoff N β i).app (D.parity i) M)).total w
+
+/-- The actual single-letter dot component at the explicitly recast target. -/
+def contentEPairOuterDot (β : Multiset I) (i j : I)
+    (M : ContentModules D Sc cutoff N β)
+    (w : ContentCategory D Sc cutoff N (β + ([i,j] : Multiset I))) :
+    Module.End k (ContentEPairSpace D Sc cutoff N β i j _ rfl M w) :=
+  ((contentInductionTransform D Sc cutoff N
+    (β := β + ([i] : Multiset I)) (γ := β + ([i,j] : Multiset I))
+    (contentPair_sum β i j).symm (contentPair_sum β i j).symm
+    (firstDot_parity D Sc j [])).app (D.parity j)
+    (BalancedInduction.induced (contentAppendTo D Sc cutoff N β [i] _ rfl) M)).total w
+
 end OddMath.QuiverHecke.ELVOld
 

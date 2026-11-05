@@ -72,10 +72,6 @@ theorem PrependKills.smul {z : Hn D Sc (n + 1 + 1)} (hz : PrependKills D Sc i β
 theorem PrependKills.of_eq {z w : Hn D Sc (n + 1 + 1)} (hz : PrependKills D Sc i β a ha n z)
     (h : z = w) : PrependKills D Sc i β a ha n w := h ▸ hz
 
-section Morphism
-
-variable (D Sc i β a ha n) in
-
 /-- Prepend images of the cyclotomic kernel act by zero. -/
 theorem prependKills_of_cyclotomicMk {z : Hn D Sc (n + 1)}
     (hz : cyclotomicMk D Sc a n z = 0) :
@@ -215,6 +211,9 @@ theorem PrependKills.of_linear_even (hp : D.parity i = 0) {z : Hn D Sc (n + 1 + 
   rw [he]
   exact h2.neg
 
+section Morphism
+
+variable (D Sc i β a ha n) in
 /-- The endomorphism `Y` of `i :: w`, placed in its corner, generates a right ideal
 acting by zero on the prescribed target. -/
 def KillE (w : Word I (n + 1)) (Y : End (wordObj D Sc (prependWord i w))) : Prop :=
@@ -279,6 +278,7 @@ theorem cornerMap_whiskerLeft (f : End (wordObj D Sc w)) :
   rw [prependLinear_single]
   rfl
 
+variable (D Sc i) in
 /-- The prepend image of the corner unit. -/
 abbrev cornerUnit (w : Word I (n + 1)) : Hn D Sc (n + 1 + 1) :=
   prependAlgebra D Sc i (n + 1) (FiniteHomMatrix.cornerMap w 1)
@@ -320,10 +320,12 @@ theorem cornerMap_mul_cornerUnit (Y : End (wordObj D Sc (prependWord i w))) :
       FiniteHomMatrix.cornerMap (prependWord i w) Y := by
   rw [← cornerMap_one_prepend, ← map_mul, mul_one]
 
+variable (D Sc i β a ha n) in
 /-- Precomposition by `g` preserves killing endomorphisms. -/
 def GoodE (w : Word I (n + 1)) (g : End (wordObj D Sc (prependWord i w))) : Prop :=
   ∀ Y, KillE D Sc i β a ha n w Y → KillE D Sc i β a ha n w (g ≫ Y)
 
+variable (D Sc i β a ha n) in
 /-- The good precompositions form a subalgebra. -/
 def goodSubalgebra (w : Word I (n + 1)) : Subalgebra k (End (wordObj D Sc (prependWord i w))) where
   carrier := {g | GoodE D Sc i β a ha n w g}
@@ -369,12 +371,6 @@ theorem KillE.of_sq_sub (c : End (wordObj D Sc w)) {Y : End (wordObj D Sc (prepe
         simp only [mul_assoc, hee]
     _ = FiniteHomMatrix.cornerMap (prependWord i w) Y * f ^ 2 := by
         rw [← hsq, ← mul_assoc, hz]
-
-variable (D Sc i) in
-
-variable (D Sc i β a ha n) in
-
-variable (D Sc i β a ha n) in
 
 end Morphism
 

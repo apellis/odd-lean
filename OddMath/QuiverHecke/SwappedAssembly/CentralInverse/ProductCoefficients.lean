@@ -24,11 +24,56 @@ section Restriction
 variable {C : Type (u+1)} [Category.{u} C] [Preadditive C] [Linear k C]
   [Supercategory k C] (P : ObjectProperty C)
 
+def restrictCoeff (t : Superfunctor.id k C ⟶ Superfunctor.id k C) :
+    Superfunctor.id k P.FullSubcategory ⟶ Superfunctor.id k P.FullSubcategory where
+  app p M := ⟨t.app p M.obj⟩
+  app_mem p M := t.app_mem p M.obj
+  naturality p _M _N _q f hf := InducedCategory.hom_ext (t.naturality p f.hom hf)
+
+theorem restrictCoeff_comp (s t : Superfunctor.id k C ⟶ Superfunctor.id k C) :
+    restrictCoeff P (s ≫ t) = restrictCoeff P s ≫ restrictCoeff P t := by
+  apply Superfunctor.hom_ext
+  intro p M
+  rfl
+
+theorem restrictCoeff_mem {p : ZMod 2}
+    {t : Superfunctor.id k C ⟶ Superfunctor.id k C}
+    (ht : t ∈ parity (R := k) _ _ p) :
+    restrictCoeff P t ∈ parity (R := k) _ _ p := by
+  rw [Superfunctor.mem_parity_iff] at ht ⊢
+  funext M
+  apply InducedCategory.hom_ext
+  exact congrFun ht M.obj
+
+def restrictCoeffLinear : (Superfunctor.id k C ⟶ Superfunctor.id k C) →ₗ[k]
+    (Superfunctor.id k P.FullSubcategory ⟶ Superfunctor.id k P.FullSubcategory) where
+  toFun := restrictCoeff P
+  map_add' _ _ := by apply Superfunctor.hom_ext; intros; rfl
+  map_smul' _ _ := by apply Superfunctor.hom_ext; intros; rfl
+
+theorem restrictCoeff_proj (p : ZMod 2)
+    (t : Superfunctor.id k C ⟶ Superfunctor.id k C) :
+    restrictCoeff P (proj k p t) = proj k p (restrictCoeff P t) := by
+  symm
+  apply proj_eq_of_add (h := restrictCoeff P (proj k (p + 1) t))
+  · change restrictCoeffLinear P t = restrictCoeffLinear P (proj k p t) +
+      restrictCoeffLinear P (proj k (p + 1) t)
+    rw [← map_add, proj_add_proj_add_one]
+  · exact restrictCoeff_mem P (proj_mem _ _)
+  · exact restrictCoeff_mem P (proj_mem _ _)
 end Restriction
 
 section FullModules
 variable (A : GSuperAlg k) (P : ObjectProperty (Modules A))
   (hP : ∀ M, P M → P ((PiSupercategory.pi (R := k)).obj M))
+
+abbrev fullModuleTarget : PiSCat k :=
+  letI := CyclotomicAction.fullPiSupercategory P hP
+  PiSCat.of k P.FullSubcategory
+
+def fullRealize (c : 𝟙 A.toSuperAlg ⟶ 𝟙 A.toSuperAlg) :
+    𝟙 (fullModuleTarget A P hP) ⟶ 𝟙 (fullModuleTarget A P hP) :=
+  restrictCoeff P (realize A c)
 
 end FullModules
 
@@ -126,6 +171,13 @@ section Bounds
 variable {B : Type u} (A : B → GSuperAlg k)
   (P : ∀ b, ObjectProperty (Modules (A b)))
   (hP : ∀ b M, P b M → P b ((PiSupercategory.pi (R := k)).obj M))
+
+/-- The product target uses exactly the full-subcategory and product Π constructions
+of `PiWeightSpaces`, without any restriction on the block index. -/
+abbrev productModuleTarget : PiSCat k :=
+  letI := fun b => CyclotomicAction.fullPiSupercategory (P b) (hP b)
+  letI := CyclotomicAction.productPiSupercategory (k := k) (fun b => (P b).FullSubcategory)
+  PiSCat.of k (∀ b, (P b).FullSubcategory)
 
 end Bounds
 

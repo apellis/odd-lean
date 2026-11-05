@@ -43,10 +43,6 @@ local notation "ψ" =>
 local notation "C" => InductionAlong.Corner ψ
 local notation "T" => InductionAlong.Ind M ψ
 
-variable (θ : M →+ M)
-  (hθ : ∀ (r : Hn D Sc (n + 1)) (y : M),
-    θ (r • y) = homMatrixTwist D Sc (n + 1) (D.parity i) r • θ y)
-
 /-- Elementary tensors as an additive map in the corner variable. -/
 def appendTensorCornerHom (y : M) : C →+ T :=
   AddMonoidHom.mk' (fun z => InductionAlong.Ind.tmul z y)
@@ -60,6 +56,10 @@ theorem appendTensor_sub_tmul (z z' : C) (y : M) :
     InductionAlong.Ind.tmul (z - z') y =
       InductionAlong.Ind.tmul z y - InductionAlong.Ind.tmul z' y :=
   (appendTensorCornerHom D Sc i n M y).map_sub z z'
+
+variable (θ : M →+ M)
+  (hθ : ∀ (r : Hn D Sc (n + 1)) (y : M),
+    θ (r • y) = homMatrixTwist D Sc (n + 1) (D.parity i) r • θ y)
 
 /-- The twisted right dot `z ⊗ y ↦ z x_(n+2) ⊗ θ y` on the induced module. -/
 def appendTensorRightDot : Module.End (Hn D Sc (n + 1 + 1)) T :=
@@ -81,6 +81,8 @@ theorem appendTensorRightDot_mem_fixed (t : T) (ht : t ∈ appendTensorFixed D S
   rw [← LinearMap.map_smul]
   exact congrArg _ ht
 
+/-! ## Coordinate maps -/
+
 /-- Shift of the dot exponent of left-crossing coefficients, with the twist `θ`. -/
 def appendTensorLeftShift :
     ((Fin (n + 1) × ℕ) →₀ M) →+ ((Fin (n + 1) × ℕ) →₀ M) :=
@@ -97,6 +99,7 @@ def appendTensorLeftDegree : ((Fin (n + 1) × ℕ) →₀ M) →+ M :=
     (DistribSMul.toAddMonoidHom M (appendShuffleElement D Sc i (appendRun n p.1) *
       affineLastDot D Sc i n ^ p.2 * appendAlgebra D Sc i n 1)).comp θ
 
+include hθ in
 /-- `θ` preserves left-crossing coordinates in `ψ'(1) M`. -/
 theorem appendTensorLeftShift_mem (f : (Fin (n + 1) × ℕ) →₀ M)
     (hf : f ∈ appendTensorLeftCoordinates D Sc i n M) :
@@ -117,6 +120,8 @@ theorem appendTensorLeftShift_mem (f : (Fin (n + 1) × ℕ) →₀ M)
     rw [Finsupp.mapDomain_apply_of_injective hinj, Finsupp.mapRange_apply]
     exact hfix _ (hf q)
   · rw [Finsupp.mapDomain_of_notMem_range _ _ hp, smul_zero]
+
+/-! ## The slides -/
 
 /-- `R_t j = j t`: the twisted right dot on polynomial tensors. -/
 theorem appendTensorRightDot_polyTensor (g : ℕ →₀ M) :
@@ -193,11 +198,5 @@ theorem appendTensorRightDot_leftTensor (f : (Fin (n + 1) × ℕ) →₀ M) :
   rw [appendTensorRightDot_tmul, rightDotCorner_appendLeftSum_single, appendTensor_sub_tmul,
     appendTensor_zsmul_tmul, appendTensor_zsmul_tmul, InductionAlong.Ind.op_smul_tmul,
     appendFamilyTensor_single, appendFamilyTensor_single]
-
-/-! ## Coordinate maps -/
-
-include hθ in
-
-/-! ## The slides -/
 
 end OddMath.QuiverHecke

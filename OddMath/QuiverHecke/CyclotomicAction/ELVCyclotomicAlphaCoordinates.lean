@@ -134,6 +134,13 @@ theorem alphaNormalizedTerm_eq (i : I) (v s t : List I) (x : PrependIdx i s t)
     pprimeTensor_balance]
   rfl
 
+/-- Finite normalization of an affine first factor, retaining its old coefficient action. -/
+def alphaNormalize (i : I) (v s t : List I)
+    (b : Old D Sc cutoff v (s ++ [i])) :
+    hom D Sc cutoff (i :: s) t →ₗ[k] PprimeDomain D Sc cutoff i v t :=
+  (Finsupp.lsum k (alphaNormalizedTerm D Sc cutoff i v s t · b)) ∘ₗ
+    (prependAffineEquiv D Sc cutoff i s t).toLinearMap
+
 /-- Literal word of a bare moving tail, including all moving dots. -/
 def alphaTailWord {i : I} {v w : List I} (x : PrependIdx i v w) : List PG :=
   (List.replicate x.1.1 0).map PG.dot ++

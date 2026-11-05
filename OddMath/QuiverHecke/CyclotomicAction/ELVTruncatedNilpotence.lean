@@ -64,8 +64,6 @@ def truncatedDot (v : List I) (r : ℕ) : TruncatedEnd D Sc cutoff N v :=
     ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k] dotE D Sc v r)
 
 include sy hc in
-
-include sy hc in
 /-- The last-strand dot of the existing append transformation is nilpotent,
 uniformly on the source content. This is componentwise, not a claim of one
 exponent on the unbounded category of all words. -/

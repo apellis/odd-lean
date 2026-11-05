@@ -89,5 +89,4 @@ instance oldLinear : Linear k (OldCategory D Sc cutoff) where
     intro v t w f r g
     exact (oldComp D Sc cutoff v.word t.word w.word f).map_smul r g
 
-
 end OddMath.QuiverHecke.ELVOld

@@ -109,6 +109,4 @@ theorem negativeKernelBoundary_degree (i : I) (v t : OldCategory D Sc cutoff)
       q + 2 * sy.d i * ((m : ℤ) - n.val) := by ring
   simpa only [negativeKernelBoundary, LinearMap.comp_apply, he] using h
 
-omit hc in
-
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

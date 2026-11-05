@@ -32,6 +32,34 @@ theorem inverseComponent_supernatural :
 
 variable (M : Superfunctor k C (SVec k))
 
+/-- The parity sign is required when composing two induced homogeneous transforms. -/
+theorem transformLinear_inverse_right (t : D) :
+    (transformLinear he M t).comp
+      (sign k (p*p) • transformLinear (inverseComponent_supernatural J e he) M t) = LinearMap.id := by
+  apply hom_ext
+  intro v g b
+  rw [LinearMap.comp_apply, LinearMap.smul_apply, map_smul,
+    transformLinear_tensor, transformLinear_tensor, twist_comp,
+    twist_of_mem p (Supercategory.inv_mem (e v) (he.mem v)), twist_twist,
+    Linear.smul_comp, Linear.comp_smul, ← Category.assoc,
+    (e v).hom_inv_id, Category.id_comp]
+  simp only [tensor, ← TensorProduct.smul_tmul', map_smul, sign_smul_sign_smul]
+  rfl
+
+/-- Both inverse products are proved; no finite-dimensionality is used. -/
+theorem transformLinear_inverse_left (t : D) :
+    (sign k (p*p) • transformLinear (inverseComponent_supernatural J e he) M t).comp
+      (transformLinear he M t) = LinearMap.id := by
+  apply hom_ext
+  intro v g b
+  rw [LinearMap.comp_apply, LinearMap.smul_apply,
+    transformLinear_tensor, transformLinear_tensor, twist_comp,
+    twist_of_mem p (he.mem v), twist_twist,
+    Linear.smul_comp, Linear.comp_smul, ← Category.assoc,
+    (e v).inv_hom_id, Category.id_comp]
+  simp only [tensor, ← TensorProduct.smul_tmul', map_smul, sign_smul_sign_smul]
+  rfl
+
 end OddMath.QuiverHecke.ELVOld.BalancedInduction
 
 namespace OddMath.QuiverHecke
@@ -50,5 +78,21 @@ noncomputable def probeOrdinaryAppendDotIso
 
 variable (M : Superfunctor k
   (OrdinaryContentCategory D Sc (probePolynomial (k := k) (probeDotExponent D) m) ν) (SVec k))
+
+/-- The prescribed signed dot transform has an explicit two-sided inverse
+on the actual ordinary append coend. -/
+def probeOrdinaryInductionDotUnit
+    (t : OrdinaryContentCategory D Sc (probePolynomial (k := k) (probeDotExponent D) m) (i :: ν)) :
+    (End (ELVOld.BalancedInduction.superspace (probeOrdinaryAppend D Sc m ν i) M.toFunctor t))ˣ :=
+  let J := probeOrdinaryAppend D Sc m ν i
+  let e := probeOrdinaryAppendDotIso D Sc m ν i
+  let he : IsSupernatural k (D.parity i) (fun v => (e v).hom) :=
+    probeOrdinaryAppendDot_supernatural D Sc m ν i
+  { val := End.of (ELVOld.BalancedInduction.transformLinear he M t)
+    inv := End.of (sign k (D.parity i * D.parity i) •
+      ELVOld.BalancedInduction.transformLinear
+        (ELVOld.BalancedInduction.inverseComponent_supernatural J e he) M t)
+    val_inv := ELVOld.BalancedInduction.transformLinear_inverse_right J e he M t
+    inv_val := ELVOld.BalancedInduction.transformLinear_inverse_left J e he M t }
 
 end OddMath.QuiverHecke

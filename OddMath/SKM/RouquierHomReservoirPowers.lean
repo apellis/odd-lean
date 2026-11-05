@@ -25,8 +25,6 @@ variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
 def homReservoirDot (Z : homWeightSector T.obj W muP muM) :
     End ((homContentPreE T W i muM h).obj Z) := T.dot i h ▷ Z
 
-omit [∀ a b : B, PiSupercategory k (a ⟶ b)] in
-
 /-- Dotted unit of the specified normalized Hom adjunction. -/
 def homReservoirCup (n : ℕ) (Z : homWeightSector T.obj W muP muM) :
     Z ⟶ (homContentPreF T W i muM h).obj ((homContentPreE T W i muM h).obj Z) :=

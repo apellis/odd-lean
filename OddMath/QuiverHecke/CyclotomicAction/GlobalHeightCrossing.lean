@@ -3,9 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightAdjunction
-import OddMath.QuiverHecke.CyclotomicAction.InductionFunctorComparison
-import OddMath.QuiverHecke.CyclotomicAction.SuperCrossing
-import StringDiagrams.Super.Functor
+import OddMath.QuiverHecke.CyclotomicAction.CrossingTransformation
 
 /-!
 # The crossing on composed induction at every height
@@ -203,7 +201,6 @@ def heightCompositionCorner : SuperBimodule GC GA where
   ract_mem p r hr := SVec.restrictHom_mem
     ((reg).ract_mem p (θ r) (heightCompositionAppend_parity D Sc i j a ha n hr))
     (fun x _ => heightCompositionCorner_right_mem D Sc i j a n r x)
-
 
 local notation "T" => heightCompositionCorner D Sc i j a ha n
 

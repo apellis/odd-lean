@@ -177,6 +177,30 @@ theorem lcrossNeImage_supernatural (c : P.CrossCoeff) (hc : c.IsSupernatural) (i
     simp only [e]
     exact isSupernatural_zero _
 
+end ProbeReservoir
+
+/-- Supernaturality of the equal-colour leftward data: the equal-colour leftward crossing has
+parity `pᵢ²`, and the `♦`-cup and cap with label `n` have parity `pᵢ n` inside their windows
+`n < ⟨hᵢ, ν⟩` and `n < -⟨hᵢ, ν⟩`. -/
+structure ProbeReservoir.LeftwardData.IsSupernatural {P : ProbeReservoir k B D Sc}
+    (L : P.LeftwardData) : Prop where
+  lcrossSame : ∀ (i : I) (ν : X) {t s : Sector I} (p : SPath (wd D ν [dn i, up i]) t s)
+    (p' : SPath (wd D ν [up i, dn i]) t s),
+    StringDiagrams.Supercategory.IsSupernatural k (D.parity i * D.parity i)
+      (fun Z => L.lcrossSame i ν p p' Z)
+  dcup : ∀ (i : I) (n : ℕ) (ν : X), (n : ℤ) < D.h i ν → ∀ {t s : Sector I}
+    (p : SPath (wd D ν (SKM.Shape.dcup i n).dom) t s)
+    (p' : SPath (wd D ν (SKM.Shape.dcup i n).cod) t s),
+    StringDiagrams.Supercategory.IsSupernatural k (D.parity i * n) (fun Z => L.dcup i n ν p p' Z)
+  dcap : ∀ (i : I) (n : ℕ) (ν : X), (n : ℤ) < -D.h i ν → ∀ {t s : Sector I}
+    (p : SPath (wd D ν (SKM.Shape.dcap i n).dom) t s)
+    (p' : SPath (wd D ν (SKM.Shape.dcap i n).cod) t s),
+    StringDiagrams.Supercategory.IsSupernatural k (D.parity i * n) (fun Z => L.dcap i n ν p p' Z)
+
+namespace ProbeReservoir
+
+variable (P : ProbeReservoir k B D Sc)
+
 /-- **The swapped generator images are supernatural** (`GeneratorsSupernatural`), when the
 coefficient `a` of the equal-colour mixed block is supernatural, the matrix of the sideways
 crossing for distinct colours is a permutation matrix with invertible entries, and the
@@ -221,30 +245,6 @@ theorem swappedGens_supernatural (c : P.CrossCoeff) (L : P.LeftwardData)
         fun Z => P.swappedGens_dcap_of_lt c L i n ν (not_le.mp h) p p' Z
       simp only [e]
       exact hL.dcap i n ν (not_le.mp h) p p'
-
-end ProbeReservoir
-
-/-- Supernaturality of the equal-colour leftward data: the equal-colour leftward crossing has
-parity `pᵢ²`, and the `♦`-cup and cap with label `n` have parity `pᵢ n` inside their windows
-`n < ⟨hᵢ, ν⟩` and `n < -⟨hᵢ, ν⟩`. -/
-structure ProbeReservoir.LeftwardData.IsSupernatural {P : ProbeReservoir k B D Sc}
-    (L : P.LeftwardData) : Prop where
-  lcrossSame : ∀ (i : I) (ν : X) {t s : Sector I} (p : SPath (wd D ν [dn i, up i]) t s)
-    (p' : SPath (wd D ν [up i, dn i]) t s),
-    StringDiagrams.Supercategory.IsSupernatural k (D.parity i * D.parity i)
-      (fun Z => L.lcrossSame i ν p p' Z)
-  dcup : ∀ (i : I) (n : ℕ) (ν : X), (n : ℤ) < D.h i ν → ∀ {t s : Sector I}
-    (p : SPath (wd D ν (SKM.Shape.dcup i n).dom) t s)
-    (p' : SPath (wd D ν (SKM.Shape.dcup i n).cod) t s),
-    StringDiagrams.Supercategory.IsSupernatural k (D.parity i * n) (fun Z => L.dcup i n ν p p' Z)
-  dcap : ∀ (i : I) (n : ℕ) (ν : X), (n : ℤ) < -D.h i ν → ∀ {t s : Sector I}
-    (p : SPath (wd D ν (SKM.Shape.dcap i n).dom) t s)
-    (p' : SPath (wd D ν (SKM.Shape.dcap i n).cod) t s),
-    StringDiagrams.Supercategory.IsSupernatural k (D.parity i * n) (fun Z => L.dcap i n ν p p' Z)
-
-namespace ProbeReservoir
-
-variable (P : ProbeReservoir k B D Sc)
 
 end ProbeReservoir
 

@@ -139,6 +139,12 @@ theorem offDiagonalBoundaryRowWindow_eq_height (j : {j : I // D.parity j = 1}) (
   change (n + outputSDegree D j.1 v < endpointQPDegree D cutoff j.1 v) ↔ n < a
   omega
 
+/-- Actual division remainder, not an independently postulated projection. -/
+def offDiagonalBoundaryPositiveRemainder (p : ZMod 2) (j : {j : I // D.parity j = 1}) (v t : List I)
+    (h : outputSDegree D j.1 v ≤ endpointQPDegree D cutoff j.1 v) :
+    (ℕ →₀ Old D Sc cutoff v t) →ₗ[k] offDiagonalBoundaryRowWindow D Sc cutoff j v t :=
+  (LinearMap.snd k _ _).comp (offDiagonalBoundaryPositiveEquiv D Sc cutoff p j v t h).symm.toLinearMap
+
 theorem offDiagonalBoundaryPositiveEquiv_symm_boundary (p : ZMod 2)
     (j : {j : I // D.parity j = 1}) (v t : List I)
     (h : outputSDegree D j.1 v ≤ endpointQPDegree D cutoff j.1 v)
@@ -148,5 +154,52 @@ theorem offDiagonalBoundaryPositiveEquiv_symm_boundary (p : ZMod 2)
   apply (offDiagonalBoundaryPositiveEquiv D Sc cutoff p j v t h).injective
   rw [LinearEquiv.apply_symm_apply, offDiagonalBoundaryPositiveEquiv_apply]
   exact (add_zero _).symm
+
+theorem offDiagonalBoundaryPositiveRemainder_ker (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v t : List I)
+    (h : outputSDegree D j.1 v ≤ endpointQPDegree D cutoff j.1 v) :
+    LinearMap.ker (offDiagonalBoundaryPositiveRemainder D Sc cutoff p j v t h) =
+      LinearMap.range (offDiagonalPolynomialBoundary D Sc cutoff p j.1 v t) := by
+  ext f
+  rw [LinearMap.mem_ker, LinearMap.mem_range]
+  constructor
+  · intro hf
+    let x := (offDiagonalBoundaryPositiveEquiv D Sc cutoff p j v t h).symm f
+    refine ⟨x.1, ?_⟩
+    have he := (offDiagonalBoundaryPositiveEquiv D Sc cutoff p j v t h).apply_symm_apply f
+    rw [offDiagonalBoundaryPositiveEquiv_apply] at he
+    change offDiagonalPolynomialBoundary D Sc cutoff p j.1 v t x.1 + x.2 = f at he
+    change x.2 = 0 at hf
+    simpa only [hf, ZeroMemClass.coe_zero, add_zero] using he
+  · rintro ⟨g, rfl⟩
+    change ((offDiagonalBoundaryPositiveEquiv D Sc cutoff p j v t h).symm
+      (offDiagonalPolynomialBoundary D Sc cutoff p j.1 v t g)).2 = 0
+    rw [offDiagonalBoundaryPositiveEquiv_symm_boundary]
+
+theorem offDiagonalBoundaryPositiveRemainder_surjective (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v t : List I)
+    (h : outputSDegree D j.1 v ≤ endpointQPDegree D cutoff j.1 v) :
+    Function.Surjective (offDiagonalBoundaryPositiveRemainder D Sc cutoff p j v t h) := by
+  intro r
+  refine ⟨offDiagonalBoundaryPositiveEquiv D Sc cutoff p j v t h (0, r), ?_⟩
+  change ((offDiagonalBoundaryPositiveEquiv D Sc cutoff p j v t h).symm
+    (offDiagonalBoundaryPositiveEquiv D Sc cutoff p j v t h (0, r))).2 = r
+  rw [LinearEquiv.symm_apply_apply]
+
+private def rowCokernelEquiv {R M N : Type*} [CommRing R] [AddCommGroup M]
+    [AddCommGroup N] [Module R M] [Module R N] (r : M →ₗ[R] N) (P : Submodule R M)
+    (he : P = LinearMap.ker r) (hs : Function.Surjective r) : (M ⧸ P) ≃ₗ[R] N :=
+  (Submodule.quotEquivOfEq _ _ he).trans (r.quotKerEquivOfSurjective hs)
+
+/-- The cokernel of the prescribed positive row is the actual polynomial window. -/
+def offDiagonalBoundaryPositiveCokernelEquiv (p : ZMod 2) (j : {j : I // D.parity j = 1}) (v t : List I)
+    (h : outputSDegree D j.1 v ≤ endpointQPDegree D cutoff j.1 v) :
+    ((ℕ →₀ Old D Sc cutoff v t) ⧸ LinearMap.range (offDiagonalPolynomialBoundary D Sc cutoff p j.1 v t)) ≃ₗ[k]
+      offDiagonalBoundaryRowWindow D Sc cutoff j v t :=
+  rowCokernelEquiv (R := k) (M := ℕ →₀ Old D Sc cutoff v t)
+    (N := offDiagonalBoundaryRowWindow D Sc cutoff j v t) (offDiagonalBoundaryPositiveRemainder D Sc cutoff p j v t h)
+    (LinearMap.range (offDiagonalPolynomialBoundary D Sc cutoff p j.1 v t))
+    (offDiagonalBoundaryPositiveRemainder_ker D Sc cutoff p j v t h).symm
+    (offDiagonalBoundaryPositiveRemainder_surjective D Sc cutoff p j v t h)
 
 end OddMath.QuiverHecke.ELVOld

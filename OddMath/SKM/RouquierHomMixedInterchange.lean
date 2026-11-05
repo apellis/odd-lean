@@ -94,5 +94,21 @@ variable {I X : Type*} [AddCommGroup X] {D : Datum I X}
   {muP nuP muM nuM : X}
   (hT : -nuP + D.α i = -muP) (hW : muM + D.α i = nuM)
 
+/-- J on the supplied factor families, with the actual two content labels. -/
+def homContentMixedInterchange (Z : homWeightSector T.obj W.obj muP muM) :
+    (homContentPreE T W.obj i nuM hT).obj
+        ((homContentPostE T.obj W i β muP hW).obj Z) ≅
+      (homContentPostE T.obj W i (β + Finsupp.single i 1) nuP hW).obj
+        ((homContentPreE T W.obj i muM hT).obj Z) :=
+  homMixedInterchange (k := k) (T.E i hT) (W.E i hW)
+    (homContentShift D i β) (homContentShift D i (β + Finsupp.single i 1)) Z
+
+/-- The prescribed negative swapping coefficient, parametrized by the AB
+coefficient a. This is not a definition of a or of its finite expansion. -/
+def homContentMixedSwap (Z : homWeightSector T.obj W.obj muP muM)
+    (a : End ((homContentPostE T.obj W i (β + Finsupp.single i 1) nuP hW).obj
+      ((homContentPreE T W.obj i muM hT).obj Z))) :=
+  -(a ≫ a ≫ (homContentMixedInterchange T W i β hT hW Z).inv)
+
 end Factors
 end OddMath.SKM

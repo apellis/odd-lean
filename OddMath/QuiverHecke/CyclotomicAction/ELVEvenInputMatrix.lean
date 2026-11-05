@@ -100,7 +100,6 @@ theorem evenBoundarySnake_eq_boundaryCrossCoordinates (p : ZMod 2)
     (offDiagonalLongSection D Sc cutoff p i v t f)
     (offDiagonalLongExtraction_section D Sc cutoff p i v t f)
 
-
 /-- The actual cap vector evaluated on the actual snake kernel coordinates. -/
 def evenCapOnKernelVector (p : ZMod 2) (i : I) (hi : D.parity i = 0)
     (v t : List I) (m : ℕ)

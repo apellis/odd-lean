@@ -134,10 +134,10 @@ def homMatrixTwistAlgebra (n : ℕ) (p : ZMod 2) : Hn D Sc n →ₙₐ[k] Hn D S
 /-- The parity of an unordered colour content. -/
 def contentSumParity (β : Multiset I) : ZMod 2 := (β.map D.parity).sum
 
-variable [Fintype I]
-
 theorem wordSumParity_eq_content {n : ℕ} (s : Word I n) :
     wordSumParity D s.1 = contentSumParity D (wordContent s) := rfl
+
+variable [Fintype I]
 
 /-- The sum of `g_n ⋯ g_1 e(i,ν)` over the words of content `β`. -/
 def contentMove (i : I) (n : ℕ) (β : Multiset I) : Hn D Sc (n + 1) :=

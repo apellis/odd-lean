@@ -37,6 +37,11 @@ variable {C B : Type u} [Category.{u} C] [Category.{u} B]
   [P.Additive] [P.Linear k] [IsSuperfunctor k P]
   [Q.Additive] [Q.Linear k] [IsSuperfunctor k Q]
   (eP : J ⋙ K = P) (eQ : P ⋙ K = Q) (R : Superfunctor k C (SVec k))
+private def recursiveIso :
+    (BalancedInduction.induction K ⋙ BalancedInduction.induction K).obj
+      (BalancedInduction.induced J R) ≅ (BalancedInduction.induction Q).obj R :=
+  (BalancedInduction.induction K).mapIso (comparisonIso J K P eP R) ≪≫
+    comparisonIso P K Q eQ R
 end Recursive
 
 section Outer
@@ -79,5 +84,50 @@ variable {C B : Type u} [Category.{u} C] [Category.{u} B]
   {α : ∀ v, Q.obj v ⟶ Q.obj v} (hα : IsSupernatural k p α)
 
 end Signed
+
+/-- Literal two-letter coefficient-source equality, with the original order. -/
+theorem pairSource_eq :
+    powerWordCoefficientSource D Sc cutoff ν ⋙ (append D Sc cutoff i ⋙ append D Sc cutoff i) =
+      powerWordCoefficientSource D Sc cutoff (ν ++ [i] ++ [i]) := by
+  calc
+    _ = (powerWordCoefficientSource D Sc cutoff ν ⋙ append D Sc cutoff i) ⋙
+        append D Sc cutoff i := rfl
+    _ = powerWordCoefficientSource D Sc cutoff (ν ++ [i]) ⋙ append D Sc cutoff i :=
+      congrArg (fun F => F ⋙ append D Sc cutoff i) (powerWordCoefficientSource_append D Sc cutoff ν i)
+    _ = _ := powerWordCoefficientSource_append D Sc cutoff (ν ++ [i]) i
+
+/-- The collapsed comparison uses the same existing induction comparison,
+with the independently proved literal coefficient-source equality. -/
+def collapsedIso :
+    (BalancedInduction.induction (append D Sc cutoff i ⋙ append D Sc cutoff i)).obj
+      (BalancedInduction.induced (powerWordCoefficientSource D Sc cutoff ν)
+        (liftedPowerRegular D cutoff L)) ≅
+    (BalancedInduction.induction (powerWordCoefficientSource D Sc cutoff (ν ++ [i] ++ [i]))).obj
+      (liftedPowerRegular D cutoff L) :=
+  (inductionCompOfEq (powerWordCoefficientSource D Sc cutoff ν)
+    (append D Sc cutoff i ⋙ append D Sc cutoff i)
+    (powerWordCoefficientSource D Sc cutoff (ν ++ [i] ++ [i]))
+    (pairSource_eq D Sc cutoff ν i)).app (liftedPowerRegular D cutoff L)
+
+/-- Exactly the two recursively selected single-word comparisons. -/
+def selectedPairIso :
+    (BalancedInduction.induction (append D Sc cutoff i) ⋙
+      BalancedInduction.induction (append D Sc cutoff i)).obj
+        (BalancedInduction.induced (powerWordCoefficientSource D Sc cutoff ν)
+          (liftedPowerRegular D cutoff L)) ≅
+    (BalancedInduction.induction (powerWordCoefficientSource D Sc cutoff (ν ++ [i] ++ [i]))).obj
+      (liftedPowerRegular D cutoff L) :=
+  recursiveIso (powerWordCoefficientSource D Sc cutoff ν) (append D Sc cutoff i)
+    (powerWordCoefficientSource D Sc cutoff (ν ++ [i]))
+    (powerWordCoefficientSource D Sc cutoff (ν ++ [i] ++ [i]))
+    (powerWordCoefficientSource_append D Sc cutoff ν i)
+    (powerWordCoefficientSource_append D Sc cutoff (ν ++ [i]) i)
+    (liftedPowerRegular D cutoff L)
+
+private def crossArrow : (OldCategory.mk (ν ++ [i] ++ [i]) : OldCategory D Sc cutoff) ⟶
+    OldCategory.mk (ν ++ [i] ++ [i]) := equalCrossComponent D Sc cutoff i (OldCategory.mk ν)
+private theorem crossArrow_mem : crossArrow D Sc cutoff ν i ∈
+    parity (R := k) _ _ (D.parity i * D.parity i) :=
+  (equalCross_supernatural D Sc cutoff i).mem (OldCategory.mk ν)
 
 end OddMath.QuiverHecke.ELVOld.PowerWordPair

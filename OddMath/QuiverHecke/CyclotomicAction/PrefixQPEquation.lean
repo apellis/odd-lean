@@ -118,8 +118,6 @@ end Product
 variable [Fintype I] (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
   (ha : CyclotomicPolynomialParity D a) (n : ℕ)
 
-section Context
-
 /-- Even linear cancellation at the morphism level: for `p(i) = 0` a factor
 `1_i ⊗ c − x₁` can be removed. -/
 theorem KillE.of_linear_even (hp : D.parity i = 0) {w : Word I (n + 1)}
@@ -150,6 +148,8 @@ theorem KillE.congr_word {w w' : Word I (n + 1)} (e : w.1 = w'.1)
   dsimp only at e
   subst e
   simpa using hY
+
+section Context
 
 /-- `Y` kills on `i :: (s ++ σ)` after right whiskering by every right context `σ`. -/
 def KillAll (s : List I) (Y : End ((pres D Sc).obj (ob D (i :: s)))) : Prop :=
@@ -192,6 +192,7 @@ theorem KillAll.zero : KillAll D Sc i β a ha n s (0 : (pres D Sc).obj (ob D (i 
 theorem KillAll.of_eq {Y Z : (pres D Sc).obj (ob D (i :: s)) ⟶ (pres D Sc).obj (ob D (i :: s))}
     (hY : KillAll D Sc i β a ha n s Y) (h : Y = Z) : KillAll D Sc i β a ha n s Z := h ▸ hY
 
+variable (D Sc i β a ha n s) in
 /-- The precompositions preserving `KillAll`. -/
 def goodAll : Subalgebra k (End ((pres D Sc).obj (ob D (i :: s)))) where
   carrier := {g | ∀ (σ : List I) (h : (s ++ σ).length = n + 1),
@@ -247,8 +248,6 @@ theorem KillAll.of_linear_even (hp : D.parity i = 0) (c : End ((pres D Sc).obj (
     (i :: s) σ (_ - _), map_sub, whiskerWordAlgHom_apply, whiskerWordAlgHom_apply,
     dotE_whiskerRight D Sc (i :: s) σ 0 (by simp), whiskerLeft_whiskerRight_cons] at this
   exact this
-
-variable (D Sc i β a ha n s) in
 
 end Context
 

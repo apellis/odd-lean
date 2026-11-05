@@ -164,6 +164,8 @@ private theorem coefficientModuleAction_zero
   rw [add_zero]
   exact ha v.word
 
+variable (L : I × ℕ → ℕ)
+
 private theorem power_le_action_kernel
     (M : CoefficientPowerModules D Sc cutoff (elementaryCoefficients (k := k) D cutoff) L) :
     coefficientPowerIdeal D cutoff (elementaryCoefficients (k := k) D cutoff) L ≤
@@ -190,6 +192,9 @@ def powerModuleCoefficientAction
       ((coefficientPowerIdeal D cutoff (elementaryCoefficients (k := k) D cutoff) L).ringCon.mkₐ k a) =
         coefficientModuleAction D Sc cutoff M.obj a := rfl
 
-variable (L : I × ℕ → ℕ)
+/-- Coefficients of the regular power vacuum are bundled as module endomorphisms. -/
+def vacuumCoefficientAction : CoefficientPowerQuotient (k := k) D cutoff L →ₐ[k]
+    End (coefficientPowerVacuum D Sc cutoff L) :=
+  powerModuleCoefficientAction D Sc cutoff L (coefficientPowerVacuumObject D Sc cutoff L)
 
 end OddMath.QuiverHecke.ELVOld

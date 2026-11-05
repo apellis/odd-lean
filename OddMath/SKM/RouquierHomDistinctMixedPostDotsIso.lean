@@ -34,17 +34,6 @@ theorem map_rouquierPower {C : Type*} [Category C] {a b : B} (G : (a ⟶ b) ⥤ 
   | zero => exact G.map_id E
   | succ n ih => rw [rouquierPower_succ, G.map_comp, ih, pow_succ', End.mul_def]
 
-end Powers
-
-section Mate
-variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
-  [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
-  [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
-  [∀ a b : B, PiSupercategory k (a ⟶ b)]
-  {a b c d : B} (E : a ⟶ b) {E' : c ⟶ d} {F' : d ⟶ c}
-  (A : SuperAdjunction (k := k) E' F') (κ τ : ZMod 2) (H : b ⟶ d)
-  {x : E ⟶ E} (hx : x ∈ parity (R := k) E E 0) {y : E' ⟶ E'} (hy : y ∈ parity (R := k) E' E' 0)
-
 /-- The right transpose of a nilpotent even endomorphism is nilpotent. -/
 theorem isNilpotent_rightTranspose {a b : B} {E : a ⟶ b} {F : b ⟶ a}
     (A : SuperAdjunction (k := k) E F) {y : E ⟶ E} (hy : y ∈ parity (R := k) _ _ 0)
@@ -57,6 +46,17 @@ theorem isNilpotent_rightTranspose {a b : B} {E : a ⟶ b} {F : b ⟶ a}
     rouquierPower_eq_pow] at h
   rw [← h]
   exact (SuperAdjunction.rightTransposeLinear A A).map_zero
+
+end Powers
+
+section Mate
+variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
+  [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
+  [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
+  [∀ a b : B, PiSupercategory k (a ⟶ b)]
+  {a b c d : B} (E : a ⟶ b) {E' : c ⟶ d} {F' : d ⟶ c}
+  (A : SuperAdjunction (k := k) E' F') (κ τ : ZMod 2) (H : b ⟶ d)
+  {x : E ⟶ E} (hx : x ∈ parity (R := k) E E 0) {y : E' ⟶ E'} (hy : y ∈ parity (R := k) E' E' 0)
 
 /-- The pre dot on the target of `J⁻¹`. -/
 abbrev mixedPostTargetPreDot (x : E ⟶ E) :
@@ -155,6 +155,7 @@ theorem exists_homDistinctMixedMateDot_eq (m : ℕ) {N}
     rw [← homDistinctMixedMateDotLinear_apply, map_smul, homDistinctMixedMateDotLinear_apply,
       e, Linear.smul_comp]
 
+include hx hy in
 /-- (15) on the post side: the dotted mate of `c • Xᵈ + N` is invertible when `x` is
 invertible, `y` is nilpotent, `c` is a unit and `N` is a combination of monomials `Xᵖ Yᑫ`
 with `q ≥ 1`. -/
@@ -192,8 +193,6 @@ theorem homDistinctMixedMateDot_isIso [IsIso x] (hn : IsNilpotent (show End E' f
   have : IsIso ((c : k) • mixedPostSourcePreDot (k := k) E κ H (F' := F') x ^ e + Ψ :
       End (E ≫ ((homParityShift (k := k) κ).obj H ≫ F'))) := (isUnit_iff_isIso _).mp hu
   infer_instance
-
-include hx hy in
 
 end Mate
 end OddMath.SKM

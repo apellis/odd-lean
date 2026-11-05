@@ -129,6 +129,11 @@ def singleCyclotomicEquiv (i : I) (a : _root_.Polynomial k) :
     AdjoinRoot a ≃ₐ[k] SingleCyclotomic D Sc i a :=
   Ideal.quotientEquivAlg _ _ (singlePolynomialEquiv D Sc i) rfl
 
+/-- The descended dot in the actual one-strand quotient. -/
+def singleCyclotomicDot (i : I) (a : _root_.Polynomial k) :
+    SingleCyclotomic D Sc i a :=
+  Ideal.Quotient.mk _ (dotE D Sc [i] 0)
+
 @[simp] theorem singleCyclotomicEquiv_mk (i : I) (a p : _root_.Polynomial k) :
     singleCyclotomicEquiv D Sc i a (AdjoinRoot.mk a p) =
       Ideal.Quotient.mk _ (singlePolynomialEquiv D Sc i p) := rfl

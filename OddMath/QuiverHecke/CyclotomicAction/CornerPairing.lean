@@ -36,6 +36,12 @@ theorem inductionCorner_mem_part_iff {p : ZMod 2} {x : (P).toSVec} :
   change x ∈ (SVec.sub _ _ _).part p ↔ _
   rw [SVec.mem_sub_part_iff, mem_regularSVec_part_iff]
 
+/-- Homogeneity in the restriction corner is inherited from the algebra. -/
+theorem restrictionCorner_mem_part_iff {p : ZMod 2} {x : (Q).toSVec} :
+    x ∈ (Q).toSVec.part p ↔ x.1 ∈ GB p := by
+  change x ∈ (SVec.sub _ _ _).part p ↔ _
+  rw [SVec.mem_sub_part_iff, mem_regularSVec_part_iff]
+
 /-- Multiplication of an induction element with a restriction element. -/
 def cornerPairingBi : (P).toSVec →ₗ[k] (Q).toSVec →ₗ[k] B where
   toFun x :=
@@ -52,6 +58,18 @@ def cornerPairingLinear : (tensor P Q).toSVec →ₗ[k] B :=
 @[simp] theorem cornerPairingLinear_btmul (x : (P).toSVec) (y : (Q).toSVec) :
     cornerPairingLinear D Sc i a ha n (btmul P Q x y) = x.1 * y.1 :=
   tensorLift_btmul _ _ x y
+
+/-- Multiplication preserves total parity. -/
+theorem cornerPairing_mem :
+    SVec.ofHom (cornerPairingLinear D Sc i a ha n) ∈
+      SVec.parityHom (tensor P Q).toSVec (regular GB).toSVec 0 := by
+  apply tensor_mem_parity_of_btmul
+  intro p q x y hx hy
+  change cornerPairingLinear D Sc i a ha n (btmul P Q x y) ∈ (regularSVec GB).part (p + q + 0)
+  rw [cornerPairingLinear_btmul, add_zero, mem_regularSVec_part_iff]
+  exact SetLike.GradedMul.mul_mem
+    ((inductionCorner_mem_part_iff D Sc i a ha n).mp hx)
+    ((restrictionCorner_mem_part_iff D Sc i a ha n).mp hy)
 
 /-- The even colour-cut idempotent in the induction bimodule. -/
 def inductionCornerIdempotent : (P).toSVec :=
@@ -78,6 +96,37 @@ def cornerUnitLinear : A →ₗ[k] (tensor Q P).toSVec where
 @[simp] theorem cornerUnitLinear_apply (r : A) :
     cornerUnitLinear D Sc i a ha n r = btmul Q P (restrictionCornerOf D Sc i a ha n r)
       (inductionCornerIdempotent D Sc i a ha n) := rfl
+
+theorem cornerUnitLinear_lact (r s : A) :
+    cornerUnitLinear D Sc i a ha n (r * s) =
+      (tensor Q P).lact r (cornerUnitLinear D Sc i a ha n s) := by
+  rw [cornerUnitLinear_apply, cornerUnitLinear_apply, lact_btmul]
+  congr 1
+  apply Subtype.ext
+  exact map_mul φ r s
+
+theorem cornerUnitLinear_ract (r s : A) :
+    cornerUnitLinear D Sc i a ha n (r * s) =
+      (tensor Q P).ract s (cornerUnitLinear D Sc i a ha n r) := by
+  rw [cornerUnitLinear_apply, cornerUnitLinear_apply, ract_btmul]
+  have hm : restrictionCornerOf D Sc i a ha n (r * s) =
+      (Q).ract (φ s) (restrictionCornerOf D Sc i a ha n r) :=
+    Subtype.ext (map_mul φ r s)
+  rw [hm, btmul_ract_lact]
+  congr 1
+  apply Subtype.ext
+  change φ s * φ 1 = φ 1 * φ s
+  rw [← map_mul, ← map_mul, mul_one, one_mul]
+
+theorem cornerUnit_mem :
+    SVec.ofHom (cornerUnitLinear D Sc i a ha n) ∈
+      SVec.parityHom (regular GA).toSVec (tensor Q P).toSVec 0 := by
+  apply SVec.mem_parityHom_of_apply_mem
+  intro p r hr
+  apply btmul_mem_part
+  · apply (restrictionCorner_mem_part_iff D Sc i a ha n).mpr
+    exact cyclotomicAppend_parity D Sc i a ha n ((mem_regularSVec_part_iff GA).mp hr)
+  · exact inductionCornerIdempotent_mem D Sc i a ha n
 
 /-- The first elementary triangular identity for the corner pairing. -/
 @[simp] theorem cornerPairing_right_unit (x : (P).toSVec) :

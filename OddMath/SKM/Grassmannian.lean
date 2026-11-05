@@ -169,7 +169,6 @@ theorem bubRs_neg (i : I) (μ : X) {n : ℤ} (hn : n < 0) : bubRs cs i μ n = 0 
 theorem bubRs_zero (i : I) (μ : X) : bubRs cs i μ 0 = (↑(cs.c μ i)⁻¹ : k) • 𝟙 _ := by
   rw [bubRs, zero_sub, bubR_eq_c]
 
-
 /-! ## Signs `(-1)^{a n}` for integers `n` -/
 
 variable (k) in
@@ -265,7 +264,6 @@ theorem ig_hpos_neg (i : I) (μ : X) (hh : 0 ≤ D.h i μ) (T : ℕ) :
   rw [e3, add_assoc, ← add_smul, show -(isg k (D.parity i) (N + 1)) * (↑(cs.c μ i)⁻¹ : k) +
     isg k (D.parity i) (N + 1) * (↑(cs.c μ i)⁻¹ : k) = 0 by ring, zero_smul, add_zero]
 
-
 theorem zmod2_mul_self' (a : ZMod 2) : a * a = a := by revert a; decide
 
 theorem zsign_mul_self' (p : ZMod 2) : zsign k p * zsign k p = 1 := by
@@ -346,7 +344,6 @@ theorem ig_hpos_split (i : I) (μ : X) (hh : 0 ≤ D.h i μ) (T : ℕ) :
     simp only [ipar, ← h0, Int.cast_zero, zero_add, mul_one]
     rw [isg_add, isg_one]
     linear_combination (-(isg k (D.parity i) T * (cs.c μ i : k))) * zsign_mul_self' (k := k) (D.parity i)
-
 
 /-! ## (5.8) for `⟨hᵢ, λ⟩ ≤ 0` -/
 
@@ -475,7 +472,6 @@ theorem ig_hneg_split (i : I) (μ : X) (hh : D.h i μ ≤ 0) (T : ℕ) :
       Category.comp_id, cl_comp hdL (sChain_epsL i 0), ← epsL_add, add_zero, Linear.comp_smul,
       ← bubL_nat, sub_self, smul_zero]
 
-
 /-! ## Parities of the bubbles -/
 
 theorem zmod2_cases (a : ZMod 2) : a = 0 ∨ a = 1 := by revert a; decide
@@ -571,7 +567,6 @@ theorem bubL_bubR_comm (i : I) (μ : X) (r s : ℤ) :
       zsign k (D.parity i * ((r + D.h i μ + 1 : ℤ) : ZMod 2) *
         (D.parity i * ((s + D.h i μ + 1 : ℤ) : ZMod 2))) • (bubR cs i μ s ≫ bubL cs i μ r) :=
   comm_of_mem (bubL_mem cs i μ r) (bubR_mem cs i μ s)
-
 
 /-! ## (5.8) as sums over `r + s = t - 2` -/
 

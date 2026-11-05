@@ -21,6 +21,11 @@ private def polynomialCapDot (i : I) : Module.End k (polynomialCapTarget D Sc cu
   inductionDot D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L)
     ((append D Sc cutoff i).obj ⟨[]⟩)
 
+/-- The coefficient-extraction functional after the literal plus-one probe polynomial. -/
+def polynomialCap (i : I) (hN : 0 < cutoff i) (M : ℕ) :
+    polynomialCapTarget D Sc cutoff L i →ₗ[k] CoefficientPowerQuotient (k := k) D cutoff L :=
+  (functional D Sc cutoff L i hN).comp ((polynomialCapDot D Sc cutoff L i ^ 2 + 1) ^ M)
+
 private def capMomentLinear (i : I) (hN : 0 < cutoff i) (n : ℕ) :
     Module.End k (polynomialCapTarget D Sc cutoff L i) →ₗ[k]
       Module.End k (CoefficientPowerQuotient (k := k) D cutoff L) where

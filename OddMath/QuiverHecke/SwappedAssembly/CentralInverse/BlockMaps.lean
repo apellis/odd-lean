@@ -46,13 +46,10 @@ variable {X Y O : C}
 
 @[simp] lemma gMap_none_none (a : X ⟶ Y) (B : ι → (O ⟶ Y)) (Cc : κ → (X ⟶ O))
     (E : ι → κ → (O ⟶ O)) : (gMap a B Cc E none none : X ⟶ Y) = a := rfl
-
 @[simp] lemma gMap_some_none (a : X ⟶ Y) (B : ι → (O ⟶ Y)) (Cc : κ → (X ⟶ O))
     (E : ι → κ → (O ⟶ O)) (i : ι) : (gMap a B Cc E (some i) none : O ⟶ Y) = B i := rfl
-
 @[simp] lemma gMap_none_some (a : X ⟶ Y) (B : ι → (O ⟶ Y)) (Cc : κ → (X ⟶ O))
     (E : ι → κ → (O ⟶ O)) (r : κ) : (gMap a B Cc E none (some r) : X ⟶ O) = Cc r := rfl
-
 @[simp] lemma gMap_some_some (a : X ⟶ Y) (B : ι → (O ⟶ Y)) (Cc : κ → (X ⟶ O))
     (E : ι → κ → (O ⟶ O)) (i : ι) (r : κ) :
     (gMap a B Cc E (some i) (some r) : O ⟶ O) = E i r := rfl

@@ -79,6 +79,4 @@ def negMapCupInverseData
     simpa only [neg_neg] using
       (negMap_isCupInverse_of_zero_corners (-sR) (-sP) (-Cx) (-Dx) uR colP hXR hYP).neg_principal
 
-omit [Preadditive C] in
-
 end OddMath.QuiverHecke.SwappedAssembly.ProbeWindow

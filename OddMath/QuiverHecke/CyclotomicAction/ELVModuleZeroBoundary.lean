@@ -44,4 +44,17 @@ instance zeroModuleFunctor_linear : (zeroModuleFunctor (k := k) C).Linear k wher
 instance zeroModuleFunctor_super : IsSuperfunctor k (zeroModuleFunctor (k := k) C) where
   map_mem _ := Submodule.zero_mem _
 
+/-- The zero lower endocell in the canonical module parity target. -/
+def zeroModuleCell : inductionModulePiCategory (k := k) C ⟶ inductionModulePiCategory (k := k) C :=
+  show Superfunctor k (Superfunctor k C (SVec k)) (Superfunctor k C (SVec k)) from
+    ⟨zeroModuleFunctor C⟩
+
+/-- Its identity is literally zero as a supernatural transformation. -/
+theorem zeroModuleCell_id : (𝟙 (zeroModuleCell (k := k) C) : _ ⟶ _) = 0 := by
+  apply Superfunctor.hom_ext_parity
+  · intro M
+    exact zeroModule_id C
+  · intro M
+    rfl
+
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

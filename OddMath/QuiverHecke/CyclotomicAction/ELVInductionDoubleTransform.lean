@@ -87,6 +87,4 @@ theorem doubleTransformLinear_eq_total (w : B)
   unfold flattenLinear unflattenLinear
   rfl
 
-omit [Supercategory k B] [K.Additive] [K.Linear k] [IsSuperfunctor k K] in
-
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

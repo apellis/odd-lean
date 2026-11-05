@@ -18,6 +18,26 @@ namespace OddMath.QuiverHecke.ELVOld
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
 
+def contentPairInnerDotAt (β : Multiset I) (i j : I) (γ : Multiset I)
+    (h : β + ([i,j] : Multiset I) = γ)
+    (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
+    ((contentEPairTo D Sc cutoff N β i j γ h).obj M).obj z ⟶
+      ((contentEPairTo D Sc cutoff N β i j γ h).obj M).obj z :=
+  ((contentInductionTo D Sc cutoff N (β + ([i] : Multiset I)) [j] γ
+      ((contentPair_sum β i j).symm.trans h)).map
+    ((contentInductionDot D Sc cutoff N β i).app (D.parity i) M)).total z
+
+def contentPairOuterDotAt (β : Multiset I) (i j : I) (γ : Multiset I)
+    (h : β + ([i,j] : Multiset I) = γ)
+    (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
+    ((contentEPairTo D Sc cutoff N β i j γ h).obj M).obj z ⟶
+      ((contentEPairTo D Sc cutoff N β i j γ h).obj M).obj z :=
+  ((contentInductionTransform D Sc cutoff N
+    (β := β + ([i] : Multiset I)) (γ := γ)
+    ((contentPair_sum β i j).symm.trans h) ((contentPair_sum β i j).symm.trans h)
+    (firstDot_parity D Sc j [])).app (D.parity j)
+    (BalancedInduction.induced (contentAppend D Sc cutoff N β [i]) M)).total z
+
 private theorem contentTwoTransform_tensor {β γ : Multiset I} {σ τ υ : List I}
     (hσ : β + (σ : Multiset I) = γ) (hτ : β + (τ : Multiset I) = γ)
     (hυ : β + (υ : Multiset I) = γ) {p q : ZMod 2}

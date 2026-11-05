@@ -62,5 +62,20 @@ theorem tensorLayerDotRaw_eq (a : (P).CrossCoeff) :
 local notation "νR" => (List.reverse (List.map (fun a => Prod.snd (SKM.Col.l a)) (Layer.right (SKM.lay D ν u (SKM.Shape.dot i) v))))
 local notation "ηL" => (List.reverse (List.map (fun a => Prod.snd (SKM.Col.l a)) (Layer.left (SKM.lay D ν u (SKM.Shape.dot i) v))))
 
+omit [Fintype I] in
+private theorem dotEndpoint
+    (pL : SPath (SKM.lay D ν u (SKM.Shape.dot i) v).left (0,cL) (0,c))
+    (hl : ∀ a ∈ (SKM.lay D ν u (SKM.Shape.dot i) v).left, a.l.1 = true)
+    (pR : SPath (SKM.lay D ν u (SKM.Shape.dot i) v).right (0,c - Finsupp.single i 1) (0,0))
+    (hr : ∀ a ∈ (SKM.lay D ν u (SKM.Shape.dot i) v).right, a.l.1 = true)
+    (hDot : ReservoirWord.weight D ΛR (c - Finsupp.single i 1) + D.α i =
+      ReservoirWord.weight D ΛR c) : ReservoirWord.weight D ΛR cL =
+    PowerWordWeightContexts.contextWeight D (PowerWordWeight.wordWeight D ΛR (νR ++ [i])) ηL :=
+  (ReservoirContexts.word_weight D ΛR pL hl).trans
+    (congrArg (fun x => PowerWordWeightContexts.contextWeight D x ηL)
+      (hDot.symm.trans ((congrArg (fun x => x + D.α i)
+        (TensorReservoirWords.path_weight D ΛR pR hr)).trans
+          (PowerWordWeight.wordWeight_append D ΛR νR i))))
+
 end Dot
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

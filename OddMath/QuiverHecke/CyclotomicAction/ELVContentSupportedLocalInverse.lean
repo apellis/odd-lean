@@ -49,7 +49,6 @@ local notation "Source" => fullSquareSourceIso J Q₁ Q₀ T sqJ
   (contentAppendToRestrictionExtensionIso D Sc cutoff N β i γ hJ M)
 local notation "Value" => contentExtensionUnitIso D Sc cutoff N γ M
 
-
 /-- The prescribed unit inverse on a supported content block is constructed
 from the given weighted unit matrix, with no inverse premise. -/
 theorem contentSupportedLocalInverseFrom_nonempty

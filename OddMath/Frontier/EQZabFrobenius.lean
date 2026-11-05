@@ -110,7 +110,6 @@ theorem mem_triWord {q k : ℕ} {i : Fin (n+1)} (hi : i ∈ StrandCrossing.triWo
   obtain ⟨j, _, e⟩ := List.mem_map.mp hv
   omega
 
-
 /-! ### Block longest divided differences on placed polynomials -/
 
 open OddMath.Frontier.EQSkewDifferential (grading)
@@ -164,7 +163,6 @@ theorem action_blockD_outside_mul {p k q k' : ℕ} (h : p + k ≤ n + 2) (h' : q
   rw [blockD, action_product_place_mul h _ (fun i hi => by
       have := mem_triWord hi
       omega), length_triWord h']
-
 
 /-! ### Signs -/
 
@@ -221,7 +219,6 @@ theorem place_right_mul_place_left {i : ℤ} {P : SkewPolynomial a} (hP : P ∈ 
     RingHom.coe_pow] at h
 
 end Pair
-
 
 /-! ### The automorphism `Γ` and the block left-kernel identity -/
 
@@ -346,7 +343,6 @@ theorem blockD_pair_elem_mul (i j : ℕ) (X : SkewPolynomial (n+2)) :
     simp only [Nat.add_mul] at h1 ⊢
     omega
 
-
 /-- **The block left-kernel identity**: `(D_x D_y)(k X) = Γ(k) (D_x D_y)(X)` for every `k ∈ OΛ̃_{a+b}`. -/
 theorem blockD_pair_kernel_mul {k : SkewPolynomial (n+2)} (hk : k ∈ OddSymmetricKernel.kernelSubring n)
     (X : SkewPolynomial (n+2)) :
@@ -431,7 +427,6 @@ theorem pdAB_gamma_mul {k : SkewPolynomial (n+2)} (hk : k ∈ OddSymmetricKernel
 
 end Gamma
 
-
 /-! ### The block symmetric polynomials `OΛ̃_a ⊠ OΛ̃_b` in rank `n + 2` -/
 
 section Model
@@ -505,7 +500,6 @@ theorem kernel_le_RT : OddSymmetricKernel.kernelSubring n ≤ RT hab := by
     (Subring.zsmul_mem _ (place_right_elem_mem hab _) _)
 
 end Model
-
 
 /-! ### `Γ` and `rev` on `OΛ̃_a ⊠ OΛ̃_b`; left spanning -/
 

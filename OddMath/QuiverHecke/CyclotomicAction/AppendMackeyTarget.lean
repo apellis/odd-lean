@@ -104,16 +104,6 @@ local notation "T" => InductionAlong.Ind B ψ
 
 /-! ## The two summands -/
 
-/-! ## The twisted right dot -/
-
-variable (σ : B →+* B)
-  (hσ : ∀ (r : Hn D Sc (n + 1)) (y : B),
-    σ (r • y) = homMatrixTwist D Sc (n + 1) (D.parity i) r • σ y)
-
-/-! ## Right multiplication on the coefficients -/
-
-variable [IsScalarTower (Hn D Sc (n + 1)) B B]
-
 /-- The crossing summand `F u = Σ ψ(c'_j x^m) τ ⊗ u_(j,m)`. -/
 def appendTargetF : appendTensorLeftCoordinates D Sc i n B →+ appendTensorFixed D Sc i n B :=
   (appendTensorCornerEquiv D Sc i n B).toAddMonoidHom.comp (AddMonoidHom.inl _ _)
@@ -135,6 +125,12 @@ theorem appendTargetF_add_J (u : appendTensorLeftCoordinates D Sc i n B) (f : �
       appendTensorCornerEquiv D Sc i n B (u, f) :=
   Subtype.ext (by
     rw [AddSubgroup.coe_add, appendTargetF_coe, appendTargetJ_coe, appendTensorCornerEquiv_apply])
+
+/-! ## The twisted right dot -/
+
+variable (σ : B →+* B)
+  (hσ : ∀ (r : Hn D Sc (n + 1)) (y : B),
+    σ (r • y) = homMatrixTwist D Sc (n + 1) (D.parity i) r • σ y)
 
 /-- The `σ`-twisted right dot on the `ψ(1)`-fixed part. -/
 def appendTargetRt : appendTensorFixed D Sc i n B →+ appendTensorFixed D Sc i n B :=
@@ -217,6 +213,10 @@ theorem appendFamilyTensor_map {ι : Type*} (Φ : (ι →₀ Hn D Sc (n + 1)) �
   | single q y =>
     rw [Finsupp.mapRange_single, appendFamilyTensor_single, appendFamilyTensor_single,
       InductionAlong.Ind.map_tmul]
+
+/-! ## Right multiplication on the coefficients -/
+
+variable [IsScalarTower (Hn D Sc (n + 1)) B B]
 
 /-- Right multiplication by `b` as a left `Hn (n+1)`-linear map of `B`. -/
 def appendCoefficientMulRight (b : B) : B →ₗ[Hn D Sc (n + 1)] B where

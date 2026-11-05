@@ -315,6 +315,8 @@ theorem isIso_homDistinctMixedMateDot_param {a b c d : B} (E : a ⟶ b) {E' : c 
           (fun h => hs ((Sc.s_symm i j p q).trans (Sc.s_eq_zero j i q p h)))
           (Finset.mem_Ioo.mp hq).1)
 
+attribute [local irreducible] Finsupp.zipWith Finsupp.single Finsupp.onFinset homContentShift
+  contentWeight in
 /-- **The sideways crossing entry on a probe/reservoir path is invertible.** For `i ≠ j`, the
 entry of `σ : Eⱼ Fᵢ → Fᵢ Eⱼ` (Brundan–Ellis, arXiv:1701.04133v2, (1.11)) from the summand
 path `(P,R)` of `Eⱼ Fᵢ` is the cup, mixed crossing and cap composite of `sigmaEntry_eq`, which
@@ -454,9 +456,6 @@ theorem isIso_sigmaEntry_probe_reservoir (hT : ∀ (i : I) {x y : X} (h : x + D.
       (by simp only [muM, u, nextSector, add_tsub_cancel_right]) rfl
       (P.muM_postF i (nextSector (up j) true t)) _
       ((eqRec_heq _ _).trans (eqRec_heq _ _)).symm
-
-attribute [local irreducible] Finsupp.zipWith Finsupp.single Finsupp.onFinset homContentShift
-  contentWeight in
 
 end ProbeReservoir
 
