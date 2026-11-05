@@ -69,8 +69,9 @@ Theorem 12.1 needs the odd-colour correction of ERRATA [BE2] 8,
 
 ## Open
 
-* The product formula for `S` itself is not formalized; (dum) is stated with `S` defined as the
-  graded superdimension of `SYM`.
+* The coefficients of `S` count monomials of `SYM` (`SYM.componentBasis`,
+  `SYM.finrank_component`, `symDimension_coeff_eq_card`), which is the corrected product
+  coefficientwise; the product identity as formal power series is not stated.
 * `DegreeLocallyFinite` is an intermediate hypothesis of the dimension statements; it holds
   for finitely many colours. The infinite-colour reading is ERRATA [BE2] 15.
 * Inhomogeneous parameters (Phase 2) are not covered.
