@@ -153,6 +153,7 @@ theorem tensorCornerEv_eq (t : List I)
   unfold tensorCornerEv
   split
   · exact tensorWordQuotientObservation_path_independent D Sc cutoff L m ΛP ΛR hP hR s t _ _
+  · exact absurd h ‹_›
 
 /-- Off the content of `s` the corner evaluation vanishes. -/
 theorem tensorCornerEv_of_ne (t : List I)
@@ -226,10 +227,12 @@ theorem tensorCornerEv_layer (G : Layer (QuiverHecke.sig D)) (hv : G.Valid)
           (tensorSourceLabels_colors D ΛP ΛR _) (tensorSourceLabels_colors D ΛP ΛR _) v y hy
   · have h' : ¬ SPath.wordContent (tensorSourceLabels D ΛP ΛR G.cod.word) + 0 = cS := by
       rw [hcont]; exact h
-    rw [tensorCornerEv_of_ne D Sc m cutoff ΛP ΛR L hP hR s G.dom.word h, LinearMap.zero_apply] at hy
-    rw [tensorCornerEv_of_ne D Sc m cutoff ΛP ΛR L hP hR s G.cod.word h', LinearMap.zero_apply]
+    have e := tensorCornerEv_of_ne D Sc m cutoff ΛP ΛR L hP hR s G.dom.word h
+    have e' := tensorCornerEv_of_ne D Sc m cutoff ΛP ΛR L hP hR s G.cod.word h'
     have hy0 : y ∈ PowerWordQuotientCoordinates.kernel D Sc cutoff L s G.dom.word :=
-      (Submodule.Quotient.mk_eq_zero _).mp (by rw [Submodule.mkQ_apply] at hy; exact hy.symm)
+      (Submodule.Quotient.mk_eq_zero _).mp
+        (hy.symm.trans ((LinearMap.congr_fun e v).trans (LinearMap.zero_apply v)))
+    refine (LinearMap.congr_fun e' _).trans ((LinearMap.zero_apply _).trans ?_)
     exact ((Submodule.Quotient.mk_eq_zero _).mpr (TransformedIdeal.comp_mem D Sc hy0 _)).symm
 
 /-- **The corner evaluation of the swapped action** at the source word `s`, for the
