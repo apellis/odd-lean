@@ -24,7 +24,11 @@ proved for a fixed choice of bases:
 * `VacuumRouteHypotheses.of_fields` and `nondegeneracy_of_vacuum_route_fields`: the
   four fields give the route hypotheses, hence the conjecture.
 
-The statements are intermediate: the four fields are open.
+The statements are reduction steps. For the swapped route bases `swappedRouteBases` the
+four fields are proved: `positiveBubbleField_swappedRouteBases`,
+`nonpositiveBubbleField_of_entries` with `swappedRightEntriesField`,
+`swappedCoordinateField` and `swappedChartField`; the resulting theorem is
+`nondegeneracy_of_symmetrizer`.
 -/
 
 noncomputable section
@@ -148,8 +152,8 @@ theorem VacuumRouteHypotheses.of_fields {sy : SKM.Symmetrizer D}
 /-- **The conjecture from the four route fields** (Brundan–Ellis, arXiv:1701.04133v2,
 §8, in the research scope of `FieldScopeBoundary.md`): for a symmetrizable datum, a
 choice of route bases with the four route fields gives the conjecture over every
-commutative ring with `2` invertible, for homogeneous scalars. Intermediate: the four
-fields are open. -/
+commutative ring with `2` invertible, for homogeneous scalars. A reduction step of
+`nondegeneracy_of_symmetrizer`, where the four fields are proved for the swapped route bases. -/
 theorem nondegeneracy_of_vacuum_route_fields {sy : SKM.Symmetrizer D}
     (hp : PositiveBubbleField B) (hn : NonpositiveBubbleField B) (Q : CoordinateField B)
     (hc : ChartField B Q) {R : Type w} [CommRing R] (h₂ : IsUnit (2 : R))
