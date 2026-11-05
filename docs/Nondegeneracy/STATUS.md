@@ -1,47 +1,46 @@
 # Odd nondegeneracy: current mathematical status
 
 This is the authoritative current status for `research/odd-nondegeneracy`.
-The proposed proof is [SwappedNondegeneracy](SwappedNondegeneracy.md); the
+The written proof is [SwappedNondegeneracy](SwappedNondegeneracy.md); the
 actionable dependency order is [HANDOFF](HANDOFF.md).
 Topic notes record local arguments and their original claim boundaries;
 their historical “open” lists do not override this page. Earlier inventories
 and checkpoint narratives remain available in git history.
 
-**The Phase 1 odd/mixed nondegeneracy theorem is open in Lean.** The
-end-to-end written argument remains proposed. The canonical distinct
-left mate at every weight, complete distinct-colour permutation and
-complete supported upward action have passed the full build, global axiom
-audit and every concrete consumer in #1044. The action has no additional
-relation or inverse premise. The full matrix coefficient observation and
-canonical source-unit normalization are also integrated.
+**The Phase 1 odd/mixed nondegeneracy theorem is proved in Lean.**
+`QuiverHecke.nondegeneracy_of_symmetrizer`
+([VacuumRouteSwappedRightNegative](../../OddMath/QuiverHecke/VacuumRouteSwappedRightNegative.lean))
+states: for a Cartan superdatum `D` with a symmetrizer `sy : SKM.Symmetrizer D`
+(positive integers `dᵢ` with `dᵢ dᵢⱼ = dⱼ dⱼᵢ`), every commutative ring `R`
+with `IsUnit (2 : R)`, every scalar system `Sc` with `Sc.Homogeneous`, and
+every `cs : SKM.CScalars Sc`, `SKM.NondegeneracyConjecture cs` holds (BE2,
+arXiv:1701.04133v2, §8). It has no further hypotheses; its axioms are
+`propext`, `Classical.choice` and `Quot.sound`, and the concrete consumer
+[SwappedRouteNondegeneracy](../../scripts/NonVacuity/SwappedRouteNondegeneracy.lean)
+applies it to a mixed-parity two-colour datum with distinct symmetrizer
+entries.
 
-The vacuum-row/source-chart identification, exact source-unit word value,
-whole-Hom layer transport, evaluated cap monomials, principal factor
-coordinates, explicit parameter schedule and original-datum action pullback
-passed full CI and are integrated in #1046. The exact affine and normalized
-bubble embedding maps, coefficient/PBW transport, presented-layer action,
-global/local dot/crossing chart conjugacies, finite odd bend and actual
-padded matrix attachment, even bend/slide/cap formulas on mixed data, and
-all-vector tensor polynomial windows passed full CI and are integrated in
-#1047. Both integrations include the warning-free full build, global axiom
-audit and every concrete consumer.
+The proof follows the swapped route. `nondegeneracy_of_swapped_bubble_fields`
+(#1068) reduces the conjecture to the positive- and nonpositive-height bubble
+fields on the swapped route bases. The positive-height field is proved
+unconditionally (#1094). The nonpositive-height field reduces through
+`SwappedRightEntriesField` to `RightVacuumEntrySupply`, and that to
+`VacuumRightNegativeEntries` at every probe reservoir (#1095). Its three
+fields are `vacuumEntry_neg_even` (#1086), `vacuumEntry_neg_odd` and
+`vacuumEntry_odd_neg` (#1084); #1098 assembles them into
+`rightVacuumEntrySupply`, `swappedRightEntriesField` and the end theorem.
+The ground-ring descent to characteristic-zero fields, finite-colour
+restriction and pairing-extension recovery used by the route are the checked
+reductions described below.
 
-The final assembly is now a checked conditional theorem.
-`QuiverHecke.nondegeneracy_of_vacuum_route` (#1056) proves the Phase 1
-conjecture for a symmetrizable datum, over every commutative ring with `2`
-invertible and every homogeneous scalar system, from the named open
-hypotheses `VacuumRouteHypotheses D sy`. Its proof composes the checked
-ground-ring descent, finite-colour restriction, pairing-extension recovery
-at `(μ, 0)` (#1050) and bounded vacuum recovery. The route hypotheses are
-not discharged; they are listed under the remaining critical chain. The
-inverse-column moment identities of #1051–#1053 express the normalized
-left bubble moments through the reservoir moments as the substituted bubble
-series, at odd and even colours and positive height, for abstract inputs;
-their attachment to the constructed action is open. On purely even data
-with Khovanov–Lauda scalars and finitely many colours, the end theorem's
-conclusion is the checked even theorem (#1059); this compares conclusions
-and does not discharge the route hypotheses there. Preserved drafts are
-not completed results.
+The earlier conditional end theorem `QuiverHecke.nondegeneracy_of_vacuum_route`
+(#1056) remains conditional on `VacuumRouteHypotheses D sy`; it is superseded
+by the swapped route and its hypotheses are not discharged. On purely even
+data with Khovanov–Lauda scalars and finitely many colours, the conclusion
+matches the checked even theorem (#1059); this compares conclusions only.
+Phase 2 and the full all-even comparison of
+[FieldScopeBoundary](FieldScopeBoundary.md) remain open, so the branch is
+not complete.
 
 ## Scope
 
@@ -68,11 +67,11 @@ characteristic-zero field case for the same datum and homogeneous parameters.
 It requires no domain, reducedness, flatness, finite-colour or independent-root
 hypothesis on the target ring. Thus proving that field input supplies the
 ordinary-ring conclusion; no additional ground-ring descent remains.
-The field input is still open. This reduction retains the datum and
+The field input is supplied by the swapped route (top of this page). This reduction retains the datum and
 homogeneity conditions and does not address genuinely supercommutative
 base rings or existence of CScalars for every weight realization.
 Intermediate lemmas may have broader scope. The field predicate fixes the datum;
-completing the present construction with a supplied positive symmetrizer
+the swapped-route construction with a supplied positive symmetrizer
 therefore establishes Phase 1. Symmetrizability is not implied by `Datum`,
 homogeneous parameters or supplied normalizations, and will remain an intended
 hypothesis. Relaxing parameter homogeneity belongs to Phase 2; proving the
@@ -843,46 +842,25 @@ and normalized content/weight transport are not asserted.
 
 ## Remaining critical chain
 
-The Phase 1 theorem follows from `QuiverHecke.nondegeneracy_of_vacuum_route`
-once `VacuumRouteHypotheses D sy` is proved. Its single field asks, over
-every characteristic-zero field, homogeneous scalar system, normalization,
-finite colour set `J`, equal-weight upward word pair, external weight `μ` and
-degree bound `d`, for a `VacuumRouteSector` of the pairing extension of the
-restriction to `J` at `(μ, 0)`. Beyond the action, vacuum vector and
-coefficient map, a sector consists of four open inputs:
+Phase 1 is proved (see the top of this page). The remaining obligations of
+the branch are those of [FieldScopeBoundary](FieldScopeBoundary.md):
 
-1. **Positive-height bubbles** (`VacuumBubblesPositiveHeight`): for colours
-   with `0 < ⟨hᵢ, μ⟩`, the normalized left bubbles act, in both parities, as
-   the coefficients of the substituted bubble series. The moment identities
-   `even_inverse_column_moments` and `odd_inverse_column_moments` are
-   checked for abstract inputs; their instantiation on the tensor vacuum is
-   in progress (#1055).
-2. **Nonpositive-height bubbles** (`VacuumBubblesNonpositiveHeight`): the
-   same identity for `⟨hᵢ, μ⟩ ≤ 0`, as reciprocal series; in progress
-   (#1057).
-3. **Vacuum coordinates** (`VacuumCoordinates`): an ideal of the
-   coefficient Hom space contained in weight at least
-   `vacuumCutoff t d - 2·C(|t|, 2)`, with a linear coordinate map from the
-   target sector to the quotient, from the canonical vacuum coefficient
-   quotient class; in progress (#1054).
-4. **Chart coherence** (`VacuumChartCoherence`): every presented upward
-   diagram applied to the substituted vacuum and read in these coordinates
-   gives the class of the placed, substituted source coefficient. This is
-   the compatibility of the contextual layer charts with the regular probe,
-   retaining the dot and both crossing maps; in progress (#1058).
+1. **Phase 2.** Inhomogeneous parameters for symmetrizable data, at least
+   the graded-coefficient generality of Brundan–Wang–Webster,
+   arXiv:2505.22929v2, Theorem 5.6, and its underlying ungraded basis
+   statement. Neither the present homogeneous proof nor its ground-ring
+   reduction is known to supply this.
+2. **All-even comparison.** A checked comparison at parity identically zero
+   recovering the benchmark's ordinary basis theorem: presentations,
+   normalizations, decorated matching families and bubble coefficients, and
+   the grading. #1059 compares conclusions only, for Khovanov–Lauda scalars
+   and finitely many colours.
+3. **Normalizations.** `CScalars` is supplied; recovering every benchmark
+   datum requires supplying compatible normalizations under its realization
+   hypotheses or a change-of-normalization comparison.
 
-Items 1 and 2 together give `AdjunctionBubbleSeries` by
-`adjunctionBubbleSeries_of_heights`, and a sector converts to a
-`SwappedVacuumBlock` by `VacuumRouteSector.toSwappedVacuumBlock`. The
-reductions after a sector (finite colours, orientation, pairing extension,
-ground ring) are checked. The all-even comparison of the completion
-criterion is checked at the level of the conclusion
-(`vacuumRoute_conclusion_of_isEven`).
-
-The older `GlobalFactorNondegeneracy.globalProbeReservoir` uses polynomial
-parameters and conditional local inversions. The intended factor for this
-construction is `elvProbeReservoir`, with its full exterior-coefficient
-reservoir and untruncated evaluated OLD probe.
+The conditional `VacuumRouteSector` inputs of the earlier vacuum route are no
+longer on the critical path.
 
 ## Verification
 
@@ -934,6 +912,21 @@ integrations passed the same gates: #1051 at
 The all-even comparison #1059 passed at
 `76135478ad984f3b069d9d5c2678a105d515a1da` (run 41922254626), merged at
 `da4974a20e3649e6ad1fb2d891bcc842d78053c9`.
+The swapped route integrations passed the full build with warnings as
+errors, the global axiom audit and every non-vacuity consumer: #1068 at
+`31a4edf5e6c7e65a66b8090909a1096a874a410f` (run 41953083238), merged at
+`e960f53075b8aeb02ffa40d5a00ccee8191831a9`; #1094 at
+`f2d4bb249f27ccd65b53a4ef1f5ab254df35b1d3` (run 41972818229), merged at
+`5f939aa25eee0dc4f89e7f94c898db422e8b3937`; #1095 at
+`310fce3601dc4104ce67a37f7aca28d8c46b7a5b` (run 41985645082), merged at
+`afa58b3ecc8994d90a689e3eabe1bea092b09c73`; #1086 at
+`edf8adcbc2e92b6dfc34a09c03a804a284d0b5ea` (run 41994571845), merged at
+`01e7e2a8532b7b098d8f36d020bb9aef9203aacd`; #1084 at
+`3a8aef1321952689f275be14c4eda2c92e0d380c` (run 42001177340), merged at
+`7cc439bafe0e982c596b2c2aa7acfa17a3c1c3fd`. The end-theorem assembly #1098
+passed the same gates, with `nondegeneracy_of_symmetrizer` depending only on
+`propext`, `Classical.choice` and `Quot.sound`; its exact head, run and
+merge commit are recorded in the pull request.
 The unfinished snapshot `0fe99e8dc4520ec9e8174c8e4604c3db181d0378`
 is reachable in primary history but is excluded from the checked tree.
 No verification claim applies to its draft proofs. Topic branches and proposed source are not established by submission

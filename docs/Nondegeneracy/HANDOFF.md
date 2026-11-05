@@ -2,29 +2,39 @@
 
 ## Research objective and order
 
-Finish **Phase 1**, the symmetrizable homogeneous-parameter theorem, using
-the dependencies below and the already-proved ground-ring reduction. Then
-begin **Phase 2**, inhomogeneous parameters for symmetrizable data. Do not
-pursue nonsymmetrizable Cartan data. Stop when the odd analog and its checked
-all-even specialization recover the most general cited even nondegeneracy
-theorems over rings with 2 invertible; see
+**Phase 1 is proved.** `QuiverHecke.nondegeneracy_of_symmetrizer` proves
+the conjecture for every symmetrizable Cartan superdatum, every commutative
+ring with 2 invertible, every homogeneous scalar system and every supplied
+`CScalars`, with no further hypotheses; the swapped route, exact heads and
+integration evidence are in [STATUS](STATUS.md). Do not pursue
+nonsymmetrizable Cartan data. The branch is complete when the odd analog and
+its checked all-even specialization recover the most general cited even
+nondegeneracy theorems over rings with 2 invertible; see
 [FieldScopeBoundary](FieldScopeBoundary.md) for the parameter benchmark and
-completion checks. Phase 2 does not block completion of the Phase 1 proof.
+completion checks.
+
+Next mathematical targets, in order:
+
+1. **All-even comparison.** At parity identically zero, identify the
+   presentation, normalizations, decorated matching families and bubble
+   coefficients with the ordinary Kac–Moody 2-category of the even
+   benchmark, and recover its basis theorem (including the grading) from
+   `nondegeneracy_of_symmetrizer`. #1059 compares conclusions only.
+2. **Phase 2.** Inhomogeneous parameters for symmetrizable data, covering
+   the graded-coefficient generality of Brundan–Wang–Webster,
+   arXiv:2505.22929v2, Theorem 5.6. First decide how the present `Scalars`
+   presentation extends to positive-degree coefficients, then check which
+   steps of the swapped route use `Sc.Homogeneous`.
+3. **Normalizations.** Supply compatible `CScalars` under the benchmark's
+   realization hypotheses, or prove a change-of-normalization comparison.
 
 Start with [STATUS](STATUS.md) for established scope and claim boundaries.
-[SwappedNondegeneracy](SwappedNondegeneracy.md) is the proposed written proof.
+[SwappedNondegeneracy](SwappedNondegeneracy.md) is the written proof.
 This file records next mathematical dependencies, not session telemetry.
-
-The final assembly is checked as a conditional theorem:
-`QuiverHecke.nondegeneracy_of_vacuum_route` proves the Phase 1 conjecture
-from the open hypotheses `VacuumRouteHypotheses D sy` (#1056); exact source
-heads and integration evidence are in STATUS. The final theorem is open.
-Restart with the four inputs of a `VacuumRouteSector` listed below. Each
-merged input should be wired into a corollary of
-`nondegeneracy_of_vacuum_route` with that input removed from the
-hypotheses. The most recent unfinished source tree is
-`0fe99e8dc4520ec9e8174c8e4604c3db181d0378`; its exact failure boundaries
-and paths appear below and in ResearchHistory.
+The sections below record the dependency analysis that led to the Phase 1
+proof, including the superseded conditional vacuum route
+(`QuiverHecke.nondegeneracy_of_vacuum_route`, #1056); they are retained as
+restart context and are not open obligations of Phase 1.
 
 
 ## Work backward from the final theorem
