@@ -149,28 +149,6 @@ private theorem vacuumNegEven_bubble (i : I) (hi : D.parity i = 0)
     (vacuumNegEven_negInverseAt D Sc m cutoff ΛP ΛR L hP hR sy hc i hh) cc
 
 include sy hc in
-/-- The decoded vacuum entry of `η x^(N - M - 1 + s)` followed by `dcap (N - M - 1)` on the
-tensor vacuum object, at an even colour with negative vacuum height. -/
-private theorem vacuumNegEven_tensorDecode (i : I) (hi : D.parity i = 0)
-    (hP0 : 0 < probeCutoff D m i) (hh : D.h i ν₀ < 0) (hPN : m i < cutoff i) (s : ℕ) :
-    ∃ c : (E).obj Zt ≅ V, (∃ h, c.hom = eqToHom h) ∧ ∀ z,
-      dec ((c.inv ≫ (E).map ((P).etaEntry cc i (cutoff i - m i - 1 + s) ν₀ (.nil _)
-          (SPath.centralDnUp i (SKM.wt D ν₀ [SKM.up i]) ν₀ ((0, 0) : Sector I) ⟨false, trivial⟩)
-          Zt ≫
-        (lw).dcap i (cutoff i - m i - 1) ν₀
-          (SPath.centralDnUp i (SKM.wt D ν₀ [SKM.up i]) ν₀ ((0, 0) : Sector I) ⟨false, trivial⟩)
-          (.nil _) Zt) ≫ c.hom).total star z) =
-      coefficientPowerQuotientMap D cutoff L (SYM.polynomialInclude D k
-        (PowerSeries.coeff s (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i))) *
-        dec z := by
-  obtain ⟨c, j, B, hB, hceq, hcup⟩ :=
-    vacuumNegEven_bubble D Sc m cutoff ΛP ΛR L hP hR sy hc i hi hP0 hh
-  refine ⟨c, hceq, fun z => ?_⟩
-  exact (congrArg (fun g => dec (g.total star z))
-    (hcup ⟨cutoff i - m i - 1, by omega⟩ (cutoff i - m i - 1 + s))).symm.trans
-    (vacuumNegEven_column D Sc m cutoff L sy hc i hi hP0 hPN j B hB s z)
-
-include sy hc in
 /-- The decoded vacuum entry of `η x^e ≫ dcap n` at an even colour with negative vacuum
 height, at the shifts `n = N - M - 1`, `e = n + s` read off the extreme moment column. -/
 private theorem vacuumNegEven_decode (i : I) (hi : D.parity i = 0)
@@ -191,14 +169,18 @@ private theorem vacuumNegEven_decode (i : I) (hi : D.parity i = 0)
   have hnZ : (n : ℤ) < -D.h i ν₀ := by rw [hhe, hn]; omega
   have hd : ¬StepValid (dn i) true ((0, 0) : Sector I) := by simp [StepValid]
   have hZ : Z = Zt := by rw [tensorTargetFamily_zero]
-  obtain ⟨c, ⟨h0', hc0⟩, hf⟩ :=
-    vacuumNegEven_tensorDecode D Sc m cutoff ΛP ΛR L hP hR sy hc i hi hP0 hh hPN s
+  obtain ⟨c, j, B, hB, ⟨h0', hc0⟩, hcup⟩ :=
+    vacuumNegEven_bubble D Sc m cutoff ΛP ΛR L hP hR sy hc i hi hP0 hh
   refine ⟨eqToIso (congrArg (E).obj hZ) ≪≫ c, ⟨(congrArg (E).obj hZ).trans h0', by
     rw [Iso.trans_hom, eqToIso.hom, hc0, eqToHom_trans]⟩, fun z => ?_⟩
   rw [conj_compDiag_even_of_eq D Sc m cutoff ΛP ΛR L hP hR sy hc hZ c,
     ProbeReservoir.compDiag_etaL_dcapL_swappedGens (P) _ _ i e n ν₀ hnZ (0,0) Zt hd]
   subst hn he
-  exact hf z
+  have hcol := hcup ⟨cutoff i - m i - 1, by omega⟩ (cutoff i - m i - 1 + s)
+  dsimp only [Fin.val_mk] at hcol
+  have hm := vacuumNegEven_column D Sc m cutoff L sy hc i hi hP0 hPN j B hB s z
+  rw [hcol] at hm
+  exact hm
 
 include sy hc in
 /-- **Even right bubbles at negative height.** For an even colour `i` with
