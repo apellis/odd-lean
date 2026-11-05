@@ -346,11 +346,11 @@ theorem tensorMatrixQuotientObservation_dot
   -- the literal layer entry, and its equality-transport form
   have hE := tensorOriginalWordEntry_layer D Sc m cutoff ΛP ΛR L hP hR s
     ((P).swappedGens a leftward) (Aℓ) hA hEnd p p hp hp x
-  have hT₀ := tensorOriginalWordLayer_dot_transport D Sc m cutoff ΛP ΛR L hP hR
+  obtain ⟨h₁, h₂, hT⟩ := tensorOriginalWordLayer_dot_transport D Sc m cutoff ΛP ΛR L hP hR
     ν u v i hv pL hl pR hr
-  have hT₁ := hT₀ (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom) p hp)
-  have hT₂ := hT₁ (tensorRowTargetIso_hom_eqToHom D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom) p hp)
-  obtain ⟨h₁, h₂, hT⟩ := hT₂ a leftward
+    (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom) p hp)
+    (tensorRowTargetIso_hom_eqToHom D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom) p hp)
+    a leftward
   have hL : tensorOriginalWordLayer D Sc m cutoff ΛP ΛR L hP hR s ((P).swappedGens a leftward)
       (Aℓ) p p hp hp = eqToHom h₁ ≫
         tensorLayerDotRaw D Sc m cutoff L ΛP ΛR hP hR ν u v i hv pL hl pR hr a ≫ eqToHom h₂.symm :=
