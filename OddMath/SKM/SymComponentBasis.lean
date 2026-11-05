@@ -2,7 +2,7 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.SKM.BubbleCoefficientBasis
+import OddMath.SKM.BubbleCoefficientGenerators
 import OddMath.SKM.DimensionFormula
 
 /-!
@@ -62,24 +62,6 @@ theorem coefficientBidegree_genIndex (g : SYMGen D) :
   cases g <;> simp [genIndex, coefficientBidegree, symGenParity]
 
 variable (k : Type w) [CommRing k]
-
-theorem oddExteriorBasis_empty : oddExteriorBasis D k ∅ = 1 := by
-  let : LinearOrder {i : I // D.parity i = 1} := WellOrderingRel.isWellOrder.linearOrder
-  change (Finsupp.basisSingleOne : Module.Basis {i : I // D.parity i = 1} k
-    (OddModule D k)).ExteriorAlgebra ∅ = 1
-  rw [ExteriorAlgebra.basis_apply_ofCard _ Finset.card_empty]
-  simp [ExteriorAlgebra.ιMulti_family]
-
-theorem oddExteriorBasis_singleton (i : {i : I // D.parity i = 1}) :
-    oddExteriorBasis D k {i} = ExteriorAlgebra.ι k (Finsupp.single i 1) := by
-  let : LinearOrder {i : I // D.parity i = 1} := WellOrderingRel.isWellOrder.linearOrder
-  change (Finsupp.basisSingleOne : Module.Basis {i : I // D.parity i = 1} k
-    (OddModule D k)).ExteriorAlgebra {i} = _
-  rw [ExteriorAlgebra.basis_apply_ofCard _ (Finset.card_singleton i)]
-  have hv : ∀ j : Fin 1, (Set.powersetCard.ofFinEmbEquiv.symm
-      (Set.powersetCard.ofCard (Finset.card_singleton i))) j = i :=
-    fun j => Finset.orderEmbOfFin_singleton i j
-  simp [ExteriorAlgebra.ιMulti_family, ExteriorAlgebra.ιMulti_apply, hv]
 
 theorem coefficientBasis_zero : coefficientBasis D k (0, ∅) = 1 := by
   apply (polynomialExteriorEquiv D k).injective
