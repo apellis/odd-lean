@@ -57,9 +57,10 @@ local notation "cc" => elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc
 local notation "lw" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc
 
 /-- The decoded value of the coefficient action at the vacuum object of the tensor target
-family is left multiplication, for every comparison with the tensor vacuum value. -/
+family is left multiplication, for every comparison with the tensor vacuum value that is
+an `eqToHom`. -/
 def VacuumCoefficientDecode : Prop :=
-  ∀ (c : (E).obj (Ys (0,0)).obj ≅ V) (a : SYM D k),
+  ∀ (c : (E).obj (Ys (0,0)).obj ≅ V), (∃ h, c.hom = eqToHom h) → ∀ (a : SYM D k),
     vacuumDecode D Sc m cutoff ΛP ΛR L hP hR _ c
       (tensorTargetFamilyCoefficientAction D Sc m cutoff L ΛP ΛR (0,0) a).hom =
     LinearMap.mulLeft k (coefficientPowerQuotientMap D cutoff L a)
@@ -118,7 +119,7 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
   have hPN : 2 * m i < cutoff i := by omega
   have hnZ : (n : ℤ) < -D.h i ν₀ := by rw [hhe, hn]; omega
   have hd : ¬StepValid (dn i) true ((0, 0) : Sector I) := by simp [StepValid]
-  obtain ⟨c, j, B, -, hcup, hm⟩ := tensorVacuum_rightward_odd_moments D Sc m cutoff L ΛP ΛR
+  obtain ⟨c, j, B, -, hceq, hcup, hm⟩ := tensorVacuum_rightward_odd_moments D Sc m cutoff L ΛP ΛR
     hP hR sy hc i hi (by rw [odd_probeCutoff_eq D m i hi]; omega) hPN (Ys (0,0)).obj
     ((congrArg (fun Y => Y.obj) (tensorTargetFamily_zero D Sc m cutoff ΛP ΛR L)).trans
       (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hP hR).symm)
@@ -127,7 +128,7 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
     (centralPointwiseLeftward_negInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
       (Ys (0,0)) hh) cc
   apply vacuumEntry_of_decode D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀ _ _ a c
-    (vacuumDecodeFaithful_tensorTarget D Sc m cutoff ΛP ΛR L hP hR c) (hcoef c a)
+    (vacuumDecodeFaithful_tensorTarget D Sc m cutoff ΛP ΛR L hP hR c) (hcoef c hceq a)
   intro z
   rw [ProbeReservoir.compDiag_etaL_dcapL_swappedGens (P) cc lw i e n ν₀ hnZ (0,0) _ hd]
   subst hn
