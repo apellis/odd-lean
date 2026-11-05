@@ -57,7 +57,7 @@ theorem pointwiseLeftward_lcrossSame_supernatural (i : I) (ν : X) {t s : Sector
       (fun Z => (L).lcrossSame i ν q p Z.obj) := by
   by_cases hw : (P).wt s = ν
   · have hC := elvProbeCrossCoeffOf_isSupernatural D Sc m cutoff bound ΛP ΛR hP hR
-    hdot
+        hdot
     by_cases hh : 0 ≤ D.h i ν
     · exact (leftward_supernatural_of_posInverseAt_comp c L hC i ν t s
         (retainedInclusion D Sc m cutoff bound ΛP ΛR hP hR s)
@@ -86,7 +86,7 @@ theorem pointwiseLeftward_dcup_supernatural (i : I) (n : ℕ) (ν : X)
   by_cases hw : (P).wt s = ν
   · have hh : 0 ≤ D.h i ν := by omega
     have hC := elvProbeCrossCoeffOf_isSupernatural D Sc m cutoff bound ΛP ΛR hP hR
-    hdot
+        hdot
     exact IsSupernatural.of_parity_eq
       ((leftward_supernatural_of_posInverseAt_comp c L hC i ν t s
         (retainedInclusion D Sc m cutoff bound ΛP ΛR hP hR s)
@@ -111,7 +111,7 @@ theorem pointwiseLeftward_dcap_supernatural (i : I) (n : ℕ) (ν : X)
   by_cases hw : (P).wt s = ν
   · have hh : D.h i ν < 0 := by omega
     have hC := elvProbeCrossCoeffOf_isSupernatural D Sc m cutoff bound ΛP ΛR hP hR
-    hdot
+        hdot
     exact IsSupernatural.of_parity_eq
       ((leftward_supernatural_of_negInverseAt_comp c L hC i ν t s
         (retainedInclusion D Sc m cutoff bound ΛP ΛR hP hR s)

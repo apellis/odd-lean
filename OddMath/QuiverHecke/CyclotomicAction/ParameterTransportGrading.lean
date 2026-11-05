@@ -23,6 +23,9 @@ noncomputable section
 
 namespace OddMath.QuiverHecke
 
+open scoped Classical
+open OddMath.Diagrams
+
 universe u v
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
