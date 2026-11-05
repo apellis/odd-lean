@@ -82,6 +82,18 @@ theorem evaluatedMixedBend_even_slideOf
   rw [hs, hi, koszulSign_zero_left, one_smul]
   exact evenSeries_slide _ (shiftedPreDot_even_isUnit D Sc m R₀ i hi H) _ _ _ hy'
 
+/-- `evaluatedMixedBend_even_slideOf` with the even Koszul sign written as `1`. -/
+theorem evaluatedMixedBend_even_slide_one
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (i : I) (hi : D.parity i = 0)
+    (hP : 0 < probeCutoff D m i) (H : modulePiCategory D Sc m ⟶ R₀) :
+    evaluatedMixedBend D Sc m cutoff bound i hP H ≫ evaluatedPostDot D Sc m cutoff bound i H -
+      (1 : k) • (shiftedPreDot D Sc m R₀ i H ≫ evaluatedMixedBend D Sc m cutoff bound i hP H) =
+      shiftedPreCap D Sc m R₀ i hP H ≫
+        (adjunction (contentAppend D Sc cutoff bound (0 : Multiset I) [i])).unit.app (H.obj N₀) := by
+  have hs := evaluatedMixedBend_even_slideOf D Sc m cutoff bound hdot i hi hP H
+  rw [one_smul]
+  simpa only [hi, koszulSign_zero_left, one_smul] using hs
+
 include sy hc in
 /-- For homogeneous parameters: the parity-zero mate slide on the prescribed evaluated bend,
 with no slide premise. -/

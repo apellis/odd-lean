@@ -47,7 +47,6 @@ def homTensorProj (X Y Z : D) (n : ℤ) :
     map_smul' := fun c y => GradedTensor.proj_smul 𝒜 _ _
       (fun hr hf => hD hr hf) (fun hr hf => hD hr hf) n c y }
 
-omit [∀ X Y : D, IsScalarTower K R (X ⟶ Y)] in
 /-- A homogeneous pure tensor is fixed or killed by the degree projection. -/
 theorem homTensorProj_tmul (X Y Z : D) (n : ℤ) (g : Y ⟶ Z) (b : X ⟶ Y) {q r : ℤ}
     (hg : g ∈ degree (R := K) Y Z q) (hb : b ∈ degree (R := K) X Y r) :
@@ -58,8 +57,8 @@ theorem homTensorProj_tmul (X Y Z : D) (n : ℤ) (g : Y ⟶ Z) (b : X ⟶ Y) {q 
     (fun hr hf => hD hr hf) (fun hr hf => hD hr hf) n (g ⊗ₜ[R] b) = _
   rw [GradedTensor.proj_tmul, GradedTensor.projBihom_of_mem_of_mem _ _ hg hb]
   by_cases hn : q + r = n
-  · rw [if_pos hn, if_pos hn]
-  · rw [if_neg hn, if_neg hn]
+  · rw [ite_eq_left hn, ite_eq_left hn]
+  · rw [ite_eq_right hn, ite_eq_right hn]
 
 /-- Project a tensor summand onto its sum integer degree, then descend to the balanced
 quotient. -/
@@ -77,9 +76,9 @@ theorem integerSummandOver_homogeneous (v t : D) (n : ℤ) (s : C)
       if q + r = n then componentTensor (k := R) J v t s g b else 0 := by
   rw [integerSummandOver, LinearMap.comp_apply, homTensorProj_tmul 𝒜 hD v (J.obj s) t n g b hg hb]
   by_cases hn : q + r = n
-  · rw [if_pos hn, if_pos hn]
+  · rw [ite_eq_left hn, ite_eq_left hn]
     rfl
-  · rw [if_neg hn, if_neg hn, map_zero]
+  · rw [ite_eq_right hn, ite_eq_right hn, map_zero]
 
 include hJ in
 private theorem integerSummandOver_balance_homogeneous (v t : D) (n : ℤ)
@@ -94,9 +93,9 @@ private theorem integerSummandOver_balance_homogeneous (v t : D) (n : ℤ)
     integerSummandOver_homogeneous 𝒜 J hD v t n s' g (b ≫ J.map f)
       hg (comp_mem_degree hb (hJ hf))]
   by_cases h : p + q + r = n
-  · rw [if_pos h, if_pos (by omega)]
+  · rw [ite_eq_left h, ite_eq_left (by omega)]
     exact BalancedInduction.balance J (J ⋙ homModule (k := R) v) f g b
-  · rw [if_neg h, if_neg (by omega)]
+  · rw [ite_eq_right h, ite_eq_right (by omega)]
 
 include hJ in
 /-- Integer projection respects balancing by every source arrow, including sums of different
@@ -111,7 +110,7 @@ theorem integerSummandOver_balance (v t : D) (n : ℤ) (s s' : C)
   · refine induction_on_degree (R := K) g ?_ (fun q g hg => ?_) ?_
     · simp only [Limits.comp_zero, zero_tmul, map_zero]
     · refine induction_on_degree (R := K) b ?_ (fun r b hb => ?_) ?_
-      · simp only [Limits.zero_comp, zero_tmul, tmul_zero, map_zero]
+      · simp only [Limits.zero_comp, tmul_zero, map_zero]
       · exact integerSummandOver_balance_homogeneous 𝒜 J hJ hD v t n f g b hf hg hb
       · intro b b' hb hb'
         simpa only [Preadditive.add_comp, tmul_add, map_add] using congrArg₂ (· + ·) hb hb'
@@ -126,6 +125,7 @@ def rawProjectionOver (v t : D) (n : ℤ) :
     BalancedInduction.Raw J (J ⋙ homModule (k := R) v) t →ₗ[K] Component (k := R) J v t :=
   DirectSum.toModule K C _ fun s => integerSummandOver 𝒜 J hD v t n s
 
+omit [Preadditive C] [Linear K C] [Supercategory K C] [GradedSupercategory K C] [J.Additive] in
 theorem rawProjectionOver_rawTensor (v t : D) (n : ℤ) (s : C)
     (g : J.obj s ⟶ t) (b : v ⟶ J.obj s) :
     rawProjectionOver 𝒜 J hD v t n
@@ -147,8 +147,8 @@ theorem relations_le_ker_rawProjectionOver (v t : D) (n : ℤ) :
       obtain ⟨s, s', f, h, m, rfl⟩ := hx
       intro c
       have e1 : c • BalancedInduction.rawTensor J (J ⋙ homModule (k := R) v) s (J.map f ≫ h) m =
-          BalancedInduction.rawTensor J (J ⋙ homModule (k := R) v) s (J.map f ≫ c • h) m := by
-        rw [Linear.comp_smul, BalancedInduction.rawTensor, BalancedInduction.rawTensor,
+          BalancedInduction.rawTensor J (J ⋙ homModule (k := R) v) s (J.map f ≫ (c • h)) m := by
+        rw [Linear.comp_smul (R := R), BalancedInduction.rawTensor, BalancedInduction.rawTensor,
           ← TensorProduct.smul_tmul', map_smul]
       have e2 : c • BalancedInduction.rawTensor J (J ⋙ homModule (k := R) v) s' h
             ((J ⋙ homModule (k := R) v).map f m) =
@@ -164,7 +164,7 @@ theorem relations_le_ker_rawProjectionOver (v t : D) (n : ℤ) :
     | smul a x _ hx => intro c; rw [smul_smul]; exact hx (c * a)
   intro x hx
   rw [Submodule.restrictScalars_mem] at hx
-  simpa only [one_smul] using key x hx 1
+  simpa only [one_smul, LinearMap.mem_ker] using key x hx 1
 
 /-- Integer projection on the represented balanced kernel, as a `K`-linear map. -/
 def integerProjectionOver (v t : D) (n : ℤ) :
@@ -180,7 +180,7 @@ theorem integerProjectionOver_inclusion (v t : D) (n : ℤ) (s : C)
         (BalancedInduction.inclusion J (J ⋙ homModule (k := R) v) t s y) =
       integerSummandOver 𝒜 J hD v t n s y := by
   change ((BalancedInduction.relations J (J ⋙ homModule (k := R) v) t).restrictScalars K).liftQ
-      (rawProjectionOver 𝒜 J hD v t n) _
+      (rawProjectionOver 𝒜 J hD v t n) (relations_le_ker_rawProjectionOver 𝒜 J hJ hD v t n)
       ((Submodule.Quotient.restrictScalarsEquiv K _).symm
         (Submodule.Quotient.mk (DirectSum.lof R C _ s y))) = _
   rw [Submodule.Quotient.restrictScalarsEquiv_symm_mk, Submodule.liftQ_apply]
@@ -212,21 +212,21 @@ theorem componentTensor_mem_integerDegreeOver (v t : D) (s : C)
     (g : J.obj s ⟶ t) (b : v ⟶ J.obj s) {q r : ℤ}
     (hg : g ∈ degree (R := K) (J.obj s) t q)
     (hb : b ∈ degree (R := K) v (J.obj s) r) :
-    componentTensor (k := R) J v t s g b ∈ integerDegreeOver J v t (q + r) :=
+    componentTensor (k := R) J v t s g b ∈ integerDegreeOver (K := K) (R := R) J v t (q + r) :=
   Submodule.mem_iSup_of_mem s (Submodule.mem_map_of_mem (GradedTensor.tmul_mem_part hg hb))
 
 omit [GradedAlgebra 𝒜] [J.Additive] in
 /-- Check a degree-submodule containment on its homogeneous pure tensors. -/
 theorem integerDegreeOver_le_iff (v t : D) (n : ℤ)
     (S : Submodule K (Component (k := R) J v t)) :
-    integerDegreeOver J v t n ≤ S ↔
+    integerDegreeOver (K := K) (R := R) J v t n ≤ S ↔
     ∀ (s : C) (q r : ℤ), q + r = n →
       ∀ g ∈ degree (R := K) (J.obj s) t q,
       ∀ b ∈ degree (R := K) v (J.obj s) r,
         componentTensor (k := R) J v t s g b ∈ S := by
   constructor
   · intro h s q r hqr g hg b hb
-    exact h (hqr ▸ componentTensor_mem_integerDegreeOver J v t s g b hg hb)
+    exact h (hqr ▸ componentTensor_mem_integerDegreeOver (K := K) (R := R) J v t s g b hg hb)
   · intro h
     refine iSup_le fun s => (Submodule.map_le_iff_le_comap).2 ?_
     refine Submodule.span_le.2 ?_
@@ -235,30 +235,31 @@ theorem integerDegreeOver_le_iff (v t : D) (n : ℤ)
 
 /-- Integer projection is the identity on its prescribed part and zero on every other part. -/
 theorem integerProjectionOver_of_mem (v t : D) {m n : ℤ}
-    {x : Component (k := R) J v t} (hx : x ∈ integerDegreeOver J v t m) :
+    {x : Component (k := R) J v t} (hx : x ∈ integerDegreeOver (K := K) (R := R) J v t m) :
     integerProjectionOver 𝒜 J hJ hD v t n x = if m = n then x else 0 := by
   let Q : Component (k := R) J v t →ₗ[K] Component (k := R) J v t :=
     if m = n then LinearMap.id else 0
-  have hle : integerDegreeOver J v t m ≤
+  have hle : integerDegreeOver (K := K) (R := R) J v t m ≤
       (integerProjectionOver 𝒜 J hJ hD v t n).eqLocus Q := by
-    apply (integerDegreeOver_le_iff J v t m _).2
+    apply (integerDegreeOver_le_iff (K := K) (R := R) J v t m _).2
     intro s q r hqr g hg b hb
     change integerProjectionOver 𝒜 J hJ hD v t n (componentTensor (k := R) J v t s g b) =
       Q (componentTensor (k := R) J v t s g b)
     rw [integerProjectionOver_tensor 𝒜 J hJ hD v t n s g b hg hb, hqr]
     by_cases h : m = n
-    · simp only [Q, if_pos h, LinearMap.id_apply]
-    · simp only [Q, if_neg h, LinearMap.zero_apply]
+    · simp only [Q, ite_eq_left h, LinearMap.id_apply]
+    · simp only [Q, ite_eq_right h, LinearMap.zero_apply]
   have h := hle hx
   by_cases hmn : m = n
-  · simpa only [LinearMap.mem_eqLocus, Q, if_pos hmn, LinearMap.id_apply] using h
-  · simpa only [LinearMap.mem_eqLocus, Q, if_neg hmn, LinearMap.zero_apply] using h
+  · simpa only [LinearMap.mem_eqLocus, Q, ite_eq_left hmn, LinearMap.id_apply] using h
+  · simpa only [LinearMap.mem_eqLocus, Q, ite_eq_right hmn, LinearMap.zero_apply] using h
 
 omit [GradedAlgebra 𝒜] in
 /-- Every represented balanced tensor is a finite sum of integer-homogeneous classes. -/
 theorem iSup_integerDegreeOver_eq_top (v t : D) :
-    (⨆ n : ℤ, integerDegreeOver J v t n) = ⊤ := by
-  let S : Submodule K (Component (k := R) J v t) := ⨆ n : ℤ, integerDegreeOver J v t n
+    (⨆ n : ℤ, integerDegreeOver (K := K) (R := R) J v t n) = ⊤ := by
+  let S : Submodule K (Component (k := R) J v t) :=
+    ⨆ n : ℤ, integerDegreeOver (K := K) (R := R) J v t n
   have ht (s : C) (g : J.obj s ⟶ t) (b : v ⟶ J.obj s) :
       componentTensor (k := R) J v t s g b ∈ S := by
     refine induction_on_degree (R := K) g ?_ (fun q g hg => ?_) ?_
@@ -266,7 +267,7 @@ theorem iSup_integerDegreeOver_eq_top (v t : D) :
     · refine induction_on_degree (R := K) b ?_ (fun r b hb => ?_) ?_
       · simp [componentTensor]
       · exact Submodule.mem_iSup_of_mem (q + r)
-          (componentTensor_mem_integerDegreeOver J v t s g b hg hb)
+          (componentTensor_mem_integerDegreeOver (K := K) (R := R) J v t s g b hg hb)
       · intro b b' hb hb'
         simpa only [componentTensor, BalancedInduction.tensor, tmul_add, map_add] using
           Submodule.add_mem S hb hb'
@@ -290,30 +291,31 @@ theorem iSup_integerDegreeOver_eq_top (v t : D) :
 
 /-- The integer degrees form an internal direct sum on the represented balanced kernel. -/
 theorem integerDegreeOver_internal (v t : D) :
-    DirectSum.IsInternal (integerDegreeOver (K := K) J v t) := by
+    DirectSum.IsInternal (integerDegreeOver (K := K) (R := R) J v t) := by
   apply DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top
   · refine iSupIndep_of_projections _ (integerProjectionOver 𝒜 J hJ hD v t)
       (fun n => ?_) (fun n m hmn => ?_)
     · intro x hx
-      exact (integerProjectionOver_of_mem 𝒜 J hJ hD v t hx).trans (if_pos rfl)
+      exact (integerProjectionOver_of_mem 𝒜 J hJ hD v t hx).trans (ite_eq_left rfl)
     · intro x hx
-      exact (integerProjectionOver_of_mem 𝒜 J hJ hD v t hx).trans (if_neg hmn)
-  · exact iSup_integerDegreeOver_eq_top J v t
+      exact (integerProjectionOver_of_mem 𝒜 J hJ hD v t hx).trans (ite_eq_right hmn)
+  · exact iSup_integerDegreeOver_eq_top (K := K) (R := R) J v t
 
 /-- Integer projection has its image in the prescribed part. -/
 theorem integerProjectionOver_mem (v t : D) (n : ℤ) (x : Component (k := R) J v t) :
-    integerProjectionOver 𝒜 J hJ hD v t n x ∈ integerDegreeOver J v t n := by
-  have hle : (⨆ m : ℤ, integerDegreeOver (K := K) J v t m) ≤
-      (integerDegreeOver J v t n).comap (integerProjectionOver 𝒜 J hJ hD v t n) := by
+    integerProjectionOver 𝒜 J hJ hD v t n x ∈ integerDegreeOver (K := K) (R := R) J v t n := by
+  have hle : (⨆ m : ℤ, integerDegreeOver (K := K) (R := R) J v t m) ≤
+      (integerDegreeOver (K := K) (R := R) J v t n).comap
+        (integerProjectionOver 𝒜 J hJ hD v t n) := by
     refine iSup_le fun m => ?_
     intro y hy
-    change integerProjectionOver 𝒜 J hJ hD v t n y ∈ integerDegreeOver J v t n
+    change integerProjectionOver 𝒜 J hJ hD v t n y ∈ integerDegreeOver (K := K) (R := R) J v t n
     rw [integerProjectionOver_of_mem 𝒜 J hJ hD v t hy]
     by_cases h : m = n
     · subst m
       simpa using hy
-    · simp only [if_neg h, Submodule.zero_mem]
-  rw [iSup_integerDegreeOver_eq_top J v t] at hle
+    · simp only [ite_eq_right h, Submodule.zero_mem]
+  rw [iSup_integerDegreeOver_eq_top (K := K) (R := R) J v t] at hle
   exact hle (Submodule.mem_top : x ∈ (⊤ : Submodule K _))
 
 end OddMath.QuiverHecke.ELVOld.IndResKernel

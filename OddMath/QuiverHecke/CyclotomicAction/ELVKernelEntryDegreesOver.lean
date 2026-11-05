@@ -111,7 +111,7 @@ abbrev representedKernelDegreeOver (i : I) (v t : OldCategory D Sc cutoff) (n : 
   letI := oldCategoryGradedSupercategoryOver D sy 𝒜 Sc hP cutoff
   letI : ∀ X Y : OldCategory D Sc cutoff, IsScalarTower K R (X ⟶ Y) :=
     Linear.isScalarTower_restrictScalars K R _
-  IndResKernel.integerDegreeOver (append D Sc cutoff i) v t n
+  IndResKernel.integerDegreeOver (K := K) (R := R) (append D Sc cutoff i) v t n
 
 /-- The chosen signed mate has degree `-2 dᵢ` on represented kernels, over a graded base. -/
 theorem actualMateKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
@@ -125,7 +125,7 @@ theorem actualMateKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cut
   let _ := oldCategoryGradedSupercategoryOver D sy 𝒜 Sc hP cutoff
   let _ : ∀ X Y : OldCategory D Sc cutoff, IsScalarTower K R (X ⟶ Y) :=
     Linear.isScalarTower_restrictScalars K R _
-  refine ((IndResKernel.integerDegreeOver_le_iff (append D Sc cutoff i) v t n
+  refine ((IndResKernel.integerDegreeOver_le_iff (K := K) (R := R) (append D Sc cutoff i) v t n
     ((oldDegreeOver D sy 𝒜 Sc hP cutoff ((append D Sc cutoff i).obj v)
       ((append D Sc cutoff i).obj t) (n - 2 * sy.d i)).comap
       ((actualMateKernelComponent D Sc cutoff i v t).restrictScalars K))).2 ?_) hx
@@ -152,7 +152,7 @@ theorem actualDotKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cuto
   let _ := oldCategoryGradedSupercategoryOver D sy 𝒜 Sc hP cutoff
   let _ : ∀ X Y : OldCategory D Sc cutoff, IsScalarTower K R (X ⟶ Y) :=
     Linear.isScalarTower_restrictScalars K R _
-  refine ((IndResKernel.integerDegreeOver_le_iff (append D Sc cutoff i) v t n
+  refine ((IndResKernel.integerDegreeOver_le_iff (K := K) (R := R) (append D Sc cutoff i) v t n
     ((representedKernelDegreeOver D sy 𝒜 Sc hP cutoff i v t (n + 2 * sy.d i)).comap
       ((actualDotKernelComponent D Sc cutoff i v t).restrictScalars K))).2 ?_) hx
   intro s q r hqr g hg b hb
@@ -161,7 +161,8 @@ theorem actualDotKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cuto
   have hnew := oldComp_mem_degreeOver D sy 𝒜 Sc hP cutoff
     (oldAppendDotComponent_degreeOver D sy 𝒜 Sc hP cutoff i s)
     (oldTwist_mem_degreeOver D sy 𝒜 Sc hP cutoff (D.parity i) g hg)
-  have hd := IndResKernel.componentTensor_mem_integerDegreeOver (append D Sc cutoff i) v t s
+  have hd := IndResKernel.componentTensor_mem_integerDegreeOver (K := K) (R := R)
+    (append D Sc cutoff i) v t s
     (oldAppendDotComponent D Sc cutoff i s ≫ twist R (D.parity i) g) b hnew hb
   rw [show n + 2 * sy.d i = 2 * sy.d i + q + r by omega]
   exact hd
@@ -191,7 +192,7 @@ theorem actualCounitKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc c
   let _ := oldCategoryGradedSupercategoryOver D sy 𝒜 Sc hP cutoff
   let _ : ∀ X Y : OldCategory D Sc cutoff, IsScalarTower K R (X ⟶ Y) :=
     Linear.isScalarTower_restrictScalars K R _
-  refine ((IndResKernel.integerDegreeOver_le_iff (append D Sc cutoff i) v t n
+  refine ((IndResKernel.integerDegreeOver_le_iff (K := K) (R := R) (append D Sc cutoff i) v t n
     ((oldDegreeOver D sy 𝒜 Sc hP cutoff v t n).comap
       ((actualCounitKernelComponent D Sc cutoff i v t).restrictScalars K))).2 ?_) hx
   intro s q r hqr g hg b hb

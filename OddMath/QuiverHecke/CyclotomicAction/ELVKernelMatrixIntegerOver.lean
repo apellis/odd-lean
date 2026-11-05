@@ -74,13 +74,13 @@ def representedKernelCoordinatesOver (i : I) (v t : OldCategory D Sc cutoff) :
   letI : ∀ X Y : OldCategory D Sc cutoff, IsScalarTower K R (X ⟶ Y) :=
     Linear.isScalarTower_restrictScalars K R _
   Coordinates.toInt
-    { degree := IndResKernel.integerDegreeOver (append D Sc cutoff i) v t
+    { degree := IndResKernel.integerDegreeOver (K := K) (R := R) (append D Sc cutoff i) v t
       projection := IndResKernel.integerProjectionOver 𝒜 (append D Sc cutoff i)
         (fun hf => oldAppend_mem_degreeOver D sy 𝒜 Sc hP cutoff i hf)
         (fun hr hf => oldSmul_mem_degreeOver D sy 𝒜 Sc hP cutoff hr hf) v t
       projection_mem := IndResKernel.integerProjectionOver_mem 𝒜 _ _ _ v t
       projection_of_mem := fun hx => IndResKernel.integerProjectionOver_of_mem 𝒜 _ _ _ v t hx
-      spanning := IndResKernel.iSup_integerDegreeOver_eq_top _ v t }
+      spanning := IndResKernel.iSup_integerDegreeOver_eq_top (K := K) (R := R) _ v t }
 
 private def positiveEntryCoordinatesOver (i : I) (m : ℕ) (v t : OldCategory D Sc cutoff) :
     ∀ a, Coordinates (k := ℤ) ((positiveKernelFamily D Sc cutoff i m t a).obj (op v))

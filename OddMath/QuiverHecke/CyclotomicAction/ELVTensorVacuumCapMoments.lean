@@ -385,19 +385,16 @@ include hdot in
 private theorem odd_slide (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) :
     evaluatedMixedBend D Sc m cutoff bound i hP H ≫ evaluatedPostDot D Sc m cutoff bound i H -
       (-1 : k) • (shiftedPreDot D Sc m R₀ i H ≫ evaluatedMixedBend D Sc m cutoff bound i hP H) =
-      shiftedPreCap D Sc m R₀ i hP H ≫ (adjunction K).unit.app V := by
-  have hs := evaluatedMixedBend_odd_slideOf D Sc m cutoff bound hdot i hi hP H
-  simpa only [hi, koszulSign_one_one, neg_one_zsmul, neg_one_smul] using hs
+      shiftedPreCap D Sc m R₀ i hP H ≫ (adjunction K).unit.app V :=
+  evaluatedMixedBend_odd_slide_neg D Sc m cutoff _ hdot i hi hP H
 
 include hdot in
 /-- The even-colour central slide of the A6 bend, with the unit Koszul sign made explicit. -/
 theorem evaluatedMixedBend_even_slide_sub (hi : D.parity i = 0) (hP : 0 < probeCutoff D m i) :
     evaluatedMixedBend D Sc m cutoff bound i hP H ≫ evaluatedPostDot D Sc m cutoff bound i H -
       (1 : k) • (shiftedPreDot D Sc m R₀ i H ≫ evaluatedMixedBend D Sc m cutoff bound i hP H) =
-      shiftedPreCap D Sc m R₀ i hP H ≫ (adjunction K).unit.app V := by
-  have hs := evaluatedMixedBend_even_slideOf D Sc m cutoff bound hdot i hi hP H
-  rw [one_smul]
-  simpa only [hi, koszulSign_zero_left, one_smul] using hs
+      shiftedPreCap D Sc m R₀ i hP H ≫ (adjunction K).unit.app V :=
+  evaluatedMixedBend_even_slide_one D Sc m cutoff _ hdot i hi hP H
 
 include hdot in
 /-- The decoded endomorphism form of both odd negative-height moment identities. -/
