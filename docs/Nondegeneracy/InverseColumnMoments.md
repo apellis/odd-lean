@@ -157,19 +157,25 @@ Checked on `research/positive-bubble-field`:
   `vacuumLeftwardColumn_cap_native` (`ELVProbeLeftwardVacuumCapInverse`): at the
   vacuum sector input these columns are a cap inverse of the native mixed bend,
   and `column ≫ dot^N ≫ cap` is the conjugated evaluation of the bubble entry.
+- `vacuumLeftwardCapInverse_bubbleEntries`, `tensorVacuum_leftward_odd_moments`
+  (`ELVTensorVacuumLeftwardMoments`): at the tensor vacuum the leftward cap inverse
+  has the substituted-series moments of `tensorVacuumCapInverse_odd_moments`, so
+  the conjugated evaluated entries `dcup (h-1) ≫ ε x^(h-1+2s)` and
+  `dcup (h-1) ≫ ε x^(h+2s)` decode to multiplication by the substituted-series
+  coefficient (times the reservoir odd coefficient in the second case).
 
 Still open:
 
-1. Vacuum entry (remaining part): apply `tensorVacuumCapInverse_odd_moments` to
-   `vacuumLeftwardCapInverse_native_odd` at `SupportedSectors.tensorVacuum` (the
-   block `vacuumBendBlock (tensorOutputAt …)` is equal, not definitionally, to the
-   probe functor block, so the moments lemma is applied after transport along
-   that equality), then lift the resulting equality after evaluation to the
-   equality in `End(tensorVacuum)` required by
-   `pointwiseUpwardModuleAction_act_bubAt_bubLs_eq_coefficient`; this lift needs
-   faithfulness of the vacuum sector evaluation on that endomorphism space, or a
-   direct identification of the evaluated coefficient action with decoding
-   (`tensorVacuumEndDecode_eq_of`) of the substituted-series coefficient.
+1. Vacuum entry (remaining part): lift the identity of
+   `tensorVacuum_leftward_odd_moments`, which holds after vacuum sector evaluation,
+   conjugation and decoding, to the equality in `End(tensorVacuum)` required by
+   `pointwiseUpwardModuleAction_act_bubAt_bubLs_eq_coefficient` (with
+   `dc = pointwiseLeftwardData.dcup` from `centralPointwiseLeftward_posInverseAt`,
+   and `compDiag_dcupL_epsL_swappedGens` for the entry). Two inputs are needed:
+   the evaluated, conjugated and decoded coefficient action of `a` is
+   multiplication by the image of `a`, and an endomorphism of `tensorVacuum` is
+   determined by its decoded evaluation at the regular probe object
+   (faithfulness of the vacuum sector evaluation on that endomorphism space).
 2. The odd bubble `oddBubble` at positive height, the same way.
 3. Even colours need an even moment result; nonpositive height is handled
    separately.
