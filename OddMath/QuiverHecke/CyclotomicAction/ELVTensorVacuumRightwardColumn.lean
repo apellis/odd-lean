@@ -43,7 +43,7 @@ variable (i : I)
 local notation "K" => contentAppend D Sc cutoff bound (0 : Multiset I) [i]
 
 /-- The unit column `η ≫ xᵉ ≫ B n` of a family `B` of maps into the tensor vacuum value. -/
-def rightwardUnitColumn {w : ℕ} (B : Fin w → ((restriction K).obj ((induction K).obj V) ⟶ V))
+def rightwardUnitColumn {w : ℕ} (B : Fin w → ((induction K ⋙ restriction K).obj V ⟶ V))
     (e : ℕ) (n : Fin w) : V ⟶ V :=
   (adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ e) ≫ B n
 
@@ -56,7 +56,7 @@ normalized odd coefficient. -/
 theorem rightwardUnitColumn_odd_moments
     (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) (hPN : 2 * m i < cutoff i)
     (j : _ ⟶ shiftedPreSourceObject D Sc m R₀ i H)
-    (B : Fin (cutoff i - 2 * m i) → ((restriction K).obj ((induction K).obj V) ⟶ V))
+    (B : Fin (cutoff i - 2 * m i) → ((induction K ⋙ restriction K).obj V ⟶ V))
     (hB : SwappedAssembly.ProbeWindow.IsCupInverse
       (evaluatedMixedBend D Sc m cutoff bound i hP H)
       (fun n => (adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ n.val))
@@ -75,8 +75,9 @@ theorem rightwardUnitColumn_odd_moments
           coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) *
         (polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
-          tensorVacuumDecodeLinear D Sc m cutoff L z) :=
-  ⟨tensorVacuumNegativeCap_odd_moments_even D Sc m cutoff L sy hc i hi hP (by omega) hPN
+          tensorVacuumDecodeLinear D Sc m cutoff L z) := by
+  unfold rightwardUnitColumn
+  exact ⟨tensorVacuumNegativeCap_odd_moments_even D Sc m cutoff L sy hc i hi hP (by omega) hPN
       j B hB r z,
     tensorVacuumNegativeCap_odd_moments_odd D Sc m cutoff L sy hc i hi hP (by omega) hPN
       j B hB r z⟩

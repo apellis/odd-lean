@@ -79,7 +79,7 @@ theorem tensorVacuum_rightward_odd_bubbleEntries (hi : D.parity i = 1)
     ∃ (c : _ ≅ V) (j : _ ⟶ shiftedPreSourceObject D (parameterTwist D Sc) m
         (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i H)
       (B : Fin (cutoff i - 2 * m i) →
-        ((BalancedInduction.restriction K).obj ((BalancedInduction.induction K).obj V) ⟶ V)),
+        ((BalancedInduction.induction K ⋙ BalancedInduction.restriction K).obj V ⟶ V)),
       ProbeWindow.IsCupInverse (evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP H)
         (fun n => (adjunction K).unit.app V ≫
           (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ n.val)) j B ∧
@@ -126,7 +126,7 @@ theorem tensorVacuum_rightward_odd_moments (hi : D.parity i = 1)
     ∃ (c : _ ≅ V) (j : _ ⟶ shiftedPreSourceObject D (parameterTwist D Sc) m
         (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i H)
       (B : Fin (cutoff i - 2 * m i) →
-        ((BalancedInduction.restriction K).obj ((BalancedInduction.induction K).obj V) ⟶ V)),
+        ((BalancedInduction.induction K ⋙ BalancedInduction.restriction K).obj V ⟶ V)),
       ProbeWindow.IsCupInverse (evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP H)
         (fun n => (adjunction K).unit.app V ≫
           (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ n.val)) j B ∧
