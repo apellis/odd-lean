@@ -138,7 +138,7 @@ theorem appendLinear_dot_tensor (s w : OldCategory D Sc cutoff)
     (h : (OldCategory.mk ν : OldCategory D Sc cutoff) ⟶ s)
     (a : CoefficientPowerQuotient (k := k) D cutoff L) :
     appendLinear D Sc cutoff L ν i w
-      (actualInductionDot D Sc cutoff i (BalancedInduction.induced (powerWordCoefficientSource D Sc cutoff ν)
+      (inductionDot D Sc cutoff i (BalancedInduction.induced (powerWordCoefficientSource D Sc cutoff ν)
         (liftedPowerRegular D cutoff L)) w
         (BalancedInduction.tensor (append D Sc cutoff i)
           (BalancedInduction.induced (powerWordCoefficientSource D Sc cutoff ν)
@@ -152,7 +152,7 @@ theorem appendLinear_dot_tensor (s w : OldCategory D Sc cutoff)
         (liftedPowerRegular D cutoff L)).toFunctor s g
           (BalancedInduction.tensor (powerWordCoefficientSource D Sc cutoff ν)
             (liftedPowerRegular D cutoff L).toFunctor (powerCoefficientStar D cutoff) h a))) := by
-  rw [actualInductionDot_tensor, appendLinear_tensor, appendLinear_tensor]
+  rw [inductionDot_tensor, appendLinear_tensor, appendLinear_tensor]
   unfold nativeDot
   erw [native_tensor D Sc cutoff L (s := ν ++ [i]) (t := ν ++ [i])
     (oldAppendDotComponent D Sc cutoff i (OldCategory.mk ν))
@@ -172,7 +172,7 @@ theorem appendLinear_dot_tensor (s w : OldCategory D Sc cutoff)
 induced word module, not only on its cyclic unit. -/
 theorem appendLinear_dot (w : OldCategory D Sc cutoff) :
     appendLinear D Sc cutoff L ν i w ∘ₗ
-      actualInductionDot D Sc cutoff i (BalancedInduction.induced (powerWordCoefficientSource D Sc cutoff ν)
+      inductionDot D Sc cutoff i (BalancedInduction.induced (powerWordCoefficientSource D Sc cutoff ν)
         (liftedPowerRegular D cutoff L)) w =
     (nativeDot D Sc cutoff L ν i).app (D.parity i) w ∘ₗ
       appendLinear D Sc cutoff L ν i w := by

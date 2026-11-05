@@ -42,18 +42,18 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (v t : OldCategory D Sc cutoff) (m : M.obj v)
 
 /-- On the double tensor generators, kernel evaluation is the actual mate. -/
-theorem actualMateKernel_evaluate_tensor (s : OldCategory D Sc cutoff)
+theorem mateKernel_evaluate_tensor (s : OldCategory D Sc cutoff)
     (g : (append D Sc cutoff i).obj s ⟶ t)
     (b : v ⟶ (append D Sc cutoff i).obj s) :
     BalancedInduction.tensor (append D Sc cutoff i) M.toFunctor v
-      (actualMateKernelComponent D Sc cutoff i v t
+      (mateKernelComponent D Sc cutoff i v t
         (BalancedInduction.tensor (append D Sc cutoff i)
           ((append D Sc cutoff i) ⋙ IndResKernel.homModule (k := k) v) s g b)) m =
       (matrixMateComponent D Sc cutoff i M).total t
         (BalancedInduction.tensor (append D Sc cutoff i)
           ((BalancedInduction.restriction (append D Sc cutoff i)).obj M).toFunctor
           s g (M.map b m)) := by
-  rw [actualMateKernelComponent_tensor]
+  rw [mateKernelComponent_tensor]
   have hp : D.parity i * D.parity i = D.parity i := by
     rcases parity_eq_zero_or_one (D.parity i) with h | h <;> simp [h]
   have hh := oldModuleMate_total_tensor D Sc cutoff i M s t g (M.map b m)
@@ -79,78 +79,78 @@ def moduleSourceEvaluation :
   IndResKernel.evaluate (append D Sc cutoff i) M.toFunctor v t m
 
 /-- Evaluation intertwines the actual kernel dot with the actual module dot. -/
-theorem actualDotKernel_evaluate :
+theorem dotKernel_evaluate :
     (IndResKernel.evaluate (append D Sc cutoff i) M.toFunctor v t m).comp
-        (actualDotKernelComponent D Sc cutoff i v t) =
-      (actualInductionDot D Sc cutoff i
+        (dotKernelComponent D Sc cutoff i v t) =
+      (inductionDot D Sc cutoff i
         ((BalancedInduction.restriction (append D Sc cutoff i)).obj M) t).comp
         (IndResKernel.evaluate (append D Sc cutoff i) M.toFunctor v t m) := by
   apply BalancedInduction.hom_ext
   intro s g b
   change v ⟶ (append D Sc cutoff i).obj s at b
   change IndResKernel.evaluate (append D Sc cutoff i) M.toFunctor v t m
-    (actualDotKernelComponent D Sc cutoff i v t
+    (dotKernelComponent D Sc cutoff i v t
       (BalancedInduction.tensor (append D Sc cutoff i)
         ((append D Sc cutoff i) ⋙ IndResKernel.homModule (k := k) v) s g b)) =
-    actualInductionDot D Sc cutoff i
+    inductionDot D Sc cutoff i
       ((BalancedInduction.restriction (append D Sc cutoff i)).obj M) t
       (IndResKernel.evaluate (append D Sc cutoff i) M.toFunctor v t m
         (BalancedInduction.tensor (append D Sc cutoff i)
           ((append D Sc cutoff i) ⋙ IndResKernel.homModule (k := k) v) s g b))
-  rw [actualDotKernelComponent_tensor, IndResKernel.evaluate_tensor,
+  rw [dotKernelComponent_tensor, IndResKernel.evaluate_tensor,
     IndResKernel.evaluate_tensor]
-  exact (actualInductionDot_tensor D Sc cutoff i
+  exact (inductionDot_tensor D Sc cutoff i
     ((BalancedInduction.restriction (append D Sc cutoff i)).obj M) s t g (M.map b m)).symm
 
 /-- The kernel counit evaluates by the ordinary module counit. -/
-theorem actualCounitKernel_evaluate :
+theorem counitKernel_evaluate :
     ((M.toFunctor.mapLinearMap (R := k)).flip m).comp
-        (actualCounitKernelComponent D Sc cutoff i v t) =
+        (counitKernelComponent D Sc cutoff i v t) =
       (BalancedInduction.counit (append D Sc cutoff i) M.toFunctor t).comp
         (IndResKernel.evaluate (append D Sc cutoff i) M.toFunctor v t m) := by
   apply BalancedInduction.hom_ext
   intro s g b
   change v ⟶ (append D Sc cutoff i).obj s at b
-  change M.map (actualCounitKernelComponent D Sc cutoff i v t
+  change M.map (counitKernelComponent D Sc cutoff i v t
     (BalancedInduction.tensor (append D Sc cutoff i)
       ((append D Sc cutoff i) ⋙ IndResKernel.homModule (k := k) v) s g b)) m =
     BalancedInduction.counit (append D Sc cutoff i) M.toFunctor t
       (IndResKernel.evaluate (append D Sc cutoff i) M.toFunctor v t m
         (BalancedInduction.tensor (append D Sc cutoff i)
           ((append D Sc cutoff i) ⋙ IndResKernel.homModule (k := k) v) s g b))
-  rw [actualCounitKernelComponent_tensor, IndResKernel.evaluate_tensor,
+  rw [counitKernelComponent_tensor, IndResKernel.evaluate_tensor,
     BalancedInduction.counit_tensor]
   exact congrArg (fun f : M.obj v ⟶ M.obj t => f m) (M.toFunctor.map_comp b g)
 
 /-- Every kernel dot power has the prescribed action on arbitrary module vectors. -/
-theorem actualDotKernel_power_evaluate (n : ℕ)
+theorem dotKernel_power_evaluate (n : ℕ)
     (z : IndResKernel.Component (k := k) (append D Sc cutoff i) v t) :
     IndResKernel.evaluate (append D Sc cutoff i) M.toFunctor v t m
-        ((actualDotKernelComponent D Sc cutoff i v t ^ n) z) =
-      (actualInductionDot D Sc cutoff i
+        ((dotKernelComponent D Sc cutoff i v t ^ n) z) =
+      (inductionDot D Sc cutoff i
         ((BalancedInduction.restriction (append D Sc cutoff i)).obj M) t ^ n)
         (IndResKernel.evaluate (append D Sc cutoff i) M.toFunctor v t m z) :=
-  BalancedInduction.evaluation_pow _ _ _ (actualDotKernel_evaluate D Sc cutoff i M v t m) n z
+  BalancedInduction.evaluation_pow _ _ _ (dotKernel_evaluate D Sc cutoff i M v t m) n z
 
 /-- Ordinary counit-dot powers retain the full module coefficient. -/
-theorem actualCapKernel_evaluate (n : ℕ)
+theorem capKernel_evaluate (n : ℕ)
     (z : IndResKernel.Component (k := k) (append D Sc cutoff i) v t) :
-    M.map (actualCapKernelComponent D Sc cutoff i n v t z) m =
+    M.map (capKernelComponent D Sc cutoff i n v t z) m =
       BalancedInduction.counit (append D Sc cutoff i) M.toFunctor t
-        ((actualInductionDot D Sc cutoff i
+        ((inductionDot D Sc cutoff i
           ((BalancedInduction.restriction (append D Sc cutoff i)).obj M) t ^ n)
           (IndResKernel.evaluate (append D Sc cutoff i) M.toFunctor v t m z)) := by
-  change M.map (actualCounitKernelComponent D Sc cutoff i v t
-    ((actualDotKernelComponent D Sc cutoff i v t ^ n) z)) m = _
-  have hc := LinearMap.congr_fun (actualCounitKernel_evaluate D Sc cutoff i M v t m)
-    ((actualDotKernelComponent D Sc cutoff i v t ^ n) z)
-  change M.map (actualCounitKernelComponent D Sc cutoff i v t
-    ((actualDotKernelComponent D Sc cutoff i v t ^ n) z)) m =
+  change M.map (counitKernelComponent D Sc cutoff i v t
+    ((dotKernelComponent D Sc cutoff i v t ^ n) z)) m = _
+  have hc := LinearMap.congr_fun (counitKernel_evaluate D Sc cutoff i M v t m)
+    ((dotKernelComponent D Sc cutoff i v t ^ n) z)
+  change M.map (counitKernelComponent D Sc cutoff i v t
+    ((dotKernelComponent D Sc cutoff i v t ^ n) z)) m =
     BalancedInduction.counit (append D Sc cutoff i) M.toFunctor t
       (IndResKernel.evaluate (append D Sc cutoff i) M.toFunctor v t m
-        ((actualDotKernelComponent D Sc cutoff i v t ^ n) z)) at hc
+        ((dotKernelComponent D Sc cutoff i v t ^ n) z)) at hc
   exact hc.trans (congrArg (BalancedInduction.counit (append D Sc cutoff i) M.toFunctor t)
-    (actualDotKernel_power_evaluate D Sc cutoff i M v t m n z))
+    (dotKernel_power_evaluate D Sc cutoff i M v t m n z))
 
 /-- The total of the chosen even counit is the raw balanced evaluation. -/
 theorem adjunctionCounit_total_apply
@@ -164,41 +164,41 @@ theorem adjunctionCounit_total_apply
   rfl
 
 /-- The kernel cap row evaluates to the literal ordinary categorical cap row. -/
-theorem actualCapKernel_evaluate_moduleCapRow (n : ℕ)
+theorem capKernel_evaluate_moduleCapRow (n : ℕ)
     (z : IndResKernel.Component (k := k) (append D Sc cutoff i) v t) :
-    M.map (actualCapKernelComponent D Sc cutoff i n v t z) m =
+    M.map (capKernelComponent D Sc cutoff i n v t z) m =
       (moduleCapRow D Sc cutoff i M n).total t
         (IndResKernel.evaluate (append D Sc cutoff i) M.toFunctor v t m z) := by
   let q := IndResKernel.evaluate (append D Sc cutoff i) M.toFunctor v t m z
-  let T := actualInductionDot D Sc cutoff i
+  let T := inductionDot D Sc cutoff i
     ((BalancedInduction.restriction (append D Sc cutoff i)).obj M) t
   have hm := LinearMap.congr_fun (moduleCapRow_total D Sc cutoff i M t n) q
   change (moduleCapRow D Sc cutoff i M n).total t q =
     ((BalancedInduction.adjunction (append D Sc cutoff i)).counit.app M).total t ((T ^ n) q) at hm
   have hc := adjunctionCounit_total_apply D Sc cutoff i M t ((T ^ n) q)
-  exact (actualCapKernel_evaluate D Sc cutoff i M v t m n z).trans (hm.trans hc).symm
+  exact (capKernel_evaluate D Sc cutoff i M v t m n z).trans (hm.trans hc).symm
 
 /-- The unscaled unit/dot kernel column evaluates to the ordinary module column. -/
-theorem actualUnitKernel_evaluate (n : ℕ) (b : v ⟶ t) :
+theorem unitKernel_evaluate (n : ℕ) (b : v ⟶ t) :
     BalancedInduction.tensor (append D Sc cutoff i) M.toFunctor v
-      (actualUnitKernelComponent D Sc cutoff i n v t b) m =
+      (unitKernelComponent D Sc cutoff i n v t b) m =
       (moduleUnitColumn D Sc cutoff i M n).total t (M.map b m) := by
   let P : (append D Sc cutoff i).obj t ⟶ (append D Sc cutoff i).obj t :=
     (ideal D Sc cutoff _ _).mkQ (appendMovingPower D Sc cutoff i t.word n)
   have hp := inductionDot_iterate_unit D Sc cutoff i M t n (M.map b m)
-  change (actualInductionDot D Sc cutoff i M ((append D Sc cutoff i).obj t))^[n]
+  change (inductionDot D Sc cutoff i M ((append D Sc cutoff i).obj t))^[n]
       (BalancedInduction.unit (append D Sc cutoff i) M.toFunctor t (M.map b m)) =
     inductionUnitDotSign (k := k) (D.parity i) n •
       BalancedInduction.tensor (append D Sc cutoff i) M.toFunctor t P (M.map b m) at hp
   have hc := LinearMap.congr_fun (moduleUnitColumn_total D Sc cutoff i M t n) (M.map b m)
   change (moduleUnitColumn D Sc cutoff i M n).total t (M.map b m) =
-    (actualInductionDot D Sc cutoff i M ((append D Sc cutoff i).obj t) ^ n)
+    (inductionDot D Sc cutoff i M ((append D Sc cutoff i).obj t) ^ n)
       (((BalancedInduction.adjunction (append D Sc cutoff i)).unit.app M).total t (M.map b m)) at hc
   have hu := adjunctionUnit_total_apply D Sc cutoff i M t (M.map b m)
   change ((BalancedInduction.adjunction (append D Sc cutoff i)).unit.app M).total t
     (M.map b m) = BalancedInduction.unit (append D Sc cutoff i) M.toFunctor t (M.map b m) at hu
   have hc' := hc.trans (congrArg
-    (actualInductionDot D Sc cutoff i M ((append D Sc cutoff i).obj t) ^ n) hu)
+    (inductionDot D Sc cutoff i M ((append D Sc cutoff i).obj t) ^ n) hu)
   simp only [Module.End.pow_apply] at hc'
   refine (show _ = inductionUnitDotSign (k := k) (D.parity i) n •
       BalancedInduction.tensor (append D Sc cutoff i) M.toFunctor t P (M.map b m) from ?_).trans

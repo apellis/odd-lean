@@ -19,7 +19,7 @@ private abbrev coefficientProjection :=
   (coefficientPowerIdeal D cutoff (elementaryCoefficients (k := k) D cutoff) L).ringCon.mkₐ k
 private abbrev target (i : I) := mateTargetSpace D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L) ⟨[]⟩
 private def dot (i : I) : Module.End k (target D Sc cutoff L i) :=
-  actualInductionDot D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L)
+  inductionDot D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L)
     ((append D Sc cutoff i).obj ⟨[]⟩)
 private def outputCoefficient (i : I)
     (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) :

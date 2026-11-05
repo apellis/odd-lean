@@ -86,40 +86,40 @@ def negativeKernelIntegerCoordinates (i : I) (m : ℕ) (v t : OldCategory D Sc c
     (negativeKernelShift D sy i m)
 
 /-- The literal positive matrix preserves the shifted integer degree. -/
-theorem actualPositiveKernelMap_degree (i : I) (m : ℕ) (v t : OldCategory D Sc cutoff)
+theorem positiveKernelMap_degree (i : I) (m : ℕ) (v t : OldCategory D Sc cutoff)
     {n : ℤ} {z : (BalancedKernelTensor.piKernel (positiveKernelFamily D Sc cutoff i m t)).obj (op v)}
     (hz : z ∈ (positiveKernelIntegerCoordinates D Sc cutoff sy hc i m v t).degree n) :
-    (actualPositiveKernelMap D Sc cutoff i m t).app (op v) z ∈
+    (positiveKernelMap D Sc cutoff i m t).app (op v) z ∈
       oldDegree D sy Sc hc cutoff (v.word ++ [i]) (t.word ++ [i]) n := by
   have hz' := (Coordinates.mem_shiftedDegree
     (positiveEntryCoordinates D Sc cutoff sy hc i m v t) (positiveKernelShift D sy i m) n z).1 hz
-  rw [actualPositiveKernelMap_apply]
+  rw [positiveKernelMap_apply]
   apply Submodule.add_mem
-  · have h := actualMateKernelComponent_degree D Sc cutoff sy hc i v t (hz' none)
+  · have h := mateKernelComponent_degree D Sc cutoff sy hc i v t (hz' none)
     simpa only [positiveEntryCoordinates, representedKernelCoordinates, positiveKernelShift,
       add_sub_cancel_right] using h
   · apply Submodule.sum_mem
     intro r _
-    have h := actualUnitKernelComponent_degree D Sc cutoff sy hc i v t r.val (hz' (some r))
+    have h := unitKernelComponent_degree D Sc cutoff sy hc i v t r.val (hz' (some r))
     simpa only [positiveEntryCoordinates, oldHomIntegerCoordinates, positiveKernelShift,
       neg_add_cancel_right] using h
 
 /-- The literal negative matrix preserves the shifted integer degree. -/
-theorem actualNegativeKernelMap_degree (i : I) (m : ℕ) (v t : OldCategory D Sc cutoff)
+theorem negativeKernelMap_degree (i : I) (m : ℕ) (v t : OldCategory D Sc cutoff)
     {n : ℤ} {z : IndResKernel.Component (k := k) (append D Sc cutoff i) v t}
     (hz : z ∈ representedKernelDegree D Sc cutoff sy hc i v t n) :
-    (actualNegativeKernelMap D Sc cutoff i m t).app (op v) z ∈
+    (negativeKernelMap D Sc cutoff i m t).app (op v) z ∈
       (negativeKernelIntegerCoordinates D Sc cutoff sy hc i m v t).degree n := by
   apply (Coordinates.mem_shiftedDegree
     (negativeEntryCoordinates D Sc cutoff sy hc i m v t) (negativeKernelShift D sy i m) n _).2
   intro a
   cases a with
   | none =>
-    rw [actualNegativeKernelMap_none]
-    exact actualMateKernelComponent_degree D Sc cutoff sy hc i v t hz
+    rw [negativeKernelMap_none]
+    exact mateKernelComponent_degree D Sc cutoff sy hc i v t hz
   | some r =>
-    rw [actualNegativeKernelMap_some]
-    exact actualCapKernelComponent_degree D Sc cutoff sy hc i v t r.val hz
+    rw [negativeKernelMap_some]
+    exact capKernelComponent_degree D Sc cutoff sy hc i v t r.val hz
 
 omit sy hc in
 /-- The raw positive kernel equivalence is the existing actual matrix, with its
@@ -127,18 +127,18 @@ proved bijectivity at the actual content height. -/
 def positiveKernelEquiv (i : I) (v t : OldCategory D Sc cutoff)
     (hh : 0 ≤ contentCrossingHeight D cutoff i (t.word : Multiset I)) :=
   LinearEquiv.ofBijective
-    ((actualPositiveKernelMap D Sc cutoff i
+    ((positiveKernelMap D Sc cutoff i
       (contentUnitCount D cutoff i (t.word : Multiset I)) t).app (op v)).hom
-    (actualPositiveKernelMap_bijective D Sc cutoff i t hh v)
+    (positiveKernelMap_bijective D Sc cutoff i t hh v)
 
 omit sy hc in
 /-- The raw negative kernel equivalence is the existing actual cap-row matrix. -/
 def negativeKernelEquiv (i : I) (v t : OldCategory D Sc cutoff)
     (hh : contentCrossingHeight D cutoff i (t.word : Multiset I) ≤ 0) :=
   LinearEquiv.ofBijective
-    ((actualNegativeKernelMap D Sc cutoff i
+    ((negativeKernelMap D Sc cutoff i
       (contentCapCount D cutoff i (t.word : Multiset I)) t).app (op v)).hom
-    (actualNegativeKernelMap_bijective D Sc cutoff i t hh v)
+    (negativeKernelMap_bijective D Sc cutoff i t hh v)
 
 /-- The positive inverse preserves the intrinsic shifted coordinate degrees. -/
 theorem positiveKernelEquiv_inverse_degree (i : I) (v t : OldCategory D Sc cutoff)
@@ -150,7 +150,7 @@ theorem positiveKernelEquiv_inverse_degree (i : I) (v t : OldCategory D Sc cutof
         (contentUnitCount D cutoff i (t.word : Multiset I)) v t).degree n := by
   exact Coordinates.inverse_mem _ (oldHomIntegerCoordinates D Sc cutoff sy hc _ _)
     (positiveKernelEquiv D Sc cutoff i v t hh)
-    (fun n x hx => actualPositiveKernelMap_degree D Sc cutoff sy hc i _ v t hx) hy
+    (fun n x hx => positiveKernelMap_degree D Sc cutoff sy hc i _ v t hx) hy
 
 /-- The negative inverse preserves the intrinsic shifted coordinate degrees. -/
 theorem negativeKernelEquiv_inverse_degree (i : I) (v t : OldCategory D Sc cutoff)
@@ -161,7 +161,7 @@ theorem negativeKernelEquiv_inverse_degree (i : I) (v t : OldCategory D Sc cutof
       representedKernelDegree D Sc cutoff sy hc i v t n := by
   exact Coordinates.inverse_mem (representedKernelCoordinates D Sc cutoff sy hc i v t) _
     (negativeKernelEquiv D Sc cutoff i v t hh)
-    (fun n x hx => actualNegativeKernelMap_degree D Sc cutoff sy hc i _ v t hx) hy
+    (fun n x hx => negativeKernelMap_degree D Sc cutoff sy hc i _ v t hx) hy
 
 omit sy hc in
 /-- Principal positive inverse component, without a changed normalization. -/

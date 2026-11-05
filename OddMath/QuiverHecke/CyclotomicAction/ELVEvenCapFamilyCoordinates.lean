@@ -17,7 +17,7 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 def evenCapFamilyComponentEquiv (p : ZMod 2) (i : {i : I // D.parity i = 0})
     (v t : List I) (m : ℕ)
     (hm : outputSDegree D i.1 v = endpointQPDegree D cutoff i.1 v + m) :
-    (actualUnshiftedSourceModule D Sc cutoff i.1 v).obj
+    (unshiftedSourceModule D Sc cutoff i.1 v).obj
       (⟨t⟩ : OldCategory D Sc cutoff) ≃ₗ[k]
     ((a : Option (Fin m)) →
       (capMatrixFamily D Sc cutoff i.1
@@ -30,7 +30,7 @@ def evenCapFamilyComponentEquiv (p : ZMod 2) (i : {i : I // D.parity i = 0})
 theorem evenCapFamilyComponentEquiv_coordinates (p : ZMod 2) (i : {i : I // D.parity i = 0})
     (v t : List I) (m : ℕ)
     (hm : outputSDegree D i.1 v = endpointQPDegree D cutoff i.1 v + m)
-    (z : (actualUnshiftedSourceModule D Sc cutoff i.1 v).obj
+    (z : (unshiftedSourceModule D Sc cutoff i.1 v).obj
       (⟨t⟩ : OldCategory D Sc cutoff)) :
     capFamilyComponentCoordinates D Sc cutoff i.1 v t m
       (evenCapFamilyComponentEquiv D Sc cutoff p i v t m hm z) =
@@ -41,7 +41,7 @@ theorem evenCapFamilyComponentEquiv_coordinates (p : ZMod 2) (i : {i : I // D.pa
 theorem evenCapFamilyComponentEquiv_fst (p : ZMod 2) (i : {i : I // D.parity i = 0})
     (v t : List I) (m : ℕ)
     (hm : outputSDegree D i.1 v = endpointQPDegree D cutoff i.1 v + m)
-    (z : (actualUnshiftedSourceModule D Sc cutoff i.1 v).obj
+    (z : (unshiftedSourceModule D Sc cutoff i.1 v).obj
       (⟨t⟩ : OldCategory D Sc cutoff)) :
     (capFamilyComponentCoordinates D Sc cutoff i.1 v t m
       (evenCapFamilyComponentEquiv D Sc cutoff p i v t m hm z)).1 =
@@ -52,12 +52,12 @@ theorem evenCapFamilyComponentEquiv_fst (p : ZMod 2) (i : {i : I // D.parity i =
 theorem evenCapFamilyComponentEquiv_cap (p : ZMod 2) (i : {i : I // D.parity i = 0})
     (v t : List I) (m : ℕ)
     (hm : outputSDegree D i.1 v = endpointQPDegree D cutoff i.1 v + m)
-    (z : (actualUnshiftedSourceModule D Sc cutoff i.1 v).obj
+    (z : (unshiftedSourceModule D Sc cutoff i.1 v).obj
       (⟨t⟩ : OldCategory D Sc cutoff)) (r : Fin m) :
     (capFamilyComponentCoordinates D Sc cutoff i.1 v t m
       (evenCapFamilyComponentEquiv D Sc cutoff p i v t m hm z)).2 r =
       unshiftedCounitComponent D Sc cutoff i.1 v t
-        ((actualInductionDot D Sc cutoff i.1 (restrictedRepresentable D Sc cutoff i.1 v)
+        ((inductionDot D Sc cutoff i.1 (restrictedRepresentable D Sc cutoff i.1 v)
           (⟨t⟩ : OldCategory D Sc cutoff))^[r.val] z) := by
   rw [evenCapFamilyComponentEquiv_coordinates]
   exact evenCounitMatrixEquiv_cap D Sc cutoff p i v t m hm z r

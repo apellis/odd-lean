@@ -65,7 +65,7 @@ private def elvToUniversalPower : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutof
         (SKM.SYM.elvCoefficientIdeal D k cutoff ⊔ SKM.SYM.coefficientPowerIdeal D k L).ringCon from
           TwoSidedIdeal.ringCon_le_iff.mp le_sup_left) h))
 
-private theorem actualPower_le_kernel :
+private theorem power_le_kernel :
     coefficientPowerIdeal D cutoff (elementaryCoefficients (k := k) D cutoff) L ≤
       TwoSidedIdeal.ofRingCon (RingCon.ker (elvToUniversalPower (k := k) D cutoff L).toRingHom) := by
   apply TwoSidedIdeal.span_le.mpr
@@ -85,7 +85,7 @@ coefficient generators. -/
 def coefficientPowerToUniversal : CoefficientPowerQuotient (k := k) D cutoff L →ₐ[k]
     UniversalCoefficientPowerQuotient (k := k) D cutoff L :=
   RingCon.liftₐ _ (elvToUniversalPower D cutoff L)
-    (TwoSidedIdeal.ringCon_le_iff.mp (actualPower_le_kernel D cutoff L))
+    (TwoSidedIdeal.ringCon_le_iff.mp (power_le_kernel D cutoff L))
 
 @[simp] theorem coefficientPowerToUniversal_apply (a : SKM.SYM D k) :
     coefficientPowerToUniversal D cutoff L (coefficientPowerQuotientMap D cutoff L a) =

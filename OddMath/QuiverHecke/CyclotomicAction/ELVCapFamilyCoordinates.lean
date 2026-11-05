@@ -51,7 +51,7 @@ def capFamilyComponentCoordinates (i : I) (v t : List I) (m : ℕ) :
 def capFamilyComponentEquiv (p : ZMod 2) (j : {j : I // D.parity j = 1})
     (v t : List I) (m : ℕ)
     (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m) :
-    (actualUnshiftedSourceModule D Sc cutoff j.1 v).obj
+    (unshiftedSourceModule D Sc cutoff j.1 v).obj
       (⟨t⟩ : OldCategory D Sc cutoff) ≃ₗ[k]
     ((a : Option (Fin m)) →
       (capMatrixFamily D Sc cutoff j.1
@@ -64,7 +64,7 @@ def capFamilyComponentEquiv (p : ZMod 2) (j : {j : I // D.parity j = 1})
 theorem capFamilyComponentEquiv_coordinates (p : ZMod 2) (j : {j : I // D.parity j = 1})
     (v t : List I) (m : ℕ)
     (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m)
-    (z : (actualUnshiftedSourceModule D Sc cutoff j.1 v).obj
+    (z : (unshiftedSourceModule D Sc cutoff j.1 v).obj
       (⟨t⟩ : OldCategory D Sc cutoff)) :
     capFamilyComponentCoordinates D Sc cutoff j.1 v t m
       (capFamilyComponentEquiv D Sc cutoff p j v t m hm z) =
@@ -75,7 +75,7 @@ theorem capFamilyComponentEquiv_coordinates (p : ZMod 2) (j : {j : I // D.parity
 theorem capFamilyComponentEquiv_fst (p : ZMod 2) (j : {j : I // D.parity j = 1})
     (v t : List I) (m : ℕ)
     (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m)
-    (z : (actualUnshiftedSourceModule D Sc cutoff j.1 v).obj
+    (z : (unshiftedSourceModule D Sc cutoff j.1 v).obj
       (⟨t⟩ : OldCategory D Sc cutoff)) :
     (capFamilyComponentCoordinates D Sc cutoff j.1 v t m
       (capFamilyComponentEquiv D Sc cutoff p j v t m hm z)).1 =
@@ -86,14 +86,14 @@ theorem capFamilyComponentEquiv_fst (p : ZMod 2) (j : {j : I // D.parity j = 1})
 theorem capFamilyComponentEquiv_cap (p : ZMod 2) (j : {j : I // D.parity j = 1})
     (v t : List I) (m : ℕ)
     (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m)
-    (z : (actualUnshiftedSourceModule D Sc cutoff j.1 v).obj
+    (z : (unshiftedSourceModule D Sc cutoff j.1 v).obj
       (⟨t⟩ : OldCategory D Sc cutoff)) (r : Fin m) :
     (capFamilyComponentCoordinates D Sc cutoff j.1 v t m
       (capFamilyComponentEquiv D Sc cutoff p j v t m hm z)).2 r =
       ((BalancedInduction.adjunctionCounit (append D Sc cutoff j.1)).app
         (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).total
           (⟨t⟩ : OldCategory D Sc cutoff)
-          ((actualInductionDot D Sc cutoff j.1
+          ((inductionDot D Sc cutoff j.1
             ((BalancedInduction.restriction (append D Sc cutoff j.1)).obj
               (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)))
             (⟨t⟩ : OldCategory D Sc cutoff))^[r.val] z) := by

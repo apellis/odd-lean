@@ -69,7 +69,7 @@ private theorem tensor_smul_first (i : I)
 theorem inductionDot_iterate_unit (i : I)
     (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
     (t : OldCategory D Sc cutoff) (n : ℕ) (b : M.obj t) :
-    (actualInductionDot D Sc cutoff i M ((append D Sc cutoff i).obj t))^[n]
+    (inductionDot D Sc cutoff i M ((append D Sc cutoff i).obj t))^[n]
       (BalancedInduction.unit (append D Sc cutoff i) M.toFunctor t b) =
       inductionUnitDotSign (k := k) (D.parity i) n •
         BalancedInduction.tensor (append D Sc cutoff i) M.toFunctor t
@@ -81,7 +81,7 @@ theorem inductionDot_iterate_unit (i : I)
   | succ n ih =>
     have hp : D.parity i * (n • D.parity i) = n • D.parity i := by
       rcases parity_eq_zero_or_one (D.parity i) with h | h <;> rw [h] <;> simp
-    rw [Function.iterate_succ_apply', ih, map_smul, actualInductionDot_tensor,
+    rw [Function.iterate_succ_apply', ih, map_smul, inductionDot_tensor,
       twist_of_mem (D.parity i) (oldAppendPower_mem D Sc cutoff i t n), hp,
       Linear.comp_smul, tensor_smul_first, smul_smul,
       oldAppendPower_succ, inductionUnitDotSign_succ, mul_comm]
@@ -101,7 +101,7 @@ def inductionUnitDotColumn (i : I) (v t : List I) (n : ℕ) :
     Old D Sc cutoff v t →ₗ[k] Old D Sc cutoff (v ++ [i]) (t ++ [i]) :=
   (OldInductionRepresentable.upperHomEquiv D Sc cutoff i
     (⟨v⟩ : OldCategory D Sc cutoff) (⟨t⟩ : OldCategory D Sc cutoff)).toLinearMap.comp
-      (((actualInductionDot D Sc cutoff i
+      (((inductionDot D Sc cutoff i
         (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))
         ((append D Sc cutoff i).obj (⟨t⟩ : OldCategory D Sc cutoff))) ^ n).comp
         (BalancedInduction.unit (append D Sc cutoff i)
@@ -118,7 +118,7 @@ theorem inductionUnitDotColumn_apply (i : I) (v t : List I) (n : ℕ)
           (appendOutputEmbedding D Sc cutoff i v t (Finsupp.single n b)) := by
   change OldInductionRepresentable.upperHomEquiv D Sc cutoff i
     (⟨v⟩ : OldCategory D Sc cutoff) (⟨t⟩ : OldCategory D Sc cutoff)
-    (((actualInductionDot D Sc cutoff i
+    (((inductionDot D Sc cutoff i
       (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))
       ((append D Sc cutoff i).obj (⟨t⟩ : OldCategory D Sc cutoff))) ^ n)
       (BalancedInduction.unit (append D Sc cutoff i)

@@ -16,57 +16,57 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
 
 /-- The fixed balanced quotient, named before constructing its grading. -/
-abbrev actualShiftedCarrier (i : I) (v t : List I) :=
+abbrev shiftedCarrier (i : I) (v t : List I) :=
   BalancedInduction.Obj (append D Sc cutoff i) (coefficient D Sc cutoff 1 i v)
     (⟨t⟩ : OldCategory D Sc cutoff)
 
-def actualShiftedSourceSpace (i : I) (v t : List I) : SVec k :=
+def shiftedSourceSpace (i : I) (v t : List I) : SVec k :=
   BalancedInduction.superspace (append D Sc cutoff i) (coefficient D Sc cutoff 1 i v)
     (⟨t⟩ : OldCategory D Sc cutoff)
 
 /-- An actual counit component, followed by the prescribed full output twist. -/
-def actualShiftedInputContraction (i : I) (v t : List I) :
-    actualShiftedCarrier D Sc cutoff i v t →ₗ[k] Old D Sc cutoff v t :=
+def shiftedInputContraction (i : I) (v t : List I) :
+    shiftedCarrier D Sc cutoff i v t →ₗ[k] Old D Sc cutoff v t :=
   (oldTwist D Sc cutoff 1 v t).comp
     ((shiftedSourceCounit D Sc cutoff i v).total (⟨t⟩ : OldCategory D Sc cutoff))
 
 /-- Actual grading on the shifted source, then the actual induction dot.
 The coefficient shift is part of this grading and must not be discarded. -/
-def actualShiftedInputDot (j : {j : I // D.parity j = 1}) (v t : List I) :
-    actualShiftedCarrier D Sc cutoff j.1 v t →ₗ[k]
-      actualShiftedCarrier D Sc cutoff j.1 v t :=
-  (actualInductionDot D Sc cutoff j.1 (coefficientOneModule D Sc cutoff j.1 v)
+def shiftedInputDot (j : {j : I // D.parity j = 1}) (v t : List I) :
+    shiftedCarrier D Sc cutoff j.1 v t →ₗ[k]
+      shiftedCarrier D Sc cutoff j.1 v t :=
+  (inductionDot D Sc cutoff j.1 (coefficientOneModule D Sc cutoff j.1 v)
     (⟨t⟩ : OldCategory D Sc cutoff)).comp
-      ((actualShiftedSourceSpace D Sc cutoff j.1 v t).sgn 1)
+      ((shiftedSourceSpace D Sc cutoff j.1 v t).sgn 1)
 
 /-- The actual cap on the literal independently defined source. -/
-def actualSourceInputContraction (j : {j : I // D.parity j = 1}) (v t : List I) :
+def sourceInputContraction (j : {j : I // D.parity j = 1}) (v t : List I) :
     Source D Sc cutoff j.1 v t →ₗ[k] Old D Sc cutoff v t :=
-  (actualShiftedInputContraction D Sc cutoff j.1 v t).comp
+  (shiftedInputContraction D Sc cutoff j.1 v t).comp
     (coefficientOneSourceEquiv D Sc cutoff j v t).symm.toLinearMap
 
 /-- The actual input dot on the literal independently defined source. -/
-def actualSourceInputDot (j : {j : I // D.parity j = 1}) (v t : List I) :
+def sourceInputDot (j : {j : I // D.parity j = 1}) (v t : List I) :
     Source D Sc cutoff j.1 v t →ₗ[k] Source D Sc cutoff j.1 v t :=
   (coefficientOneSourceEquiv D Sc cutoff j v t).toLinearMap.comp
-    ((actualShiftedInputDot D Sc cutoff j v t).comp
+    ((shiftedInputDot D Sc cutoff j v t).comp
       (coefficientOneSourceEquiv D Sc cutoff j v t).symm.toLinearMap)
 
-theorem actualSourceInputContraction_carrier (j : {j : I // D.parity j = 1})
-    (v t : List I) (z : actualShiftedCarrier D Sc cutoff j.1 v t) :
-    actualSourceInputContraction D Sc cutoff j v t
+theorem sourceInputContraction_carrier (j : {j : I // D.parity j = 1})
+    (v t : List I) (z : shiftedCarrier D Sc cutoff j.1 v t) :
+    sourceInputContraction D Sc cutoff j v t
       (coefficientOneSourceEquiv D Sc cutoff j v t z) =
-      actualShiftedInputContraction D Sc cutoff j.1 v t z := by
-  simp only [actualSourceInputContraction, LinearMap.comp_apply,
+      shiftedInputContraction D Sc cutoff j.1 v t z := by
+  simp only [sourceInputContraction, LinearMap.comp_apply,
     LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]
 
-theorem actualSourceInputDot_carrier (j : {j : I // D.parity j = 1})
-    (v t : List I) (z : actualShiftedCarrier D Sc cutoff j.1 v t) :
-    actualSourceInputDot D Sc cutoff j v t
+theorem sourceInputDot_carrier (j : {j : I // D.parity j = 1})
+    (v t : List I) (z : shiftedCarrier D Sc cutoff j.1 v t) :
+    sourceInputDot D Sc cutoff j v t
       (coefficientOneSourceEquiv D Sc cutoff j v t z) =
       coefficientOneSourceEquiv D Sc cutoff j v t
-        (actualShiftedInputDot D Sc cutoff j v t z) := by
-  simp only [actualSourceInputDot, LinearMap.comp_apply,
+        (shiftedInputDot D Sc cutoff j v t z) := by
+  simp only [sourceInputDot, LinearMap.comp_apply,
     LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]
 
 /-- The coefficient module comparison is identity on every underlying vector. -/
@@ -133,9 +133,9 @@ theorem shiftedSourceCounit_total_tensor (i : I) (v s t : List I)
   rfl
 
 /-- The actual cap retains parity on the entire coefficient, with arbitrary endpoints. -/
-theorem actualShiftedInputContraction_tensor (i : I) (v s t : List I)
+theorem shiftedInputContraction_tensor (i : I) (v s t : List I)
     (g : Old D Sc cutoff (s ++ [i]) t) (b : Old D Sc cutoff v (s ++ [i])) :
-    actualShiftedInputContraction D Sc cutoff i v t
+    shiftedInputContraction D Sc cutoff i v t
       (BalancedInduction.tensor (append D Sc cutoff i)
         (coefficientOneModule D Sc cutoff i v).toFunctor (⟨s⟩ : OldCategory D Sc cutoff) g b) =
       oldComp D Sc cutoff v (s ++ [i]) t
@@ -175,9 +175,9 @@ private theorem induced_sgn_tensor
 
 /-- Actual grading on coefficient(1) contributes the shift minus, including
 the entire old coefficient and the kernel-arrow parity. -/
-theorem actualShiftedSource_sgn_tensor (i : I) (v s t : List I)
+theorem shiftedSource_sgn_tensor (i : I) (v s t : List I)
     (g : Old D Sc cutoff (s ++ [i]) t) (b : Old D Sc cutoff v (s ++ [i])) :
-    (actualShiftedSourceSpace D Sc cutoff i v t).sgn 1
+    (shiftedSourceSpace D Sc cutoff i v t).sgn 1
       (BalancedInduction.tensor (append D Sc cutoff i)
         (coefficientOneModule D Sc cutoff i v).toFunctor (⟨s⟩ : OldCategory D Sc cutoff) g b) =
       -BalancedInduction.tensor (append D Sc cutoff i)
@@ -215,22 +215,22 @@ theorem actualShiftedSource_sgn_tensor (i : I) (v s t : List I)
 
 /-- The specified input-dot representative formula follows from the actual
 dot and actual shifted grading, rather than from an assumed kernel map. -/
-theorem actualShiftedInputDot_tensor (j : {j : I // D.parity j = 1})
+theorem shiftedInputDot_tensor (j : {j : I // D.parity j = 1})
     (v s t : List I) (g : Old D Sc cutoff (s ++ [j.1]) t)
     (b : Old D Sc cutoff v (s ++ [j.1])) :
-    actualShiftedInputDot D Sc cutoff j v t
+    shiftedInputDot D Sc cutoff j v t
       (BalancedInduction.tensor (append D Sc cutoff j.1)
         (coefficientOneModule D Sc cutoff j.1 v).toFunctor (⟨s⟩ : OldCategory D Sc cutoff) g b) =
       -BalancedInduction.tensor (append D Sc cutoff j.1)
         (coefficientOneModule D Sc cutoff j.1 v).toFunctor (⟨s⟩ : OldCategory D Sc cutoff)
         (oldAppendDotComponent D Sc cutoff j.1 (⟨s⟩ : OldCategory D Sc cutoff) ≫ g)
         (oldTwist D Sc cutoff 1 v (s ++ [j.1]) b) := by
-  change actualInductionDot D Sc cutoff j.1 (coefficientOneModule D Sc cutoff j.1 v)
+  change inductionDot D Sc cutoff j.1 (coefficientOneModule D Sc cutoff j.1 v)
     (⟨t⟩ : OldCategory D Sc cutoff)
-      ((actualShiftedSourceSpace D Sc cutoff j.1 v t).sgn 1
+      ((shiftedSourceSpace D Sc cutoff j.1 v t).sgn 1
         (BalancedInduction.tensor (append D Sc cutoff j.1)
           (coefficientOneModule D Sc cutoff j.1 v).toFunctor ⟨s⟩ g b)) = _
-  rw [actualShiftedSource_sgn_tensor,
-    map_neg, actualInductionDot_tensor, j.property, twist_twist]
+  rw [shiftedSource_sgn_tensor,
+    map_neg, inductionDot_tensor, j.property, twist_twist]
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

@@ -46,7 +46,7 @@ theorem evenCounitMatrixEquiv_cap (p : ZMod 2)
         (⟨t⟩ : OldCategory D Sc cutoff))) (r : Fin m) :
     (evenCounitMatrixEquiv D Sc cutoff p i v t m hm z).2 r =
       unshiftedCounitComponent D Sc cutoff i.1 v t
-        ((actualInductionDot D Sc cutoff i.1 (restrictedRepresentable D Sc cutoff i.1 v)
+        ((inductionDot D Sc cutoff i.1 (restrictedRepresentable D Sc cutoff i.1 v)
           (⟨t⟩ : OldCategory D Sc cutoff))^[r.val] z) := by
   change -evenInputContraction D Sc cutoff i.1 i.property v t
     (((evenCrossingInputDot D Sc cutoff i.1 i.property v t) ^ r.val)

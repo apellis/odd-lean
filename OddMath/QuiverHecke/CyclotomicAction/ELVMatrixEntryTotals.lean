@@ -31,7 +31,7 @@ theorem moduleUnitColumn_total (i : I)
     (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
     (t : OldCategory D Sc cutoff) (n : ℕ) :
     SVec.toLinearMap ((moduleUnitColumn D Sc cutoff i M n).total t) =
-      ((actualInductionDot D Sc cutoff i M ((append D Sc cutoff i).obj t)) ^ n).comp
+      ((inductionDot D Sc cutoff i M ((append D Sc cutoff i).obj t)) ^ n).comp
         (SVec.toLinearMap (((BalancedInduction.adjunction (append D Sc cutoff i)).unit.app M).total t)) := by
   rw [moduleUnitColumn, Superfunctor.comp_total, SVec.toLinearMap_comp,
     MatrixEntryTotals.restriction_total, inductionDotModule_power_total]
@@ -42,7 +42,7 @@ theorem moduleCapRow_total (i : I)
     (t : OldCategory D Sc cutoff) (n : ℕ) :
     SVec.toLinearMap ((moduleCapRow D Sc cutoff i M n).total t) =
       (SVec.toLinearMap (((BalancedInduction.adjunction (append D Sc cutoff i)).counit.app M).total t)).comp
-        ((actualInductionDot D Sc cutoff i
+        ((inductionDot D Sc cutoff i
           ((BalancedInduction.restriction (append D Sc cutoff i)).obj M) t) ^ n) := by
   rw [moduleCapRow, Superfunctor.comp_total, SVec.toLinearMap_comp,
     inductionDotModule_power_total]

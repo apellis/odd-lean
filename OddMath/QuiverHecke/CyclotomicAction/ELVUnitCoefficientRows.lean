@@ -233,12 +233,12 @@ theorem moduleUnitCoefficient_dot_window (i : I) (t : OldCategory D Sc cutoff)
     (r : Fin (contentUnitCount D cutoff i (t.word : Multiset I)))
     (a : ℕ) (ha : a < contentUnitCount D cutoff i (t.word : Multiset I)) (z : M.obj t) :
     moduleUnitCoefficient D Sc cutoff M i t hh r
-      (((actualInductionDot D Sc cutoff i M ((append D Sc cutoff i).obj t)) ^ a)
+      (((inductionDot D Sc cutoff i M ((append D Sc cutoff i).obj t)) ^ a)
         ((((BalancedInduction.adjunction (append D Sc cutoff i)).unit.app M).total t) z)) =
       if a = r.val then z else 0 := by
   have hcol := LinearMap.congr_fun (moduleUnitColumn_total D Sc cutoff i M t a) z
   change (moduleUnitColumn D Sc cutoff i M a).total t z =
-    (((actualInductionDot D Sc cutoff i M ((append D Sc cutoff i).obj t)) ^ a)
+    (((inductionDot D Sc cutoff i M ((append D Sc cutoff i).obj t)) ^ a)
       ((((BalancedInduction.adjunction (append D Sc cutoff i)).unit.app M).total t) z)) at hcol
   rw [← hcol]
   by_cases h : a = r.val
@@ -337,7 +337,7 @@ theorem functional_dot_window (i : I) (hN : 0 < cutoff i)
     (a : ℕ) (ha : a < cutoff i)
     (z : (coefficientModule D Sc cutoff).obj (⟨[]⟩ : OldCategory D Sc cutoff)) :
     functional D Sc cutoff i hN
-      (((actualInductionDot D Sc cutoff i (coefficientModule D Sc cutoff)
+      (((inductionDot D Sc cutoff i (coefficientModule D Sc cutoff)
           ((append D Sc cutoff i).obj ⟨[]⟩)) ^ a)
         ((((BalancedInduction.adjunction (append D Sc cutoff i)).unit.app
           (coefficientModule D Sc cutoff)).total ⟨[]⟩) z)) =

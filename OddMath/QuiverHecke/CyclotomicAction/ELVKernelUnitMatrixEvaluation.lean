@@ -24,7 +24,7 @@ def unitKernelForward :
       (BalancedKernelTensor.piKernel (positiveKernelFamily D Sc cutoff i m t))
         M.toFunctor →ₗ[k] mateTargetSpace D Sc cutoff i M t :=
   (resIndKernelCoordinates D Sc cutoff M i t).toLinearMap.comp
-    (BalancedKernelTensor.map M.toFunctor (actualPositiveKernelMap D Sc cutoff i m t))
+    (BalancedKernelTensor.map M.toFunctor (positiveKernelMap D Sc cutoff i m t))
 
 /-- The actual unit matrix with its named source and target superspaces. -/
 def unitMatrixLinear : unitMatrixSourceSpace D Sc cutoff i M m t →ₗ[k]
@@ -176,20 +176,20 @@ theorem unitKernelForward_tensor (v : OldCategory D Sc cutoff)
       (BalancedKernelTensor.tensor (BalancedKernelTensor.piKernel
         (positiveKernelFamily D Sc cutoff i m t)) M.toFunctor v x b) =
       mateCoefficientEvaluation D Sc cutoff i M v t b
-        (actualMateKernelComponent D Sc cutoff i v t (x none)) +
+        (mateKernelComponent D Sc cutoff i v t (x none)) +
         ∑ r : Fin m, mateCoefficientEvaluation D Sc cutoff i M v t b
-          (actualUnitKernelComponent D Sc cutoff i r.val v t (x (some r))) := by
+          (unitKernelComponent D Sc cutoff i r.val v t (x (some r))) := by
   change resIndKernelCoordinates D Sc cutoff M i t
-    (BalancedKernelTensor.map M.toFunctor (actualPositiveKernelMap D Sc cutoff i m t)
+    (BalancedKernelTensor.map M.toFunctor (positiveKernelMap D Sc cutoff i m t)
       (BalancedKernelTensor.tensor (BalancedKernelTensor.piKernel
         (positiveKernelFamily D Sc cutoff i m t)) M.toFunctor v x b)) = _
   rw [BalancedKernelTensor.map_tensor]
   have h := (resIndKernelCoordinates_tensor D Sc cutoff M i v t
-    ((actualPositiveKernelMap D Sc cutoff i m t).app (op v) x) b).trans
+    ((positiveKernelMap D Sc cutoff i m t).app (op v) x) b).trans
       (mateCoefficientEvaluation_apply D Sc cutoff i M v t b _).symm
   refine h.trans ?_
   have hc := congrArg (mateCoefficientEvaluation D Sc cutoff i M v t b)
-    (actualPositiveKernelMap_apply D Sc cutoff i m v t x)
+    (positiveKernelMap_apply D Sc cutoff i m v t x)
   refine hc.trans ?_
   rw [map_add, map_sum]
 
@@ -206,7 +206,7 @@ theorem unitKernelForward_eq_moduleForward :
   · apply Finset.sum_congr rfl
     intro r _
     exact (mateCoefficientEvaluation_apply D Sc cutoff i M v t b _).trans
-      ((actualUnitKernel_evaluate D Sc cutoff i M v t b r.val (x (some r))).trans
+      ((unitKernel_evaluate D Sc cutoff i M v t b r.val (x (some r))).trans
         (unitColumnLinear_apply D Sc cutoff M i t r.val _).symm)
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.TensorMatrixCoordinates

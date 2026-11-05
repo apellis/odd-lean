@@ -15,7 +15,7 @@ universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
 
-abbrev actualUnshiftedSourceModule (i : I) (v : List I) :
+abbrev unshiftedSourceModule (i : I) (v : List I) :
     Superfunctor k (OldCategory D Sc cutoff) (SVec k) :=
   (BalancedInduction.induction (append D Sc cutoff i)).obj
     ((BalancedInduction.restriction (append D Sc cutoff i)).obj
@@ -29,7 +29,7 @@ theorem coefficientModuleBackward_mem (i : I) (v : List I) :
   rw [coefficientModuleBackward_app, ite_eq_right hq]
   rfl
 
-def actualParityCoefficientMap (i : I) (v : List I) :
+def parityCoefficientMap (i : I) (v : List I) :
     (BalancedInduction.restriction (append D Sc cutoff i)).obj
       (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)) ⟶
       coefficientOneModule D Sc cutoff i v :=
@@ -38,19 +38,19 @@ def actualParityCoefficientMap (i : I) (v : List I) :
         (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).inv ≫
     coefficientModuleBackward D Sc cutoff i v
 
-theorem actualParityCoefficientMap_mem (i : I) (v : List I) :
-    actualParityCoefficientMap D Sc cutoff i v ∈ parity (R := k) _ _ 1 := by
+theorem parityCoefficientMap_mem (i : I) (v : List I) :
+    parityCoefficientMap D Sc cutoff i v ∈ parity (R := k) _ _ 1 := by
   have h := map_mem (BalancedInduction.restriction (append D Sc cutoff i))
     (inv_mem _
       (supermoduleParityIso_hom_mem
         (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))))
-  simpa only [actualParityCoefficientMap, add_zero] using
+  simpa only [parityCoefficientMap, add_zero] using
     comp_mem h (coefficientModuleBackward_mem D Sc cutoff i v)
 
 theorem shiftedSourceParityIso_hom_eq_induction_map (i : I) (v : List I) :
     (shiftedSourceParityIso D Sc cutoff i v).hom =
       (BalancedInduction.induction (append D Sc cutoff i)).map
-        (actualParityCoefficientMap D Sc cutoff i v) := by
+        (parityCoefficientMap D Sc cutoff i v) := by
   change (BalancedInduction.induction (append D Sc cutoff i)).map
       ((BalancedInduction.restriction (append D Sc cutoff i)).map
         (supermoduleParityIso
@@ -64,7 +64,7 @@ theorem shiftedSourceParityIso_hom_mem (i : I) (v : List I) :
     (shiftedSourceParityIso D Sc cutoff i v).hom ∈ parity (R := k) _ _ 1 := by
   rw [shiftedSourceParityIso_hom_eq_induction_map]
   exact map_mem (BalancedInduction.induction (append D Sc cutoff i))
-    (actualParityCoefficientMap_mem D Sc cutoff i v)
+    (parityCoefficientMap_mem D Sc cutoff i v)
 
 theorem odd_total_eq_app_one
     {M N : Superfunctor k (OldCategory D Sc cutoff) (SVec k)} {f : M ⟶ N}
@@ -80,10 +80,10 @@ theorem odd_total_mem
   rw [odd_total_eq_app_one D Sc cutoff hf t]
   exact f.app_mem 1 t
 
-theorem actualInductionDot_mem (j : {j : I // D.parity j = 1})
+theorem inductionDot_mem (j : {j : I // D.parity j = 1})
     (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
     (t : OldCategory D Sc cutoff) :
-    actualInductionDot D Sc cutoff j.1 M t ∈ parity (R := k)
+    inductionDot D Sc cutoff j.1 M t ∈ parity (R := k)
       (((BalancedInduction.induction (append D Sc cutoff j.1)).obj M).obj t)
       (((BalancedInduction.induction (append D Sc cutoff j.1)).obj M).obj t) 1 := by
   change BalancedInduction.transformLinear (oldAppendDot_supernatural D Sc cutoff j.1) M t ∈
@@ -96,23 +96,23 @@ theorem actualInductionDot_mem (j : {j : I // D.parity j = 1})
     (oldAppendDot_supernatural D Sc cutoff j.1) M t
 
 /-- The outer Koszul sign for the actual odd dot and the canonical odd J. -/
-theorem actualInductionDot_sourceParity (j : {j : I // D.parity j = 1})
+theorem inductionDot_sourceParity (j : {j : I // D.parity j = 1})
     (v t : List I)
-    (z : (actualUnshiftedSourceModule D Sc cutoff j.1 v).obj
+    (z : (unshiftedSourceModule D Sc cutoff j.1 v).obj
       (⟨t⟩ : OldCategory D Sc cutoff)) :
-    actualInductionDot D Sc cutoff j.1 (coefficientOneModule D Sc cutoff j.1 v)
+    inductionDot D Sc cutoff j.1 (coefficientOneModule D Sc cutoff j.1 v)
       (⟨t⟩ : OldCategory D Sc cutoff)
       ((shiftedSourceParityIso D Sc cutoff j.1 v).hom.total
         (⟨t⟩ : OldCategory D Sc cutoff) z) =
       -(shiftedSourceParityIso D Sc cutoff j.1 v).hom.total
         (⟨t⟩ : OldCategory D Sc cutoff)
-        (actualInductionDot D Sc cutoff j.1
+        (inductionDot D Sc cutoff j.1
           ((BalancedInduction.restriction (append D Sc cutoff j.1)).obj
             (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)))
           (⟨t⟩ : OldCategory D Sc cutoff) z) := by
-  let f := actualParityCoefficientMap D Sc cutoff j.1 v
+  let f := parityCoefficientMap D Sc cutoff j.1 v
   have hf := map_mem (BalancedInduction.induction (append D Sc cutoff j.1))
-    (actualParityCoefficientMap_mem D Sc cutoff j.1 v)
+    (parityCoefficientMap_mem D Sc cutoff j.1 v)
   have hj : (shiftedSourceParityIso D Sc cutoff j.1 v).hom.total
       (⟨t⟩ : OldCategory D Sc cutoff) =
       BalancedInduction.mapComponent (append D Sc cutoff j.1) f 1

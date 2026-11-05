@@ -31,15 +31,15 @@ theorem inductionUnitDotColumn_comp (i : I) (v t : List I) (n : ℕ)
   rfl
 
 /-- The exact ordinary categorical unit/dot column, with no column rescaling. -/
-def actualUnitKernelComponent (i : I) (n : ℕ) (v t : OldCategory D Sc cutoff) :
+def unitKernelComponent (i : I) (n : ℕ) (v t : OldCategory D Sc cutoff) :
     (v ⟶ t) →ₗ[k] ((append D Sc cutoff i).obj v ⟶ (append D Sc cutoff i).obj t) :=
   inductionUnitDotColumn D Sc cutoff i v.word t.word n
 
-theorem actualUnitKernelComponent_precompose (i : I) (n : ℕ)
+theorem unitKernelComponent_precompose (i : I) (n : ℕ)
     {v w : OldCategory D Sc cutoff} (a : v ⟶ w) (t : OldCategory D Sc cutoff) :
-    (actualUnitKernelComponent D Sc cutoff i n v t).comp (Linear.leftComp k t a) =
+    (unitKernelComponent D Sc cutoff i n v t).comp (Linear.leftComp k t a) =
     (Linear.leftComp k ((append D Sc cutoff i).obj t) ((append D Sc cutoff i).map a)).comp
-      (actualUnitKernelComponent D Sc cutoff i n w t) := by
+      (unitKernelComponent D Sc cutoff i n w t) := by
   apply LinearMap.ext
   intro b
   cases v with
@@ -54,13 +54,13 @@ theorem actualUnitKernelComponent_precompose (i : I) (n : ℕ)
           Functor.map_comp, Linear.comp_smul, Category.assoc]
 
 /-- The actual unscaled unit/dot-power column is an ordinary-right kernel map. -/
-def actualUnitKernel (i : I) (n : ℕ) (t : OldCategory D Sc cutoff) :
+def unitKernel (i : I) (n : ℕ) (t : OldCategory D Sc cutoff) :
     BalancedKernelTensor.inductionKernel (k := k) (𝟭 (OldCategory D Sc cutoff)) t ⟶
       BalancedKernelTensor.inductionKernel (k := k) (append D Sc cutoff i)
         ((append D Sc cutoff i).obj t) where
-  app v := ModuleCat.ofHom (actualUnitKernelComponent D Sc cutoff i n v.unop t)
+  app v := ModuleCat.ofHom (unitKernelComponent D Sc cutoff i n v.unop t)
   naturality _ _ a := by
     apply ModuleCat.hom_ext
-    exact actualUnitKernelComponent_precompose D Sc cutoff i n a.unop t
+    exact unitKernelComponent_precompose D Sc cutoff i n a.unop t
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

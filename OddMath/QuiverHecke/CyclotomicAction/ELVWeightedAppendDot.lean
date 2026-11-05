@@ -32,7 +32,7 @@ old coend dot and the prescribed truncated dot on every output word.
 No homogeneous-arrow or homogeneous-vector restriction is needed. -/
 theorem appendWeightedModuleIso_hom_dot (w : OldCategory D Sc cutoff) :
     weightedAppendComparisonLinear D Sc cutoff N i M w ∘ₗ
-        CyclotomicCrossingTensor.actualInductionDot D Sc cutoff i RM w =
+        CyclotomicCrossingTensor.inductionDot D Sc cutoff i RM w =
       BalancedInduction.transformLinear
         (truncatedAppendComponent_supernatural D Sc cutoff N (by
           simpa only [pow_one, one_nsmul] using firstDot_pow_parity D Sc i [] 1)) M ((Q).obj w) ∘ₗ
@@ -40,7 +40,7 @@ theorem appendWeightedModuleIso_hom_dot (w : OldCategory D Sc cutoff) :
   apply BalancedInduction.hom_ext
   intro s g b
   simp only [LinearMap.comp_apply,
-    CyclotomicCrossingTensor.actualInductionDot_tensor,
+    CyclotomicCrossingTensor.inductionDot_tensor,
     appendWeightedModuleIso_hom_tensor, BalancedInduction.transformLinear_tensor]
   rw [(Q).map_comp, map_twist, oldTruncateFunctor_map_appendDot]
   rfl

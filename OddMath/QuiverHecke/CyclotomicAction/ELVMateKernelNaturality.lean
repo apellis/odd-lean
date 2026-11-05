@@ -49,7 +49,7 @@ def oldSourceKernelEquiv (i : I) (v t : OldCategory D Sc cutoff) :
 def oldSourceKernelLinear (i : I) (v t : List I) :
     IndResKernel.Component (k := k) (append D Sc cutoff i)
       (⟨v⟩ : OldCategory D Sc cutoff) (⟨t⟩ : OldCategory D Sc cutoff) →ₗ[k]
-      (actualUnshiftedSourceModule D Sc cutoff i v).obj
+      (unshiftedSourceModule D Sc cutoff i v).obj
         (⟨t⟩ : OldCategory D Sc cutoff) :=
   (oldSourceKernelEquiv D Sc cutoff i ⟨v⟩ ⟨t⟩).toLinearMap
 
@@ -66,7 +66,7 @@ theorem oldSourceKernelLinear_tensor (i : I) (v s t : List I)
   oldSourceKernelEquiv_tensor D Sc cutoff i ⟨v⟩ ⟨s⟩ ⟨t⟩ g b
 
 private theorem matrixMateRow_total (i : I) (v t : List I)
-    (z : (actualUnshiftedSourceModule D Sc cutoff i v).obj
+    (z : (unshiftedSourceModule D Sc cutoff i v).obj
       (⟨t⟩ : OldCategory D Sc cutoff)) :
     matrixMateRow D Sc cutoff i v t z =
       OldInductionRepresentable.upperHomEquiv D Sc cutoff i
@@ -76,7 +76,7 @@ private theorem matrixMateRow_total (i : I) (v t : List I)
             (⟨t⟩ : OldCategory D Sc cutoff) z) := rfl
 
 /-- The chosen actual mate, evaluated in canonical upper-Hom coordinates. -/
-def actualMateKernelComponent (i : I) (v t : OldCategory D Sc cutoff) :
+def mateKernelComponent (i : I) (v t : OldCategory D Sc cutoff) :
     IndResKernel.Component (k := k) (append D Sc cutoff i) v t →ₗ[k]
       ((append D Sc cutoff i).obj v ⟶ (append D Sc cutoff i).obj t) := by
   cases v with
@@ -87,16 +87,16 @@ def actualMateKernelComponent (i : I) (v t : OldCategory D Sc cutoff) :
         (oldSourceKernelLinear D Sc cutoff i v t)
 
 /-- The stored row and its source linear map share the same module endpoint. -/
-theorem actualMateKernelComponent_row (i : I) (v t : List I)
+theorem mateKernelComponent_row (i : I) (v t : List I)
     (z : IndResKernel.Component (k := k) (append D Sc cutoff i)
       (⟨v⟩ : OldCategory D Sc cutoff) (⟨t⟩ : OldCategory D Sc cutoff)) :
-    actualMateKernelComponent D Sc cutoff i ⟨v⟩ ⟨t⟩ z =
+    mateKernelComponent D Sc cutoff i ⟨v⟩ ⟨t⟩ z =
       matrixMateRow D Sc cutoff i v t (oldSourceKernelLinear D Sc cutoff i v t z) := rfl
 
-@[simp] theorem actualMateKernelComponent_tensor (i : I)
+@[simp] theorem mateKernelComponent_tensor (i : I)
     (v s t : OldCategory D Sc cutoff) (g : (append D Sc cutoff i).obj s ⟶ t)
     (b : v ⟶ (append D Sc cutoff i).obj s) :
-    actualMateKernelComponent D Sc cutoff i v t
+    mateKernelComponent D Sc cutoff i v t
       (BalancedInduction.tensor (append D Sc cutoff i)
         ((append D Sc cutoff i) ⋙ IndResKernel.homModule (k := k) v) s g b) =
     -((append D Sc cutoff i).map b ≫ equalCrossComponent D Sc cutoff i s ≫
@@ -107,7 +107,7 @@ theorem actualMateKernelComponent_row (i : I) (v t : List I)
     | mk s =>
       cases t with
       | mk t =>
-        rw [actualMateKernelComponent_row]
+        rw [mateKernelComponent_row]
         rw [oldSourceKernelLinear_tensor, matrixMateRow_total]
         have hp : D.parity i * D.parity i = D.parity i := by
           rcases parity_eq_zero_or_one (D.parity i) with h | h <;> simp [h]
@@ -115,16 +115,16 @@ theorem actualMateKernelComponent_row (i : I) (v t : List I)
         rw [hp] at ht
         exact ht
 
-theorem actualMateKernelComponent_precompose (i : I)
+theorem mateKernelComponent_precompose (i : I)
     {v w : OldCategory D Sc cutoff} (a : v ⟶ w) (t : OldCategory D Sc cutoff) :
-    (actualMateKernelComponent D Sc cutoff i v t).comp
+    (mateKernelComponent D Sc cutoff i v t).comp
       (IndResKernel.precompose (k := k) (append D Sc cutoff i) a t) =
     (Linear.leftComp k ((append D Sc cutoff i).obj t) ((append D Sc cutoff i).map a)).comp
-      (actualMateKernelComponent D Sc cutoff i w t) := by
+      (mateKernelComponent D Sc cutoff i w t) := by
   apply BalancedInduction.hom_ext
   intro s g b
   simp only [LinearMap.comp_apply, IndResKernel.precompose_tensor,
-    actualMateKernelComponent_tensor]
+    mateKernelComponent_tensor]
   change -((append D Sc cutoff i).map (a ≫ b) ≫ equalCrossComponent D Sc cutoff i s ≫
       twist k (D.parity i) ((append D Sc cutoff i).map g)) =
     (append D Sc cutoff i).map a ≫
@@ -133,36 +133,36 @@ theorem actualMateKernelComponent_precompose (i : I)
   rw [Functor.map_comp, Preadditive.comp_neg, Category.assoc]
 
 /-- The same actual mate coefficient with literal kernel-object endpoints. -/
-def actualMateKernelLinear (i : I) (v : (OldCategory D Sc cutoff)ᵒᵖ)
+def mateKernelLinear (i : I) (v : (OldCategory D Sc cutoff)ᵒᵖ)
     (t : OldCategory D Sc cutoff) :
     (IndResKernel.kernel (k := k) (append D Sc cutoff i) t).obj v →ₗ[k]
       (BalancedKernelTensor.inductionKernel (k := k) (append D Sc cutoff i)
         ((append D Sc cutoff i).obj t)).obj v :=
-  actualMateKernelComponent D Sc cutoff i v.unop t
+  mateKernelComponent D Sc cutoff i v.unop t
 
 /-- The typed kernel-object coefficient is the fixed actual mate coefficient. -/
-theorem actualMateKernelLinear_eq_component (i : I) (v : (OldCategory D Sc cutoff)ᵒᵖ)
+theorem mateKernelLinear_eq_component (i : I) (v : (OldCategory D Sc cutoff)ᵒᵖ)
     (t : OldCategory D Sc cutoff) :
-    actualMateKernelLinear D Sc cutoff i v t =
-      actualMateKernelComponent D Sc cutoff i v.unop t := rfl
+    mateKernelLinear D Sc cutoff i v t =
+      mateKernelComponent D Sc cutoff i v.unop t := rfl
 
 /-- The actual normalized first entry is ordinary-right natural, not merely even-arrow natural. -/
-def actualMateKernel (i : I) (t : OldCategory D Sc cutoff) :
+def mateKernel (i : I) (t : OldCategory D Sc cutoff) :
     IndResKernel.kernel (k := k) (append D Sc cutoff i) t ⟶
       BalancedKernelTensor.inductionKernel (k := k) (append D Sc cutoff i)
         ((append D Sc cutoff i).obj t) :=
-  kernelNatTrans _ _ (fun v => actualMateKernelLinear D Sc cutoff i v t)
-    (fun a => actualMateKernelComponent_precompose D Sc cutoff i a.unop t)
+  kernelNatTrans _ _ (fun v => mateKernelLinear D Sc cutoff i v t)
+    (fun a => mateKernelComponent_precompose D Sc cutoff i a.unop t)
 
-@[simp] theorem actualMateKernel_apply (i : I) (v t : OldCategory D Sc cutoff)
+@[simp] theorem mateKernel_apply (i : I) (v t : OldCategory D Sc cutoff)
     (z : IndResKernel.Component (k := k) (append D Sc cutoff i) v t) :
-    (actualMateKernel D Sc cutoff i t).app (op v) z =
-      actualMateKernelComponent D Sc cutoff i v t z := by
-  change actualMateKernelLinear D Sc cutoff i (op v) t z = _
-  rw [actualMateKernelLinear_eq_component]
+    (mateKernel D Sc cutoff i t).app (op v) z =
+      mateKernelComponent D Sc cutoff i v t z := by
+  change mateKernelLinear D Sc cutoff i (op v) t z = _
+  rw [mateKernelLinear_eq_component]
   simp only [Opposite.unop_op]
   exact LinearMap.congr_fun
-    (rfl : actualMateKernelComponent D Sc cutoff i v t =
-      actualMateKernelComponent D Sc cutoff i v t) z
+    (rfl : mateKernelComponent D Sc cutoff i v t =
+      mateKernelComponent D Sc cutoff i v t) z
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

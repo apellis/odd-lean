@@ -16,7 +16,7 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 /-- The induction dot on the literal even-moving coefficient module. -/
 def evenSourceInputDot (i : {i : I // D.parity i = 0}) (v t : List I) :
     Source D Sc cutoff i.1 v t →ₗ[k] Source D Sc cutoff i.1 v t :=
-  actualInductionDot D Sc cutoff i.1 (evenMovingCoefficientModule D Sc cutoff i v)
+  inductionDot D Sc cutoff i.1 (evenMovingCoefficientModule D Sc cutoff i v)
     (⟨t⟩ : OldCategory D Sc cutoff)
 
 theorem evenSourceInputDot_tensor (i : {i : I // D.parity i = 0})
@@ -25,9 +25,9 @@ theorem evenSourceInputDot_tensor (i : {i : I // D.parity i = 0})
     evenSourceInputDot D Sc cutoff i v t (tensor D Sc cutoff i.1 v s t g b) =
       tensor D Sc cutoff i.1 v s t
         (oldAppendDotComponent D Sc cutoff i.1 (⟨s⟩ : OldCategory D Sc cutoff) ≫ g) b := by
-  change actualInductionDot D Sc cutoff i.1 (evenMovingCoefficientModule D Sc cutoff i v) _
+  change inductionDot D Sc cutoff i.1 (evenMovingCoefficientModule D Sc cutoff i v) _
     (BalancedInduction.tensor _ _ _ g b) = _
-  rw [actualInductionDot_tensor]
+  rw [inductionDot_tensor]
   have hg : twist k (D.parity i.1)
       (X := (append D Sc cutoff i.1).obj (⟨s⟩ : OldCategory D Sc cutoff))
       (Y := (⟨t⟩ : OldCategory D Sc cutoff)) g = g := by
@@ -105,12 +105,12 @@ theorem evenSourceInputDot_sourceEquiv (i : {i : I // D.parity i = 0})
         (⟨t⟩ : OldCategory D Sc cutoff))) :
     evenSourceInputDot D Sc cutoff i v t (evenSourceEquiv D Sc cutoff i v t z) =
       evenSourceEquiv D Sc cutoff i v t
-        (actualInductionDot D Sc cutoff i.1 (restrictedRepresentable D Sc cutoff i.1 v)
+        (inductionDot D Sc cutoff i.1 (restrictedRepresentable D Sc cutoff i.1 v)
           (⟨t⟩ : OldCategory D Sc cutoff) z) := by
   suffices h : (evenSourceInputDot D Sc cutoff i v t).comp
       (evenSourceEquiv D Sc cutoff i v t).toLinearMap =
       (evenSourceEquiv D Sc cutoff i v t).toLinearMap.comp
-        (actualInductionDot D Sc cutoff i.1 (restrictedRepresentable D Sc cutoff i.1 v)
+        (inductionDot D Sc cutoff i.1 (restrictedRepresentable D Sc cutoff i.1 v)
           (⟨t⟩ : OldCategory D Sc cutoff)) from
     LinearMap.congr_fun h z
   apply BalancedInduction.hom_ext
@@ -120,9 +120,9 @@ theorem evenSourceInputDot_sourceEquiv (i : {i : I // D.parity i = 0})
       (BalancedInduction.tensor (append D Sc cutoff i.1)
         (restrictedRepresentable D Sc cutoff i.1 v).toFunctor s g b)) =
     evenSourceEquiv D Sc cutoff i v t
-      (actualInductionDot D Sc cutoff i.1 (restrictedRepresentable D Sc cutoff i.1 v) _
+      (inductionDot D Sc cutoff i.1 (restrictedRepresentable D Sc cutoff i.1 v) _
         (BalancedInduction.tensor _ _ s g b))
-  rw [evenSourceEquiv_tensor, evenSourceInputDot_tensor, actualInductionDot_tensor]
+  rw [evenSourceEquiv_tensor, evenSourceInputDot_tensor, inductionDot_tensor]
   have hg : twist k (D.parity i.1)
       (X := (append D Sc cutoff i.1).obj s)
       (Y := (⟨t⟩ : OldCategory D Sc cutoff)) g = g := by
@@ -136,7 +136,7 @@ theorem evenSourceInputDot_iterate_sourceEquiv (i : {i : I // D.parity i = 0})
       (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).obj
         (⟨t⟩ : OldCategory D Sc cutoff))) :
     (evenSourceInputDot D Sc cutoff i v t)^[n] (evenSourceEquiv D Sc cutoff i v t z) =
-      evenSourceEquiv D Sc cutoff i v t ((actualInductionDot D Sc cutoff i.1 (restrictedRepresentable D Sc cutoff i.1 v)
+      evenSourceEquiv D Sc cutoff i v t ((inductionDot D Sc cutoff i.1 (restrictedRepresentable D Sc cutoff i.1 v)
           (⟨t⟩ : OldCategory D Sc cutoff))^[n] z) := by
   induction n with
   | zero => rfl
@@ -153,7 +153,7 @@ theorem evenCapRow_normalization (i : {i : I // D.parity i = 0})
         (⟨t⟩ : OldCategory D Sc cutoff))) :
     evenSourceInputContraction D Sc cutoff i v t
       ((evenSourceInputDot D Sc cutoff i v t)^[n] (evenSourceEquiv D Sc cutoff i v t z)) =
-      -unshiftedCounitComponent D Sc cutoff i.1 v t ((actualInductionDot D Sc cutoff i.1 (restrictedRepresentable D Sc cutoff i.1 v)
+      -unshiftedCounitComponent D Sc cutoff i.1 v t ((inductionDot D Sc cutoff i.1 (restrictedRepresentable D Sc cutoff i.1 v)
           (⟨t⟩ : OldCategory D Sc cutoff))^[n] z) := by
   rw [evenSourceInputDot_iterate_sourceEquiv, evenSourceInputContraction_counit]
 

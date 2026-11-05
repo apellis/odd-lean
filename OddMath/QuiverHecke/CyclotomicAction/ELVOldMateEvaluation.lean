@@ -14,7 +14,7 @@ universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
 
-private theorem actualCross_eq (i : I)
+private theorem cross_eq (i : I)
     (N : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :
     equalCrossOnDoubleInduction D Sc cutoff i N =
       BalancedInduction.doubleCrossComponent (append D Sc cutoff i)
@@ -26,7 +26,7 @@ private theorem signedCross_component_eq (i : I)
       -BalancedInduction.doubleCrossComponent (append D Sc cutoff i)
         (equalCross_supernatural D Sc cutoff i) N := by
   rw [signedEqualInductionCross_app, ite_eq_left rfl]
-  exact congrArg Neg.neg (actualCross_eq D Sc cutoff i N)
+  exact congrArg Neg.neg (cross_eq D Sc cutoff i N)
 
 private theorem oldModuleMate_eq_ordered (i : I)
     (N : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :

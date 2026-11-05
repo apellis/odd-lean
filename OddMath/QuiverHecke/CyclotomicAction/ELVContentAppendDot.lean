@@ -82,7 +82,7 @@ theorem oldContentAppendExtensionIso_dot_tensor
           (BalancedInduction.induced (oldContentAppend D Sc cutoff ν i) M).toFunctor
           t h (BalancedInduction.tensor (oldContentAppend D Sc cutoff ν i)
             M.toFunctor s g b))) =
-    actualInductionDot D Sc cutoff i
+    inductionDot D Sc cutoff i
       (BalancedInduction.induced (oldContentInclusion D Sc cutoff ν) M) w
       (oldContentAppendExtensionLinear D Sc cutoff ν i M w
         (BalancedInduction.tensor (oldContentInclusion D Sc cutoff (i :: ν))
@@ -94,7 +94,7 @@ theorem oldContentAppendExtensionIso_dot_tensor
     ↓reduceIte, BalancedInduction.transformLinear_tensor]
   rw [oldContentAppendExtensionLinear_tensor, oldContentAppendExtensionLinear_tensor]
   unfold BalancedInduction.inductionInsertedTensor
-  rw [actualInductionDot_tensor]
+  rw [inductionDot_tensor]
   apply congrArg (fun a : (append D Sc cutoff i).obj s.obj ⟶ w =>
     BalancedInduction.tensor (append D Sc cutoff i)
       (BalancedInduction.induced (oldContentInclusion D Sc cutoff ν) M).toFunctor
@@ -116,7 +116,7 @@ theorem oldContentAppendExtensionIso_dot
     oldContentAppendExtensionLinear D Sc cutoff ν i M w ∘ₗ
       BalancedInduction.mapComponent (oldContentInclusion D Sc cutoff (i :: ν))
         (oldContentInductionDotComponent D Sc cutoff ν i M) (D.parity i) w =
-    actualInductionDot D Sc cutoff i
+    inductionDot D Sc cutoff i
       (BalancedInduction.induced (oldContentInclusion D Sc cutoff ν) M) w ∘ₗ
         oldContentAppendExtensionLinear D Sc cutoff ν i M w := by
   apply BalancedInduction.nested_hom_ext

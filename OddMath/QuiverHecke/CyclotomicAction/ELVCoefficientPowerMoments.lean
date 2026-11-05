@@ -55,7 +55,7 @@ theorem rawMoment_recurrence (i : I) (hN : 0 < cutoff i)
 def signedMoment (i : I) (hN : 0 < cutoff i) (n : ℕ) :
     CoefficientPowerQuotient (k := k) D cutoff L :=
   functional D Sc cutoff L i hN
-    ((actualInductionDot D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L)
+    ((inductionDot D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L)
       ((append D Sc cutoff i).obj ⟨[]⟩) ^ n) (unit D Sc cutoff L i 1))
 
 /-- At every exponent the existing signed dot differs from the literal

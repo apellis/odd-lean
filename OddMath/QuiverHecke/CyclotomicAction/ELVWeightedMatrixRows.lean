@@ -256,7 +256,7 @@ theorem weightedAppendSourceLinear_dot
     (BalancedInduction.transformLinear
       (CyclotomicCrossingTensor.oldAppendDot_supernatural D Sc cutoff i) (weightedRestriction D Sc cutoff N L) w)
     (BalancedInduction.transformLinear (truncatedDot_supernatural D Sc cutoff N i) L ((Q).obj w)) h₁'
-    (by simpa only [CyclotomicCrossingTensor.actualInductionDot] using
+    (by simpa only [CyclotomicCrossingTensor.inductionDot] using
       appendWeightedModuleIso_hom_dot D Sc cutoff N i L w)
 
 variable (M : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k))
@@ -319,7 +319,7 @@ theorem weightedMateTargetLinear_unitDot (w : OldCategory D Sc cutoff) (n : ℕ)
     (BalancedInduction.postcompose T M.toFunctor
       (eqToHom (show (T).obj ((Q).obj w) = (Q).obj ((J).obj w) from rfl)) ∘ₗ
         BalancedInduction.unit T M.toFunctor ((Q).obj w))
-    (by simpa only [CyclotomicCrossingTensor.actualInductionDot] using
+    (by simpa only [CyclotomicCrossingTensor.inductionDot] using
       appendWeightedModuleIso_hom_dot D Sc cutoff N i M ((J).obj w))
     (weightedMateTargetLinear_unit D Sc cutoff N i M w) n
   exact h

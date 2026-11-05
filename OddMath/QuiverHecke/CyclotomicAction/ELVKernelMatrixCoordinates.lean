@@ -21,14 +21,14 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 def kernelSourceCoordinates (i : I) (v : (OldCategory D Sc cutoff)ᵒᵖ)
     (t : OldCategory D Sc cutoff) :
     (IndResKernel.kernel (k := k) (append D Sc cutoff i) t).obj v ≃ₗ[k]
-      (actualUnshiftedSourceModule D Sc cutoff i v.unop.word).obj t :=
+      (unshiftedSourceModule D Sc cutoff i v.unop.word).obj t :=
   oldSourceKernelEquiv D Sc cutoff i v.unop t
 
 /-- The ordinary Option-family source splits into its actual source and coefficient vector. -/
 def positiveKernelCoordinates (i : I) (m : ℕ) (v : (OldCategory D Sc cutoff)ᵒᵖ)
     (t : OldCategory D Sc cutoff) :
     (BalancedKernelTensor.piKernel (positiveKernelFamily D Sc cutoff i m t)).obj v ≃ₗ[k]
-      ((actualUnshiftedSourceModule D Sc cutoff i v.unop.word).obj t ×
+      ((unshiftedSourceModule D Sc cutoff i v.unop.word).obj t ×
         (Fin m → Old D Sc cutoff v.unop.word t.word)) :=
   (LinearEquiv.piOptionEquivProd k).trans
     ((kernelSourceCoordinates D Sc cutoff i v t).prodCongr

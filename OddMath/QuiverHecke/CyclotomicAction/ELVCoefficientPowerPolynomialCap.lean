@@ -18,7 +18,7 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 private abbrev polynomialCapTarget (i : I) :=
   mateTargetSpace D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L) ⟨[]⟩
 private def polynomialCapDot (i : I) : Module.End k (polynomialCapTarget D Sc cutoff L i) :=
-  actualInductionDot D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L)
+  inductionDot D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L)
     ((append D Sc cutoff i).obj ⟨[]⟩)
 
 private def capMomentLinear (i : I) (hN : 0 < cutoff i) (n : ℕ) :

@@ -51,33 +51,33 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 theorem sourceInputContraction_tensor (j : {j : I // D.parity j = 1})
     (v s t : List I) (g : Old D Sc cutoff (s ++ [j.1]) t)
     (b : Old D Sc cutoff v (s ++ [j.1])) :
-    actualSourceInputContraction D Sc cutoff j v t (tensor D Sc cutoff j.1 v s t g b) =
+    sourceInputContraction D Sc cutoff j v t (tensor D Sc cutoff j.1 v s t g b) =
       oldComp D Sc cutoff v (s ++ [j.1]) t
         (oldTwist D Sc cutoff 1 v (s ++ [j.1]) b) g := by
-  rw [← coefficientOneSourceEquiv_tensor, actualSourceInputContraction_carrier,
-    actualShiftedInputContraction_tensor]
+  rw [← coefficientOneSourceEquiv_tensor, sourceInputContraction_carrier,
+    shiftedInputContraction_tensor]
 
 theorem sourceInputDot_tensor (j : {j : I // D.parity j = 1})
     (v s t : List I) (g : Old D Sc cutoff (s ++ [j.1]) t)
     (b : Old D Sc cutoff v (s ++ [j.1])) :
-    actualSourceInputDot D Sc cutoff j v t (tensor D Sc cutoff j.1 v s t g b) =
+    sourceInputDot D Sc cutoff j v t (tensor D Sc cutoff j.1 v s t g b) =
       -tensor D Sc cutoff j.1 v s t
         (oldAppendDotComponent D Sc cutoff j.1 (⟨s⟩ : OldCategory D Sc cutoff) ≫ g)
         (oldTwist D Sc cutoff 1 v (s ++ [j.1]) b) := by
-  rw [← coefficientOneSourceEquiv_tensor, actualSourceInputDot_carrier,
-    actualShiftedInputDot_tensor, map_neg, coefficientOneSourceEquiv_tensor]
+  rw [← coefficientOneSourceEquiv_tensor, sourceInputDot_carrier,
+    shiftedInputDot_tensor, map_neg, coefficientOneSourceEquiv_tensor]
 
 theorem sourceInputContraction_q (j : {j : I // D.parity j = 1}) (v t : List I)
     (z : ShortTarget D Sc cutoff j.1 v t) :
-    actualSourceInputContraction D Sc cutoff j v t (q D Sc cutoff j.1 v t z) =
+    sourceInputContraction D Sc cutoff j v t (q D Sc cutoff j.1 v t z) =
       offDiagonalInputContractionAffine D Sc cutoff j v t z := by
-  suffices h : (actualSourceInputContraction D Sc cutoff j v t).comp
+  suffices h : (sourceInputContraction D Sc cutoff j v t).comp
       (q D Sc cutoff j.1 v t) = offDiagonalInputContractionAffine D Sc cutoff j v t from
     LinearMap.congr_fun h z
   apply BalancedInduction.hom_ext
   intro s g b
   simp only [LinearMap.comp_apply]
-  change actualSourceInputContraction D Sc cutoff j v t
+  change sourceInputContraction D Sc cutoff j v t
     (q D Sc cutoff j.1 v t (shortTensor D Sc cutoff j.1 v s.word t g b)) = _
   rw [q_shortTensor, sourceInputContraction_tensor]
   obtain ⟨r, rfl⟩ := (ideal D Sc cutoff v (s.word ++ [j.1])).mkQ_surjective b
@@ -91,15 +91,15 @@ theorem sourceInputContraction_q (j : {j : I // D.parity j = 1}) (v t : List I)
 
 theorem sourceInputDot_q (j : {j : I // D.parity j = 1}) (v t : List I)
     (z : ShortTarget D Sc cutoff j.1 v t) :
-    actualSourceInputDot D Sc cutoff j v t (q D Sc cutoff j.1 v t z) =
+    sourceInputDot D Sc cutoff j v t (q D Sc cutoff j.1 v t z) =
       q D Sc cutoff j.1 v t (offDiagonalCrossingInputDotAffine D Sc cutoff j v t z) := by
-  suffices h : (actualSourceInputDot D Sc cutoff j v t).comp
+  suffices h : (sourceInputDot D Sc cutoff j v t).comp
       (q D Sc cutoff j.1 v t) =
       (q D Sc cutoff j.1 v t).comp (offDiagonalCrossingInputDotAffine D Sc cutoff j v t) from
     LinearMap.congr_fun h z
   apply BalancedInduction.hom_ext
   intro s g b
-  change actualSourceInputDot D Sc cutoff j v t
+  change sourceInputDot D Sc cutoff j v t
     (q D Sc cutoff j.1 v t (shortTensor D Sc cutoff j.1 v s.word t g b)) =
     q D Sc cutoff j.1 v t
       (offDiagonalCrossingInputDotAffine D Sc cutoff j v t
@@ -125,7 +125,7 @@ theorem sourceInputDot_q (j : {j : I // D.parity j = 1}) (v t : List I)
 
 /-- Equality with the specified input contraction, proved on all balanced classes. -/
 theorem sourceInputContraction_eq (j : {j : I // D.parity j = 1}) (v t : List I) :
-    actualSourceInputContraction D Sc cutoff j v t =
+    sourceInputContraction D Sc cutoff j v t =
       offDiagonalInputContraction D Sc cutoff j v t := by
   apply LinearMap.ext
   intro z
@@ -134,7 +134,7 @@ theorem sourceInputContraction_eq (j : {j : I // D.parity j = 1}) (v t : List I)
 
 /-- Equality with the specified input dot, retaining the whole coefficient twist. -/
 theorem sourceInputDot_eq (j : {j : I // D.parity j = 1}) (v t : List I) :
-    actualSourceInputDot D Sc cutoff j v t =
+    sourceInputDot D Sc cutoff j v t =
       offDiagonalCrossingInputDot D Sc cutoff j v t := by
   apply LinearMap.ext
   intro z
@@ -147,8 +147,8 @@ def offDiagonalShiftedInputMatrix (j : {j : I // D.parity j = 1}) (v t : List I)
       (Old D Sc cutoff (v ++ [j.1]) (t ++ [j.1]) × (Fin m → Old D Sc cutoff v t)) :=
   (toCyclotomic D Sc cutoff j.1 v t).prod
     (LinearMap.pi fun r : Fin m =>
-      (actualSourceInputContraction D Sc cutoff j v t).comp
-        ((actualSourceInputDot D Sc cutoff j v t) ^ r.val))
+      (sourceInputContraction D Sc cutoff j v t).comp
+        ((sourceInputDot D Sc cutoff j v t) ^ r.val))
 
 theorem offDiagonalShiftedInputMatrix_eq (j : {j : I // D.parity j = 1})
     (v t : List I) (m : ℕ) :
