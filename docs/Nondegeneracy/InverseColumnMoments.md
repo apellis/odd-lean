@@ -181,10 +181,18 @@ Still open:
    that a transformation out of `G` followed by the tensor vacuum `M ↦ W ⊗ M(a)`
    is determined by its component at one object `Y₀`, when every homogeneous
    vector of every `(G X)(a)` is `(G f)(y₀)` for a fixed `y₀` and a homogeneous
-   `f : Y₀ ⟶ X` of the same parity (here `G = emptyProbe`, `Y₀ = regularProbe`). Remaining for faithfulness: supply these morphisms out of the regular
-   probe (its value at the empty object is the scalar line on
-   `probeOldVacuumVector`), and pass through the weight-block product
-   `WeightTensorVacuum.hom` and the input-weight transport of `tensorHomAt`.
+   `f : Y₀ ⟶ X` of the same parity (here `G = emptyProbe`, `Y₀ = regularProbe`).
+   The generating hypothesis is checked (`ELVRegularProbeGenerating.lean`):
+   `regularProbe_generating` gives, for every homogeneous vector `n` of the
+   empty block of a probe weight product `Y`, a morphism
+   `regularProbe ⟶ Y` of the same parity carrying `regularVector` to `n`.
+   It uses that the old empty-content category has only the empty object
+   (`emptyObject_eq`), that its endomorphisms are coefficients
+   (`vacuumEnd_eq`, `vacuum_map_eq`), and the morphisms `vacuumHom` out of the
+   regular empty probe. Remaining for faithfulness: restrict an endomorphism of
+   `WeightTensorVacuum.hom` to each weight block, apply
+   `hom_ext_of_generating` there, and pass through the input-weight transport
+   of `tensorHomAt`.
 2. The odd bubble `oddBubble` at positive height, the same way.
 3. Even colours need an even moment result; nonpositive height is handled
    separately.
