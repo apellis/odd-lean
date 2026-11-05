@@ -47,7 +47,7 @@ open CategoryTheory StringDiagrams Presentation Finset
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : IntegralScalars D k} (cs : CScalars Sc)
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo} (cs : CScalars Sc)
 
 /-! ## Dots on a strand -/
 

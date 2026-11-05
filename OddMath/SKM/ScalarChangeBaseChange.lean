@@ -27,7 +27,7 @@ open scoped TensorProduct
 universe u v w w'
 
 variable {R : Type w} {S : Type w'} [CommRing R] [CommRing S] (f : R →+* S)
-  {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X) (Sc : IntegralScalars D R)
+  {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X) {Ptwo : Prop} (Sc : ScalarData D R Ptwo)
 
 /-- Extend the diagramwise tensor evaluation linearly over the target ring. -/
 def tensorLin (a b : Obj (sig D)) :

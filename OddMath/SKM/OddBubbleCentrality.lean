@@ -27,7 +27,7 @@ namespace OddMath.SKM
 open CategoryTheory StringDiagrams Presentation Finset
 universe u v w
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : IntegralScalars D k} (cs : CScalars Sc)
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo} (cs : CScalars Sc)
 
 theorem bubbleCoeffR_one_odd (i : I) (μ : X) (hi : D.parity i = 1) :
     bubbleCoeffR cs i μ 1 = oddBubble cs i μ := by

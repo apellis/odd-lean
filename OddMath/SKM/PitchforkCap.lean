@@ -20,7 +20,7 @@ namespace OddMath.SKM
 open CategoryTheory StringDiagrams Presentation Finset
 universe u v w
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : IntegralScalars D k} (cs : CScalars Sc)
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo} (cs : CScalars Sc)
 
 abbrev cupAt (i : I) (μ : X) (u v : List (Letter I)) :=
   plcL D Sc μ u v [] [up i, dn i] (etaP cs i (wt D μ v))

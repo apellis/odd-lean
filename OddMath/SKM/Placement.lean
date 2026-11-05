@@ -27,7 +27,7 @@ open CategoryTheory StringDiagrams Presentation Finset
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : IntegralScalars D k}
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo}
 
 variable (D Sc) in
 /-- The span of the normal-form diagrams `E_s 1_μ ⟶ E_t 1_μ` whose generators have parities

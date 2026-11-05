@@ -25,7 +25,7 @@ open CategoryTheory StringDiagrams Presentation
 universe u v w w'
 
 variable {R : Type w} {S : Type w'} [CommRing R] [CommRing S] (f : R →+* S)
-  {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {Sc : IntegralScalars D R}
+  {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {Ptwo : Prop} {Sc : ScalarData D R Ptwo}
 
 /-- Coefficient change carries the relations of the integral form into the target ideal whenever
 the source admits a normalization `cs`. -/

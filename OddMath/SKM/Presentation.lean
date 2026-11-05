@@ -287,7 +287,7 @@ def cod : Rel D → List (Letter I)
 
 end Rel
 
-variable {k : Type w} [CommRing k] (Sc : IntegralScalars D k)
+variable {k : Type w} [CommRing k] {Ptwo : Prop} (Sc : ScalarData D k Ptwo)
 
 /-- Shorthand: the class of the normal-form diagram with layers `ls` as a linear combination. -/
 abbrev dg (μ : X) {t t' : List (Letter I)} (ls : List (LayerData I)) (h : SChain t ls t') :
@@ -446,7 +446,7 @@ theorem parity_mul_dn (i j : I) : D.parity i * (D.dn i j : ZMod 2) = 0 := by
   · rw [zmod2_eq_zero_of_ne_one hi, zero_mul]
 
 variable {D} in
-theorem IntegralScalars.parity_of_ne_zero {i j : I} {p q : ℕ} (hs : Sc.s i j p q ≠ 0) :
+theorem ScalarData.parity_of_ne_zero {i j : I} {p q : ℕ} (hs : Sc.s i j p q ≠ 0) :
     (p : ZMod 2) * D.parity i = 0 ∧ (q : ZMod 2) * D.parity j = 0 :=
   ⟨zmod2_eq_zero_of_ne_one fun h => hs (Sc.s_eq_zero i j p q h),
     zmod2_eq_zero_of_ne_one fun h => hs (by rw [Sc.s_symm]; exact Sc.s_eq_zero j i q p h)⟩

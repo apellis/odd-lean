@@ -36,12 +36,12 @@ universe u v w
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
 
 /-- The units `c_{λ;i}` of (1.17), with `c_{λ+αⱼ;i} = tᵢⱼ c_{λ;i}`. -/
-structure CScalars (Sc : IntegralScalars D k) where
+structure CScalars {Ptwo : Prop} (Sc : ScalarData D k Ptwo) where
   /-- `c_{λ;i}`. -/
   c : X → I → kˣ
   shift : ∀ μ i j, c (μ + D.α j) i = Sc.t i j * c μ i
 
-variable {Sc : IntegralScalars D k} (cs : CScalars Sc)
+variable {Ptwo : Prop} {Sc : ScalarData D k Ptwo} (cs : CScalars Sc)
 
 /-- The parity `|i, λ| = |i|(⟨hᵢ, λ⟩ + 1)` (1.15). -/
 def ipar (D : Datum I X) (i : I) (μ : X) : ZMod 2 := D.parity i * ((D.h i μ : ZMod 2) + 1)

@@ -34,7 +34,7 @@ open CategoryTheory StringDiagrams Presentation
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X) {k : Type w} [CommRing k]
-  (Sc : IntegralScalars D k)
+  {Ptwo : Prop} (Sc : ScalarData D k Ptwo)
 
 @[simp] theorem ob_start (μ : X) (t : List (Letter I)) : (ob D μ t).start = wt D μ t := rfl
 @[simp] theorem ob_word (μ : X) (t : List (Letter I)) : (ob D μ t).word = wd D μ t := rfl

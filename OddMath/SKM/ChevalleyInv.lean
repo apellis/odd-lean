@@ -22,7 +22,7 @@ open CategoryTheory StringDiagrams Presentation Supercategory
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : IntegralScalars D k}
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo}
 
 /-! ## `omegaL` and whiskering -/
 

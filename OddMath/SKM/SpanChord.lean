@@ -136,7 +136,7 @@ theorem ncr_step {L R : List (Move α)} (hs : Step L R) : ncr L = ncr R := by
 end Count
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : IntegralScalars D k} (cs : CScalars Sc)
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo} (cs : CScalars Sc)
 
 /-! ## The diagram of a chord diagram -/
 

@@ -33,7 +33,7 @@ namespace OddMath.SKM
 open CategoryTheory StringDiagrams Presentation Finset
 universe u v w
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : IntegralScalars D k}
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo}
 
 def altL (i j a : I) : List (LayerData I) :=
   (sigmaL i j).map (whL [] [up a]) ++ crossL [dn i] j a [] ++

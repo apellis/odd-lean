@@ -22,7 +22,7 @@ open CategoryTheory StringDiagrams Presentation
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : IntegralScalars D k}
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo}
 
 theorem lin_idg (μ : X) (t : List (Letter I)) :
     (pres D Sc).lin (idg (k := k) D μ t) = cl D Sc μ t t [] := by

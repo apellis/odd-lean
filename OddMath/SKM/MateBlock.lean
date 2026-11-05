@@ -30,7 +30,7 @@ open CategoryTheory StringDiagrams Presentation
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : IntegralScalars D k}
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo}
 
 /-! ## Whiskered chains -/
 
@@ -106,13 +106,13 @@ theorem parsum_mateB {Cu A Ca : List (LayerData I)} (Wa' Wb' : List (Letter I))
 
 /-- The zigzag relation `(W ⊗ Cu) ≫ (Ca ⊗ W) = 1_W` for blocks `Cu : 1 → W' W`,
 `Ca : W W' → 1`, at every weight. -/
-def ZigE (D : Datum I X) (Sc : IntegralScalars D k) (Cu Ca : List (LayerData I)) (W : List (Letter I)) :
+def ZigE (D : Datum I X) {Ptwo : Prop} (Sc : ScalarData D k Ptwo) (Cu Ca : List (LayerData I)) (W : List (Letter I)) :
     Prop :=
   ∀ μ : X, cl D Sc μ W W (Cu.map (whL W []) ++ Ca.map (whL [] W)) = cl D Sc μ W W []
 
 /-- The zigzag relation `(Cu ⊗ W') ≫ (W' ⊗ Ca) = 1_{W'}` for blocks `Cu : 1 → W' W`,
 `Ca : W W' → 1`, at every weight. -/
-def ZigF (D : Datum I X) (Sc : IntegralScalars D k) (Cu Ca : List (LayerData I)) (W' : List (Letter I)) :
+def ZigF (D : Datum I X) {Ptwo : Prop} (Sc : ScalarData D k Ptwo) (Cu Ca : List (LayerData I)) (W' : List (Letter I)) :
     Prop :=
   ∀ μ : X, cl D Sc μ W' W' (Cu.map (whL [] W') ++ Ca.map (whL W' [])) = cl D Sc μ W' W' []
 

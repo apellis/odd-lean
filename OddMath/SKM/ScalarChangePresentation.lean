@@ -116,7 +116,7 @@ theorem coeff_interchange (x : InterchangeData T) (hx : x.Valid) :
     coeff f (InterchangeData.rel R hx) = InterchangeData.rel S hx := by
   simp [InterchangeData.rel]
 
-variable {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X) (Sc : IntegralScalars D R)
+variable {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X) {Ptwo : Prop} (Sc : ScalarData D R Ptwo)
 
 include f in
 theorem isUnit_two_map (h : IsUnit (2 : R)) : IsUnit (2 : S) := by
@@ -170,10 +170,10 @@ theorem ZTransport.of_or (h : IsUnit (2 : R) ∨ ¬IsUnit (2 : S)) : ZTransport 
 theorem ZTransport.of_not_isUnit (h : ¬IsUnit (2 : S)) : ZTransport f D Sc :=
   .of_or f D Sc (.inr h)
 
-instance ZTransport.of_scalars (Sc : Scalars D R) : ZTransport f D Sc.toIntegralScalars where
+instance ZTransport.of_scalars (Sc : Scalars D R) : ZTransport f D Sc where
   lin_coeff_relation b := by
     by_cases h : ∃ i, D.parity i = 1
-    · exact (ZTransport.of_or f D Sc.toIntegralScalars (.inl (Sc.two_isUnit h))).1 b
+    · exact (ZTransport.of_or f D Sc (.inl (Sc.two_isUnit h))).1 b
     · have hz : ∀ i : I, D.parity i ≠ 1 := fun i hi => h ⟨i, hi⟩
       cases b <;> simp [relation, zGate_of_parity D _ _ (hz _)]
 

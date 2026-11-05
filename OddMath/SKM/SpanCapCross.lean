@@ -28,7 +28,7 @@ open CategoryTheory StringDiagrams Presentation
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : IntegralScalars D k} (cs : CScalars Sc)
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo} (cs : CScalars Sc)
 
 theorem XEq.congr {ν : X} {s t : List (Letter I)} {c : ℕ} {L₁ L₂ L₁' L₂' : List (XLayer I)}
     (hL : L₁ = L₂) (hL' : L₁' = L₂') (E : XEq cs ν s t c L₂ L₂') : XEq cs ν s t c L₁ L₁' :=

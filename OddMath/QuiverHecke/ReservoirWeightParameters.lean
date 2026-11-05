@@ -74,7 +74,7 @@ def pairingExtensionSymmetrizer (sy : SKM.Symmetrizer D) :
 
 theorem pairingExtensionScalars_homogeneous (Sc : SKM.Scalars D k)
     (hc : Sc.Homogeneous) : (pairingExtensionScalars D Sc).Homogeneous := by
-  simpa only [SKM.IntegralScalars.Homogeneous, pairingExtension_d, pairingExtensionScalars_s] using hc
+  simpa only [SKM.ScalarData.Homogeneous, pairingExtension_d, pairingExtensionScalars_s] using hc
 
 private theorem scalars_ext {S T : SKM.Scalars D k}
     (ht : S.t = T.t) (hs : S.s = T.s) : S = T := by

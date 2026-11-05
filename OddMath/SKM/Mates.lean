@@ -34,7 +34,7 @@ open CategoryTheory StringDiagrams Presentation
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : IntegralScalars D k}
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo}
 
 /-- The right mate on `Fᵢ` of the 2-morphism on `Eᵢ` with layers `a`: the cup `η` on the left,
 `a` on the middle (upward) strand, the cap `ε` on the right. -/

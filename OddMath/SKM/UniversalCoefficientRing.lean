@@ -139,23 +139,23 @@ variable {D}
 
 /-- Specialization to every supplied endpoint/normalization system, without
 homogeneity, finiteness, flatness, field or independent-root assumptions. -/
-def specialize (h₂ : IsUnit (2 : R)) {Sc : Scalars D R} (cs : CScalars Sc) :
+def specialize (h₂ : IsUnit (2 : R)) {Ptwo : Prop} {Sc : ScalarData D R Ptwo} (cs : CScalars Sc) :
     UnitRing D →+* R :=
   lift D h₂ (NormalizationParameterGroup.specialize cs)
 
-@[simp] theorem specialize_t (h₂ : IsUnit (2 : R)) {Sc : Scalars D R}
+@[simp] theorem specialize_t (h₂ : IsUnit (2 : R)) {Ptwo : Prop} {Sc : ScalarData D R Ptwo}
     (cs : CScalars Sc) (i j : I) :
     Units.map (specialize h₂ cs) (t D i j) = Sc.t i j := by
   simp [specialize, t]
 
-@[simp] theorem specialize_c (h₂ : IsUnit (2 : R)) {Sc : Scalars D R}
+@[simp] theorem specialize_c (h₂ : IsUnit (2 : R)) {Ptwo : Prop} {Sc : ScalarData D R Ptwo}
     (cs : CScalars Sc) (μ : X) (i : I) :
     Units.map (specialize h₂ cs) (c D μ i) = cs.c μ i := by
   simp [specialize, c]
 
 /-- Uniqueness of specialization, including all disconnected endpoints and
 all weights simultaneously. -/
-theorem specialize_unique (h₂ : IsUnit (2 : R)) {Sc : Scalars D R}
+theorem specialize_unique (h₂ : IsUnit (2 : R)) {Ptwo : Prop} {Sc : ScalarData D R Ptwo}
     (cs : CScalars Sc) (f : UnitRing D →+* R)
     (ht : ∀ i j, Units.map f (t D i j) = Sc.t i j)
     (hc : ∀ μ i, Units.map f (c D μ i) = cs.c μ i) : f = specialize h₂ cs := by

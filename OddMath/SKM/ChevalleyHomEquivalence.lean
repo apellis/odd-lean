@@ -15,7 +15,7 @@ and counit. The explicit morphism preimage proves fullness; the packaged inverse
 is choice-based, not definitionally that explicit preimage.
 
 The coefficient ring is commutative, with the original `Scalars` and
-`IntegralScalars.Homogeneous` constraints; no field hypothesis is needed. This completes
+`ScalarData.Homogeneous` constraints; no field hypothesis is needed. This completes
 the homwise graded equivalence prerequisite for Brundan–Ellis,
 *Super Kac–Moody 2-categories*, arXiv:1701.04133v2, §9, Proposition 9.3.
 Global horizontal coherence and the shifted-envelope extension remain open.

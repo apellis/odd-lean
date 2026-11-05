@@ -19,7 +19,7 @@ namespace OddMath.SKM
 open CategoryTheory StringDiagrams Presentation Finset
 universe u v w
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : IntegralScalars D k}
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo}
 
 @[simp] theorem Om_zero (μ : X) (s t : List (Letter I)) :
     Om D Sc μ s t 0 = 0 := by simp [Om]

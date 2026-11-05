@@ -117,23 +117,23 @@ def lift (tv : I → I → A) (cv : X → I → A)
 variable {R : Type w} [CommRing R] {D}
 
 /-- Specialization to the supplied units, with no additional ring hypotheses. -/
-def specialize {Sc : Scalars D R} (cs : CScalars Sc) :
+def specialize {Ptwo : Prop} {Sc : ScalarData D R Ptwo} (cs : CScalars Sc) :
     Group D →+ Additive Rˣ :=
   lift D (fun i j => Additive.ofMul (Sc.t i j)) (fun μ i => Additive.ofMul (cs.c μ i))
     (fun i => congrArg Additive.ofMul (Sc.t_self i))
     (fun i j h => congrArg Additive.ofMul (Sc.t_symm_of_d_eq_zero i j h))
     (fun μ i j => congrArg Additive.ofMul (cs.shift μ i j))
 
-@[simp] theorem specialize_t {Sc : Scalars D R} (cs : CScalars Sc) (i j : I) :
+@[simp] theorem specialize_t {Ptwo : Prop} {Sc : ScalarData D R Ptwo} (cs : CScalars Sc) (i j : I) :
     (specialize cs (t D i j)).toMul = Sc.t i j := by
   simp [specialize]
 
-@[simp] theorem specialize_c {Sc : Scalars D R} (cs : CScalars Sc) (μ : X) (i : I) :
+@[simp] theorem specialize_c {Ptwo : Prop} {Sc : ScalarData D R Ptwo} (cs : CScalars Sc) (μ : X) (i : I) :
     (specialize cs (c D μ i)).toMul = cs.c μ i := by
   simp [specialize]
 
 /-- The universal units specialization is unique. -/
-theorem specialize_unique {Sc : Scalars D R} (cs : CScalars Sc)
+theorem specialize_unique {Ptwo : Prop} {Sc : ScalarData D R Ptwo} (cs : CScalars Sc)
     (f : Group D →+ Additive Rˣ)
     (ht : ∀ i j, (f (t D i j)).toMul = Sc.t i j)
     (hc : ∀ μ i, (f (c D μ i)).toMul = cs.c μ i) : f = specialize cs := by

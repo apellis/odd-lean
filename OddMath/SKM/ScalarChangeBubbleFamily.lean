@@ -57,7 +57,7 @@ def symMap : SYM D R →+* SYM D S := by
   symMap_ι f (.inr i)
 
 /-- Every dotted or fake left bubble specializes with its prescribed normalization. -/
-theorem homMap_bubL {Sc : IntegralScalars D R} [ZTransport f D Sc] (cs : CScalars Sc)
+theorem homMap_bubL {Ptwo : Prop} {Sc : ScalarData D R Ptwo} [ZTransport f D Sc] (cs : CScalars Sc)
     (i : I) (μ : X) (n : ℤ) :
     homMap f D Sc _ _ (bubL cs i μ n) =
       bubL (cScalars D f cs) i μ n := by
@@ -67,7 +67,7 @@ theorem homMap_bubL {Sc : IntegralScalars D R} [ZTransport f D Sc] (cs : CScalar
   all_goals simp
 
 /-- Every dotted or fake right bubble specializes with its inverse unit. -/
-theorem homMap_bubR {Sc : IntegralScalars D R} [ZTransport f D Sc] (cs : CScalars Sc)
+theorem homMap_bubR {Ptwo : Prop} {Sc : ScalarData D R Ptwo} [ZTransport f D Sc] (cs : CScalars Sc)
     (i : I) (μ : X) (n : ℤ) :
     homMap f D Sc _ _ (bubR cs i μ n) =
       bubR (cScalars D f cs) i μ n := by
@@ -76,13 +76,13 @@ theorem homMap_bubR {Sc : IntegralScalars D R} [ZTransport f D Sc] (cs : CScalar
   split_ifs
   all_goals simp
 
-@[simp] theorem homMap_bubLs {Sc : IntegralScalars D R} [ZTransport f D Sc] (cs : CScalars Sc)
+@[simp] theorem homMap_bubLs {Ptwo : Prop} {Sc : ScalarData D R Ptwo} [ZTransport f D Sc] (cs : CScalars Sc)
     (i : I) (μ : X) (n : ℤ) :
     homMap f D Sc _ _ (bubLs cs i μ n) =
       bubLs (cScalars D f cs) i μ n :=
   homMap_bubL f cs i μ _
 
-@[simp] theorem homMap_oddBubble {Sc : IntegralScalars D R} [ZTransport f D Sc] (cs : CScalars Sc)
+@[simp] theorem homMap_oddBubble {Ptwo : Prop} {Sc : ScalarData D R Ptwo} [ZTransport f D Sc] (cs : CScalars Sc)
     (i : I) (μ : X) :
     homMap f D Sc _ _ (oddBubble cs i μ) =
       oddBubble (cScalars D f cs) i μ := by
@@ -90,7 +90,7 @@ theorem homMap_bubR {Sc : IntegralScalars D R} [ZTransport f D Sc] (cs : CScalar
   split_ifs <;> simp [homMap_bubL, homMap_bubR, cScalars]
 
 /-- The two generator families, including the odd bubble, commute with specialization. -/
-theorem homMap_betaSYMGen {Sc : IntegralScalars D R} [ZTransport f D Sc] (cs : CScalars Sc)
+theorem homMap_betaSYMGen {Ptwo : Prop} {Sc : ScalarData D R Ptwo} [ZTransport f D Sc] (cs : CScalars Sc)
     (μ : X) (g : SYMGen D) :
     homMap f D Sc _ _ (betaSYMGen cs μ g) =
       betaSYMGen (cScalars D f cs) μ g := by
@@ -103,7 +103,7 @@ theorem homMap_betaSYMGen {Sc : IntegralScalars D R} [ZTransport f D Sc] (cs : C
 
 /-- Coefficient change is multiplicative on closed diagrams, with the
 `End` multiplication convention (`x * y = y ≫ x`). -/
-def endMap {Sc : IntegralScalars D R} [ZTransport f D Sc] (μ : X) :
+def endMap {Ptwo : Prop} {Sc : ScalarData D R Ptwo} [ZTransport f D Sc] (μ : X) :
     End ((pres D Sc).obj (ob D μ [])) →+*
       End ((pres D (scalars D f Sc)).obj (ob D μ [])) where
   toFun x := homMap f D Sc _ _ x
@@ -126,7 +126,7 @@ theorem symMap_algebraMap (r : R) :
 
 /-- The full all-colour bubble evaluation commutes with specialization,
 including products of exterior generators and arbitrary finite expressions. -/
-theorem homMap_betaSYM {Sc : IntegralScalars D R} [ZTransport f D Sc] (cs : CScalars Sc)
+theorem homMap_betaSYM {Ptwo : Prop} {Sc : ScalarData D R Ptwo} [ZTransport f D Sc] (cs : CScalars Sc)
     (μ : X) (p : SYM D R) :
     homMap f D Sc _ _ (betaSYM cs μ p) =
       betaSYM (cScalars D f cs) μ (symMap (D := D) f p) := by
@@ -148,7 +148,7 @@ theorem homMap_betaSYM {Sc : IntegralScalars D R} [ZTransport f D Sc] (cs : CSca
 
 /-- The tensor comparison sends every source bubble coefficient to the
 specialized bubble coefficient, without a flatness or basis assumption. -/
-theorem homBaseChange_betaSYM {Sc : IntegralScalars D R} [ZTransport f D Sc] (cs : CScalars Sc)
+theorem homBaseChange_betaSYM {Ptwo : Prop} {Sc : ScalarData D R Ptwo} [ZTransport f D Sc] (cs : CScalars Sc)
     (μ : X) (s : S) (p : SYM D R) :
     letI := f.toAlgebra
     homBaseChange f D Sc (ob D μ []) (ob D μ []) (s ⊗ₜ[R] betaSYM cs μ p) =

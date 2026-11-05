@@ -98,7 +98,7 @@ theorem decoratedFamily_eq (F : MatchingBasisChoice a b) :
     simp [layers, ambientSerializer, R.property]
 
 variable {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : IntegralScalars D k} (cs : CScalars Sc) (μ : X)
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo} (cs : CScalars Sc) (μ : X)
 
 /-- Move a rightmost coefficient past a homogeneous diagram. This only asserts
 existence of the new coefficient, not faithfulness of the bubble map. -/
@@ -252,7 +252,7 @@ theorem isBasis_iff_injective (F : MatchingBasisChoice a b) :
 end MatchingBasisChoice
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X}
-  {k : Type w} [CommRing k] {Sc : IntegralScalars D k}
+  {k : Type w} [CommRing k] {Ptwo : Prop} {Sc : ScalarData D k Ptwo}
 
 /-- **The Nondegeneracy Conjecture, BE2 §8 after Theorem 8.1.** For every
 pair of equal-weight words, every external weight and every complete unique

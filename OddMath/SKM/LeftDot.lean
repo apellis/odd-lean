@@ -45,7 +45,7 @@ open CategoryTheory StringDiagrams Presentation
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : IntegralScalars D k} (cs : CScalars Sc)
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo} (cs : CScalars Sc)
 
 /-! ## The 2-morphisms involved -/
 
@@ -393,7 +393,7 @@ theorem lemma41_eq3_one_odd_nonneg (i : I) (μ : X) (hi : D.parity i = 1) (hh : 
 /-! ### `⟨hᵢ, λ⟩ < 0`: testing on the components of (1.14) -/
 
 /-- The `♣`-cap with label `n`. -/
-abbrev dkM (D : Datum I X) (Sc : IntegralScalars D k) (i : I) (μ : X) (n : ℕ) :=
+abbrev dkM (D : Datum I X) {Ptwo : Prop} (Sc : ScalarData D k Ptwo) (i : I) (μ : X) (n : ℕ) :=
   cl D Sc μ [dn i, up i] [] (dcapL i n)
 
 /-- For `⟨hᵢ, λ⟩ ≤ 0`, a 2-morphism out of `Fᵢ Eᵢ 1_λ` is determined by its composites with `σ`

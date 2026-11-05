@@ -35,7 +35,7 @@ open CategoryTheory StringDiagrams Presentation
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : IntegralScalars D k} {cs : CScalars Sc}
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo} {cs : CScalars Sc}
 
 /-- A local relation holding up to sign holds in context, up to the same sign. -/
 theorem xev_sgn_at {ν : X} {s₀ t₀ s t : List (Letter I)} {L L' : List (XLayer I)}

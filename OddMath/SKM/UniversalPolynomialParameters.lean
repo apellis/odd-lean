@@ -12,7 +12,7 @@ import Mathlib.Algebra.MvPolynomial.CommRing
 The coefficient-slot polynomial extension in `GroundRingDescent.md` §3,
 for the proposed deduction supporting Brundan–Ellis, arXiv:1701.04133v2,
 Theorem 8.1 and the §8 conjecture. The slot restrictions are precisely
-`Scalars.s_eq_zero`, its symmetric counterpart, and `IntegralScalars.Homogeneous`.
+`Scalars.s_eq_zero`, its symmetric counterpart, and `ScalarData.Homogeneous`.
 All allowed unused slots remain, including diagonal slots. No symmetrizer
 is needed for this construction: the homogeneity predicate uses `D.d`.
 The original colours, weights and unsaturated normalization group are retained.
@@ -131,7 +131,7 @@ def normalizations : CScalars (scalars D) where
 variable {R : Type w} [CommRing R] {D}
 
 /-- A nonzero supplied coefficient is an allowed position, including unused ones. -/
-theorem allowed_of_ne_zero (Sc : Scalars D R) (hh : Sc.Homogeneous)
+theorem allowed_of_ne_zero {Ptwo : Prop} (Sc : ScalarData D R Ptwo) (hh : Sc.Homogeneous)
     (a : RawSlot I) (h : Sc.s a.i a.j a.p a.q ≠ 0) : Allowed D a := by
   refine ⟨fun hp => h (Sc.s_eq_zero _ _ _ _ hp), ?_, ?_⟩
   · intro hq
@@ -141,7 +141,7 @@ theorem allowed_of_ne_zero (Sc : Scalars D R) (hh : Sc.Homogeneous)
   · exact fun hp hp' hq hq' => hh _ _ _ _ hp hp' hq hq' h
 
 /-- Evaluation on quotient slots is well defined by the supplied symmetry law. -/
-def slotValue (Sc : Scalars D R) : Slot D → R :=
+def slotValue {Ptwo : Prop} (Sc : ScalarData D R Ptwo) : Slot D → R :=
   Quot.lift (fun a => Sc.s a.val.i a.val.j a.val.p a.val.q) (by
     intro a b h
     rw [h]
@@ -149,16 +149,16 @@ def slotValue (Sc : Scalars D R) : Slot D → R :=
 
 /-- Specialize every unit and every allowed coefficient, without restrictions on
 colours, roots, the target's zero divisors or its characteristic beyond 2 being a unit. -/
-def specialize (h₂ : IsUnit (2 : R)) {Sc : Scalars D R} (cs : CScalars Sc) :
+def specialize (h₂ : IsUnit (2 : R)) {Ptwo : Prop} {Sc : ScalarData D R Ptwo} (cs : CScalars Sc) :
     ParameterRing D →+* R :=
   MvPolynomial.eval₂Hom (UniversalCoefficientRing.specialize h₂ cs) (slotValue Sc)
 
-@[simp] theorem specialize_C (h₂ : IsUnit (2 : R)) {Sc : Scalars D R}
+@[simp] theorem specialize_C (h₂ : IsUnit (2 : R)) {Ptwo : Prop} {Sc : ScalarData D R Ptwo}
     (cs : CScalars Sc) (a : UniversalCoefficientRing.UnitRing D) :
     specialize h₂ cs (MvPolynomial.C a) = UniversalCoefficientRing.specialize h₂ cs a := by
   simp [specialize]
 
-@[simp] theorem specialize_coefficient (h₂ : IsUnit (2 : R)) {Sc : Scalars D R}
+@[simp] theorem specialize_coefficient (h₂ : IsUnit (2 : R)) {Ptwo : Prop} {Sc : ScalarData D R Ptwo}
     (cs : CScalars Sc) (hh : Sc.Homogeneous) (a : RawSlot I) :
     specialize h₂ cs (coefficient D a) = Sc.s a.i a.j a.p a.q := by
   classical
@@ -169,7 +169,7 @@ def specialize (h₂ : IsUnit (2 : R)) {Sc : Scalars D R} (cs : CScalars Sc) :
       exact h (allowed_of_ne_zero Sc hh a hn)
     simp [coefficient, h, hz]
 
-@[simp] theorem specialize_t (h₂ : IsUnit (2 : R)) {Sc : Scalars D R}
+@[simp] theorem specialize_t (h₂ : IsUnit (2 : R)) {Ptwo : Prop} {Sc : ScalarData D R Ptwo}
     (cs : CScalars Sc) (i j : I) :
     Units.map (specialize h₂ cs).toMonoidHom ((scalars D).t i j) = Sc.t i j := by
   apply Units.ext
@@ -179,7 +179,7 @@ def specialize (h₂ : IsUnit (2 : R)) {Sc : Scalars D R} (cs : CScalars Sc) :
   exact congrArg (fun z : Rˣ => (z : R))
     (UniversalCoefficientRing.specialize_t h₂ cs i j)
 
-@[simp] theorem specialize_c (h₂ : IsUnit (2 : R)) {Sc : Scalars D R}
+@[simp] theorem specialize_c (h₂ : IsUnit (2 : R)) {Ptwo : Prop} {Sc : ScalarData D R Ptwo}
     (cs : CScalars Sc) (μ : X) (i : I) :
     Units.map (specialize h₂ cs).toMonoidHom ((normalizations D).c μ i) = cs.c μ i := by
   apply Units.ext
@@ -211,7 +211,7 @@ theorem hom_ext {f g : ParameterRing D →+* R}
 
 /-- Unique simultaneous specialization of the supplied Scalars and CScalars,
 including coefficients outside all used rectangles. -/
-theorem specialize_unique (h₂ : IsUnit (2 : R)) {Sc : Scalars D R}
+theorem specialize_unique (h₂ : IsUnit (2 : R)) {Ptwo : Prop} {Sc : ScalarData D R Ptwo}
     (cs : CScalars Sc) (hh : Sc.Homogeneous) (f : ParameterRing D →+* R)
     (ht : ∀ i j, Units.map f.toMonoidHom ((scalars D).t i j) = Sc.t i j)
     (hc : ∀ μ i, Units.map f.toMonoidHom ((normalizations D).c μ i) = cs.c μ i)

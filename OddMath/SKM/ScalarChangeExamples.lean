@@ -25,7 +25,7 @@ private def specialize : ZMod 9 →+* ZMod 3 := ZMod.castHom (by decide : 3 ∣ 
 
 /-- Both odd colours retain their required invertible `2` after reduction. -/
 theorem target_two_isUnit : IsUnit (2 : ZMod 3) :=
-  (scalars oddDatum specialize source).two_isUnit ⟨false, rfl⟩
+  (unitScalars oddDatum specialize source).two_isUnit ⟨false, rfl⟩
 
 /-- The transported bubble units satisfy the weight-shift law. -/
 theorem target_bubble_shift (μ : Bool → ℤ) (i j : Bool) :
@@ -61,7 +61,7 @@ matrices at positive, negative and zero heights. -/
 theorem odd_relation_specializes (r : Rel oddDatum) :
     coeff specialize (relation oddDatum source r) =
       relation oddDatum (scalars oddDatum specialize source) r :=
-  coeff_relation specialize oddDatum source r
+  coeff_relation specialize oddDatum source r (.inl (source.two_isUnit ⟨false, rfl⟩))
 
 /-- The mixed leftward crossing generator is unchanged in the quotient. -/
 theorem mixed_inverse_specializes (μ : Bool → ℤ) :
