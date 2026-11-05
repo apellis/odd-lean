@@ -82,7 +82,8 @@ for an odd colour at negative height: `e = N - 2M - 1 + 2s` gives the `s`-th mom
 `e = N - 2M - 1 + 1` the normalized odd coefficient. -/
 private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cutoff ΛP ΛR L hP hR)
     (i : I) (hi : D.parity i = 1) (hP0 : 0 < probeCutoff D m i)
-    (hh : D.h i ν₀ < 0) (e n : ℕ) (hn : n = cutoff i - 2 * m i - 1) (a : SYM D k)
+    (hh : D.h i ν₀ < 0) (hPN : 2 * m i < cutoff i) (e n : ℕ) (hn : n = cutoff i - 2 * m i - 1)
+    (a : SYM D k)
     (hmom : ∀ (c : (E).obj (Ys (0,0)).obj ≅ V) (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
       (z : (V).obj (⟨⟨[]⟩, rfl⟩ : ContentCategory D (parameterTwist D Sc) cutoff N 0)),
       (∀ (r : ℕ) (z : (V).obj (⟨⟨[]⟩, rfl⟩ :
@@ -121,7 +122,6 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
       (etaL i e ++ dcapL i n) ((sChain_etaL i _).append (sChain_dcapL i _)) a := by
   have hhe := vacuum_height_eq D Sc m cutoff N ΛP ΛR hP hR i
   rw [odd_probeCutoff_eq D m i hi] at hhe hP0
-  have hPN : 2 * m i < cutoff i := by omega
   have hnZ : (n : ℤ) < -D.h i ν₀ := by rw [hhe, hn]; omega
   have hd : ¬StepValid (dn i) true ((0, 0) : Sector I) := by simp [StepValid]
   have hPi : 0 < probeCutoff D m i := by rw [odd_probeCutoff_eq D m i hi]; omega
@@ -164,7 +164,8 @@ theorem vacuumEntry_neg_odd (i : I) (hi : D.parity i = 1) (hP0 : 0 < probeCutoff
     rw [hhe]; omega
   rw [he]
   refine vacuumEntry_odd_shift D Sc m cutoff ΛP ΛR L hP hR sy hc
-    (vacuumCoefficientDecode_holds D Sc m cutoff ΛP ΛR L hP hR) i hi hP0 hh _ _
+    (vacuumCoefficientDecode_holds D Sc m cutoff ΛP ΛR L hP hR) i hi hP0 hh
+    (by rw [hhe] at hh; omega) _ _
     (by rw [hhe]; omega) _ (fun c B z hm => (hm s z).1)
 
 include sy hc in
@@ -185,7 +186,8 @@ theorem vacuumEntry_odd_neg (N' : I → ℕ) (i : {i : I // D.parity i = 1})
     rw [hhe]; omega
   rw [he]
   refine vacuumEntry_odd_shift D Sc m cutoff ΛP ΛR L hP hR sy hc
-    (vacuumCoefficientDecode_holds D Sc m cutoff ΛP ΛR L hP hR) i.1 i.2 hP0 hh _ _
+    (vacuumCoefficientDecode_holds D Sc m cutoff ΛP ΛR L hP hR) i.1 i.2 hP0 hh
+    (by rw [hhe] at hh; omega) _ _
     (by rw [hhe]; omega) _ (fun c B z hm => ?_)
   rw [(hm 0 z).2, AdjunctionBubbleSeries.coeff_zero_momentSeries, map_one, one_mul, hN']
 
