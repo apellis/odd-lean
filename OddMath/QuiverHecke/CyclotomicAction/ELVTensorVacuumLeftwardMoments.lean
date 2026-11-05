@@ -232,8 +232,9 @@ theorem tensorVacuum_leftward_odd_moments (hi : D.parity i = 1)
     rw [← odd_probeCutoff' D m i hi]
     omega
   exact ⟨c, j, A, hceq, hA, hcap, fun s z =>
-    tensorVacuumCapInverse_odd_moments D (parameterTwist D Sc) m cutoff L sy
-      (parameterTwist_homogeneous D Sc hc) i hi hP hN _ (by omega) hhN j A hA s z⟩
+    tensorVacuumCapInverse_odd_moments D (parameterTwist D Sc) m cutoff L
+      (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+        (parameterTwist_homogeneous D Sc hc) _) i hi hP hN _ (by omega) hhN j A hA s z⟩
 
 end Tensor
 
