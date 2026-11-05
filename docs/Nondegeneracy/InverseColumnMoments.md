@@ -197,4 +197,14 @@ Still open:
 3. Even colours need an even moment result; nonpositive height is handled
    separately.
 4. Transport from `actionAt (probeHW - reservoirHW)` and the restricted datum to the
-   route index to conclude `PositiveBubbleField (swappedRouteBases sy)`.
+   route index to conclude `PositiveBubbleField (swappedRouteBases sy)`. The assembly is
+   checked (`VacuumRouteSwappedPositiveBubbles.lean`): `SKM.oddBubble_eq_cl_of_pos`
+   writes the odd bubble at positive height as `cl (dcupL i (h-1) ++ epsL i h)`;
+   `VacuumBubblesPositiveHeight.of_closed` gives the positive-height hypothesis
+   for any upward action from the values of its closed action on these
+   diagrams; and `positiveBubbleField_of_entries` concludes the field from
+   `SwappedLeftEntriesField sy`, the vacuum entries
+   `SupportedSectors.VacuumLeftEntries` at every route index (with
+   `M = probeExponent`, `N = reservoirLevel`). With the right entries,
+   `nondegeneracy_of_swapped_entries` gives the conjecture. What remains is the
+   entries themselves (items 1–3), at the route parameters.
