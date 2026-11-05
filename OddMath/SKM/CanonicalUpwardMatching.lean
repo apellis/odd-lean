@@ -19,6 +19,8 @@ variable {I : Type*}
 def crossingMoves (σ : List ℕ) : List (TMove (Letter I)) :=
   σ.reverse.map (fun p => .mv (.cross p))
 
+@[simp] theorem crossingMoves_nil : crossingMoves (I := I) [] = [] := rfl
+
 theorem crossingMoves_cons (p : ℕ) (σ : List ℕ) :
     crossingMoves (I := I) (p :: σ) = crossingMoves σ ++ [.mv (.cross p)] := by
   simp [crossingMoves]

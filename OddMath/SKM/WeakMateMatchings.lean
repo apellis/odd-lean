@@ -39,6 +39,10 @@ theorem reduced {l : List I} {a b w : List (Letter I)}
     (R : List (TMove (Letter I))) : ncr₂ (matching l b w R) = ncr₂ R := by
   simp [matching]
 
+@[simp] theorem tmoves_moves (l : List I) (b w : List (Letter I)) (ds : List (DTMove I)) :
+    tmoves (moves l b w ds) = matching l b w (tmoves ds) := by
+  simp [moves, matching, tmoves_cupPrefix]
+
 def strandEquiv {l : List I} {a b w : List (Letter I)}
     {R : List (TMove (Letter I))} (hR : IsMatching₂ (ups l ++ a) (b ++ w) R) :
     MatchingStrand (ups l ++ a) R ≃ MatchingStrand (a ++ dualW w) (matching l b w R) :=

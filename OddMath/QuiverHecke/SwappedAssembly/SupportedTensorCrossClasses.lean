@@ -164,6 +164,9 @@ private theorem crossTargetEdge
       ReservoirWord.weight D ΛR (c - Finsupp.single j 1)) : PowerWordWeight.wordWeight D ΛR νR + D.α i =
     ReservoirWord.weight D ΛR (c - Finsupp.single j 1) :=
   (congrArg (fun x => x + D.α i) (TensorReservoirWords.path_weight D ΛR qR hr)).symm.trans hE
+
+class under the literal supported cell, retaining its source endpoint cast. -/
+
 local notation "hS" => crossSourceEdge D ΛR ν u v i j r hr h₁
 local notation "hT" => crossTargetEdge D ΛR ν u v i j r hr h₃
 end Distinct

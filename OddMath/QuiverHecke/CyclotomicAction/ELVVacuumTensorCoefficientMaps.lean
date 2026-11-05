@@ -422,6 +422,9 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
 local notation "N" => PowerWordContent.powerBound D cutoff L
 local notation "Z" => WeightTensorVacuum.selectedHom D Sc m cutoff ΛP ΛR L
 
+@[simp] theorem postcompositionAlgHom_apply (A B : C) (a : End B) (f : A ⟶ B) :
+    postcompositionAlgHom (k := k) A B a f = f ≫ a := rfl
+
 /-- Source coefficients on a literal reservoir-path Hom are the full
 vacuum coefficient maps whiskered by that same path functor. -/
 def pathCoefficientAction {l : List (SKM.Col I X)} {c : I →₀ ℕ}
@@ -439,6 +442,16 @@ def pathHomCoefficientAction {l : List (SKM.Col I X)} {c : I →₀ ℕ}
     SKM.SYM D k →ₐ[k] Module.End k (G ⟶ TensorReservoirWords.pathHom D Sc m cutoff L ΛP ΛR p hl) :=
   (postcompositionAlgHom G (TensorReservoirWords.pathHom D Sc m cutoff L ΛP ΛR p hl)).comp
     (pathCoefficientAction D Sc m cutoff L ΛP ΛR p hl)
+
+/-- Placement on a word Hom is postcomposition, including inhomogeneous
+coefficients and arbitrary whole-functor maps from the source. -/
+@[simp] theorem pathHomCoefficientAction_apply {l : List (SKM.Col I X)} {c : I →₀ ℕ}
+    (p : SPath l (0,c) (0,0)) (hl : ∀ a ∈ l, a.l.1 = true)
+    (G : probeOldWeightSpace D Sc m ΛP (-ΛP) ⟶
+      elvWeightSpace D Sc cutoff N ΛR (ReservoirWord.weight D ΛR c))
+    (a : SKM.SYM D k) (f : G ⟶ TensorReservoirWords.pathHom D Sc m cutoff L ΛP ΛR p hl) :
+    pathHomCoefficientAction D Sc m cutoff L ΛP ΛR p hl G a f =
+      f ≫ pathCoefficientAction D Sc m cutoff L ΛP ΛR p hl a := rfl
 
 end Paths
 

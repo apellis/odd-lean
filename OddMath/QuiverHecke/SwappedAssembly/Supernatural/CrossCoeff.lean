@@ -141,6 +141,11 @@ theorem CrossCoeff.isSupernatural_of_isInverse (c : P.CrossCoeff Sc) (hc : c.IsI
     convert hfin using 2 with Z
     exact ha Z
 
+/-- The coefficient built from `CrossCoeffInputs` is supernatural. -/
+theorem crossCoeffOfInputs_isSupernatural (h : P.CrossCoeffInputs) :
+    (P.crossCoeffOfInputs h).IsSupernatural :=
+  CrossCoeff.isSupernatural_of_isInverse P _ (P.crossCoeffOfInputs_isInverse h) h
+
 end ProbeReservoir
 
 end OddMath.QuiverHecke.SwappedAssembly

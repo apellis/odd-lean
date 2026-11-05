@@ -31,6 +31,9 @@ theorem zeroModule_evaluatesCoefficients : P (zeroModule (k := k) C) := by
 def probeEvaluatedZeroModule : ProbeEvaluatedModules D Sc m γ :=
   ⟨zeroModule C, zeroModule_evaluatesCoefficients D Sc m γ⟩
 
+@[simp] theorem probeEvaluatedZeroModule_obj :
+    (probeEvaluatedZeroModule D Sc m γ).obj = zeroModule (k := k) C := rfl
+
 /-- The zero object remains inside the given evaluated module category. -/
 theorem probeEvaluatedZeroModule_id :
     (𝟙 (probeEvaluatedZeroModule D Sc m γ) : _ ⟶ _) = 0 := by

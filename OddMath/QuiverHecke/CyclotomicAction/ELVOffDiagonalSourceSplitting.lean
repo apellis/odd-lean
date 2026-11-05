@@ -59,4 +59,34 @@ theorem offDiagonalSource_reconstruction (p : ZMod 2) (i : I) (v t : List I)
   rw [← he, ha]
   exact sub_add_cancel _ _
 
+/-- Coordinates in the prescribed balanced source and the existing polynomial old module. -/
+def offDiagonalSourceCoordinateEquiv (p : ZMod 2) (i : I) (v t : List I) :
+    Target D Sc cutoff i v (t ++ [i]) ≃ₗ[k]
+      (PprimeDomain D Sc cutoff i v t × (ℕ →₀ Old D Sc cutoff v t)) where
+  toLinearMap := (extract D Sc cutoff i v t).prod (offDiagonalLongExtraction D Sc cutoff p i v t)
+  invFun a := alpha D Sc cutoff i v t a.1 + offDiagonalSourceLongSection D Sc cutoff p i v t a.2
+  left_inv := offDiagonalSource_reconstruction D Sc cutoff p i v t
+  right_inv a := by
+    apply Prod.ext
+    · change extract D Sc cutoff i v t (_ + _) = a.1
+      simp only [map_add, extract_alpha, extract_offDiagonalSourceLongSection, add_zero]
+    · change offDiagonalLongExtraction D Sc cutoff p i v t (_ + _) = a.2
+      simp only [map_add, offDiagonalLongExtraction_alpha,
+        offDiagonalLongExtraction_sourceLongSection, zero_add]
+
+@[simp] theorem offDiagonalSourceCoordinateEquiv_apply (p : ZMod 2) (i : I) (v t : List I)
+    (z : Target D Sc cutoff i v (t ++ [i])) :
+    offDiagonalSourceCoordinateEquiv D Sc cutoff p i v t z =
+      (extract D Sc cutoff i v t z, offDiagonalLongExtraction D Sc cutoff p i v t z) := rfl
+
+@[simp] theorem offDiagonalSourceCoordinateEquiv_symm_apply (p : ZMod 2) (i : I) (v t : List I)
+    (a : PprimeDomain D Sc cutoff i v t) (f : ℕ →₀ Old D Sc cutoff v t) :
+    (offDiagonalSourceCoordinateEquiv D Sc cutoff p i v t).symm (a, f) =
+      alpha D Sc cutoff i v t a + offDiagonalSourceLongSection D Sc cutoff p i v t f := rfl
+
+@[simp] theorem offDiagonalSourceCoordinateEquiv_alpha (p : ZMod 2) (i : I) (v t : List I)
+    (a : PprimeDomain D Sc cutoff i v t) :
+    offDiagonalSourceCoordinateEquiv D Sc cutoff p i v t (alpha D Sc cutoff i v t a) = (a, 0) := by
+  simp only [offDiagonalSourceCoordinateEquiv_apply, extract_alpha, offDiagonalLongExtraction_alpha]
+
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

@@ -270,6 +270,10 @@ def prependRightCoefficients {n : ℕ} (r : Hn D Sc n) :
       map_add' := fun a b => add_mul a b r
       map_smul' := fun c b => smul_mul_assoc c b r }
 
+@[simp] theorem prependRightCoefficients_apply {n : ℕ} (r : Hn D Sc n)
+    (b : (PrependShuffle n × ℕ) →₀ Hn D Sc n) (q : PrependShuffle n × ℕ) :
+    prependRightCoefficients D Sc r b q = b q * r := rfl
+
 /-- Right action is inherited from the actual affine multiplication. -/
 theorem prependExpansion_right (i : I) (n : ℕ)
     (b : (PrependShuffle n × ℕ) →₀ Hn D Sc n) (r : Hn D Sc n) :

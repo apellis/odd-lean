@@ -66,6 +66,12 @@ def componentTensor (v t : D) (s : C) (g : J.obj s ⟶ t)
     (b : v ⟶ J.obj s) : Component (k := k) J v t :=
   BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s g b
 
+@[simp] theorem precompose_componentTensor {v w : D} (a : v ⟶ w) (t : D)
+    (s : C) (g : J.obj s ⟶ t) (b : w ⟶ J.obj s) :
+    precompose (k := k) J a t (componentTensor (k := k) J w t s g b) =
+      componentTensor (k := k) J v t s g (a ≫ b) :=
+  precompose_tensor J a t s g b
+
 variable [Preadditive C] [Linear k C] [Supercategory k C]
   [J.Additive] [J.Linear k] [IsSuperfunctor k J]
 

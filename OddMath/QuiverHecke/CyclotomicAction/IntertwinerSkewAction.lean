@@ -50,4 +50,23 @@ def coefficientParityHom (a : I → _root_.Polynomial k)
         simp only [add_mul, sign_add, smul_mul_assoc, mul_smul_comm, smul_smul]
         rw [mul_comm (sign k (q * p))]
 
+/-- Powers of the parity twist, as the action required by Mathlib skew polynomials. -/
+@[instance_reducible] def coefficientParityAction (i : I) (a : I → _root_.Polynomial k)
+    (ha : CyclotomicPolynomialParity D a) (n : ℕ) :
+    MulSemiringAction (Multiplicative ℕ) (CyclotomicAlgebra D Sc a n) where
+  smul m := coefficientParityHom D Sc a ha n ((m.toAdd : ZMod 2) * D.parity i)
+  smul_zero m := map_zero _
+  smul_add m := map_add _
+  smul_one m := map_one _
+  smul_mul m := map_mul _
+  one_smul b := by
+    change (cyclotomicSuperspace D Sc a ha n).sgn ((0 : ZMod 2) * D.parity i) b = b
+    simp
+  mul_smul m l b := by
+    change (cyclotomicSuperspace D Sc a ha n).sgn
+      (((m.toAdd + l.toAdd : ℕ) : ZMod 2) * D.parity i) b =
+      ((cyclotomicSuperspace D Sc a ha n).sgn ((m.toAdd : ZMod 2) * D.parity i))
+        ((cyclotomicSuperspace D Sc a ha n).sgn ((l.toAdd : ZMod 2) * D.parity i) b)
+    rw [← LinearMap.comp_apply, SVec.sgn_comp_sgn, Nat.cast_add, add_mul]
+
 end OddMath.QuiverHecke

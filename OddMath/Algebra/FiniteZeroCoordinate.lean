@@ -33,6 +33,9 @@ def dropZeroPrincipalEquiv (h₀ : Subsingleton (V none)) :
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+@[simp] theorem dropZeroPrincipalEquiv_apply (h₀ : Subsingleton (V none))
+    (x : product V) (a : ι) : dropZeroPrincipalEquiv V h₀ x a = x (some a) := rfl
+
 @[simp] theorem dropZeroPrincipalEquiv_symm_none (h₀ : Subsingleton (V none))
     (x : withoutPrincipal V) : (dropZeroPrincipalEquiv V h₀).symm x none = 0 := rfl
 

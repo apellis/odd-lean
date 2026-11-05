@@ -77,6 +77,8 @@ def tPow : ℕ → (ℕ →₀ B) →+ (ℕ →₀ B)
 
 theorem tPow_succ (j : ℕ) (p : ℕ →₀ B) : tPow σ (j + 1) p = tShift σ (tPow σ j p) := rfl
 
+@[simp] theorem tPow_zero (p : ℕ →₀ B) : tPow σ 0 p = p := rfl
+
 theorem tPow_add_apply (j : ℕ) (p : ℕ →₀ B) (l : ℕ) : tPow σ j p (l + j) = σ^[j] (p l) := by
   induction j generalizing l with
   | zero => simp

@@ -143,6 +143,12 @@ def truncatedAppendDot (i : I) :
   truncatedAppendTransform D Sc cutoff N (by
     simpa only [pow_one, one_nsmul] using firstDot_pow_parity D Sc i [] 1)
 
+/-- The appended crossing retains the source and target colour order. -/
+def truncatedAppendCross (i j : I) :
+    SuperNatTrans k (truncatedAppend D Sc cutoff N [i, j])
+      (truncatedAppend D Sc cutoff N [j, i]) :=
+  truncatedAppendTransform D Sc cutoff N (crossTwo_mem D Sc i j)
+
 @[simp] theorem truncatedAppendDot_app (i : I) (v : TruncatedCategory D Sc cutoff N) :
     (truncatedAppendDot D Sc cutoff N i).app (D.parity i) v =
       truncatedAppendComponent D Sc cutoff N (dotE D Sc [i] 0) v := by
@@ -150,6 +156,12 @@ def truncatedAppendDot (i : I) :
     IsSupernatural.toSuperNatTrans, ↓reduceIte]
 
 variable (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
+
+@[simp] theorem truncatedAppendCross_app (i j : I) (v : TruncatedCategory D Sc cutoff N) :
+    (truncatedAppendCross D Sc cutoff N i j).app (D.parity i * D.parity j) v =
+      truncatedAppendComponent D Sc cutoff N (crossTwo D Sc i j) v := by
+  simp only [truncatedAppendCross, truncatedAppendTransform,
+    IsSupernatural.toSuperNatTrans, ↓reduceIte]
 
 theorem appendComponent_mem_degree {σ τ : List I} {n : ℤ}
     {h : (pres D Sc).obj (ob D σ) ⟶ (pres D Sc).obj (ob D τ)}

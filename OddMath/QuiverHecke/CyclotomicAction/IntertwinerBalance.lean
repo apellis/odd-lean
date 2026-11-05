@@ -722,4 +722,13 @@ theorem meetLeft_eq (l v : List I) {i j c : I} (hb : ¬(i = c ∧ i ≠ j)) :
     · exact meetLeft_eq_of_eq_ne D Sc l v hic
   · exact meetLeft_eq_of_ne D Sc l v hij (fun h => hb ⟨h, hij⟩)
 
+/-- KKO (8.13), first identity, for an old crossing of `j, c`, unless `c = i ≠ j`. -/
+theorem cross_comp_moveHom_of (v : List I) {i j c : I} (hb : ¬(i = c ∧ i ≠ j)) (m l : List I) :
+    cl D Sc _ _ [.cross (l.length + 1 + m.length)] (sChain_mid₁ l m v i j c) ≫
+        moveHom D Sc i l (m ++ c :: j :: v) =
+      zsign k (D.parity j * D.parity c * (D.parity i * (wordSumParity D m + wordSumParity D v))) •
+        (moveHom D Sc i l (m ++ j :: c :: v) ≫
+          cl D Sc _ _ [.cross (l.length + m.length)] (sChain_mid₂ l m v i j c)) :=
+  cross_comp_moveHom D Sc v i j c (fun l' => meetLeft_eq D Sc l' v hb) m l
+
 end OddMath.QuiverHecke

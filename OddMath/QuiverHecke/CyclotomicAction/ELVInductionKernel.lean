@@ -27,6 +27,10 @@ def inductionKernel (J : C ⥤ D) (w : D) : Cᵒᵖ ⥤ ModuleCat k where
     change J.map (b.unop ≫ a.unop) ≫ g = J.map b.unop ≫ (J.map a.unop ≫ g)
     rw [J.map_comp, Category.assoc]
 
+@[simp] theorem inductionKernel_map_apply (J : C ⥤ D) (w : D)
+    {v s : C} (a : v ⟶ s) (g : J.obj s ⟶ w) :
+    (inductionKernel (k := k) J w).map a.op g = J.map a ≫ g := rfl
+
 /-- The coefficient-kernel quotient is the existing induction quotient. -/
 def inductionKernelEquiv (J : C ⥤ D) (M : C ⥤ SVec k) (w : D) :
     Obj (inductionKernel J w) M ≃ₗ[k] BalancedInduction.Obj J M w :=
@@ -36,5 +40,10 @@ def inductionKernelEquiv (J : C ⥤ D) (M : C ⥤ SVec k) (w : D) :
     (w : D) (v : C) (g : J.obj v ⟶ w) (m : M.obj v) :
     inductionKernelEquiv J M w (tensor (inductionKernel J w) M v g m) =
       BalancedInduction.tensor J M v g m := rfl
+
+@[simp] theorem inductionKernelEquiv_symm_tensor (J : C ⥤ D) (M : C ⥤ SVec k)
+    (w : D) (v : C) (g : J.obj v ⟶ w) (m : M.obj v) :
+    (inductionKernelEquiv J M w).symm (BalancedInduction.tensor J M v g m) =
+      tensor (inductionKernel J w) M v g m := rfl
 
 end OddMath.QuiverHecke.ELVOld.BalancedKernelTensor

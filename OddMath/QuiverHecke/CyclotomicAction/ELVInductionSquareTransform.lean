@@ -63,6 +63,14 @@ def coendSquareMap (w : A) : Obj J (Q ⋙ M) w →ₗ[k] Obj T M (U.obj w) :=
       coendSquareCoefficient_balance (k := k)]
     exact balance T M (Q.map f) (coendSquareCoefficient (k := k) J U Q T h v' w g) b)
 
+@[simp] theorem coendSquareMap_tensor (w : A) (v : C)
+    (g : J.obj v ⟶ w) (b : M.obj (Q.obj v)) :
+    coendSquareMap J U Q T h M w (tensor J (Q ⋙ M) v g b) =
+      tensor T M (Q.obj v)
+        (eqToHom (congrArg (fun F : C ⥤ D => F.obj v) h).symm ≫ U.map g) b := by
+  rw [coendSquareMap, lift_tensor, coendSquareTensor_tmul]
+  rfl
+
 end Coends
 
 section Transform

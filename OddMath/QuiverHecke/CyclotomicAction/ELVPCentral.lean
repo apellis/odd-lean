@@ -171,4 +171,28 @@ theorem appendMovingPower_whisker (i : I) (v : List I) (d : ℕ) :
   rw [he]
   rfl
 
+/-- The old-only source with the prescribed central polynomial action. -/
+abbrev CentralTarget (i : I) (v w : List I) :=
+  Module.AEval' (centralSource D Sc cutoff i v w)
+
+/-- The append-old target with the prescribed central polynomial action. -/
+abbrev CentralAppendTarget (i : I) (v w : List I) :=
+  Module.AEval' (centralAppend D Sc cutoff i v w)
+
+/-- P is polynomial-linear for the dot at even colour and square at odd colour.
+The intertwining proof is `pMap_central`, not an input assumption. -/
+def pCentralMap (i : I) (v w : List I) :
+    CentralTarget D Sc cutoff i v w →ₗ[Polynomial k] CentralAppendTarget D Sc cutoff i v w :=
+  LinearMap.ofAEval (centralSource D Sc cutoff i v w)
+    ((Module.AEval'.of (centralAppend D Sc cutoff i v w)).toLinearMap.comp
+      (pMap D Sc cutoff i v w)) (fun z => by
+        simp only [LinearMap.comp_apply, LinearEquiv.coe_coe]
+        rw [Module.AEval'.X_smul_of]
+        exact congrArg (Module.AEval'.of (centralAppend D Sc cutoff i v w))
+          (pMap_central D Sc cutoff i v w z))
+
+@[simp] theorem pCentralMap_of (i : I) (v w : List I) (z : Target D Sc cutoff i v w) :
+    pCentralMap D Sc cutoff i v w (Module.AEval'.of (centralSource D Sc cutoff i v w) z) =
+      Module.AEval'.of (centralAppend D Sc cutoff i v w) (pMap D Sc cutoff i v w z) := rfl
+
 end OddMath.QuiverHecke.ELVOld

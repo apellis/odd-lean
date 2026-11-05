@@ -87,6 +87,11 @@ def coefficientPowerToUniversal : CoefficientPowerQuotient (k := k) D cutoff L �
   RingCon.liftₐ _ (elvToUniversalPower D cutoff L)
     (TwoSidedIdeal.ringCon_le_iff.mp (power_le_kernel D cutoff L))
 
+@[simp] theorem universalToCoefficientPower_apply (a : SKM.SYM D k) :
+    universalToCoefficientPower D cutoff L
+      ((SKM.SYM.elvCoefficientIdeal D k cutoff ⊔ SKM.SYM.coefficientPowerIdeal D k L).ringCon.mkₐ k a) =
+      coefficientPowerQuotientMap D cutoff L a := rfl
+
 @[simp] theorem coefficientPowerToUniversal_apply (a : SKM.SYM D k) :
     coefficientPowerToUniversal D cutoff L (coefficientPowerQuotientMap D cutoff L a) =
       (SKM.SYM.elvCoefficientIdeal D k cutoff ⊔ SKM.SYM.coefficientPowerIdeal D k L).ringCon.mkₐ k a := rfl

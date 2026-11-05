@@ -296,6 +296,17 @@ def inductionCompositionIso : tensor P Q ≅ T where
     apply SVec.hom_ext
     exact compositionCornerLinear_inverse D Sc i j a ha n
 
+/-- The comparison sends a pure tensor to the ordered product. -/
+@[simp] theorem inductionCompositionIso_hom_btmul (x : (P).toSVec) (y : (Q).toSVec) :
+    (((inductionCompositionIso D Sc i j a ha n).hom).1 (btmul P Q x y)).1 =
+      x.1 * φ y.1 := rfl
+
+/-- The inverse inserts the lower idempotent without a parity sign. -/
+@[simp] theorem inductionCompositionIso_inv_apply (z : (T).toSVec) :
+    ((inductionCompositionIso D Sc i j a ha n).inv).1 z =
+      btmul P Q (compositionCornerInclusion D Sc i j a ha n z)
+        (inductionCornerIdempotent D Sc j a ha n) := rfl
+
 /-- The comparison is an even map. -/
 theorem inductionCompositionIso_hom_mem :
     (inductionCompositionIso D Sc i j a ha n).hom ∈ Supercategory.parity (R := k) _ _ 0 :=

@@ -55,6 +55,12 @@ def sourcePull (p : ZMod 2) (i : I) (u v w : List I) :
       exact (Submodule.Quotient.mk_eq_zero _).mpr
         (insert_comp_relations D Sc cutoff i (twist k p c) hh))
 
+@[simp] theorem sourcePull_mk (p : ZMod 2) (i : I) {u v w : List I}
+    (c : hom D Sc cutoff u v) (h : hom D Sc cutoff (i :: v) w) :
+    sourcePull D Sc cutoff p i u v w ((ideal D Sc cutoff u v).mkQ c)
+      (projection D Sc cutoff i v w h) =
+    projection D Sc cutoff i u w (insert D Sc cutoff i u v (twist k p c) ≫ h) := rfl
+
 theorem sourcePull_comp (p : ZMod 2) (i : I) {a b c w : List I}
     (f : Old D Sc cutoff a b) (g : Old D Sc cutoff b c)
     (z : Target D Sc cutoff i c w) :
@@ -112,6 +118,12 @@ def appendPull (i : I) (u v w : List I) :
       intro h hh
       ext c
       exact (Submodule.Quotient.mk_eq_zero _).mpr (comp_appendRelations D Sc cutoff i c hh))
+
+@[simp] theorem appendPull_mk (i : I) {u v w : List I}
+    (c : hom D Sc cutoff u v) (h : hom D Sc cutoff (v ++ [i]) w) :
+    appendPull D Sc cutoff i u v w ((ideal D Sc cutoff u v).mkQ c)
+      (appendProjection D Sc cutoff i v w h) =
+    appendProjection D Sc cutoff i u w (rightContext D Sc cutoff [i] u v c ≫ h) := rfl
 
 private theorem appendContext_id (i : I) (v : List I) :
     rightContext D Sc cutoff [i] v v (𝟙 _) = 𝟙 _ := by

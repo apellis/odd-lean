@@ -28,6 +28,12 @@ def oldModuleRawMap (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
     hom D Sc cutoff v w →ₗ[k] (M.obj ⟨v⟩ →ₗ[k] M.obj ⟨w⟩) :=
   (M.toFunctor.mapLinearMap k).comp (ideal D Sc cutoff v w).mkQ
 
+@[simp] theorem oldModuleRawMap_apply
+    (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
+    (v w : List I) (f : hom D Sc cutoff v w) :
+    oldModuleRawMap D Sc cutoff M v w f =
+      M.map (X := ⟨v⟩) (Y := ⟨w⟩) ((ideal D Sc cutoff v w).mkQ f) := rfl
+
 theorem oldModuleRawMap_comp
     (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
     (v t w : List I) (f : hom D Sc cutoff v t) (g : hom D Sc cutoff t w) :
@@ -69,6 +75,14 @@ def weightedModuleMap (N : ℕ)
   (truncatedIdeal D Sc cutoff N v w).liftQ
     (oldModuleRawMap D Sc cutoff M v w)
     (oldModuleRawMap_kills_truncatedIdeal D Sc cutoff N M hM v w)
+
+@[simp] theorem weightedModuleMap_mk (N : ℕ)
+    (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
+    (hM : KillsWeightedCoefficients D Sc cutoff N M)
+    (v w : List I) (f : hom D Sc cutoff v w) :
+    weightedModuleMap D Sc cutoff N M hM v w
+      ((truncatedIdeal D Sc cutoff N v w).mkQ f) =
+      oldModuleRawMap D Sc cutoff M v w f := rfl
 
 /-- The same module, with its action descended to the actual weighted
 coefficient-truncated category. Its vector spaces are unchanged. -/

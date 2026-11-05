@@ -95,6 +95,11 @@ def pairingExtension : SKM.Datum I (X × (I → ℤ)) where
 @[simp] theorem pairingExtension_h (i : I) (ν : X × (I → ℤ)) :
     (pairingExtension D).h i ν = D.h i ν.1 + ν.2 i := rfl
 
+@[simp] theorem pairingExtension_cartanMatrix :
+    (pairingExtension D).cd.cartanMatrix = D.cd.cartanMatrix := by
+  ext i j
+  simp [CartanDatum.cartanMatrix_apply, pairingExtension, SKM.Datum.h, SKM.Datum.α]
+
 /-- No richness assumption on the original weight lattice is needed after
 adjoining independent pairing coordinates. -/
 theorem pairingExtension_surjective :

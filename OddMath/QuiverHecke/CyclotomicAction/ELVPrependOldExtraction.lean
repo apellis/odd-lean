@@ -169,6 +169,17 @@ theorem prependExtractOld_insert_tail (p : ZMod 2) {i : I} {v w : List I}
       exact twist_twist _ _
   rw [hc, LinearEquiv.symm_apply_apply]
 
+/-- Extract arbitrary old composition in chronological (first-position) order. -/
+theorem prependExtractOld_insert_comp_tail (p : ZMod 2) {i : I} {v s w : List I}
+    (x : PrependIdx i v w) (r : hom D Sc cutoff v s)
+    (b : hom D Sc cutoff s x.oldTarget) :
+    prependExtractOld D Sc cutoff p x
+      (insert D Sc cutoff i v s r ≫ insert D Sc cutoff i s x.oldTarget b ≫
+        ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k]
+          prependTail D Sc x : hom D Sc cutoff (i :: x.oldTarget) w)) =
+      twist k p (r ≫ b) := by
+  rw [← Category.assoc, ← insert_comp, prependExtractOld_insert_tail]
+
 /-- A genuine old-quotient coordinate, obtained from the affine extraction. -/
 def prependExtractOldQuotient (p : ZMod 2) {i : I} {v w : List I}
     (x : PrependIdx i v w) :

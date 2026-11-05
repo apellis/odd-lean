@@ -34,6 +34,13 @@ instance (h : ν.Perm μ) : (oldContentReindex D Sc cutoff h).Linear k where
 instance (h : ν.Perm μ) : IsSuperfunctor k (oldContentReindex D Sc cutoff h) where
   map_mem hf := hf
 
+@[simp] theorem oldContentReindex_comp (h : ν.Perm μ) (g : μ.Perm η) :
+    oldContentReindex D Sc cutoff h ⋙ oldContentReindex D Sc cutoff g =
+      oldContentReindex D Sc cutoff (h.trans g) := rfl
+
+@[simp] theorem oldContentReindex_refl :
+    oldContentReindex D Sc cutoff (List.Perm.refl ν) = 𝟭 _ := rfl
+
 end OddMath.QuiverHecke.ELVOld
 
 namespace OddMath.QuiverHecke
@@ -75,5 +82,12 @@ instance (h : ν.Perm μ) : IsSuperfunctor k (probeEvaluatedReindex D Sc m h) wh
     change f.hom ∈ parity (R := k) _ _ p at hf
     change (restriction (oldContentReindex D Sc (probeCutoff D m) h.symm)).map f.hom ∈ parity (R := k) _ _ p
     exact map_mem _ hf
+
+@[simp] theorem probeEvaluatedReindex_comp (h : ν.Perm μ) (g : μ.Perm η) :
+    probeEvaluatedReindex D Sc m h ⋙ probeEvaluatedReindex D Sc m g =
+      probeEvaluatedReindex D Sc m (h.trans g) := rfl
+
+@[simp] theorem probeEvaluatedReindex_refl :
+    probeEvaluatedReindex D Sc m (List.Perm.refl ν) = 𝟭 _ := rfl
 
 end OddMath.QuiverHecke

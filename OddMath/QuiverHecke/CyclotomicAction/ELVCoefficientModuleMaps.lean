@@ -153,6 +153,43 @@ theorem coefficientModuleAction_total
       M.map (X := v) (Y := v) (coefficientEndomorphism D Sc cutoff v.word a) :=
   coefficientModuleLinear_total D Sc cutoff M a v
 
+private theorem coefficientModuleAction_zero
+    (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
+    (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff)
+    (ha : KillsCoefficient D Sc cutoff M a) : coefficientModuleAction D Sc cutoff M a = 0 := by
+  apply module_hom_ext_total D Sc cutoff M
+  intro v
+  rw [coefficientModuleAction_total]
+  change M.map (X := v) (Y := v) (coefficientEndomorphism D Sc cutoff v.word a) = 0 + 0
+  rw [add_zero]
+  exact ha v.word
+
+private theorem power_le_action_kernel
+    (M : CoefficientPowerModules D Sc cutoff (elementaryCoefficients (k := k) D cutoff) L) :
+    coefficientPowerIdeal D cutoff (elementaryCoefficients (k := k) D cutoff) L ≤
+      TwoSidedIdeal.ofRingCon (RingCon.ker
+        (coefficientModuleAction D Sc cutoff M.obj).toRingHom) := by
+  intro a ha
+  change coefficientModuleAction D Sc cutoff M.obj a = coefficientModuleAction D Sc cutoff M.obj 0
+  rw [map_zero]
+  exact coefficientModuleAction_zero D Sc cutoff M.obj a
+    ((mem_coefficientAnnihilator D Sc cutoff M.obj a).mp (M.property ha))
+
+/-- The literal A/T action by supermodule maps on every T-annihilated old module. -/
+def powerModuleCoefficientAction
+    (M : CoefficientPowerModules D Sc cutoff (elementaryCoefficients (k := k) D cutoff) L) :
+    CoefficientPowerQuotient (k := k) D cutoff L →ₐ[k] End M.obj :=
+  RingCon.liftₐ _ (coefficientModuleAction D Sc cutoff M.obj)
+    (TwoSidedIdeal.ringCon_le_iff.mp (power_le_action_kernel D Sc cutoff L M))
+
+/-- The quotient action evaluates on coefficient representatives without changing maps. -/
+@[simp] theorem powerModuleCoefficientAction_mk
+    (M : CoefficientPowerModules D Sc cutoff (elementaryCoefficients (k := k) D cutoff) L)
+    (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) :
+    powerModuleCoefficientAction D Sc cutoff L M
+      ((coefficientPowerIdeal D cutoff (elementaryCoefficients (k := k) D cutoff) L).ringCon.mkₐ k a) =
+        coefficientModuleAction D Sc cutoff M.obj a := rfl
+
 variable (L : I × ℕ → ℕ)
 
 end OddMath.QuiverHecke.ELVOld

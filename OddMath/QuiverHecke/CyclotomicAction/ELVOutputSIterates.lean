@@ -127,6 +127,43 @@ theorem outputLongExtraction_boundaryRho_move_independentS (p : ZMod 2)
     ← Module.End.coe_pow, map_smul, Module.End.pow_apply,
     outputCoefficientRho_iterate_independentS]
 
+/-- The reverse polynomial and the prescribed corrected-basis P-images agree
+modulo the chronological crossing image. No polynomial projection is assumed. -/
+theorem reverseBoundary_sub_correctedS_mem (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I) (d : ℕ) :
+    sign k ((cutoff j.1 • D.parity j.1) * (D.parity j.1 * wordSumParity D v)) •
+      appendProjection D Sc cutoff j.1 v (v ++ [j.1])
+        (appendMovingPower D Sc cutoff j.1 v d ≫
+          affineUnit D Sc cutoff _ _ (appendQPProduct D Sc j.1 v) ≫
+          endpointELV D Sc cutoff j.1 v) -
+      SKM.zsign k (D.parity j.1) ^ v.count j.1 •
+        ∑ n ∈ (independentOutputS D Sc cutoff j.1 v).support,
+          pMap D Sc cutoff j.1 v (v ++ [j.1])
+            (outputCorrectedLift D Sc cutoff p j v (d + n)
+              (independentOutputS D Sc cutoff j.1 v n)) ∈
+        chronologicalCrossingSpan D Sc cutoff j.1 v v := by
+  have h := pMap_sub_outputLiftBoundary_mem D Sc cutoff p j v
+    ((boundaryRho D Sc cutoff j v (v ++ [j.1]))^[d]
+      (projection D Sc cutoff j.1 v (v ++ [j.1]) (move D Sc cutoff j.1 v)))
+  have hp := pMap_boundaryRho_move_iterate D Sc cutoff j v (v ++ [j.1]) d (𝟙 _)
+  simp only [Category.comp_id] at hp
+  rw [hp] at h
+  change _ - outputLiftBoundary D Sc cutoff p j v
+    (outputLongExtraction D Sc cutoff p j.1 v
+      ((boundaryRho D Sc cutoff j v (v ++ [j.1]))^[d]
+        (projection D Sc cutoff j.1 v (v ++ [j.1])
+          (affineUnit D Sc cutoff _ _ (moveHom D Sc j.1 [] v))))) ∈ _ at h
+  rw [outputLongExtraction_boundaryRho_move_independentS, map_smul, map_sum] at h
+  convert h using 1
+  congr 2
+  apply Finset.sum_congr rfl
+  intro n _
+  change _ = pMap D Sc cutoff j.1 v (v ++ [j.1])
+    (outputLongSection D Sc cutoff p j.1 v
+      (outputLongExtraction D Sc cutoff p j.1 v
+        (outputCorrectedLift D Sc cutoff p j v (d + n) _)))
+  rw [outputLongExtraction_correctedLift, outputLongSection_rho_iterate]
+
 private theorem twist_oldComp (p : ZMod 2) (v : List I) (b c : Old D Sc cutoff v v) :
     oldTwist D Sc cutoff p v v (oldComp D Sc cutoff v v v b c) =
       oldComp D Sc cutoff v v v (oldTwist D Sc cutoff p v v b)

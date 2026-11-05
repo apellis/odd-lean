@@ -80,6 +80,25 @@ local notation "C" => (PrependShuffle (n + 1) × ℕ) →₀ B
 local notation "L" => Ind B (prependTwist D Sc i n eps)
 local notation "coord" => prependTwistCoordinates D Sc i n eps B
 
+/-- The append projector fixes the moving crossing matrix. -/
+theorem appendOne_mul_longPrependShuffleElement (i : I) (r : ℕ) :
+    appendAlgebra D Sc i r 1 * prependShuffleElement D Sc i (longPrependShuffle r) =
+      prependShuffleElement D Sc i (longPrependShuffle r) := by
+  have hs (s : Word I r) (t : Word I (r + 1)) (ht : t = appendWord i s)
+      (f : wordObj D Sc (prependWord i s) ⟶ wordObj D Sc t) :
+      appendAlgebra D Sc i r 1 * FiniteHomMatrix.single t (prependWord i s) f =
+        FiniteHomMatrix.single t (prependWord i s) f := by
+    subst t
+    exact appendOne_mul_single D Sc i s (prependWord i s) f
+  rw [prependShuffleElement, Finset.mul_sum]
+  exact Finset.sum_congr rfl fun s _ => hs s _ (prependShuffleTarget_long i s) _
+
+/-- All first-dot powers of the moving shuffle remain in the append corner. -/
+theorem appendOne_mul_longPrependPBWTerm (i : I) (r m : ℕ) (b : Hn D Sc r) :
+    appendAlgebra D Sc i r 1 * prependPBWTerm D Sc i (longPrependShuffle r) m b =
+      prependPBWTerm D Sc i (longPrependShuffle r) m b := by
+  simp only [prependPBWTerm, ← mul_assoc, appendOne_mul_longPrependShuffleElement]
+
 /-- Read the full moving-shuffle row of the balanced PBW coordinates.
 These are input-first-dot coordinates, before the corrected-ρ sign normalization. -/
 def appendContentLongExtract : appendContentSource D Sc a n β i →+ (ℕ →₀ B) :=
@@ -87,5 +106,46 @@ def appendContentLongExtract : appendContentSource D Sc a n β i →+ (ℕ →�
     (f := fun m : ℕ => (longPrependShuffle (n + 1), m))
     (fun _ _ h => congrArg Prod.snd h)).comp
       ((coord).symm.toAddMonoidHom.comp (appendContentSource D Sc a n β i).subtype)
+
+/-- Extraction is the literal long-shuffle coefficient. -/
+theorem appendContentLongExtract_apply (z : appendContentSource D Sc a n β i) (m : ℕ) :
+    appendContentLongExtract D Sc a n β i z m =
+      (coord).symm z.1 (longPrependShuffle (n + 1), m) := rfl
+
+/-- A moving PBW tensor satisfies the left append projector without any cutoff assumption. -/
+theorem appendContentLong_mem (m : ℕ) (b : B) :
+    coord (Finsupp.single (longPrependShuffle (n + 1), m) b) ∈
+      appendContentSource D Sc a n β i := by
+  change appendAlgebra D Sc i (n + 1) 1 • _ = _
+  rw [prependTwistCoordinates_single, Ind.smul_tmul]
+  congr 1
+  apply Subtype.ext
+  exact appendOne_mul_longPrependPBWTerm D Sc i (n + 1) m 1
+
+/-- The prescribed moving crossing followed by input-first-dot powers. -/
+def appendContentLongLift : (ℕ →₀ B) →+ appendContentSource D Sc a n β i :=
+  Finsupp.liftAddHom fun m =>
+    { toFun := fun b => ⟨coord (Finsupp.single (longPrependShuffle (n + 1), m) b),
+        appendContentLong_mem D Sc a n β i m b⟩
+      map_zero' := Subtype.ext (by simp)
+      map_add' := fun b c => Subtype.ext (by simp) }
+
+/-- On each monomial the lift is the specified PBW tensor, not an arbitrary section. -/
+theorem appendContentLongLift_single (m : ℕ) (b : B) :
+    (appendContentLongLift D Sc a n β i (Finsupp.single m b)).1 =
+      coord (Finsupp.single (longPrependShuffle (n + 1), m) b) := by
+  exact congrArg Subtype.val (Finsupp.liftAddHom_apply_single _ m b)
+
+/-- All long-shuffle coefficients are recovered, over the cyclotomic content ring. -/
+theorem appendContentLongExtract_lift (f : ℕ →₀ B) :
+    appendContentLongExtract D Sc a n β i (appendContentLongLift D Sc a n β i f) = f := by
+  induction f using Finsupp.induction_linear with
+  | zero => simp only [map_zero]
+  | add f g hf hg => simp only [map_add, hf, hg]
+  | single m b =>
+    ext l
+    rw [appendContentLongExtract_apply, appendContentLongLift_single,
+      AddEquiv.symm_apply_apply]
+    simp [Finsupp.single_apply]
 
 end OddMath.QuiverHecke

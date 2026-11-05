@@ -38,4 +38,21 @@ def evenBoundaryKernelEquiv (p : ZMod 2) (i : I) (hi : D.parity i = 0) (v t : Li
       exact (offDiagonalPolynomialBoundary_even_eq_zero_iff D Sc cutoff p i hi v t f.val).mp
         (LinearMap.mem_ker.mp f.property) d hd)
 
+@[simp] theorem evenBoundaryKernelEquiv_apply (p : ZMod 2) (i : I)
+    (hi : D.parity i = 0) (v t : List I) (f : evenBoundaryKernelWindow D Sc cutoff i v t) :
+    (evenBoundaryKernelEquiv D Sc cutoff p i hi v t f).val = f.val := rfl
+
+/-- The low polynomial coordinates are exactly the kernel of the prescribed crossing. -/
+def evenCrossingKernelEquiv (p : ZMod 2) (i : I) (hi : D.parity i = 0) (v t : List I) :
+    evenBoundaryKernelWindow D Sc cutoff i v t ≃ₗ[k]
+      LinearMap.ker (toCyclotomic D Sc cutoff i v t) :=
+  (evenBoundaryKernelEquiv D Sc cutoff p i hi v t).trans
+    (offDiagonalBoundarySnakeKernelEquiv D Sc cutoff p i v t)
+
+@[simp] theorem evenCrossingKernelEquiv_apply (p : ZMod 2) (i : I)
+    (hi : D.parity i = 0) (v t : List I) (f : evenBoundaryKernelWindow D Sc cutoff i v t) :
+    (evenCrossingKernelEquiv D Sc cutoff p i hi v t f).val =
+      offDiagonalBoundarySnake D Sc cutoff p i v t
+        (evenBoundaryKernelEquiv D Sc cutoff p i hi v t f) := rfl
+
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

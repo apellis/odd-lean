@@ -46,6 +46,10 @@ def prependPermutationEquiv (n : ℕ) :
     Perm (Fin n) × PrependShuffle n ≃ Perm (Fin (n + 1)) :=
   Equiv.ofBijective (prependPermutation n) (prependPermutation_bijective n)
 
+@[simp] theorem prependPermutationEquiv_apply (n : ℕ)
+    (p : Perm (Fin n) × PrependShuffle n) :
+    prependPermutationEquiv n p = p.2.1⁻¹ * blockPerm (Nat.add_comm 1 n) 1 p.1 := rfl
+
 /-- The input factorization has no cancellation of crossings. -/
 theorem length_prependPermutation (n : ℕ) (p : Perm (Fin n) × PrependShuffle n) :
     length (n + 1) (prependPermutation n p) = length n p.1 + length (n + 1) p.2.1 := by

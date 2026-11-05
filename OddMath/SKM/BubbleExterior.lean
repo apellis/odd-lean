@@ -68,4 +68,44 @@ def exteriorInclude : ExteriorAlgebra k (OddModule D k) →ₐ[k] SYM D k :=
     exteriorInclude D k (ExteriorAlgebra.ι k x) = oddLinear D k x :=
   ExteriorAlgebra.lift_ι_apply _ _ _ _
 
+private def exteriorProjectionGen (g : SYMGen D) : ExteriorAlgebra k (OddModule D k) :=
+  match g with
+  | .inl _ => 0
+  | .inr i => ExteriorAlgebra.ι k (Finsupp.single i 1)
+
+private theorem exteriorProjection_rel {x y : FreeAlgebra k (SYMGen D)}
+    (h : SYMRel D k x y) :
+    FreeAlgebra.lift k (exteriorProjectionGen D k) x =
+      FreeAlgebra.lift k (exteriorProjectionGen D k) y := by
+  cases h with
+  | polynomial a b => simp [exteriorProjectionGen]
+  | mixed a i => simp [exteriorProjectionGen]
+  | exterior i j =>
+    simp only [map_mul, map_neg, FreeAlgebra.lift_ι_apply, exteriorProjectionGen]
+    exact eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap (R := k) _ _)
+  | square i =>
+    rw [map_pow, map_zero, FreeAlgebra.lift_ι_apply]
+    change (ExteriorAlgebra.ι k (Finsupp.single i 1 : OddModule D k)) ^ 2 = 0
+    simpa only [pow_two] using ExteriorAlgebra.ι_sq_zero (R := k) (Finsupp.single i 1 : OddModule D k)
+
+/-- Kill the elementary polynomial generators and retain the entire exterior algebra. -/
+def exteriorProjection : SYM D k →ₐ[k] ExteriorAlgebra k (OddModule D k) :=
+  RingQuot.liftAlgHom k
+    ⟨FreeAlgebra.lift k (exteriorProjectionGen D k), fun _ _ h => exteriorProjection_rel D k h⟩
+
+@[simp] theorem exteriorProjection_delta (i : {i : I // D.parity i = 1}) :
+    exteriorProjection D k (delta D k i) = ExteriorAlgebra.ι k (Finsupp.single i 1) := by
+  simp only [exteriorProjection, delta, ι, mk, RingQuot.liftAlgHom_mkAlgHom_apply,
+    FreeAlgebra.lift_ι_apply, exteriorProjectionGen]
+
+@[simp] theorem exteriorProjection_oddLinear (x : OddModule D k) :
+    exteriorProjection D k (oddLinear D k x) = ExteriorAlgebra.ι k x := by
+  induction x using Finsupp.induction_linear with
+  | zero => simp
+  | add x y hx hy => simp [hx, hy]
+  | single i a =>
+    rw [oddLinear_single, map_smul, exteriorProjection_delta]
+    rw [show Finsupp.single i a = a • Finsupp.single i 1 by simp]
+    rw [map_smul]
+
 end OddMath.SKM.SYM

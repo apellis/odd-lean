@@ -29,6 +29,13 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
 local notation "Q" => oldTruncateFunctor D Sc cutoff N
 
+@[simp] theorem weightedRestrictionModuleIso_inv_app
+    (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
+    (hM : KillsWeightedCoefficients D Sc cutoff N M) (p : ZMod 2)
+    (v : OldCategory D Sc cutoff) :
+    (weightedRestrictionModuleIso D Sc cutoff N M hM).inv.app p v =
+      if p = 0 then LinearMap.id else 0 := rfl
+
 @[simp] theorem quotientInductionCounitIso_hom
     (M : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k)) :
     (quotientInductionCounitIso D Sc cutoff N M).hom =

@@ -42,6 +42,10 @@ def truncateOld (N : ℕ) (v w : List I) :
     Old D Sc cutoff v w →ₗ[k] TruncatedOld D Sc cutoff N v w :=
   Submodule.mapQ _ _ LinearMap.id (by intro x hx; exact Submodule.mem_sup_left hx)
 
+@[simp] theorem truncateOld_mk (N : ℕ) (v w : List I) (f : hom D Sc cutoff v w) :
+    truncateOld D Sc cutoff N v w ((ideal D Sc cutoff v w).mkQ f) =
+      (truncatedIdeal D Sc cutoff N v w).mkQ f := rfl
+
 theorem truncateOld_surjective (N : ℕ) (v w : List I) :
     Function.Surjective (truncateOld D Sc cutoff N v w) := by
   intro z

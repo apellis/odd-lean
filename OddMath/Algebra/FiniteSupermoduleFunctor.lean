@@ -33,6 +33,10 @@ def productMap (f : ∀ a, V a ⟶ W a) : product V ⟶ product W where
     funext a
     exact LinearMap.congr_fun ((f a).naturality p g hg) (x a)
 
+@[simp] theorem productMap_app_apply (f : ∀ a, V a ⟶ W a)
+    (p : ZMod 2) (t : C) (x : (product V).obj t) (a : ι) :
+    (productMap f).app p t x a = (f a).app p t (x a) := rfl
+
 @[simp] theorem productMap_total_apply (f : ∀ a, V a ⟶ W a)
     (t : C) (x : (product V).obj t) (a : ι) :
     (productMap f).total t x a = (f a).total t (x a) := rfl

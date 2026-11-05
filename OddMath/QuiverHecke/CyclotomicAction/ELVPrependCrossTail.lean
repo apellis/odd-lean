@@ -33,6 +33,9 @@ variable {i : I} {v w : List I}
 def tailKey (x : PrependIdx i v w) : ℕ × PrependShuffle v.length :=
   (x.1.1, x.1.2.2.2)
 
+@[simp] theorem tailKey_replaceOld (x : PrependIdx i v w) (y : NFIdx v x.oldTarget) :
+    (x.replaceOld y).tailKey = x.tailKey := rfl
+
 /-- Different moving tails have disjoint sets of old normal-form replacements. -/
 theorem replaceOld_ne_of_tailKey_ne (x z : PrependIdx i v w)
     (h : x.tailKey ≠ z.tailKey) (y : NFIdx v x.oldTarget) (b : NFIdx v z.oldTarget) :

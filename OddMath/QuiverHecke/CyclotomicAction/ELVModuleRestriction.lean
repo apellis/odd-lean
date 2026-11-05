@@ -47,4 +47,62 @@ instance moduleRestriction_super (σ : List I) :
     IsSuperfunctor k (moduleRestriction D Sc cutoff N σ) where
   map_mem := Superfunctor.whiskerLeft_mem _
 
+/-- A homogeneous appended morphism acts on every module by evaluation. -/
+def moduleRestrictionComponent {σ τ : List I} {p : ZMod 2}
+    {h : (pres D Sc).obj (ob D σ) ⟶ (pres D Sc).obj (ob D τ)}
+    (hh : h ∈ parity (R := k) _ _ p) (M : TruncatedModules D Sc cutoff N) :
+    (moduleRestriction D Sc cutoff N σ).obj M ⟶
+      (moduleRestriction D Sc cutoff N τ).obj M :=
+  Superfunctor.whiskerRight
+    (Superfunctor.homMk (truncatedAppendTransform D Sc cutoff N hh)) M
+
+theorem moduleRestrictionComponent_mem {σ τ : List I} {p : ZMod 2}
+    {h : (pres D Sc).obj (ob D σ) ⟶ (pres D Sc).obj (ob D τ)}
+    (hh : h ∈ parity (R := k) _ _ p) (M : TruncatedModules D Sc cutoff N) :
+    moduleRestrictionComponent D Sc cutoff N hh M ∈ parity (R := k) _ _ p := by
+  exact Superfunctor.whiskerRight_mem
+    (F := ⟨truncatedAppend D Sc cutoff N σ⟩)
+    (H := ⟨truncatedAppend D Sc cutoff N τ⟩)
+    (Superfunctor.IsSupernatural.toSuperNatTrans_mem
+      (F := ⟨truncatedAppend D Sc cutoff N σ⟩)
+      (G := ⟨truncatedAppend D Sc cutoff N τ⟩)
+      (truncatedAppendComponent_supernatural D Sc cutoff N hh)) M
+
+theorem moduleRestrictionComponent_supernatural {σ τ : List I} {p : ZMod 2}
+    {h : (pres D Sc).obj (ob D σ) ⟶ (pres D Sc).obj (ob D τ)}
+    (hh : h ∈ parity (R := k) _ _ p) :
+    IsSupernatural k p (moduleRestrictionComponent D Sc cutoff N hh) where
+  mem := moduleRestrictionComponent_mem D Sc cutoff N hh
+  naturality := by
+    intro M L q f hf
+    have ht := Superfunctor.IsSupernatural.toSuperNatTrans_mem
+      (F := ⟨truncatedAppend D Sc cutoff N σ⟩)
+      (G := ⟨truncatedAppend D Sc cutoff N τ⟩)
+      (truncatedAppendComponent_supernatural D Sc cutoff N hh)
+    have he := Superfunctor.whisker_exchange ht hf
+    have he' := congrArg (fun z => koszulSign p q • z) he
+    rw [koszulSign_smul_smul] at he'
+    simpa only [koszulSign_smul (R := k), moduleRestriction,
+      moduleRestrictionComponent, truncatedAppendTransform] using he'.symm
+
+/-- The transformation on restriction, including its exterior-coefficient signs. -/
+def moduleRestrictionTransform {σ τ : List I} {p : ZMod 2}
+    {h : (pres D Sc).obj (ob D σ) ⟶ (pres D Sc).obj (ob D τ)}
+    (hh : h ∈ parity (R := k) _ _ p) :
+    SuperNatTrans k (moduleRestriction D Sc cutoff N σ)
+      (moduleRestriction D Sc cutoff N τ) :=
+  (moduleRestrictionComponent_supernatural D Sc cutoff N hh).toSuperNatTrans
+
+/-- Evaluation of the homogeneous restriction transformation is the specified
+quotient morphism, not a chosen module endomorphism. -/
+@[simp] theorem moduleRestrictionTransform_app {σ τ : List I} {p : ZMod 2}
+    {h : (pres D Sc).obj (ob D σ) ⟶ (pres D Sc).obj (ob D τ)}
+    (hh : h ∈ parity (R := k) _ _ p) (M : TruncatedModules D Sc cutoff N)
+    (v : TruncatedCategory D Sc cutoff N) :
+    ((moduleRestrictionTransform D Sc cutoff N hh).app p M).app p v =
+      M.map (truncatedAppendComponent D Sc cutoff N h v) := by
+  simp only [moduleRestrictionTransform, IsSupernatural.toSuperNatTrans,
+    ↓reduceIte, moduleRestrictionComponent, Superfunctor.whiskerRight_app,
+    Superfunctor.homMk, truncatedAppendTransform]
+
 end OddMath.QuiverHecke.ELVOld

@@ -32,9 +32,50 @@ variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
   (i j : I) (n : ℕ) (β δ : Multiset I)
 
 omit [Fintype I] in
+
+/-- Two inductions land in the sum content, with the displayed strand order. -/
+theorem contentSupported_induction₂ (h : {i} + ({j} + β) = δ)
+    (M : CyclotomicSupermodules D Sc a ha n) (hM : ContentSupported D Sc a ha n β M) :
+    ContentSupported D Sc a ha (n + 1 + 1) δ
+      ((cyclotomicSuperInduction D Sc i a ha (n + 1)).obj
+        ((cyclotomicSuperInduction D Sc j a ha n).obj M)) := by
+  subst h
+  exact contentSupported_induction D Sc a ha i (n + 1) _ _
+    (contentSupported_induction D Sc a ha j n β M hM)
+
+/-- Two successive inductions with an explicitly chosen common target content. -/
+def globalBlockInduction₂ (h : {i} + ({j} + β) = δ) :
+    Superfunctor k (CyclotomicContentModules D Sc a ha n β)
+      (CyclotomicContentModules D Sc a ha (n + 1 + 1) δ) :=
+  fullLiftSuperfunctor _ _
+    ⟨cyclotomicSuperInduction D Sc j a ha n ⋙ cyclotomicSuperInduction D Sc i a ha (n + 1)⟩
+    (contentSupported_induction₂ D Sc a ha i j n β δ h)
+
 /-- The two orders have the same target content. -/
 theorem swapped_content (h : {i} + ({j} + β) = δ) : {j} + ({i} + β) = δ :=
   (add_left_comm _ _ _).trans h
+
+/-- The constructed homogeneous crossing `ψ`, restricted to content blocks. -/
+def globalBlockCross (h : {i} + ({j} + β) = δ) :
+    globalBlockInduction₂ D Sc a ha i j n β δ h ⟶
+      globalBlockInduction₂ D Sc a ha j i n β δ (swapped_content i j β δ h) :=
+  fullLiftTrans _ _
+    (contentSupported_induction₂ D Sc a ha i j n β δ h)
+    (contentSupported_induction₂ D Sc a ha j i n β δ (swapped_content i j β δ h))
+    (cyclotomicSuperInductionCrossing D Sc i j a ha n)
+
+/-- Forgetting content gives the existing crossing component, with no extra sign. -/
+@[simp] theorem globalBlockCross_app (h : {i} + ({j} + β) = δ) (p : ZMod 2)
+    (M : CyclotomicContentModules D Sc a ha n β) :
+    ((globalBlockCross D Sc a ha i j n β δ h).app p M).hom =
+      (cyclotomicSuperInductionCrossing D Sc i j a ha n).app p M.obj := rfl
+
+/-- The Rouquier crossing of the even file: `-ψ` for equal colours, `ψ` otherwise. -/
+def globalBlockSignedCross [DecidableEq I] (h : {i} + ({j} + β) = δ) :
+    globalBlockInduction₂ D Sc a ha i j n β δ h ⟶
+      globalBlockInduction₂ D Sc a ha j i n β δ (swapped_content i j β δ h) :=
+  if i = j then -globalBlockCross D Sc a ha i j n β δ h
+  else globalBlockCross D Sc a ha i j n β δ h
 
 /-- Two homogeneous transformations of the same parity whose components of that parity
 compose to zero have zero composite. -/

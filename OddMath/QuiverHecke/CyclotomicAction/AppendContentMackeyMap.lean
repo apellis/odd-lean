@@ -38,6 +38,12 @@ local notation "ψ" =>
   (appendAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))
 local notation "L" => Ind B (prependTwist D Sc i n eps)
 
+/-- The corrected source-dot sign depends only on content, not on the cutoff. -/
+@[simp] theorem appendSourceSign_contentParity :
+    appendSourceSign D a i (appendContentParity D a β i) =
+      D.parity i * (β.map D.parity).sum := by
+  simp [appendSourceSign, appendContentParity]
+
 /-- The left append-idempotent part of twisted prepend induction. -/
 def appendContentSource : AddSubgroup L where
   carrier := {z | (ψ 1 : Hn D Sc (n + 1 + 1)) • z = z}

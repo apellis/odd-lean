@@ -85,4 +85,20 @@ theorem evenToCyclotomic_surjective_of_nonpositive_height (p : ZMod 2)
   rw [LinearMap.mem_ker] at hx
   rw [hx, sub_zero]
 
+/-- At height zero the prescribed crossing itself is an equivalence. -/
+def evenToCyclotomicEquiv_zero_height (p : ZMod 2)
+    (j : I) (hj : D.parity j = 0) (v t : List I)
+    (h : endpointQPDegree D cutoff j v = outputSDegree D j v) :
+    Source D Sc cutoff j v t ≃ₗ[k] Old D Sc cutoff (v ++ [j]) (t ++ [j]) :=
+  LinearEquiv.ofBijective (toCyclotomic D Sc cutoff j v t)
+    ⟨evenToCyclotomic_injective_of_nonnegative_height D Sc cutoff p j hj v t h.ge,
+      evenToCyclotomic_surjective_of_nonpositive_height D Sc cutoff p j hj v t h.le⟩
+
+@[simp] theorem evenToCyclotomicEquiv_zero_height_apply (p : ZMod 2)
+    (j : I) (hj : D.parity j = 0) (v t : List I)
+    (h : endpointQPDegree D cutoff j v = outputSDegree D j v)
+    (z : Source D Sc cutoff j v t) :
+    evenToCyclotomicEquiv_zero_height D Sc cutoff p j hj v t h z =
+      toCyclotomic D Sc cutoff j v t z := rfl
+
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

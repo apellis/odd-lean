@@ -197,4 +197,11 @@ theorem pPolynomial_injective (i : I) (ν : List I) :
   apply pMap_injective D Sc cutoff i v.val w.val
   exact congrFun (congrFun h w) v
 
+/-- On quotient elements, the polynomial map is the prescribed wordwise P. -/
+@[simp] theorem pPolynomial_of (i : I) (ν : List I)
+    (z : SourceContent D Sc cutoff (appendQ D cutoff i ν) i ν) :
+    pPolynomial D Sc cutoff i ν
+      (CyclotomicAction.RightCentralPolynomialModule.of _ z) =
+    CyclotomicAction.RightCentralPolynomialModule.of _ (pContent D Sc cutoff i ν z) := rfl
+
 end OddMath.QuiverHecke.ELVOld

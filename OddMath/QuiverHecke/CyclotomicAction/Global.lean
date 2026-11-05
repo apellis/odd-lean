@@ -29,6 +29,10 @@ def blockWeight (β : Multiset I) : X := (β.map D.α).sum - Λ
 @[simp] theorem blockWeight_zero : blockWeight D Λ 0 = -Λ := by
   simp [blockWeight]
 
+@[simp] theorem blockWeight_singleton (i : I) :
+    blockWeight D Λ {i} = D.α i - Λ := by
+  simp [blockWeight]
+
 theorem blockWeight_cons (i : I) (β : Multiset I) :
     blockWeight D Λ ({i} + β) = blockWeight D Λ β + D.α i := by
   simp only [blockWeight, Multiset.map_add, Multiset.map_singleton,

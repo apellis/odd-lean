@@ -357,6 +357,19 @@ theorem appendRowsPolynomial_finite (i : I) (ν : List I) (d : ℕ) (hd : 0 < d)
   Module.Finite.of_surjective (appendRowsPolynomialRetraction D Sc cutoff i ν d)
     (Function.LeftInverse.surjective (appendRowsPolynomialRetraction_section D Sc cutoff i ν d hd))
 
+@[simp] theorem appendRowsPolynomialEquiv_symm_of (i : I) (ν : List I) (d : ℕ) (hd : 0 < d)
+    (z : AppendPolynomialCoefficients D Sc cutoff i ν d) :
+    (appendRowsPolynomialEquiv D Sc cutoff i ν d hd).symm
+      (RightCentralPolynomialModule.of _ z) =
+      RightCentralPolynomialModule.of _ (appendRowsJoin D Sc cutoff i ν d z) := rfl
+
+@[simp] theorem appendRowsPolynomialEquiv_of (i : I) (ν : List I) (d : ℕ) (hd : 0 < d)
+    (z : AppendRows D Sc cutoff i ν) :
+    appendRowsPolynomialEquiv D Sc cutoff i ν d hd (RightCentralPolynomialModule.of _ z) =
+      RightCentralPolynomialModule.of _ (appendRowsSplit D Sc cutoff i ν d hd z) := by
+  apply (appendRowsPolynomialEquiv D Sc cutoff i ν d hd).symm.injective
+  rw [LinearEquiv.symm_apply_apply, appendRowsPolynomialEquiv_symm_of, appendRowsJoin_split]
+
 instance appendRowsPolynomial_projective_inst (i : I) (ν : List I) (d : ℕ) [NeZero d] :
     Module.Projective (Polynomial (ContentRing D Sc cutoff ν))ᵐᵒᵖ
       (AppendRowsPolynomial D Sc cutoff i ν d) :=

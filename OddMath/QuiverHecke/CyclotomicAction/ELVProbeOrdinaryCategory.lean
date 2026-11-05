@@ -119,6 +119,11 @@ variable
   (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
   (hN : ProbeEvaluatesCoefficients D m Sc ν N)
 
+@[simp] theorem probeOldOrdinaryFunctor_obj_lift (v : Q) :
+    (probeOldOrdinaryFunctor D Sc m ν).obj (probeOrdinaryOldObject D Sc m ν v) = v := by
+  cases v
+  rfl
+
 /-- The actual descended ordinary module on precisely the original old module values. -/
 def probeOrdinaryModuleFunctor : Q ⥤ SVec k where
   obj v := N.obj (probeOrdinaryOldObject D Sc m ν v)

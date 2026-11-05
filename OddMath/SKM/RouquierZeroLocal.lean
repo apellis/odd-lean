@@ -94,4 +94,10 @@ def ofCoefficients (hLower : (𝟙 (F₀ ≫ E₀) : _ ⟶ _) = 0)
   invNeg _ := by
     simpa only [neg_neg, Int.toNat_natCast] using negativeInverse A₀ A x p n V hLower
 
+@[simp] theorem negativeInverse_f' (hLower : (𝟙 (F₀ ≫ E₀) : _ ⟶ _) = 0) :
+    (negativeInverse A₀ A x p n V hLower).f' = 0 := rfl
+
+@[simp] theorem negativeInverse_g' (hLower : (𝟙 (F₀ ≫ E₀) : _ ⟶ _) = 0) (j : ℕ) :
+    (negativeInverse A₀ A x p n V hLower).g' j = V.coeff j := rfl
+
 end OddMath.SKM.RouquierZeroLocal

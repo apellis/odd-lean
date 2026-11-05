@@ -51,6 +51,31 @@ theorem point_separate (a : ParameterRing D)
     UniversalCoefficientReduced.rationalParameters_separate D _ h
   simpa using hq
 
+@[simp] theorem point_C (p : PrimeSpectrum (RationalParameters D))
+    (a : UniversalCoefficientRing.UnitRing D) :
+    point D p (MvPolynomial.C a) =
+      primeFractionMap (RationalParameters D) p (MvPolynomial.C (rationalize D a)) := by
+  simp [point]
+
+@[simp] theorem point_X (p : PrimeSpectrum (RationalParameters D)) (s : Slot D) :
+    point D p (MvPolynomial.X s) =
+      primeFractionMap (RationalParameters D) p (MvPolynomial.X s) := by
+  simp [point]
+
+@[simp] theorem point_t (p : PrimeSpectrum (RationalParameters D)) (i j : I) :
+    point D p (MvPolynomial.C (UniversalCoefficientRing.t D i j :
+      UniversalCoefficientRing.UnitRing D)) =
+      primeFractionMap (RationalParameters D) p
+        (MvPolynomial.C (AddMonoidAlgebra.single (NormalizationParameterGroup.t D i j) 1)) := by
+  simp
+
+@[simp] theorem point_c (p : PrimeSpectrum (RationalParameters D)) (μ : X) (i : I) :
+    point D p (MvPolynomial.C (UniversalCoefficientRing.c D μ i :
+      UniversalCoefficientRing.UnitRing D)) =
+      primeFractionMap (RationalParameters D) p
+        (MvPolynomial.C (AddMonoidAlgebra.single (NormalizationParameterGroup.c D μ i) 1)) := by
+  simp
+
 /-- The scalar system at a point; the datum and weight group are unchanged. -/
 def scalars (p : PrimeSpectrum (RationalParameters D)) : Scalars D (FieldAt D p) where
   t i j := Units.map (point D p).toMonoidHom ((UniversalPolynomialParameters.scalars D).t i j)
@@ -90,5 +115,9 @@ def normalizations (p : PrimeSpectrum (RationalParameters D)) : CScalars (scalar
 @[simp] theorem scalars_s (p : PrimeSpectrum (RationalParameters D))
     (i j : I) (m n : ℕ) :
     (scalars D p).s i j m n = point D p (coefficient D ⟨i, j, m, n⟩) := rfl
+
+@[simp] theorem normalizations_c (p : PrimeSpectrum (RationalParameters D)) (μ : X) (i : I) :
+    (normalizations D p).c μ i =
+      Units.map (point D p).toMonoidHom ((UniversalPolynomialParameters.normalizations D).c μ i) := rfl
 
 end OddMath.SKM.UniversalParameterFields

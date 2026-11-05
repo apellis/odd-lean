@@ -61,6 +61,12 @@ def heightAppend (i : I) : (n : ℕ) →
   | 0 => vacuumAppend D Sc i a
   | n + 1 => cyclotomicAppend D Sc i a n
 
+@[simp] theorem heightAppend_zero (i : I) :
+    heightAppend D Sc a i 0 = vacuumAppend D Sc i a := rfl
+
+@[simp] theorem heightAppend_succ (i : I) (n : ℕ) :
+    heightAppend D Sc a i (n + 1) = cyclotomicAppend D Sc i a n := rfl
+
 /-- Every strand map in the extended tower is even. -/
 theorem heightAppend_parity (i : I) (n : ℕ) {p : ZMod 2}
     {x : heightAlgebra D Sc a n} (hx : x ∈ heightParity D Sc a ha n p) :

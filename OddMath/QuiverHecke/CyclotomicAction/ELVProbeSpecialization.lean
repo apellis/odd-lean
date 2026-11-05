@@ -132,6 +132,37 @@ theorem elvProbeOldHom_rightContext (σ v w : List I) (f : ELVOld.Old D Sc cut v
   exact elvAffineScalarSpecialization_rightContext D Sc cut
     (probeScalarValues D m) (probeScalarValues_vanish D m) σ v w f
 
+/-- The existing ordinary Hom quotient maps to its literal probe matrix entry. -/
+def probeCycHomWordEntry {n : ℕ} (s t : Word I (n+1)) :
+    (((pres D Sc).obj (ob D s.val) ⟶ (pres D Sc).obj (ob D t.val)) ⧸
+      cycHom D Sc a s.val t.val) →ₗ[k] CyclotomicAlgebra D Sc a n :=
+  (cycHom D Sc a s.val t.val).liftQ
+    { toFun := cyclotomicWordEntry D Sc a s t
+      map_add' := by
+        intro f g
+        change cyclotomicMk D Sc a n (FiniteHomMatrix.single t s (f+g)) = _
+        rw [FiniteHomMatrix.single_add, map_add]
+        rfl
+      map_smul' := by
+        intro c f
+        change cyclotomicMk D Sc a n (FiniteHomMatrix.single t s (c • f)) = _
+        rw [FiniteHomMatrix.single_smul, map_smul]
+        rfl } (by
+      intro f hf
+      change cyclotomicMk D Sc a n (FiniteHomMatrix.single t s f) = 0
+      apply Ideal.Quotient.eq_zero_iff_mem.mpr
+      exact single_mem_cyclotomicIdeal D Sc a n t s hf)
+
+/-- The scalar Hom functor descends into the actual probe cyclotomic algebra. -/
+def elvProbeWordEntry {n : ℕ} (s t : Word I (n+1)) :
+    ELVOld.Old D Sc cut s.val t.val →ₗ[k] CyclotomicAlgebra D Sc a n :=
+  (probeCycHomWordEntry D m Sc s t).comp (elvProbeOldHom D m Sc s.val t.val)
+
+@[simp] theorem elvProbeWordEntry_mk {n : ℕ} (s t : Word I (n+1))
+    (f : ELVOld.hom D Sc cut s.val t.val) :
+    elvProbeWordEntry D m Sc s t ((ELVOld.ideal D Sc cut s.val t.val).mkQ f) =
+      cyclotomicWordEntry D Sc a s t ((F).map f) := rfl
+
 variable [Fintype I]
 
 end OddMath.QuiverHecke

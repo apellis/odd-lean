@@ -28,6 +28,9 @@ def inductionUnitDotUnit (p : ZMod 2) (n : ℕ) : kˣ where
   val_inv := Supercategory.sign_mul_self _
   inv_val := Supercategory.sign_mul_self _
 
+@[simp] theorem inductionUnitDotUnit_val (p : ZMod 2) (n : ℕ) :
+    (inductionUnitDotUnit (k := k) p n : k) = inductionUnitDotSign (k := k) p n := rfl
+
 /-- The finite coordinate sign change is invertible without a field premise. -/
 def unitCoefficientDiagonal (p : ZMod 2) (v t : List I) (m : ℕ) :
     (Fin m → Old D Sc cutoff v t) ≃ₗ[k] (Fin m → Old D Sc cutoff v t) :=

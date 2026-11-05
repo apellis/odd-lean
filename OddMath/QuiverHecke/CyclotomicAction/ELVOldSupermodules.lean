@@ -74,4 +74,8 @@ def oldRepresentable (v : OldCategory D Sc cutoff) :
     Superfunctor k (OldCategory D Sc cutoff) (SVec k) :=
   ⟨oldRepresentableFunctor D Sc cutoff v⟩
 
+@[simp] theorem oldRepresentable_map (v w z : OldCategory D Sc cutoff)
+    (f : w ⟶ z) (h : v ⟶ w) :
+    (oldRepresentable D Sc cutoff v).map f h = h ≫ f := rfl
+
 end OddMath.QuiverHecke.ELVOld

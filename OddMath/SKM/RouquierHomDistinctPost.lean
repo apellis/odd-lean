@@ -168,6 +168,16 @@ theorem homPostCrossMate_isIso_of {t : E₃ ≫ E₂ ⟶ E₁ ≫ E₄}
     [IsIso (crossMate A₁ A₂ t)] (Z : x ⟶ b) : IsIso (homPostCrossMate A₁ A₂ t Z) :=
   ⟨⟨homPostCrossMateInv A₁ A₂ t Z, homPostCrossMate_inv_products A₁ A₂ Z⟩⟩
 
+/-- For distinct colours of a `RouquierMulticolour`, the post/post mate of the
+factor crossing is invertible, by `invNe`. -/
+theorem homPostCrossMate_isIso (T : RouquierFamily (k := k) (B := B) D)
+    {Sc : Scalars D k} (M : RouquierMulticolour T Sc) (i j : I) (hij : i ≠ j)
+    {y ν c' d' : X} (h₁ : y + D.α j = d') (h₂ : d' + D.α i = c') (h₃ : y + D.α i = ν)
+    (h₄ : ν + D.α j = c') {z : B} (Z : z ⟶ T.obj ν) :
+    IsIso (homPostCrossMate (T.adj i h₃) (T.adj i h₂) (T.cross i j h₁ h₂ h₃ h₄) Z) := by
+  have := M.invNe i j hij h₁ h₂ h₃ h₄
+  exact homPostCrossMate_isIso_of _ _ Z
+
 section Multicolour
 variable {I X : Type*} [AddCommGroup X] {D : Datum I X}
 

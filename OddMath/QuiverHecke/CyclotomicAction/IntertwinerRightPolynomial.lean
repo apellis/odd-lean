@@ -40,4 +40,66 @@ private theorem dot_pow_coefficient {V : Type*} [AddCommGroup V] [Module k V]
       smul_mul_assoc, smul_smul, ← pow_succ', mul_assoc, ← pow_succ]
     rw [← pow_succ']
 
+/-- Finite coefficients in the order `t^m ⊗ c_m`; no multiplication is declared. -/
+abbrev RightPolynomialCoefficients (a : I → _root_.Polynomial k) (n : ℕ) :=
+  ℕ →₀ CyclotomicAlgebra D Sc a n
+
+/-- The ordered monomial `t^m ⊗ c` acts by dots followed by the coefficient. -/
+def sourceRightMonomial (i : I) (a : I → _root_.Polynomial k)
+    (ha : CyclotomicPolynomialParity D a) (n : ℕ) (m : ℕ) :
+    CyclotomicAlgebra D Sc a n →+ Module.End k (qSourceSpace D Sc i a ha n) where
+  toFun c := sourceRightCoefficientLinear D Sc i a ha n c * sourceRightDotLinear D Sc i a ha n ^ m
+  map_zero' := by
+    have h : sourceRightCoefficientLinear D Sc i a ha n 0 = 0 := by
+      ext z
+      exact LinearMap.congr_fun (sourceRightCoefficient_zero D Sc i a n) z
+    rw [h, zero_mul]
+  map_add' b c := by
+    have h : sourceRightCoefficientLinear D Sc i a ha n (b + c) =
+        sourceRightCoefficientLinear D Sc i a ha n b + sourceRightCoefficientLinear D Sc i a ha n c := by
+      ext z
+      exact LinearMap.congr_fun (sourceRightCoefficient_add D Sc i a n b c) z
+    rw [h, add_mul]
+
+/-- Evaluation of every finite ordered polynomial on the same quotient carrier. -/
+def sourceRightPolynomial (i : I) (a : I → _root_.Polynomial k)
+    (ha : CyclotomicPolynomialParity D a) (n : ℕ) :
+    RightPolynomialCoefficients D Sc a n →+ Module.End k (qSourceSpace D Sc i a ha n) :=
+  Finsupp.liftAddHom (sourceRightMonomial D Sc i a ha n)
+
+@[simp] theorem sourceRightPolynomial_single (i : I) (a : I → _root_.Polynomial k)
+    (ha : CyclotomicPolynomialParity D a) (n : ℕ) (m : ℕ)
+    (c : CyclotomicAlgebra D Sc a n) :
+    sourceRightPolynomial D Sc i a ha n (Finsupp.single m c) = sourceRightMonomial D Sc i a ha n m c := by
+  simp [sourceRightPolynomial]
+
+/-- The ordered monomial `t^m ⊗ c` acts by dots followed by the coefficient. -/
+def targetRightMonomial (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
+    (ha : CyclotomicPolynomialParity D a) (n : ℕ) (m : ℕ) :
+    CyclotomicAlgebra D Sc a n →+ Module.End k (qTargetSpace D Sc i β a ha n) where
+  toFun c := targetRightCoefficientLinear D Sc i β a ha n c * targetRightDotLinear D Sc i β a ha n ^ m
+  map_zero' := by
+    have h : targetRightCoefficientLinear D Sc i β a ha n 0 = 0 := by
+      ext z
+      exact LinearMap.congr_fun (targetRightCoefficient_zero D Sc i β a ha n) z
+    rw [h, zero_mul]
+  map_add' b c := by
+    have h : targetRightCoefficientLinear D Sc i β a ha n (b + c) =
+        targetRightCoefficientLinear D Sc i β a ha n b + targetRightCoefficientLinear D Sc i β a ha n c := by
+      ext z
+      exact LinearMap.congr_fun (targetRightCoefficient_add D Sc i β a ha n b c) z
+    rw [h, add_mul]
+
+/-- Evaluation of every finite ordered polynomial on the same quotient carrier. -/
+def targetRightPolynomial (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
+    (ha : CyclotomicPolynomialParity D a) (n : ℕ) :
+    RightPolynomialCoefficients D Sc a n →+ Module.End k (qTargetSpace D Sc i β a ha n) :=
+  Finsupp.liftAddHom (targetRightMonomial D Sc i β a ha n)
+
+@[simp] theorem targetRightPolynomial_single (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
+    (ha : CyclotomicPolynomialParity D a) (n : ℕ) (m : ℕ)
+    (c : CyclotomicAlgebra D Sc a n) :
+    targetRightPolynomial D Sc i β a ha n (Finsupp.single m c) = targetRightMonomial D Sc i β a ha n m c := by
+  simp [targetRightPolynomial]
+
 end OddMath.QuiverHecke

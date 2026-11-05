@@ -109,6 +109,41 @@ theorem inductionCompOfEq_assoc
     Functor.isoWhiskerLeft_hom, Functor.whiskerRight_app, Functor.whiskerLeft_app,
     Functor.associator_hom_app, Category.id_comp]
   exact inductionCompOfEq_assoc_hom J K L P Q R eP eQ eR eS M
+
+/-- Pair-first and suffix-first content comparisons agree as natural isomorphisms. -/
+theorem contentInductionComp_assoc :
+    Functor.isoWhiskerRight (contentEPairComparison D Sc cutoff N β i j)
+        (BalancedInduction.induction L) ≪≫
+      contentInductionCompTo D Sc cutoff N β [i,j] δ₂ (contentPair_sum β i j) τ γ hγ h =
+    Functor.associator (BalancedInduction.induction J) (BalancedInduction.induction K)
+      (BalancedInduction.induction L) ≪≫
+      Functor.isoWhiskerLeft (BalancedInduction.induction J)
+        (contentInductionComp D Sc cutoff N δ₁ [j] τ γ hγ hs) ≪≫
+      contentInductionComp D Sc cutoff N β [i] ([j] ++ τ) γ hs h := by
+  rw [contentInductionCompTo_eq]
+  exact inductionCompOfEq_assoc J K L
+    (contentAppendTo D Sc cutoff N β [i,j] δ₂ (contentPair_sum β i j))
+    (contentAppendTo D Sc cutoff N δ₁ ([j] ++ τ) γ hs)
+    (contentAppendTo D Sc cutoff N β ([i,j] ++ τ) γ h)
+    (contentAppend_comp_eq D Sc cutoff N β [i] [j] δ₂ rfl (contentPair_sum β i j))
+    (contentAppend_comp_eq D Sc cutoff N δ₁ [j] τ γ hγ hs)
+    (contentAppend_compTo_eq D Sc cutoff N β [i,j] δ₂ (contentPair_sum β i j) τ γ hγ h)
+    (contentAppend_comp_eq D Sc cutoff N β [i] ([j] ++ τ) γ hs h)
+
+/-- The named triple comparison agrees with the suffix-first composition tree. -/
+theorem contentETripleComparison_assoc (l : I) (γ : Multiset I)
+    (h : β + ([i,j,l] : Multiset I) = γ)
+    (hs : δ₁ + ([j,l] : Multiset I) = γ) :
+    contentETripleComparison D Sc cutoff N β i j l γ h =
+    Functor.associator (contentE D Sc cutoff N β i) (contentE D Sc cutoff N δ₁ j)
+      (contentInductionTo D Sc cutoff N δ₂ [l] γ
+        (by rw [add_assoc, add_assoc]; exact h)) ≪≫
+      Functor.isoWhiskerLeft (contentE D Sc cutoff N β i)
+        (contentInductionComp D Sc cutoff N δ₁ [j] [l] γ
+          (by rw [add_assoc, add_assoc]; exact h) hs) ≪≫
+      contentInductionComp D Sc cutoff N β [i] [j,l] γ hs h :=
+  contentInductionComp_assoc D Sc cutoff N β i j [l] γ _ hs h
+
 end OddMath.QuiverHecke.ELVOld
 
 namespace OddMath.QuiverHecke.ELVOld

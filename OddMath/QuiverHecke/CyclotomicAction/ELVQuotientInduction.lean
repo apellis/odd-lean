@@ -87,6 +87,20 @@ theorem quotientInductionCounit_left_inv (w : TruncatedCategory D Sc cutoff N) :
       (BalancedInduction.counit Q M.toFunctor w) = LinearMap.id :=
   BalancedInduction.unit_counit_of_full Q M.toFunctor ⟨w.word⟩
 
+/-- The forward map is exactly the existing balanced adjunction counit. -/
+def quotientInductionCounitEquiv (w : TruncatedCategory D Sc cutoff N) :
+    BalancedInduction.Obj Q (Q ⋙ M.toFunctor) w ≃ₗ[k] M.obj w :=
+  LinearEquiv.ofLinearMap (BalancedInduction.counit Q M.toFunctor w)
+    (quotientInductionCounitInverse D Sc cutoff N M w)
+    (quotientInductionCounit_right_inv D Sc cutoff N M w)
+    (quotientInductionCounit_left_inv D Sc cutoff N M w)
+
+@[simp] theorem quotientInductionCounitEquiv_tensor (w : TruncatedCategory D Sc cutoff N)
+    (v : OldCategory D Sc cutoff) (h : (Q).obj v ⟶ w) (m : M.obj ((Q).obj v)) :
+    quotientInductionCounitEquiv D Sc cutoff N M w
+      (BalancedInduction.tensor Q (Q ⋙ M.toFunctor) v h m) = M.map h m :=
+  BalancedInduction.counit_tensor Q M.toFunctor w v h m
+
 /-- The pointwise equivalence is natural for the actual module action. -/
 def quotientInductionCounitNatIso :
     (BalancedInduction.induced Q (weightedRestriction D Sc cutoff N M)).toFunctor ≅

@@ -30,6 +30,20 @@ def restrictionCoendCoordinates (w : C) :
     Obj A ((restriction B).obj M).toFunctor w ≃ₗ[k] Obj A (B ⋙ M.toFunctor) w :=
   coefficientEquiv A (restrictionCoefficientCoordinates B M) w
 
+@[simp] theorem restrictionCoendCoordinates_tensor (s w : C) (g : A.obj s ⟶ w)
+    (b : M.obj (B.obj s)) :
+    restrictionCoendCoordinates A B M w
+      (tensor A ((restriction B).obj M).toFunctor s g b) =
+      tensor A (B ⋙ M.toFunctor) s g b :=
+  coefficientEquiv_tensor A (restrictionCoefficientCoordinates B M) w s g b
+
+@[simp] theorem restrictionCoendCoordinates_symm_tensor (s w : C) (g : A.obj s ⟶ w)
+    (b : M.obj (B.obj s)) :
+    (restrictionCoendCoordinates A B M w).symm
+      (tensor A (B ⋙ M.toFunctor) s g b) =
+      tensor A ((restriction B).obj M).toFunctor s g b :=
+  coefficientMap_tensor A (restrictionCoefficientCoordinates B M).inv w s g b
+
 /-- The same forward formula with its raw linear-map endpoint fixed. -/
 theorem restrictionCoendCoordinates_hom_tensor (s w : C) (g : A.obj s ⟶ w)
     (b : M.obj (B.obj s)) :

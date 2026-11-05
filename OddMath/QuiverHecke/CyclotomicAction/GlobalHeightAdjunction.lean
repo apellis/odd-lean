@@ -60,6 +60,14 @@ def heightCornerPairingBi : (P).toSVec →ₗ[k] (Q).toSVec →ₗ[k] B where
   map_add' x y := by ext z; exact add_mul x.1 y.1 z.1
   map_smul' c x := by ext y; exact smul_mul_assoc c x.1 y.1
 
+/-- The pairing descends through balancing over the lower cyclotomic algebra. -/
+def heightCornerPairingLinear : (tensor P Q).toSVec →ₗ[k] B :=
+  tensorLift (heightCornerPairingBi D Sc i a ha n) (fun x r y => mul_assoc x.1 (φ r) y.1)
+
+@[simp] theorem heightCornerPairingLinear_btmul (x : (P).toSVec) (y : (Q).toSVec) :
+    heightCornerPairingLinear D Sc i a ha n (btmul P Q x y) = x.1 * y.1 :=
+  tensorLift_btmul _ _ x y
+
 /-- The even colour-cut idempotent in the induction bimodule. -/
 def heightInductionCornerIdempotent : (P).toSVec :=
   ⟨φ 1, by change φ 1 * φ 1 = φ 1; rw [← map_mul, mul_one]⟩
@@ -80,6 +88,31 @@ local notation "ep" => heightInductionCornerIdempotent D Sc i a ha n
 local notation "eq" => heightRestrictionCornerOf D Sc i a ha n 1
 local notation "F" => heightSuperInduction D Sc i a ha n
 local notation "E" => heightSuperRestriction D Sc i a ha n
+
+/-- The linear coevaluation `a ↦ φ(a) ⊗ e`. -/
+def heightCornerUnitLinear : A →ₗ[k] (tensor Q P).toSVec where
+  toFun r := btmul Q P (heightRestrictionCornerOf D Sc i a ha n r)
+    (heightInductionCornerIdempotent D Sc i a ha n)
+  map_add' r s := by rw [map_add, btmul_add_left]
+  map_smul' c r := by rw [map_smul, btmul_smul_left]; rfl
+
+@[simp] theorem heightCornerUnitLinear_apply (r : A) :
+    heightCornerUnitLinear D Sc i a ha n r = btmul Q P (heightRestrictionCornerOf D Sc i a ha n r)
+      (heightInductionCornerIdempotent D Sc i a ha n) := rfl
+
+/-- The first elementary triangular identity for the corner pairing. -/
+@[simp] theorem heightCornerPairing_right_unit (x : (P).toSVec) :
+    heightCornerPairingLinear D Sc i a ha n
+      (btmul P Q x (heightRestrictionCornerOf D Sc i a ha n 1)) = x.1 := by
+  rw [heightCornerPairingLinear_btmul]
+  exact x.2
+
+/-- The second elementary triangular identity for the corner pairing. -/
+@[simp] theorem heightCornerPairing_left_unit (y : (Q).toSVec) :
+    heightCornerPairingLinear D Sc i a ha n
+      (btmul P Q (heightInductionCornerIdempotent D Sc i a ha n) y) = y.1 := by
+  rw [heightCornerPairingLinear_btmul]
+  exact y.2
 
 /-- The two even colour idempotents give the linear unit. -/
 def heightSuperUnitLinear (M : HeightModules D Sc a ha n) :

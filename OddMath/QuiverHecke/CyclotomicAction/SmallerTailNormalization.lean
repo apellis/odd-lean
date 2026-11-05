@@ -257,4 +257,15 @@ theorem chronological_scalar_long_zero {i j : I} {v s t : List I}
   (mem_shortSpan_iff D Sc i v (t ++ [j]) _).mp
     (chronological_scalar_short D Sc r h) x hx
 
+/-- Output action on the smaller block preserves the exact scalar short summand. -/
+theorem chronological_scalar_output_stability {i j : I} {v s t t' : List I}
+    (r : (pres D Sc).obj (ob D v) ⟶ (pres D Sc).obj (ob D (s ++ [j])))
+    (h : (pres D Sc).obj (ob D (i :: s)) ⟶ (pres D Sc).obj (ob D t))
+    (g : (pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D t')) :
+    (ELVOld.affineInsert D Sc i v (s ++ [j]) r ≫
+      (h ▷ (pres D Sc).obj (ob D [j]))) ≫
+        (g ▷ (pres D Sc).obj (ob D [j])) ∈ shortSpan D Sc i v (t' ++ [j]) := by
+  erw [Category.assoc, ← MonoidalSupercategory.comp_whiskerRight (R := k)]
+  exact chronological_scalar_short D Sc r (h ≫ g)
+
 end OddMath.QuiverHecke.SmallerTailNormalization

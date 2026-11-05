@@ -149,6 +149,12 @@ def probeOrdinaryInverseHom (v : C)
     ((twist k (D.parity i) (X := (U).obj ((J).obj v)) (Y := (U).obj t)).comp
       ((U).mapLinearMap (R := k) (X := (J).obj v) (Y := t)))
 
+@[simp] theorem probeOrdinaryInverseHom_apply (v : C)
+    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) :
+    probeOrdinaryInverseHom D Sc m ν i v t g =
+      probeOrdinarySourceDotInverse D Sc m ν i v ≫
+        twist k (D.parity i) ((U).map (X := (J).obj v) (Y := t) g) := rfl
+
 /-- This is the ordinary Hom identity needed for actual old coend balancing. -/
 theorem probeOrdinaryInverseHom_balance (v w : C)
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν))
@@ -235,6 +241,13 @@ def probeOldInverseGenerator (v : C)
   (Linear.leftComp k ((L).obj t)
     (show N.obj v ⟶ (L).obj ((J).obj v) from ELVOld.BalancedInduction.unit J N.toFunctor v)).comp
       (probeOldInverseHomAction D Sc m ν i N hN v t)
+
+@[simp] theorem probeOldInverseGenerator_apply (v : C)
+    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) (b : N.obj v) :
+    probeOldInverseGenerator D Sc m ν i N hN v t g b =
+      probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) t
+        (probeOrdinaryInverseHom D Sc m ν i v t g)
+        (ELVOld.BalancedInduction.unit J N.toFunctor v b) := rfl
 
 def probeOldInverseSummand (v : C)
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :

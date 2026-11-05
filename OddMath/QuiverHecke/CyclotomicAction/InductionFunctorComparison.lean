@@ -96,4 +96,16 @@ def inductionFunctorComparison : F ≅ compositionCornerFunctor D Sc i j a ha n 
   NatIso.ofComponents (inductionFunctorComparisonApp D Sc i j a ha n)
     (fun f => inductionFunctorComparisonApp_naturality D Sc i j a ha n f)
 
+/-- On pure tensors the comparison multiplies the two corner factors in order. -/
+@[simp] theorem inductionFunctorComparison_hom_btmul
+    (M : CyclotomicSupermodules D Sc a ha n) (x : (P).toSVec) (y : (Q).toSVec)
+    (m : M.toSVec) :
+    ((inductionFunctorComparison D Sc i j a ha n).hom.app M).1
+      (btmul P (tensor Q M) x (btmul Q M y m)) =
+      btmul T M (compositionCornerBi D Sc i j a ha n x y) m := by
+  change (whiskerRight (inductionCompositionIso D Sc i j a ha n).hom M).1
+    ((assoc P Q M).inv.1 (btmul P (tensor Q M) x (btmul Q M y m))) = _
+  rw [assoc_inv_btmul, whiskerRight_btmul]
+  rfl
+
 end OddMath.QuiverHecke

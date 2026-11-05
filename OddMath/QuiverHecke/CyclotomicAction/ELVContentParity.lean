@@ -54,6 +54,19 @@ def supermodulePiSupercategory :
   PiSupercategory.ofIso supermoduleParityObj supermoduleParityIso
     supermoduleParityIso_hom_mem
 
+@[simp] theorem supermoduleParityObj_obj (M : Superfunctor k C (SVec.{u} k)) (v : C) :
+    (supermoduleParityObj M).obj v =
+      (PiSupercategory.pi (R := k) (C := SVec.{u} k)).obj (M.obj v) := rfl
+
+@[simp] theorem supermoduleParityIso_hom_app_zero
+    (M : Superfunctor k C (SVec.{u} k)) (v : C) :
+    (supermoduleParityIso M).hom.app 0 v = 0 := rfl
+
+@[simp] theorem supermoduleParityIso_hom_app_one
+    (M : Superfunctor k C (SVec.{u} k)) (v : C) :
+    (supermoduleParityIso M).hom.app 1 v =
+      (PiSupercategory.ζ (R := k) (M.obj v)).hom := rfl
+
 end Supermodules
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]

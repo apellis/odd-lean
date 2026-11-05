@@ -61,6 +61,11 @@ def weightedAppendRestrictionIso :
       rfl))
     (fun _ => id_mem _) (fun _ => id_mem _)
 
+@[simp] theorem weightedAppendRestrictionIso_hom_app
+    (p : ZMod 2) (s : OldCategory D Sc cutoff) :
+    (weightedAppendRestrictionIso D Sc cutoff N i M).hom.app p s =
+      if p = 0 then LinearMap.id else 0 := rfl
+
 theorem weightedAppendRestrictionIso_hom_mem :
     (weightedAppendRestrictionIso D Sc cutoff N i M).hom ∈ parity (R := k) _ _ 0 := by
   unfold weightedAppendRestrictionIso

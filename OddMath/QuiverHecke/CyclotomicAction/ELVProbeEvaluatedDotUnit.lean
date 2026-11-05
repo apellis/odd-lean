@@ -60,6 +60,53 @@ theorem probeEvaluatedInductionDot_mem :
   Superfunctor.IsSupernatural.toSuperNatTrans_mem
     (probeEvaluatedDotComponent_supernatural D Sc m ν i)
 
+/-- The whole functor dot has exactly the prescribed native module component. -/
+theorem probeEvaluatedInductionDot_total (N : ProbeEvaluatedModules D Sc m ν) :
+    (probeEvaluatedInductionDot D Sc m ν i).total N = probeEvaluatedDotComponent D Sc m ν i N :=
+  OddMath.HomogeneousSuperfunctorIso.homogeneous_total
+    (F := (⟨E⟩ : Superfunctor k (ProbeEvaluatedModules D Sc m ν) (ProbeEvaluatedModules D Sc m (i :: ν))))
+    (G := (⟨E⟩ : Superfunctor k (ProbeEvaluatedModules D Sc m ν) (ProbeEvaluatedModules D Sc m (i :: ν))))
+    (probeEvaluatedDotComponent_supernatural D Sc m ν i) N
+
+/-- Every evaluated old probe module has the prescribed dot isomorphism;
+the inverse comes from the actual scalar quotient, with no inverse premise. -/
+def probeEvaluatedDotModuleIso (N : ProbeEvaluatedModules D Sc m ν) :
+    induced J N.obj ≅ induced J N.obj :=
+  OddMath.HomogeneousSuperfunctorIso.ofBijectiveTotals
+    (transformComponent hDot N.obj) (transformComponent_mem hDot N.obj) (by
+      intro t
+      rw [transform_total]
+      change Function.Bijective (probeOldContentInductionDot D Sc m ν i N.obj t)
+      have h := probeOldContentInductionDot_isUnit D Sc m ν i N.obj N.property t
+      exact (Module.End.isUnit_iff _).mp h)
+
+/-- The dot isomorphism retains the exact specified module forward. -/
+theorem probeEvaluatedDotModuleIso_hom (N : ProbeEvaluatedModules D Sc m ν) :
+    (probeEvaluatedDotModuleIso D Sc m ν i N).hom = transformComponent hDot N.obj :=
+  OddMath.HomogeneousSuperfunctorIso.ofBijectiveTotals_hom _ _ _
+
+/-- The pointwise inverse is a morphism of the same full evaluated category. -/
+def probeEvaluatedDotIso (N : ProbeEvaluatedModules D Sc m ν) : (E).obj N ≅ (E).obj N :=
+  ObjectProperty.isoMk (ProbeEvaluatesCoefficients D m Sc (i :: ν)) (probeEvaluatedDotModuleIso D Sc m ν i N)
+
+private theorem evaluatedDotIso_hom_total (N : ProbeEvaluatedModules D Sc m ν) :
+    (probeEvaluatedDotIso D Sc m ν i N).hom = (probeEvaluatedInductionDot D Sc m ν i).total N := by
+  rw [probeEvaluatedInductionDot_total]
+  apply InducedCategory.hom_ext
+  exact probeEvaluatedDotModuleIso_hom D Sc m ν i N
+
+/-- The actual dot inverse is natural on the entire evaluated probe category. -/
+def probeEvaluatedInductionDotIso :
+    (⟨E⟩ : Superfunctor k (ProbeEvaluatedModules D Sc m ν)
+      (ProbeEvaluatedModules D Sc m (i :: ν))) ≅ ⟨E⟩ :=
+  OddMath.HomogeneousSuperfunctorIso.ofHom
+    (probeEvaluatedInductionDot D Sc m ν i) (probeEvaluatedInductionDot_mem D Sc m ν i)
+    (probeEvaluatedDotIso D Sc m ν i) (evaluatedDotIso_hom_total D Sc m ν i)
+
+@[simp] theorem probeEvaluatedInductionDotIso_hom :
+    (probeEvaluatedInductionDotIso D Sc m ν i).hom = probeEvaluatedInductionDot D Sc m ν i :=
+  OddMath.HomogeneousSuperfunctorIso.ofHom_hom _ _ _ _
+
 variable [Fintype I]
 
 end OddMath.QuiverHecke

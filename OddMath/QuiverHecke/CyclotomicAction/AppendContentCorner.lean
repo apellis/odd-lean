@@ -67,6 +67,10 @@ def contentCornerMk (y : CyclotomicAlgebra D Sc a n)
     CyclotomicContentCorner D Sc a n β :=
   show Subsemigroup.corner (cyclotomicContentIdempotent D Sc a n β) from ⟨y, hy⟩
 
+@[simp] theorem contentCornerVal_mk (y : CyclotomicAlgebra D Sc a n)
+    (hy : y ∈ Subsemigroup.corner (cyclotomicContentIdempotent D Sc a n β)) :
+    contentCornerVal D Sc a n β (contentCornerMk D Sc a n β y hy) = y := rfl
+
 theorem contentCornerVal_injective : Function.Injective (contentCornerVal D Sc a n β) :=
   fun x y h => (Subtype.ext h :
     (show Subsemigroup.corner (cyclotomicContentIdempotent D Sc a n β) from x) =
@@ -147,5 +151,14 @@ theorem contentCornerParity_smul (r : Hn D Sc (n + 1)) (y : CyclotomicContentCor
       coefficientParityHom D Sc a ha n (D.parity i) (contentCornerVal D Sc a n β y)
   rw [coefficientParityHom_parity_eq_rightDotCoefficient,
     coefficientParityHom_parity_eq_rightDotCoefficient, rightDotCoefficient_smul]
+
+/-- **The target side of the append-side Mackey boundary on the content-`β` corner** of the
+cyclotomic quotient: `appendMackeyTarget` at `B_β = e(β) A e(β)` with the twist `σ_β`. -/
+def appendContentMackeyTarget :
+    CyclotomicAction.BoundaryPolynomial.MackeyTarget (contentCornerParity D Sc a n β i ha)
+      (appendTensorFixed D Sc i n (CyclotomicContentCorner D Sc a n β))
+      (appendTensorLeftCoordinates D Sc i n (CyclotomicContentCorner D Sc a n β)) :=
+  appendMackeyTarget D Sc i n (CyclotomicContentCorner D Sc a n β)
+    (contentCornerParity D Sc a n β i ha) (contentCornerParity_smul D Sc a n β i ha)
 
 end OddMath.QuiverHecke

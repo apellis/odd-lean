@@ -346,4 +346,18 @@ theorem shortCross_surjective (i j : I) (hij : i ≠ j) (v t : List I) :
     rw [appendOldReconstruct, DirectSum.toModule_lof]
     exact appendPair_mem_range_shortCross D Sc cutoff i j hij v t q.representative r
 
+/-- The explicit PBW crossing equivalence before the output-old quotient. -/
+def crossingEquiv (i j : I) (hij : i ≠ j) (v t : List I) :
+    ShortTarget D Sc cutoff i j v t ≃ₗ[k] AppendTarget D Sc cutoff i v (t ++ [j]) :=
+  LinearEquiv.ofBijective (shortCross D Sc cutoff i j v t)
+    ⟨shortCross_injective D Sc cutoff i j hij v t,
+      shortCross_surjective D Sc cutoff i j hij v t⟩
+
+@[simp] theorem crossingEquiv_symm (i j : I) (hij : i ≠ j) (v t : List I)
+    (z : AppendTarget D Sc cutoff i v (t ++ [j])) :
+    (crossingEquiv D Sc cutoff i j hij v t).symm z = decode D Sc cutoff i j v t z := by
+  obtain ⟨w, rfl⟩ := shortCross_surjective D Sc cutoff i j hij v t z
+  rw [decode_shortCross D Sc cutoff i j hij]
+  exact (crossingEquiv D Sc cutoff i j hij v t).symm_apply_apply w
+
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct

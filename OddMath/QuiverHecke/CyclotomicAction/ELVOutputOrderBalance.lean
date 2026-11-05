@@ -139,6 +139,47 @@ theorem dotted_bareU_pair_coordinate (p : ZMod 2) (i : I) (v : List I)
   rw [map_sub, sub_eq_zero] at h
   exact congrArg (fun f : ℕ →₀ Old D Sc cutoff v v => f n) h
 
+/-- The actual output action on a dotted long row, before quotient descent. -/
+def dottedOutputRow (p : ZMod 2) (i : I) (v : List I) (m : ℕ)
+    (b : Old D Sc cutoff v v) : hom D Sc cutoff v v →ₗ[k] (ℕ →₀ Old D Sc cutoff v v) where
+  toFun g := outputLongExtraction D Sc cutoff p i v
+    (act D Sc cutoff i (appendInsert D Sc cutoff i v v g)
+      (pair D Sc cutoff p i (movingPower D Sc cutoff i v m ≫ bareUFull D Sc cutoff i v) b))
+  map_add' g h := by
+    obtain ⟨r, rfl⟩ := (ideal D Sc cutoff v v).mkQ_surjective b
+    simp only [pair_mk, map_add]
+    change outputLongExtraction D Sc cutoff p i v
+      (projection D Sc cutoff i v (v ++ [i]) (_ ≫ (_ + _))) = _
+    rw [Preadditive.comp_add, map_add, map_add]
+    rfl
+  map_smul' a g := by
+    obtain ⟨r, rfl⟩ := (ideal D Sc cutoff v v).mkQ_surjective b
+    simp only [pair_mk, map_smul]
+    change outputLongExtraction D Sc cutoff p i v
+      (projection D Sc cutoff i v (v ++ [i]) (_ ≫ (a • _))) = _
+    rw [Linear.comp_smul, map_smul, map_smul]
+    rfl
+
+theorem dottedOutputRow_ideal (p : ZMod 2) (i : I) (v : List I) (m : ℕ)
+    (b : Old D Sc cutoff v v) {g : hom D Sc cutoff v v}
+    (hg : g ∈ ideal D Sc cutoff v v) : dottedOutputRow D Sc cutoff p i v m b g = 0 := by
+  ext n
+  change outputLongCoordinate D Sc cutoff p i v n _ = 0
+  rw [dotted_bareU_pair_coordinate]
+  have hg' : (ideal D Sc cutoff v v).mkQ g = 0 := (Submodule.Quotient.mk_eq_zero _).mpr hg
+  rw [hg', map_zero, map_zero, map_zero, map_zero]
+
+/-- Output quotient descent of the actual finite extraction on every dotted long row. -/
+def dottedOutputQuotientRow (p : ZMod 2) (i : I) (v : List I) (m : ℕ)
+    (b : Old D Sc cutoff v v) : Old D Sc cutoff v v →ₗ[k] (ℕ →₀ Old D Sc cutoff v v) :=
+  (ideal D Sc cutoff v v).liftQ (dottedOutputRow D Sc cutoff p i v m b)
+    (fun _ hg => dottedOutputRow_ideal D Sc cutoff p i v m b hg)
+
+@[simp] theorem dottedOutputQuotientRow_mk (p : ZMod 2) (i : I) (v : List I) (m : ℕ)
+    (b : Old D Sc cutoff v v) (g : hom D Sc cutoff v v) :
+    dottedOutputQuotientRow D Sc cutoff p i v m b ((ideal D Sc cutoff v v).mkQ g) =
+      dottedOutputRow D Sc cutoff p i v m b g := rfl
+
 theorem tail_long_zero (i : I) (v : List I) :
     HEq (prependTail D Sc (longOutputIndex i v 0)) (OutputOldComposite.bareU D Sc i v) := by
   have transport {s s' t : List I} (e : s = s') {gs gs' : List PG} (eg : gs = gs')
@@ -302,6 +343,49 @@ namespace OddMath.QuiverHecke.ELVOld
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
+
+/-- Finite extraction after the actual output old arrow. -/
+def outputOldExtractionHom (p : ZMod 2) (i : I) (v : List I)
+    (z : Target D Sc cutoff i v (v ++ [i])) :
+    hom D Sc cutoff v v →ₗ[k] (ℕ →₀ Old D Sc cutoff v v) where
+  toFun g := outputLongExtraction D Sc cutoff p i v
+    (act D Sc cutoff i (appendInsert D Sc cutoff i v v g) z)
+  map_add' g h := by
+    obtain ⟨r, rfl⟩ := projection_surjective D Sc cutoff i v (v ++ [i]) z
+    simp only [map_add]
+    change outputLongExtraction D Sc cutoff p i v
+      (projection D Sc cutoff i v (v ++ [i]) (r ≫ (_ + _))) = _
+    rw [Preadditive.comp_add, map_add, map_add]
+    rfl
+  map_smul' a g := by
+    obtain ⟨r, rfl⟩ := projection_surjective D Sc cutoff i v (v ++ [i]) z
+    simp only [map_smul]
+    change outputLongExtraction D Sc cutoff p i v
+      (projection D Sc cutoff i v (v ++ [i]) (r ≫ (a • _))) = _
+    rw [Linear.comp_smul, map_smul, map_smul]
+    rfl
+
+theorem outputOldExtractionHom_ideal (p : ZMod 2) (i : I) (v : List I)
+    (z : Target D Sc cutoff i v (v ++ [i])) {g : hom D Sc cutoff v v}
+    (hg : g ∈ ideal D Sc cutoff v v) : outputOldExtractionHom D Sc cutoff p i v z g = 0 := by
+  ext n
+  change outputLongCoordinate D Sc cutoff p i v n _ = 0
+  rw [outputLongCoordinate_outputOld]
+  have hg' : (ideal D Sc cutoff v v).mkQ g = 0 := (Submodule.Quotient.mk_eq_zero _).mpr hg
+  rw [hg', map_zero, map_zero]
+
+/-- Output quotient factor descended from actual arrow action, for arbitrary z. -/
+def outputOldExtraction (p : ZMod 2) (i : I) (v : List I)
+    (z : Target D Sc cutoff i v (v ++ [i])) :
+    Old D Sc cutoff v v →ₗ[k] (ℕ →₀ Old D Sc cutoff v v) :=
+  (ideal D Sc cutoff v v).liftQ (outputOldExtractionHom D Sc cutoff p i v z)
+    (fun _ hg => outputOldExtractionHom_ideal D Sc cutoff p i v z hg)
+
+@[simp] theorem outputOldExtraction_mk (p : ZMod 2) (i : I) (v : List I)
+    (z : Target D Sc cutoff i v (v ++ [i])) (g : hom D Sc cutoff v v) :
+    outputOldExtraction D Sc cutoff p i v z ((ideal D Sc cutoff v v).mkQ g) =
+      outputLongExtraction D Sc cutoff p i v
+        (act D Sc cutoff i (appendInsert D Sc cutoff i v v g) z) := rfl
 
 theorem canonical_last_commute (i : I) (v : List I) (m : ℕ)
     (g : hom D Sc cutoff v v) :

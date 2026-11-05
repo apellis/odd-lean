@@ -83,6 +83,10 @@ def cupPrefixStrandEquiv (l : List I) {a b : List (Letter I)}
   left_inv _ := rfl
   right_inv _ := rfl
 
+@[simp] theorem cupPrefixStrandEquiv_val (l : List I) {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ (ups l ++ a) b R)
+    (j : MatchingStrand (ups l ++ a) R) : (cupPrefixStrandEquiv l hR j).val = j.val := rfl
+
 theorem tmoves_cupPrefix (l : List I) (ds : List (DTMove I)) :
     tmoves (cupPrefixMoves l ds) = cupPrefixMatching l (tmoves ds) := by
   induction l generalizing ds with

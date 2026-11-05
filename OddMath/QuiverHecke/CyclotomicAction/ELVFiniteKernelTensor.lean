@@ -98,6 +98,17 @@ variable [Fintype ι]
 def fromPi : (∀ a, Obj (K a) M) →ₗ[k] Obj (piKernel K) M :=
   ∑ a, map M (piInjection K a) ∘ₗ LinearMap.proj a
 
+theorem fromPi_single (a : ι) (z : Obj (K a) M) :
+    fromPi K M (Pi.single a z) = map M (piInjection K a) z := by
+  simp only [fromPi, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply]
+  calc
+    _ = map M (piInjection K a) ((Pi.single a z : ∀ b, Obj (K b) M) a) := by
+      apply Finset.sum_eq_single a
+      · intro b _ hb
+        simp [hb]
+      · simp
+    _ = _ := by simp
+
 theorem fromPi_toPi : fromPi K M ∘ₗ toPi K M = LinearMap.id := by
   apply hom_ext
   intro v x m
@@ -127,5 +138,14 @@ theorem toPi_fromPi : toPi K M ∘ₗ fromPi K M = LinearMap.id := by
 /-- Finite coefficient products commute with kernel tensor, without flatness. -/
 def piEquiv : Obj (piKernel K) M ≃ₗ[k] (∀ a, Obj (K a) M) :=
   LinearEquiv.ofLinearMap (toPi K M) (fromPi K M) (toPi_fromPi K M) (fromPi_toPi K M)
+
+@[simp] theorem piEquiv_tensor (v : C) (x : (piKernel K).obj (op v))
+    (m : M.obj v) (a : ι) :
+    piEquiv K M (tensor (piKernel K) M v x m) a = tensor (K a) M v (x a) m :=
+  toPi_tensor K M v x m a
+
+@[simp] theorem piEquiv_symm_single (a : ι) (z : Obj (K a) M) :
+    (piEquiv K M).symm (Pi.single a z) = map M (piInjection K a) z :=
+  fromPi_single K M a z
 
 end OddMath.QuiverHecke.ELVOld.BalancedKernelTensor

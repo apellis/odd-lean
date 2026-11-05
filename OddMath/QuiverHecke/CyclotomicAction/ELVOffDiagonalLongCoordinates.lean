@@ -29,6 +29,9 @@ def longHomIndex (i : I) {v t : List I} (y : NFIdx v t) (m : ℕ) :
     (y : NFIdx v t) (m : ℕ) : (longHomIndex i y m).oldTarget = t :=
   (PrependIdx.rebase_target _ _).trans (longOutputIndex_oldTarget i t m)
 
+@[simp] theorem longHomIndex_exponent (i : I) {v t : List I}
+    (y : NFIdx v t) (m : ℕ) : (longHomIndex i y m).1.1 = m := rfl
+
 /-- The source-normalized coefficient of a long off-diagonal tail. -/
 def longHomCoordinate (p : ZMod 2) (i : I) {v t : List I} (y : NFIdx v t) (m : ℕ) :
     Target D Sc cutoff i v (t ++ [i]) →ₗ[k] Old D Sc cutoff v t :=

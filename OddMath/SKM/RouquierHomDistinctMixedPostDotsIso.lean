@@ -45,6 +45,19 @@ variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
   (A : SuperAdjunction (k := k) E' F') (κ τ : ZMod 2) (H : b ⟶ d)
   {x : E ⟶ E} (hx : x ∈ parity (R := k) E E 0) {y : E' ⟶ E'} (hy : y ∈ parity (R := k) E' E' 0)
 
+/-- The right transpose of a nilpotent even endomorphism is nilpotent. -/
+theorem isNilpotent_rightTranspose {a b : B} {E : a ⟶ b} {F : b ⟶ a}
+    (A : SuperAdjunction (k := k) E F) {y : E ⟶ E} (hy : y ∈ parity (R := k) _ _ 0)
+    (hn : IsNilpotent (show End E from y)) :
+    IsNilpotent (show End F from SuperAdjunction.rightTranspose A A y) := by
+  obtain ⟨n, hn⟩ := hn
+  refine ⟨n, ?_⟩
+  have h := SuperAdjunction.rightTranspose_power A hy n
+  rw [rouquierPower_eq_pow, hn, koszulSign_zero_left, one_pow, one_smul,
+    rouquierPower_eq_pow] at h
+  rw [← h]
+  exact (SuperAdjunction.rightTransposeLinear A A).map_zero
+
 /-- The pre dot on the target of `J⁻¹`. -/
 abbrev mixedPostTargetPreDot (x : E ⟶ E) :
     End (E ≫ (homParityShift (k := k) κ).obj
@@ -141,6 +154,44 @@ theorem exists_homDistinctMixedMateDot_eq (m : ℕ) {N}
     refine ⟨s • Ψ, Submodule.smul_mem _ s hΨ, ?_⟩
     rw [← homDistinctMixedMateDotLinear_apply, map_smul, homDistinctMixedMateDotLinear_apply,
       e, Linear.smul_comp]
+
+/-- (15) on the post side: the dotted mate of `c • Xᵈ + N` is invertible when `x` is
+invertible, `y` is nilpotent, `c` is a unit and `N` is a combination of monomials `Xᵖ Yᑫ`
+with `q ≥ 1`. -/
+theorem homDistinctMixedMateDot_isIso [IsIso x] (hn : IsNilpotent (show End E' from y))
+    (c : kˣ) (e : ℕ) {N}
+    (hN : N ∈ admissibleMonomials (k := k)
+      (mixedPostTargetPreDot (k := k) E κ H (E' := E') (F' := F') x)
+      (mixedPostTargetPostDot (k := k) E κ H (F' := F') y) (fun _ => True) (fun _ => True) 1) :
+    IsIso (homDistinctMixedMateDot E A κ τ H
+      ((c : k) • mixedPostTargetPreDot (k := k) E κ H (E' := E') (F' := F') x ^ e + N)) := by
+  obtain ⟨Ψ, hΨ, hΨe⟩ := exists_homDistinctMixedMateDot_eq E A κ τ H hx hy 1 hN
+  have h0 := homDistinctMixedMateDot_pow_mul_pow E A κ τ H hx hy e 0
+  simp only [pow_zero, mul_one] at h0
+  rw [← homDistinctMixedMateDotLinear_apply, map_add, map_smul,
+    homDistinctMixedMateDotLinear_apply, homDistinctMixedMateDotLinear_apply, h0, hΨe,
+    ← Linear.smul_comp, ← Preadditive.add_comp]
+  have ha : IsUnit (mixedPostSourcePreDot (k := k) E κ H (F' := F') x) := by
+    refine ⟨⟨_, inv x ▷ ((homParityShift (k := k) κ).obj H ≫ F'), ?_, ?_⟩, rfl⟩ <;>
+      rw [End.mul_def, ← TwoSupercategory.comp_whiskerRight (R := k)] <;>
+      simp only [IsIso.hom_inv_id, IsIso.inv_hom_id] <;>
+      exact TwoSupercategory.id_whiskerRight (R := k) _ _
+  have hb : IsNilpotent (mixedPostSourcePostDot (k := k) E κ H A y) := by
+    obtain ⟨n, hn'⟩ := isNilpotent_rightTranspose A hy hn
+    refine ⟨n, ?_⟩
+    unfold mixedPostSourcePostDot
+    rw [← rouquierPower_eq_pow] at hn'
+    rw [whiskerLeft_rouquierPower (k := k), rouquierPower_eq_pow,
+      whiskerLeft_rouquierPower (k := k), hn']
+    rw [whiskerLeft_zero' (k := k), whiskerLeft_zero' (k := k)]
+  have hu := isUnit_smul_pow_add_of_mem_admissibleMonomials (k := k)
+    (Pa := fun _ => True) (Pb := fun _ => True) (fun _ _ _ _ => trivial)
+    (fun _ _ _ _ => trivial)
+    (fun p q _ _ => (commute_mixedPostSource (k := k) E A κ H hx (y := y)).pow_pow p q)
+    hb ha c (d := e) trivial hΨ
+  have : IsIso ((c : k) • mixedPostSourcePreDot (k := k) E κ H (F' := F') x ^ e + Ψ :
+      End (E ≫ ((homParityShift (k := k) κ).obj H ≫ F'))) := (isUnit_iff_isIso _).mp hu
+  infer_instance
 
 include hx hy in
 

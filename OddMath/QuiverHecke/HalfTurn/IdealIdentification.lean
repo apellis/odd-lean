@@ -218,4 +218,12 @@ theorem map_htCoef_transformedIdeal (cutoff : I → ℕ) (s t : List I) :
   exact ⟨htCoefInv D Sc s t y, htCoefInv_mem_transformedIdeal D Sc cutoff hy,
     htCoef_htCoefInv D Sc y⟩
 
+/-- **`U⁻¹(I_N) = K_N`**: the transformed ideal is the inverse image of the ELV relation span
+under the half-turn. -/
+theorem comap_htCoef_elvRelationSpan (cutoff : I → ℕ) (s t : List I) :
+    (ELVRelationSpan D (parameterTwist D Sc) cutoff t.reverse s.reverse).comap (htCoef D Sc s t) =
+      TransformedIdeal D Sc cutoff ∅ s t := by
+  rw [← map_htCoef_transformedIdeal,
+    Submodule.comap_map_eq_of_injective (htCoef_injective D Sc s t)]
+
 end OddMath.QuiverHecke

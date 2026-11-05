@@ -41,6 +41,9 @@ def homMatrixTwistRingHom : Hn D Sc n →+* Hn D Sc n :=
 
 variable (N : Type w) [AddCommGroup N] [Module (Hn D Sc n) N]
 
+@[simp] theorem homMatrixTwistRingHom_apply (r : Hn D Sc n) :
+    homMatrixTwistRingHom D Sc n p r = homMatrixTwist D Sc n p r := rfl
+
 /-- `N` with the action precomposed by the parity twist `tw_p`. -/
 @[nolint unusedArguments]
 def TwistModule (_ : SKM.Scalars D k) (_ : ℕ) (_ : ZMod 2) (N : Type w) : Type w := N
@@ -81,6 +84,12 @@ def prependTwistCorner : InductionAlong.Corner (prependTwist D Sc i n ε) ≃+ I
   left_inv _ := rfl
   right_inv _ := rfl
   map_add' _ _ := rfl
+
+@[simp] theorem prependTwistCorner_val (z : InductionAlong.Corner (prependTwist D Sc i n ε)) :
+    (prependTwistCorner D Sc i n ε z).1 = z.1 := rfl
+
+@[simp] theorem prependTwistCorner_symm_val (z : InductionAlong.Corner φ) :
+    ((prependTwistCorner D Sc i n ε).symm z).1 = z.1 := rfl
 
 theorem prependTwistCorner_op_smul (a : Hn D Sc (n + 1))
     (z : InductionAlong.Corner (prependTwist D Sc i n ε)) :
@@ -150,11 +159,22 @@ def prependTwistEquiv :
     prependTwistEquiv D Sc i n ε N (Ind.tmul z m) =
       Ind.tmul (prependTwistCorner D Sc i n ε z) (toTwistModule D Sc (n + 1) ε N m) := rfl
 
+@[simp] theorem prependTwistEquiv_symm_tmul (z : InductionAlong.Corner φ)
+    (m : TwistModule D Sc (n + 1) ε N) :
+    (prependTwistEquiv D Sc i n ε N).symm (Ind.tmul z m) =
+      Ind.tmul ((prependTwistCorner D Sc i n ε).symm z) ((toTwistModule D Sc (n + 1) ε N).symm m) :=
+  rfl
+
 /-- The affine prepend PBW coordinates of the twisted induction. -/
 def prependTwistCoordinates :
     ((PrependShuffle (n + 1) × ℕ) →₀ N) ≃+ Ind N (prependTwist D Sc i n ε) :=
   ((Finsupp.mapRange.addEquiv (toTwistModule D Sc (n + 1) ε N)).trans
     (prependTensorEquiv D Sc i (n + 1) (TwistModule D Sc (n + 1) ε N))).trans
     (prependTwistEquiv D Sc i n ε N).symm
+
+@[simp] theorem prependTwistCoordinates_single (q : PrependShuffle (n + 1) × ℕ) (m : N) :
+    prependTwistCoordinates D Sc i n ε N (Finsupp.single q m) =
+      Ind.tmul ((prependTwistCorner D Sc i n ε).symm (prependPBWCorner D Sc i q.1 q.2 1)) m := by
+  simp [prependTwistCoordinates, prependTensorEquiv]
 
 end OddMath.QuiverHecke

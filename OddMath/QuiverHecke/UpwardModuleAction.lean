@@ -67,5 +67,28 @@ def closedAct (t : List I) :
 def bubbles (t : List I) : SKM.SYM D k →ₐ[k] Module.End k (A.V t) :=
   (A.closedAct t).comp (SKM.betaSYM cs μ)
 
+/-- An upward action, a vacuum, reservoir coordinates and their recovery maps
+give the reservoir-vacuum consumer. The bubble field is the derived action. -/
+def toReservoirVacuumEvaluation (cutoff : I → ℕ) (vacuum : ∀ t, A.V t)
+    (reservoir : ∀ t, SKM.SYM D k →ₐ[k] Module.End k (A.V t))
+    (recover : ∀ t t', A.V t' →ₗ[k] ReservoirQuotient D Sc cutoff t t')
+    (window : List I → List I → ℕ)
+    (affine_coordinates : ∀ t t' (a : SKM.SYM D k)
+      (f : (pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D t')),
+      sourceCoefficientHom D Sc a f ∈ ExtendedAtMost D Sc t t' (window t t') →
+      recover t t' (A.act t t' ((alpha D Sc μ).map f) (reservoir t a (vacuum t))) =
+        (ELVRelationSpan D Sc cutoff t t').mkQ (sourceCoefficientHom D Sc a f)) :
+    ReservoirVacuumEvaluation D Sc cs μ cutoff where
+  V := A.V
+  act := A.act
+  act_comp := A.act_comp
+  vacuum := vacuum
+  bubbles := A.bubbles cs
+  bubbles_eq _ _ := rfl
+  reservoir := reservoir
+  recover := recover
+  window := window
+  affine_coordinates := affine_coordinates
+
 end UpwardModuleAction
 end OddMath.QuiverHecke

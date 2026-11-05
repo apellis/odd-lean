@@ -93,4 +93,19 @@ theorem rectangularMateHom_mem :
     (G := rectangularMateTargetFunctor (k := k) L M)
     (orderedRectangularMateComponent_supernatural J K L M hα) N
 
+/-- The inverse is supernatural in arbitrary, including odd, input-module maps. -/
+def rectangularMateFunctorIso
+    (h : ∀ N t, Function.Bijective (orderedRectangularMateLinear J K L M hα N t)) :
+    rectangularMateSourceFunctor (k := k) J K ≅ rectangularMateTargetFunctor (k := k) L M :=
+  HomogeneousSuperfunctorIso.ofHom (rectangularMateHom J K L M hα)
+    (rectangularMateHom_mem J K L M hα)
+    (fun N => rectangularMateModuleIso J K L M hα N (h N))
+    (fun N => (rectangularMateModuleIso_hom J K L M hα N (h N)).trans
+      (rectangularMateHom_total J K L M hα N).symm)
+
+@[simp] theorem rectangularMateFunctorIso_hom
+    (h : ∀ N t, Function.Bijective (orderedRectangularMateLinear J K L M hα N t)) :
+    (rectangularMateFunctorIso J K L M hα h).hom = rectangularMateHom J K L M hα :=
+  HomogeneousSuperfunctorIso.ofHom_hom _ _ _ _
+
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

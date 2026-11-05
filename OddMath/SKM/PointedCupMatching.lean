@@ -92,6 +92,9 @@ def appendCup (F : PointedMatching a (P ++ Q)) (ε : Bool) (i : I) :
     rw [he] at h
     exact h
 
+@[simp] theorem appendCup_moves (F : PointedMatching a (P ++ Q)) (ε : Bool) (i : I) :
+    (F.appendCup ε i).moves = F.moves ++ [.mv (.cup P.length (ε, i))] := rfl
+
 theorem appendCup_layers (F : PointedMatching a (P ++ Q)) (ε : Bool) (i : I)
     (b : ℕ) (n : MatchingStrand a F.moves → ℕ) :
     (F.appendCup ε i).layers ((terminalCupCountsEquiv F.matching ε i).symm (b, n)) =

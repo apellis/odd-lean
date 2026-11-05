@@ -55,6 +55,15 @@ def topPosition (R : F.members) : MatchingStrand (List.ofFn fun r : Fin c => (tr
   Equiv.ofBijective (positive_top_points a b (F.matching R.val R.property).1).choose
     (positive_top_points a b (F.matching R.val R.property).1).choose_spec.1
 
+/-- All strand multiplicities, reindexed by actual top endpoint positions. -/
+def topCountsEquiv (R : F.members) : (MatchingStrand (List.ofFn fun r : Fin c => (true, a r)) R.val → ℕ) ≃ TopCounts d :=
+  (Equiv.arrowCongr (F.topPosition a b R) (Equiv.refl ℕ)).trans TopCounts.equivFun
+
+@[simp] theorem topCountsEquiv_apply (R : F.members) (n : MatchingStrand (List.ofFn fun r : Fin c => (true, a r)) R.val → ℕ)
+    (j : MatchingStrand (List.ofFn fun r : Fin c => (true, a r)) R.val) :
+    (F.topCountsEquiv a b R n).val (F.topPosition a b R j).val = n j := by
+  simp [topCountsEquiv, TopCounts.equivFun]
+
 theorem topPosition_onStrand (R : F.members) (j : MatchingStrand (List.ofFn fun r : Fin c => (true, a r)) R.val) :
     OnStrand₂ (List.ofFn fun r : Fin c => (true, a r)) R.val j.val (R.val.length, (F.topPosition a b R j).val) :=
   (positive_top_points a b (F.matching R.val R.property).1).choose_spec.2 j

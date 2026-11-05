@@ -17,6 +17,13 @@ variable {k : Type u} [CommRing k]
 
 def capRowSign (n : ℕ) : k := (-1 : k) ^ (n + 1).choose 2
 
+theorem capRowSign_eq (n : ℕ) :
+    capRowSign (k := k) n = (-1 : k) ^ (n * (n + 1) / 2) := by
+  unfold capRowSign
+  rw [Nat.choose_two_right]
+  simp only [Nat.add_sub_cancel]
+  rw [Nat.mul_comm (n + 1) n]
+
 private theorem sign_natCast (n : ℕ) :
     sign k (n : ZMod 2) = (-1 : k) ^ n := by
   induction n with

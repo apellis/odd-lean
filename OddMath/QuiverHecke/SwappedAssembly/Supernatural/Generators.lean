@@ -177,6 +177,51 @@ theorem lcrossNeImage_supernatural (c : P.CrossCoeff) (hc : c.IsSupernatural) (i
     simp only [e]
     exact isSupernatural_zero _
 
+/-- **The swapped generator images are supernatural** (`GeneratorsSupernatural`), when the
+coefficient `a` of the equal-colour mixed block is supernatural, the matrix of the sideways
+crossing for distinct colours is a permutation matrix with invertible entries, and the
+equal-colour leftward data are supernatural inside their windows. -/
+theorem swappedGens_supernatural (c : P.CrossCoeff) (L : P.LeftwardData)
+    (hc : c.IsSupernatural) (hσ : ∀ i j : I, i ≠ j → ∀ ν : X, P.SigmaPermutation c i j ν)
+    (hL : L.IsSupernatural) : GeneratorsSupernatural (P.swappedGens c L) := by
+  rintro ⟨g, ν⟩ t s p p'
+  cases g with
+  | dot i => exact P.dotImage_supernatural i ν p p'
+  | cross i j => exact P.crossImage_supernatural c hc i j ν p p'
+  | cup i => exact P.cupImage_supernatural i ν p p'
+  | cap i => exact P.capImage_supernatural i ν p p'
+  | lcross i j =>
+    by_cases h : i = j
+    · subst h
+      have e : ∀ Z, (P.swappedGens c L).image (.lcross i i, ν) p p' Z =
+          L.lcrossSame i ν p p' Z := fun Z => P.swappedGens_lcross_self c L i ν p p' Z
+      simp only [e]
+      exact hL.lcrossSame i ν p p'
+    · have e : ∀ Z, (P.swappedGens c L).image (.lcross i j, ν) p p' Z =
+          P.lcrossNeImage c i j ν p p' Z := fun Z => P.swappedGens_lcross_of_ne c L h ν p p' Z
+      simp only [e]
+      exact lcrossNeImage_supernatural c hc i j ν (hσ i j h ν) p p'
+  | dcup i n =>
+    by_cases h : D.h i ν ≤ n
+    · have e : ∀ Z, (P.swappedGens c L).image (.dcup i n, ν) p p' Z = 0 := fun Z => by
+        simp [Generators.image, swappedGens, h]
+      simp only [e]
+      exact isSupernatural_zero _
+    · have e : ∀ Z, (P.swappedGens c L).image (.dcup i n, ν) p p' Z = L.dcup i n ν p p' Z :=
+        fun Z => P.swappedGens_dcup_of_lt c L i n ν (not_le.mp h) p p' Z
+      simp only [e]
+      exact hL.dcup i n ν (not_le.mp h) p p'
+  | dcap i n =>
+    by_cases h : -D.h i ν ≤ n
+    · have e : ∀ Z, (P.swappedGens c L).image (.dcap i n, ν) p p' Z = 0 := fun Z => by
+        simp [Generators.image, swappedGens, h]
+      simp only [e]
+      exact isSupernatural_zero _
+    · have e : ∀ Z, (P.swappedGens c L).image (.dcap i n, ν) p p' Z = L.dcap i n ν p p' Z :=
+        fun Z => P.swappedGens_dcap_of_lt c L i n ν (not_le.mp h) p p' Z
+      simp only [e]
+      exact hL.dcap i n ν (not_le.mp h) p p'
+
 end ProbeReservoir
 
 /-- Supernaturality of the equal-colour leftward data: the equal-colour leftward crossing has

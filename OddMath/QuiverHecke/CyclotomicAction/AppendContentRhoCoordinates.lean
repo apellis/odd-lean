@@ -39,9 +39,67 @@ local notation "eps" => appendContentParity D a β i
 local notation "p" => D.parity i * Multiset.sum (Multiset.map D.parity β)
 local notation "coord" => prependTwistCoordinates D Sc i n eps B
 
+@[simp] theorem movingSignNormalize_apply {M : Type*} [AddCommGroup M]
+    (p : ZMod 2) (f : ℕ →₀ M) (m : ℕ) :
+    movingSignNormalize p f m = (zsign ℤ p) ^ m • f m := rfl
+
+@[simp] theorem movingSignNormalize_single {M : Type*} [AddCommGroup M]
+    (p : ZMod 2) (m : ℕ) (b : M) :
+    movingSignNormalize p (Finsupp.single m b) =
+      Finsupp.single m ((zsign ℤ p) ^ m • b) := by
+  ext l
+  by_cases h : m = l
+  · subst l; simp
+  · simp [h]
+
+/-- The sign correction is its own inverse, including degree zero. -/
+@[simp] theorem movingSignNormalize_twice {M : Type*} [AddCommGroup M]
+    (p : ZMod 2) (f : ℕ →₀ M) :
+    movingSignNormalize p (movingSignNormalize p f) = f := by
+  ext m
+  simp only [movingSignNormalize_apply, smul_smul, ← mul_pow,
+    ← zsign_add_eq, CharTwo.add_self_eq_zero]
+  simp [zsign]
+
+/-- Degree raising with the coefficient parity retained. -/
+def movingParityRaise {M : Type*} [AddCommGroup M] (θ : M →+ M) :
+    (ℕ →₀ M) →+ (ℕ →₀ M) :=
+  (Finsupp.embDomain.addMonoidHom ⟨Nat.succ, Nat.succ_injective⟩).comp
+    (Finsupp.mapRange.addMonoidHom θ)
+
+@[simp] theorem movingParityRaise_single {M : Type*} [AddCommGroup M]
+    (θ : M →+ M) (m : ℕ) (b : M) :
+    movingParityRaise θ (Finsupp.single m b) = Finsupp.single (m + 1) (θ b) := by
+  simp [movingParityRaise]
+
+/-- The normalized lift is the full moving PBW lift with its exact degreewise sign. -/
+def appendContentRhoLift : (ℕ →₀ B) →+ appendContentSource D Sc a n β i :=
+  (appendContentLongLift D Sc a n β i).comp (movingSignNormalize p)
+
 /-- Extraction in the corrected-rho normalization. -/
 def appendContentRhoExtract : appendContentSource D Sc a n β i →+ (ℕ →₀ B) :=
   (movingSignNormalize p).comp (appendContentLongExtract D Sc a n β i)
+
+@[simp] theorem appendContentRhoLift_single (m : ℕ) (b : B) :
+    (appendContentRhoLift D Sc a n β i (Finsupp.single m b)).1 =
+      coord (Finsupp.single (longPrependShuffle (n + 1), m) ((zsign ℤ p) ^ m • b)) := by
+  simp only [appendContentRhoLift, AddMonoidHom.comp_apply, movingSignNormalize_single,
+    appendContentLongLift_single]
+
+@[simp] theorem appendContentRhoExtract_lift (f : ℕ →₀ B) :
+    appendContentRhoExtract D Sc a n β i (appendContentRhoLift D Sc a n β i f) = f := by
+  simp [appendContentRhoExtract, appendContentRhoLift, appendContentLongExtract_lift]
+
+/-- The parity raising operator has zero constant term. -/
+@[simp] theorem movingParityRaise_zero {M : Type*} [AddCommGroup M]
+    (τ : M →+ M) (f : ℕ →₀ M) : movingParityRaise τ f 0 = 0 := by
+  exact Finsupp.embDomain_of_notMem_range _ _ _ (by simp)
+
+/-- Its successor coefficient is exactly the parity of the previous coefficient. -/
+@[simp] theorem movingParityRaise_succ {M : Type*} [AddCommGroup M]
+    (τ : M →+ M) (f : ℕ →₀ M) (m : ℕ) :
+    movingParityRaise τ f (m + 1) = τ (f m) :=
+  Finsupp.embDomain_apply_self _ _ m
 
 variable (ha : CyclotomicPolynomialParity D a)
 local notation "θ" => RingHom.toAddMonoidHom (contentCornerParity D Sc a n β i ha)

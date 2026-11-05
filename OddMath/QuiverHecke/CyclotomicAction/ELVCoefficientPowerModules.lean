@@ -140,6 +140,17 @@ parity, remain literal morphisms of the full subcategory. -/
 def restrictMap (M N : CoefficientPowerModules D Sc cutoff c L) (f : M.obj ⟶ N.obj) :
     M ⟶ N := ⟨f⟩
 
+/-- Both maps of a chosen old-module isomorphism restrict together, with
+their exact inverse products. -/
+def restrictIso (M N : CoefficientPowerModules D Sc cutoff c L) (e : M.obj ≅ N.obj) :
+    M ≅ N := (coefficientPowerProperty D Sc cutoff c L).isoMk e
+
+@[simp] theorem restrictIso_hom (M N : CoefficientPowerModules D Sc cutoff c L)
+    (e : M.obj ≅ N.obj) : (restrictIso D Sc cutoff c L M N e).hom.hom = e.hom := rfl
+
+@[simp] theorem restrictIso_inv (M N : CoefficientPowerModules D Sc cutoff c L)
+    (e : M.obj ≅ N.obj) : (restrictIso D Sc cutoff c L M N e).inv.hom = e.inv := rfl
+
 /-- The chosen ordinary old induction/restriction adjunction restricts
 with exactly its existing unit and counit components. -/
 def adjunction (i : I) :
@@ -160,6 +171,30 @@ def adjunction (i : I) :
     ((BalancedInduction.adjunction (CyclotomicCrossingTensor.append D Sc cutoff i)).left_triangle_components M.obj)
   right_triangle_components M := InducedCategory.hom_ext
     ((BalancedInduction.adjunction (CyclotomicCrossingTensor.append D Sc cutoff i)).right_triangle_components M.obj)
+
+@[simp] theorem adjunction_unit_hom (i : I) (M : CoefficientPowerModules D Sc cutoff c L) :
+    ((adjunction D Sc cutoff c L hc i).unit.app M).hom =
+      (BalancedInduction.adjunction (CyclotomicCrossingTensor.append D Sc cutoff i)).unit.app M.obj := rfl
+
+@[simp] theorem adjunction_counit_hom (i : I) (M : CoefficientPowerModules D Sc cutoff c L) :
+    ((adjunction D Sc cutoff c L hc i).counit.app M).hom =
+      (BalancedInduction.adjunction (CyclotomicCrossingTensor.append D Sc cutoff i)).counit.app M.obj := rfl
+
+/-- The chosen induction dot restricts as the same supernatural
+transformation, including its original parity. -/
+def inductionDot (i : I) : SuperNatTrans k
+    (induction D Sc cutoff c L hc i).toFunctor (induction D Sc cutoff c L hc i).toFunctor :=
+  CyclotomicAction.fullLiftTrans
+    (coefficientPowerProperty D Sc cutoff c L) (coefficientPowerProperty D Sc cutoff c L)
+    (fun M hM => coefficientPowerProperty_induction D Sc cutoff c L hc i ⟨M, hM⟩)
+    (fun M hM => coefficientPowerProperty_induction D Sc cutoff c L hc i ⟨M, hM⟩)
+    (BalancedInduction.transform (CyclotomicCrossingTensor.oldAppendDot_supernatural D Sc cutoff i))
+
+@[simp] theorem inductionDot_app_hom (i : I) (p : ZMod 2)
+    (M : CoefficientPowerModules D Sc cutoff c L) :
+    ((inductionDot D Sc cutoff c L hc i).app p M).hom =
+      (BalancedInduction.transform
+        (CyclotomicCrossingTensor.oldAppendDot_supernatural D Sc cutoff i)).app p M.obj := rfl
 
 end CoefficientPowerModules
 

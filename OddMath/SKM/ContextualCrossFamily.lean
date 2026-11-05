@@ -87,4 +87,23 @@ def terminalCrossStrandEquiv {a P Q : List (Letter I)} {x y : Letter I}
   matchingStrandEquivOfSwap (target_pair_bound hR) hn (by
     rw [pairing_append_cross]; exact Iso.refl _)
 
+@[simp] theorem terminalCrossStrandEquiv_val {a P Q : List (Letter I)} {x y : Letter I}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (P ++ x :: y :: Q) R)
+    (hn : ¬ Same (pairing₂ a R) (a.length + P.length) (a.length + P.length + 1))
+    (j : MatchingStrand a R) :
+    (terminalCrossStrandEquiv hR hn j).val = tau (a.length + P.length) j.val := rfl
+
+def terminalCrossCountsEquiv {a P Q : List (Letter I)} {x y : Letter I}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (P ++ x :: y :: Q) R)
+    (hn : ¬ Same (pairing₂ a R) (a.length + P.length) (a.length + P.length + 1)) :
+    (MatchingStrand a R → ℕ) ≃ (MatchingStrand a (R ++ [.mv (.cross P.length)]) → ℕ) :=
+  _root_.Equiv.arrowCongr (terminalCrossStrandEquiv hR hn) (_root_.Equiv.refl ℕ)
+
+@[simp] theorem terminalCrossCountsEquiv_apply {a P Q : List (Letter I)} {x y : Letter I}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (P ++ x :: y :: Q) R)
+    (hn : ¬ Same (pairing₂ a R) (a.length + P.length) (a.length + P.length + 1))
+    (n : MatchingStrand a R → ℕ) (j : MatchingStrand a R) :
+    terminalCrossCountsEquiv hR hn n (terminalCrossStrandEquiv hR hn j) = n j := by
+  simp [terminalCrossCountsEquiv]
+
 end OddMath.SKM

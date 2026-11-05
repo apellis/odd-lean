@@ -282,6 +282,12 @@ def labelEquiv {L Q b : List (Letter I)} {x y : Letter I}
       MatchingStrand (L ++ x :: y :: Q) (.mv (.cross L.length) :: R) :=
   matchingStrandEquivOfSwap (source_bound hR) hn (pairing_iso L Q x y hR.1)
 
+@[simp] theorem labelEquiv_val {L Q b : List (Letter I)} {x y : Letter I}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ (L ++ y :: x :: Q) b R)
+    (hn : ¬ Same (pairing₂ (L ++ y :: x :: Q) R) Q.length (Q.length + 1))
+    (j : MatchingStrand (L ++ y :: x :: Q) R) :
+    (labelEquiv hR hn j).val = tau Q.length j.val := rfl
+
 private theorem ends_perm {L Q b : List (Letter I)} {x y : Letter I}
     {R : List (TMove (Letter I))} (hR : IsMatching₂ (L ++ y :: x :: Q) b R)
     (hn : ¬ Same (pairing₂ (L ++ y :: x :: Q) R) Q.length (Q.length + 1)) :
@@ -356,6 +362,27 @@ def attach {L Q b : List (Letter I)} {x y : Letter I}
       have hc := counts_transport F.matching hn n (tau Q.length j)
       simpa only [tau_tau, e, Function.comp_def] using congrArg
         (fun c => List.replicate c ((F.points j).1 + 1, (F.points j).2)) hc
+
+@[simp] theorem attach_moves {L Q b : List (Letter I)} {x y : Letter I}
+    (F : PointedMatching (L ++ y :: x :: Q) b)
+    (hn : ¬ Same (pairing₂ (L ++ y :: x :: Q) F.moves) Q.length (Q.length + 1))
+    (hi : ¬ Ilv (pairing₂ (L ++ y :: x :: Q) F.moves) Q.length) :
+    (attach F hn hi).moves = .mv (.cross L.length) :: F.moves := rfl
+
+@[simp] theorem attach_points {L Q b : List (Letter I)} {x y : Letter I}
+    (F : PointedMatching (L ++ y :: x :: Q) b)
+    (hn : ¬ Same (pairing₂ (L ++ y :: x :: Q) F.moves) Q.length (Q.length + 1))
+    (hi : ¬ Ilv (pairing₂ (L ++ y :: x :: Q) F.moves) Q.length) (j : ℕ) :
+    (attach F hn hi).points j =
+      ((F.points (tau Q.length j)).1 + 1, (F.points (tau Q.length j)).2) := rfl
+
+@[simp] theorem attach_serialize {L Q b : List (Letter I)} {x y : Letter I}
+    (F : PointedMatching (L ++ y :: x :: Q) b)
+    (hn : ¬ Same (pairing₂ (L ++ y :: x :: Q) F.moves) Q.length (Q.length + 1))
+    (hi : ¬ Ilv (pairing₂ (L ++ y :: x :: Q) F.moves) Q.length)
+    (n : MatchingStrand (L ++ x :: y :: Q) (attach F hn hi).moves → ℕ) :
+    (attach F hn hi).serialize n =
+      .tm (.mv (.cross L.length)) :: F.serialize (n ∘ labelEquiv F.matching hn) := rfl
 
 theorem attach_layers_high {L Q b : List (Letter I)} {x y : Letter I}
     (F : PointedMatching (L ++ y :: x :: Q) b)

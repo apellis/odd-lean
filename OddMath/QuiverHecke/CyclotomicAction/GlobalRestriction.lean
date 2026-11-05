@@ -52,4 +52,45 @@ theorem contentSupported_restriction (M : CyclotomicSupermodules D Sc a ha (n + 
     rw [SuperBimodule.lact_btmul, restrictionCorner_content,
       SuperBimodule.btmul_ract_lact, hM m]
 
+/-- The restriction superfunctor on the two content blocks. -/
+def globalBlockRestriction :
+    Superfunctor k (CyclotomicContentModules D Sc a ha (n + 1) (({i} : Multiset I) + β))
+      (CyclotomicContentModules D Sc a ha n β) :=
+  fullLiftSuperfunctor _ _ ⟨cyclotomicSuperRestriction D Sc i a ha n⟩
+    (contentSupported_restriction D Sc a ha i n β)
+
+@[simp] theorem globalBlockRestriction_obj
+    (M : CyclotomicContentModules D Sc a ha (n + 1) (({i} : Multiset I) + β)) :
+    ((globalBlockRestriction D Sc a ha i n β).obj M).obj =
+      (cyclotomicSuperRestriction D Sc i a ha n).obj M.obj := rfl
+
+@[simp] theorem globalBlockRestriction_map
+    {M N : CyclotomicContentModules D Sc a ha (n + 1) (({i} : Multiset I) + β)} (f : M ⟶ N) :
+    ((globalBlockRestriction D Sc a ha i n β).map f).hom =
+      (cyclotomicSuperRestriction D Sc i a ha n).map f.hom := rfl
+
+/-- The original even unit, restricted to the source content. -/
+def globalBlockUnit : 𝟭 (CyclotomicContentModules D Sc a ha n β) ⟶
+    (globalBlockInduction D Sc a ha i n β).toFunctor ⋙
+      (globalBlockRestriction D Sc a ha i n β).toFunctor where
+  app M := ⟨(cyclotomicSuperUnit D Sc i a ha n).app M.obj⟩
+  naturality _ _ f := InducedCategory.hom_ext ((cyclotomicSuperUnit D Sc i a ha n).naturality f.hom)
+
+/-- The original even counit, restricted to the target content. -/
+def globalBlockCounit : (globalBlockRestriction D Sc a ha i n β).toFunctor ⋙
+    (globalBlockInduction D Sc a ha i n β).toFunctor ⟶
+      𝟭 (CyclotomicContentModules D Sc a ha (n + 1) (({i} : Multiset I) + β)) where
+  app M := ⟨(cyclotomicSuperCounit D Sc i a ha n).app M.obj⟩
+  naturality _ _ f :=
+    InducedCategory.hom_ext ((cyclotomicSuperCounit D Sc i a ha n).naturality f.hom)
+
+@[simp] theorem globalBlockUnit_app (M : CyclotomicContentModules D Sc a ha n β) :
+    ((globalBlockUnit D Sc a ha i n β).app M).hom =
+      (cyclotomicSuperUnit D Sc i a ha n).app M.obj := rfl
+
+@[simp] theorem globalBlockCounit_app
+    (M : CyclotomicContentModules D Sc a ha (n + 1) (({i} : Multiset I) + β)) :
+    ((globalBlockCounit D Sc a ha i n β).app M).hom =
+      (cyclotomicSuperCounit D Sc i a ha n).app M.obj := rfl
+
 end OddMath.QuiverHecke.CyclotomicAction

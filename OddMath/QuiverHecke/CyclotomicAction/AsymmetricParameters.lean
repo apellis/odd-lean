@@ -75,6 +75,10 @@ def transportedScalars : Scalars datum ℚ where
   s_eq_zero := fun _ _ _ _ _ => rfl
   two_isUnit := by intro _; norm_num
 
+theorem transported_homogeneous : transportedScalars.Homogeneous := by
+  intro _ _ _ _ _ _ _ _ h
+  exact (h rfl).elim
+
 /-- In square coordinates, no crossing-product scalar repairs unchanged parameters. -/
 theorem no_common_quadratic_scalar :
     ¬ ∃ c : ℚ, ∀ z w : ℚ, c * (z + w ^ 2) = -z + w ^ 2 := by

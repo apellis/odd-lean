@@ -480,6 +480,10 @@ noncomputable def strandIdEquiv (a : List (Letter I)) (R : List (TMove (Letter I
     simpa only [idD, idAt, List.getElem?_eq_getElem hi, Option.map_some, Option.getD_some,
       hiZ] using he
 
+@[simp] theorem strandIdEquiv_val (a : List (Letter I)) (R : List (TMove (Letter I)))
+    (hv : Valid (pairing₂ a R)) (j : MatchingStrand a R) :
+    (strandIdEquiv a R hv j).val = idD (pairing₂ a R) j.val := rfl
+
 theorem attach_ids_perm {x : Letter I} {a b : List (Letter I)}
     {R : List (TMove (Letter I))} (hR : IsMatching₂ a (b ++ [flipL x]) R) :
     ((pairing₂ (a ++ [x]) (attach b R)).map Prod.fst).Perm
@@ -608,6 +612,12 @@ noncomputable def attachPoints {x : Letter I} {a b : List (Letter I)}
   classical
   exact if h : j ∈ leftEnds₂ (a ++ [x]) (attach b R) then
     q ((attachStrandEquiv hR).symm ⟨j, h⟩).val else (0, 0)
+
+@[simp] theorem attachPoints_apply {x : Letter I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (b ++ [flipL x]) R)
+    (q : ℕ → ℕ × ℕ) (j : MatchingStrand (a ++ [x]) (attach b R)) :
+    attachPoints hR q j.val = q ((attachStrandEquiv hR).symm j).val := by
+  simp only [attachPoints, dite_eq_left j.property]
 
 private theorem dotList_attach (a : List (Letter I)) (R : List (TMove (Letter I)))
     (q : ℕ → ℕ × ℕ) (n : MatchingStrand a R → ℕ) :

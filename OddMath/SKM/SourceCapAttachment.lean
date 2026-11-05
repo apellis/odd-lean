@@ -961,6 +961,23 @@ noncomputable def attach {L Q Z : List (Letter I)} (x : Letter I)
   intro j hj
   rw [capCounts_on_strands x F.matching n j hj]
 
+@[simp] theorem attach_moves {L Q Z : List (Letter I)} (x : Letter I)
+    (F : PointedMatching (L ++ Q) Z) : (attach x F).moves = .cap L.length :: F.moves := rfl
+
+@[simp] theorem attach_points {L Q Z : List (Letter I)} (x : Letter I)
+    (F : PointedMatching (L ++ Q) Z) :
+    (attach x F).points = capPoints L.length Q.length F.points := rfl
+
+/-- Complete existence of cap-adapted pointed representatives with actual serializers. -/
+theorem exists_pointed_cap_adapted {L Q Z : List (Letter I)} (x : Letter I)
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ (L ++ flipL x :: x :: Q) Z R)
+    (hc : Same (pairing₂ (L ++ flipL x :: x :: Q) R) Q.length (Q.length + 1)) :
+    ∃ F : PointedMatching (L ++ Q) Z,
+      Iso (pairing₂ (L ++ flipL x :: x :: Q) (attach x F).moves)
+        (pairing₂ (L ++ flipL x :: x :: Q) R) := by
+  obtain ⟨S, hS, hs, _, _, hi⟩ := exists_cap_adapted x hR hc
+  exact ⟨PointedMatching.ofStrict hS hs, hi⟩
+
 /-- The serializer evaluates to cap dots, the actual contextual cap layers,
 and exactly the inherited residual layers. -/
 theorem capMoves_layers (L Q : List (Letter I)) (x : Letter I) (b : ℕ) (ds : List (DTMove I)) :
@@ -994,6 +1011,21 @@ theorem cap_pairing_iso_iff {L Q Z : List (Letter I)} (x : Letter I)
       (hA.pairing_properties.2.2.trans hB.pairing_properties.2.2.symm)
       ((cap_delete_iso L Q x R hR.1).symm.trans (hi.trans (cap_delete_iso L Q x S hS.1)))
 
+/-- Any complete residual family yields a complete *actual* cap-adapted family,
+with no separately assumed cap comparison or realization map. -/
+theorem cap_family_complete {L Q Z : List (Letter I)} (x : Letter I)
+    (M : Set (List (TMove (Letter I))))
+    (hm : ∀ S ∈ M, IsMatching₂ (L ++ Q) Z S)
+    (hcomplete : ∀ R, IsMatching₂ (L ++ Q) Z R → StrictReduced₂ (L ++ Q) R →
+      ∃ S ∈ M, Iso (pairing₂ (L ++ Q) S) (pairing₂ (L ++ Q) R))
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ (L ++ flipL x :: x :: Q) Z R)
+    (hc : Same (pairing₂ (L ++ flipL x :: x :: Q) R) Q.length (Q.length + 1)) :
+    ∃ S ∈ M, Iso (pairing₂ (L ++ flipL x :: x :: Q) (.cap L.length :: S))
+      (pairing₂ (L ++ flipL x :: x :: Q) R) := by
+  obtain ⟨T, hT, ht, _, _, hi⟩ := exists_cap_adapted x hR hc
+  obtain ⟨S, hS, hST⟩ := hcomplete T hT ht
+  exact ⟨S, hS, ((cap_pairing_iso_iff x (hm S hS) hT).2 hST).trans hi⟩
+
 /-- Natural strand counts split bijectively into one cap count and residual counts. -/
 noncomputable def labelEquiv {L Q Z : List (Letter I)} (x : Letter I)
     {R : List (TMove (Letter I))} (hR : IsMatching₂ (L ++ Q) Z R) :
@@ -1001,6 +1033,13 @@ noncomputable def labelEquiv {L Q Z : List (Letter I)} (x : Letter I)
       ℕ × (MatchingStrand (L ++ Q) R → ℕ) :=
   capLabelEquiv (cap_matching x hR).pairing_properties.1
     (cap_same L Q x R hR.1) (cap_delete_iso L Q x R hR.1)
+
+/-- Serializer compatibility uses the constructed label equivalence. -/
+theorem attach_serialize {L Q Z : List (Letter I)} (x : Letter I)
+    (F : PointedMatching (L ++ Q) Z)
+    (n : MatchingStrand (L ++ flipL x :: x :: Q) (attach x F).moves → ℕ) :
+    (attach x F).serialize n = capMoves L.length ((labelEquiv x F.matching) n).1
+      (F.serialize ((labelEquiv x F.matching) n).2) := rfl
 
 /-- The attached pointed representative has precisely the expected layer factorization. -/
 theorem attach_layers {L Q Z : List (Letter I)} (x : Letter I)

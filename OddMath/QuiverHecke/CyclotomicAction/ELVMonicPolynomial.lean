@@ -30,6 +30,10 @@ def affineUnitEndHom (w : List I) :
   map_one' := affineUnit_id D Sc cutoff w
   map_mul' f g := affineUnit_comp D Sc cutoff g f
 
+@[simp] theorem affineUnitEndHom_apply (w : List I)
+    (f : End ((pres D Sc).obj (ob D w))) :
+    affineUnitEndHom D Sc cutoff w f = affineUnit D Sc cutoff w w f := rfl
+
 def movingELVPolynomial (i : I) (v : List I) : Polynomial (End (obj D Sc cutoff (v ++ [i]))) :=
   ∑ r : Fin (cutoff i + 1),
     (C (R := End (obj D Sc cutoff (v ++ [i]))))

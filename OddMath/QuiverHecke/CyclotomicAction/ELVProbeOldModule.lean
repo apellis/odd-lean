@@ -144,5 +144,11 @@ instance probeOldModuleFunctor_super : IsSuperfunctor k (probeOldModuleFunctor D
 def probeOldModule : Superfunctor k C (SVec k) :=
   ⟨probeOldModuleFunctor D m Sc ν M⟩
 
+@[simp] theorem probeOldModule_map_apply {v w : C} (f : v ⟶ w)
+    (x : probeOldWordSVec D m Sc ν M v) :
+    ((show probeOldWordSubmodule D m Sc ν M w from
+      (probeOldModule D m Sc ν M).map f x) : M.toSVec) =
+      M.lact (probeOldWordEntry D m Sc ν f) x.val := rfl
+
 end OddMath.QuiverHecke
 

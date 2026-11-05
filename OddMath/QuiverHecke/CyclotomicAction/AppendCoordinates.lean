@@ -57,6 +57,46 @@ def appendShuffleElement (i : I) {n : ℕ} (u : AppendShuffleAt n) : Hn D Sc (n 
 
 /-! ## Matrix entries -/
 
+/-- A coefficient acts first, followed by last-strand dots and the moving crossings. -/
+def appendPBWTerm (i : I) {n : ℕ} (u : AppendShuffleAt n) (m : ℕ)
+    (b : Hn D Sc n) : Hn D Sc (n + 1) :=
+  appendShuffleElement D Sc i u * affineLastDot D Sc i n ^ m * appendAlgebra D Sc i n b
+
+theorem appendPBWTerm_corner (i : I) {n : ℕ} (u : AppendShuffleAt n) (m : ℕ)
+    (b : Hn D Sc n) :
+    appendPBWTerm D Sc i u m b * appendAlgebra D Sc i n 1 = appendPBWTerm D Sc i u m b := by
+  simp only [appendPBWTerm, mul_assoc, ← map_mul, mul_one]
+
+/-- The same term as an element of the append induction corner. -/
+def appendPBWCorner (i : I) {n : ℕ} (u : AppendShuffleAt n) (m : ℕ)
+    (b : Hn D Sc n) :
+    InductionAlong.Corner (appendAlgebra D Sc i n : Hn D Sc n →ₙ+* Hn D Sc (n + 1)) :=
+  ⟨appendPBWTerm D Sc i u m b, appendPBWTerm_corner D Sc i u m b⟩
+
+theorem affineLastDot_mul_single (i : I) {n : ℕ} (s t : Word I n)
+    (f : wordObj D Sc (appendWord i s) ⟶ wordObj D Sc (appendWord i t)) :
+    affineLastDot D Sc i n * FiniteHomMatrix.single (appendWord i t) (appendWord i s) f =
+      FiniteHomMatrix.single (appendWord i t) (appendWord i s)
+        (f ≫ inductionLastDot D Sc i t) := by
+  rw [affineLastDot, Finset.sum_mul, Finset.sum_eq_single t]
+  · simp
+  · intro b _ hb
+    exact FiniteHomMatrix.single_mul_single_of_ne _ _ _ _
+      (fun h => hb (appendWord_injective i n h)) _ _
+  · simp
+
+theorem affineLastDot_pow_mul_single (i : I) {n : ℕ} (s t : Word I n)
+    (f : wordObj D Sc (appendWord i s) ⟶ wordObj D Sc (appendWord i t)) (m : ℕ) :
+    affineLastDot D Sc i n ^ m * FiniteHomMatrix.single (appendWord i t) (appendWord i s) f =
+      FiniteHomMatrix.single (appendWord i t) (appendWord i s)
+        (f ≫ inductionLastDot D Sc i t ^ m) := by
+  induction m with
+  | zero => simp [End.one_def]
+  | succ m ih =>
+    rw [pow_succ', mul_assoc, ih, affineLastDot_mul_single]
+    congr 1
+    rw [pow_succ', End.mul_def, Category.assoc]
+
 theorem appendShuffleElement_mul_single (i : I) {n : ℕ} (u : AppendShuffleAt n)
     (s t : Word I n)
     (f : wordObj D Sc (appendWord i s) ⟶ wordObj D Sc (appendWord i t)) :
@@ -72,6 +112,26 @@ theorem appendShuffleElement_mul_single (i : I) {n : ℕ} (u : AppendShuffleAt n
   · simp
 
 omit [Fintype I] in
+
+/-- The coefficient morphism acts first, then the new dots, then the moving crossing. -/
+theorem appendPBWTerm_single (i : I) {n : ℕ} (u : AppendShuffleAt n) (m : ℕ)
+    (s t : Word I n) (f : wordObj D Sc s ⟶ wordObj D Sc t) :
+    appendPBWTerm D Sc i u m (FiniteHomMatrix.single t s f) =
+      FiniteHomMatrix.single (appendShuffleTarget i u t) (appendWord i s)
+        (appendHom D Sc i s t f ≫ (inductionLastDot D Sc i t ^ m) ≫
+          appendShuffleHom D Sc i u t) := by
+  unfold appendPBWTerm
+  change (_ * _) * appendLinear D Sc i n (FiniteHomMatrix.single t s f) = _
+  rw [appendLinear_single, mul_assoc, affineLastDot_pow_mul_single,
+    appendShuffleElement_mul_single, Category.assoc]
+
+/-- The last dot is the positioned dot at the last strand. -/
+theorem inductionLastDot_eq_dotE (i : I) {n : ℕ} (s : Word I n) :
+    inductionLastDot D Sc i s = dotE D Sc (s.1 ++ [i]) s.1.length := by
+  simp [inductionLastDot, inductionStrandDot, dotE_eq, cl, wordObj,
+    Presentation.diag_whiskerLeft, pl, PG.ld, appendWord]
+  exact Presentation.diag_eq_of_layers_eq _
+    (by simp [Diagram.whiskerL, mkD, layList, Layer.wl, lay, ob])
 
 /-- The intermediate old target as a word of the original height. -/
 def AppendIdx.oldWord {i : I} {s t : List I} (x : AppendIdx i s t) : Word I s.length :=
@@ -103,5 +163,55 @@ private theorem cl_target_heq {s t t' : List I} {l l' : List PG}
   subst t'
   subst l'
   rfl
+
+omit [Fintype I] in
+theorem AppendIdx.canWord_shuffle {i : I} {s t : List I} (x : AppendIdx i s t) :
+    canWord (s.length + 1) x.shuffle.1⁻¹ = canWord (s ++ [i]).length x.1.2.2.2.1⁻¹ := by
+  rw [← AppendShuffle.canWord_cast _ (appendLen s i) x.shuffle]
+  simp [AppendIdx.shuffle]
+
+/-- A scalar append basis element is exactly the corresponding matrix PBW term. -/
+theorem appendPBWTerm_old_nf {i : I} {s t : List I} (x : AppendIdx i s t) :
+    appendPBWTerm D Sc i x.shuffle x.1.1
+      (FiniteHomMatrix.single x.oldWord ⟨s, rfl⟩ (NFIdx.nf (D := D) (Sc := Sc) x.old)) =
+    FiniteHomMatrix.single x.targetWord (appendWord i ⟨s, rfl⟩) (appendElt D Sc x) := by
+  rw [appendPBWTerm_single, inductionLastDot_eq_dotE, dotE_pow]
+  apply matrix_single_heq D Sc (Subtype.ext (by
+    simpa only [appendShuffleTarget, AppendIdx.oldWord, AppendIdx.targetWord,
+      x.canWord_shuffle] using x.moving_target))
+  change HEq ((x.old.nf ▷ (pres D Sc).obj (ob D [i])) ≫ _ ≫ _) _
+  rw [nf_whiskerRight]
+  unfold appendShuffleHom
+  dsimp only [AppendIdx.oldWord, AppendIdx.old]
+  rw [cl_comp, cl_comp]
+  unfold appendElt
+  apply cl_target_heq D Sc (by
+    simpa only [appendShuffleTarget, AppendIdx.oldWord, AppendIdx.targetWord,
+      x.canWord_shuffle] using x.moving_target)
+  simp [AppendIdx.gens, AppendIdx.oldTarget, x.canWord_shuffle, List.append_assoc]
+
+/-- Every allowed matrix entry with appended source has a finite expansion by the
+prescribed append PBW terms, with coefficients single old normal forms. -/
+theorem append_single_expansion (i : I) (s : List I) (t : Word I (s.length + 1))
+    (f : wordObj D Sc (appendWord i ⟨s, rfl⟩) ⟶ wordObj D Sc t) :
+    FiniteHomMatrix.single t (appendWord i ⟨s, rfl⟩) f =
+      ((appendBasis D Sc (i := i) (s := s) (t := t.1)).repr f).sum
+        (fun x c => c • appendPBWTerm D Sc i x.shuffle x.1.1
+          (FiniteHomMatrix.single x.oldWord ⟨s, rfl⟩
+            (NFIdx.nf (D := D) (Sc := Sc) x.old))) := by
+  let L : (wordObj D Sc (appendWord i ⟨s, rfl⟩) ⟶ wordObj D Sc t) →ₗ[k]
+      Hn D Sc (s.length + 1) :=
+    { toFun := FiniteHomMatrix.single t (appendWord i ⟨s, rfl⟩)
+      map_add' := FiniteHomMatrix.single_add _ _
+      map_smul' := fun c g => FiniteHomMatrix.single_smul _ _ c g }
+  have h := congrArg L ((appendBasis D Sc (i := i) (s := s) (t := t.1)).linearCombination_repr f)
+  change L f = _
+  rw [← h]
+  simp only [Finsupp.linearCombination_apply, Finsupp.sum, map_sum, map_smul,
+    appendBasis_apply]
+  apply Finset.sum_congr rfl
+  intro x _
+  apply congrArg (_ • ·)
+  exact (appendPBWTerm_old_nf D Sc x).symm
 
 end OddMath.QuiverHecke

@@ -47,6 +47,13 @@ def truncatedComp (v t w : List I) :
       ext f
       exact (Submodule.Quotient.mk_eq_zero _).mpr (comp_truncatedIdeal D Sc cutoff N f hg))
 
+@[simp] theorem truncatedComp_mk (v t w : List I)
+    (f : hom D Sc cutoff v t) (g : hom D Sc cutoff t w) :
+    truncatedComp D Sc cutoff N v t w
+      ((truncatedIdeal D Sc cutoff N v t).mkQ f)
+      ((truncatedIdeal D Sc cutoff N t w).mkQ g) =
+      (truncatedIdeal D Sc cutoff N v w).mkQ (f ≫ g) := rfl
+
 instance truncatedCategory : Category (TruncatedCategory D Sc cutoff N) where
   Hom v w := TruncatedOld D Sc cutoff N v.word w.word
   id v := (truncatedIdeal D Sc cutoff N v.word v.word).mkQ (𝟙 _)

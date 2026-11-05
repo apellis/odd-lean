@@ -392,4 +392,23 @@ theorem oldContentDistinctMateLinear_bijective (hij : i ≠ j)
   intro x
   exact LinearMap.congr_fun (oldContentDistinctMateLinear_square D Sc cutoff ν i j N t) x
 
+/-- The actual positive content cup-crossing-cap has a linear inverse for every input module. -/
+def oldContentDistinctMateEquiv (hij : i ≠ j)
+    (N : Superfunctor k (OldContentCategory D Sc cutoff (j :: ν)) (SVec k))
+    (t : OldContentCategory D Sc cutoff (i :: ν)) :
+    BalancedInduction.Obj K ((BalancedInduction.restriction J).obj N).toFunctor t ≃ₗ[k]
+      BalancedInduction.Obj L N.toFunctor ((M).obj t) :=
+  BalancedInduction.orderedRectangularMateEquiv J K L M
+    (oldContentDistinctCross_supernatural D Sc cutoff ν i j) N t
+    (oldContentDistinctMateLinear_bijective D Sc cutoff ν i j hij N t)
+
+@[simp] theorem oldContentDistinctMateEquiv_toLinearMap (hij : i ≠ j)
+    (N : Superfunctor k (OldContentCategory D Sc cutoff (j :: ν)) (SVec k))
+    (t : OldContentCategory D Sc cutoff (i :: ν)) :
+    (oldContentDistinctMateEquiv D Sc cutoff ν i j hij N t).toLinearMap =
+      BalancedInduction.orderedRectangularMateLinear J K L M
+        (oldContentDistinctCross_supernatural D Sc cutoff ν i j) N t :=
+  BalancedInduction.orderedRectangularMateEquiv_toLinearMap J K L M
+    (oldContentDistinctCross_supernatural D Sc cutoff ν i j) N t _
+
 end OddMath.QuiverHecke.ELVOld

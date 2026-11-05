@@ -80,6 +80,27 @@ universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k)
 
+/-- Base change of an affine Hom module to the exact finite ELV coefficient algebra. -/
+abbrev ELVCoefficientHom (cutoff : I → ℕ) (t t' : List I) :=
+  SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff ⊗[k]
+    ((pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D t'))
+
+/-- The canonical coefficient-quotient map; no flatness or descent premise. -/
+def elvHomQuotient (cutoff : I → ℕ) (t t' : List I) :
+    (coefficientObj D Sc t ⟶ coefficientObj D Sc t') →ₗ[k]
+      ELVCoefficientHom D Sc cutoff t t' :=
+  (TensorProduct.map (SKM.SYM.elvCoefficientQuotient D cutoff).toLinearMap
+    (LinearMap.id : _ →ₗ[k] _)).comp (sourceTensorEquiv D Sc t t').symm.toLinearMap
+
+@[simp] theorem elvHomQuotient_source (cutoff : I → ℕ) {t t' : List I}
+    (a : SKM.SYM D k) (f : (pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D t')) :
+    elvHomQuotient D Sc cutoff t t' (sourceCoefficientHom D Sc a f) =
+      SKM.SYM.elvCoefficientQuotient D cutoff a ⊗ₜ[k] f := by
+  change TensorProduct.map _ _ ((sourceTensorEquiv D Sc t t').symm
+    (sourceTensorEquiv D Sc t t' (a ⊗ₜ[k] f))) = _
+  rw [LinearEquiv.symm_apply_apply, TensorProduct.map_tmul]
+  rfl
+
 /-- The ELV polynomial at any strand, with the existing normalized left coefficients. -/
 def elvDotPolynomial (i : {i : I // D.parity i = 1}) (w : List I) (r N : ℕ) :
     End (coefficientObj D Sc w) :=

@@ -109,6 +109,15 @@ structure SwappedVacuumBlock (μ : X) (t t' : List I) (d : ℕ) where
         (coefficientSubstitution D Sc (vacuumSubstitution D k μ t d) t t'
           (sourceCoefficientHom D Sc a f)))
 
+/-- **Conditional field theorem.** Vacuum blocks at every equal-weight upward word
+pair, external weight and degree bound imply the Nondegeneracy Conjecture. -/
+theorem nondegeneracy_of_vacuum_blocks
+    (h : ∀ (t t' : List I), SKM.wt D 0 (SKM.ups t) = SKM.wt D 0 (SKM.ups t') →
+      ∀ (μ : X) (d : ℕ), Nonempty (SwappedVacuumBlock D Sc cs μ t t' d)) :
+    SKM.NondegeneracyConjecture cs :=
+  nondegeneracy_of_vacuum_evaluations fun t t' hw μ d =>
+    (h t t' hw μ d).map SwappedVacuumBlock.toSwappedVacuumEvaluation
+
 namespace SwappedVacuumBlock
 variable {D Sc cs} {μ : X} {t t' : List I} {d : ℕ}
 

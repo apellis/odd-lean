@@ -37,6 +37,52 @@ def vacuumAppend (i : I) (a : I → _root_.Polynomial k) :
     (x : Hn D Sc 0) :
     vacuumAppend D Sc i a x = cyclotomicMk D Sc a 0 (appendAlgebra D Sc i 0 x) := rfl
 
+/-- The first-strand colour cut in the cyclotomic quotient. -/
+def vacuumColourCut (i : I) (a : I → _root_.Polynomial k) :
+    CyclotomicAlgebra D Sc a 0 :=
+  cyclotomicMk D Sc a 0 (Hn.wordIdempotent (appendWord i (vacuumWord (I := I))))
+
+private theorem vacuum_one : (1 : Hn D Sc 0) =
+    Hn.wordIdempotent (vacuumWord (I := I)) := by
+  have h : (Finset.univ : Finset (Word I 0)) = {vacuumWord} := by
+    ext w
+    simp only [Finset.mem_univ, Finset.mem_singleton, true_iff]
+    apply Subtype.ext
+    exact List.length_eq_zero_iff.mp w.2
+  change FiniteHomMatrix.localUnit Finset.univ = _
+  rw [h]
+  simp [FiniteHomMatrix.localUnit, Hn.wordIdempotent]
+
+@[simp] theorem vacuumAppend_one (i : I) (a : I → _root_.Polynomial k) :
+    vacuumAppend D Sc i a 1 = vacuumColourCut D Sc i a := by
+  rw [vacuumAppend_apply, vacuum_one]
+  congr 1
+  change appendLinear D Sc i 0 (FiniteHomMatrix.single _ _ (𝟙 _)) = _
+  rw [appendLinear_single]
+  congr 1
+  exact MonoidalSupercategory.id_whiskerRight (R := k)
+    (wordObj D Sc (vacuumWord (I := I))) ((pres D Sc).obj (ob D [i]))
+
+/-- Scalars act on the chosen colour cut, not necessarily on the whole unit. -/
+@[simp] theorem vacuumAppend_scalar (i : I) (a : I → _root_.Polynomial k) (c : k) :
+    vacuumAppend D Sc i a (algebraMap k (Hn D Sc 0) c) =
+      c • vacuumColourCut D Sc i a := by
+  rw [Algebra.algebraMap_eq_smul_one, map_smul, vacuumAppend_one]
+
+@[simp] theorem vacuumColourCut_sq (i : I) (a : I → _root_.Polynomial k) :
+    vacuumColourCut D Sc i a * vacuumColourCut D Sc i a = vacuumColourCut D Sc i a := by
+  rw [← vacuumAppend_one, ← map_mul, one_mul]
+
+@[simp] theorem vacuumColourCut_mul_append (i : I) (a : I → _root_.Polynomial k)
+    (x : Hn D Sc 0) :
+    vacuumColourCut D Sc i a * vacuumAppend D Sc i a x = vacuumAppend D Sc i a x := by
+  rw [← vacuumAppend_one, ← map_mul, one_mul]
+
+@[simp] theorem vacuumAppend_mul_colourCut (i : I) (a : I → _root_.Polynomial k)
+    (x : Hn D Sc 0) :
+    vacuumAppend D Sc i a x * vacuumColourCut D Sc i a = vacuumAppend D Sc i a x := by
+  rw [← vacuumAppend_one, ← map_mul, mul_one]
+
 /-- Vacuum strand inclusion is even for homogeneous cyclotomic parameters. -/
 theorem vacuumAppend_parity (i : I) (a : I → _root_.Polynomial k)
     (ha : CyclotomicPolynomialParity D a) {p : ZMod 2} {x : Hn D Sc 0}

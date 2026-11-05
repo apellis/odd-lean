@@ -121,4 +121,10 @@ instance contentInduction_super :
       parity (R := k) _ _ p
     exact IsSuperfunctor.map_mem (F := cyclotomicSuperInduction D Sc i a ha n) hf
 
+/-- Balanced-tensor induction restricted to its content superspaces. -/
+def globalBlockInduction :
+    Superfunctor k (CyclotomicContentModules D Sc a ha n β)
+      (CyclotomicContentModules D Sc a ha (n + 1) ({i} + β)) :=
+  ⟨cyclotomicContentInduction D Sc a ha i n β⟩
+
 end OddMath.QuiverHecke.CyclotomicAction

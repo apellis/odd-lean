@@ -14,6 +14,34 @@ namespace MatchingBasisChoice
 variable (cs : CScalars Sc) (μ : X) {a b : List (Letter I)}
 variable (F : MatchingBasisChoice a b)
 
+/-- Choose each residual unit column once. Negative indices are zero and
+index zero is the literal original label. Positive indices use only spanning. -/
+def residualUnitColumn
+    (R : ℤ → F.Labels → ((pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ b)))
+    (n : ℤ) (t : F.Labels) : F.Labels →₀ SYM D k :=
+  if n < 0 then 0 else if n = 0 then Finsupp.single t 1
+  else (F.expansion_surjective cs μ (R n t)).choose
+
+@[simp] theorem residualUnitColumn_zero
+    (R : ℤ → F.Labels → ((pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ b)))
+    (t : F.Labels) : F.residualUnitColumn cs μ R 0 t = Finsupp.single t 1 := by
+  simp [residualUnitColumn]
+
+/-- Extend the fixed unit column linearly in the input coefficient, optionally
+using a prescribed full-SYM parity twist. No new choice depends on that input. -/
+def residualCoefficientColumn
+    (R : ℤ → F.Labels → ((pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ b)))
+    (n : ℤ) (t : F.Labels) (q : ZMod 2) : SYM D k →ₗ[k] (F.Labels →₀ SYM D k) :=
+  (MatchingTransition.rightColumn (k := k) (F.residualUnitColumn cs μ R n t)).comp
+    (SYM.parityTwist D k q)
+
+@[simp] theorem residualCoefficientColumn_zero
+    (R : ℤ → F.Labels → ((pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ b)))
+    (t : F.Labels) (q : ZMod 2) (p : SYM D k) :
+    F.residualCoefficientColumn cs μ R 0 t q p =
+      Finsupp.single t (SYM.parityTwist D k q p) := by
+  simp [residualCoefficientColumn, LinearMap.comp_apply]
+
 /-- Insert a finite residual coefficient vector at one isolated-strand row. -/
 def residualRow (m : ℕ) :
     (F.Labels →₀ SYM D k) →ₗ[k] ((F.Labels × ℕ) →₀ SYM D k) :=

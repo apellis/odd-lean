@@ -112,6 +112,11 @@ def heightBlockCross (h : {i} + ({j} + β) = δ) :
     (heightContentSupported_induction₂ D Sc a ha j i n β δ (swapped_content i j β δ h))
     (heightSuperInductionCrossing D Sc i j a ha n)
 
+@[simp] theorem heightBlockCross_app (h : {i} + ({j} + β) = δ) (p : ZMod 2)
+    (M : ObjectProperty.FullSubcategory (heightContentSupported D Sc a ha n β)) :
+    ((heightBlockCross D Sc a ha i j n β δ h).app p M).hom =
+      (heightSuperInductionCrossing D Sc i j a ha n).app p M.obj := rfl
+
 theorem heightBlockCross_homogeneous (h : {i} + ({j} + β) = δ) :
     (heightBlockCross D Sc a ha i j n β δ h).IsHomogeneous (D.parity i * D.parity j) :=
   fullLiftTrans_homogeneous _ _ _ _ _

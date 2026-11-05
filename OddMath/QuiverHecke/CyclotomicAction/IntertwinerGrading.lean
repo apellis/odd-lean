@@ -159,6 +159,46 @@ variable {A B : Type u} [Ring A] [Ring B] [Algebra k B]
   (φ : A →ₙ+* B) (he : φ 1 ∈ ℬ 0)
 
 include he in
+
+theorem balanced_tmul_mem {p q : ZMod 2} {x : V} {y : W}
+    (hx : x ∈ V.part p) (hy : y ∈ W.part q) :
+    (BalancedTensor.tmul x y : BalancedTensor ℤ B A V W) ∈
+      (balancedSpace (B := B) V W 𝒜 hR hL).part (p + q) :=
+  SVec.quotMkFun_mem_part _ _ (tensorSpace_tmul_mem V W hx hy)
+
+/-- Test homogeneity on homogeneous pure tensors of the existing quotient. -/
+theorem balanced_map_mem {U : SVec k} {d : ZMod 2}
+    (f : balancedSpace (B := B) V W 𝒜 hR hL →ₗ[k] U)
+    (hf : ∀ (p q : ZMod 2) (x : V) (y : W), x ∈ V.part p → y ∈ W.part q →
+      f (BalancedTensor.tmul x y) ∈ U.part (p + q + d)) :
+    SVec.ofHom f ∈ SVec.parityHom (balancedSpace (B := B) V W 𝒜 hR hL) U d := by
+  intro s
+  apply LinearMap.ext
+  intro z
+  obtain ⟨t, rfl⟩ := SVec.quotMkFun_surjective (tensorSpace V W)
+    (balanceGraded (B := B) V W 𝒜 hR hL) z
+  induction t using TensorProduct.inductionOn with
+  | add t t' ht ht' =>
+    change f ((balancedSpace (B := B) V W 𝒜 hR hL).proj s
+      (SVec.quotMkFun _ _ (t + t'))) = _
+    simpa only [LinearMap.comp_apply, SVec.toLinearMap_ofHom, SVec.quotMkFun_add (tensorSpace V W) (balanceGraded (B := B) V W 𝒜 hR hL), map_add] using congrArg₂ (· + ·) ht ht'
+  | tmul x y =>
+    induction x using induction_on V with
+    | add x x' hx hx' =>
+      simpa only [TensorProduct.add_tmul, SVec.quotMkFun_add (tensorSpace V W) (balanceGraded (B := B) V W 𝒜 hR hL), LinearMap.comp_apply,
+        SVec.toLinearMap_ofHom, map_add] using congrArg₂ (· + ·) hx hx'
+    | hom p x hx =>
+      induction y using induction_on W with
+      | add y y' hy hy' =>
+        simpa only [TensorProduct.tmul_add, SVec.quotMkFun_add (tensorSpace V W) (balanceGraded (B := B) V W 𝒜 hR hL), LinearMap.comp_apply,
+          SVec.toLinearMap_ofHom, map_add] using congrArg₂ (· + ·) hy hy'
+      | hom q y hy =>
+        change f ((balancedSpace (B := B) V W 𝒜 hR hL).proj s
+          (BalancedTensor.tmul x y)) = U.proj (s + d) (f (BalancedTensor.tmul x y))
+        rw [SVec.proj_apply_of_mem_part _ (balanced_tmul_mem (B := B) V W 𝒜 hR hL hx hy),
+          SVec.proj_apply_of_mem_part _ (hf p q x y hx hy)]
+        simp only [add_left_inj, apply_ite f, map_zero]
+
 /-- The corner is stable under every parity projection since its idempotent is even. -/
 theorem corner_proj_mem (p : ZMod 2) (x : InductionAlong.Corner φ) :
     SuperBimodule.algProj ℬ p x.val ∈ Categorification.lIdeal (φ 1) := by
@@ -214,6 +254,20 @@ abbrev indSpace : SVec k :=
     (cornerSpace ℬ φ (hφ 0 1 (SetLike.one_mem_graded 𝒜))) W 𝒜
     (fun p _q a _x ha hx => (cornerSpace_mem ℬ φ _).mpr
       (SetLike.GradedMul.mul_mem ((cornerSpace_mem ℬ φ _).mp hx) (hφ p a ha))) hW
+
+theorem ind_tmul_mem {p q : ZMod 2} {x : InductionAlong.Corner φ} {y : W}
+    (hx : x.val ∈ ℬ p) (hy : y ∈ W.part q) :
+    InductionAlong.Ind.tmul x y ∈ (indSpace W 𝒜 ℬ φ hφ hW).part (p + q) :=
+  balanced_tmul_mem (B := B) _ _ _ _ _ ((cornerSpace_mem ℬ φ _).mpr hx) hy
+
+/-- A homogeneous pure-tensor criterion for maps on the original induction quotient. -/
+theorem ind_map_mem {U : SVec k} {d : ZMod 2}
+    (f : indSpace W 𝒜 ℬ φ hφ hW →ₗ[k] U)
+    (hf : ∀ (p q : ZMod 2) (x : InductionAlong.Corner φ) (y : W),
+      x.val ∈ ℬ p → y ∈ W.part q → f (InductionAlong.Ind.tmul x y) ∈ U.part (p + q + d)) :
+    SVec.ofHom f ∈ SVec.parityHom (indSpace W 𝒜 ℬ φ hφ hW) U d :=
+  balanced_map_mem (B := B) _ _ _ _ _ f
+    (fun p q x y hx hy => hf p q x y ((cornerSpace_mem ℬ φ _).mp hx) hy)
 
 end Ind
 end OddMath.QuiverHecke.InducedParity
@@ -277,6 +331,18 @@ def qTargetSpace (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
     (affineParity D Sc (n + 1)) (affineParity D Sc (n + 1 + 1))
     (prependAlgebra D Sc i (n + 1)) (fun _ _ h => prependAlgebra_parity D Sc i (n + 1) h)
     (qCoefficient_smul_mem D Sc i β a ha n)
+
+/-- Target tensor degrees use the canonical shifted coefficient, not the unshifted one. -/
+theorem qTargetSpace_tmul_mem (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
+    (ha : CyclotomicPolynomialParity D a) (n : ℕ) {p q : ZMod 2}
+    {x : InductionAlong.Corner (prependAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))}
+    {b : (qCoefficient D Sc i β a ha n).toSVec}
+    (hx : x.val ∈ affineParity D Sc (n + 1 + 1) p)
+    (hb : b ∈ (qCoefficient D Sc i β a ha n).toSVec.part q) :
+    InductionAlong.Ind.tmul x b ∈ (qTargetSpace D Sc i β a ha n).part (p + q) :=
+  InducedParity.ind_tmul_mem _ _ _ _
+    (fun _ _ h => prependAlgebra_parity D Sc i (n + 1) h)
+    (qCoefficient_smul_mem D Sc i β a ha n) hx hb
 
 omit [Fintype I] in
 theorem positionedDot_parity (l r : List I) (i : I) :
@@ -362,5 +428,87 @@ theorem moveHom_parity (i : I) (l ν : List I) :
       zero_add, add_zero] using Supercategory.comp_mem (he _)
         (Supercategory.comp_mem (intertwinerHom_parity D Sc l ν i j)
           (Supercategory.comp_mem (he _) (Supercategory.comp_mem (ih (l ++ [j])) (he _))))
+
+/-- Every supported matrix summand has the content's total moving-strand parity. -/
+theorem contentMove_parity (i : I) (n : ℕ) (β : Multiset I) :
+    contentMove D Sc i n β ∈ affineParity D Sc (n + 1)
+      (D.parity i * contentSumParity D β) := by
+  classical
+  apply Submodule.sum_mem
+  intro w hw
+  have hw' := (Finset.mem_filter.mp hw).2
+  have h := moveHom_parity D Sc i [] w.val
+  rw [wordSumParity_eq_content D w, hw'] at h
+  exact FiniteHomMatrix.single_mem_component _ _ h
+
+/-- Q as a scalar-linear map on its existing graded carriers. -/
+def parityCyclotomicContentQLinear (i : I) (β : Multiset I)
+    (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ) :
+    qSourceSpace D Sc i a ha n →ₗ[k] qTargetSpace D Sc i β a ha n :=
+
+    letI : Module k (InductionAlong.Ind (CyclotomicAlgebra D Sc a n)
+      (appendAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))) :=
+      inferInstanceAs (Module k (qSourceSpace D Sc i a ha n))
+    letI : Module k (InductionAlong.Ind (qCoefficient D Sc i β a ha n).toSVec
+      (prependAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))) :=
+      inferInstanceAs (Module k (qTargetSpace D Sc i β a ha n))
+    letI : IsScalarTower k (Hn D Sc (n + 1 + 1))
+      (InductionAlong.Ind (CyclotomicAlgebra D Sc a n)
+        (appendAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))) :=
+      inferInstanceAs (IsScalarTower k (Hn D Sc (n + 1 + 1))
+        ((InductionAlong.Corner (appendAlgebra D Sc i (n + 1) :
+          Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1)) ⊗[ℤ] CyclotomicAlgebra D Sc a n) ⧸
+          BalancedTensor.rel ℤ (Hn D Sc (n + 1 + 1)) (Hn D Sc (n + 1)) _ _))
+    letI : IsScalarTower k (Hn D Sc (n + 1 + 1))
+      (InductionAlong.Ind (qCoefficient D Sc i β a ha n).toSVec
+        (prependAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))) :=
+      inferInstanceAs (IsScalarTower k (Hn D Sc (n + 1 + 1))
+        ((InductionAlong.Corner (prependAlgebra D Sc i (n + 1) :
+          Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1)) ⊗[ℤ] (qCoefficient D Sc i β a ha n).toSVec) ⧸
+          BalancedTensor.rel ℤ (Hn D Sc (n + 1 + 1)) (Hn D Sc (n + 1)) _ _))
+    (parityCyclotomicContentQ D Sc i β a ha n).restrictScalars k
+
+/-- Homogeneous pure tensors retain their total degree under Q. -/
+theorem parityCyclotomicContentQ_tmul_mem (i : I) (β : Multiset I)
+    (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
+    (p q : ZMod 2)
+    (x : InductionAlong.Corner (appendAlgebra D Sc i (n + 1) :
+      Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1)))
+    (b : CyclotomicAlgebra D Sc a n)
+    (hx : x.val ∈ affineParity D Sc (n + 1 + 1) p)
+    (hb : b ∈ cyclotomicParity D Sc a ha n q) :
+    parityCyclotomicContentQLinear D Sc i β a ha n
+      (InductionAlong.Ind.tmul (N := CyclotomicAlgebra D Sc a n) x b) ∈
+      (qTargetSpace D Sc i β a ha n).part (p + q + 0) := by
+  change parityCyclotomicContentQ D Sc i β a ha n (InductionAlong.Ind.tmul x b) ∈ _
+  rw [parityCyclotomicContentQ_tmul]
+  have hcorner := SetLike.GradedMul.mul_mem hx (contentMove_parity D Sc i (n + 1) β)
+  have h := qTargetSpace_tmul_mem D Sc i β a ha n
+    (x := qPrependCorner D Sc i (n + 1) β
+      (InductionAlong.cornerMul (contentMove_intertwines D Sc i (n + 1) β) x))
+    hcorner (qCoefficientInsert_mem D Sc i β a ha n q b hb)
+  have he (η : ZMod 2) : p + η + (η + q) = p + q + 0 := by
+    have hη : η + η = 0 := by
+      rcases parity_eq_zero_or_one η with rfl | rfl <;> decide
+    calc
+      _ = p + (η + η) + q := by abel
+      _ = _ := by rw [hη]; simp
+  rw [he] at h
+  exact h
+
+/-- The moving-strand parity and the canonical coefficient shift cancel on Q. -/
+theorem parityCyclotomicContentQ_even (i : I) (β : Multiset I)
+    (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ) :
+    SVec.ofHom (parityCyclotomicContentQLinear D Sc i β a ha n) ∈
+      SVec.parityHom (qSourceSpace D Sc i a ha n) (qTargetSpace D Sc i β a ha n) 0 := by
+  let : Module (Hn D Sc (n + 1)) (cyclotomicSuperspace D Sc a ha n) :=
+    inferInstanceAs (Module (Hn D Sc (n + 1)) (CyclotomicAlgebra D Sc a n))
+  exact InducedParity.ind_map_mem (cyclotomicSuperspace D Sc a ha n)
+    (affineParity D Sc (n + 1)) (affineParity D Sc (n + 1 + 1))
+    (appendAlgebra D Sc i (n + 1))
+    (fun _ _ h => appendAlgebra_parity D Sc i (n + 1) h)
+    (cyclotomicCoefficient_smul_mem D Sc a ha n)
+    (parityCyclotomicContentQLinear D Sc i β a ha n)
+    (fun p q x b hx hb => parityCyclotomicContentQ_tmul_mem D Sc i β a ha n p q x b hx hb)
 
 end OddMath.QuiverHecke

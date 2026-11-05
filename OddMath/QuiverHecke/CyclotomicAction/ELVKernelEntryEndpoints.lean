@@ -77,6 +77,11 @@ theorem moduleMateLinear_apply (t : OldCategory D Sc cutoff)
     moduleMateLinear D Sc cutoff i M t z =
       (matrixMateComponent D Sc cutoff i M).total t z := rfl
 
+@[simp] theorem mateSourceEvaluation_apply (v t : OldCategory D Sc cutoff)
+    (m : M.obj v) (z : IndResKernel.Component (k := k) (append D Sc cutoff i) v t) :
+    mateSourceEvaluation D Sc cutoff i M v t m z =
+      moduleSourceEvaluation D Sc cutoff i M v t m z := rfl
+
 theorem mateSourceEvaluation_tensor (v s t : OldCategory D Sc cutoff) (m : M.obj v)
     (g : (append D Sc cutoff i).obj s ⟶ t)
     (b : v ⟶ (append D Sc cutoff i).obj s) :

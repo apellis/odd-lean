@@ -433,4 +433,24 @@ theorem extract_comp_alpha (i : I) (v t : List I) :
     extract D Sc cutoff i v t (alpha D Sc cutoff i v t z) = z :=
   LinearMap.congr_fun (extract_comp_alpha D Sc cutoff i v t) z
 
+/-- The actual short source column is injective, without an independence premise. -/
+theorem alpha_injective (i : I) (v t : List I) :
+    Function.Injective (alpha D Sc cutoff i v t) :=
+  Function.LeftInverse.injective (extract_alpha D Sc cutoff i v t)
+
+/-- The actual short moving-word map is injective by the actual column square.
+No injectivity of the crossing column is needed for this implication. -/
+theorem pprime_injective (i : I) (v t : List I) :
+    Function.Injective (pprime D Sc cutoff i v t) := by
+  intro z z' h
+  apply alpha_injective D Sc cutoff i v t
+  apply pMap_injective D Sc cutoff i v (t ++ [i])
+  have hz := LinearMap.congr_fun (shortColumn_square D Sc cutoff i v t) z
+  have hz' := LinearMap.congr_fun (shortColumn_square D Sc cutoff i v t) z'
+  change pMap D Sc cutoff i v (t ++ [i]) (alpha D Sc cutoff i v t z) =
+    shortCross D Sc cutoff i v t (pprime D Sc cutoff i v t z) at hz
+  change pMap D Sc cutoff i v (t ++ [i]) (alpha D Sc cutoff i v t z') =
+    shortCross D Sc cutoff i v t (pprime D Sc cutoff i v t z') at hz'
+  rw [hz, hz', h]
+
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

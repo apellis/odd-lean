@@ -67,6 +67,13 @@ def moduleCross (i j : I) :
   Superfunctor.homMk (BalancedInduction.mixedCrossComponent_supernatural
     (append D Sc cutoff i) (append D Sc cutoff j) (cross_supernatural D Sc cutoff i j)).toSuperNatTrans
 
+@[simp] theorem moduleCross_app (i j : I) (r : ZMod 2)
+    (N : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :
+    (moduleCross D Sc cutoff i j).app r N =
+      if r = D.parity i * D.parity j then
+        BalancedInduction.mixedCrossComponent (append D Sc cutoff i) (append D Sc cutoff j)
+          (cross_supernatural D Sc cutoff i j) N else 0 := rfl
+
 /-- The prescribed rectangular cup-crossing-cap, using the fixed even adjunction. -/
 def moduleMate (i j : I) :
     oldRestriction D Sc cutoff j ≫ oldInduction D Sc cutoff i ⟶

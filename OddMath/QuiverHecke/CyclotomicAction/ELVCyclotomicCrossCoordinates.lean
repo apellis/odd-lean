@@ -524,5 +524,22 @@ theorem range_shortCross (i : I) (v t : List I) :
     exact ⟨shortTensor D Sc cutoff i v s t c ((ideal D Sc cutoff _ _).mkQ r),
       column_mk D Sc cutoff i v s t c r⟩
 
+/-- The independently balanced short source identifies with the genuine crossing span. -/
+def crossingEquiv (i : I) (v t : List I) :
+    ShortTarget D Sc cutoff i v t ≃ₗ[k] appendCrossingSpan D Sc cutoff i v t where
+  toFun z := ⟨shortCross D Sc cutoff i v t z, by
+    rw [← range_shortCross]; exact ⟨z, rfl⟩⟩
+  invFun z := decode D Sc cutoff i v t z.1
+  left_inv := decode_shortCross D Sc cutoff i v t
+  right_inv z := by
+    apply Subtype.ext
+    have hz : z.1 ∈ LinearMap.range (shortCross D Sc cutoff i v t) := by
+      rw [range_shortCross]; exact z.2
+    obtain ⟨a, ha⟩ := hz
+    change shortCross D Sc cutoff i v t (decode D Sc cutoff i v t z.1) = z.1
+    rw [← ha, decode_shortCross]
+  map_add' a b := Subtype.ext (map_add _ a b)
+  map_smul' a b := Subtype.ext (map_smul _ a b)
+
 end ShortCrossCoordinates
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

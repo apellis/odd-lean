@@ -554,6 +554,17 @@ theorem appendCrossingSpan_le_ker (i : I) (v t : List I) :
   rintro z ⟨s, r, g, rfl⟩
   exact appendC0_crossing D Sc cutoff i v s t r g
 
+/-- The global constant defect on every genuine crossing, not merely a local
+identity or an assumed polynomial-linear projection. -/
+theorem appendC0_outputDot_crossing (i : I) (v s t : List I)
+    (r : hom D Sc cutoff v (s ++ [i])) (g : hom D Sc cutoff (s ++ [i]) t) :
+    appendC0 D Sc cutoff i v t
+      (appendOutputDot D Sc cutoff i v t (appendCrossingClass D Sc cutoff i v s t r g)) =
+    -SKM.zsign k (D.parity i * D.parity i) •
+      Finsupp.single 0 ((ideal D Sc cutoff v t).mkQ (r ≫ twist k (D.parity i) g)) := by
+  rw [appendOutputDot_crossingClass, map_sub, map_smul, map_smul,
+    appendC0_crossing, appendC0_embedding, smul_zero, zero_sub, neg_smul]
+
 private theorem appendRunWord_shape (i : I) (u t : List I) (n : ℕ) (hn : u.length = n)
     (j : Fin (n + 1))
     (ht : tgt (u ++ [i]) (cw (Categorification.TypeA.canWord (n + 1) (appendRun n j).1⁻¹)) = t ++ [i]) :
@@ -705,5 +716,62 @@ theorem appendC0_residual_mem (i : I) (v t : List I)
       appendCrossingSpan D Sc cutoff i v t := by
   rw [← appendC0_ker, LinearMap.mem_ker]
   simp only [map_sub, appendC0_embedding, sub_self]
+
+/-- The prescribed augmented inverse: subtract the actual polynomial output
+from the vector to obtain its crossing component. -/
+def appendC0Splitting (i : I) (v t : List I) :
+    AppendTarget D Sc cutoff i v (t ++ [i]) ≃ₗ[k]
+      (appendCrossingSpan D Sc cutoff i v t × (ℕ →₀ Old D Sc cutoff v t)) where
+  toFun z := (⟨z - appendOutputEmbedding D Sc cutoff i v t (appendC0 D Sc cutoff i v t z),
+    appendC0_residual_mem D Sc cutoff i v t z⟩, appendC0 D Sc cutoff i v t z)
+  invFun p := p.1.1 + appendOutputEmbedding D Sc cutoff i v t p.2
+  left_inv z := sub_add_cancel z _
+  right_inv p := by
+    obtain ⟨c, f⟩ := p
+    have hc : appendC0 D Sc cutoff i v t c.1 = 0 := appendCrossingSpan_le_ker D Sc cutoff i v t c.2
+    apply Prod.ext
+    · apply Subtype.ext
+      change c.1 + _ - _ = c.1
+      simp only [map_add, hc, appendC0_embedding, zero_add, add_sub_cancel_right]
+    · change appendC0 D Sc cutoff i v t (c.1 + _) = f
+      simp only [map_add, hc, appendC0_embedding, zero_add]
+  map_add' a b := by
+    apply Prod.ext
+    · apply Subtype.ext
+      change a + b - _ = (a - _) + (b - _)
+      simp only [map_add]
+      abel
+    · exact map_add _ a b
+  map_smul' a b := by
+    apply Prod.ext
+    · apply Subtype.ext
+      change a • b - _ = a • (b - _)
+      simp only [map_smul, smul_sub]
+    · exact map_smul _ a b
+
+@[simp] theorem appendC0Splitting_symm (i : I) (v t : List I)
+    (c : appendCrossingSpan D Sc cutoff i v t) (f : ℕ →₀ Old D Sc cutoff v t) :
+    (appendC0Splitting D Sc cutoff i v t).symm (c, f) =
+      c.1 + appendOutputEmbedding D Sc cutoff i v t f := rfl
+
+/-- The output-dot commutator of the actual global polynomial projection. -/
+def appendC0Defect (i : I) (v t : List I) :
+    AppendTarget D Sc cutoff i v (t ++ [i]) →ₗ[k] (ℕ →₀ Old D Sc cutoff v t) :=
+  (appendC0 D Sc cutoff i v t).comp (appendOutputDot D Sc cutoff i v t) -
+    (appendOutputShift D Sc cutoff v t).comp (appendC0 D Sc cutoff i v t)
+
+@[simp] theorem appendC0Defect_embedding (i : I) (v t : List I)
+    (f : ℕ →₀ Old D Sc cutoff v t) :
+    appendC0Defect D Sc cutoff i v t (appendOutputEmbedding D Sc cutoff i v t f) = 0 := by
+  simp only [appendC0Defect, LinearMap.sub_apply, LinearMap.comp_apply,
+    appendOutputDot_embedding, appendC0_embedding, sub_self]
+
+@[simp] theorem appendC0Defect_crossing (i : I) (v s t : List I)
+    (r : hom D Sc cutoff v (s ++ [i])) (g : hom D Sc cutoff (s ++ [i]) t) :
+    appendC0Defect D Sc cutoff i v t (appendCrossingClass D Sc cutoff i v s t r g) =
+      -SKM.zsign k (D.parity i * D.parity i) •
+        Finsupp.single 0 ((ideal D Sc cutoff v t).mkQ (r ≫ twist k (D.parity i) g)) := by
+  simp only [appendC0Defect, LinearMap.sub_apply, LinearMap.comp_apply,
+    appendC0_outputDot_crossing, appendC0_crossing, map_zero, sub_zero]
 
 end OddMath.QuiverHecke.ELVOld

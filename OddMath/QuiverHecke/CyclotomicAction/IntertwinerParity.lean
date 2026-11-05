@@ -128,4 +128,74 @@ open Categorification MulOpposite
     homMatrixTwist D Sc n p 1 * homMatrixTwist D Sc n p (homMatrixTwist D Sc n p 1) at h
   simpa only [one_mul, homMatrixTwist_twice, mul_one] using h.symm
 
+/-- The parity twist fixes the corner idempotent. -/
+def qPrependCorner (i : I) (n : ℕ) (β : Multiset I) :
+    InductionAlong.Corner (twistedPrepend D Sc i n β) →ₗ[Hn D Sc (n + 1)]
+      InductionAlong.Corner (prependAlgebra D Sc i n : Hn D Sc n →ₙ+* Hn D Sc (n + 1)) where
+  toFun x := ⟨x.1, by
+    change x.1 * prependAlgebra D Sc i n 1 = x.1
+    have h := x.2
+    change x.1 * prependAlgebra D Sc i n (homMatrixTwist D Sc n
+      (D.parity i * contentSumParity D β) 1) = x.1 at h
+    simpa only [homMatrixTwist_one] using h⟩
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+/-- Canonical transfer to the actual parity-shifted coefficient carrier. -/
+def qCoefficientTransfer (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
+    (ha : CyclotomicPolynomialParity D a) (n : ℕ) :
+    InductionAlong.Ind (CyclotomicAlgebra D Sc a n) (twistedPrepend D Sc i (n + 1) β)
+      →ₗ[Hn D Sc (n + 1 + 1)]
+    InductionAlong.Ind (qCoefficient D Sc i β a ha n).toSVec
+      (prependAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1)) :=
+  InductionAlong.Ind.lift
+    (fun x b => InductionAlong.Ind.tmul (qPrependCorner D Sc i (n + 1) β x)
+      (qCoefficientInsert D Sc i β a ha n b))
+    (by intros; rw [map_add, InductionAlong.Ind.add_tmul])
+    (by intros; rw [map_add, InductionAlong.Ind.tmul_add])
+    (by
+      intro x r b
+      have h : qPrependCorner D Sc i (n + 1) β (op r • x) =
+          op (homMatrixTwist D Sc (n + 1) (D.parity i * contentSumParity D β) r) •
+            qPrependCorner D Sc i (n + 1) β x := rfl
+      rw [h, InductionAlong.Ind.op_smul_tmul, qCoefficientInsert_smul])
+    (by intros; rw [map_smul, InductionAlong.Ind.smul_tmul])
+
+/-- The existing quotient-descended map, now with the coefficient shift in its target. -/
+def parityCyclotomicContentQ (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
+    (ha : CyclotomicPolynomialParity D a) (n : ℕ) :=
+  (qCoefficientTransfer D Sc i β a ha n).comp (cyclotomicContentQ D Sc i n β a)
+
+/-- The coefficient insertion has exactly the prescribed parity shift. -/
+theorem qCoefficientInsert_mem (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
+    (ha : CyclotomicPolynomialParity D a) (n : ℕ) (p : ZMod 2)
+    (b : CyclotomicAlgebra D Sc a n) (hb : b ∈ cyclotomicParity D Sc a ha n p) :
+    qCoefficientInsert D Sc i β a ha n b ∈
+      (qCoefficient D Sc i β a ha n).toSVec.part
+        ((D.parity i * contentSumParity D β) + p) := by
+  rw [qCoefficientInsert_apply]
+  let V := SuperBimodule.regular (cyclotomicParity D Sc a ha n)
+  let e := Envelope.ζPow k (D.parity i * contentSumParity D β) V
+  have he : e.inv.1 ∈ Supercategory.parity (R := k) V.toSVec
+      (qCoefficient D Sc i β a ha n).toSVec (D.parity i * contentSumParity D β) :=
+    SuperBimodule.mem_parity_iff.mp (Envelope.ζPow_inv_mem (R := k)
+      (D.parity i * contentSumParity D β) V)
+  have hb' : b ∈ V.toSVec.part p :=
+    (SuperBimodule.mem_regularSVec_part_iff _).mpr hb
+  have h := SVec.apply_mem_part he hb'
+  simp only [add_comm] at h ⊢
+  convert h using 1
+
+/-- The refined map retains the actual moving-strand representative. -/
+@[simp] theorem parityCyclotomicContentQ_tmul (i : I) (β : Multiset I)
+    (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
+    (x : InductionAlong.Corner
+      (appendAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1)))
+    (b : CyclotomicAlgebra D Sc a n) :
+    parityCyclotomicContentQ D Sc i β a ha n (InductionAlong.Ind.tmul x b) =
+      InductionAlong.Ind.tmul
+        (qPrependCorner D Sc i (n + 1) β
+          (InductionAlong.cornerMul (contentMove_intertwines D Sc i (n + 1) β) x))
+        (qCoefficientInsert D Sc i β a ha n b) := rfl
+
 end OddMath.QuiverHecke
