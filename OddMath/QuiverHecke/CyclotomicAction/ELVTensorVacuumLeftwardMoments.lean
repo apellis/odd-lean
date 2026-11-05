@@ -33,6 +33,23 @@ local instance leftwardVacuumMomentsHomPi {k : Type u} [CommRing k]
     (A B : PiSCat.{u,u,u+1} k) : PiSupercategory k (A ⟶ B) :=
   PiTwoSupercategory.homPiLeft A B
 
+section Pullback
+
+/-- The return isomorphism of a pulled-back input is an `eqToHom`. -/
+theorem capPullbackSelfIso_hom {k : Type*} [CommRing k] {B : Type*} [BicategoryStruct B]
+    [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
+    [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
+    [∀ a b : B, PiSupercategory k (a ⟶ b)]
+    {I X : Type*} [AddCommGroup X] {D : SKM.Datum I X}
+    (T W : SKM.RouquierFamily (k := k) (B := B) D)
+    {a a' b b' : X} (ha : a = a') (hb : b = b')
+    (Z' : SKM.homWeightSector T.obj W.obj a' b') :
+    (capPullbackSelfIso T W ha hb Z').hom = eqToHom (by subst a' b'; rfl) := by
+  subst a' b'
+  rfl
+
+end Pullback
+
 section Generic
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
@@ -49,6 +66,13 @@ variable (H : ProbeVacuumCap.modulePiCategory D (parameterTwist D Sc) m ⟶
 variable (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (i : I)
 local notation "p₀" => SPath.centralUpDn i (SKM.wt D ν₀ [SKM.dn i]) ν₀ ((0, 0) : Sector I)
   ⟨true, trivial⟩
+
+/-- The cap target comparison `paddedVacuumCapTargetIso` is an `eqToHom`. -/
+theorem paddedVacuumCapTargetIso_hom_eq_eqToHom :
+    ∃ h, (paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H).hom = eqToHom h := by
+  rw [paddedVacuumCapTargetIso, Iso.trans_hom, Functor.mapIso_hom, Functor.mapIso_hom,
+    capPullbackSelfIso_hom, eqToIso.hom, eqToHom_map, eqToHom_map, eqToHom_trans]
+  exact ⟨_, rfl⟩
 
 include sy hc in
 /-- **Leftward vacuum cap inverse with bubble-entry columns.** For leftward data
@@ -69,7 +93,7 @@ theorem vacuumLeftwardCapInverse_bubbleEntries (Z : (P).H ((0, 0) : Sector I))
       ((0, 0) : Sector I) ((0, 0) : Sector I) Z lc dc)
     (cc : (P).CrossCoeff) (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1) :
     ∃ (c : _ ≅ _) (j : _) (A : Fin (D.h i ν₀).toNat → _),
-      ProbeWindow.IsCapInverse
+      (∃ h, c.hom = eqToHom h) ∧ ProbeWindow.IsCapInverse
         (ProbeVacuumCap.evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP
           (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H))
         (fun n : Fin (D.h i ν₀).toNat => (ProbeVacuumCap.shiftedPreDot D (parameterTwist D Sc) m
@@ -90,7 +114,8 @@ theorem vacuumLeftwardCapInverse_bubbleEntries (Z : (P).H ((0, 0) : Sector I))
   subst hZ
   obtain ⟨j, hj⟩ := vacuumLeftwardCapInverse_native_odd D Sc m cutoff bound ΛP ΛR hcP hcR H
     sy hc i _ rfl lc dc HP hP hi
-  exact ⟨paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H, j, _, hj,
+  exact ⟨paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H, j, _,
+    paddedVacuumCapTargetIso_hom_eq_eqToHom D Sc m cutoff bound ΛP ΛR hcP hcR H, hj,
     fun n N => vacuumLeftwardColumn_cap_native D Sc m cutoff bound ΛP ΛR hcP hcR H i dc cc hP
       n N⟩
 
@@ -148,7 +173,7 @@ theorem tensorVacuum_leftward_odd_moments (hi : D.parity i = 1)
     ∃ (c : _ ≅ V) (j : _) (A : Fin (probeCutoff D m i - cutoff i) →
         (V ⟶ shiftedPreSourceObject D (parameterTwist D Sc) m
           (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i H)),
-      ProbeWindow.IsCapInverse
+      (∃ h, c.hom = eqToHom h) ∧ ProbeWindow.IsCapInverse
         (evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i (hN.trans hlt) H)
         (fun n : Fin (probeCutoff D m i - cutoff i) =>
           (shiftedPreDot D (parameterTwist D Sc) m
@@ -200,11 +225,11 @@ theorem tensorVacuum_leftward_odd_moments (hi : D.parity i = 1)
   rw [show vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR
       (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) = H from
     tensorOutputAt_empty D (parameterTwist D Sc) m cutoff L ΛR, hlen] at hex
-  obtain ⟨c, j, A, hA, hcap⟩ := hex
+  obtain ⟨c, j, A, hceq, hA, hcap⟩ := hex
   have hhN : probeCutoff D m i - cutoff i + cutoff i = 2 * m i := by
     rw [← odd_probeCutoff' D m i hi]
     omega
-  exact ⟨c, j, A, hA, hcap, fun s z =>
+  exact ⟨c, j, A, hceq, hA, hcap, fun s z =>
     tensorVacuumCapInverse_odd_moments D (parameterTwist D Sc) m cutoff L sy
       (parameterTwist_homogeneous D Sc hc) i hi hP hN _ (by omega) hhN j A hA s z⟩
 
