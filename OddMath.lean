@@ -2769,6 +2769,7 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedActionAlphaLayers
 import OddMath.QuiverHecke.SwappedAssembly.SupportedActionLayers
 import OddMath.QuiverHecke.SwappedAssembly.SupportedClosedAction
 import OddMath.QuiverHecke.SwappedAssembly.SupportedClosedCoefficients
+import OddMath.QuiverHecke.SwappedAssembly.SupportedRightBubbleCoefficients
 import OddMath.SKM.PairingExtensionBubbles
 import OddMath.QuiverHecke.PairingExtensionAffine
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumBendSeries
@@ -2794,3 +2795,4 @@ import OddMath.QuiverHecke.VacuumRouteEvenComparison
 import OddMath.QuiverHecke.VacuumRouteFields
 import OddMath.QuiverHecke.VacuumRouteSwappedBases
 import OddMath.QuiverHecke.VacuumRouteSwappedCharts
+import OddMath.QuiverHecke.VacuumRouteSwappedNonpositiveBubbles
