@@ -257,3 +257,19 @@ nonpositive colours with positive colours if the separate positive-height
 calculation is supplied. This note proves only the nonpositive part on
 paper. Full factor/action assembly, formalization and nondegeneracy are
 not consequences claimed here.
+
+## Right moments determine the left bubbles (checked)
+
+`VacuumRightBubbles.lean` formalizes the reduction of the nonpositive bubble field to
+the right bubbles. `VacuumRightBubblesNonpositiveHeight` records, at colours with
+`h_i(mu) <= 0`, that the normalized right bubbles `c_(mu,i) bubRs(s)` (even) and
+`c_(mu,i) bubRs(2s)` (odd) act through `raw` as the coefficients of
+`momentSeries (probeSeriesInv M)`, that is `(1-z)^(M_i)/E_i(-z)`, resp.
+`(1+z)^(M_i)/C_i(-z)`, together with the odd bubble. Its
+`toNonpositiveHeight` derives `VacuumBubblesNonpositiveHeight`: the Grassmannian
+relations (5.5), (5.6) hold in every action, both series have constant term one, and
+`substitutedSeries * momentSeries = 1`, so the left series is forced. This is the
+converse of `AdjunctionBubbleSeries.right_even`, `right_odd`. The right series is the
+one computed by the tensor-vacuum cap moments; what remains for
+`NonpositiveBubbleField (swappedRouteBases sy)` is the identification of the right
+bubbles of the swapped action with those cap moments, and the odd bubble.

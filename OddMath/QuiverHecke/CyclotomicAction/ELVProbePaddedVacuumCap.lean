@@ -294,20 +294,33 @@ theorem paddedVacuumCap_native (i : I) (hP : 0 < probeCutoff D m i) (n : ℕ) :
             (preCapInput D (parameterTwist D Sc) m ΛP hcP W₀ (-ΛR) B₀))).obj N₀ := by
     simp only [SKM.homContentPreF, Functor.comp_obj, SKM.homParityShift]
     split_ifs <;> rfl
-  have hE : c₀ = eqToHom hSrc ≫ c₁ :=
-    reservoirCap_block D (parameterTwist D Sc) cutoff bound ΛR (-ΛR) (emptyBlock D ΛR)
+  have hE0 := reservoirCap_block D (parameterTwist D Sc) cutoff bound ΛR (-ΛR) (emptyBlock D ΛR)
       PR.T i ep₀ Z₀ N₀ hSrc n
+  have hc₀ : c₀ = (SKM.homReservoirCap PR.T PR.W.obj
+      i (-ΛR) ep₀ n Z₀).total N₀ (emptyBlock D ΛR) := by
+    simp only [c₀, E₀, N₀, capVacuumEvaluation, homContentEvaluation, Functor.comp_map,
+      Pi.eval_map, homTotalEvaluation]
+  have hc₁ : (SKM.homReservoirCap PR.T
+        (fun _ => contentModuleTarget D (parameterTwist D Sc) cutoff bound (emptyBlock D ΛR).1)
+        i (-ΛR) ep₀ n
+        (Z₀.comp (elvBlockEval D (parameterTwist D Sc) cutoff bound ΛR (emptyBlock D ΛR)))).total N₀
+      = c₁ := rfl
+  have hE : c₀ = eqToHom hSrc ≫ c₁ := by
+    rw [hc₀, ← hc₁]
+    exact hE0
   have hn : c₁ ≫ q = e.hom ≫ d :=
     vacuumPreReservoirCap_native D (parameterTwist D Sc) m ΛP hcP W₀ (-ΛR) i ep₀ B₀ hP n
   have hs := cap_charts_attach s u hSrc e c p q c₀ c₁ d hsq hE hn
   have hcap : PR.centralPaddedCap i (((0, 0) : Sector I)) Z E true n = s.hom ≫ c := by
     unfold ProbeReservoir.centralPaddedCap
-    rw [dif_pos (show StepValid (up i) true (((0, 0) : Sector I)) from by trivial)]
+    rw [dite_eq_left_of_eq_true (eq_true (show StepValid (SKM.up i) true (((0, 0) : Sector I)) from
+      by trivial))]
     rfl
-  rw [hcap]
-  simpa only [s, u, e, c, p, q, d, E₀, Z, E, Z₀, PR, B₀, W₀, N₀,
-    paddedVacuumSourceIso, paddedVacuumCapTargetIso, vacuumPreBlockSourceIso,
-    Functor.mapIso_hom, Iso.trans_hom, eqToIso.hom] using hs
+  have hsrc : (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).hom =
+      (s ≪≫ u ≪≫ (eqToIso hSrc ≪≫ e)).hom := rfl
+  have htgt : (paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H).hom = p ≫ q := rfl
+  rw [hcap, htgt, hsrc]
+  exact hs
 end Padded
 
 end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
