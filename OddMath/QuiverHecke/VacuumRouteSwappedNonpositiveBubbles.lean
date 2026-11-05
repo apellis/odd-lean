@@ -19,6 +19,8 @@ hypothesis, and through (5.5)/(5.6) (`VacuumRightBubblesNonpositiveHeight.toNonp
 the nonpositive-height bubble field:
 
 * `SwappedRightEntriesField sy`: the vacuum entries at every route index;
+* `swappedRouteBases_closedAct_cl`: a closed diagram with such a vacuum entry acts as the
+  raw coefficient action in the swapped base;
 * `nonpositiveBubbleField_of_entries`: `NonpositiveBubbleField (swappedRouteBases sy)`;
 * `nondegeneracy_of_swapped_positive_field_and_entries`: the conjecture from the positive
   bubble field and the vacuum entries.
@@ -44,16 +46,37 @@ def SwappedRightEntriesField (sy : SKM.Symmetrizer D) : Prop :=
       (sy := ι.symmetrizer sy) (hc := ι.scalars_homogeneous) ι.weight
       (probeExponent ι.datum ι.weight ι.t ι.d) (reservoirLevel ι.datum ι.weight ι.t ι.d)
 
+/-- At a route index, a closed diagram whose vacuum entry is the coefficient action of `a`
+acts in the swapped base as the raw coefficient action of `a`. -/
+theorem swappedRouteBases_closedAct_cl (sy : SKM.Symmetrizer D) (ι : VacuumRouteIndex D)
+    (M : List (SKM.LayerData ι.J)) (hM : SKM.SChain [] M []) (a : SKM.SYM ι.datum ι.K)
+    (h : SwappedAssembly.SupportedSectors.VacuumEntry (D := ι.datum)
+      (Sc := ι.scalars) (m := ι.exponent) (cutoff := ι.level) (ΛP := ι.probeHW)
+      (ΛR := ι.reservoirHW) (L := ι.power) (hP := ι.probe_pairing)
+      (hR := ι.reservoir_pairing) (sy := ι.symmetrizer sy) (hc := ι.scalars_homogeneous)
+      ι.weight M hM a) :
+    (swappedRouteBases sy ι).A.closedAct ι.t (SKM.cl ι.datum ι.scalars ι.weight [] [] M) =
+      (swappedRouteBases sy ι).raw a :=
+  SwappedAssembly.SupportedSectors.closedAct_cl_eq_coefficient (D := ι.datum)
+      (Sc := ι.scalars) (m := ι.exponent) (cutoff := ι.level) (ΛP := ι.probeHW)
+      (ΛR := ι.reservoirHW) (L := ι.power) (hP := ι.probe_pairing)
+      (hR := ι.reservoir_pairing) (sy := ι.symmetrizer sy) (hc := ι.scalars_homogeneous)
+      (sw := ι.t) ι.weight ι.t M hM a h
+
 /-- **The nonpositive-height bubble field of the swapped route bases**, from the vacuum entries
 of the right bubbles. -/
 theorem nonpositiveBubbleField_of_entries (sy : SKM.Symmetrizer D)
     (hE : SwappedRightEntriesField sy) : NonpositiveBubbleField (swappedRouteBases sy) :=
   fun ι =>
-    (SwappedAssembly.SupportedSectors.vacuumRightBubbles_of_entries (D := ι.datum)
-      (Sc := ι.scalars) (m := ι.exponent) (cutoff := ι.level) (ΛP := ι.probeHW)
-      (ΛR := ι.reservoirHW) (L := ι.power) (hP := ι.probe_pairing)
-      (hR := ι.reservoir_pairing) (sy := ι.symmetrizer sy) (hc := ι.scalars_homogeneous)
-      (sw := ι.t) ι.cscalars ι.weight ι.t _ _ (hE ι)).toNonpositiveHeight
+    (VacuumRightBubblesNonpositiveHeight.of_closed ι.cscalars (swappedRouteBases sy ι).A ι.t
+      (swappedRouteBases sy ι).raw _ _
+      (fun i hi h s => swappedRouteBases_closedAct_cl sy ι _ _ _ ((hE ι).neg_even i hi h s))
+      (fun i hi h s => swappedRouteBases_closedAct_cl sy ι _ _ _ ((hE ι).zero_even i hi h s))
+      (fun i hi h s => swappedRouteBases_closedAct_cl sy ι _ _ _ ((hE ι).neg_odd i hi h s))
+      (fun i hi h s => swappedRouteBases_closedAct_cl sy ι _ _ _ ((hE ι).zero_odd i hi h s))
+      (fun i h => swappedRouteBases_closedAct_cl sy ι _ _ _ ((hE ι).odd_neg i h))
+      (fun i h => swappedRouteBases_closedAct_cl sy ι _ _ _
+        ((hE ι).odd_zero i h))).toNonpositiveHeight
 
 /-- **The conjecture from the positive bubble field and the vacuum entries** of the right
 bubbles at nonpositive height, for the swapped route bases. Intermediate: both inputs are

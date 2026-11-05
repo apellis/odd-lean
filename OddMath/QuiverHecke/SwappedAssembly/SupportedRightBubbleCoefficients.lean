@@ -28,8 +28,9 @@ In the supported action on the tensor families these closed diagrams act as sour
 coefficients once their entries at the vacuum sector are coefficient actions
 (`SupportedSectors.pointwiseUpwardModuleAction_act_bubAt_cl_eq_coefficient`).
 `SupportedSectors.VacuumRightEntries` collects these vacuum entries, and
-`SupportedSectors.vacuumRightBubbles_of_entries` turns them into the right-bubble hypothesis
-`VacuumRightBubblesNonpositiveHeight` of the route.
+`VacuumRightBubblesNonpositiveHeight.of_closed` turns the values of the closed action on these
+diagrams into the right-bubble hypothesis `VacuumRightBubblesNonpositiveHeight` of the route,
+for any upward action and raw coefficient map.
 -/
 
 noncomputable section
@@ -207,17 +208,12 @@ def VacuumEntry (μ : X) (M : List (SKM.LayerData I)) (hM : SKM.SChain [] M []) 
   ProbeReservoir.compDiag gens (SKM.mkD D μ M hM) (SPath.nil (0,0)) (SPath.nil (0,0))
     (Ys (0,0)).obj = (tensorTargetFamilyCoefficientAction D Sc m cutoff L ΛP ΛR (0,0) a).hom
 
-/-- The raw coefficient action at the source word `upWord t`, as a coefficient action on the
-spaces of the supported action. -/
-def supportedRaw (μ : X) (t : List I) : SYM D k →ₐ[k] Module.End k ((action μ).V t) :=
-  tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L sw (SKM.ob D μ (upWord t))
-
 /-- A closed diagram whose vacuum entry is the coefficient action of `a` acts as `a`. -/
 theorem closedAct_cl_eq_coefficient (μ : X) (t : List I) (M : List (SKM.LayerData I))
     (hM : SKM.SChain [] M []) (a : SYM D k)
     (h : VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc μ M hM a) :
     (action μ).closedAct t (SKM.cl D Sc μ [] [] M) =
-      supportedRaw D Sc m cutoff ΛP ΛR L hP hR sy hc sw μ t a :=
+      tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L sw (SKM.ob D μ (upWord t)) a :=
   pointwiseUpwardModuleAction_act_bubAt_cl_eq_coefficient D Sc m cutoff ΛP ΛR L hP hR sy hc sw
     μ t M hM a h
 
@@ -262,28 +258,6 @@ structure VacuumRightEntries (μ : X) (M N' : I → ℕ) : Prop where
       ((SKM.sChain_etaL i.1 _).append
         ((SKM.sChain_lcrossL i.1 i.1).append (SKM.sChain_epsL i.1 _)))
       (-(SKM.SYM.probeSign D k N' i • SKM.SYM.delta D k i))
-
-/-- **Right bubbles at nonpositive height from vacuum entries.** In the supported action on
-the tensor families, the vacuum entries `VacuumRightEntries` give the right-bubble hypothesis
-of the route for the raw coefficient action. -/
-theorem vacuumRightBubbles_of_entries (cs : SKM.CScalars Sc) (μ : X) (t : List I)
-    (M N' : I → ℕ) (hE : VacuumRightEntries D Sc m cutoff ΛP ΛR L hP hR sy hc μ M N') :
-    VacuumRightBubblesNonpositiveHeight cs (action μ) t
-      (supportedRaw D Sc m cutoff ΛP ΛR L hP hR sy hc sw μ t) M N' :=
-  VacuumRightBubblesNonpositiveHeight.of_closed cs (action μ) t
-    (supportedRaw D Sc m cutoff ΛP ΛR L hP hR sy hc sw μ t) M N'
-    (fun i hi h s => closedAct_cl_eq_coefficient D Sc m cutoff ΛP ΛR L hP hR sy hc sw μ t _ _ _
-      (hE.neg_even i hi h s))
-    (fun i hi h s => closedAct_cl_eq_coefficient D Sc m cutoff ΛP ΛR L hP hR sy hc sw μ t _ _ _
-      (hE.zero_even i hi h s))
-    (fun i hi h s => closedAct_cl_eq_coefficient D Sc m cutoff ΛP ΛR L hP hR sy hc sw μ t _ _ _
-      (hE.neg_odd i hi h s))
-    (fun i hi h s => closedAct_cl_eq_coefficient D Sc m cutoff ΛP ΛR L hP hR sy hc sw μ t _ _ _
-      (hE.zero_odd i hi h s))
-    (fun i h => closedAct_cl_eq_coefficient D Sc m cutoff ΛP ΛR L hP hR sy hc sw μ t _ _ _
-      (hE.odd_neg i h))
-    (fun i h => closedAct_cl_eq_coefficient D Sc m cutoff ΛP ΛR L hP hR sy hc sw μ t _ _ _
-      (hE.odd_zero i h))
 
 end Tensor
 
