@@ -84,7 +84,7 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
     (i : I) (hi : D.parity i = 1) (hP0 : 0 < probeCutoff D m i)
     (hh : D.h i ν₀ < 0) (hPN : 2 * m i < cutoff i) (e n : ℕ) (hn : n = cutoff i - 2 * m i - 1)
     (a : SYM D k)
-    (hmom : ∀ (c : (E).obj (Ys (0,0)).obj ≅ V) (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
+    (hmom : ∀ (_c : (E).obj (Ys (0,0)).obj ≅ V) (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
       (z : (V).obj (⟨⟨[]⟩, rfl⟩ : ContentCategory D (parameterTwist D Sc) cutoff N 0)),
       (∀ (r : ℕ) (z : (V).obj (⟨⟨[]⟩, rfl⟩ :
           ContentCategory D (parameterTwist D Sc) cutoff N 0)),
@@ -122,8 +122,7 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
   intro z
   rw [ProbeReservoir.compDiag_etaL_dcapL_swappedGens (P) cc lw i e n ν₀ hnZ (0,0) _ hd]
   subst hn
-  refine (congrArg (fun f => tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
-    (f.total ⟨⟨[]⟩, rfl⟩ z)) (hcup ⟨cutoff i - 2 * m i - 1, by omega⟩ e).symm).trans ?_
+  rw [← hcup ⟨cutoff i - 2 * m i - 1, by omega⟩ e]
   exact hmom c B z fun r z =>
     ⟨fun e' he' => ELVOld.rightwardLastColumnDecode_even D (parameterTwist D Sc) m cutoff L sy
       (parameterTwist_homogeneous D Sc hc) i hi hPi hPN j B hB r e' he' z,
