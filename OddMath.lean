@@ -2379,6 +2379,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVRouquierMixedBraidEquation
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedRelation
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerVacuumContentRows
 import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumTensorCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumTensorFaithful
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumCap
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumPolynomialCap
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumPrincipalCap
@@ -2612,6 +2613,8 @@ import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.FactorClosures
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedContentKernelClosureCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedContentKernelBoundaryCoordinates
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.FactorWindowInverse
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseCapInverse
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseBubbleEntry
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SupportedFactorWindowInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirBoundaries
 import OddMath.SKM.RouquierHomBendMonomials
@@ -2769,6 +2772,7 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedActionAlphaLayers
 import OddMath.QuiverHecke.SwappedAssembly.SupportedActionLayers
 import OddMath.QuiverHecke.SwappedAssembly.SupportedClosedAction
 import OddMath.QuiverHecke.SwappedAssembly.SupportedClosedCoefficients
+import OddMath.QuiverHecke.SwappedAssembly.SupportedRightBubbleCoefficients
 import OddMath.SKM.PairingExtensionBubbles
 import OddMath.QuiverHecke.PairingExtensionAffine
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumBendSeries
@@ -2780,7 +2784,9 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumPolynomialWindow
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumBend
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumCap
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumCapInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeLeftwardVacuumCapInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumCapInverseAttach
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumLeftwardMoments
 import OddMath.QuiverHecke.PairingExtensionPBW
 import OddMath.QuiverHecke.PairingExtensionRecovery
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorEntryLayerCharts
@@ -2792,3 +2798,4 @@ import OddMath.QuiverHecke.VacuumRouteEvenComparison
 import OddMath.QuiverHecke.VacuumRouteFields
 import OddMath.QuiverHecke.VacuumRouteSwappedBases
 import OddMath.QuiverHecke.VacuumRouteSwappedCharts
+import OddMath.QuiverHecke.VacuumRouteSwappedNonpositiveBubbles

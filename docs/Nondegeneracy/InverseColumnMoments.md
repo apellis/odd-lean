@@ -145,14 +145,46 @@ Checked on `research/positive-bubble-field`:
   `c⁻¹·bubLs(s) = cl (dcupL i (h-1) ++ epsL i (s+h-1))`, so the `left_odd` and
   `left_even` fields reduce to the vacuum entry of this closed diagram.
 
+- `isCapInverse_centralPadded_of_posInverseAt` (`Sigma/PointwiseCapInverse`): a
+  pointwise `PosInverseAt` at a central sector gives an explicit cap inverse of the
+  padded cap, with columns the evaluated leftward cups composed with the source
+  factor and corner isomorphisms.
+- `compDiag_dcupL_epsL_swappedGens`, `map_dcup_epsEntry_eq_padded`
+  (`Sigma/PointwiseBubbleEntry`): the swapped-generator entry of
+  `dcupL i n ++ epsL i N` on empty paths is `dcup ≫ epsEntry`, and its evaluation
+  is the leftward column composed with the padded cap.
+- `vacuumLeftwardColumn`, `vacuumLeftwardCapInverse_native_odd`,
+  `vacuumLeftwardColumn_cap_native` (`ELVProbeLeftwardVacuumCapInverse`): at the
+  vacuum sector input these columns are a cap inverse of the native mixed bend,
+  and `column ≫ dot^N ≫ cap` is the conjugated evaluation of the bubble entry.
+- `vacuumLeftwardCapInverse_bubbleEntries`, `tensorVacuum_leftward_odd_moments`
+  (`ELVTensorVacuumLeftwardMoments`): at the tensor vacuum the leftward cap inverse
+  has the substituted-series moments of `tensorVacuumCapInverse_odd_moments`, so
+  the conjugated evaluated entries `dcup (h-1) ≫ ε x^(h-1+2s)` and
+  `dcup (h-1) ≫ ε x^(h+2s)` decode to multiplication by the substituted-series
+  coefficient (times the reservoir odd coefficient in the second case).
+
 Still open:
 
-1. Vacuum entry: the swapped-generator evaluation (`compDiag`) of
-   `dcupL i (h-1) ++ epsL i (2s+h-1)` at the vacuum sector equals the composite
-   `A_{h-1} ≫ dot^{h-1+2s} ≫ cap` of `tensorVacuum_chosenCapInverse_odd_moments`
-   (the leftward cup of `pointwiseLeftwardData` against that theorem's cap inverse),
-   and the decoded moment identifies it with the coefficient action of the
-   substituted-series coefficient (via `tensorVacuumEndDecode_eq_of`).
+1. Vacuum entry (remaining part): lift the identity of
+   `tensorVacuum_leftward_odd_moments`, which holds after vacuum sector evaluation,
+   conjugation and decoding, to the equality in `End(tensorVacuum)` required by
+   `pointwiseUpwardModuleAction_act_bubAt_bubLs_eq_coefficient` (with
+   `dc = pointwiseLeftwardData.dcup` from `centralPointwiseLeftward_posInverseAt`,
+   and `compDiag_dcupL_epsL_swappedGens` for the entry). Two inputs are needed:
+   the evaluated, conjugated and decoded coefficient action of `a` is
+   multiplication by the image of `a`, and an endomorphism of `tensorVacuum` is
+   determined by its decoded evaluation at the regular probe object
+   (faithfulness of the vacuum sector evaluation on that endomorphism space).
+   The generic Yoneda step is checked (`ELVVacuumTensorFaithful.lean`):
+   `VacuumTensor.hom_ext_of_generating` and `hom_ext_of_generating_total` show
+   that a transformation out of `G` followed by the tensor vacuum `M ↦ W ⊗ M(a)`
+   is determined by its component at one object `Y₀`, when every homogeneous
+   vector of every `(G X)(a)` is `(G f)(y₀)` for a fixed `y₀` and a homogeneous
+   `f : Y₀ ⟶ X` of the same parity (here `G = emptyProbe`, `Y₀ = regularProbe`). Remaining for faithfulness: supply these morphisms out of the regular
+   probe (its value at the empty object is the scalar line on
+   `probeOldVacuumVector`), and pass through the weight-block product
+   `WeightTensorVacuum.hom` and the input-weight transport of `tensorHomAt`.
 2. The odd bubble `oddBubble` at positive height, the same way.
 3. Even colours need an even moment result; nonpositive height is handled
    separately.
