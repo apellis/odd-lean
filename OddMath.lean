@@ -2536,6 +2536,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentHomZero
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedContentBends
 import OddMath.QuiverHecke.SwappedVacuum.NegativeCapInverse
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowCoefficientIdeal
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowCoefficientIdealOver
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCrossEntries
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ResidualComparisonNegative
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.SignedResidualWindows
