@@ -84,10 +84,10 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
     (i : I) (hi : D.parity i = 1) (hP0 : 0 < probeCutoff D m i)
     (hh : D.h i ν₀ < 0) (e n : ℕ) (hn : n = cutoff i - 2 * m i - 1) (a : SYM D k)
     (hmom : ∀ (c : (E).obj (Ys (0,0)).obj ≅ V) (B : Fin (cutoff i - 2 * m i) →
-        ((BalancedInduction.restriction
-            (contentAppend D (parameterTwist D Sc) cutoff N (0 : Multiset I) [i])).obj
-          ((BalancedInduction.induction
-            (contentAppend D (parameterTwist D Sc) cutoff N (0 : Multiset I) [i])).obj V) ⟶ V))
+        ((BalancedInduction.induction
+            (contentAppend D (parameterTwist D Sc) cutoff N (0 : Multiset I) [i]) ⋙
+          BalancedInduction.restriction
+            (contentAppend D (parameterTwist D Sc) cutoff N (0 : Multiset I) [i])).obj V ⟶ V))
       (z : (V).obj (⟨⟨[]⟩, rfl⟩ : ContentCategory D (parameterTwist D Sc) cutoff N 0)),
       (∀ (r : ℕ) (z : (V).obj (⟨⟨[]⟩, rfl⟩ :
           ContentCategory D (parameterTwist D Sc) cutoff N 0)),
@@ -102,8 +102,7 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
             ((ELVOld.rightwardUnitColumn D (parameterTwist D Sc) m cutoff L i B
               (cutoff i - 2 * m i - 1 + (2 * r + 1))
               ⟨cutoff i - 2 * m i - 1, by omega⟩).total ⟨⟨[]⟩, rfl⟩ z) =
-          ((-1 : k) ^ (cutoff i + 1) •
-              coefficientPowerQuotientMap D cutoff L (SYM.delta D k ⟨i, hi⟩)) *
+          ELVOld.oddMomentScalar D cutoff L i hi *
             (polynomialToPower D cutoff L (PowerSeries.coeff r
               (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
               tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z)) →
@@ -177,6 +176,6 @@ theorem vacuumEntry_odd_neg (N' : I → ℕ) (i : {i : I // D.parity i = 1})
   refine vacuumEntry_odd_shift D Sc m cutoff ΛP ΛR L hP hR sy hc
     (vacuumCoefficientDecode_holds D Sc m cutoff ΛP ΛR L hP hR) i.1 i.2 hP0 hh _ _
     (by rw [hhe]; omega) _ (fun c B z hm => ?_)
-  rw [(hm 0 z).2, AdjunctionBubbleSeries.coeff_zero_momentSeries, map_one, one_mul, map_smul, hN']
+  rw [(hm 0 z).2, ELVOld.oddMomentScalar, AdjunctionBubbleSeries.coeff_zero_momentSeries, map_one, one_mul, map_smul, hN']
 
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
