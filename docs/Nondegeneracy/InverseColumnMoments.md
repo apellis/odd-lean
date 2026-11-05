@@ -244,3 +244,22 @@ Still open:
    `swappedLeftEntriesField` and `positiveBubbleField_swappedRouteBases` hold with
    no hypothesis, and `nondegeneracy_of_swapped_right_entries` reduces the
    conjecture to `SwappedRightEntriesField` (nonpositive height).
+
+5. **Right vacuum entries, reduction to the probe reservoir.**
+   `VacuumRouteSwappedNonpositiveField.lean` mirrors item 4 for `SwappedRightEntriesField`:
+   `RightVacuumEntrySupply` asks for `SupportedSectors.VacuumRightEntries` of every probe
+   reservoir with positive probe cutoffs and reservoir levels, at the vacuum weight
+   `ΛP - ΛR`; `swappedRightEntriesField_of_supply` transports it along
+   `weight_difference`, and `nondegeneracy_of_rightVacuumEntrySupply` gives the conjecture.
+   The probe cutoffs of every route index are positive (`VacuumRouteIndex.probeCutoff_pos`,
+   from `cutoff_bounds`), so for odd colours `M > 0` and the case `M = 0` does not arise
+   in the odd right entries. The supply is open: its six families are the negative-height
+   entries (even moments, odd moments, odd coefficient) and the zero-height entries.
+
+- Zero-height right vacuum entries
+  (`SwappedAssembly/SupportedVacuumZeroHeightEntries.lean`). At a colour of height
+  zero the inverse windows are empty, so the negative inverse condition follows from
+  the positive one (`negInverseAt_of_posInverseAt_of_eq_zero`), and the padded cup
+  inverse turns the bubble entry into the cap-moment form
+  (`vacuumZeroHeight_bubbleEntries`). With the tensor cap moments this gives the
+  fields `vacuumEntry_zero_even`, `vacuumEntry_zero_odd` and `vacuumEntry_odd_zero`.
