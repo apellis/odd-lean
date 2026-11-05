@@ -42,7 +42,7 @@ theorem VacuumRouteIndex.probeCutoff_pos (ι : VacuumRouteIndex D) (i : ι.J) :
   have e := probeExponent_pairingExtension (D.restrictColours ι.J) ι.μ ι.t ι.d
   change 0 < probeCutoff ι.datum (probeExponent _ (ι.μ, 0) ι.t ι.d) i
   rw [e]
-  omega
+  exact lt_of_le_of_lt (Nat.zero_le _) h
 
 /-- **The right vacuum entries of the probe reservoirs.** For every probe reservoir with positive
 probe cutoffs and positive reservoir levels, the vacuum entries of the right bubbles at
