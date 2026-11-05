@@ -23,7 +23,8 @@ probe exponent `M` and reservoir cutoff `N`:
   window `[s, u, u ≫ y, …, u ≫ y^(N-2M-1)]`, the moments of the extreme
   inverse cap `B_(N-2M-1)` act on the coefficient chart as the coefficients
   of `(1 + w)^M / C(-w)` and those coefficients times the normalized odd
-  coefficient `(-1)^(N+1) δ` (`tensorVacuumNegativeCap_odd_moments`);
+  coefficient `(-1)^(N+1) δ` (`tensorVacuumNegativeCap_odd_moments_even`,
+  `tensorVacuumNegativeCap_odd_moments_odd`);
 * at zero height `2M = N`, for the bend as an isomorphism, the moments
   `u ≫ y^(2r) ≫ s⁻¹ ≫ v` and `u ≫ y^(2r+1) ≫ s⁻¹ ≫ v` are `δ` times the
   `r`th and the `(r+1)`st coefficient (`tensorVacuumZeroHeightCap_odd_moments`).
@@ -317,11 +318,9 @@ private theorem even_reservoir_coefficient (hi : D.parity i = 0) (hN : 0 < cutof
         (PowerSeries.invOfUnit (PowerSeries.rescale (-1) (SKM.SYM.generatorSeries k i)) 1)) := by
   refine tensorVacuumEndDecode_eq_of D Sc m cutoff L _ _ fun z => ?_
   rw [unit_cap_moment D Sc m cutoff L i hN, capCoefficientLmul_ringHom_apply]
-  have hm := (tensorPowerVacuumCap_moment_apply D Sc m cutoff L i hN (cutoff i - 1 + l) z).trans
-    (congrArg (· * tensorVacuumDecodeLinear D Sc m cutoff L z)
-      (even_colour_signedMoment D Sc cutoff L i hi hN l))
   show _ = completeCoefficient D cutoff L i l * _
-  convert hm using 3
+  rw [← even_colour_signedMoment D Sc cutoff L i hi hN l]
+  convert tensorPowerVacuumCap_moment_apply D Sc m cutoff L i hN (cutoff i - 1 + l) z using 3
 
 /-- The reservoir series of the tensor vacuum at an even colour, in the decode
 chart: `T(z) = 1/E(-z)`, the complete coefficients. -/
@@ -387,7 +386,12 @@ private theorem even_slide (hi : D.parity i = 0) (hP : 0 < probeCutoff D m i) :
   simpa only [hi, koszulSign_zero_left, one_smul] using hs
 
 include sy hc in
-private theorem odd_negative_even_index
+/-- **Odd colour, negative height, on the tensor vacuum: even moments.** For
+probe exponent `M = m i` and reservoir cutoff `N = cutoff i` with `2M < N`, and
+any entrywise inverse `[j; B]` of the cup window of the A6 bend with the
+unit/post-dot rows, the decoded even moments of the extreme inverse cap are the
+coefficients of `(1 + w)^M / C(-w)`. -/
+theorem tensorVacuumNegativeCap_odd_moments_even
     (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) (hN : 0 < cutoff i)
     (hPN : 2 * m i < cutoff i)
     (j : _ ⟶ shiftedPreSourceObject D Sc m R₀ i H)
@@ -423,7 +427,11 @@ private theorem odd_negative_even_index
   exact e1
 
 include sy hc in
-private theorem odd_negative_odd_index
+/-- **Odd colour, negative height, on the tensor vacuum: odd moments.** Under
+the hypotheses of `tensorVacuumNegativeCap_odd_moments_even`, the decoded odd
+moments carry the normalized odd coefficient `(-1)^(N+1) δ` in front of the
+coefficients of `(1 + w)^M / C(-w)`. -/
+theorem tensorVacuumNegativeCap_odd_moments_odd
     (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) (hN : 0 < cutoff i)
     (hPN : 2 * m i < cutoff i)
     (j : _ ⟶ shiftedPreSourceObject D Sc m R₀ i H)
@@ -460,42 +468,6 @@ private theorem odd_negative_odd_index
   rw [tensorVacuumEndDecode_apply, cap_end_mul_apply, cap_lmul_apply,
     capCoefficientLmul_apply] at e2
   exact e2
-
-include sy hc in
-/-- **Odd colour, negative height, on the tensor vacuum.** For probe exponent
-`M = m i` and reservoir cutoff `N = cutoff i` with `2M < N`, and any entrywise
-inverse `[j; B]` of the cup window of the actual A6 bend with the unit/post-dot
-rows, the decoded moments of the extreme inverse cap are the coefficients of
-`(1 + w)^M / C(-w)`, and the odd moments carry the normalized odd coefficient
-`(-1)^(N+1) δ`. -/
-theorem tensorVacuumNegativeCap_odd_moments
-    (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) (hN : 0 < cutoff i)
-    (hPN : 2 * m i < cutoff i)
-    (j : _ ⟶ shiftedPreSourceObject D Sc m R₀ i H)
-    (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V))
-    (hB : SwappedAssembly.ProbeWindow.IsCupInverse
-      (evaluatedMixedBend D Sc m cutoff bound i hP H)
-      (fun n => (adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ n.val))
-      j B)
-    (r : ℕ) (z : (V).obj star) :
-    tensorVacuumDecodeLinear D Sc m cutoff L
-        (((adjunction K).unit.app V ≫
-          (evaluatedPostDot D Sc m cutoff bound i H ^ (cutoff i - 2 * m i - 1 + 2 * r)) ≫
-            B ⟨cutoff i - 2 * m i - 1, by omega⟩).total star z) =
-      polynomialToPower D cutoff L (PowerSeries.coeff r
-          (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
-        tensorVacuumDecodeLinear D Sc m cutoff L z ∧
-    tensorVacuumDecodeLinear D Sc m cutoff L
-        (((adjunction K).unit.app V ≫
-          (evaluatedPostDot D Sc m cutoff bound i H ^ (cutoff i - 2 * m i - 1 + (2 * r + 1))) ≫
-            B ⟨cutoff i - 2 * m i - 1, by omega⟩).total star z) =
-      ((-1 : k) ^ (cutoff i + 1) •
-          coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) *
-        (polynomialToPower D cutoff L (PowerSeries.coeff r
-          (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
-          tensorVacuumDecodeLinear D Sc m cutoff L z) :=
-  ⟨odd_negative_even_index D Sc m cutoff L sy hc i hi hP hN hPN j B hB r z,
-    odd_negative_odd_index D Sc m cutoff L sy hc i hi hP hN hPN j B hB r z⟩
 
 include sy hc in
 /-- **Odd colour, zero height, on the tensor vacuum.** For `cutoff i = 2 M`,

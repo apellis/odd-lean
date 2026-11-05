@@ -14,7 +14,8 @@ At colours with `hᵢ(μ) ≤ 0` the dotted right bubbles are the ones computed 
 the tensor vacuum: they are the cap moments of the chosen inverse column, whose
 generating series is the moment series `(1-z)^(M_i)/E_i(-z)` at even colours and
 `(1+z)^(M_i)/C_i(-z)` at odd colours
-(`ELVOld.tensorVacuumNegativeCap_even_moments`, `tensorVacuumNegativeCap_odd_moments`).
+(`ELVOld.tensorVacuumNegativeCap_even_moments`, `tensorVacuumNegativeCap_odd_moments_even`,
+`tensorVacuumNegativeCap_odd_moments_odd`).
 This file shows that these right moments, together with the odd bubble, determine the
 left bubbles: the infinite Grassmannian relations (5.5), (5.6) (`SKM.eq_5_5`,
 `SKM.eq_5_6`) hold in every action, the right series has constant term one, and the
