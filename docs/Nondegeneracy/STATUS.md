@@ -42,6 +42,22 @@ Phase 2 and the full all-even comparison of
 [FieldScopeBoundary](FieldScopeBoundary.md) remain open, so the branch is
 not complete.
 
+**Consequences: Hom bases, `β_λ` and graded dimensions.**
+[HomBases](../../OddMath/QuiverHecke/HomBases.lean) (note: [HomBases](HomBases.md))
+applies `nondegeneracy_of_symmetrizer` under its hypotheses (symmetrizer,
+`IsUnit (2 : k)`, homogeneous parameters). `QuiverHecke.betaSYM_bijective`
+and `betaSYMEquiv`: `β_λ : SYM ≃ End(1_λ)` (surjectivity is Theorem 8.1 on the
+empty boundary, `endOne_mem_bubbleSpan`, now over every commutative ring).
+`MatchingBasisChoice.expansionEquiv` (right `SYM`-linear by
+`expansion_mapRange_mul`), `homBasisOfSymmetrizer` with
+`homBasisOfSymmetrizer_apply` (basis `f(σ, λ) β_λ(p)`, `p` a monomial of
+`SYM.coefficientBasis`), `free_hom` and the graded form `componentEquiv`.
+Over a field with `2 ≠ 0` and `DegreeLocallyFinite`:
+`wordHomComponent_finrank_eq_sum`, `homDimension_coeff_eq_sum`, and
+`homDimension_eq_form_mul_symDimension`, BE2 Theorem 12.1 (dum) without the
+Nondegeneracy Conjecture as a premise. Consumer:
+[HomBases](../../scripts/NonVacuity/HomBases.lean).
+
 ## Scope
 
 **Phase 1:** symmetrizable data and homogeneous admissible parameters.
