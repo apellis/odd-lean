@@ -124,6 +124,37 @@ inverse `(j, A)` and the substituted-series moments of its last padded column
 
 ## Remaining for item 2
 
-1. Identify the normalized presentation bubbles `c⁻¹·bubLs(2s)` with these
-   column moments to produce the `left_odd` field.
-2. Even colours and nonpositive height are handled separately.
+Checked on `research/positive-bubble-field`:
+
+- `ProbeReservoir.evalW_apply_whisker`,
+  `ProbeReservoir.res_opList_ext_whisker_apply` (`WhiskerEvaluation`): entries of
+  the native layer evaluation of a whiskered diagram, also up to equalities of
+  boundary objects.
+- `SPath.append_nil_nil_cast` and `pointwiseUpwardModuleAction_act_bubAt_cl`
+  (`SupportedClosedAction`): the supported action of `bubAt` of a closed diagram
+  on `ob μ (upWord t)` postcomposes each matrix entry with the path functor of
+  the closed diagram's `compDiag` on empty paths at the target sector.
+
+- `entryEquiv_comp_map`, `pointwiseUpwardModuleAction_act_bubAt_cl_eq`,
+  `pointwiseUpwardModuleAction_act_bubAt_cl_eq_coefficient`
+  (`SupportedClosedCoefficients`): a closed diagram acts on the tensor-family matrix
+  module as the source coefficient `a` once its vacuum-sector entry is the vacuum
+  coefficient action of `a`; off-vacuum sectors are zero objects.
+- `SKM.inv_smul_bubLs_of_pos` and
+  `pointwiseUpwardModuleAction_act_bubAt_bubLs_eq_coefficient`: at `hᵢ(μ) > 0`,
+  `c⁻¹·bubLs(s) = cl (dcupL i (h-1) ++ epsL i (s+h-1))`, so the `left_odd` and
+  `left_even` fields reduce to the vacuum entry of this closed diagram.
+
+Still open:
+
+1. Vacuum entry: the swapped-generator evaluation (`compDiag`) of
+   `dcupL i (h-1) ++ epsL i (2s+h-1)` at the vacuum sector equals the composite
+   `A_{h-1} ≫ dot^{h-1+2s} ≫ cap` of `tensorVacuum_chosenCapInverse_odd_moments`
+   (the leftward cup of `pointwiseLeftwardData` against that theorem's cap inverse),
+   and the decoded moment identifies it with the coefficient action of the
+   substituted-series coefficient (via `tensorVacuumEndDecode_eq_of`).
+2. The odd bubble `oddBubble` at positive height, the same way.
+3. Even colours need an even moment result; nonpositive height is handled
+   separately.
+4. Transport from `actionAt (probeHW - reservoirHW)` and the restricted datum to the
+   route index to conclude `PositiveBubbleField (swappedRouteBases sy)`.
