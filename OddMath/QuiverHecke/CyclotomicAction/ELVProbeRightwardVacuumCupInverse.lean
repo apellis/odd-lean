@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumUnit
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumCapInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumLeftwardMoments
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseCupInverse
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseRightBubbleEntry
 
@@ -213,7 +214,7 @@ include sy hc in
 satisfying the negative inverse equations at an input equal to the vacuum sector
 input, the native cup window of the evaluated A6 bend has an entrywise inverse
 whose products with the native unit rows `unit ≫ xᴺ` are the evaluated right bubble
-entries `η xᴺ ≫ dcap n`, conjugated by one isomorphism `c`. -/
+entries `η xᴺ ≫ dcap n`, conjugated by one isomorphism `c`, which is an `eqToHom`. -/
 theorem vacuumRightwardCupInverse_bubbleEntries (Z : (P).H ((0, 0) : Sector I))
     (hZ : Z = vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
@@ -237,6 +238,7 @@ theorem vacuumRightwardCupInverse_bubbleEntries (Z : (P).H ((0, 0) : Sector I))
               (0 : Multiset I) i)
             ((vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H).obj
               (probeOldVacuumRegular D (parameterTwist D Sc) m)) n) j B ∧
+      (∃ h, c.hom = eqToHom h) ∧
       ∀ (n : Fin (-D.h i ν₀).toNat) (N : ℕ),
         unitDotColumn (contentAppend D (parameterTwist D Sc) cutoff bound (0 : Multiset I) [i])
             (canonicalAppendDot_supernatural D (parameterTwist D Sc) cutoff bound
@@ -249,6 +251,7 @@ theorem vacuumRightwardCupInverse_bubbleEntries (Z : (P).H ((0, 0) : Sector I))
   obtain ⟨j, hj⟩ := vacuumRightwardCupInverse_native_odd D Sc m cutoff bound ΛP ΛR hcP hcR H
     sy hc i _ rfl lc dc HN hP hi
   exact ⟨paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H, j, _, hj,
+    paddedVacuumCapTargetIso_hom_eq_eqToHom D Sc m cutoff bound ΛP ΛR hcP hcR H,
     fun n N => vacuumRightwardColumn_unit D Sc m cutoff bound ΛP ΛR hcP hcR H i cc dc n N⟩
 
 end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
