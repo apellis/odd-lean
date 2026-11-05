@@ -342,7 +342,7 @@ private theorem even_reservoir_series (hi : D.parity i = 0) (hN : 0 < cutoff i) 
         ((adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ (cutoff i - 1 + l)) ≫
           tensorPowerVacuumCap D Sc m cutoff L i hN)) =
       PowerSeries.map (capCoefficientLmul D cutoff L).toRingHom
-        (PowerSeries.invOfUnit (PowerSeries.rescale (-1) (SKM.SYM.generatorSeries k i)) 1) := by
+        (PowerSeries.invOfUnit (PowerSeries.rescale (-1) (SKM.SYM.generatorSeries k i)) 1) :=
   mk_eq_map_of_coeff _ _ _ (even_reservoir_coefficient D Sc m cutoff L i hi hN)
 
 private theorem odd_probe_polynomial (hi : D.parity i = 1) :
@@ -498,7 +498,7 @@ include sy hc in
 private theorem odd_zero_decoded
     (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) (hN : 0 < cutoff i)
     (hcut : cutoff i = 2 * m i)
-    (s : shiftedPreSourceObject D Sc m R₀ i H ≅ _)
+    (s : shiftedPreSourceObject D Sc m R₀ i H ≅ (restriction K).obj ((induction K).obj V))
     (hsb : s.hom = evaluatedMixedBend D Sc m cutoff bound i hP H)
     (r : ℕ) :
     tensorVacuumEndDecode D Sc m cutoff L ((adjunction K).unit.app V ≫
@@ -539,7 +539,7 @@ coefficient of `(1 + w)^M / C(-w)` and `δ` the normalized odd coefficient
 theorem tensorVacuumZeroHeightCap_odd_moments_even
     (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) (hN : 0 < cutoff i)
     (hcut : cutoff i = 2 * m i)
-    (s : shiftedPreSourceObject D Sc m R₀ i H ≅ _)
+    (s : shiftedPreSourceObject D Sc m R₀ i H ≅ (restriction K).obj ((induction K).obj V))
     (hsb : s.hom = evaluatedMixedBend D Sc m cutoff bound i hP H)
     (r : ℕ) (z : (V).obj star) :
     tensorVacuumDecodeLinear D Sc m cutoff L
@@ -562,7 +562,7 @@ hypotheses of `tensorVacuumZeroHeightCap_odd_moments_even`, the decoded moment
 theorem tensorVacuumZeroHeightCap_odd_moments_odd
     (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) (hN : 0 < cutoff i)
     (hcut : cutoff i = 2 * m i)
-    (s : shiftedPreSourceObject D Sc m R₀ i H ≅ _)
+    (s : shiftedPreSourceObject D Sc m R₀ i H ≅ (restriction K).obj ((induction K).obj V))
     (hsb : s.hom = evaluatedMixedBend D Sc m cutoff bound i hP H)
     (r : ℕ) (z : (V).obj star) :
     tensorVacuumDecodeLinear D Sc m cutoff L
@@ -624,7 +624,7 @@ coefficient of `(1 - w)^M / E(-w)`. -/
 theorem tensorVacuumZeroHeightCap_even_moments
     (hi : D.parity i = 0) (hP : 0 < probeCutoff D m i) (hN : 0 < cutoff i)
     (hcut : cutoff i = m i)
-    (s : shiftedPreSourceObject D Sc m R₀ i H ≅ _)
+    (s : shiftedPreSourceObject D Sc m R₀ i H ≅ (restriction K).obj ((induction K).obj V))
     (hsb : s.hom = evaluatedMixedBend D Sc m cutoff bound i hP H)
     (l : ℕ) (z : (V).obj star) :
     tensorVacuumDecodeLinear D Sc m cutoff L
