@@ -2610,6 +2610,7 @@ import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.FactorClosures
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedContentKernelClosureCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedContentKernelBoundaryCoordinates
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.FactorWindowInverse
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseCapInverse
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SupportedFactorWindowInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirBoundaries
 import OddMath.SKM.RouquierHomBendMonomials
