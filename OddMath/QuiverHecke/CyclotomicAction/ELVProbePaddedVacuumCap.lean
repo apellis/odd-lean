@@ -173,6 +173,7 @@ def capPullbackSelfIso :
   subst b'
   exact Iso.refl _
 
+omit [TwoSupercategory k B] [(a b : B) → PiSupercategory k (a ⟶ b)] in
 /-- The pulled-back return isomorphism is an `eqToHom`. -/
 theorem capPullbackSelfIso_hom_eq_eqToHom :
     ∃ h, (capPullbackSelfIso T W ha hb Z').hom = eqToHom h := by
@@ -251,9 +252,11 @@ theorem paddedVacuumCapTargetIso_hom_eq_eqToHom :
     (capReservoirWeight_zero D Sc m cutoff bound ΛP ΛR hcP hcR)
     (preCapInput D (parameterTwist D Sc) m ΛP hcP
       (elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR) (-ΛR) H)
+  refine ⟨(congrArg (capVacuumEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).obj h₁).trans
+    (congrArg (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H).toFunctor.obj
+      (emptyProbe_regular D (parameterTwist D Sc) m ΛP)), ?_⟩
   simp only [paddedVacuumCapTargetIso, Iso.trans_hom, Functor.mapIso_hom, eqToIso.hom, e₁,
     eqToHom_map, eqToHom_trans]
-  exact ⟨_, rfl⟩
 
 /-- The prescribed padded reservoir cap row `n` at the vacuum sector is the
 native `x ^ n ≫ v` of the output block, through the same source chart as the
