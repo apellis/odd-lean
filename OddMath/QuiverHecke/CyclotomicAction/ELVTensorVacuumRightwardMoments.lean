@@ -63,7 +63,7 @@ include sy hc in
 `0 < 2 M < N`, leftward data satisfying the negative inverse equations at the tensor
 vacuum give an entrywise inverse `(j, B)` of the native cup window of the tensor
 vacuum bend such that every product `unit ≫ xᴺ ≫ B n` is the evaluated right bubble
-entry `η xᴺ ≫ dcap n` conjugated by one isomorphism `c`, and the last column has the
+entry `η xᴺ ≫ dcap n` conjugated by one isomorphism `c` (an `eqToHom`), and the last column has the
 decoded moments: the shift `N - 2M - 1 + 2r` gives the `r`-th coefficient of
 `(1 + w)^M / C(-w)`, the shift `N - 2M - 1 + (2r + 1)` that coefficient times the
 normalized odd coefficient. -/
@@ -88,6 +88,7 @@ theorem tensorVacuum_rightward_odd_moments (hi : D.parity i = 1)
       ProbeWindow.IsCupInverse (evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP H)
         (fun n => (adjunction K).unit.app V ≫
           (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ n.val)) j B ∧
+      (∃ h, c.hom = eqToHom h) ∧
       (∀ (n : Fin (cutoff i - 2 * m i)) (N : ℕ),
         (adjunction K).unit.app V ≫
           (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ N) ≫ B n =
@@ -124,9 +125,9 @@ theorem tensorVacuum_rightward_odd_moments (hi : D.parity i = 1)
       (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) = H from
     tensorOutputAt_empty D (parameterTwist D Sc) m cutoff L ΛR, hlen] at hex
   simp only [unitDotColumn_eq_restrictedDotEnd, Category.assoc] at hex
-  obtain ⟨c, j, B, hB, hcup⟩ := hex
+  obtain ⟨c, j, B, hB, hceq, hcup⟩ := hex
   have hN : 0 < cutoff i := by omega
-  exact ⟨c, j, B, hB, hcup, fun r z =>
+  exact ⟨c, j, B, hB, hceq, hcup, fun r z =>
     ⟨tensorVacuumNegativeCap_odd_moments_even D (parameterTwist D Sc) m cutoff L sy
       (parameterTwist_homogeneous D Sc hc) i hi hP hN hPN j B hB r z,
      tensorVacuumNegativeCap_odd_moments_odd D (parameterTwist D Sc) m cutoff L sy
