@@ -74,7 +74,7 @@ private theorem odd_negative_cap_moments_of_slide (D : SKM.Datum I' X') {R : Typ
     [Algebra k' R] (φ : MvPolynomial (I' × ℕ) k' →ₐ[k'] R) (ρ : End V' →ₐ[k'] R)
     (P : I' → ℕ) (i : I') (hi : D.parity i = 1)
     (x : End Xo) (y : End Yo) (s : Xo ⟶ Yo) (u : V' ⟶ Yo) (v : Xo ⟶ V') (ell : Yo ⟶ V')
-    (N : ℕ) (hPN : 2 * P i < N) (e : R)
+    (N : ℕ) (hPN : 2 * P i < N) (e : R) (hcomm : ∀ p, Commute (φ p) e)
     (hslide : s ≫ y - (-1 : k') • (x ≫ s) = v ≫ u)
     (hwindow : ∀ a < N, u ≫ (y ^ a) ≫ ell = if a + 1 = N then 𝟙 V' else 0)
     (hprobe : SwappedVacuum.capPolynomial
@@ -90,9 +90,9 @@ private theorem odd_negative_cap_moments_of_slide (D : SKM.Datum I' X') {R : Typ
         φ (PowerSeries.coeff r
           (VacuumSeries.momentSeries k' (SKM.SYM.probeSeriesInv D k' P) i)) ∧
       ρ (u ≫ (y ^ (N - 2 * P i - 1 + (2 * r + 1))) ≫ B ⟨N - 2 * P i - 1, by omega⟩) =
-        φ (PowerSeries.coeff r
-          (VacuumSeries.momentSeries k' (SKM.SYM.probeSeriesInv D k' P) i)) * e :=
-  SwappedVacuum.odd_cap_moments D φ P i hi (N - 1) e
+        e * φ (PowerSeries.coeff r
+          (VacuumSeries.momentSeries k' (SKM.SYM.probeSeriesInv D k' P) i)) := by
+  have h := SwappedVacuum.odd_cap_moments D φ P i hi (N - 1) e
     (fun l => ρ (u ≫ (y ^ (N - 2 * P i - 1 + l)) ≫ B ⟨N - 2 * P i - 1, by omega⟩))
     (fun n => ρ (u ≫ (y ^ n) ≫ ell))
     (map_probe_convolution ρ (fun n => ((Polynomial.X ^ 2 + 1 : Polynomial k') ^ P i).coeff n)
@@ -104,6 +104,7 @@ private theorem odd_negative_cap_moments_of_slide (D : SKM.Datum I' X') {R : Typ
         (SwappedVacuum.square_add_one_coeff_top (P i))
         (fun n _ => SwappedVacuum.square_add_one_coeff_mul_neg_one_pow (P i) n)
         hslide hwindow hprobe j B H)) hT r
+  exact ⟨h.1, h.2.trans (hcomm _).eq⟩
 
 /-- Odd colour, zero height, read through an algebra map `ρ`. -/
 private theorem odd_zero_cap_moments_of_slide (D : SKM.Datum I' X') {R : Type*} [Ring R]
@@ -314,8 +315,10 @@ private theorem even_moment_apply (hi : D.parity i = 0) (hN : 0 < cutoff i) (l :
     tensorVacuumDecodeLinear D Sc m cutoff L
         ((tensorUnitCapClosure D Sc m cutoff L i hN (cutoff i - 1 + l)).total star z) =
       completeCoefficient D cutoff L i l * tensorVacuumDecodeLinear D Sc m cutoff L z := by
-  rw [← even_colour_signedMoment D Sc cutoff L i hi hN l]
-  exact tensorPowerVacuumCap_moment_apply D Sc m cutoff L i hN _ z
+  have hm := (tensorPowerVacuumCap_moment_apply D Sc m cutoff L i hN (cutoff i - 1 + l) z).trans
+    (congrArg (· * tensorVacuumDecodeLinear D Sc m cutoff L z)
+      (even_colour_signedMoment D Sc cutoff L i hi hN l))
+  convert hm using 3
 
 private theorem even_reservoir_coefficient (hi : D.parity i = 0) (hN : 0 < cutoff i) (l : ℕ) :
     tensorVacuumEndDecode D Sc m cutoff L
@@ -325,6 +328,7 @@ private theorem even_reservoir_coefficient (hi : D.parity i = 0) (hN : 0 < cutof
         (PowerSeries.invOfUnit (PowerSeries.rescale (-1) (SKM.SYM.generatorSeries k i)) 1)) := by
   refine tensorVacuumEndDecode_eq_of D Sc m cutoff L _ _ fun z => ?_
   rw [unit_cap_moment D Sc m cutoff L i hN, capCoefficientLmul_ringHom_apply]
+  show _ = completeCoefficient D cutoff L i l * _
   exact even_moment_apply D Sc m cutoff L i hi hN l z
 
 /-- The reservoir series of the tensor vacuum at an even colour, in the decode
@@ -434,17 +438,15 @@ theorem tensorVacuumNegativeCap_odd_moments
     (tensorPowerVacuumCap D Sc m cutoff L i hN) (cutoff i) hPN
     (Algebra.lmul k AQ ((-1 : k) ^ (cutoff i + 1) •
       coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)))
+    (fun p => (delta_commute D cutoff L i hi p).map (Algebra.lmul k AQ))
     (odd_slide D Sc m cutoff L sy hc i hi hP) hwin (odd_probe_polynomial D Sc m cutoff L i hi)
     j B hB (odd_reservoir_series D Sc m cutoff L i hi hN) r
   have e1 := LinearMap.congr_fun h1 (tensorVacuumDecodeLinear D Sc m cutoff L z)
   have e2 := LinearMap.congr_fun h2 (tensorVacuumDecodeLinear D Sc m cutoff L z)
   rw [tensorVacuumEndDecode_apply, capCoefficientLmul_apply] at e1
-  rw [tensorVacuumEndDecode_apply, cap_end_mul_apply, capCoefficientLmul_apply,
-    cap_lmul_apply] at e2
-  constructor
-  · exact e1
-  · rw [← mul_assoc, ← (delta_commute D cutoff L i hi _).eq, mul_assoc]
-    exact e2
+  rw [tensorVacuumEndDecode_apply, cap_end_mul_apply, cap_lmul_apply,
+    capCoefficientLmul_apply] at e2
+  exact ⟨e1, e2⟩
 
 include sy hc in
 /-- **Odd colour, zero height, on the tensor vacuum.** For `cutoff i = 2 M`,
