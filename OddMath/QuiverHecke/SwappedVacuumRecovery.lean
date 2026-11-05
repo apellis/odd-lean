@@ -30,15 +30,17 @@ upward word pair and one joint coefficient/PBW degree bound `d`:
 * a coordinate map to the quotient by `K` with the literal evaluation
   identity `coord(act(α f)(raw(b) vac)) = q_K(σ(b ⊗ f))`.
 
-Over a field these data give a `BoundedCyclicRecovery`
+Over any commutative ring these data give a `BoundedCyclicRecovery`
 (`SwappedVacuumEvaluation.toBoundedCyclicRecovery`):
-`recover = q ∘ θ⁻¹ ∘ σ⁻¹ ∘ incl ∘ L_d ∘ coord`, where `L_d` is a linear left
-inverse of `q_K` on the window. The recovered identity holds before taking
-any quotient, so the target quotient `q` is the standard first-boundary
-ELV quotient `ELVRelationSpan` at any cutoff for which it is injective on
-the window. The conclusion `nondegeneracy_of_vacuum_evaluations` is the
-field theorem `NondegeneracyConjecture cs` conditional on these data at
-every equal-weight upward pair, weight and degree.
+`recover = q ∘ θ⁻¹ ∘ σ⁻¹ ∘ L_d ∘ coord`, where `L_d` is the projection along the
+extension basis onto the degree-`d` window (`extensionTruncation`), which
+descends to the quotient by `K` because `K` lies in degrees above `d`. The
+recovered identity holds before taking any quotient, so the target quotient
+`q` is the standard first-boundary ELV quotient `ELVRelationSpan` at any cutoff
+for which it is injective on the window. The conclusion
+`nondegeneracy_of_vacuum_evaluations` is `NondegeneracyConjecture cs`,
+conditional on these data at every equal-weight upward pair, weight and
+degree, over any commutative ground ring.
 
 No vacuum evaluation is constructed here. The substitution and placement are
 instantiated for upward module actions by `UpwardModuleAction.toSwappedVacuumEvaluation`,
@@ -231,34 +233,78 @@ def UpwardModuleAction.toSwappedVacuumEvaluation {μ : X} (A : UpwardModuleActio
   coordinate := coordinate
   evaluation := evaluation
 
-section Field
-variable {I X k : Type u} [AddCommGroup X] [Field k]
-  {D : SKM.Datum I X} {Sc : SKM.Scalars D k} {cs : SKM.CScalars Sc}
+section Recovery
+variable {I X k : Type u} [AddCommGroup X] [CommRing k]
+  (D : SKM.Datum I X) (Sc : SKM.Scalars D k)
+
+/-- The projection along the extension basis onto the degree-`d` window
+`ExtendedAtMost D Sc t t' d`: basis vectors of extension degree at most `d` are
+kept, the others are sent to zero. -/
+def extensionTruncation (t t' : List I) (d : ℕ) :
+    (coefficientObj D Sc t ⟶ coefficientObj D Sc t') →ₗ[k]
+      (coefficientObj D Sc t ⟶ coefficientObj D Sc t') :=
+  (extensionBasis D Sc t t').constr k fun i =>
+    if extensionDegree D i ≤ d then extensionBasis D Sc t t' i else 0
+
+theorem extensionTruncation_basis (t t' : List I) (d : ℕ)
+    (i : SKM.SYM.CoefficientIndex D × NFIdx t t') :
+    extensionTruncation D Sc t t' d (extensionBasis D Sc t t' i) =
+      if extensionDegree D i ≤ d then extensionBasis D Sc t t' i else 0 :=
+  (extensionBasis D Sc t t').constr_basis k _ i
+
+/-- The truncation fixes the degree-`d` window. -/
+theorem extensionTruncation_of_mem {t t' : List I} {d : ℕ}
+    {x : coefficientObj D Sc t ⟶ coefficientObj D Sc t'}
+    (hx : x ∈ ExtendedAtMost D Sc t t' d) : extensionTruncation D Sc t t' d x = x := by
+  induction hx using Submodule.span_induction with
+  | mem x hx =>
+    obtain ⟨i, hi, rfl⟩ := hx
+    rw [extensionTruncation_basis, if_pos (show extensionDegree D i ≤ d from hi)]
+  | zero => exact map_zero _
+  | add x y _ _ hx hy => rw [map_add, hx, hy]
+  | smul c x _ hx => rw [map_smul, hx]
+
+/-- The truncation kills every degree above `d`. -/
+theorem extensionTruncation_eq_zero {t t' : List I} {d : ℕ} {s : ℤ} (hs : (d : ℤ) < s)
+    {x : coefficientObj D Sc t ⟶ coefficientObj D Sc t'}
+    (hx : x ∈ ExtendedAtLeast D Sc t t' s) : extensionTruncation D Sc t t' d x = 0 := by
+  induction hx using Submodule.span_induction with
+  | mem x hx =>
+    obtain ⟨i, hi, rfl⟩ := hx
+    rw [extensionTruncation_basis, if_neg]
+    intro h
+    have hi' : s ≤ (extensionDegree D i : ℤ) := hi
+    have h' : (extensionDegree D i : ℤ) ≤ d := by exact_mod_cast h
+    omega
+  | zero => exact map_zero _
+  | add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]
+  | smul c x _ hx => rw [map_smul, hx, smul_zero]
+
+variable {D Sc} {cs : SKM.CScalars Sc}
 
 namespace SwappedVacuumEvaluation
 variable {μ : X} {t t' : List I} {d : ℕ} (E : SwappedVacuumEvaluation D Sc cs μ t t' d)
 
-/-- A linear left inverse `L_d` of the vacuum quotient on the window. -/
-def windowSplitting : ((coefficientObj D Sc t ⟶ coefficientObj D Sc t') ⧸ E.ideal) →ₗ[k]
-    ExtendedAtMost D Sc t t' d :=
-  Classical.choose (E.windowQuotient.exists_leftInverse_of_injective E.ker_windowQuotient)
+/-- The retraction `L_d` of the vacuum quotient onto the window: the truncation
+`extensionTruncation` descends to the quotient by `K`, since `K` lies in degrees above
+`d`. -/
+def windowRetraction : ((coefficientObj D Sc t ⟶ coefficientObj D Sc t') ⧸ E.ideal) →ₗ[k]
+    (coefficientObj D Sc t ⟶ coefficientObj D Sc t') :=
+  E.ideal.liftQ (extensionTruncation D Sc t t' d) fun _ hx =>
+    LinearMap.mem_ker.mpr (extensionTruncation_eq_zero D Sc E.degree_lt_bound (E.ideal_le hx))
 
-theorem windowSplitting_mk (x : coefficientObj D Sc t ⟶ coefficientObj D Sc t')
-    (hx : x ∈ ExtendedAtMost D Sc t t' d) :
-    (E.windowSplitting (E.ideal.mkQ x) : coefficientObj D Sc t ⟶ coefficientObj D Sc t') = x := by
-  have h := Classical.choose_spec
-    (E.windowQuotient.exists_leftInverse_of_injective E.ker_windowQuotient)
-  have := LinearMap.congr_fun h ⟨x, hx⟩
-  exact congrArg Subtype.val this
+theorem windowRetraction_mk (x : coefficientObj D Sc t ⟶ coefficientObj D Sc t')
+    (hx : x ∈ ExtendedAtMost D Sc t t' d) : E.windowRetraction (E.ideal.mkQ x) = x := by
+  rw [windowRetraction, Submodule.mkQ_apply, Submodule.liftQ_apply]
+  exact extensionTruncation_of_mem D Sc hx
 
 /-- The signed bounded recovery
-`q ∘ θ⁻¹ ∘ σ⁻¹ ∘ incl ∘ L_d ∘ coord`, into the standard ELV quotient at any cutoff. -/
+`q ∘ θ⁻¹ ∘ σ⁻¹ ∘ L_d ∘ coord`, into the standard ELV quotient at any cutoff. -/
 def recover (cutoff : I → ℕ) : E.W →ₗ[k]
     ((coefficientObj D Sc t ⟶ coefficientObj D Sc t') ⧸ ELVRelationSpan D Sc cutoff t t') :=
   (ELVRelationSpan D Sc cutoff t t').mkQ ∘ₗ
     (coefficientSubstitution D Sc E.substitution t t').symm.toLinearMap ∘ₗ
-    E.placement.symm.toLinearMap ∘ₗ (ExtendedAtMost D Sc t t' d).subtype ∘ₗ
-    E.windowSplitting ∘ₗ E.coordinate
+    E.placement.symm.toLinearMap ∘ₗ E.windowRetraction ∘ₗ E.coordinate
 
 /-- Recovery returns the bounded coefficient exactly, before any quotient. -/
 theorem recover_coordinates (cutoff : I → ℕ) (a : SKM.SYM D k)
@@ -272,7 +318,7 @@ theorem recover_coordinates (cutoff : I → ℕ) (a : SKM.SYM D k)
     exact coefficientSubstitution_mem_extendedAtMost D Sc E.substitution_weight hf
   have hσ := E.placement_bounded _ hθ
   simp only [recover, LinearMap.coe_comp, Function.comp_apply, AlgHom.coe_comp,
-    AlgEquiv.coe_toAlgHom, E.evaluation, E.windowSplitting_mk _ hσ, Submodule.subtype_apply,
+    AlgEquiv.coe_toAlgHom, E.evaluation, E.windowRetraction_mk _ hσ,
     LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]
   congr 1
   rw [LinearEquiv.symm_apply_eq, coefficientSubstitution_source]
@@ -306,7 +352,7 @@ theorem upwardCoefficientMap_injective_of_vacuum_evaluations (μ : X) (t t' : Li
   refine ⟨fun _ => d + 2 * t.length.choose 2 + 1, d + 2 * t.length.choose 2 + 1,
     fun _ => le_rfl, by omega, ⟨E.toBoundedCyclicRecovery _⟩⟩
 
-/-- **Conditional field theorem.** Over a field, vacuum evaluations of the
+/-- **Conditional theorem.** Over a commutative ring, vacuum evaluations of the
 swapped action at every equal-weight upward word pair, external weight and
 degree bound imply the full nondegeneracy conjecture. -/
 theorem nondegeneracy_of_vacuum_evaluations
@@ -318,6 +364,6 @@ theorem nondegeneracy_of_vacuum_evaluations
   intro t t' hw μ
   exact upwardCoefficientMap_injective_of_vacuum_evaluations μ t t' (h t t' hw μ)
 
-end Field
+end Recovery
 
 end OddMath.QuiverHecke
