@@ -178,10 +178,10 @@ Still open:
    (faithfulness of the vacuum sector evaluation on that endomorphism space).
    The generic Yoneda step is checked (`ELVVacuumTensorFaithful.lean`):
    `VacuumTensor.hom_ext_of_generating` and `hom_ext_of_generating_total` show
-   that a transformation out of the tensor vacuum `M ↦ W ⊗ M(a)` is determined by
-   its component at one module `Y₀`, when every homogeneous vector of every `M(a)`
-   is the image of a fixed `y₀ ∈ Y₀(a)` under a homogeneous morphism of the same
-   parity. Remaining for faithfulness: supply these morphisms out of the regular
+   that a transformation out of `G` followed by the tensor vacuum `M ↦ W ⊗ M(a)`
+   is determined by its component at one object `Y₀`, when every homogeneous
+   vector of every `(G X)(a)` is `(G f)(y₀)` for a fixed `y₀` and a homogeneous
+   `f : Y₀ ⟶ X` of the same parity (here `G = emptyProbe`, `Y₀ = regularProbe`). Remaining for faithfulness: supply these morphisms out of the regular
    probe (its value at the empty object is the scalar line on
    `probeOldVacuumVector`), and pass through the weight-block product
    `WeightTensorVacuum.hom` and the input-weight transport of `tensorHomAt`.
