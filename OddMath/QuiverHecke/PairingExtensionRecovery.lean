@@ -12,9 +12,8 @@ extension `Dₑ` of a Brundan–Ellis datum `D` and pulls it back to `D`. This
 module records a shorter consumer: the full-coefficient upward evaluation of
 `D` at `μ`, followed by the exact presentation map, equals the upward
 evaluation of `Dₑ` at `(μ, 0)` after the coefficient-Hom equivalence. Hence
-injectivity at `(μ, 0)` in the extension implies injectivity at `μ`, and
-vacuum evaluations for `Dₑ` at the original weights suffice for the field
-theorem for `D`. No observation quotient needs to be transported back to `D`.
+injectivity at `(μ, 0)` in the extension implies injectivity at `μ`. No
+observation quotient needs to be transported back to `D`.
 -/
 noncomputable section
 namespace OddMath.QuiverHecke.PairingExtension
@@ -51,11 +50,3 @@ theorem upwardCoefficientMap_injective_of_pairingExtension (μ : X) (t t' : List
   rw [← homMap_upwardCoefficientMap, ← homMap_upwardCoefficientMap, hFG]
 
 end OddMath.QuiverHecke.PairingExtension
-
-namespace OddMath.QuiverHecke
-open CategoryTheory StringDiagrams
-universe u
-variable {I X k : Type u} [AddCommGroup X] [Field k]
-  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cs : SKM.CScalars Sc)
-
-end OddMath.QuiverHecke

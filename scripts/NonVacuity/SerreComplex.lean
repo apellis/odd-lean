@@ -4,7 +4,7 @@ import OddMath.QuiverHecke.SerreComplex
 
 The colours are `true` (odd) and `false` (even), with `d_{true,false} = 2` and
 `d_{false,true} = 1` (a Cartan matrix of type `B₂`, with the odd colour on the root for which
-(1.4) asks `d` to be even). Scalars over `ℚ`: all `tᵢⱼ = 1`, `sᵢⱼ^{pq} = 0`. Both orders of the
+(1.2) asks `d` to be even). Scalars over `ℚ`: all `tᵢⱼ = 1`, `sᵢⱼ^{pq} = 0`. Both orders of the
 two colours are exercised: `i` odd with `M = 3`, and `i` even with `M = 2`.
 -/
 
