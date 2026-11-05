@@ -147,9 +147,11 @@ theorem tensorVacuumEndDecode_eq_of (f : End V) (g : Module.End k AQ)
 private def coefficientLmul : MvPolynomial (I × ℕ) k →ₐ[k] Module.End k AQ :=
   (Algebra.lmul k AQ).comp (polynomialToPower D cutoff L)
 
+omit [Fintype I] in
 private theorem coefficientLmul_apply (p : MvPolynomial (I × ℕ) k) (w : AQ) :
     coefficientLmul D cutoff L p w = polynomialToPower D cutoff L p * w := rfl
 
+omit [Fintype I] in
 private theorem coefficientLmul_ringHom_apply (p : MvPolynomial (I × ℕ) k) (w : AQ) :
     (coefficientLmul D cutoff L).toRingHom p w = polynomialToPower D cutoff L p * w := rfl
 
@@ -179,8 +181,10 @@ private theorem reservoir_even_coefficient (hi : D.parity i = 1) (hN : 0 < cutof
       (coefficientLmul D cutoff L).toRingHom (PowerSeries.coeff r
         (PowerSeries.invOfUnit (PowerSeries.rescale (-1) (SKM.SYM.generatorSeries k i)) 1)) := by
   refine tensorVacuumEndDecode_eq_of D Sc m cutoff L _ _ fun z => ?_
-  rw [unit_cap_closure D Sc m cutoff L i hN, tensorPowerVacuumCap_moment_even D Sc m cutoff L i hi hN r z,
-    coefficientLmul_ringHom_apply, completeCoefficient]
+  rw [unit_cap_closure D Sc m cutoff L i hN, coefficientLmul_ringHom_apply]
+  have hm := tensorPowerVacuumCap_moment_even D Sc m cutoff L i hi hN r z
+  show _ = completeCoefficient D cutoff L i r * _
+  convert hm using 3
 
 private theorem reservoir_odd_coefficient (hi : D.parity i = 1) (hN : 0 < cutoff i) (r : ℕ) :
     tensorVacuumEndDecode D Sc m cutoff L
@@ -192,10 +196,10 @@ private theorem reservoir_odd_coefficient (hi : D.parity i = 1) (hN : 0 < cutoff
         Algebra.lmul k AQ ((-1 : k) ^ (cutoff i + 1) •
           coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) := by
   refine tensorVacuumEndDecode_eq_of D Sc m cutoff L _ _ fun z => ?_
-  rw [unit_cap_closure D Sc m cutoff L i hN, tensorPowerVacuumCap_moment_odd D Sc m cutoff L i hi hN r z,
-    end_mul_apply', lmul_apply', coefficientLmul_ringHom_apply, completeCoefficient, ← mul_assoc,
-    (odd_coefficient_commute D cutoff L i hi _).eq]
-  simp only [smul_mul_assoc]
+  rw [unit_cap_closure D Sc m cutoff L i hN, end_mul_apply', lmul_apply',
+    coefficientLmul_ringHom_apply, ← mul_assoc, (odd_coefficient_commute D cutoff L i hi _).eq,
+    smul_mul_assoc]
+  convert tensorPowerVacuumCap_moment_odd D Sc m cutoff L i hi hN r z using 3
 
 private theorem tensorVacuum_reservoir_series (hi : D.parity i = 1) (hN : 0 < cutoff i) :
     PowerSeries.mk (fun l => tensorVacuumEndDecode D Sc m cutoff L
@@ -287,8 +291,14 @@ theorem tensorVacuumColumn_odd_moments
     (odd_probe_polynomial D Sc m cutoff L i hi h hhN) hcol hwin
     (tensorVacuum_reservoir_series D Sc m cutoff L i hi hN) s
   constructor
-  · rw [← tensorVacuumEndDecode_apply, hmom.1, coefficientLmul_apply]
-  · rw [← tensorVacuumEndDecode_apply, hmom.2, end_mul_apply', lmul_apply', coefficientLmul_apply]
+  · have e1 := tensorVacuumEndDecode_apply D Sc m cutoff L
+      (a ≫ (shiftedPreDot D Sc m R₀ i H ^ (h - 1 + 2 * s)) ≫ shiftedPreCap D Sc m R₀ i hP H) z
+    rw [hmom.1, coefficientLmul_apply] at e1
+    exact e1.symm
+  · have e2 := tensorVacuumEndDecode_apply D Sc m cutoff L
+      (a ≫ (shiftedPreDot D Sc m R₀ i H ^ (h + 2 * s)) ≫ shiftedPreCap D Sc m R₀ i hP H) z
+    rw [hmom.2, end_mul_apply', lmul_apply', coefficientLmul_apply] at e2
+    exact e2.symm
 
 include sy hc in
 /-- **Chosen inverse column.** If the cap window `[bend; x^n ≫ v]_(n < h)` of the actual A6
