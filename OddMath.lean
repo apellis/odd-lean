@@ -1577,6 +1577,7 @@ import OddMath.SKM.OddDotTranslation
 import OddMath.SKM.RightCapAttachment
 import OddMath.SKM.PositiveDotTransport
 import OddMath.SKM.BubbleCoefficientBasis
+import OddMath.SKM.SymComponentBasis
 import OddMath.SKM.BubbleCoefficientGrading
 import OddMath.Diagrams.OddNilHecke.CyclotomicNorm
 import OddMath.QuiverHecke.CoefficientExtension

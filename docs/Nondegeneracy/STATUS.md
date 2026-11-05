@@ -54,6 +54,14 @@ Phase 2 and the full all-even comparison of
 [FieldScopeBoundary](FieldScopeBoundary.md) remain open, so the branch is
 not complete.
 
+**Graded components of `SYM`.** The monomials of `SYM.coefficientBasis` of bidegree `z`
+form a basis of the homogeneous component `SYM_z` over every commutative ring
+(`SYM.componentBasis`, `OddMath/SKM/SymComponentBasis.lean`), so `dim SYM_z` is the number of
+monomials of bidegree `z` over every field (`SYM.finrank_component`) and the coefficients of
+`S = symDimension` in BE2 (dum) count monomials (`symDimension_coeff_eq_card`). This is the
+coefficientwise form of the corrected product of ERRATA [BE2] 8; the product identity as
+formal power series is not stated.
+
 ## Scope
 
 **Phase 1:** symmetrizable data and homogeneous admissible parameters.
