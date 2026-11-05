@@ -88,34 +88,18 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
       (z : (V).obj (⟨⟨[]⟩, rfl⟩ : ContentCategory D (parameterTwist D Sc) cutoff N 0)),
       (∀ (r : ℕ) (z : (V).obj (⟨⟨[]⟩, rfl⟩ :
           ContentCategory D (parameterTwist D Sc) cutoff N 0)),
-        tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
-            ((ELVOld.rightwardUnitColumn
-              ((BalancedInduction.adjunction (contentAppend D (parameterTwist D Sc) cutoff N
-                (0 : Multiset I) [i])).unit.app V)
-              (ProbeVacuumCap.evaluatedPostDot D (parameterTwist D Sc) m cutoff N i H) B
-              (cutoff i - 2 * m i - 1 + 2 * r)
-              ⟨cutoff i - 2 * m i - 1, by omega⟩).total ⟨⟨[]⟩, rfl⟩ z) =
+        ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B
+            (cutoff i - 2 * m i - 1 + 2 * r) z =
           polynomialToPower D cutoff L (PowerSeries.coeff r
               (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
             tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z ∧
-        tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
-            ((ELVOld.rightwardUnitColumn
-              ((BalancedInduction.adjunction (contentAppend D (parameterTwist D Sc) cutoff N
-                (0 : Multiset I) [i])).unit.app V)
-              (ProbeVacuumCap.evaluatedPostDot D (parameterTwist D Sc) m cutoff N i H) B
-              (cutoff i - 2 * m i - 1 + (2 * r + 1))
-              ⟨cutoff i - 2 * m i - 1, by omega⟩).total ⟨⟨[]⟩, rfl⟩ z) =
-          coefficientPowerQuotientMap D cutoff L
-              ((-1 : k) ^ (cutoff i + 1) • SYM.delta D k ⟨i, hi⟩) *
+        ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B
+            (cutoff i - 2 * m i - 1 + (2 * r + 1)) z =
+          ELVOld.rightwardOddScalar D cutoff L i hi *
             (polynomialToPower D cutoff L (PowerSeries.coeff r
               (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
               tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z)) →
-      tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
-          ((ELVOld.rightwardUnitColumn
-              ((BalancedInduction.adjunction (contentAppend D (parameterTwist D Sc) cutoff N
-                (0 : Multiset I) [i])).unit.app V)
-              (ProbeVacuumCap.evaluatedPostDot D (parameterTwist D Sc) m cutoff N i H) B e
-              ⟨cutoff i - 2 * m i - 1, by omega⟩).total ⟨⟨[]⟩, rfl⟩ z) =
+      ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e z =
         coefficientPowerQuotientMap D cutoff L a *
           tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) :
     VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀
@@ -141,9 +125,9 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
   refine (congrArg (fun f => tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
     (f.total ⟨⟨[]⟩, rfl⟩ z)) (hcup ⟨cutoff i - 2 * m i - 1, by omega⟩ e).symm).trans ?_
   exact hmom c B z fun r z =>
-    ⟨ELVOld.rightwardUnitColumn_odd_moments_even D (parameterTwist D Sc) m cutoff L sy
+    ⟨ELVOld.rightwardLastColumnDecode_even D (parameterTwist D Sc) m cutoff L sy
       (parameterTwist_homogeneous D Sc hc) i hi hPi hPN j B hB r z,
-     ELVOld.rightwardUnitColumn_odd_moments_odd D (parameterTwist D Sc) m cutoff L sy
+     ELVOld.rightwardLastColumnDecode_odd D (parameterTwist D Sc) m cutoff L sy
       (parameterTwist_homogeneous D Sc hc) i hi hPi hPN j B hB r z⟩
 
 include sy hc in
@@ -189,6 +173,7 @@ theorem vacuumEntry_odd_neg (N' : I → ℕ) (i : {i : I // D.parity i = 1})
     (vacuumCoefficientDecode_holds D Sc m cutoff ΛP ΛR L hP hR) i.1 i.2 hP0 hh
     (by rw [hhe] at hh; omega) _ _
     (by rw [hhe]; omega) _ (fun c B z hm => ?_)
-  rw [(hm 0 z).2, AdjunctionBubbleSeries.coeff_zero_momentSeries, map_one, one_mul, hN']
+  rw [(hm 0 z).2, AdjunctionBubbleSeries.coeff_zero_momentSeries, map_one, one_mul,
+    ELVOld.rightwardOddScalar, hN']
 
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
