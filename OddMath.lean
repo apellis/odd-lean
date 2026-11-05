@@ -1657,6 +1657,7 @@ import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.BlockMaps
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.MixedCases
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.Extraction
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.NilpotentLifting
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.PositiveVacuumWindow
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.TwoSector
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.CoefficientIdeal
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ResidualComparison
@@ -1944,6 +1945,7 @@ import OddMath.QuiverHecke.SwappedVacuum.InverseColumnMoments
 import OddMath.QuiverHecke.SwappedVacuum.InverseColumnSeries
 import OddMath.QuiverHecke.SwappedVacuum.InverseColumnOddSeries
 import OddMath.QuiverHecke.SwappedVacuum.InverseColumnEvenSeries
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumColumnMoments
 
 import OddMath.QuiverHecke.SwappedVacuum.NegativeCapMoments
 
@@ -2652,6 +2654,7 @@ import OddMath.QuiverHecke.SwappedAssembly.PointwiseLeftwardInverse
 import OddMath.QuiverHecke.SwappedAssembly.SupportedPointwiseLeftwardInverse
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.VacuumWindow
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.VacuumInverseWindow
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.VacuumCapInverseWindow
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeTransposeNorms
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorFamilies
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.OffCentralAugmentedMatrix
@@ -2762,6 +2765,9 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvenCentralSlide
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorEvenVacuumCap
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumPolynomialWindow
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumBend
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumCap
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumCapInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumCapInverseAttach
 import OddMath.QuiverHecke.PairingExtensionPBW
 import OddMath.QuiverHecke.PairingExtensionRecovery
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorEntryLayerCharts
