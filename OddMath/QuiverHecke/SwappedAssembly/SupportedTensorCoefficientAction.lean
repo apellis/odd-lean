@@ -149,4 +149,38 @@ def tensorFamilyWordHomCoefficientAction {l : List (Col I X)} {s t : Sector I}
     tensorFamilyWordHomCoefficientAction D Sc m cutoff L ΛP ΛR p sourceWord a f =
       f ≫ tensorFamilyPathCoefficientAction D Sc m cutoff L ΛP ΛR p a := rfl
 
+private theorem reindexCoefficientAction_heq {x y z : X} (h : x = y)
+    (F : probeOldWeightSpace D Tw m ΛP x ⟶ elvWeightSpace D Tw cutoff N ΛR z)
+    (φ : SYM D k →ₐ[k] End F) (a : SYM D k) :
+    HEq (reindexCoefficientAction D Sc m cutoff L ΛP ΛR h F φ a) (φ a) := by
+  subst y
+  rfl
+
+omit [Fintype I] in
+private theorem coefficientActionAtEquality_heq {C : Type*} [Category* C] [Preadditive C]
+    [Linear k C] {V V' : C} (h : V = V') (φ : SYM D k →ₐ[k] End V) (a : SYM D k) :
+    HEq (coefficientActionAtEquality D h φ a) (φ a) := by
+  subst V'
+  rfl
+
+private theorem supportedHom_heq {V V' : H D Tw m cutoff N ΛP ΛR (0,0)} (h : V = V')
+    {f : V ⟶ V} {f' : V' ⟶ V'} (hf : HEq f f') : HEq f.hom f'.hom := by
+  subst V'
+  cases hf
+  rfl
+
+/-- At the occupied vacuum sector, the chosen family coefficient is literally the
+source coefficient on the selected tensor-vacuum Hom, across the input-weight
+and supported-object equalities. -/
+theorem tensorTargetFamilyCoefficientAction_zero_heq (a : SYM D k) :
+    HEq (tensorTargetFamilyCoefficientAction D Sc m cutoff L ΛP ΛR (0,0) a).hom
+      (sourceCoefficientAction D Tw m cutoff L ΛP ΛR a) := by
+  have h1 : HEq (tensorTargetFamilyCoefficientAction D Sc m cutoff L ΛP ΛR (0,0) a)
+      (tensorVacuumCoefficientAction D Sc m cutoff L ΛP ΛR a) := by
+    unfold tensorTargetFamilyCoefficientAction
+    simp only [↓reduceDIte]
+    exact coefficientActionAtEquality_heq D _ _ a
+  exact (supportedHom_heq D Sc m cutoff L ΛP ΛR (tensorTargetFamily_zero D Sc m cutoff ΛP ΛR L) h1).trans
+    (reindexCoefficientAction_heq D Sc m cutoff L ΛP ΛR _ _ _ a)
+
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
