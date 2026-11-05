@@ -1,6 +1,8 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMateTensors
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDoubleCrossing
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCounitComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDoubleAppend
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendCrossing
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionDoubleTransform
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeRestrictionComparison
 
 /-! # The chosen ordinary-adjunction crossing mate under scalar specialization
 

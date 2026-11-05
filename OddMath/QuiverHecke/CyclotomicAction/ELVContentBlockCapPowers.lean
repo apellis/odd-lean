@@ -1,5 +1,6 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVFullInductionSquareSourceDots
-import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockMatrixCaps
+import OddMath.QuiverHecke.CyclotomicAction.ELVFullInductionSquareCounit
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockMatrixRows
 
 /-! # Dotted caps through the chosen canonical content source chart
 

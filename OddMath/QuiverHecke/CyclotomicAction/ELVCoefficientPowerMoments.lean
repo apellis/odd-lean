@@ -1,5 +1,7 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerRows
-import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumMoments
+import OddMath.QuiverHecke.CyclotomicAction.ELVUnitCoefficientRows
+import OddMath.QuiverHecke.CyclotomicAction.ELVOneStrand
+import OddMath.QuiverHecke.CyclotomicAction.ELVPScalarBalance
 
 /-! # One-strand moments on the literal coefficient-power vacuum
 

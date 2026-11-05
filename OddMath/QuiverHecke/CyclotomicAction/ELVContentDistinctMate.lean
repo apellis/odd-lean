@@ -4,7 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldContentAppendTo
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionRectangularMate
-import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctModuleIso
+import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctModuleInverse
+import OddMath.Algebra.HomogeneousSuperfunctorIso
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentEFChartTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionIsoComponents
 

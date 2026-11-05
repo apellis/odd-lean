@@ -1,7 +1,8 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordAppendDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentWhiskering
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentComparisonCoherence
-import OddMath.QuiverHecke.CyclotomicAction.ELVOldMateTensors
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldModuleAdjunction
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionCrossTensor
 
 /-! Selected recursive word comparisons and the actual signed equal-colour
 crossing, via existing whole-comparison coherence and outer recasting. -/

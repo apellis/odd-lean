@@ -1,5 +1,6 @@
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorEntryPullback
-import OddMath.QuiverHecke.CyclotomicAction.ELVTensorWordQuotientObservation
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumWords
+import OddMath.QuiverHecke.HalfTurn.PowerWordQuotientCoordinates
 
 /-! # Canonical cyclic-unit observation of the supported tensor matrix
 
