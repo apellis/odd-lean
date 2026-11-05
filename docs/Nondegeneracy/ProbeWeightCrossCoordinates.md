@@ -1,7 +1,0 @@
-# Stored-target coordinates of the selected OLD weight crossings
-
-`probeOldActionCross_stored_total` retains the entire supported crossing as its prescribed evaluated stored-target component, conjugated by the two selected product-coordinate equalities. The normalization is negative on equal colours and positive otherwise. `probeOldBlockEqualCross_stored_total` and `probeOldBlockDistinctCross_stored_total` identify the block maps directly. The equality `probeOldActionEqualCross_eq_neg_distinct` compares the selected equal crossing with the positive rectangular construction on equal colours; `probeOldActionCross_eq_normalized_distinct` records the resulting single normalization convention.
-
-No braid, naturality, comparison, inverse or finiteness premise is added. The equal comparison uses the constructed zero output at absent predecessors and retains the actual maps on supported blocks. The coordinate identities supply the comparisons needed to attach the stored-target three-strand equations to the selected generators.
-
-The producer and paired occupied consumer pass scoped checks with warnings as errors and both transparency compatibility settings. The consumer tests equal and distinct colours over mixed-parity and two-odd data, actual evaluated modules on nonempty content and positive-exponent nonzero append outputs, and audits all 23 owned declarations against the allowed axioms. Whole-weight corrected and general braid attachments remain separate obligations.

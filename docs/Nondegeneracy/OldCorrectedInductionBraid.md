@@ -1,7 +1,0 @@
-# The corrected OLD braid on direct triple induction
-
-`oldDirectMixedBraid_polynomial` retains the prescribed suffix-first minus prefix-first paths, with the equal crossing negative in each path. It identifies that entire direct balanced-induction linear operator with the ordered three-dot correction in the original scalar family `Sc`, while the acting OLD category uses `parameterTwist D Sc`.
-
-The literal source coefficient braid supplies the difference. The two superopposite three-map signs both reduce to the product of the two colour parities. The total source parity is the outer parity, so the twist of an arbitrary coefficient kernel survives exactly as in `oldTriplePolynomial_operator`. No source braid, polynomial-naturality or comparison premise is supplied.
-
-The producer and paired occupied consumer pass scoped checks with warnings as errors and both transparency compatibility options. The consumer audits all 16 owned declarations against `propext`, `Classical.choice` and `Quot.sound`. Full integration verification remains separate. The consumer uses both mixed outer parities, three odd moving strands, nonempty OLD representables, arbitrary coefficient kernels including an odd last dot, nonzero homogeneous interior parameters in original and twisted scalar families, and positive-exponent nonzero append outputs. The remaining attachment compares these direct paths with the chosen nested/evaluated crossing whiskerings and carries the same dot correction to the actual weight coordinates.
