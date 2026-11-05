@@ -42,3 +42,6 @@ route index. No hypothesis beyond the route index is used.
 
 `PositiveBubbleField` and `NonpositiveBubbleField` for the same bases are not addressed
 here.
+`nondegeneracy_of_swapped_bubble_fields sy hp hn` assembles the conjecture from these two
+fields for `swappedRouteBases sy`, using `swappedCoordinateField sy` and
+`swappedChartField sy` for the other two.
