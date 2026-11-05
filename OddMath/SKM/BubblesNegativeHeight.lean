@@ -39,7 +39,7 @@ theorem smul_bubRs_of_neg (i : I) (μ : X) (hμ : D.h i μ < 0) (s : ℕ) :
     (cs.c μ i : k) • bubRs cs i μ s =
       cl D Sc μ [] [dn i, up i] (etaL i ((s : ℤ) - D.h i μ - 1).toNat) ≫
         cl D Sc μ [dn i, up i] [] (dcapL i (-D.h i μ - 1).toNat) := by
-  rw [bubRs, bubR, if_pos (show (0 : ℤ) ≤ (s : ℤ) - D.h i μ - 1 by omega), epsP, if_pos hμ,
+  rw [bubRs, bubR, ite_eq_left (show (0 : ℤ) ≤ (s : ℤ) - D.h i μ - 1 by omega), epsP, ite_eq_left hμ,
     Linear.comp_smul, smul_smul,
     show (cs.c μ i : k) * (↑(cs.c μ i)⁻¹ : k) = 1 by
       rw [← Units.val_mul, mul_inv_cancel, Units.val_one], one_smul]
@@ -47,7 +47,7 @@ theorem smul_bubRs_of_neg (i : I) (μ : X) (hμ : D.h i μ < 0) (s : ℕ) :
 /-- At negative height the odd bubble (2.18) is the normalized right bubble `bubRs(1)`. -/
 theorem oddBubble_of_neg (i : I) (μ : X) (hμ : D.h i μ < 0) :
     oddBubble cs i μ = (cs.c μ i : k) • bubRs cs i μ (1 : ℕ) := by
-  rw [oddBubble, if_neg (not_le.mpr hμ), bubRs,
+  rw [oddBubble, ite_eq_right (not_le.mpr hμ), bubRs,
     show ((1 : ℕ) : ℤ) - D.h i μ - 1 = -D.h i μ by omega]
 
 end OddMath.SKM
