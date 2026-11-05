@@ -164,6 +164,13 @@ as it is and grade the `R`-linear KLR category as a `K`-linear supercategory:
    `sᵢⱼ^{pq}` in `𝒜 (coefficientDegree)` and of `tᵢⱼ` in `𝒜 0`), then
    `gradedSupercategoryOf 𝒜 : GradedSupercategory K (H D Sc)` and its monoidal version, with
    `gradedSupercategory D sy Sc hc` the special case `K = R`, trivial grading.
+   *Checked* (`OddMath/QuiverHecke/CoefficientGrading.lean`): `isHomogeneous_coefficientGraded`
+   (the quiver Hecke presentation is coefficient-graded homogeneous when the `tᵢⱼ` lie in
+   `𝒜 0` and each nonzero `sᵢⱼ^{pq}` lies in `𝒜 (coefficientDegree)`, indexed by `ℤ`),
+   `iSupIndep_coefficientGraded`, and `isHomogeneous_rees` (the Rees parameters of a
+   lower-degree system over `K[h]`, `h` in degree `1`). Open: the bundled
+   `GradedSupercategory K` structure (needs item 2) and the truncations `K[h]/(h^N)`
+   (needs the coefficient grading of the quotient ring).
 4. *Downstream threading*: the ELV coefficient grading (`ELVHomGrading`, `ELVOldGrading`,
    `ELVOldCategoryGrading`, `ELVLowerDegree`, `ELVKernelDegree`, `ELVKernelBoundaryDegrees`,
    `ELVWeightedKernelBoundaryCoordinates`, `ELVTruncatedNilpotence` and the other files

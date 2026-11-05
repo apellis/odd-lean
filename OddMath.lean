@@ -1,5 +1,6 @@
 import OddMath.SKM.ELVScalarSpecialization
 import OddMath.SKM.ELVScalarParity
+import OddMath.QuiverHecke.CoefficientGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVScalarSpecializationFunctor
 import OddMath.QuiverHecke.CyclotomicAction.ELVBoundaryRowLeading
 import OddMath.QuiverHecke.CyclotomicAction.ELVBoundaryRowDivision

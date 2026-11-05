@@ -135,6 +135,23 @@ theorem of_mem_part (g : a ⟶ b) :
   have := single_mem_part (𝒜 := 𝒜) (deg := deg) (g := g) SetLike.GradedOne.one_mem
   rwa [add_zero] at this
 
+theorem of_mem_part' (g : a ⟶ b) {d : A} (hd : Diagram.degree deg g = d) :
+    (LinDiagram.of g : LinDiagram R a b) ∈ part 𝒜 deg a b d :=
+  hd ▸ of_mem_part g
+
+/-- Multiplying by a coefficient of degree `m` raises the degree by `m`. -/
+theorem smul_mem_part {r : R} {m : A} (hr : r ∈ 𝒜 m) {f : LinDiagram R a b} {d : A}
+    (hf : f ∈ part 𝒜 deg a b d) : r • f ∈ part 𝒜 deg a b (m + d) := by
+  intro g
+  change r * f.toFinsupp g ∈ _
+  convert SetLike.GradedMul.mul_mem hr (hf g) using 2
+  abel
+
+/-- Coefficients of degree `0` preserve the degree. -/
+theorem smul_mem_part_zero {r : R} (hr : r ∈ 𝒜 0) {f : LinDiagram R a b} {d : A}
+    (hf : f ∈ part 𝒜 deg a b d) : r • f ∈ part 𝒜 deg a b d := by
+  simpa using smul_mem_part hr hf
+
 /-- Composition of homogeneous combinations adds degrees. -/
 theorem comp_mem_part {f : LinDiagram R a b} {g : LinDiagram R b c} {d e : A}
     (hf : f ∈ part 𝒜 deg a b d) (hg : g ∈ part 𝒜 deg b c e) :
