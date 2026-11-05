@@ -36,17 +36,6 @@ private theorem underlying_right {C : Type u} [Bicategory.{w,v} C]
       (Bicategory.leftUnitor F).hom := by unfold Bicategory.rightZigzag; bicategory
     _ = _ := by rw [A.right_triangle]; simp
 
-private theorem comp_unit_formula {C : Type u} [Bicategory.{w,v} C]
-    {a b c : C} {E₁ : a ⟶ b} {F₁ : b ⟶ a} {E₂ : b ⟶ c} {F₂ : c ⟶ b}
-    (A₁ : Bicategory.Adjunction E₁ F₁) (A₂ : Bicategory.Adjunction E₂ F₂) :
-    (A₁.comp A₂).unit = A₁.unit ≫
-      Bicategory.whiskerLeft E₁ (Bicategory.leftUnitor F₁).inv ≫
-      Bicategory.whiskerLeft E₁ (Bicategory.whiskerRight A₂.unit F₁) ≫
-      Bicategory.whiskerLeft E₁ (Bicategory.associator E₂ F₂ F₁).hom ≫
-      (Bicategory.associator E₁ E₂ (F₂ ≫ F₁)).inv := by
-  dsimp [Bicategory.Adjunction.comp, Bicategory.Adjunction.compUnit]
-  bicategory
-
 private theorem comp_counit_formula {C : Type u} [Bicategory.{w,v} C]
     {a b c : C} {E₁ : a ⟶ b} {F₁ : b ⟶ a} {E₂ : b ⟶ c} {F₂ : c ⟶ b}
     (A₁ : Bicategory.Adjunction E₁ F₁) (A₂ : Bicategory.Adjunction E₂ F₂) :
@@ -77,14 +66,6 @@ def comp (A₁ : SuperAdjunction (k := k) E₁ F₁)
     (A₂ : SuperAdjunction (k := k) E₂ F₂) :
     SuperAdjunction (k := k) (E₁ ≫ E₂) (F₂ ≫ F₁) :=
   fromUnderlying (A₁.toUnderlying.comp A₂.toUnderlying)
-
-/-- The nested right units, with all associators in execution order. -/
-theorem comp_unit (A₁ : SuperAdjunction (k := k) E₁ F₁)
-    (A₂ : SuperAdjunction (k := k) E₂ F₂) :
-    (A₁.comp A₂).unit = A₁.unit ≫ E₁ ◁ (leftUnitor F₁).inv ≫
-      E₁ ◁ (A₂.unit ▷ F₁) ≫ E₁ ◁ (associator E₂ F₂ F₁).hom ≫
-      (associator E₁ E₂ (F₂ ≫ F₁)).inv :=
-  congrArg Subtype.val (comp_unit_formula A₁.toUnderlying A₂.toUnderlying)
 
 /-- The nested right counits, without a left-adjunction hypothesis. -/
 theorem comp_counit (A₁ : SuperAdjunction (k := k) E₁ F₁)

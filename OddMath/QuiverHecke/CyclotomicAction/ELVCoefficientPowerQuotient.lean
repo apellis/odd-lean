@@ -65,7 +65,7 @@ private def elvToUniversalPower : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutof
         (SKM.SYM.elvCoefficientIdeal D k cutoff ⊔ SKM.SYM.coefficientPowerIdeal D k L).ringCon from
           TwoSidedIdeal.ringCon_le_iff.mp le_sup_left) h))
 
-private theorem actualPower_le_kernel :
+private theorem power_le_kernel :
     coefficientPowerIdeal D cutoff (elementaryCoefficients (k := k) D cutoff) L ≤
       TwoSidedIdeal.ofRingCon (RingCon.ker (elvToUniversalPower (k := k) D cutoff L).toRingHom) := by
   apply TwoSidedIdeal.span_le.mpr
@@ -85,7 +85,7 @@ coefficient generators. -/
 def coefficientPowerToUniversal : CoefficientPowerQuotient (k := k) D cutoff L →ₐ[k]
     UniversalCoefficientPowerQuotient (k := k) D cutoff L :=
   RingCon.liftₐ _ (elvToUniversalPower D cutoff L)
-    (TwoSidedIdeal.ringCon_le_iff.mp (actualPower_le_kernel D cutoff L))
+    (TwoSidedIdeal.ringCon_le_iff.mp (power_le_kernel D cutoff L))
 
 @[simp] theorem universalToCoefficientPower_apply (a : SKM.SYM D k) :
     universalToCoefficientPower D cutoff L
@@ -138,16 +138,5 @@ theorem coefficientPowerQuotientMap_eq_zero_iff (a : SKM.SYM D k) :
     exact (show (SKM.SYM.elvCoefficientIdeal D k cutoff ⊔
       SKM.SYM.coefficientPowerIdeal D k L).ringCon.mkₐ k a = 0 from Quotient.sound ha).trans
         (map_zero (coefficientPowerQuotientEquiv (k := k) D cutoff L)).symm
-
-/-- The literal actual power quotient retains the bounded coefficient
-window. Detection transfers through the proved quotient map, without
-inferring injectivity after an additional quotient. -/
-theorem coefficientPowerQuotient_injective (d N : ℕ) (hd : d < N)
-    (hc : ∀ i, N ≤ cutoff i) (hL : ∀ a, N ≤ L a * SKM.SYM.elementaryWeight D a) :
-    Function.Injective (fun x : SKM.SYM.CoefficientAtMost D k d =>
-      coefficientPowerQuotientMap D cutoff L (x : SKM.SYM D k)) := by
-  intro x y hxy
-  apply SKM.SYM.elvPower_quotient_injective D k cutoff L d N hd hc hL
-  exact congrArg (coefficientPowerToUniversal D cutoff L) hxy
 
 end OddMath.QuiverHecke.ELVOld

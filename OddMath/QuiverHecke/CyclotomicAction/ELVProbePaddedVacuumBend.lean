@@ -263,7 +263,6 @@ theorem paddedVacuumDx_odd (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1) :
   exact paddedVacuumDx_odd_at D Sc m cutoff bound ΛP ΛR hcP hcR H i sy hc hP hi n hb'
     (((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).centralPaddedDx_separated i (((0, 0) : Sector I)) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) (factorDotIso D Sc m cutoff bound ΛP ΛR hcP hcR i) (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) (2 * n) hD)
 
-
 private theorem paddedVacuumDx_even_at
     (hP : 0 < probeCutoff D m i) (hi : D.parity i = 0) (n : ℕ)
     (hn : ProbeVacuumCap.diagonalPostDot D (parameterTwist D Sc) m cutoff bound i (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) ^ n = 0)

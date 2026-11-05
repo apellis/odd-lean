@@ -39,18 +39,4 @@ theorem elvWeightRouquierMate_mem :
   simpa only [SKM.zmod2_mul_self] using
     elvWeightMixedMate_mem D Sc cutoff bound i i Λ h₁ h₂ h₁ h₂
 
-/-- The selected principal field uses the upper cup, signed crossing and induced lower cap. -/
-theorem elvWeightRouquierMate_app_block (p : ZMod 2)
-    (M : ELVWeightProduct D Sc cutoff bound Λ x₁) (δ : WeightBlocks D Λ x₁) :
-    (SKM.rouquierMate A₁ A₂ Cross).app p M δ =
-      (elvWeightUnitApp D Sc cutoff bound i Λ h₂ δ
-          ((elvE D Sc cutoff bound i Λ h₁).obj ((elvF D Sc cutoff bound i Λ h₁).obj M)) ≫
-        (elvBlockRes D Sc cutoff bound i Λ h₂ δ).map
-          ((Cross).app p ((elvF D Sc cutoff bound i Λ h₁).obj M) (blockSucc D Λ i h₂ δ))) ≫
-        (elvBlockRes D Sc cutoff bound i Λ h₂ δ).map
-          ((elvInductionComponent D Sc cutoff bound i Λ h₂ (blockSucc D Λ i h₂ δ)).map
-            ((elvWeightCounit D Sc cutoff bound i Λ h₁).app M)) := by
-  rw [elvWeightRouquierMate_eq]
-  exact elvWeightMixedMate_app_block D Sc cutoff bound i i Λ h₁ h₂ h₁ h₂ p M δ
-
 end OddMath.QuiverHecke.ELVOld

@@ -71,7 +71,6 @@ theorem tmul_mul_eq_zero {X : H} (hX : X * ψ 1 = X) {c : A} (hc : ∀ m : N, c 
 
 end Categorification.InductionAlong.Ind
 
-
 namespace OddMath.QuiverHecke
 open CategoryTheory StringDiagrams MonoidalCategory Categorification Categorification.InductionAlong
 open scoped Classical

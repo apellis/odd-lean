@@ -33,14 +33,4 @@ theorem contentMissingUnitModuleIso_hom :
     (contentMissingUnitModuleIso D Sc cutoff γ i hi N).hom = unitColumnModuleMap K hDot N count :=
   unitColumnModuleIso_hom K hDot N count _ _
 
-/-- Both directions retain the actual finite-family parity grading. -/
-theorem contentMissingUnitModuleIso_hom_mem :
-    (contentMissingUnitModuleIso D Sc cutoff γ i hi N).hom ∈ parity (R := k) _ _ 0 := by
-  rw [contentMissingUnitModuleIso_hom]
-  exact unitColumnModuleMap_mem K hDot N count
-
-theorem contentMissingUnitModuleIso_inv_mem :
-    (contentMissingUnitModuleIso D Sc cutoff γ i hi N).inv ∈ parity (R := k) _ _ 0 :=
-  unitColumnModuleIso_inv_mem K hDot N count _ _
-
 end OddMath.QuiverHecke.ELVOld

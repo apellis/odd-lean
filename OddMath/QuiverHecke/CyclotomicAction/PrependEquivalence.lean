@@ -252,15 +252,6 @@ def prependCoordinateEquiv (i : I) (n : ℕ) :
       obtain ⟨b, hb⟩ := prependExpansion_exists D Sc i n z
       exact ⟨b, Subtype.ext hb⟩⟩
 
-/-- Forward coordinates are the literal finite sum of prepend corner terms. -/
-theorem prependCoordinateEquiv_apply (i : I) (n : ℕ)
-    (b : (PrependShuffle n × ℕ) →₀ Hn D Sc n) :
-    prependCoordinateEquiv D Sc i n b =
-      b.sum (fun q c => prependPBWCorner D Sc i q.1 q.2 c) := by
-  apply Subtype.ext
-  change prependExpansion D Sc i n b = _
-  simp [prependExpansion, Finsupp.lsum_apply, Finsupp.sum, prependPBWCorner]
-
 /-- The inverse is the finite entrywise coefficient assembly. -/
 theorem prependCoordinateEquiv_symm_apply (i : I) (n : ℕ)
     (z : InductionAlong.Corner (prependAlgebra D Sc i n : Hn D Sc n →ₙ+* Hn D Sc (n + 1))) :
@@ -316,17 +307,5 @@ theorem prependCoordinateEquiv_symm_right (i : I) (n : ℕ)
       prependRightCoefficients D Sc r ((prependCoordinateEquiv D Sc i n).symm z) := by
   apply (prependCoordinateEquiv D Sc i n).injective
   rw [LinearEquiv.apply_symm_apply, prependCoordinateEquiv_right, LinearEquiv.apply_symm_apply]
-
-/-- Reconstructing the extracted coefficients gives the original corner element. -/
-theorem prependCoordinateEquiv_roundtrip (i : I) (n : ℕ)
-    (z : InductionAlong.Corner (prependAlgebra D Sc i n : Hn D Sc n →ₙ+* Hn D Sc (n + 1))) :
-    prependCoordinateEquiv D Sc i n ((prependCoordinateEquiv D Sc i n).symm z) = z :=
-  (prependCoordinateEquiv D Sc i n).apply_symm_apply z
-
-/-- Extracting the coefficients of the literal expansion gives the original family. -/
-theorem prependCoordinateEquiv_symm_roundtrip (i : I) (n : ℕ)
-    (b : (PrependShuffle n × ℕ) →₀ Hn D Sc n) :
-    (prependCoordinateEquiv D Sc i n).symm (prependCoordinateEquiv D Sc i n b) = b :=
-  (prependCoordinateEquiv D Sc i n).symm_apply_apply b
 
 end OddMath.QuiverHecke

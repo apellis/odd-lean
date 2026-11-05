@@ -33,7 +33,6 @@ theorem decorates_valid {a : List (Letter I)} {R : List (TMove (Letter I))}
   rw [List.eq_of_mem_replicate hp, hd.1]
   exact (hq j hj).1
 
-
 /-- Literal cup/cap decorated moves evaluate to exactly the ordinary partial
 right mate used by the closure identity. -/
 theorem dLay_moves {l r : List I} {a b : List (Letter I)}

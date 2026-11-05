@@ -43,47 +43,4 @@ theorem powerWordHalfTurnCoordinate_ker (s t : List I) :
     ← Submodule.comap_comp]
   exact halfTurn_oldElementaryPowers_preimage D Sc cutoff L s t
 
-private theorem elementaryPowers_weight {N : ℕ}
-    (hL : ∀ j, N ≤ L j * SKM.SYM.elementaryWeight D j) :
-    ∀ a ∈ (Set.range fun j : I × ℕ => SKM.SYM.e D k j.1 j.2 ^ L j),
-      a ∈ SKM.SYM.CoefficientAtLeast D k N := by
-  rintro a ⟨j, rfl⟩
-  exact SKM.SYM.coefficientAtLeast_antitone D k (hL j)
-    (SKM.SYM.elementary_pow_mem_coefficientAtLeast D k j (L j))
-
-/-- Actual word values detect the full coefficient/PBW window under the
-explicit cutoff and literal power inequalities, with no kernel premise. -/
-theorem powerWordHalfTurnCoordinate_injective_on_extendedAtMost
-    {s t : List I} {d N : ℕ} (hN : ∀ i, N ≤ cutoff i)
-    (hL : ∀ j, N ≤ L j * SKM.SYM.elementaryWeight D j)
-    (hd : d + 2 * s.length.choose 2 < N) :
-    Function.Injective (fun x : ExtendedAtMost D Sc s t d =>
-      powerWordHalfTurnCoordinate D Sc cutoff L s t x.val) := by
-  intro x y hxy
-  apply transformedIdeal_quotient_injective_on_extendedAtMost D Sc hN
-    (elementaryPowers_weight D L hL) hd
-  apply (Submodule.Quotient.eq _).mpr
-  rw [← powerWordHalfTurnCoordinate_ker D Sc cutoff L s t]
-  change powerWordHalfTurnCoordinate D Sc cutoff L s t (x.val - y.val) = 0
-  rw [map_sub]
-  exact sub_eq_zero.mpr hxy
-
-/-- The actual-coordinate kernel satisfies the prescribed vacuum window
-bound for the literal reservoir schedule. -/
-theorem powerWordHalfTurnCoordinate_kernel_le_vacuumWindow
-    (μ : X) (s t : List I) (d : ℕ)
-    (hL : ∀ j, vacuumCutoff s d ≤ L j * SKM.SYM.elementaryWeight D j) :
-    LinearMap.ker (powerWordHalfTurnCoordinate D Sc (reservoirLevel D μ s d) L s t) ≤
-      ExtendedAtLeast D Sc s t ((vacuumCutoff s d : ℤ) - 2 * s.length.choose 2) := by
-  rw [powerWordHalfTurnCoordinate_ker]
-  exact transformedIdeal_le_vacuumWindow D Sc μ s t d (elementaryPowers_weight D L hL)
-
-/-- Bounded detection in the actual word values at the prescribed schedule. -/
-theorem powerWordHalfTurnCoordinate_reservoir_injective (μ : X) (s t : List I) (d : ℕ)
-    (hL : ∀ j, vacuumCutoff s d ≤ L j * SKM.SYM.elementaryWeight D j) :
-    Function.Injective (fun x : ExtendedAtMost D Sc s t d =>
-      powerWordHalfTurnCoordinate D Sc (reservoirLevel D μ s d) L s t x.val) :=
-  powerWordHalfTurnCoordinate_injective_on_extendedAtMost D Sc _ L
-    (vacuumCutoff_le_reservoirLevel D μ s d) hL (by simp [vacuumCutoff])
-
 end OddMath.QuiverHecke

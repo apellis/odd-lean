@@ -104,10 +104,10 @@ theorem sum_total {M N : Superfunctor k C (SVec k)} (s : Finset ι)
     (∑ a ∈ s, f a).total t = ∑ a ∈ s, (f a).total t :=
   map_sum (totalLinear (k := k) t) f s
 
-private theorem id_total_native (M : Superfunctor k C (SVec k)) (t : C) :
+private theorem id_total_eq (M : Superfunctor k C (SVec k)) (t : C) :
     (𝟙 M : M ⟶ M).total t = 𝟙 (M.obj t) := SuperNatTrans.id_total M.toFunctor t
 
-private theorem zero_total_native (M N : Superfunctor k C (SVec k)) (t : C) :
+private theorem zero_total_eq (M N : Superfunctor k C (SVec k)) (t : C) :
     (0 : M ⟶ N).total t = 0 := by
   simp only [SuperNatTrans.total, Superfunctor.zero_app, zero_add]
 
@@ -116,7 +116,7 @@ private theorem zero_total_native (M N : Superfunctor k C (SVec k)) (t : C) :
     inclusionHom V a ≫ projectionHom V a = 𝟙 (V a) := by
   apply hom_ext_total
   intro t
-  rw [Superfunctor.comp_total, id_total_native]
+  rw [Superfunctor.comp_total, id_total_eq]
   apply SVec.hom_ext
   intro x
   rw [SVec.comp_apply, projectionHom_total_apply, inclusionHom_total_self, SVec.id_apply]
@@ -126,7 +126,7 @@ theorem inclusionHom_projectionHom_ne [Fintype ι] (a b : ι) (hne : a ≠ b) :
     inclusionHom V a ≫ projectionHom V b = 0 := by
   apply hom_ext_total
   intro t
-  rw [Superfunctor.comp_total, zero_total_native]
+  rw [Superfunctor.comp_total, zero_total_eq]
   apply SVec.hom_ext
   intro x
   rw [SVec.comp_apply, projectionHom_total_apply, inclusionHom_total_ne V a b hne, SVec.zero_apply]
@@ -137,7 +137,7 @@ theorem sum_projectionHom_inclusionHom [Fintype ι] :
   classical
   apply hom_ext_total
   intro t
-  rw [sum_total, id_total_native]
+  rw [sum_total, id_total_eq]
   apply SVec.hom_ext
   intro x
   simp only [sum_hom_apply, Superfunctor.comp_total, SVec.comp_apply, SVec.id_apply]

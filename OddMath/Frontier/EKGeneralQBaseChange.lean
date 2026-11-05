@@ -341,7 +341,6 @@ def degreeHBasisK (n : ℕ) : Module.Basis (DegreeShapes.DegreeShape n) k (degre
   simp only [degreeHBasisK, Module.Basis.map_apply, LinearEquiv.coe_ofEq_apply, Module.Basis.span_apply]
   exact hBasisK_apply _
 
-
 theorem eBasisK_eq_psi (μ : YoungDiagram) :
     eBasisK (k := k) μ = psiRing (EKPartitionSpanning.ePartition μ) := by
   rw [eBasisK, Module.Basis.map_apply, Module.Basis.baseChange_apply, EKIntegralBases.eBasis_apply]

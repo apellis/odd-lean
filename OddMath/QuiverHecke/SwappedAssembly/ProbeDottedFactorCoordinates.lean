@@ -269,44 +269,5 @@ theorem etaEntry_probe_factor (c : P.CrossCoeff) (i : I) (n : ℕ) (ν : X) {t :
       (twoPathEndpointIso (c₁ := ⟨dn i, SKM.wt D ν [up i]⟩) (c₂ := ⟨up i, ν⟩)
         true true hv hw e Z).inv) h
 
-/-- The literal probe cap word, with its homogeneous shift sign and
-inverse left-adjunction scalar retained at every exponent. -/
-theorem epsEntry_probe_coordinates (c : P.CrossCoeff) (i : I) (n : ℕ) (ν : X)
-    {t : Sector I} (hw : StepValid (false, i) true (nextSector (true, i) true t))
-    (e : nextSector (false, i) true (nextSector (true, i) true t) = t) (Z : P.H t) :
-    P.epsEntry c i n ν (SPath.two true true (by trivial) hw e) (.nil t) Z =
-      (probeCapFactorIso i ν hw e Z).hom ≫
-      (koszulSign (leftAdjParity D i (-P.muP t))
-        (1 + (n : ZMod 2) * D.parity i) •
-      (P.T.E i (P.muP_preE i t) ◁
-        ((homParityShiftDatum (k := k) (leftAdjParity D i (-P.muP t))).iso
-          (P.T.F i (P.muP_preE i t) ≫ Z)).hom ≫
-        rouquierPower (P.T.dot i (P.muP_preE i t)) n ▷ (P.T.F i (P.muP_preE i t) ≫ Z) ≫
-        (associator (P.T.E i (P.muP_preE i t)) (P.T.F i (P.muP_preE i t)) Z).inv ≫
-        (((((P.T.leftAdjScalar i (-P.muP t))⁻¹ : kˣ) : k) •
-          P.T.leftCap i (P.muP_preE i t)) ▷ Z) ≫ (leftUnitor Z).hom)) := by
-  rw [epsEntry_probe_factor, homReservoirCap_coordinates]
-
-/-- The literal probe cup word retains the sign from removing the output
-shift, and the prescribed order of every inherited dot power. -/
-theorem etaEntry_probe_coordinates (c : P.CrossCoeff) (i : I) (n : ℕ) (ν : X)
-    {t : Sector I} (hv : StepValid (false, i) true t)
-    (hw : StepValid (true, i) true (nextSector (false, i) true t))
-    (e : nextSector (true, i) true (nextSector (false, i) true t) = t) (Z : P.H t) :
-    P.etaEntry c i n ν (.nil t) (SPath.two true true hv hw e) Z ≫
-      (probeCupFactorIso i ν hv hw e Z ≪≫
-        (homParityShiftDatum (k := k)
-          (leftAdjParity D i (-P.muP (nextSector (false, i) true t)))).iso
-          (P.T.F i (P.muP_preF i hv) ≫ P.T.E i (P.muP_preF i hv) ≫ Z)).hom =
-      koszulSign (leftAdjParity D i (-P.muP (nextSector (false, i) true t)))
-        ((n : ZMod 2) * D.parity i) •
-      ((leftUnitor Z).inv ≫ P.T.leftCup i (P.muP_preF i hv) ▷ Z ≫
-        (associator (P.T.F i (P.muP_preF i hv)) (P.T.E i (P.muP_preF i hv)) Z).hom ≫
-        P.T.F i (P.muP_preF i hv) ◁ (rouquierPower (P.T.dot i (P.muP_preF i hv)) n ▷ Z)) := by
-  rw [etaEntry_probe_factor]
-  simp only [Iso.trans_hom, Category.assoc, Iso.inv_hom_id_assoc]
-  exact homReservoirCup_coordinates P.T P.W.obj i (P.muM t) (P.muP_preF i hv) n Z
-
-
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

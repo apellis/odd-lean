@@ -46,10 +46,6 @@ theorem homContentShift_add_single (i j : I) (β : I →₀ ℕ) :
       homContentShift D i β + D.parity i * D.parity j := by
   simp [homContentShift, map_add, mul_add]
 
-/-- Word concatenation gives the same shift as successive postcomposition steps. -/
-theorem homContentShift_add (i : I) (β γ : I →₀ ℕ) :
-    homContentShift D i (β + γ) = homContentShift D i β + homContentShift D i γ := by
-  simp [homContentShift, map_add, mul_add]
 end Content
 
 section Shift

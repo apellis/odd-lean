@@ -38,15 +38,6 @@ theorem outputLiftBoundary_rho (p : ZMod 2) (j : {j : I // D.parity j = 1})
   rw [← boundaryRho_outputLongSection, pMap_boundaryRho]
   rfl
 
-/-- Every corrected basis lift has its prescribed, not assumed, P-image. -/
-theorem pMap_outputCorrectedLift (p : ZMod 2) (j : {j : I // D.parity j = 1})
-    (v : List I) (d : ℕ) (b : Old D Sc cutoff v v) :
-    pMap D Sc cutoff j.1 v (v ++ [j.1]) (outputCorrectedLift D Sc cutoff p j v d b) =
-      appendMovingPowerTarget D Sc cutoff j.1 v (v ++ [j.1]) d
-        (pMap D Sc cutoff j.1 v (v ++ [j.1]) (outputLongLift D Sc cutoff p j.1 v 0 b)) :=
-  pMap_boundaryRho_iterate D Sc cutoff j v (v ++ [j.1]) d
-    (outputLongLift D Sc cutoff p j.1 v 0 b)
-
 /-- The P-image of every source class differs from that of its specified long
 lift by an actual chronological crossing class. This is the needed concrete
 factorization statement before constructing the polynomial projection. -/

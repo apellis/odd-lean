@@ -204,21 +204,6 @@ theorem upwardCoefficientMap_injective (t t' : List I) :
   intro a
   rw [map_sub, h, sub_self, map_zero]
 
-/-- C3 in matching coordinates at the fixed weight, for every complete choice
-of upward matching representatives. No change of weight is used. -/
-theorem upward_independence_at (t t' : List I)
-    (U : SKM.MatchingBasisChoice (upWord t) (upWord t')) :
-    Function.Injective (U.expansion cs μ) := by
-  by_cases hlen : t.length = t'.length
-  · let C := SKM.CanonicalUpward.choiceList t t' hlen
-    have hC : Function.Injective (C.expansion cs μ) :=
-      canonicalChoice_independence D Sc cs C
-        (SKM.CanonicalUpward.choiceList_word t t' hlen)
-        (SKM.CanonicalUpward.choiceList_word_spec t t' hlen) μ
-        (F.upwardCoefficientMap_injective t t')
-    exact U.expansion_injective_of_choice cs μ C hC
-  · exact upward_choice_injective_of_length_ne D Sc cs hlen μ U
-
 end FusedFixedWeightFamily
 
 /-- C3 for the oriented reduction, conditional on fused reservoir data at each

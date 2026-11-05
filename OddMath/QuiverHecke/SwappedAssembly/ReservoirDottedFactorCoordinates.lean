@@ -154,36 +154,5 @@ theorem etaEntry_reservoir_factor (c : P.CrossCoeff) (i : I) (n : ℕ) (ν : X) 
       (twoPathEndpointIso (c₁ := ⟨dn i, SKM.wt D ν [up i]⟩) (c₂ := ⟨up i, ν⟩)
         false false hv hw e Z).inv) h
 
-/-- The actual reservoir cap row as the literal factor counit word,
-with both homogeneous shifts cancelled by the prescribed chart. -/
-theorem epsEntry_reservoir_coordinates (c : P.CrossCoeff) (i : I) (n : ℕ) (ν : X)
-    {t : Sector I} (hv : StepValid (true, i) false t)
-    (hw : StepValid (false, i) false (nextSector (true, i) false t))
-    (e : nextSector (false, i) false (nextSector (true, i) false t) = t) (Z : P.H t) :
-    P.epsEntry c i n ν (SPath.two false false hv hw e) (.nil t) Z =
-      (reservoirCapFactorIso i ν hv hw e Z ≪≫
-        homContentPostSourceIso P.T.obj P.W i t.1 (P.muP t) (P.muM_postE i hv) Z).hom ≫
-      (Z ≫ P.W.F i (P.muM_postE i hv)) ◁ rouquierPower (P.W.dot i (P.muM_postE i hv)) n ≫
-      (associator Z (P.W.F i (P.muM_postE i hv)) (P.W.E i (P.muM_postE i hv))).hom ≫
-      Z ◁ (P.W.adj i (P.muM_postE i hv)).counit ≫ (rightUnitor Z).hom := by
-  rw [epsEntry_reservoir_factor, homContentPostCap_coordinates]
-  simp only [Iso.trans_hom, Category.assoc]
-
-/-- The actual reservoir cup column as the literal factor unit word,
-with its original dot order and adjunction normalization. -/
-theorem etaEntry_reservoir_coordinates (c : P.CrossCoeff) (i : I) (n : ℕ) (ν : X)
-    {t : Sector I} (hv : StepValid (false, i) false t)
-    (hw : StepValid (true, i) false (nextSector (false, i) false t))
-    (e : nextSector (true, i) false (nextSector (false, i) false t) = t) (Z : P.H t) :
-    P.etaEntry c i n ν (.nil t) (SPath.two false false hv hw e) Z ≫
-      (reservoirCupFactorIso i ν hv hw e Z ≪≫
-        homContentPostTargetIso P.T.obj P.W i t.1 (P.muP t) (P.muM_postF i t) Z).hom =
-      (rightUnitor Z).inv ≫ Z ◁ (P.W.adj i (P.muM_postF i t)).unit ≫
-      (associator Z (P.W.E i (P.muM_postF i t)) (P.W.F i (P.muM_postF i t))).inv ≫
-      (Z ◁ rouquierPower (P.W.dot i (P.muM_postF i t)) n) ▷ P.W.F i (P.muM_postF i t) := by
-  rw [etaEntry_reservoir_factor]
-  simp only [Iso.trans_hom, Category.assoc, Iso.inv_hom_id_assoc]
-  exact homContentPostCup_coordinates P.T.obj P.W i t.1 (P.muP t) (P.muM_postF i t) n Z
-
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

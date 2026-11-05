@@ -85,13 +85,6 @@ theorem probeEvaluatedZeroCell_comp_id (B : PiSCat.{u,u,u+1} k) (H : T₀ ⟶ B)
   · intro N
     rfl
 
-/-- Every given transformation after the zero cell vanishes by its source identity. -/
-theorem probeEvaluatedZeroCell_whiskerLeft (B : PiSCat.{u,u,u+1} k)
-    {H J : T₀ ⟶ B} (η : H ⟶ J) : probeEvaluatedZeroCell D Sc m γ ◁ η = 0 := by
-  have h := Category.id_comp (probeEvaluatedZeroCell D Sc m γ ◁ η)
-  rw [probeEvaluatedZeroCell_comp_id D Sc m γ B H, Limits.zero_comp] at h
-  exact h.symm
-
 /-- The same zero endocell is evenly self-adjoint in the existing evaluated target. -/
 def probeEvaluatedZeroAdjunction :
     SKM.SuperAdjunction (k := k) (probeEvaluatedZeroCell D Sc m γ) (probeEvaluatedZeroCell D Sc m γ) where

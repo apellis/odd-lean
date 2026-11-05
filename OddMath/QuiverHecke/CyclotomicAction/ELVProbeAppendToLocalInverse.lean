@@ -108,23 +108,4 @@ def probeAppendToInvNeg (hh : height ≤ 0) :
     (mate_coordinate D Sc m ν i h₁ h₂).symm
     (funext fun n => (unit_coordinate D Sc m ν i h₁ h₂ n).symm)
 
-/-- Copying the selected principal map keeps the positive inverse component literally. -/
-theorem probeAppendToInvPos_f' (hh : 0 ≤ height) :
-    (probeAppendToInvPos D Sc m ν i h₁ h₂ hh).f' =
-      (probeReindexInvPos D Sc m ν i h₁ h₂ hh).f' := rfl
-
-/-- Every positive inverse row, including outside-window rows, is retained literally. -/
-theorem probeAppendToInvPos_g' (hh : 0 ≤ height) (n : ℕ) :
-    (probeAppendToInvPos D Sc m ν i h₁ h₂ hh).g' n =
-      (probeReindexInvPos D Sc m ν i h₁ h₂ hh).g' n := rfl
-
-/-- Copying the selected principal map keeps the negative inverse component literally. -/
-theorem probeAppendToInvNeg_f' (hh : height ≤ 0) :
-    (probeAppendToInvNeg D Sc m ν i h₁ h₂ hh).f' =
-      (probeReindexInvNeg D Sc m ν i h₁ h₂ hh).f' := rfl
-
-/-- Every negative inverse row, including outside-window rows, is retained literally. -/
-theorem probeAppendToInvNeg_g' (hh : height ≤ 0) (n : ℕ) :
-    (probeAppendToInvNeg D Sc m ν i h₁ h₂ hh).g' n =
-      (probeReindexInvNeg D Sc m ν i h₁ h₂ hh).g' n := rfl
 end OddMath.QuiverHecke

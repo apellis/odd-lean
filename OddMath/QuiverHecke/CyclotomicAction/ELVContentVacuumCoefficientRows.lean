@@ -124,16 +124,4 @@ theorem contentVacuumCoefficientMap_eq_inverseRow
     rw [contentVacuumCoefficientMap_unitDotColumn D Sc cutoff N i M hh r a ha]
     exact (J.gg a r.val ha r.isLt).symm
 
-/-- The boundary row retains exactly its source-shift degree, since it is
-literally the row of the constructed inverse of the prescribed columns. -/
-theorem contentVacuumCoefficientMap_mem
-    (hh : 0 ≤ contentCrossingHeight D cutoff i β)
-    (r : Fin (contentUnitCount D cutoff i β)) :
-    contentVacuumCoefficientMap D Sc cutoff N i M hh r ∈
-      parity (R := k) _ _ (r.val • D.parity i) := by
-  let J := Classical.choice
-    (contentAbsentUnitInverse_nonempty D Sc cutoff N β i (by simp) M)
-  rw [contentVacuumCoefficientMap_eq_inverseRow D Sc cutoff N i M hh r J]
-  exact J.g'_mem r.val
-
 end OddMath.QuiverHecke.ELVOld

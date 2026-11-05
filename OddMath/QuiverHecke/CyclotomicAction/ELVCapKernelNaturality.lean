@@ -51,56 +51,56 @@ private theorem pow_intertwining {V W : Type u} [AddCommGroup V] [Module k V]
     BalancedInduction.tensor (append D Sc cutoff i)
       ((append D Sc cutoff i) ⋙ IndResKernel.homModule (k := k) v) s g b := rfl
 
-def actualDotKernelComponent (i : I) (v t : OldCategory D Sc cutoff) :
+def dotKernelComponent (i : I) (v t : OldCategory D Sc cutoff) :
     Module.End k (IndResKernel.Component (k := k) (append D Sc cutoff i) v t) :=
   transportEnd (oldSourceKernelEquiv D Sc cutoff i v t)
-    (actualInductionDot D Sc cutoff i
+    (inductionDot D Sc cutoff i
       ((BalancedInduction.restriction (append D Sc cutoff i)).obj
         (oldRepresentable D Sc cutoff v)) t)
 
-@[simp] theorem actualDotKernelComponent_tensor (i : I) (v s t : OldCategory D Sc cutoff)
+@[simp] theorem dotKernelComponent_tensor (i : I) (v s t : OldCategory D Sc cutoff)
     (g : (append D Sc cutoff i).obj s ⟶ t) (b : v ⟶ (append D Sc cutoff i).obj s) :
-    actualDotKernelComponent D Sc cutoff i v t
+    dotKernelComponent D Sc cutoff i v t
       (BalancedInduction.tensor (append D Sc cutoff i)
         ((append D Sc cutoff i) ⋙ IndResKernel.homModule (k := k) v) s g b) =
     BalancedInduction.tensor (append D Sc cutoff i)
       ((append D Sc cutoff i) ⋙ IndResKernel.homModule (k := k) v) s
       (oldAppendDotComponent D Sc cutoff i s ≫ twist k (D.parity i) g) b := by
-  rw [actualDotKernelComponent, transportEnd_apply, oldSourceKernelEquiv_tensor]
-  have h := actualInductionDot_tensor D Sc cutoff i
+  rw [dotKernelComponent, transportEnd_apply, oldSourceKernelEquiv_tensor]
+  have h := inductionDot_tensor D Sc cutoff i
     ((BalancedInduction.restriction (append D Sc cutoff i)).obj
       (oldRepresentable D Sc cutoff v)) s t g b
   exact (congrArg (oldSourceKernelEquiv D Sc cutoff i v t).symm h).trans
     (oldSourceKernelEquiv_symm_tensor D Sc cutoff i v s t
       (oldAppendDotComponent D Sc cutoff i s ≫ twist k (D.parity i) g) b)
 
-theorem actualDotKernelComponent_precompose (i : I)
+theorem dotKernelComponent_precompose (i : I)
     {v w : OldCategory D Sc cutoff} (a : v ⟶ w) (t : OldCategory D Sc cutoff) :
-    (actualDotKernelComponent D Sc cutoff i v t).comp
+    (dotKernelComponent D Sc cutoff i v t).comp
       (IndResKernel.precompose (k := k) (append D Sc cutoff i) a t) =
     (IndResKernel.precompose (k := k) (append D Sc cutoff i) a t).comp
-      (actualDotKernelComponent D Sc cutoff i w t) := by
+      (dotKernelComponent D Sc cutoff i w t) := by
   apply BalancedInduction.hom_ext
   intro s g b
-  simp only [LinearMap.comp_apply, IndResKernel.precompose_tensor, actualDotKernelComponent_tensor]
+  simp only [LinearMap.comp_apply, IndResKernel.precompose_tensor, dotKernelComponent_tensor]
 
-def actualCounitKernelComponent (i : I) (v t : OldCategory D Sc cutoff) :
+def counitKernelComponent (i : I) (v t : OldCategory D Sc cutoff) :
     IndResKernel.Component (k := k) (append D Sc cutoff i) v t →ₗ[k] (v ⟶ t) :=
   (unshiftedCounitComponent D Sc cutoff i v.word t.word).comp
     (oldSourceKernelEquiv D Sc cutoff i v t).toLinearMap
 
-theorem actualCounitKernelComponent_apply (i : I) (v t : OldCategory D Sc cutoff)
+theorem counitKernelComponent_apply (i : I) (v t : OldCategory D Sc cutoff)
     (z : IndResKernel.Component (k := k) (append D Sc cutoff i) v t) :
-    actualCounitKernelComponent D Sc cutoff i v t z =
+    counitKernelComponent D Sc cutoff i v t z =
       unshiftedCounitComponent D Sc cutoff i v.word t.word
         (oldSourceKernelEquiv D Sc cutoff i v t z) := rfl
 
-@[simp] theorem actualCounitKernelComponent_tensor (i : I) (v s t : OldCategory D Sc cutoff)
+@[simp] theorem counitKernelComponent_tensor (i : I) (v s t : OldCategory D Sc cutoff)
     (g : (append D Sc cutoff i).obj s ⟶ t) (b : v ⟶ (append D Sc cutoff i).obj s) :
-    actualCounitKernelComponent D Sc cutoff i v t
+    counitKernelComponent D Sc cutoff i v t
       (BalancedInduction.tensor (append D Sc cutoff i)
         ((append D Sc cutoff i) ⋙ IndResKernel.homModule (k := k) v) s g b) = b ≫ g := by
-  rw [actualCounitKernelComponent_apply, oldSourceKernelEquiv_tensor]
+  rw [counitKernelComponent_apply, oldSourceKernelEquiv_tensor]
   cases v with
   | mk v =>
     cases s with
@@ -108,34 +108,34 @@ theorem actualCounitKernelComponent_apply (i : I) (v t : OldCategory D Sc cutoff
       cases t with
       | mk t => exact unshiftedCounitComponent_tensor D Sc cutoff i v s t g b
 
-theorem actualCounitKernelComponent_precompose (i : I)
+theorem counitKernelComponent_precompose (i : I)
     {v w : OldCategory D Sc cutoff} (a : v ⟶ w) (t : OldCategory D Sc cutoff) :
-    (actualCounitKernelComponent D Sc cutoff i v t).comp
+    (counitKernelComponent D Sc cutoff i v t).comp
       (IndResKernel.precompose (k := k) (append D Sc cutoff i) a t) =
-    (Linear.leftComp k t a).comp (actualCounitKernelComponent D Sc cutoff i w t) := by
+    (Linear.leftComp k t a).comp (counitKernelComponent D Sc cutoff i w t) := by
   apply BalancedInduction.hom_ext
   intro s g b
   simp only [LinearMap.comp_apply, IndResKernel.precompose_tensor,
-    actualCounitKernelComponent_tensor]
+    counitKernelComponent_tensor]
   exact Category.assoc a b g
 
 /-- Underlying coefficient component of the actual ordinary counit/dot-power row. -/
-def actualCapKernelComponent (i : I) (n : ℕ) (v t : OldCategory D Sc cutoff) :
+def capKernelComponent (i : I) (n : ℕ) (v t : OldCategory D Sc cutoff) :
     IndResKernel.Component (k := k) (append D Sc cutoff i) v t →ₗ[k] (v ⟶ t) :=
-  (actualCounitKernelComponent D Sc cutoff i v t).comp
-    (actualDotKernelComponent D Sc cutoff i v t ^ n)
+  (counitKernelComponent D Sc cutoff i v t).comp
+    (dotKernelComponent D Sc cutoff i v t ^ n)
 
-theorem actualCapKernelComponent_precompose (i : I) (n : ℕ)
+theorem capKernelComponent_precompose (i : I) (n : ℕ)
     {v w : OldCategory D Sc cutoff} (a : v ⟶ w) (t : OldCategory D Sc cutoff) :
-    (actualCapKernelComponent D Sc cutoff i n v t).comp
+    (capKernelComponent D Sc cutoff i n v t).comp
       (IndResKernel.precompose (k := k) (append D Sc cutoff i) a t) =
-    (Linear.leftComp k t a).comp (actualCapKernelComponent D Sc cutoff i n w t) := by
+    (Linear.leftComp k t a).comp (capKernelComponent D Sc cutoff i n w t) := by
   have hd := pow_intertwining
     (IndResKernel.precompose (k := k) (append D Sc cutoff i) a t)
-    (actualDotKernelComponent D Sc cutoff i w t) (actualDotKernelComponent D Sc cutoff i v t)
-    (actualDotKernelComponent_precompose D Sc cutoff i a t) n
-  rw [actualCapKernelComponent, actualCapKernelComponent, LinearMap.comp_assoc,
-    hd, ← LinearMap.comp_assoc, actualCounitKernelComponent_precompose, LinearMap.comp_assoc]
+    (dotKernelComponent D Sc cutoff i w t) (dotKernelComponent D Sc cutoff i v t)
+    (dotKernelComponent_precompose D Sc cutoff i a t) n
+  rw [capKernelComponent, capKernelComponent, LinearMap.comp_assoc,
+    hd, ← LinearMap.comp_assoc, counitKernelComponent_precompose, LinearMap.comp_assoc]
 
 private theorem moduleCapRow_total_apply (i : I)
     (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
@@ -144,65 +144,37 @@ private theorem moduleCapRow_total_apply (i : I)
       ((BalancedInduction.restriction (append D Sc cutoff i)).obj M)).obj t) :
     (moduleCapRow D Sc cutoff i M n).total t z =
       ((BalancedInduction.adjunction (append D Sc cutoff i)).counit.app M).total t
-        ((actualInductionDot D Sc cutoff i
+        ((inductionDot D Sc cutoff i
           ((BalancedInduction.restriction (append D Sc cutoff i)).obj M) t ^ n) z) := by
   have h := LinearMap.congr_fun (moduleCapRow_total D Sc cutoff i M t n) z
   change (moduleCapRow D Sc cutoff i M n).total t z =
     ((BalancedInduction.adjunction (append D Sc cutoff i)).counit.app M).total t
-      ((actualInductionDot D Sc cutoff i
+      ((inductionDot D Sc cutoff i
         ((BalancedInduction.restriction (append D Sc cutoff i)).obj M) t ^ n) z) at h
   exact h
 
 /-- The kernel row is the fixed actual moduleCapRow, not an assumed substitute. -/
-theorem actualCapKernelComponent_moduleCapRow (i : I) (n : ℕ) (v t : OldCategory D Sc cutoff)
+theorem capKernelComponent_moduleCapRow (i : I) (n : ℕ) (v t : OldCategory D Sc cutoff)
     (z : IndResKernel.Component (k := k) (append D Sc cutoff i) v t) :
-    actualCapKernelComponent D Sc cutoff i n v t z =
+    capKernelComponent D Sc cutoff i n v t z =
       (moduleCapRow D Sc cutoff i (oldRepresentable D Sc cutoff v) n).total t
         (oldSourceKernelEquiv D Sc cutoff i v t z) := by
-  rw [actualCapKernelComponent, LinearMap.comp_apply, actualCounitKernelComponent_apply]
+  rw [capKernelComponent, LinearMap.comp_apply, counitKernelComponent_apply]
   have he := transportEnd_pow_apply (oldSourceKernelEquiv D Sc cutoff i v t)
-    (actualInductionDot D Sc cutoff i
+    (inductionDot D Sc cutoff i
       ((BalancedInduction.restriction (append D Sc cutoff i)).obj
         (oldRepresentable D Sc cutoff v)) t) n z
   have hc := congrArg (unshiftedCounitComponent D Sc cutoff i v.word t.word) he
   exact hc.trans (moduleCapRow_total_apply D Sc cutoff i
     (oldRepresentable D Sc cutoff v) t n (oldSourceKernelEquiv D Sc cutoff i v t z)).symm
 
-theorem actualDotKernelComponent_pow_apply (i : I) (n : ℕ) (v t : OldCategory D Sc cutoff)
-    (z : IndResKernel.Component (k := k) (append D Sc cutoff i) v t) :
-    oldSourceKernelEquiv D Sc cutoff i v t
-      ((actualDotKernelComponent D Sc cutoff i v t ^ n) z) =
-    (actualInductionDot D Sc cutoff i
-      ((BalancedInduction.restriction (append D Sc cutoff i)).obj
-        (oldRepresentable D Sc cutoff v)) t ^ n)
-      (oldSourceKernelEquiv D Sc cutoff i v t z) :=
-  transportEnd_pow_apply _ _ n z
-
-/-- The fixed actual induction dot is ordinary-right natural on the coefficient kernel. -/
-def actualDotKernel (i : I) (t : OldCategory D Sc cutoff) :
-    IndResKernel.kernel (k := k) (append D Sc cutoff i) t ⟶
-      IndResKernel.kernel (k := k) (append D Sc cutoff i) t where
-  app v := ModuleCat.ofHom (actualDotKernelComponent D Sc cutoff i v.unop t)
-  naturality _ _ a := by
-    apply ModuleCat.hom_ext
-    exact actualDotKernelComponent_precompose D Sc cutoff i a.unop t
-
-/-- The fixed ordinary adjunction counit is ordinary-right natural. -/
-def actualCounitKernel (i : I) (t : OldCategory D Sc cutoff) :
-    IndResKernel.kernel (k := k) (append D Sc cutoff i) t ⟶
-      BalancedKernelTensor.inductionKernel (k := k) (𝟭 (OldCategory D Sc cutoff)) t where
-  app v := ModuleCat.ofHom (actualCounitKernelComponent D Sc cutoff i v.unop t)
-  naturality _ _ a := by
-    apply ModuleCat.hom_ext
-    exact actualCounitKernelComponent_precompose D Sc cutoff i a.unop t
-
 /-- Every fixed ordinary counit/dot-power row is an ordinary-right kernel map. -/
-def actualCapKernel (i : I) (n : ℕ) (t : OldCategory D Sc cutoff) :
+def capKernel (i : I) (n : ℕ) (t : OldCategory D Sc cutoff) :
     IndResKernel.kernel (k := k) (append D Sc cutoff i) t ⟶
       BalancedKernelTensor.inductionKernel (k := k) (𝟭 (OldCategory D Sc cutoff)) t where
-  app v := ModuleCat.ofHom (actualCapKernelComponent D Sc cutoff i n v.unop t)
+  app v := ModuleCat.ofHom (capKernelComponent D Sc cutoff i n v.unop t)
   naturality _ _ a := by
     apply ModuleCat.hom_ext
-    exact actualCapKernelComponent_precompose D Sc cutoff i n a.unop t
+    exact capKernelComponent_precompose D Sc cutoff i n a.unop t
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

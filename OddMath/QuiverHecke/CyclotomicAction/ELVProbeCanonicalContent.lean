@@ -120,36 +120,6 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 /-- Canonical multiset contents of the untruncated OLD scalar-evaluated probe. -/
 abbrev ProbeCanonicalModules (β : Multiset I) := ProbeEvaluatedModules D Sc m β.toList
 
-/-- The canonical representative is related to every stored word of its content. -/
-theorem probeCanonicalRepresentative (ν : List I) : ν.Perm (ν : Multiset I).toList := by
-  apply Multiset.coe_eq_coe.mp
-  exact (Multiset.coe_toList _).symm
-
-/-- The unique next multiset block has a prescribed target representative. -/
-theorem probeCanonicalAppend_perm (β : Multiset I) (i : I) :
-    (i :: β.toList).Perm (β + ([i] : Multiset I)).toList := by
-  apply Multiset.coe_eq_coe.mp
-  simp only [Multiset.coe_toList]
-  change {i} + (β.toList : Multiset I) = β + {i}
-  rw [Multiset.coe_toList, add_comm]
-
-/-- Equivalence from a stored content word to its canonical multiset block. -/
-def probeCanonicalRepresentativeEquivalence (ν : List I) :
-    ProbeEvaluatedModules D Sc m ν ≌ ProbeCanonicalModules D Sc m (ν : Multiset I) :=
-  probeEvaluatedReindexEquivalence D Sc m (probeCanonicalRepresentative ν)
-
-/-- Chosen append on canonical probe contents, using the original balanced coend. -/
-abbrev probeCanonicalInduction (β : Multiset I) (i : I) :
-    ProbeCanonicalModules D Sc m β ⥤ ProbeCanonicalModules D Sc m (β + ([i] : Multiset I)) :=
-  probeEvaluatedAppendTo D Sc m β.toList i (β + ([i] : Multiset I)).toList
-    (probeCanonicalAppend_perm β i)
-
-/-- Chosen restriction along the very same canonical append. -/
-abbrev probeCanonicalRestriction (β : Multiset I) (i : I) :
-    ProbeCanonicalModules D Sc m (β + ([i] : Multiset I)) ⥤ ProbeCanonicalModules D Sc m β :=
-  probeEvaluatedRestrictTo D Sc m β.toList i (β + ([i] : Multiset I)).toList
-    (probeCanonicalAppend_perm β i)
-
 @[instance_reducible]
 def probeCanonicalPiSupercategory (β : Multiset I) :
     PiSupercategory k (ProbeCanonicalModules D Sc m β) :=

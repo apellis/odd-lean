@@ -22,7 +22,7 @@ private theorem unitDot_value
     (unitDotColumn J hα R n).total t b = unitDotLinear J hα R n t b :=
   LinearMap.congr_fun (unitDotColumn_total J hα R n t) b
 
-private theorem unitDot_native_compare
+private theorem unitDot_compare
     {k C A B E : Type u} [CommRing k]
     [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
     [Category.{u} A] [Preadditive A] [Linear k A] [Supercategory k A]
@@ -81,7 +81,7 @@ theorem contentBlockUnitDotColumn_square (M : ContentModules D Sc cutoff N β)
     fullSquareTargetLinear K Q₁ Q₀ T sqK M ((K).obj t) ((T).obj t.obj)
       (congrArg (fun F => F.obj t) sqK) ((unitDotColumn K hDot M n).total t b) =
       (unitDotColumn T hGlobalDot (induced Q₀ M) n).total t.obj (unit Q₀ M.toFunctor t b) := by
-  exact unitDot_native_compare K T hDot hGlobalDot M (induced Q₀ M) n t t.obj
+  exact unitDot_compare K T hDot hGlobalDot M (induced Q₀ M) n t t.obj
     (fullSquareTargetLinear K Q₁ Q₀ T sqK M ((K).obj t) ((T).obj t.obj)
       (congrArg (fun F => F.obj t) sqK))
     (fun x => unit Q₀ M.toFunctor t x)

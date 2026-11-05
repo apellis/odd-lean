@@ -115,20 +115,6 @@ theorem swappedPairedInclusion_off (v : (F.residual.Labels × ℕ) →₀ SYM D 
   rintro ⟨⟨r, b⟩, he⟩
   exact ht ⟨(b, r), F.exchange.injective he⟩
 
-/-- Native caps with arbitrary residual morphisms have only paired coordinates.
-The residual coefficients are transported using the cap's own parity. -/
-theorem swappedCoordinates_cap_off
-    (hG : Function.Injective (F.swapped.expansion cs μ))
-    (f : (pres D Sc).obj (ob D μ (P ++ Q)) ⟶ (pres D Sc).obj (ob D μ Z))
-    (m : ℕ) (t : F.original.Labels) (ht : t ∉ Set.range F.paired) :
-    F.swappedCoordinates hG (sourceCapRows (Sc := Sc) μ P Q i m ≫ f) (F.exchange t) = 0 := by
-  obtain ⟨v, rfl⟩ := F.residual.expansion_surjective cs μ f
-  have H := F.swappedPairedInclusion_eval cs μ (F.capResidualColumn m v)
-  rw [capResidualColumn, F.residual.preRowsExpansion_residualRow cs μ _ m _
-    (sourceCapRows_mem_parity μ P Q i m)] at H
-  rw [← H, F.swappedCoordinates_expansion]
-  exact F.swappedPairedInclusion_off _ t ht
-
 theorem swappedCoordinates_cap_rightAction_off
     (hG : Function.Injective (F.swapped.expansion cs μ))
     (f : (pres D Sc).obj (ob D μ (P ++ Q)) ⟶ (pres D Sc).obj (ob D μ Z))

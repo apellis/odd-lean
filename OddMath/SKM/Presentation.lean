@@ -21,9 +21,9 @@ diagrams modulo the relations below and the super interchange law.
 
 Diagrams are lists of layers, read from bottom to top, so no reordering signs arise in the
 statement of a relation. Two dots "at the same horizontal level" in the paper denote the
-horizontal composite `yx = (yH) ∘ (Gx)` of the paper's (1.1)–(1.3): the dot on the **right** is
-applied first (it is the lower layer). All relations are written as `lhs - rhs = 0`; `ν` is the
-weight of the rightmost region, and `⟨hᵢ, ν⟩` is `D.h i ν`.
+horizontal composite `yx = (yH) ∘ (Gx)` given by the super interchange law of BE2 §1: the dot
+on the **right** is applied first (it is the lower layer). All relations are written as
+`lhs - rhs = 0`; `ν` is the weight of the rightmost region, and `⟨hᵢ, ν⟩` is `D.h i ν`.
 
 ## The relations (all `i, j, k ∈ I`, `ν ∈ X`)
 
@@ -53,7 +53,7 @@ the entries of their inverses with these relations, since two-sided inverses are
 how the paper reads the inversion relations ("there are some as yet unnamed generating
 2-morphisms in `𝔘(𝔤)` which are the matrix entries of two-sided inverses").
 
-All relations are homogeneous for the parity (`isParityHomogeneous`), using (1.4) and (1.6).
+All relations are homogeneous for the parity (`isParityHomogeneous`), using (1.2) and (1.4).
 -/
 
 noncomputable section
@@ -551,7 +551,7 @@ theorem zGate_mem {a b : Obj (sig D)} (i : I) {f : LinDiagram k a b} {S : Submod
   · exact hf h.1
   · exact S.zero_mem
 
-/-- All relations of Definition 1.5 are homogeneous for the parity, by (1.4) and (1.6). -/
+/-- All relations of Definition 1.5 are homogeneous for the parity, by (1.2) and (1.4). -/
 theorem isParityHomogeneous : (pres D Sc).IsParityHomogeneous := by
   intro r
   cases r with

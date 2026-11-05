@@ -109,25 +109,6 @@ lemma literalCoeff_heq (ν : X) {t : Sector I}
   change (𝟙 _ ≫ _ ≫ 𝟙 _) = _
   simp only [Category.id_comp, Category.comp_id]
 
-include hs0 in
-lemma left_literal_slide (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
-    let n : SPath (wd D ν [up i, up j, up i]) s _ := SPath.three false false true hi hj trivial hs
-    let b : SPath (wd D ν [up j, up i, up i]) s _ := SPath.three false false true hj0 hi0 trivial rfl
-    crossEntry (P.swappedGens c L) ν [] i j [up i] n b Y ≫
-      crossEntry (P.swappedGens c L) ν [up j] i i [] b b Y =
-    literalCoeff P i j s hi hj ν hs Y c ≫
-      crossEntry (P.swappedGens c L) ν [] i j [up i] n b Y := by
-  dsimp only
-  rw [left_mid P i j s hj0 hi0 Y ν c L]
-  have hn := P.pathFunctor_three_obj (c₁ := ⟨up i, SKM.wt D ν [up j, up i]⟩)
-    (c₂ := ⟨up j, SKM.wt D ν [up i]⟩) (c₃ := ⟨up i, ν⟩)
-    false false true hi hj trivial hs Y
-  have hf := left_first P i j s hi hj hj0 hi0 hs Y hs0 ν c L hij
-  have hleft := comp_common_grid_heq hn rfl rfl hf (HEq.rfl (a :=
-    (P.step (true, j) false s hj0).map (c.a i (nextSector (true, j) false s) hi0 Y)))
-  have hright := comp_common_grid_heq hn hn rfl (literalCoeff_heq P i j s hi hj ν hs Y c) hf
-  exact eq_of_heq (hleft.trans ((heq_of_eq (coeff_slide P i j s hi hj hj0 hi0 hs Y hs0 c hc h hij).symm).trans hright.symm))
 section Canonical
 variable (Z : P.H (nextSector (true, j) false
     (nextSector (true, i) false (nextSector (true, i) true s))))
@@ -318,32 +299,6 @@ lemma full_diag_transport (ν : X) {t : Sector I}
             compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] n Z) (b - 1 - a)) := by
   subst e
   exact full_diag P i j s hi hj hj0 hi0 Z e' ν c L hc h hij
-
-include hj0 hi0 in
-lemma full_diag_path (ν : X) {t : Sector I}
-    (e : nextSector (true, j) false (nextSector (true, i) false (nextSector (true, i) true s)) = t)
-    (e' : nextSector (true, i) false (nextSector (true, j) false (nextSector (true, i) true s)) = t)
-    (Z : P.H t) (p : SPath (wd D ν [up i, up j, up i]) s t)
-    (hp : p = SPath.three (c₁ := ⟨up i, SKM.wt D ν [up j, up i]⟩)
-      (c₂ := ⟨up j, SKM.wt D ν [up i]⟩) (c₃ := ⟨up i, ν⟩)
-      false false true hi hj trivial e)
-    (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
-    braidLeft (P.swappedGens c L) i j i ν p p Z -
-      braidRight (P.swappedGens c L) i j i ν p p Z =
-      ∑ a ∈ Finset.range (D.dn i j),
-        (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
-          (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Z) a ≫
-            compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] p Z)
-              (D.dn i j - 1 - a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
-        (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
-          (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Z) a ≫
-            compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] p Z) d ≫
-            compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] p Z) (b - 1 - a)) := by
-  subst p
-  exact full_diag_transport P i j s hi hj hj0 hi0 ν e e' Z c L hc h hij
-
 
 end RepeatedOuterPre
 end OddMath.QuiverHecke.SwappedAssembly

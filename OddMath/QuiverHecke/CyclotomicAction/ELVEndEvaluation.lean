@@ -68,13 +68,6 @@ def moduleFamilyEndEvaluation {J : Type u} {A : J → Type u}
       (piEndEvaluation (F.obj M) j)).comp
       (supernaturalEndEvaluation F M)
 
-theorem moduleFamilyEndEvaluation_apply {J : Type u} {A : J → Type u}
-    [∀ j, Category.{u} (A j)] [∀ j, Preadditive (A j)]
-    [∀ j, Linear k (A j)] [∀ j, Supercategory k (A j)]
-    (F : Superfunctor k C (∀ j, Superfunctor k (A j) (SVec k)))
-    (M : C) (j : J) (w : A j) (f : End F) :
-    moduleFamilyEndEvaluation F M j w f = (f.total M j).total w := rfl
-
 theorem moduleFamilyEndEvaluation_ext {J : Type u} {A : J → Type u}
     [∀ j, Category.{u} (A j)] [∀ j, Preadditive (A j)]
     [∀ j, Linear k (A j)] [∀ j, Supercategory k (A j)]

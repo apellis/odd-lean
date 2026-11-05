@@ -83,7 +83,6 @@ theorem κ_obj_ob (μ : X) (t : List (Letter I)) :
   · exact (wt_eq D C hc μ t).symm
   · exact κ_word_wd D C hc μ t
 
-
 /-! ## Placement between empty contexts -/
 
 /-- Placement between empty strand sequences is the identity, up to retyping. -/
@@ -196,7 +195,6 @@ theorem map_mkD_single (μ : X) (u : List (Letter I)) (g : Shape I) (v : List (L
     (by rw [genDom_eq, hv']) (by rw [genCod_eq, hv']) (img_eq D C hc k g hv'.symm) hu hw]
   simp only [Diagram.plc, LinearMap.coe_mk, AddHom.coe_mk, Category.assoc, eqToHom_trans,
     eqToHom_trans_assoc]
-
 
 /-! ## Diagrams without `♦`-cups and `♦`-caps -/
 
@@ -325,7 +323,6 @@ theorem rel_quadEq (i : I) (ν : X) :
   rw [Diagram.dg_sqEq]
   simp
 
-
 theorem plain_crossL (u : List (Letter I)) (i j : I) (v : List (Letter I)) :
     ∀ x ∈ crossL u i j v, PlainShape x.2.1 := by
   simp [crossL, PlainShape]
@@ -416,9 +413,7 @@ theorem rel_quadNe (hS : IsKLScalars D k Sc) (i j : I) (ν : X) (hij : i ≠ j) 
     hS.1 j i, dij_eq_dn hc, dij_eq_dn hc]
   simp [hS.2, Preadditive.add_comp, Preadditive.comp_add]
 
-
 theorem ip_eq (i : I) (ν : X) : Diagram.ip RD i ν = D.h i ν := rfl
-
 
 theorem rel_slideL (hD : IsEven D) (i j : I) (ν : X) (hij : i ≠ j) :
     (StringDiagrams.freeLift k (locMap D C hc k).functor).map (relation D Sc (.slideL i j ν hij)) = 0 := by

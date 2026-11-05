@@ -78,7 +78,6 @@ theorem decorates_append_cross {a P Q : List (Letter I)} {x y : Letter I}
         (q (tau (a.length + P.length) j)))
     simpa only [List.flatMap_map, Function.comp_def, tau_tau] using hp.symm
 
-
 theorem strandCounts_terminalCross {a P Q : List (Letter I)} {x y : Letter I}
     {R : List (TMove (Letter I))} (hR : IsMatching₂ a (P ++ x :: y :: Q) R)
     (hn : ¬ Same (pairing₂ a R) (a.length + P.length) (a.length + P.length + 1))

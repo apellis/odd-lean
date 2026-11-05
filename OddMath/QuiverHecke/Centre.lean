@@ -381,7 +381,6 @@ theorem X_pow_card {S : Finset ℕ} {p : ℕ} (hp : p ∈ S) :
   rw [esymmS, pow_succ]
   ring
 
-
 theorem esymmS_insert_insert_mem {A : Subalgebra k (MvPolynomial ℕ k)} {S : Finset ℕ} {a b : ℕ}
     (hab : a ≠ b) (ha : a ∉ S) (hb : b ∉ S) (hS : ∀ p ∈ S, MvPolynomial.X p ∈ A)
     (h₁ : MvPolynomial.X a + MvPolynomial.X b ∈ A) (h₂ : MvPolynomial.X a * MvPolynomial.X b ∈ A)

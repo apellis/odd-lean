@@ -13,7 +13,7 @@ Research issue #345, toward Brundan–Ellis, *Super Kac–Moody 2-categories*, �
 Even-colour analogue of `ELVTensorVacuumRightwardMoments`. At negative height of the
 vacuum sector, leftward data satisfying the negative inverse equations (1.14) give an
 entrywise inverse of the native cup window of the evaluated even A6 bend
-(`vacuumRightwardCupInverse_native_even`, via `paddedVacuumDx_even`), whose products
+(`vacuumRightwardCupInverse_even`, via `paddedVacuumDx_even`), whose products
 with the native unit rows are the conjugated evaluated right bubble entries
 `η xᴺ ≫ dcap n` (`vacuumRightwardCupInverse_bubbleEntries_even`). On the tensor
 vacuum (`0 < M < N`, `M = m i`, `N = cutoff i`), the extreme column has the decoded
@@ -62,7 +62,7 @@ include sy hc in
 data satisfying the negative inverse equations at the vacuum sector give an
 entrywise inverse of the native cup window `[bend, unit ≫ xⁿ]_(n < -h)` of the
 evaluated even A6 bend, `h = h_i(ν₀)`, whose columns are `vacuumRightwardColumn`. -/
-theorem vacuumRightwardCupInverse_native_even (Z : (P).H ((0, 0) : Sector I))
+theorem vacuumRightwardCupInverse_even (Z : (P).H ((0, 0) : Sector I))
     (hZ : Z = vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
         ((0, 0) : Sector I))
@@ -116,7 +116,7 @@ theorem vacuumRightwardCupInverse_native_even (Z : (P).H ((0, 0) : Sector I))
           (0 : Multiset I) i)
         ((vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H).obj
           (probeOldVacuumRegular D (parameterTwist D Sc) m)) n := fun n =>
-    (Iso.inv_comp_eq _).2 (paddedVacuumUnit_native D Sc m cutoff bound ΛP ΛR hcP hcR H i n)
+    (Iso.inv_comp_eq _).2 (paddedVacuumUnit_eq D Sc m cutoff bound ΛP ΛR hcP hcR H i n)
   simp only [Iso.symm_hom, Iso.symm_inv] at h₃
   rw [hs] at h₃
   simp only [hw] at h₃
@@ -161,7 +161,7 @@ theorem vacuumRightwardCupInverse_bubbleEntries_even (Z : (P).H ((0, 0) : Sector
         c.inv ≫ (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).map
           ((P).etaEntry cc i N ν₀ (.nil _) q₀ Z ≫ dc n q₀ (.nil _)) ≫ c.hom := by
   subst hZ
-  obtain ⟨j, hj⟩ := vacuumRightwardCupInverse_native_even D Sc m cutoff bound ΛP ΛR hcP hcR H
+  obtain ⟨j, hj⟩ := vacuumRightwardCupInverse_even D Sc m cutoff bound ΛP ΛR hcP hcR H
     sy hc i _ rfl lc dc HN hP hi
   exact ⟨paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H, j, _, hj,
     paddedVacuumCapTargetIso_hom_eq_eqToHom D Sc m cutoff bound ΛP ΛR hcP hcR H,

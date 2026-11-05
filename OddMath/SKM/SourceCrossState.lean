@@ -241,23 +241,6 @@ theorem cross_crit (L Q : List (Letter I)) (x y : Letter I)
   rw [List.map_nil] at H
   rw [H, SourceFrozenSwap.crit flipL (by simp) _ _ hR []]
 
-/-- Distinguished-point IDs acquire precisely the initial source transposition. -/
-theorem cross_ren (L Q : List (Letter I)) (x y : Letter I)
-    (R : List (TMove (Letter I)))
-    (hR : TFits flipL (L ++ y :: x :: Q).length (tStart (L ++ y :: x :: Q)) R)
-    (z : ℕ) :
-    tRen (L ++ x :: y :: Q).length (tStart (L ++ x :: y :: Q))
-      (.mv (.cross L.length) :: R) (exchangeId Q.length z) =
-      exchangeId Q.length (tRen (L ++ y :: x :: Q).length
-        (tStart (L ++ y :: x :: Q)) R z) := by
-  change tRen _ (tStep flipL _ _ _) R (exchangeId Q.length z) = _
-  rw [start_cross_history, history_ren]
-  have hlen : (L ++ x :: y :: Q).length = (L ++ y :: x :: Q).length := by simp
-  rw [hlen]
-  have hF := SourceFrozenSwap.fits flipL (p := Q.length) (by simp) _ _ hR
-  rw [SourceIdRelabel.ren _ (exchangeId Q.length).injective _ (SourceFrozenSwap.frozen Q.length (tStart (L ++ y :: x :: Q))) (fun n hn => fresh L Q y x n hn) R hF z,
-    SourceFrozenSwap.ren (by simp) _ _ hR z]
-
 /-- Full state transport retains the initial crossing after all cap renamings.
 In particular, it is not enough to compare only the terminal pairing. -/
 theorem cross_run (L Q : List (Letter I)) (x y : Letter I)

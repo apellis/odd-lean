@@ -145,8 +145,6 @@ theorem signedMovingPower_coordinate_shift (p : ZMod 2) {i : I} {v w : List I}
             exact hs
         exact t.representative_tailKey.symm.trans (hk.symm.trans q.representative_tailKey)
 
-
-
 /-- Exact shifted coordinate of an arbitrary quotient element. -/
 theorem signedMovingPower_coordinate (p : ZMod 2) {i : I} {v w : List I}
     (q : PrependIdx.Tail i v w) (d : ℕ) (z : Target D Sc cutoff i v w) :
@@ -157,27 +155,5 @@ theorem signedMovingPower_coordinate (p : ZMod 2) {i : I} {v w : List I}
   simpa only [prependOldReconstruct_coordinateEquiv] using
     signedMovingPower_coordinate_shift D Sc cutoff p q d
       (prependOldCoordinateEquiv D Sc cutoff p i v w z)
-
-/-- No output coordinate lies above the input moving support shifted by the power. -/
-theorem signedMovingPower_above (p : ZMod 2) {i : I} {v w : List I}
-    (x : PrependIdx i v w) (d : ℕ) (f : PrependOldCoordinates D Sc cutoff i v w)
-    (h : ∀ q ∈ f.support, d + q.1.1 < x.1.1) :
-    prependOldCoordinate D Sc cutoff p x
-      (signedMovingPowerTarget D Sc cutoff i v w d
-        (prependOldReconstruct D Sc cutoff p i v w f)) = 0 := by
-  have hf : f = ∑ q ∈ f.support, DirectSum.lof k _ _ q (f q) :=
-    (DFinsupp.sum_single (f := f)).symm
-  rw [hf, map_sum, map_sum, map_sum]
-  apply Finset.sum_eq_zero
-  intro q hq
-  rw [prependOldReconstruct, DirectSum.toModule_lof, signedMovingPower_pair_shift]
-  apply prependOldCoordinate_pair_off
-  intro he
-  have hn := congrArg Prod.fst he
-  have hk := congrArg Prod.fst q.representative_tailKey
-  have hh := h q hq
-  change x.1.1 = d + q.representative.1.1 at hn
-  change q.representative.1.1 = q.1.1 at hk
-  omega
 
 end OddMath.QuiverHecke.ELVOld

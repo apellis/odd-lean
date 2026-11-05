@@ -38,18 +38,18 @@ theorem oldAppendDot_supernatural (i : I) :
     rw [map_zsmul, koszulSign_smul (R := k)] at h
     exact h
 
-def actualInductionDot (i : I)
+def inductionDot (i : I)
     (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
     (t : OldCategory D Sc cutoff) :
     BalancedInduction.Obj (append D Sc cutoff i) M.toFunctor t →ₗ[k]
       BalancedInduction.Obj (append D Sc cutoff i) M.toFunctor t :=
   BalancedInduction.transformLinear (oldAppendDot_supernatural D Sc cutoff i) M t
 
-@[simp] theorem actualInductionDot_tensor (i : I)
+@[simp] theorem inductionDot_tensor (i : I)
     (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
     (s t : OldCategory D Sc cutoff)
     (g : (append D Sc cutoff i).obj s ⟶ t) (b : M.obj s) :
-    actualInductionDot D Sc cutoff i M t
+    inductionDot D Sc cutoff i M t
       (BalancedInduction.tensor (append D Sc cutoff i) M.toFunctor s g b) =
       BalancedInduction.tensor (append D Sc cutoff i) M.toFunctor s
         (oldAppendDotComponent D Sc cutoff i s ≫ twist k (D.parity i) g) b :=

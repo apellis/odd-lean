@@ -127,19 +127,4 @@ def globalBlockInduction :
       (CyclotomicContentModules D Sc a ha (n + 1) ({i} + β)) :=
   ⟨cyclotomicContentInduction D Sc a ha i n β⟩
 
-/-- The concrete last dot retains signed naturality on each content block. -/
-def globalBlockDot : globalBlockInduction D Sc a ha i n β ⟶
-    globalBlockInduction D Sc a ha i n β where
-  app p M := ⟨(cyclotomicSuperInductionDot D Sc i a ha n).app p M.obj⟩
-  app_mem p M := (cyclotomicSuperInductionDot D Sc i a ha n).app_mem p M.obj
-  naturality p _ _ _ f hf := InducedCategory.hom_ext
-    ((cyclotomicSuperInductionDot D Sc i a ha n).naturality p f.hom hf)
-
-theorem globalBlockDot_homogeneous :
-    (globalBlockDot D Sc a ha i n β).IsHomogeneous (D.parity i) := by
-  intro p hp
-  funext M
-  apply InducedCategory.hom_ext
-  exact congrFun (cyclotomicSuperInductionDot_homogeneous D Sc i a ha n p hp) M.obj
-
 end OddMath.QuiverHecke.CyclotomicAction

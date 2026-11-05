@@ -513,7 +513,6 @@ theorem downMap_comp_downMap {a : ℕ} (ha : a + 1 < M) :
 
 end Complex
 
-
 /-! ## The splitting -/
 
 section Annihilation
@@ -556,7 +555,6 @@ theorem ann_mono_top {B : Type*} [Ring B] {A Bm L R x z : B} {cL cR : ℤ} {m n 
     hB n le_rfl, ite_eq_left rfl, mul_smul_comm, smul_smul]
 
 end Annihilation
-
 
 section Commuting
 
@@ -1052,7 +1050,6 @@ theorem split_top (hij : i ≠ j) {b : ℕ} (hM : M = D.dn i j + 1) (hbM : M = b
     rw [hc, hcc, hval, smul_smul, hγ.val_inv_mul, one_smul]
 
 end Ends
-
 
 /-! ## The split complex in `H_{M+1}` -/
 

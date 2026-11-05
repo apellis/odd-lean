@@ -22,14 +22,6 @@ theorem atTopAlong_bounded (ha : (List.ofFn fun j => (true, α j)) = a)
   subst a b
   exact F.atTop_bounded α β R j
 
-theorem atTopAlong_valid (ha : (List.ofFn fun j => (true, α j)) = a)
-    (hb : (List.ofFn fun j => (true, β j)) = b)
-    (F : MatchingBasisChoice a b) (R : (F.atTopAlong α β ha hb).members)
-    (n : MatchingStrand a R.val → ℕ) :
-    DOk₂ a ((F.atTopAlong α β ha hb).serialize R n) := by
-  subst a b
-  exact F.atTop_valid α β R n
-
 theorem atTopAlong_ordinary (ha : (List.ofFn fun j => (true, α j)) = a)
     (hb : (List.ofFn fun j => (true, β j)) = b)
     (F : MatchingBasisChoice a b) (t : (F.atTopAlong α β ha hb).Labels) :
@@ -68,10 +60,6 @@ theorem ofFn_up_get_append (a b : List I) :
   rw [ofFn_up_get, ups_append]
 
 namespace MatchingBasisChoice
-
-def atTopList (a b : List I) (F : MatchingBasisChoice (ups a) (ups b)) :
-    MatchingBasisChoice (ups a) (ups b) :=
-  F.atTopAlong a.get b.get (ofFn_up_get a) (ofFn_up_get b)
 
 def atTopSplit (l a b r : List I)
     (F : MatchingBasisChoice (ups l ++ ups a) (ups b ++ ups r)) :

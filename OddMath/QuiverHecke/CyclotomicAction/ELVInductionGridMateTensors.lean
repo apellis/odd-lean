@@ -47,11 +47,4 @@ theorem orderedGridMateLinear_tensor
     dsimp only [orderedGridMateLinear, induction] at h ⊢
   exact h.trans hn.symm
 
-/-- The raw-coend realization is exactly the given mate component's total map. -/
-theorem orderedGridMateLinear_apply
-    {p : ZMod 2} {α : ∀ s, (J ⋙ K).obj s ⟶ (J ⋙ K).obj s}
-    (hα : IsSupernatural k p α) (N : Superfunctor k A (SVec k)) (t : A)
-    (b : Obj J ((restriction J).obj N).toFunctor t) :
-    orderedGridMateLinear J K hα N t b = (orderedGridMateComponent J K hα N).total t b := rfl
-
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

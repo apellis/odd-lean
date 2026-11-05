@@ -60,11 +60,6 @@ theorem mixedCrossComponent_supernatural :
         transformComponent hα M ≫ (inductionComp (k := k) B A).inv.app M)
   simpa only [zero_add, add_zero, Category.assoc] using hL.comp (hT.comp hR)
 
-/-- The two-colour crossing as a homogeneous module transformation. -/
-def mixedCross : SuperNatTrans k (induction (k := k) A ⋙ induction (k := k) B)
-      (induction (k := k) B ⋙ induction (k := k) A) :=
-  (mixedCrossComponent_supernatural A B hα).toSuperNatTrans
-
 private theorem mixed_transform_total (M : Superfunctor k C (SVec k)) (w : C) :
     (transformComponent hα M).total w = transformLinear hα M w := by
   rcases parity_eq_zero_or_one p with h | h

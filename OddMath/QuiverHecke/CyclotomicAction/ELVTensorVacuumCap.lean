@@ -125,15 +125,6 @@ theorem tensorPowerVacuumCap_eq_inverseRow (hN : 0 < cutoff i)
   rw [← hW] at hc
   exact hc.symm
 
-/-- The cap's degree is the exact last-row source shift, unchanged by the
-even tensor-vacuum coordinate, for both odd and even reservoir cutoffs. -/
-theorem tensorPowerVacuumCap_mem (hN : 0 < cutoff i) :
-    tensorPowerVacuumCap D Sc m cutoff L i hN ∈
-      parity (R := k) _ _ ((cutoff i - 1) • D.parity i) := by
-  let J := Classical.choice (contentAbsentUnitInverse_nonempty D Sc cutoff bound 0 i (by simp) V)
-  rw [tensorPowerVacuumCap_eq_inverseRow D Sc m cutoff L i hN J]
-  exact J.g'_mem _
-
 /-- The native inverse cap commutes with the genuine evaluation coordinate
 as a whole module square. Thus its scalar decoding is the same literal-T
 lambda already attached to the regular power vacuum. -/

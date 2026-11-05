@@ -96,28 +96,4 @@ theorem odd_correction_smul (A x z : R) (h : x*z = -(z*x))
   simpa only [Algebra.smul_def, map_pow, map_neg, map_one] using
     odd_correction A x z h hA n
 
-/-- A middle monomial can be inserted without changing the chronological order.
-Only its commutation with the right outer dot is needed. -/
-theorem odd_correction_middle (A x z m : R) (h : x*z = -(z*x))
-    (hA : A*(x*x-z*z) = x-z) (hm : Commute z m) (n c : ℕ) :
-    A*(x^(2*n)-z^(2*n))*m^c =
-      ∑ a ∈ range (2*n), (-1:k)^a • (x^(2*n-1-a)*m^c*z^a) := by
-  rw [odd_correction_smul (k := k) A x z h hA, sum_mul]
-  apply sum_congr rfl
-  intro a _
-  rw [smul_mul_assoc, mul_assoc, (hm.pow_pow a c).eq, ← mul_assoc]
-
-/-- Finite linear combinations of even outer monomials, with the middle factor
-kept between the ordered outer powers on the correction side. -/
-theorem odd_polynomial_correction {ι : Type*} (s : Finset ι)
-    (w : ι → k) (n c : ι → ℕ) (A x z m : R)
-    (h : x*z = -(z*x)) (hA : A*(x*x-z*z) = x-z) (hm : Commute z m) :
-    A * (∑ t ∈ s, w t • ((x^(2*n t)-z^(2*n t))*m^(c t))) =
-      ∑ t ∈ s, w t • (∑ a ∈ range (2*n t),
-        (-1:k)^a • (x^(2*n t-1-a)*m^(c t)*z^a)) := by
-  rw [mul_sum]
-  apply sum_congr rfl
-  intro t _
-  rw [mul_smul_comm, ← mul_assoc, odd_correction_middle (k := k) A x z m h hA hm]
-
 end OddMath.QuiverHecke.SwappedAssembly.RepeatedOuterPolynomial

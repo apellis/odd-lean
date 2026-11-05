@@ -92,27 +92,4 @@ def affineTripleLeft (i j c : I) (n : ℕ) : Hn D Sc (n + 3) :=
 def affineTripleRight (i j c : I) (n : ℕ) : Hn D Sc (n + 3) :=
   tripleMatrix D Sc i j c i c j (tripleCrossRight D Sc i j c)
 
-/-- The affine braid, including arbitrary old strands and all colour parities. -/
-theorem affineTriple_braid (i j c : I) (hb : ¬ (i = c ∧ i ≠ j)) (n : ℕ) :
-    affineTripleLeft D Sc j c i n *
-        (affineTripleRight D Sc j i c n * affineTripleLeft D Sc i j c n) =
-      affineTripleRight D Sc c i j n *
-        (affineTripleLeft D Sc i c j n * affineTripleRight D Sc i j c n) := by
-  simp only [affineTripleLeft, affineTripleRight, tripleMatrix_mul]
-  congr 1
-  funext w
-  simpa only [Category.assoc] using tripleCross_braid D Sc i j c hb w
-
-/-- The braid survives the specified two-sided cyclotomic quotient. -/
-theorem cyclotomicTriple_braid (i j c : I) (hb : ¬ (i = c ∧ i ≠ j))
-    (a : I → _root_.Polynomial k) (n : ℕ) :
-    cyclotomicMk D Sc a (n + 2) (affineTripleLeft D Sc j c i n) *
-        (cyclotomicMk D Sc a (n + 2) (affineTripleRight D Sc j i c n) *
-          cyclotomicMk D Sc a (n + 2) (affineTripleLeft D Sc i j c n)) =
-      cyclotomicMk D Sc a (n + 2) (affineTripleRight D Sc c i j n) *
-        (cyclotomicMk D Sc a (n + 2) (affineTripleLeft D Sc i c j n) *
-          cyclotomicMk D Sc a (n + 2) (affineTripleRight D Sc i j c n)) := by
-  simp only [← map_mul]
-  exact congrArg (cyclotomicMk D Sc a (n + 2)) (affineTriple_braid D Sc i j c hb n)
-
 end OddMath.QuiverHecke

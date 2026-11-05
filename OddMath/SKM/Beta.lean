@@ -224,7 +224,6 @@ theorem eq_5_2_even (i : I) (μ : X) (hi : D.parity i = 0) (n : ℕ) :
       one_mul, Units.inv_mul]
   rw [e1, map_smul, beta_h, smul_smul, smul_smul, hc, one_smul]
 
-
 /-! ## `β_{λ;i}` for odd `i` -/
 
 theorem bubLs_mem (i : I) (μ : X) (n : ℤ) :

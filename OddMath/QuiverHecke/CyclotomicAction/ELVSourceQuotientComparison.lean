@@ -82,17 +82,6 @@ theorem elvQuotientMap_ker_eq_coefficientRelationSpan (s t : List I) :
         BoxProd.tmulHom, SuperalgebraCat.ofElem] using h
   · exact elvQuotientMap_kills_span D Sc cutoff s t
 
-/-- The tensor quotient used by reservoir modules has the same proved source
-kernel as the categorical coefficient quotient. -/
-theorem elvHomQuotient_ker_eq_coefficientRelationSpan (s t : List I) :
-    LinearMap.ker (elvHomQuotient D Sc cutoff s t) =
-      ELVCoefficientRelationSpan D Sc cutoff s t := by
-  have hq : elvHomQuotient D Sc cutoff s t =
-      elvQuotientMap D Sc cutoff (coefficientObj D Sc s) (coefficientObj D Sc t) :=
-    (elvQuotientMap_eq D Sc cutoff s t).symm
-  rw [hq]
-  exact elvQuotientMap_ker_eq_coefficientRelationSpan D Sc cutoff s t
-
 private theorem elvGenerator_image_mem_oldIdeal {v : List I}
     {r : coefficientObj D Sc v ⟶ coefficientObj D Sc v}
     (hr : ELVGenerator D Sc cutoff v r) :
@@ -159,26 +148,9 @@ theorem map_elvRelationSpan_eq_oldIdeal (s t : List I) :
       rw [ha, Limits.zero_comp]
       exact Submodule.zero_mem _
 
-/-- Pulling back the actual old ideal recovers exactly the full source
-relation span, using the proved coefficient kernel rather than flatness. -/
-theorem comap_oldIdeal_eq_elvRelationSpan (s t : List I) :
-    (ELVOld.ideal D Sc cutoff s t).comap
-        (elvQuotientMap D Sc cutoff (coefficientObj D Sc s) (coefficientObj D Sc t)) =
-      ELVRelationSpan D Sc cutoff s t := by
-  rw [← map_elvRelationSpan_eq_oldIdeal D Sc cutoff s t]
-  apply Submodule.comap_map_eq_self
-  rw [elvQuotientMap_ker_eq_coefficientRelationSpan]
-  exact elvCoefficientRelationSpan_le D Sc cutoff s t
-
 /-- The actual quotient projection to old cyclotomic Homs. -/
 def sourceToOldHom (s t : List I) :=
   (ELVOld.ideal D Sc cutoff s t).mkQ ∘ₗ
     elvQuotientMap D Sc cutoff (coefficientObj D Sc s) (coefficientObj D Sc t)
-
-/-- The source presentation kernel of the literal old cyclotomic quotient. -/
-theorem sourceToOldHom_ker (s t : List I) :
-    LinearMap.ker (sourceToOldHom D Sc cutoff s t) = ELVRelationSpan D Sc cutoff s t := by
-  rw [sourceToOldHom, LinearMap.ker_comp, Submodule.ker_mkQ]
-  exact comap_oldIdeal_eq_elvRelationSpan D Sc cutoff s t
 
 end OddMath.QuiverHecke

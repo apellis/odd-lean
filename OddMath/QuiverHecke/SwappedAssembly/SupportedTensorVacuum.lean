@@ -94,29 +94,4 @@ def tensorVacuumPathIso {l : List (Col I X)} {c : I →₀ ℕ}
   exact eqToIso (atProbeWeight_comp D Sc m cutoff L ΛP ΛR
     (probeWeight_vacuum D ΛP).symm _ _)
 
-/-- The whole supported vacuum-path chart is even, including for odd letters. -/
-theorem tensorVacuumPathIso_hom_mem {l : List (Col I X)} {c : I →₀ ℕ}
-    (p : SPath l (0,c) (0,0)) (hl : ∀ a ∈ l, a.l.1 = true) :
-    (tensorVacuumPathIso D Sc m cutoff L ΛP ΛR hP hR p hl).hom ∈
-      parity (R := k) _ _ 0 := by
-  have comp_even {A B C : Ambient D Sc' m cutoff N ΛP ΛR (0,c)}
-      (a : A ⟶ B) (b : B ⟶ C)
-      (ha : a ∈ parity (R := k) _ _ 0) (hb : b ∈ parity (R := k) _ _ 0) :
-      a ≫ b ∈ parity (R := k) _ _ 0 := by
-    simpa only [zero_add] using comp_mem ha hb
-  let Z := tensorVacuum D Sc m cutoff L ΛP ΛR
-  let K := ReservoirWord.word (P).W.toRouquierData ΛR p hl
-  have h₀ : (eqToHom (factor_path_obj D Sc m cutoff N ΛP ΛR hP hR p Z) :
-      ((pathFunctor D Sc' m cutoff N ΛP ΛR p).obj Z).obj ⟶
-        ((P).pathFunctor p).obj Z.obj) ∈ parity (R := k) _ _ 0 := eqToHom_mem _
-  have h₁ : (((P).reservoirWordFunctorIso p hl).hom.app Z.obj :
-      ((P).pathFunctor p).obj Z.obj ⟶ Z.obj ≫ K) ∈ parity (R := k) _ _ 0 :=
-    (P).reservoirWordFunctorIso_hom_mem p hl Z.obj
-  have h₂ : (eqToHom (atProbeWeight_comp D Sc m cutoff L ΛP ΛR
-      (probeWeight_vacuum D ΛP).symm _ K) : Z.obj ≫ K ⟶
-        tensorHomAt D Sc m cutoff L ΛP ΛR
-          (TensorReservoirWords.pathHom D Sc' m cutoff L ΛP ΛR p hl)) ∈
-      parity (R := k) _ _ 0 := eqToHom_mem _
-  exact comp_even _ _ h₀ (comp_even _ _ h₁ h₂)
-
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

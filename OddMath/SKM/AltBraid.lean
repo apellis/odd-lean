@@ -894,7 +894,6 @@ theorem alt_equal (i : I) (μ : X) :
   rw [sub_eq_iff_eq_add] at e
   exact e.trans (by abel)
 
-
 theorem altInvCorrectionR_boundary (i : I) (μ : X) (hh : D.h i μ = -1) :
     altInvCorrectionR cs i μ = 0 := by
   rw [altInvCorrectionR_eq, altCorrectionR_boundary cs i μ hh, neg_zero]

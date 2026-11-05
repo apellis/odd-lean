@@ -89,19 +89,6 @@ theorem parameterTwist_s_reversed_eval {R : Type*} [Ring R] [Algebra k R]
     simp only [smul_smul]
     rw [← mul_assoc, parameterSignExponent_untwist D i j p q h hp hq, mul_comm]
 
-/-- Leading coefficient cancellation, for every permitted Cartan exponent. -/
-theorem parameterTwist_t_eval {R : Type*} [Ring R] [Algebra k R]
-    {i j : I} (hij : i ≠ j) (h : ZMod 2) (z B : R) :
-    SKM.zsign k (D.parity i * D.parity j) •
-        (((parameterTwist D Sc).t i j : k) • (z * B ^ D.dn i j)) =
-      (Sc.t i j : k) •
-        (SKM.zsign k (elvOrderedDotExponent D i j (D.dn i j) 0 h) •
-          (z * B ^ D.dn i j)) := by
-  rw [CyclotomicAction.parameterTwist_t_of_ne D Sc hij]
-  simp only [smul_smul]
-  rw [← mul_assoc, parameterSignExponent_untwist D i j (D.dn i j) 0 h
-    (CyclotomicAction.dn_cast_mul_parity D hij) (by simp), mul_comm]
-
 /-- Evaluation of the signed dot polynomial, in algebra-position order.
 This is an ordered noncommutative evaluation, not a substitution into a
 commutative polynomial ring. The disconnected branch has one constant. -/
@@ -157,34 +144,5 @@ theorem pairQuadPoly_parameterTwist_reversed_eval {R : Type*} [Ring R] [Algebra 
       elvSignedPairQuadEval D Sc j i A B := by
   simpa only [mul_comm (D.parity i) (D.parity j)] using
     pairQuadPoly_parameterTwist_eval D Sc hij.symm A B
-
-/-- Apply the actual affine mixed quadratic relation, then untwist its
-coefficients. The algebra map may be a coefficient-extension map or a quotient
-map; the target remains an arbitrary, possibly noncommutative k-algebra. -/
-theorem affineLastCrossing_parameterUntwist_eval [Fintype I]
-    {R : Type*} [Ring R] [Algebra k R] {i j : I} (hij : i ≠ j) (n : ℕ)
-    (f : Hn D (parameterTwist D Sc) (n + 1 + 1) →ₐ[k] R) :
-    SKM.zsign k (D.parity i * D.parity j) •
-      (f (affineLastCrossing D (parameterTwist D Sc) i j n) *
-        f (affineLastCrossing D (parameterTwist D Sc) j i n)) =
-      f (appendAlgebra D (parameterTwist D Sc) i (n + 1)
-        (appendAlgebra D (parameterTwist D Sc) j n 1)) *
-      elvSignedPairQuadEval D Sc j i
-        (f (appendAlgebra D (parameterTwist D Sc) i (n + 1)
-          (affineLastDot D (parameterTwist D Sc) j n)))
-        (f (affineLastDot D (parameterTwist D Sc) i (n + 1))) := by
-  rw [← map_mul, affineLastCrossing_mul_mixed D (parameterTwist D Sc) n hij,
-    map_mul, map_pairQuadPoly, ← mul_smul_comm,
-    pairQuadPoly_parameterTwist_reversed_eval D Sc hij]
-
-/-- Evaluation remains valid on every left module over the target algebra.
-The arbitrary left factor z may contain odd coefficients. No flatness,
-projectivity, or commutativity of that algebra is required. -/
-theorem pairQuadPoly_parameterTwist_module {R M : Type*} [Ring R] [Algebra k R]
-    [AddCommGroup M] [Module R M] {i j : I} (hij : i ≠ j) (z A B : R) (m : M) :
-    (z * (SKM.zsign k (D.parity i * D.parity j) •
-      pairQuadPoly D (parameterTwist D Sc) j i A B)) • m =
-      (z * elvSignedPairQuadEval D Sc j i A B) • m := by
-  rw [pairQuadPoly_parameterTwist_reversed_eval D Sc hij]
 
 end OddMath.QuiverHecke

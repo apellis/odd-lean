@@ -58,18 +58,4 @@ theorem outputLongExtraction_move_endpointPolynomial (p : ZMod 2) (i : I) (v : L
   rw [prependAffineEquiv_tmul, prependAffineEquiv_tmul,
     moveHom_long_prepend_repr_endpointPolynomial D Sc i v y hy]
 
-/-- The moving chain differs from its collected polynomial by chronological short terms. -/
-theorem move_sub_endpointPolynomial_mem_chronologicalShortSpan
-    (p : ZMod 2) (i : I) (v : List I)
-    (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) :
-    projection D Sc cutoff i v (v ++ [i])
-      (a ⊗ₜ[k] moveHom D Sc i [] v) -
-    projection D Sc cutoff i v (v ++ [i])
-      (a ⊗ₜ[k] (leadingMoveEndpointPolynomial D Sc i [] v ≫
-        cl D Sc _ _ (cw (leadingMoveWord [] v)) (leadingMoveWord_sChain i [] v))) ∈
-      chronologicalShortSpan D Sc cutoff i v v := by
-  rw [← ker_outputLongExtraction_eq_chronologicalShortSpan D Sc cutoff p i v]
-  change outputLongExtraction D Sc cutoff p i v _ = 0
-  rw [map_sub, outputLongExtraction_move_endpointPolynomial, sub_self]
-
 end OddMath.QuiverHecke.ELVOld

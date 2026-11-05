@@ -74,18 +74,6 @@ theorem outputLast_last_block {I : Type*} {s t : List I} {j : I}
   have hp := x.2.2.tgt_cw
   simpa only [canWord, hc, codeWord_nil, cw_nil, tgt_nil] using hp
 
-/-- In a mixed first-to-last corner, the long output shuffle is absent before
-any quadratic or braid reduction is used. -/
-theorem outputLast_nonlong_of_distinct {I : Type*} {i j : I}
-    (hij : i ≠ j) (v t : List I)
-    {hlen : t.length + [j].length = (i :: v).length} (x : ShIdx hlen) :
-    cw (canWord (i :: v).length x.1.1) ≠ cw (descRun 0 v.length) := by
-  intro hw
-  have ht : t.length = v.length := by simpa using hlen
-  have hlast := outputLast_last_block x
-  rw [shR, shTop, hw, outputLast_long_target, ht, List.drop_left] at hlast
-  exact hij (List.singleton_inj.mp hlast)
-
 /-- Every admissible mixed output-last shuffle is a word on the tail after
 the first strand. The first strand is a spectator throughout, not merely at
 the two endpoints. -/

@@ -17,7 +17,7 @@ negative inverse equations (1.14) give an entrywise inverse of the padded cup wi
 `[σ, w₀, …]` (`isCupInverse_centralPadded_of_negInverseAt`). Evaluated by the vacuum
 sector evaluation and read in the native charts of the regular vacuum probe, its
 principal map is the evaluated A6 bend (odd colour, `paddedVacuumDx_odd`) and its
-windows are the native dotted units `unitDotColumn` (`paddedVacuumUnit_native`). The
+windows are the native dotted units `unitDotColumn` (`paddedVacuumUnit_eq`). The
 columns of the inverse are explicit: the evaluated dotted rightward caps `dcap n`,
 conjugated by the target and cap-target charts (`vacuumRightwardColumn`).
 No inverse, moment or bubble value is assumed.
@@ -101,7 +101,7 @@ data satisfying the negative inverse equations at the vacuum sector give an
 entrywise inverse of the native cup window `[bend, unit ≫ xⁿ]_(n < -h)` of the
 evaluated A6 bend, `h = h_i(ν₀)`, whose columns are the explicit
 `vacuumRightwardColumn`. -/
-theorem vacuumRightwardCupInverse_native_odd (Z : (P).H ((0, 0) : Sector I))
+theorem vacuumRightwardCupInverse_odd (Z : (P).H ((0, 0) : Sector I))
     (hZ : Z = vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
         ((0, 0) : Sector I))
@@ -154,7 +154,7 @@ theorem vacuumRightwardCupInverse_native_odd (Z : (P).H ((0, 0) : Sector I))
           (0 : Multiset I) i)
         ((vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H).obj
           (probeOldVacuumRegular D (parameterTwist D Sc) m)) n := fun n =>
-    (Iso.inv_comp_eq _).2 (paddedVacuumUnit_native D Sc m cutoff bound ΛP ΛR hcP hcR H i n)
+    (Iso.inv_comp_eq _).2 (paddedVacuumUnit_eq D Sc m cutoff bound ΛP ΛR hcP hcR H i n)
   simp only [Iso.symm_hom, Iso.symm_inv] at h₃
   rw [hs] at h₃
   simp only [hw] at h₃
@@ -203,7 +203,7 @@ theorem vacuumRightwardColumn_unit (cc : (P).CrossCoeff)
           dc n q₀ (.nil _)) ≫
       (paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H).hom := by
   rw [vacuumRightwardColumn_eq, ← (Iso.inv_comp_eq _).2
-    (paddedVacuumUnit_native D Sc m cutoff bound ΛP ΛR hcP hcR H i N),
+    (paddedVacuumUnit_eq D Sc m cutoff bound ΛP ΛR hcP hcR H i N),
     (P).map_etaEntry_dcap_eq_padded cc i ν₀ ((0, 0) : Sector I)
       (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
       (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) (dc n q₀ (.nil _)) N]
@@ -248,7 +248,7 @@ theorem vacuumRightwardCupInverse_bubbleEntries (Z : (P).H ((0, 0) : Sector I))
         c.inv ≫ (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).map
           ((P).etaEntry cc i N ν₀ (.nil _) q₀ Z ≫ dc n q₀ (.nil _)) ≫ c.hom := by
   subst hZ
-  obtain ⟨j, hj⟩ := vacuumRightwardCupInverse_native_odd D Sc m cutoff bound ΛP ΛR hcP hcR H
+  obtain ⟨j, hj⟩ := vacuumRightwardCupInverse_odd D Sc m cutoff bound ΛP ΛR hcP hcR H
     sy hc i _ rfl lc dc HN hP hi
   exact ⟨paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H, j, _, hj,
     paddedVacuumCapTargetIso_hom_eq_eqToHom D Sc m cutoff bound ΛP ΛR hcP hcR H,

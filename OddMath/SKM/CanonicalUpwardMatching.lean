@@ -95,7 +95,6 @@ theorem crossing_fits (σ : List ℕ) {P S : List (ℕ × Letter I)}
     simp only [List.length_append, length_tgt]
     omega
 
-
 private theorem tgt_cw_map {α β : Type*} (f : α → β) (S : List α) (σ : List ℕ)
     (hv : ValidWord S.length σ) : tgt (S.map f) (cw σ) = (tgt S (cw σ)).map f := by
   apply List.ext_getElem
@@ -133,7 +132,6 @@ theorem crossing_matching (A : List (Letter I)) (σ : List ℕ) (hv : ValidWord 
   have hl := letters_tRun (length_dualW A) (crossingMoves σ) _ A (tStart_letters A) hf
   rw [hl] at he
   exact List.append_cancel_left he
-
 
 private theorem pairing_state (A : List (Letter I)) (σ : List ℕ) (hv : ValidWord A.length σ) :
     pairing₂ A (crossingMoves σ) = (tStart A).st.take A.length ++
@@ -198,7 +196,6 @@ theorem crossing_pairing (A : List (Letter I)) (σ : List ℕ) (hv : ValidWord A
 @[simp] theorem ncr_crossingMoves (σ : List ℕ) : ncr₂ (crossingMoves (I := I) σ) = σ.length := by
   simp [crossingMoves, ncr₂, List.countP_map]
 
-
 private theorem run_length (σ : List ℕ) (k : ℕ) (T : TState (Letter I)) :
     (tRun flipL k T (crossingMoves σ)).st.length = T.st.length := by
   induction σ with
@@ -245,7 +242,6 @@ theorem critPts_crossingMoves (A : List (Letter I)) (σ : List ℕ) :
     | nil => rfl
     | cons p ρ ih => exact ih _
   exact aux σ.reverse (tStart A) []
-
 
 theorem crossing_matching_ofFn {n : ℕ} (a : Fin n → I) (σ : List ℕ) (hv : ValidWord n σ) :
     IsMatching₂ (List.ofFn fun j => (true, a j))
@@ -312,7 +308,6 @@ theorem canonical_matching {n : ℕ} (a : Fin n → I) (w : Equiv.Perm (Fin n)) 
     StrictReduced₂ (List.ofFn fun j => (true, a j)) (crossingMoves (canWord n w)) := by
   refine ⟨?_, crossing_strict_of_reduced a _ (isReduced_canWord n w)⟩
   simpa only [wordProd_canWord] using crossing_matching_ofFn a _ (validWord_canWord n w)
-
 
 theorem wordProd_eq_of_pairing_iso (A : List (Letter I)) (σ τ : List ℕ)
     (hσ : ValidWord A.length σ) (hτ : ValidWord A.length τ)
@@ -404,7 +399,6 @@ noncomputable def choice {n : ℕ} (a b : Fin n → I) :
 
 @[simp] theorem choice_members {n : ℕ} (a b : Fin n → I) :
     (choice a b).members = members a b := rfl
-
 
 private theorem ofFn_up_get (t : List I) :
     (List.ofFn fun j : Fin t.length => (true, t.get j)) = ups t := by

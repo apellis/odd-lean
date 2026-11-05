@@ -24,7 +24,6 @@ variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
   {a b c d : B} (E : a ⟶ b) {E' : c ⟶ d} {F' : d ⟶ c}
   (A : SuperAdjunction (k := k) E' F') (κ τ : ZMod 2) (H : b ⟶ d)
 
-
 /-- The even inverse identities need only the literal transposed source denominator unit. -/
 theorem homDistinctMixedMateDot_isIso_of_inverse_units {x : E ⟶ E} (hx : x ∈ parity (R := k) E E 0)
     {y : E' ⟶ E'} (hy : y ∈ parity (R := k) E' E' 0)
@@ -66,7 +65,6 @@ theorem homDistinctMixedMateDot_isIso_of_inverse_units {x : E ⟶ E} (hx : x ∈
 
   · simpa only [pow_zero, neg_zero, zero_smul, add_zero, neg_one_smul] using
       (isUnit_one : IsUnit (1 : End (E ≫ ((homParityShift (k := k) κ).obj H ≫ F')))).neg
-
 
 /-- The odd inverse identity uses target and transposed source norm units.
 The transpose of an odd square carries the signed reversal explicitly. -/
@@ -179,7 +177,6 @@ theorem homDistinctMixedMateDot_isIso_of_inverse_odd_units {x : E ⟶ E}
     exact hPlus.pow 2
   · rw [pow_one, hSX2, hSY2, neg_one_smul, neg_one_smul, neg_neg]
     simpa only [sub_eq_add_neg, neg_add, neg_neg] using hMinus.neg
-
 
 end Conj
 end OddMath.SKM

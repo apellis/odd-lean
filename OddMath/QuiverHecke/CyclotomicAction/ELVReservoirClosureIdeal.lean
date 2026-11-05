@@ -112,7 +112,7 @@ local notation "W" => elvRouquierFamily D Sc cutoff N Λ hcutoff
 
 /-- The literal native positive principal contraction, after output
 projection and arbitrary surrounding maps, belongs to the content ideal. -/
-theorem positiveNativeClosure_evaluate_mem
+theorem positiveClosure_evaluate_mem
     (TF : X → PiSCat.{u,u,u + 1} k) (betaP : I →₀ ℕ) (muP : X)
     (hh : 0 ≤ D.h i x₁) (r s : ℕ)
     {V Z Y : TF (-muP) ⟶ elvWeightSpace D Sc cutoff N Λ x₁}
@@ -129,7 +129,7 @@ theorem positiveNativeClosure_evaluate_mem
 
 /-- The literal native negative principal contraction, after output
 projection and arbitrary surrounding maps, belongs to the content ideal. -/
-theorem negativeNativeClosure_evaluate_mem
+theorem negativeClosure_evaluate_mem
     (TF : X → PiSCat.{u,u,u + 1} k) (betaP : I →₀ ℕ) (muP : X)
     (hh : D.h i x₁ ≤ 0) (r s : ℕ)
     {V Z Y : TF (-muP) ⟶ elvWeightSpace D Sc cutoff N Λ x₁}

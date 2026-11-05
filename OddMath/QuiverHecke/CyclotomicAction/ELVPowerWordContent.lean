@@ -32,9 +32,6 @@ def weightedWord (ν : List I) :
   weightedModule D Sc cutoff (powerBound D cutoff L) (powerWordModule D Sc cutoff L ν)
     (word_killsWeighted D Sc cutoff L ν)
 
-theorem weightedWord_eq (ν : List I) : weightedWord D Sc cutoff L ν =
-    (elementaryPowerToWeighted D Sc cutoff L).obj (powerWordObject D Sc cutoff L ν) := rfl
-
 /-- Support is proved from the literal old Homs, not assumed of the model. -/
 theorem weightedWord_supported (ν : List I) :
     ContentSupported D Sc cutoff (powerBound D cutoff L) (ν : Multiset I)

@@ -48,7 +48,7 @@ theorem probeOldBlockEqualCross_stored_total (i : I) (Λ : X) {a b c : X}
         (probeOldPairUpper_perm D i i Λ h₁ h₂ β _ rfl)
         (probeOldPairUpper_perm D i i Λ h₁ h₂ β _ rfl) N := by
   apply InducedCategory.hom_ext
-  rw [probeOldBlockEqualCross_native_total, inductionModuleCross_total]
+  rw [probeOldBlockEqualCross_total, inductionModuleCross_total]
   apply congrArg Neg.neg
   exact equal_rectangle_grid
     (probeOldBlockAppend D Sc m i Λ h₁ β)

@@ -67,37 +67,4 @@ theorem superRestriction_triangle (M : CyclotomicSupermodules D Sc a ha (n + 1))
   apply Subtype.ext
   exact y.2
 
-/-- Induction is left adjoint to restriction on the actual supermodule categories. -/
-def cyclotomicSuperIndResAdjunction : F ⊣ E where
-  unit := cyclotomicSuperUnit D Sc i a ha n
-  counit := cyclotomicSuperCounit D Sc i a ha n
-  left_triangle_components := superInduction_triangle D Sc i a ha n
-  right_triangle_components := superRestriction_triangle D Sc i a ha n
-
-/-- The adjunction bijection preserves the parity of a homogeneous morphism. -/
-theorem cyclotomicSuperAdjunction_homEquiv_mem
-    {M : CyclotomicSupermodules D Sc a ha n}
-    {N : CyclotomicSupermodules D Sc a ha (n + 1)} {p : ZMod 2}
-    {f : (F).obj M ⟶ N} (hf : f ∈ Supercategory.parity (R := k) _ _ p) :
-    (cyclotomicSuperIndResAdjunction D Sc i a ha n).homEquiv M N f ∈
-      Supercategory.parity (R := k) _ _ p := by
-  rw [Adjunction.homEquiv_unit]
-  change superUnitComponent D Sc i a ha n M ≫ whiskerLeft Q f ∈
-    Supercategory.parity (R := k) _ _ p
-  simpa only [zero_add] using Supercategory.comp_mem
-    (superUnitComponent_mem D Sc i a ha n M) (whiskerLeft_mem Q f hf)
-
-/-- The inverse adjunction bijection also preserves parity. -/
-theorem cyclotomicSuperAdjunction_homEquiv_symm_mem
-    {M : CyclotomicSupermodules D Sc a ha n}
-    {N : CyclotomicSupermodules D Sc a ha (n + 1)} {p : ZMod 2}
-    {f : M ⟶ (E).obj N} (hf : f ∈ Supercategory.parity (R := k) _ _ p) :
-    ((cyclotomicSuperIndResAdjunction D Sc i a ha n).homEquiv M N).symm f ∈
-      Supercategory.parity (R := k) _ _ p := by
-  rw [Adjunction.homEquiv_counit]
-  change whiskerLeft P f ≫ superCounitComponent D Sc i a ha n N ∈
-    Supercategory.parity (R := k) _ _ p
-  simpa only [add_zero] using Supercategory.comp_mem
-    (whiskerLeft_mem P f hf) (superCounitComponent_mem D Sc i a ha n N)
-
 end OddMath.QuiverHecke

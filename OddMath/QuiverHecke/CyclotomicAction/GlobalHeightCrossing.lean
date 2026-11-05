@@ -202,7 +202,6 @@ def heightCompositionCorner : SuperBimodule GC GA where
     ((reg).ract_mem p (θ r) (heightCompositionAppend_parity D Sc i j a ha n hr))
     (fun x _ => heightCompositionCorner_right_mem D Sc i j a n r x)
 
-
 local notation "T" => heightCompositionCorner D Sc i j a ha n
 
 /-- Parity in the composite corner is inherited from the quotient algebra. -/

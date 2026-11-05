@@ -231,9 +231,7 @@ theorem dom_transpose {μ ν : YoungDiagram} (hc : μ.card = ν.card) (h : Dom �
   change _ = ν.card at htν
   omega
 
-
 /-! ## Degree-d algebra -/
-
 
 theorem lexLT_trichotomy (a b : YoungDiagram) : LexLT a b ∨ a = b ∨ LexLT b a := by
   rcases lt_trichotomy a.rowLens b.rowLens with h | h | h
@@ -426,7 +424,6 @@ theorem schur_sub_e_mem (d : ℕ) (h311 : Identity311 d) (lam : DegreeShape d) :
   rw [hs]
   exact Submodule.neg_mem _ (Submodule.smul_mem _ _ hrest)
 
-
 open Classical in
 /-- The two defining properties of `s'_λ` in Proposition 3.10. -/
 def IsSPrime (d : ℕ) (lam : DegreeShape d) (x : degreePiece d) : Prop :=
@@ -544,7 +541,6 @@ theorem proposition_3_10 (d : ℕ) (h311 : Identity311 d) (lam : DegreeShape d) 
     ∀ x : degreePiece d, IsSPrime d lam x →
       x = (-1 : ℤ) ^ (EKSemiorthogonality.ell lam.val + transposeChoose lam.val) • schur d lam :=
   ⟨⟨_, isSPrime_sgn_schur d h311 lam, isSPrime_unique d h311 lam⟩, isSPrime_unique d h311 lam⟩
-
 
 /-! ## The source normalisation `s'_(1ⁿ) = e_n` -/
 

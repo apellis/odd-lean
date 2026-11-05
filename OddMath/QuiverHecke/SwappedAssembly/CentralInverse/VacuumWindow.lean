@@ -79,16 +79,4 @@ def negMapCupInverseData
     simpa only [neg_neg] using
       (negMap_isCupInverse_of_zero_corners (-sR) (-sP) (-Cx) (-Dx) uR colP hXR hYP).neg_principal
 
-omit [Preadditive C] in
-/-- The literal matrix square also determines its inverse square. -/
-theorem inverse_of_chart_square {A A' B B' : C} (S : A' ≅ A) (T : B' ≅ B)
-    (F : A ⟶ B) (M : A' ⟶ B') [IsIso F] [IsIso M]
-    (h : S.hom ≫ F = M ≫ T.hom) : inv M = T.hom ≫ inv F ≫ S.inv := by
-  apply (cancel_mono M).mp
-  rw [Category.assoc, Category.assoc, IsIso.inv_hom_id]
-  have h' : inv F ≫ S.inv ≫ M = T.inv := by
-    apply (cancel_mono T.hom).mp
-    simp only [Category.assoc, ← h, Iso.inv_hom_id_assoc, IsIso.inv_hom_id, Iso.inv_hom_id]
-  rw [h', Iso.hom_inv_id]
-
 end OddMath.QuiverHecke.SwappedAssembly.ProbeWindow

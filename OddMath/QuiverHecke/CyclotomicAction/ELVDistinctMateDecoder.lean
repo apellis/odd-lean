@@ -88,74 +88,6 @@ theorem pairing_eq_append_comp (i j : I) (v s t : List I)
   obtain ⟨b, rfl⟩ := (ideal D Sc cutoff v (s ++ [j])).mkQ_surjective b
   rfl
 
-theorem moduleMate_upper_tensor (i j : I) (v s t : List I)
-    (g : Old D Sc cutoff (s ++ [i]) t) (b : Old D Sc cutoff v (s ++ [j])) :
-    OldInductionRepresentable.equiv D Sc cutoff i
-      (⟨v⟩ : OldCategory D Sc cutoff) ((append D Sc cutoff j).obj ⟨t⟩)
-      (((moduleMate D Sc cutoff i j).app (D.parity i * D.parity j)
-        (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).total ⟨t⟩
-        (BalancedInduction.tensor (append D Sc cutoff i)
-          ((BalancedInduction.restriction (append D Sc cutoff j)).obj
-            (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).toFunctor ⟨s⟩ g b)) =
-      (append D Sc cutoff i).map (X := (⟨v⟩ : OldCategory D Sc cutoff))
-        (Y := (append D Sc cutoff j).obj ⟨s⟩) b ≫
-      crossComponent D Sc cutoff i j ⟨s⟩ ≫
-      twist k (D.parity i * D.parity j)
-        ((append D Sc cutoff j).map
-          (X := (append D Sc cutoff i).obj (⟨s⟩ : OldCategory D Sc cutoff)) (Y := ⟨t⟩) g) := by
-  rw [moduleMate_total_tensor]
-  exact OldInductionRepresentable.forward_tensor D Sc cutoff i
-    (⟨v⟩ : OldCategory D Sc cutoff) ((append D Sc cutoff j).obj ⟨t⟩)
-    ((append D Sc cutoff j).obj ⟨s⟩) _ b
-
-private theorem moduleMate_crossing_word_tensor (i j : I) (v s t : List I)
-    (g : Old D Sc cutoff (s ++ [i]) t) (b : Old D Sc cutoff v (s ++ [j])) :
-    OldInductionRepresentable.equiv D Sc cutoff i
-      (⟨v⟩ : OldCategory D Sc cutoff) ((append D Sc cutoff j).obj ⟨t⟩)
-      (((moduleMate D Sc cutoff i j).app (D.parity i * D.parity j)
-        (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).total ⟨t⟩
-        (BalancedInduction.tensor (append D Sc cutoff i)
-          ((BalancedInduction.restriction (append D Sc cutoff j)).obj
-            (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).toFunctor ⟨s⟩ g b)) =
-      toCyclotomic D Sc cutoff i j v t
-        (moduleSourceParityEquiv D Sc cutoff i j v t
-          (BalancedInduction.tensor (append D Sc cutoff i)
-            ((BalancedInduction.restriction (append D Sc cutoff j)).obj
-              (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).toFunctor ⟨s⟩ g b)) := by
-  rw [moduleMate_upper_tensor, moduleSourceParityEquiv_tensor,
-    toCyclotomic_tensor, pairing_eq_append_comp]
-  have h := map_twist (R := k) (append D Sc cutoff j) (D.parity i * D.parity j)
-    (X := (append D Sc cutoff i).obj (⟨s⟩ : OldCategory D Sc cutoff))
-    (Y := (⟨t⟩ : OldCategory D Sc cutoff)) g
-  rw [oldCategory_twist] at h
-  exact congrArg (fun f :
-      (append D Sc cutoff j).obj ((append D Sc cutoff i).obj (⟨s⟩ : OldCategory D Sc cutoff)) ⟶
-        (append D Sc cutoff j).obj (⟨t⟩ : OldCategory D Sc cutoff) =>
-      (append D Sc cutoff i).map (X := (⟨v⟩ : OldCategory D Sc cutoff))
-        (Y := (append D Sc cutoff j).obj ⟨s⟩) b ≫ crossComponent D Sc cutoff i j ⟨s⟩ ≫ f) h.symm
-
-/-- The tensor comparison at categorical endpoints avoids rebuilding the
-word object inside the balanced induction carrier. -/
-theorem moduleMate_crossing_tensor (i j : I) (v : List I)
-    (s t : OldCategory D Sc cutoff) (g : (append D Sc cutoff i).obj s ⟶ t)
-    (b : ((BalancedInduction.restriction (append D Sc cutoff j)).obj
-      (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).obj s) :
-    OldInductionRepresentable.equiv D Sc cutoff i
-      (⟨v⟩ : OldCategory D Sc cutoff) ((append D Sc cutoff j).obj t)
-      (((moduleMate D Sc cutoff i j).app (D.parity i * D.parity j)
-        (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).total t
-        (BalancedInduction.tensor (append D Sc cutoff i)
-          ((BalancedInduction.restriction (append D Sc cutoff j)).obj
-            (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).toFunctor s g b)) =
-      toCyclotomic D Sc cutoff i j v t.word
-        (moduleSourceParityEquiv D Sc cutoff i j v t.word
-          (BalancedInduction.tensor (append D Sc cutoff i)
-            ((BalancedInduction.restriction (append D Sc cutoff j)).obj
-              (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).toFunctor s g b)) := by
-  rcases s with ⟨s⟩
-  rcases t with ⟨t⟩
-  exact moduleMate_crossing_word_tensor D Sc cutoff i j v s t g b
-
 /-- Co-Yoneda evaluation of the literal rectangular mate, with its target
 endpoint fixed before comparing source carriers. -/
 def evaluatedMate (i j : I) (v t : List I) :
@@ -164,40 +96,5 @@ def evaluatedMate (i j : I) (v t : List I) :
     (⟨v⟩ : OldCategory D Sc cutoff) ((append D Sc cutoff j).obj ⟨t⟩)).toLinearMap ∘ₗ
     SVec.toLinearMap (((moduleMate D Sc cutoff i j).app (D.parity i * D.parity j)
       (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).total ⟨t⟩)
-
-private theorem evaluatedMate_tensor (i j : I) (v t : List I)
-    (s : OldCategory D Sc cutoff) (g : (append D Sc cutoff i).obj s ⟶ ⟨t⟩)
-    (b : ((BalancedInduction.restriction (append D Sc cutoff j)).obj
-      (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).obj s) :
-    evaluatedMate D Sc cutoff i j v t
-      (BalancedInduction.tensor (append D Sc cutoff i)
-        ((BalancedInduction.restriction (append D Sc cutoff j)).obj
-          (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).toFunctor s g b) =
-      toCyclotomic D Sc cutoff i j v t
-        (moduleSourceParityEquiv D Sc cutoff i j v t
-          (BalancedInduction.tensor (append D Sc cutoff i)
-            ((BalancedInduction.restriction (append D Sc cutoff j)).obj
-              (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).toFunctor s g b)) := by
-  exact moduleMate_crossing_tensor D Sc cutoff i j v s ⟨t⟩ g b
-
-/-- Equality with the prescribed mate on all balanced classes. -/
-theorem moduleMate_crossing (i j : I) (v t : List I) :
-    evaluatedMate D Sc cutoff i j v t =
-      toCyclotomic D Sc cutoff i j v t ∘ₗ (moduleSourceParityEquiv D Sc cutoff i j v t).toLinearMap := by
-  apply BalancedInduction.hom_ext
-  intro s g b
-  exact evaluatedMate_tensor D Sc cutoff i j v t s g b
-
-/-- The explicit mixed PBW inverse attached to the prescribed categorical mate
-on old representables. -/
-def moduleMateEquiv (i j : I) (hij : i ≠ j) (v t : List I) :
-    ModuleSource D Sc cutoff i j v t ≃ₗ[k] Old D Sc cutoff (v ++ [i]) (t ++ [j]) :=
-  (moduleSourceParityEquiv D Sc cutoff i j v t).trans (cyclotomicEquiv D Sc cutoff i j hij v t)
-
-/-- The constructed equivalence is the evaluated literal cup-crossing-cap. -/
-theorem moduleMateEquiv_apply (i j : I) (hij : i ≠ j) (v t : List I)
-    (z : ModuleSource D Sc cutoff i j v t) :
-    moduleMateEquiv D Sc cutoff i j hij v t z = evaluatedMate D Sc cutoff i j v t z :=
-  (LinearMap.congr_fun (moduleMate_crossing D Sc cutoff i j v t) z).symm
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct

@@ -61,11 +61,6 @@ theorem reservoir_pairing (μ : X) (s : List I) (d : ℕ) (i : I) :
   change _ = -D.h i μ + _
   omega
 
-theorem probeExponent_pos (μ : X) (s : List I) (d : ℕ) (i : I) :
-    0 < probeExponent D μ s d i := by
-  unfold probeExponent probeLevel vacuumCutoff
-  split_ifs <;> omega
-
 /-- A single strict lower bound works simultaneously for both factors. -/
 theorem cutoff_bounds (μ : X) (s : List I) (d : ℕ) (i : I) :
     d + 2 * s.length.choose 2 <
@@ -78,10 +73,6 @@ theorem cutoff_bounds (μ : X) (s : List I) (d : ℕ) (i : I) :
 /-- The constant positive exponent chosen in §2 for every elementary coefficient. -/
 def coefficientPower (s : List I) (d : ℕ) : I × ℕ → ℕ :=
   fun _ => vacuumCutoff s d
-
-theorem coefficientPower_pos (s : List I) (d : ℕ) (j : I × ℕ) :
-    0 < coefficientPower s d j := by
-  simp [coefficientPower, vacuumCutoff]
 
 /-- Every chosen elementary power has at least the required coefficient weight. -/
 theorem coefficientPower_weight (s : List I) (d : ℕ) (j : I × ℕ) :

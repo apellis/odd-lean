@@ -23,11 +23,6 @@ private def retagAdjunction {k : Type u} [CommRing k] {A B : PiSCat.{u,u,u+1} k}
     (L : SKM.ShiftedSuperAdjunction (k := k) F E σ) (h : σ = τ) :
     SKM.ShiftedSuperAdjunction (k := k) F E τ := h ▸ L
 
-private theorem retagAdjunction_counit {k : Type u} [CommRing k] {A B : PiSCat.{u,u,u+1} k}
-    {F : B ⟶ A} {E : A ⟶ B} {σ τ : ZMod 2}
-    (L : SKM.ShiftedSuperAdjunction (k := k) F E σ) (h : σ = τ) :
-    (retagAdjunction L h).counit = L.counit := by cases h; rfl
-
 private theorem negative_cutoff_parity (p : ZMod 2) (P : ℕ) (hP : 0 < P) :
     p * (((-(P : ℤ)) : ZMod 2) + 1) = (P - 1) • p := by
   rw [Int.cast_natCast, nsmul_eq_mul, Nat.cast_sub (by omega : 1 ≤ P), Nat.cast_one]
@@ -96,7 +91,6 @@ variable {Z : PiSCat.{u,u,u+1} k}
       ((associator E₀ (inductionCell D Sc m i) E₃).inv ≫ t ▷ E₃ ≫
         (associator E₀ (inductionCell D Sc m i) E₃).hom))
 
-
 /-- The existing negative-height local left adjunction on the given native
 probe induction/restriction edge, expressed at its last-row parity. -/
 def localLeftAdjunction :
@@ -104,13 +98,6 @@ def localLeftAdjunction :
       ((cut i - 1) • D.parity i) :=
   retagAdjunction (L.negativeLeftAdjunction U (by omega) hsq hsq' hB)
     (by simpa only [Int.cast_neg] using negative_cutoff_parity (D.parity i) (cut i) hP)
-
-omit [Fintype I] in
-/-- Its counit is exactly the existing normalized local cap family. -/
-theorem localLeftAdjunction_counit :
-    (localLeftAdjunction D Sc m i A₀ x₀ t L A₃ x₃ t' U hP hsq hsq' hB).counit =
-      localLeftCounitFamily D Sc m i A₀ x₀ t L A₃ x₃ t' U hP hsq hsq' hB :=
-  retagAdjunction_counit _ _
 
 /-- The unshifted precomposition adjunction from this specified local
 probe left adjunction, with canonical parity comparisons. -/
@@ -122,19 +109,6 @@ def localPreAdjunction (R : PiSCat.{u,u,u+1} k) :=
 def localPreSuperAdjunction (R : PiSCat.{u,u,u+1} k) :=
   SKM.unshiftedPreSuperAdjunction
     (localLeftAdjunction D Sc m i A₀ x₀ t L A₃ x₃ t' U hP hsq hsq' hB) R
-
-/-- Evaluation of the CONSTRUCTED precomposition adjunction's counit is
-precisely the specified shifted native probe cap. Both normalization signs
-cancel; the left unit has not been rescaled. -/
-theorem localPreAdjunction_counit_total (R : PiSCat.{u,u,u+1} k)
-    (H : modulePiCategory D Sc m ⟶ R) :
-    ((localPreAdjunction D Sc m i A₀ x₀ t L A₃ x₃ t' U hP hsq hsq' hB R).counit.app H).total N =
-      shiftedPreCap D Sc m R i hP H := by
-  rw [localPreAdjunction, preCounit_total, localLeftAdjunction_counit]
-  change koszulSign ((cut i - 1) • D.parity i) ((cut i - 1) • D.parity i) •
-    ((preSourceComponent D Sc m R i H).hom ≫ H.map
-      ((localLeftCounitFamily D Sc m i A₀ x₀ t L A₃ x₃ t' U hP hsq hsq' hB).total N)) = _
-  exact localLeftCounit_preCap_eq D Sc m i A₀ x₀ t L A₃ x₃ t' U hP hsq hsq' hB R H
 
 end Adjacent
 end Local

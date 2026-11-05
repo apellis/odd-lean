@@ -162,14 +162,6 @@ theorem realize_proj (p : ZMod 2) (c : 𝟙 A.toSuperAlg ⟶ 𝟙 A.toSuperAlg) 
   · exact realize_mem A (proj_mem _ _)
   · exact realize_mem A (proj_mem _ _)
 
-/-- Explicit algebra support forces high-degree realized module coefficients to vanish. -/
-theorem realize_eq_zero_of_high_degree (K : ℕ)
-    (hK : ∀ d : ℤ, (K : ℤ) ≤ d → A.degree d = ⊥) {d : ℤ}
-    (c : 𝟙 A.toSuperAlg ⟶ 𝟙 A.toSuperAlg)
-    (hc : c ∈ (coeffGrading A).deg d) (hd : (K : ℤ) ≤ d) : realize A c = 0 := by
-  rw [coefficient_eq_zero A K hK d hd c hc]
-  exact (realizeLinear A).map_zero
-
 instance modulePi : PiSupercategory k (Modules A) :=
   inferInstanceAs (PiSupercategory k (SuperBimodule A.grading (trivialGrading k)))
 
@@ -182,34 +174,5 @@ theorem realize_id : realize A (𝟙 (𝟙 A.toSuperAlg)) = 𝟙 (Superfunctor.i
   rw [realize_total, ProbeWindow.postCoeff_id (k := k)]
   change 𝟙 M = 𝟙 M + 0
   exact (add_zero _).symm
-
-/-- The image grading of regular coefficients on the actual module identity superfunctor.
-No grading of arbitrary superfunctors or surjectivity onto the whole center is assumed. -/
-def moduleCoeffGrading : ProbeWindow.CoeffGrading k (moduleTarget A) where
-  deg n := {t | ∃ c ∈ (coeffGrading A).deg n, realize A c = t}
-  id_mem := ⟨_, (coeffGrading A).id_mem, realize_id A⟩
-  comp_mem := by
-    rintro m n x y ⟨c, hc, rfl⟩ ⟨d, hd, rfl⟩
-    exact ⟨c ≫ d, (coeffGrading A).comp_mem hc hd, realize_comp A c d⟩
-  proj_mem := by
-    rintro n p x ⟨c, hc, rfl⟩
-    exact ⟨proj k p c, (coeffGrading A).proj_mem p hc, realize_proj A p c⟩
-
-/-- Algebra support, rather than an assumed functor-coefficient bound, kills the image grading. -/
-theorem module_coefficient_eq_zero (K : ℕ)
-    (hK : ∀ d : ℤ, (K : ℤ) ≤ d → A.degree d = ⊥)
-    (d : ℤ) (hd : (K : ℤ) ≤ d)
-    (t : 𝟙 (moduleTarget A) ⟶ 𝟙 (moduleTarget A))
-    (ht : t ∈ (moduleCoeffGrading A).deg d) : t = 0 := by
-  obtain ⟨c, hc, rfl⟩ := ht
-  exact realize_eq_zero_of_high_degree A K hK c hc hd
-
-/-- A jointly nilpotent ideal on module **superfunctors** from any probe Π-supercategory.
-This is the concrete bridge from regular bimodule support to the swapped action's target. -/
-def moduleCoefficientIdeal (T : PiSCat k) (K : ℕ)
-    (hK : ∀ d : ℤ, (K : ℤ) ≤ d → A.degree d = ⊥) :
-    ProbeWindow.CoefficientIdeal (T ⟶ moduleTarget A) :=
-  ProbeWindow.reservoirCoefficientIdeal T (moduleCoeffGrading A) K
-    (module_coefficient_eq_zero A K hK)
 
 end OddMath.QuiverHecke.SwappedAssembly.RegularReservoir

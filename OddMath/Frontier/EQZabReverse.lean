@@ -192,7 +192,6 @@ theorem rev_monomial (a : Fin N → ℕ) :
   exact ⟨(-1 : ℤ) ^ (a i * a j), IsSign.pow _, OnhReflection.pow_mul_pow_anti
     (EQSkewDifferential.generator_anticomm i j (Fin.ne_of_lt hij)) (a i) (a j)⟩
 
-
 /-! ## `rev` on odd symmetric polynomials -/
 
 section Generic2

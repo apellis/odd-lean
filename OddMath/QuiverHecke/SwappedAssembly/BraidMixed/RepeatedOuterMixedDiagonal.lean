@@ -32,13 +32,6 @@ private lemma single_coeff {C : Type*} [Category C]
   rw [hu', ha, ← Category.assoc J.hom, hj]
   simp only [Category.assoc]
 
-private lemma normalized_signed_slide {k : Type u} [CommRing k]
-    {C : Type*} [Category C] [Preadditive C] [Linear k C]
-    {A B : C} (a : End A) (b : End B) (f : A ⟶ B) (q ε : k)
-    (hε : ε * ε = 1) (h : a ≫ f = f ≫ b) :
-    (q • a) ≫ f = ε • (f ≫ ((ε * q) • b)) := by
-  rw [Linear.smul_comp, h, Linear.comp_smul, smul_smul, ← mul_assoc, hε, one_mul]
-
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
   {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
@@ -92,20 +85,6 @@ theorem repeatedOuterMixed_probe_coeff (c : P.CrossCoeff Sc) (hc : c.IsInverse)
   have he' := single_coeff J H K A B (P.adjacentReverseMove i j s hR hs Z)
     (P.adjacentReverseProbeCross i j s hR hs₀ Z) he hj
   exact he'
-
-/-- With explicit sign normalizations, the single edge has the Koszul sign.
-The source normalization is `(-1)^pᵢ`, and the separated target normalization
-is `(-1)^(pᵢ+pᵢpⱼ)`. Both total parities are retained. -/
-theorem repeatedOuterMixed_probe_coeff_signed (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
-    (zsign k (D.parity i) • P.repeatedOuterMixedAdjacentCoeff i j s hR hs Z c) ≫
-        P.adjacentReverseProbeCross i j s hR hs₀ Z =
-      zsign k (D.parity i * D.parity j) •
-        (P.adjacentReverseProbeCross i j s hR hs₀ Z ≫
-          ((zsign k (D.parity i * D.parity j) * zsign k (D.parity i)) •
-            P.repeatedOuterMixedSeparatedCoeff i j s hR Z c)) := by
-  exact normalized_signed_slide _ _ _ _ _ (zsign_mul_self' _)
-    (P.repeatedOuterMixed_probe_coeff i j s hR hs₀ hs Z c hc h hij)
 
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

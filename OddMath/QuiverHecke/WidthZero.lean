@@ -211,7 +211,6 @@ theorem iso_of_retract_of_idem {C : Type*} [Category C] [Preadditive C] {W Z : C
       _ = 0 := by rw [h0]; simp
   · exact ⟨⟨ι, π, hιπ, h1⟩⟩
 
-
 variable {sy hc} in
 include cs in
 /-- **Width zero (BE2, proof of Theorem 11.7)**: an indecomposable retract of `Q^m Π^a 1_μ` in

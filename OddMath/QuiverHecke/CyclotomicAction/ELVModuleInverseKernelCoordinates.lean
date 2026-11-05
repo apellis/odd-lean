@@ -36,10 +36,10 @@ theorem moduleUnitMatrixIso_inv_kernel
     (moduleUnitMatrixIso D Sc cutoff M i t hh).inv z =
       positiveKernelCoordinates D Sc cutoff M i _ t
         ((BalancedKernelTensor.equivOfBijective M.toFunctor
-          (actualPositiveKernelMap D Sc cutoff i _ t)
+          (positiveKernelMap D Sc cutoff i _ t)
           (fun v => by
             rcases v with ⟨v⟩
-            exact actualPositiveKernelMap_bijective D Sc cutoff i t hh v)).symm
+            exact positiveKernelMap_bijective D Sc cutoff i t hh v)).symm
           ((resIndKernelCoordinates D Sc cutoff M i t).symm z)) := rfl
 
 /-- The selected OLD cap-matrix inverse uses the actual negative kernel map. -/
@@ -49,25 +49,12 @@ theorem moduleCapMatrixIso_inv_kernel
     (moduleCapMatrixIso D Sc cutoff M i t hh).inv z =
       indResKernelCoordinates D Sc cutoff M i t
         ((BalancedKernelTensor.equivOfBijective M.toFunctor
-          (actualNegativeKernelMap D Sc cutoff i _ t)
+          (negativeKernelMap D Sc cutoff i _ t)
           (fun v => by
             rcases v with ⟨v⟩
-            exact actualNegativeKernelMap_bijective D Sc cutoff i t hh v)).symm
+            exact negativeKernelMap_bijective D Sc cutoff i t hh v)).symm
           ((negativeKernelCoordinates D Sc cutoff M i _ t).symm z)) := rfl
 
-/-- The Option.none unit slot is the same literal principal extraction. -/
-theorem moduleUnitMatrixIso_inv_kernel_none
-    (hh : 0 ≤ contentCrossingHeight D cutoff i (t.word : Multiset I))
-    (z : mateTargetSpace D Sc cutoff i M t) :
-    ((moduleUnitMatrixIso D Sc cutoff M i t hh).inv z) none =
-      (positiveKernelCoordinates D Sc cutoff M i _ t
-        ((BalancedKernelTensor.equivOfBijective M.toFunctor
-          (actualPositiveKernelMap D Sc cutoff i _ t)
-          (fun v => by
-            rcases v with ⟨v⟩
-            exact actualPositiveKernelMap_bijective D Sc cutoff i t hh v)).symm
-          ((resIndKernelCoordinates D Sc cutoff M i t).symm z))) none :=
-  congrFun (moduleUnitMatrixIso_inv_kernel D Sc cutoff M i t hh z) none
 /-- On pure upper-Hom tensors the unit inverse applies the raw coefficient
 inverse and leaves the module vector unchanged. -/
 theorem moduleUnitMatrixIso_inv_tensor

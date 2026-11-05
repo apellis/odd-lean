@@ -104,9 +104,6 @@ local notation "K" => oldContentAppendTo D Sc cutoff μ i μ' hμ
 local notation "Q" => oldContentReindex D Sc cutoff h
 local notation "Q'" => oldContentReindex D Sc cutoff h'
 
-/-- Appending and changing certificates give exactly the same OLD functor. -/
-theorem oldAppendTo_reindex_square : J ⋙ Q' = Q ⋙ K := rfl
-
 /-- The first composite uses the actual balanced append adjunction. -/
 def oldAppendReindexLeftAdjunction :
     induction J ⋙ oldModuleReindex D Sc cutoff h' ⊣ restriction Q' ⋙ restriction J :=
@@ -132,16 +129,6 @@ theorem oldAppendReindexIso_hom_mem
       (oldModuleReindexAdjunction_unit_mem D Sc cutoff h) (adjunctionUnit_mem K)
   · exact composite_counit_mem _ _ (adjunctionCounit_mem J)
       (oldModuleReindexAdjunction_counit_mem D Sc cutoff h')
-
-theorem oldAppendReindexIso_inv_mem
-    (N : Superfunctor k (OldContentCategory D Sc cutoff ν) (SVec k)) :
-    (oldAppendReindexIso D Sc cutoff h i hν hμ h').inv.app N ∈ parity (R := k) _ _ 0 := by
-  rw [oldAppendReindexIso, Adjunction.leftAdjointUniq_inv_app]
-  apply leftUniq_hom_mem
-  · exact composite_unit_mem _ _ (adjunctionUnit_mem J)
-      (oldModuleReindexAdjunction_unit_mem D Sc cutoff h')
-  · exact composite_counit_mem _ _
-      (oldModuleReindexAdjunction_counit_mem D Sc cutoff h) (adjunctionCounit_mem K)
 
 /-- The comparison retains the chosen composite unit. -/
 theorem oldAppendReindexIso_unit
@@ -182,22 +169,8 @@ def probeAppendReindexIso :
       apply InducedCategory.hom_ext
       exact (oldAppendReindexIso D Sc (probeCutoff D m) h i hν hμ h').hom.naturality f.hom)
 
-/-- No reindexing gauge is introduced on the given forward map. -/
-theorem probeAppendReindexIso_hom_native (N : ProbeEvaluatedModules D Sc m ν) :
-    ((probeAppendReindexIso D Sc m h i hν hμ h').hom.app N).hom =
-      (oldAppendReindexIso D Sc (probeCutoff D m) h i hν hμ h').hom.app N.obj := rfl
-
-/-- The inverse is the given OLD inverse comparison as a map of full evaluated categories. -/
-theorem probeAppendReindexIso_inv_native (N : ProbeEvaluatedModules D Sc m ν) :
-    ((probeAppendReindexIso D Sc m h i hν hμ h').inv.app N).hom =
-      (oldAppendReindexIso D Sc (probeCutoff D m) h i hν hμ h').inv.app N.obj := rfl
-
 theorem probeAppendReindexIso_hom_mem (N : ProbeEvaluatedModules D Sc m ν) :
     (probeAppendReindexIso D Sc m h i hν hμ h').hom.app N ∈ parity (R := k) _ _ 0 :=
   oldAppendReindexIso_hom_mem D Sc (probeCutoff D m) h i hν hμ h' N.obj
-
-theorem probeAppendReindexIso_inv_mem (N : ProbeEvaluatedModules D Sc m ν) :
-    (probeAppendReindexIso D Sc m h i hν hμ h').inv.app N ∈ parity (R := k) _ _ 0 :=
-  oldAppendReindexIso_inv_mem D Sc (probeCutoff D m) h i hν hμ h' N.obj
 
 end OddMath.QuiverHecke

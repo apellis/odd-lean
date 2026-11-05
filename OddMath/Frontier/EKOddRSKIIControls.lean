@@ -533,7 +533,6 @@ theorem sum0 {M : Type*} [AddCommMonoid M] (f : DegreeShape 0 → M) :
   rw [sum_list [sh0] (by simp) hex]
   simp
 
-
 theorem exhaust1 (μ : DegreeShape 1) : μ = sh1 := by
   have hs : μ.val.rowLens.sum = 1 := (rowLens_sum μ.val).trans μ.property
   rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _).pairwise
@@ -549,7 +548,6 @@ theorem sum1 {M : Type*} [AddCommMonoid M] (f : DegreeShape 1 → M) :
     all_goals simp
   rw [sum_list [sh1] (by simp) hex]
   simp
-
 
 theorem exhaust2 (μ : DegreeShape 2) : μ = sh2 ∨ μ = sh11 := by
   have hs : μ.val.rowLens.sum = 2 := (rowLens_sum μ.val).trans μ.property
@@ -567,7 +565,6 @@ theorem sum2 {M : Type*} [AddCommMonoid M] (f : DegreeShape 2 → M) :
   rw [sum_list [sh2, sh11] (by simp) hex]
   simp
 
-
 theorem exhaust3 (μ : DegreeShape 3) : μ = sh3 ∨ μ = sh21 ∨ μ = sh111 := by
   have hs : μ.val.rowLens.sum = 3 := (rowLens_sum μ.val).trans μ.property
   rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _).pairwise
@@ -583,7 +580,6 @@ theorem sum3 {M : Type*} [AddCommMonoid M] (f : DegreeShape 3 → M) :
     all_goals simp
   rw [sum_list [sh3, sh21, sh111] (by simp) hex]
   simp
-
 
 theorem exhaust4 (μ : DegreeShape 4) : μ = sh4 ∨ μ = sh31 ∨ μ = sh22 ∨ μ = sh211 ∨ μ = sh1111 := by
   have hs : μ.val.rowLens.sum = 4 := (rowLens_sum μ.val).trans μ.property
@@ -601,9 +597,7 @@ theorem sum4 {M : Type*} [AddCommMonoid M] (f : DegreeShape 4 → M) :
   rw [sum_list [sh4, sh31, sh22, sh211, sh1111] (by simp) hex]
   simp
 
-
 /-! ## Independent cross-check against the inherited degree-2 Gram controls -/
-
 
 /-! ## Bridge C: colored row-peeling recursion (EK Prop 2.6 matrix sum), all inputs -/
 
@@ -814,7 +808,6 @@ theorem first_of_numeric (d : ℕ)
   simp only [hc]
   exact hF ν μ
 
-
 /-! ### Degree 0: exact M = (e,h), M″ = (e,e), transposes and statistics -/
 
 theorem sh0_T : sh0.val.transpose = sh0.val :=
@@ -866,7 +859,6 @@ theorem odd_rsk_II_0 (μ ρ : DegreeShape 0) :
   all_goals simp only [sh0_T, sh0_rc, sh0_cc, sh0_ev, K_0_0, Me_0_0]
   all_goals decide
 
-
 /-! ### Degree 1: exact M = (e,h), M″ = (e,e), transposes and statistics -/
 
 theorem sh1_T : sh1.val.transpose = sh1.val :=
@@ -917,7 +909,6 @@ theorem odd_rsk_II_1 (μ ρ : DegreeShape 1) :
   all_goals rcases exhaust1 ρ with rfl
   all_goals simp only [sh1_T, sh1_rc, sh1_cc, sh1_ev, K_1_1, Me_1_1]
   all_goals decide
-
 
 /-! ### Degree 2: exact M = (e,h), M″ = (e,e), transposes and statistics -/
 
@@ -989,7 +980,6 @@ theorem odd_rsk_II_2 (μ ρ : DegreeShape 2) :
   all_goals rcases exhaust2 ρ with rfl|rfl
   all_goals simp only [sh2_T, sh2_rc, sh2_cc, sh2_ev, sh11_T, sh11_rc, sh11_cc, sh11_ev, K_2_2, Me_2_2, K_2_11, Me_2_11, K_11_2, Me_11_2, K_11_11, Me_11_11]
   all_goals decide
-
 
 /-! ### Degree 3: exact M = (e,h), M″ = (e,e), transposes and statistics -/
 
@@ -1089,7 +1079,6 @@ theorem odd_rsk_II_3 (μ ρ : DegreeShape 3) :
   all_goals rcases exhaust3 ρ with rfl|rfl|rfl
   all_goals simp only [sh3_T, sh3_rc, sh3_cc, sh3_ev, sh21_T, sh21_rc, sh21_cc, sh21_ev, sh111_T, sh111_rc, sh111_cc, sh111_ev, K_3_3, Me_3_3, K_3_21, Me_3_21, K_3_111, Me_3_111, K_21_3, Me_21_3, K_21_21, Me_21_21, K_21_111, Me_21_111, K_111_3, Me_111_3, K_111_21, Me_111_21, K_111_111, Me_111_111]
   all_goals decide
-
 
 /-! ### Degree 4: exact M = (e,h), M″ = (e,e), transposes and statistics -/
 
@@ -1269,7 +1258,6 @@ theorem odd_rsk_II_4 (μ ρ : DegreeShape 4) :
   all_goals rcases exhaust4 ρ with rfl|rfl|rfl|rfl|rfl
   all_goals simp only [sh4_T, sh4_rc, sh4_cc, sh4_ev, sh31_T, sh31_rc, sh31_cc, sh31_ev, sh22_T, sh22_rc, sh22_cc, sh22_ev, sh211_T, sh211_rc, sh211_cc, sh211_ev, sh1111_T, sh1111_rc, sh1111_cc, sh1111_ev, K_4_4, Me_4_4, K_4_31, Me_4_31, K_4_22, Me_4_22, K_4_211, Me_4_211, K_4_1111, Me_4_1111, K_31_4, Me_31_4, K_31_31, Me_31_31, K_31_22, Me_31_22, K_31_211, Me_31_211, K_31_1111, Me_31_1111, K_22_4, Me_22_4, K_22_31, Me_22_31, K_22_22, Me_22_22, K_22_211, Me_22_211, K_22_1111, Me_22_1111, K_211_4, Me_211_4, K_211_31, Me_211_31, K_211_22, Me_211_22, K_211_211, Me_211_211, K_211_1111, Me_211_1111, K_1111_4, Me_1111_4, K_1111_31, Me_1111_31, K_1111_22, Me_1111_22, K_1111_211, Me_1111_211, K_1111_1111, Me_1111_1111]
   all_goals decide
-
 
 /-! ## Unconditional (3.14) in actual Q for every degree d ≤ 4 -/
 

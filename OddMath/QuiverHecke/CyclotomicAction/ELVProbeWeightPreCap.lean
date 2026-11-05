@@ -94,7 +94,7 @@ def vacuumPreSourceIso :
 /-- The prescribed whole-weight pre-Hom counit evaluates to the native
 shifted cap under the selected source chart. No cap compatibility or
 moment premise is supplied. -/
-theorem vacuumPreCounit_native (hP : 0 < probeCutoff D m i) :
+theorem vacuumPreCounit_eq (hP : 0 < probeCutoff D m i) :
     ((SKM.homContentPreAdjunction (T) W (T).leftAdjoints i muM h).counit.app Z).total N₀ ≫
       H.map (eqToHom (emptyProbe_regular D Sc m Λ)) =
     (vacuumPreSourceIso D Sc m Λ hc W muM i h H).hom ≫
@@ -102,7 +102,7 @@ theorem vacuumPreCounit_native (hP : 0 < probeCutoff D m i) :
   have hw := preCounit_total (T) W i muM h Z N₀
   have hout := congrArg (fun f => f ≫ H.map (eqToHom (emptyProbe_regular D Sc m Λ))) hw
   refine hout.trans ?_
-  have hn := congrArg H.toFunctor.map (vacuumLeftCounit_native D Sc m Λ i h hc hP)
+  have hn := congrArg H.toFunctor.map (vacuumLeftCounit_eq D Sc m Λ i h hc hP)
   rw [CategoryTheory.Functor.map_zsmul, CategoryTheory.Functor.map_comp,
     CategoryTheory.Functor.map_comp] at hn
   change (koszulSign (SKM.leftAdjParity D i (-Λ)) (SKM.leftAdjParity D i (-Λ)) •

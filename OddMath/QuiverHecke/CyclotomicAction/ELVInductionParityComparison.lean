@@ -28,19 +28,6 @@ def adjunctionParitySourceIso (N : Superfunctor k D (SVec k)) :
       (induction A).obj ((restriction A).obj (supermoduleParityObj N)) :=
   ((restriction A ⋙ induction A).mapIso (supermoduleParityIso N)).symm
 
-/-- Every component on every coend generator uses the existing induced map.
-The kernel-arrow twist is the canonical shift-through-tensor sign. -/
-theorem adjunctionParitySourceIso_tensor
-    (N : Superfunctor k D (SVec k)) (p : ZMod 2) (w : D) (v : C)
-    (h : A.obj v ⟶ w) (m : N.obj (A.obj v)) :
-    (adjunctionParitySourceIso A N).hom.app p w
-      (tensor A (A ⋙ N.toFunctor) v h m) =
-      tensor A (A ⋙ (supermoduleParityObj N).toFunctor) v (twist k p h)
-        (((restriction A).map (supermoduleParityIso N).inv).app p v m) := by
-  change mapComponent A ((restriction A).map (supermoduleParityIso N).inv) p w
-    (tensor A (((restriction A).obj N).toFunctor) v h m) = _
-  exact mapComponent_tensor A ((restriction A).map (supermoduleParityIso N).inv) p w v h m
-
 /-- The actual counit at the parity-shifted module, transported on source
 and output by the canonical isomorphisms, equals the original actual counit.
 This is a whole supernatural module-map equality, including odd inputs. -/

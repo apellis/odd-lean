@@ -181,11 +181,6 @@ abbrev K1 (i : I) (ν : List I) :=
   CyclotomicAction.RightCentralPolynomialModule
     (sourceContentCentral D Sc cutoff (appendQ D cutoff i ν) i ν)
 
-/-- K₁′ retains eta, without the parity of the moving cyclotomic relation. -/
-abbrev K1Prime (i : I) (ν : List I) :=
-  CyclotomicAction.RightCentralPolynomialModule
-    (sourceContentCentral D Sc cutoff (D.parity i * wordSumParity D ν) i ν)
-
 /-- The prescribed content map is an ordinary right B[s]-linear map. -/
 def pPolynomial (i : I) (ν : List I) :
     K1 D Sc cutoff i ν →ₗ[(Polynomial (ContentRing D Sc cutoff ν))ᵐᵒᵖ] K0 D Sc cutoff i ν :=
@@ -208,51 +203,5 @@ theorem pPolynomial_injective (i : I) (ν : List I) :
     pPolynomial D Sc cutoff i ν
       (CyclotomicAction.RightCentralPolynomialModule.of _ z) =
     CyclotomicAction.RightCentralPolynomialModule.of _ (pContent D Sc cutoff i ν z) := rfl
-
-/-- The polynomial variable on K₀ is the moving dot/square on every matrix component. -/
-theorem K0_X (i : I) (ν : List I) (z : AppendContent D Sc cutoff i ν) :
-    MulOpposite.op (Polynomial.X : Polynomial (ContentRing D Sc cutoff ν)) •
-      CyclotomicAction.RightCentralPolynomialModule.of (appendContentCentral D Sc cutoff i ν) z =
-    CyclotomicAction.RightCentralPolynomialModule.of _ (appendContentCentral D Sc cutoff i ν z) :=
-  CyclotomicAction.RightCentralPolynomialModule.X_smul_of _ z
-
-/-- The polynomial variable on K₁ uses the same central exponent, with epsilon unchanged. -/
-theorem K1_X (i : I) (ν : List I)
-    (z : SourceContent D Sc cutoff (appendQ D cutoff i ν) i ν) :
-    MulOpposite.op (Polynomial.X : Polynomial (ContentRing D Sc cutoff ν)) •
-      CyclotomicAction.RightCentralPolynomialModule.of
-        (sourceContentCentral D Sc cutoff (appendQ D cutoff i ν) i ν) z =
-    CyclotomicAction.RightCentralPolynomialModule.of _
-      (sourceContentCentral D Sc cutoff (appendQ D cutoff i ν) i ν z) :=
-  CyclotomicAction.RightCentralPolynomialModule.X_smul_of _ z
-
-/-- Ground-ring PBW coordinates of the full source content module. The old word,
-ambient word, moving shuffle and moving exponent are all retained. This is not
-asserted to be a polynomial-linear finite-projective decomposition. -/
-def sourceContentCoordinateEquiv (p : ZMod 2) (i : I) (ν : List I) :
-    SourceContent D Sc cutoff p i ν ≃ₗ[k]
-      (∀ w : ContentWords (i :: ν), ∀ v : ContentWords ν,
-        PrependOldCoordinates D Sc cutoff i v.val w.val) :=
-  LinearEquiv.piCongrRight fun w => LinearEquiv.piCongrRight fun v =>
-    prependOldCoordinateEquiv D Sc cutoff p i v.val w.val
-
-/-- The central action advances precisely one central block of the moving exponent,
-without changing the old quotient coefficient or the PBW shuffle. -/
-theorem centralSource_pair_shift (p : ZMod 2) {i : I} {v w : List I}
-    (x : PrependIdx i v w) (b : Old D Sc cutoff v x.oldTarget) :
-    centralSource D Sc cutoff i v w
-      (pair D Sc cutoff p i
-        ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k] prependTail D Sc x) b) =
-      pair D Sc cutoff p i
-        ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k]
-          prependTail D Sc (x.shift (centralDegree D i))) b :=
-  movingPower_pair_shift D Sc cutoff p x _ (centralDegree_even D i) b
-
-/-- The residue in the dot/square decomposition is unchanged by the central action. -/
-theorem centralSource_residue {i : I} {v w : List I} (x : PrependIdx i v w) :
-    (x.shift (centralDegree D i)).val.1 % centralDegree D i =
-      x.val.1 % centralDegree D i := by
-  change (centralDegree D i + x.val.1) % centralDegree D i = _
-  simp
 
 end OddMath.QuiverHecke.ELVOld

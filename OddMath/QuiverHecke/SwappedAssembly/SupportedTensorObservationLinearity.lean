@@ -78,13 +78,4 @@ def tensorMatrixQuotientObservationLinear {a : Obj (SKM.sig D)}
   exact coordinate.comp (wordValue.comp (chart.comp (evaluate.comp
     ((LinearMap.proj β).comp (value.comp row)))))
 
-/-- Bundling linearity leaves the canonical observation unchanged. -/
-theorem tensorMatrixQuotientObservationLinear_apply {a : Obj (SKM.sig D)}
-    (hEnd : (ΛP - contentWeight D (0 : I →₀ ℕ)) + (-ΛR + contentWeight D (0 : I →₀ ℕ)) = a.endR)
-    (p : SPath a.word (0,cS) (0,0)) (hup : ∀ c ∈ a.word, c.l.1 = true)
-    (x : matrixModule D Sc m cutoff N ΛP ΛR
-      (tensorSourceFamily D Sc m cutoff ΛP ΛR L s) (tensorTargetFamily D Sc m cutoff ΛP ΛR L) a) :
-    tensorMatrixQuotientObservationLinear D Sc m cutoff ΛP ΛR L hP hR s hEnd p hup x =
-      tensorMatrixQuotientObservation D Sc m cutoff ΛP ΛR L hP hR s hEnd p hup x := rfl
-
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

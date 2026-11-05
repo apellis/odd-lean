@@ -329,7 +329,6 @@ theorem sig_clifDiff :
   rw [mul_sub, h₀, h₁, ← sub_mul]
   exact (congrArg (· * _) (neg_sub _ _).symm).trans (endNeg_mul _ _)
 
-
 /-- `τ_{ji} τ_{ij}`: the square of a crossing as an operator. -/
 theorem crossOp_mul_crossOp (i j : I) :
     crossOp D Sc j i a * crossOp D Sc i j a =

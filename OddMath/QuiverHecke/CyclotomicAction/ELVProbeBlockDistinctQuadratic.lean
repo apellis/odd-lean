@@ -63,7 +63,7 @@ theorem probeOldBlockPairQuadraticArrow_supernatural (hij : i ≠ j)
     (probeOldBlockPairQuadraticArrow_source D Sc m i j Λ h₁ h₂ h₃ h₄ hij β ε hε)
 
 /-- The selected pair polynomial uses exactly its original flattening and inverse. -/
-def probeOldBlockPairQuadraticNative (hij : i ≠ j)
+def probeOldBlockPairQuadratic (hij : i ≠ j)
     (β : WeightBlocks D Λ x₀) (ε : WeightBlocks D Λ xu)
     (hε : blockSucc₂ D i j Λ h₁ h₂ β = ε)
     (N : Superfunctor k (OldContentCategory D Sc' (probeCutoff D m) β.1.toList) (SVec k)) :
@@ -74,20 +74,20 @@ def probeOldBlockPairQuadraticNative (hij : i ≠ j)
     (inductionComp (K β) (U β ε hε)).inv.app N
 
 /-- The actual two rectangular crossings compose to that original-parameter polynomial. -/
-theorem probeOldBlockDistinctCross_quadratic_native (hij : i ≠ j)
+theorem probeOldBlockDistinctCross_quadratic_eq (hij : i ≠ j)
     (β : WeightBlocks D Λ x₀) (ε : WeightBlocks D Λ xu)
     (hε : blockSucc₂ D i j Λ h₁ h₂ β = ε)
     (N : ProbeCanonicalModules D Sc' m β.1) :
     ((probeOldBlockDistinctCross D Sc' m i j Λ h₁ h₂ h₃ h₄ β ε hε).total N).hom ≫
       ((probeOldBlockDistinctCross D Sc' m j i Λ h₃ h₄ h₁ h₂ β ε (sw hε)).total N).hom =
-      probeOldBlockPairQuadraticNative D Sc m i j Λ h₁ h₂ h₃ h₄ hij β ε hε N.obj := by
-  rw [probeOldBlockDistinctCross_native_total, probeOldBlockDistinctCross_native_total]
+      probeOldBlockPairQuadratic D Sc m i j Λ h₁ h₂ h₃ h₄ hij β ε hε N.obj := by
+  rw [probeOldBlockDistinctCross_total, probeOldBlockDistinctCross_total]
   have hr := rectangularCrossComponent_signed_quadratic_of_parity (J β) (K β) (L β ε hε) (U β ε hε)
     (hc β ε hε)
     (probeOldBlockPairQuadraticArrow_supernatural D Sc m i j Λ h₁ h₂ h₃ h₄ hij β ε hε)
     (probeOldBlockPairQuadraticArrow_source D Sc m i j Λ h₁ h₂ h₃ h₄ hij β ε hε)
     (probeOldBlockDistinctCrossArrow_supernatural D Sc' m j i Λ h₃ h₄ h₁ h₂ β ε (sw hε))
     (mul_comm _ _) N.obj
-  unfold probeOldBlockPairQuadraticNative
+  unfold probeOldBlockPairQuadratic
   exact hr
 end OddMath.QuiverHecke

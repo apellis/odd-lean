@@ -258,22 +258,4 @@ theorem inclusion_user_relation (r : Rel D)
     ha hb (inclusion_ob D J s.ν s.dom) (inclusion_ob D J s.ν s.cod)).trans
     ((heq_of_eq hcast).trans h))
 
-/-- Every supported presentation generator lifts, including signed interchange. -/
-theorem inclusion_allRel (r : (pres D Sc).AllRel)
-    (hr : allRelColours D Sc r ⊆ J) :
-    ∃ s : (pres (D.restrictColours J) (Sc.restrictColours D J)).AllRel,
-      ∃ (ha : (inclusion D J).obj s.dom = r.dom)
-        (hb : (inclusion D J).obj s.cod = r.cod),
-        LinDiagram.cast ((inclusion D J).toLayerMap.lin s.rel) ha hb = r.rel := by
-  cases r with
-  | user r =>
-    obtain ⟨s, _, ha, hb, h⟩ := inclusion_user_relation D J Sc r (by
-      simpa only [allRelColours] using hr)
-    exact ⟨.user s, ha, hb, h⟩
-  | interchange x hx =>
-    obtain ⟨y, hy, ha, hb, _, _, _, _, h⟩ :=
-      supported_interchange_lift D J (k := k) x (by
-        simpa only [allRelColours, interchangeColours] using hr) hx
-    exact ⟨.interchange y hy, ha, hb, h⟩
-
 end OddMath.SKM.FiniteColour

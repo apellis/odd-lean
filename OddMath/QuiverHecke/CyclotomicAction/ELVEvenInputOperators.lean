@@ -83,21 +83,6 @@ def evenInputContraction (i : I) (hi : D.parity i = 0) (v t : List I) :
   simp only [evenInputContraction, LinearMap.comp_apply, LinearEquiv.coe_coe,
     LinearMap.quotKerEquivOfSurjective_symm_apply, Submodule.liftQ_apply]
 
-theorem evenInputContraction_representative (i : I) (hi : D.parity i = 0)
-    (v s t : List I) (r : hom D Sc cutoff v (s ++ [i]))
-    (g : hom D Sc cutoff (s ++ [i]) t) :
-    evenInputContraction D Sc cutoff i hi v t
-      (q D Sc cutoff i v t
-        (shortTensor D Sc cutoff i v s t g ((ideal D Sc cutoff v (s ++ [i])).mkQ r))) =
-      -(ideal D Sc cutoff v t).mkQ (r ≫ g) := by
-  rw [evenInputContraction_q]
-  change appendC0InputDefect D Sc cutoff i v t
-    (shortCross D Sc cutoff i v t
-      (shortTensor D Sc cutoff i v s t g ((ideal D Sc cutoff _ _).mkQ r))) 0 = _
-  rw [ShortCrossCoordinates.column_mk, appendC0InputDefect_crossing]
-  simp only [Finsupp.neg_apply, Finsupp.single_eq_same, hi, zero_mul,
-    SKM.zsign_zero, twist_zero, neg_one_smul]
-
 /-- The input dot is the decoded ordinary append moving dot. -/
 def evenCrossingInputDotAffine (i : I) (v t : List I) :
     ShortTarget D Sc cutoff i v t →ₗ[k] ShortTarget D Sc cutoff i v t :=

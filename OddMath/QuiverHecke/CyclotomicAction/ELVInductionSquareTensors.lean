@@ -33,16 +33,6 @@ theorem total_linear_congr
     {F G : Superfunctor k C (SVec k)} {f g : F ⟶ G} (h : f = g) (w : C) :
     f.total w = g.total w := congrArg (fun a : F ⟶ G => a.total w) h
 
-private theorem four_mem
-    {k : Type u} [CommRing k] {E : Type*} [Category E]
-    [Preadditive E] [Linear k E] [Supercategory k E]
-    {F₀ F₁ F₂ F₃ F₄ : E} (a : F₀ ⟶ F₁) (b : F₁ ⟶ F₂)
-    (c : F₂ ⟶ F₃) (d : F₃ ⟶ F₄)
-    (ha : a ∈ parity (R := k) _ _ 0) (hb : b ∈ parity (R := k) _ _ 0)
-    (hc : c ∈ parity (R := k) _ _ 0) (hd : d ∈ parity (R := k) _ _ 0) :
-    a ≫ b ≫ c ≫ d ∈ parity (R := k) _ _ 0 := by
-  simpa only [zero_add] using comp_mem ha (comp_mem hb (comp_mem hc hd))
-
 section FunctorEquality
 variable {k : Type u} [CommRing k]
   {C D : Type u} [Category.{u} C] [Category.{u} D]
@@ -56,11 +46,6 @@ private theorem functorEq_hom_app :
     (inductionFunctorIsoOfEq J K h).hom.app R = (inducedIsoOfFunctorEq J K h R).hom := by
   subst K
   rfl
-
-private theorem functorEq_hom_mem :
-    (inductionFunctorIsoOfEq J K h).hom.app R ∈ parity (R := k) _ _ 0 := by
-  subst K
-  exact id_mem _
 
 private theorem functorEq_total_tensor (v : C) (w : D)
     (g : J.obj v ⟶ w) (b : R.obj v) :
@@ -106,14 +91,6 @@ theorem squareComparison_eq :
   exact congrArg (fun z : (induction (J ⋙ U)).obj R ⟶ (induction (Q ⋙ T)).obj R =>
     (inductionComp J U).hom.app R ≫ z ≫ (inductionComp Q T).inv.app R ≫
       (induction T).map c) (functorEq_hom_app (J ⋙ U) (Q ⋙ T) h R)
-
-/-- The composition and square comparisons are even; an even input map
-therefore gives an even whole comparison. -/
-theorem squareComparison_mem (hc : c ∈ parity (R := k) _ _ 0) :
-    squareComparison J U Q T h R M c ∈ parity (R := k) _ _ 0 := by
-  exact four_mem _ _ _ _ (inductionComp_hom_mem J U R)
-    (functorEq_hom_mem (J ⋙ U) (Q ⋙ T) h R)
-    (inductionComp_inv_mem Q T R) (IsSuperfunctor.map_mem (F := induction T) hc)
 
 /-- On a generator the four-map comparison changes only the arrow through
 the commuting square and applies the chosen input map to its unit tensor.
@@ -164,11 +141,6 @@ induction superspace projections out of subsequent generator formulas. -/
 def squareLinear (w : D) :
     Obj U (induced J R).toFunctor w →ₗ[k] Obj T M.toFunctor w :=
   (squareComparison J U Q T h R M c).total w
-
-/-- The literal coend realization agrees with the selected module map. -/
-theorem squareLinear_apply (w : D) (b : Obj U (induced J R).toFunctor w) :
-    squareLinear J U Q T h R M c w b =
-      (squareComparison J U Q T h R M c).total w b := rfl
 
 /-- Generator formula on literal coends, normalized while the four
 functors and their module endpoints are still abstract. -/

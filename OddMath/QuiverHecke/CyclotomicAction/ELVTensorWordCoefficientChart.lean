@@ -179,23 +179,4 @@ theorem chart_square (ν : List I) (a : SKM.SYM D k) :
       (TensorVacuumWords.chart D Sc m cutoff L ΛP ΛR (ν ++ [i])).hom
       (TensorVacuumWords.chart_append_heq D Sc m cutoff L ΛP ΛR ν i).symm _ hs
 
-/-- The global coefficient square on every output vector and content block. -/
-theorem chart_square_apply (ν : List I) (a : SKM.SYM D k)
-    (β : WeightBlocks D ΛR (PowerWordWeight.wordWeight D ΛR ν))
-    (c : ContentCategory D Sc cutoff N β.1)
-    (v : (((TensorVacuumWords.wordHom D Sc m cutoff L ΛP ΛR ν).obj P₀) β).obj c) :
-    ((TensorVacuumWords.chart D Sc m cutoff L ΛP ΛR ν).hom β).total c
-      ((((wordAction D Sc m cutoff L ΛP ΛR ν a).total P₀) β).total c v) =
-    (PowerWordWeightWhiskering.wordFamilyArrow D Sc cutoff L ΛR
-      (PowerWordWeight.wordWeight D ΛR ν) ν ν
-      (coefficientEndomorphism D Sc cutoff ν (SKM.SYM.elvCoefficientQuotient D cutoff a)) β).total c
-      (((TensorVacuumWords.chart D Sc m cutoff L ΛP ΛR ν).hom β).total c v) := by
-  have h := congrArg (fun f => (f β).total c v) (chart_square D Sc m cutoff L ΛP ΛR ν a)
-  change ((((wordAction D Sc m cutoff L ΛP ΛR ν a).total P₀) β ≫
-    (TensorVacuumWords.chart D Sc m cutoff L ΛP ΛR ν).hom β).total c) v =
-      (((TensorVacuumWords.chart D Sc m cutoff L ΛP ΛR ν).hom β ≫
-        PowerWordWeightWhiskering.wordFamilyArrow D Sc cutoff L ΛR
-          (PowerWordWeight.wordWeight D ΛR ν) ν ν
-          (coefficientEndomorphism D Sc cutoff ν (SKM.SYM.elvCoefficientQuotient D cutoff a)) β).total c) v at h
-  simpa only [Superfunctor.comp_total, SVec.comp_apply] using h
 end OddMath.QuiverHecke.ELVOld.TensorWordCoefficientChart

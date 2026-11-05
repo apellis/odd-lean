@@ -126,19 +126,6 @@ def sourceOldHom (i : I) (ν : List I) : List ℕ → End (wordObj D Sc ⟨ν, r
   | 0 :: ps => Supercategory.twist k (D.parity i) (sourceOldHom i ν ps)
   | (p + 1) :: ps => wordPositionDot D Sc ⟨ν, rfl⟩ p ≫ sourceOldHom i ν ps
 
-omit [Fintype I] in
-/-- All old coefficients are on the original word's diagonal. -/
-theorem sourceOldCoefficient_single (i : I) (ν : List I) (ps : List ℕ) :
-    sourceOldCoefficient D Sc i ν ps =
-      FiniteHomMatrix.single ⟨ν, rfl⟩ ⟨ν, rfl⟩ (sourceOldHom D Sc i ν ps) := by
-  induction ps with
-  | nil => rfl
-  | cons p ps ih =>
-    cases p with
-    | zero => simp only [sourceOldCoefficient, sourceOldHom, ih, homMatrixTwist_single]
-    | succ p => simp only [sourceOldCoefficient, sourceOldHom, ih,
-        FiniteHomMatrix.single_mul_single]
-
 /-- Concrete coordinates of any source dot monomial followed by a prescribed
 shuffle: one moving degree, and the explicitly computed old diagonal entry. -/
 theorem prependWordCoefficients_endpointDots (i : I) (ν : List I)
@@ -361,12 +348,6 @@ theorem prependEntryCoefficients_leadingEndpoint (i : I) (ν : List I) :
     rfl
   rw [leadingMoveEndpointPolynomial_eq_product]
   exact (hc _ _ (Subtype.ext ht) _ _).symm.trans h
-
-theorem sourceOldDots_append (ps qs : List ℕ) :
-    sourceOldDots (ps ++ qs) = sourceOldDots ps ++ sourceOldDots qs := by
-  induction ps with
-  | nil => rfl
-  | cons p ps ih => cases p <;> simp [sourceOldDots, ih]
 
 omit [Fintype I] in
 /-- Old positions in the finite producer are already in PBW order and bounded. -/

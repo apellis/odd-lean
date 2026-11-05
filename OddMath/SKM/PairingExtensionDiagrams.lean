@@ -161,7 +161,6 @@ def relationLabel : Rel D → Rel (ReservoirWeights.pairingExtension D)
   | .zInt (.right i ν n hn) => .zInt (.right i (ν, 0) n (by simpa using hn))
   | .zInt (.left i ν n hn) => .zInt (.left i (ν, 0) n (by simpa using hn))
 
-
 @[simp] theorem relationLabel_dom (r : Rel D) : (relationLabel D r).dom = r.dom := by
   cases r <;> (try cases ‹ZBase _›) <;> rfl
 @[simp] theorem relationLabel_cod (r : Rel D) : (relationLabel D r).cod = r.cod := by

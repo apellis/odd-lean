@@ -155,11 +155,4 @@ theorem offDiagonalBoundary_even_top (p : ZMod 2) (i : I) (hi : D.parity i = 0)
   obtain ⟨b, hb⟩ := (ideal D Sc cutoff v t).mkQ_surjective (oldTwist D Sc cutoff p v t c)
   rw [← hb, oldComp_mk, Category.id_comp]
 
-theorem offDiagonalBoundary_even_eq_zero_of_negative (p : ZMod 2) (i : I)
-    (hi : D.parity i = 0) (v t : List I) (d : ℕ) (c : Old D Sc cutoff v t)
-    (hd : d + endpointQPDegree D cutoff i v < outputSDegree D i v) :
-    offDiagonalPolynomialBoundary D Sc cutoff p i v t (Finsupp.single d c) = 0 := by
-  ext n
-  exact offDiagonalBoundary_even_above D Sc cutoff p i hi v t d n c (by omega)
-
 end OddMath.QuiverHecke.ELVOld

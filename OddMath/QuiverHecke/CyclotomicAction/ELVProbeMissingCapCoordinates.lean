@@ -45,18 +45,6 @@ theorem probeMissingStoredLoc_cap_chart (hn : 0 < count) :
   simp only [SKM.RouquierBoundary.Coefficients.cap, hn, ite_true]
   rfl
 
-/-- Forgetting the scalar-evaluation certificate retains the full OLD
-inverse cap under the same chart, at every input module. -/
-theorem probeMissingStoredLoc_cap_total_native (hn : 0 < count)
-    (N : ProbeEvaluatedModules D Sc m γ) :
-    ((L).capL.total N).hom =
-      ((probeAppendUpperLoopSuperIso D Sc m γ i h).inv.total N).hom ≫
-        (contentMissingBoundaryCoefficients D Sc (probeCutoff D m) γ i hi).cap.total N.obj := by
-  rw [probeMissingStoredLoc_cap_chart D Sc m γ i h hi hn, Superfunctor.comp_total]
-  change ((probeAppendUpperLoopSuperIso D Sc m γ i h).inv.total N).hom ≫
-    ((probeEvaluatedMissingCoefficients D Sc m γ i hi).cap.total N).hom = _
-  rw [probeEvaluatedMissingCoefficients_cap_total]
-
 /-- On the original regular probe, the full OLD boundary cap is precisely
 its prescribed native vacuum cap. The finite moments are proved from the
 constructed boundary inverse. -/

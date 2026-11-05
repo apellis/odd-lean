@@ -145,15 +145,6 @@ def coefficientModuleAction (M : Superfunctor k (OldCategory D Sc cutoff) (SVec 
       coefficientModuleLinear_total, coefficientModuleLinear_total, ← M.toFunctor.map_comp,
       coefficient_comp])
 
-/-- Evaluation of the homogeneous component retains the coefficient parity projection. -/
-theorem coefficientModuleAction_app
-    (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
-    (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) (p : ZMod 2)
-    (v : OldCategory D Sc cutoff) :
-    (coefficientModuleAction D Sc cutoff M a).app p v =
-      M.map (X := v) (Y := v) (coefficientEndomorphism D Sc cutoff v.word
-        (GradedAlgebra.proj (SKM.SYM.elvCoefficientParity D cutoff) p a)) := rfl
-
 /-- Total evaluation is the original coefficient action on every old word. -/
 theorem coefficientModuleAction_total
     (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
@@ -161,19 +152,6 @@ theorem coefficientModuleAction_total
     (coefficientModuleAction D Sc cutoff M a).total v =
       M.map (X := v) (Y := v) (coefficientEndomorphism D Sc cutoff v.word a) :=
   coefficientModuleLinear_total D Sc cutoff M a v
-
-/-- Homogeneous coefficients give module maps of the same parity. -/
-theorem coefficientModuleAction_mem
-    (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
-    {a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff} {p : ZMod 2}
-    (ha : a ∈ SKM.SYM.elvCoefficientParity D cutoff p) :
-    coefficientModuleAction D Sc cutoff M a ∈ parity (R := k) M M p := by
-  apply Superfunctor.mem_parity_iff_isHomogeneous.mpr
-  intro q hq
-  funext v
-  change evaluateCoefficient D Sc cutoff M v
-    (GradedAlgebra.proj (SKM.SYM.elvCoefficientParity D cutoff) q a) = 0
-  rw [GradedAlgebra.proj_apply, DirectSum.decompose_of_mem_ne _ ha (Ne.symm hq), map_zero]
 
 private theorem coefficientModuleAction_zero
     (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
@@ -185,31 +163,6 @@ private theorem coefficientModuleAction_zero
   change M.map (X := v) (Y := v) (coefficientEndomorphism D Sc cutoff v.word a) = 0 + 0
   rw [add_zero]
   exact ha v.word
-
-/-- Source-word whiskering retains the parity twist on the entire induction kernel.
-The coefficient acts through the genuine input module map. -/
-theorem coefficientModuleAction_induction_tensor
-    (J : OldCategory D Sc cutoff ⥤ OldCategory D Sc cutoff)
-    [J.Additive] [J.Linear k] [IsSuperfunctor k J]
-    (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
-    {a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff} {p : ZMod 2}
-    (ha : a ∈ SKM.SYM.elvCoefficientParity D cutoff p)
-    (v w : OldCategory D Sc cutoff) (h : J.obj v ⟶ w) (m : M.obj v) :
-    ((BalancedInduction.induction J).map (coefficientModuleAction D Sc cutoff M a)).total w
-      (BalancedInduction.tensor J M.toFunctor v h m) =
-        BalancedInduction.tensor J M.toFunctor v (twist k p h)
-          (M.map (X := v) (Y := v) (coefficientEndomorphism D Sc cutoff v.word a) m) := by
-  change (BalancedInduction.moduleMap J (coefficientModuleAction D Sc cutoff M a)).total w _ = _
-  rw [BalancedInduction.moduleMap_total_tensor]
-  rcases parity_eq_zero_or_one p with rfl | rfl
-  · rw [Superfunctor.app_eq_zero_of_mem (coefficientModuleAction_mem D Sc cutoff M ha)
-      (q := 1) (by decide), LinearMap.zero_apply, BalancedInduction.tensor_zero_right, add_zero]
-    rw [coefficientModuleAction_app, GradedAlgebra.proj_apply,
-      DirectSum.decompose_of_mem_same _ ha, twist_zero]
-  · rw [Superfunctor.app_eq_zero_of_mem (coefficientModuleAction_mem D Sc cutoff M ha)
-      (q := 0) (by decide), LinearMap.zero_apply, BalancedInduction.tensor_zero_right, zero_add]
-    rw [coefficientModuleAction_app, GradedAlgebra.proj_apply,
-      DirectSum.decompose_of_mem_same _ ha]
 
 variable (L : I × ℕ → ℕ)
 
@@ -243,17 +196,5 @@ def powerModuleCoefficientAction
 def vacuumCoefficientAction : CoefficientPowerQuotient (k := k) D cutoff L →ₐ[k]
     End (coefficientPowerVacuum D Sc cutoff L) :=
   powerModuleCoefficientAction D Sc cutoff L (coefficientPowerVacuumObject D Sc cutoff L)
-
-/-- In the chosen empty-component coordinates these module maps are literal left multiplication,
-including inhomogeneous quotient coefficients and vectors. -/
-theorem vacuumCoefficientAction_empty (a z : CoefficientPowerQuotient (k := k) D cutoff L) :
-    (vacuumCoefficientAction D Sc cutoff L a).total (⟨[]⟩ : OldCategory D Sc cutoff)
-      (coefficientPowerVacuumEmptyEquiv D Sc cutoff L z) =
-        coefficientPowerVacuumEmptyEquiv D Sc cutoff L (a * z) := by
-  obtain ⟨b, rfl⟩ := RingCon.mkₐ_surjective (α := k)
-    (coefficientPowerIdeal D cutoff (elementaryCoefficients (k := k) D cutoff) L).ringCon a
-  change (coefficientModuleAction D Sc cutoff (coefficientPowerVacuum D Sc cutoff L) b).total _ _ = _
-  rw [coefficientModuleAction_total]
-  exact PowerVacuumCoefficient.empty_coefficient_action D Sc cutoff L b z
 
 end OddMath.QuiverHecke.ELVOld

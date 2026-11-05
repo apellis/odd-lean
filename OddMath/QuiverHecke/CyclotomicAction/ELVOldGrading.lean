@@ -102,31 +102,6 @@ theorem oldDegree_internal (v w : List I) :
     rw [Submodule.map_top]
     exact LinearMap.range_eq_top.mpr (Submodule.mkQ_surjective _)
 
-/-- The quotient projection is homogeneous of degree zero. -/
-theorem mkQ_mem_oldDegree {v w : List I} {n : ℤ} {f : hom D Sc cutoff v w}
-    (hf : f ∈ elvHomDegree D sy Sc hc cutoff v w n) :
-    (ideal D Sc cutoff v w).mkQ f ∈ oldDegree D sy Sc hc cutoff v w n :=
-  Submodule.mem_map_of_mem hf
-
-/-- Total super parity preserves the integer degree on the old quotient. -/
-theorem oldTwist_mem_oldDegree (p : ZMod 2) {v w : List I} {n : ℤ}
-    {f : Old D Sc cutoff v w} (hf : f ∈ oldDegree D sy Sc hc cutoff v w n) :
-    oldTwist D Sc cutoff p v w f ∈ oldDegree D sy Sc hc cutoff v w n := by
-  let _ := elvHomGrading D sy Sc hc cutoff
-  obtain ⟨a, ha, rfl⟩ := hf
-  exact Submodule.mem_map_of_mem (twist_mem_degree p ha)
-
-/-- The existing signed old action adds integer degrees; its twist uses total parity. -/
-theorem oldCompose_mem_oldDegree (p : ZMod 2) {v s t : List I} {m n : ℤ}
-    {r : hom D Sc cutoff s t} {f : Old D Sc cutoff v s}
-    (hr : r ∈ elvHomDegree D sy Sc hc cutoff s t n)
-    (hf : f ∈ oldDegree D sy Sc hc cutoff v s m) :
-    oldCompose D Sc cutoff p r f ∈ oldDegree D sy Sc hc cutoff v t (m + n) := by
-  let _ := elvHomGrading D sy Sc hc cutoff
-  obtain ⟨a, ha, rfl⟩ := hf
-  rw [oldCompose_mk]
-  exact mkQ_mem_oldDegree D sy Sc hc cutoff (comp_mem_degree ha (twist_mem_degree p hr))
-
 /-- Super parity projections also preserve the ideal, without dividing by two. -/
 theorem ideal_proj_mem {v w : List I} {f : hom D Sc cutoff v w}
     (hf : f ∈ ideal D Sc cutoff v w) (p : ZMod 2) :
@@ -205,15 +180,5 @@ theorem oldProj_mem_oldDegree (p : ZMod 2) {v w : List I} {n : ℤ}
   let _ := elvHomGrading D sy Sc hc cutoff
   obtain ⟨a, ha, rfl⟩ := hf
   exact Submodule.mem_map_of_mem (proj_mem_degree p ha)
-
-/-- The integer and total-parity component projections commute after quotienting. -/
-theorem oldProj_oldDproj (p : ZMod 2) (n : ℤ) (v w : List I)
-    (f : Old D Sc cutoff v w) :
-    oldProj D Sc cutoff v w p (oldDproj D sy Sc hc cutoff v w n f) =
-      oldDproj D sy Sc hc cutoff v w n (oldProj D Sc cutoff v w p f) := by
-  let _ := elvHomGrading D sy Sc hc cutoff
-  obtain ⟨a, rfl⟩ := (ideal D Sc cutoff v w).mkQ_surjective f
-  simp only [oldDproj_mk, oldProj_mk]
-  exact congrArg (ideal D Sc cutoff v w).mkQ (proj_dproj p n a)
 
 end OddMath.QuiverHecke.ELVOld

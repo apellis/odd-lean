@@ -114,8 +114,6 @@ theorem appendTail_power_cross (i : I) (s t : List I) (z : AppendIdx i s t) :
   apply append_cl_heq D Sc rfl rfl
   simp only [hl, List.map_replicate]
 
-
-
 /-- The first crossing exchanges the two literal last colours, with the
 unchanged final output colour retained as a spectator through the tail. -/
 theorem appendTail_cross_heq (i j : I) (v s t : List I)

@@ -38,14 +38,14 @@ def positiveKernelBoundary (i : I) (v t : OldCategory D Sc cutoff)
     (m : Fin (contentUnitCount D cutoff i (t.word : Multiset I))) (n : ℕ) :
     (v ⟶ t) →ₗ[k] (v ⟶ t) :=
   positiveKernelWindowInverse D Sc cutoff i v t hh m ∘ₗ
-    actualUnitKernelComponent D Sc cutoff i n v t
+    unitKernelComponent D Sc cutoff i n v t
 
 /-- Negative boundary: dot/cap row `m` after inverse window column `n`. -/
 def negativeKernelBoundary (i : I) (v t : OldCategory D Sc cutoff)
     (hh : contentCrossingHeight D cutoff i (t.word : Multiset I) ≤ 0)
     (m : ℕ) (n : Fin (contentCapCount D cutoff i (t.word : Multiset I))) :
     (v ⟶ t) →ₗ[k] (v ⟶ t) :=
-  actualCapKernelComponent D Sc cutoff i m v t ∘ₗ
+  capKernelComponent D Sc cutoff i m v t ∘ₗ
     negativeKernelWindowInverse D Sc cutoff i v t hh n
 
 variable (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
@@ -91,7 +91,7 @@ theorem positiveKernelBoundary_degree (i : I) (v t : OldCategory D Sc cutoff)
     positiveKernelBoundary D Sc cutoff i v t hh m n y ∈
       oldDegree D sy Sc hc cutoff v.word t.word (q + 2 * sy.d i * ((n : ℤ) - m.val)) := by
   have h := positiveKernelWindowInverse_degree D Sc cutoff sy hc i v t hh m
-    (actualUnitKernelComponent_degree D Sc cutoff sy hc i v t n hy)
+    (unitKernelComponent_degree D Sc cutoff sy hc i v t n hy)
   have he : q + 2 * sy.d i * n - 2 * sy.d i * m.val =
       q + 2 * sy.d i * ((n : ℤ) - m.val) := by ring
   simpa only [positiveKernelBoundary, LinearMap.comp_apply, he] using h
@@ -103,16 +103,10 @@ theorem negativeKernelBoundary_degree (i : I) (v t : OldCategory D Sc cutoff)
     {y : v ⟶ t} (hy : y ∈ oldDegree D sy Sc hc cutoff v.word t.word q) :
     negativeKernelBoundary D Sc cutoff i v t hh m n y ∈
       oldDegree D sy Sc hc cutoff v.word t.word (q + 2 * sy.d i * ((m : ℤ) - n.val)) := by
-  have h := actualCapKernelComponent_degree D Sc cutoff sy hc i v t m
+  have h := capKernelComponent_degree D Sc cutoff sy hc i v t m
     (negativeKernelWindowInverse_degree D Sc cutoff sy hc i v t hh n hy)
   have he : q - 2 * sy.d i * n.val + 2 * sy.d i * m =
       q + 2 * sy.d i * ((m : ℤ) - n.val) := by ring
   simpa only [negativeKernelBoundary, LinearMap.comp_apply, he] using h
-
-omit hc in
-/-- Every off-window difference occurring in either orientation is positive. -/
-theorem kernelBoundaryDegree_pos (i : I) {m n : ℕ} (hmn : m < n) :
-    0 < 2 * sy.d i * ((n : ℤ) - m) :=
-  mul_pos (mul_pos (by norm_num) (sy.pos i)) (by omega)
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

@@ -85,11 +85,6 @@ theorem curlEG_zsmul (u : 𝟙 b ⟶ E₂ ≫ F₂) (e : E₂ ≫ F₂ ⟶ 𝟙 
   rw [← curlEG_apply (k := k), map_zsmul, curlEG_apply]
 
 include k in
-theorem curlG_neg (u : 𝟙 b ⟶ F₁ ≫ E₁) (e : F₁ ≫ E₁ ⟶ 𝟙 b)
-    (w : E₁ ≫ E₂ ⟶ E₁ ≫ E₂) : curlG u e (-w) = -curlG u e w := by
-  rw [← curlG_apply (k := k), map_neg, curlG_apply]
-
-include k in
 theorem curlEG_neg (u : 𝟙 b ⟶ E₂ ≫ F₂) (e : E₂ ≫ F₂ ⟶ 𝟙 b)
     (w : E₁ ≫ E₂ ⟶ E₁ ≫ E₂) : curlEG u e (-w) = -curlEG u e w := by
   rw [← curlEG_apply (k := k), map_neg, curlEG_apply]
@@ -98,11 +93,6 @@ include k in
 theorem curlG_sub (u : 𝟙 b ⟶ F₁ ≫ E₁) (e : F₁ ≫ E₁ ⟶ 𝟙 b)
     (w w' : E₁ ≫ E₂ ⟶ E₁ ≫ E₂) : curlG u e (w - w') = curlG u e w - curlG u e w' := by
   rw [← curlG_apply (k := k), map_sub, curlG_apply, curlG_apply]
-
-include k in
-theorem curlEG_sub (u : 𝟙 b ⟶ E₂ ≫ F₂) (e : E₂ ≫ F₂ ⟶ 𝟙 b)
-    (w w' : E₁ ≫ E₂ ⟶ E₁ ≫ E₂) : curlEG u e (w - w') = curlEG u e w - curlEG u e w' := by
-  rw [← curlEG_apply (k := k), map_sub, curlEG_apply, curlEG_apply]
 
 include k in
 theorem curlG_sum {ι : Type*} (s : Finset ι) (u : 𝟙 b ⟶ F₁ ≫ E₁) (e : F₁ ≫ E₁ ⟶ 𝟙 b)
@@ -270,18 +260,6 @@ theorem curlEG_whiskerLeft (u : 𝟙 b ⟶ E₂ ≫ F₂) (e : E₂ ≫ F₂ ⟶
   rw [TwoSupercategory.id_whiskerRight (R := k)]
   simp only [Category.id_comp, Iso.inv_hom_id_assoc, TwoSupercategory.whiskerLeft_comp (R := k),
     Category.assoc]
-
-/-- A scalar bubble beside a strand. -/
-theorem bubble_left_smul_id (E : b ⟶ c) (r : k) :
-    (leftUnitor E).inv ≫ (r • 𝟙 (𝟙 b)) ▷ E ≫ (leftUnitor E).hom = r • 𝟙 E := by
-  rw [TwoSupercategory.smul_whiskerRight (R := k), TwoSupercategory.id_whiskerRight (R := k)]
-  simp
-
-/-- A scalar bubble beside a strand. -/
-theorem bubble_right_smul_id (E : a ⟶ b) (r : k) :
-    (rightUnitor E).inv ≫ E ◁ (r • 𝟙 (𝟙 b)) ≫ (rightUnitor E).hom = r • 𝟙 E := by
-  rw [TwoSupercategory.whiskerLeft_smul (R := k), TwoSupercategory.whiskerLeft_id (R := k)]
-  simp
 
 end Generic
 

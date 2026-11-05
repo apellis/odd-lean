@@ -180,12 +180,6 @@ theorem output_shuffle_cases (i : I) (v : List I)
     have hl : r = v.length := by omega
     exact long_of_word D Sc i v d.1 (hl ▸ he)
 
-theorem isShuffle_wordProd_range {N r : ℕ} (hr : r < N) :
-    IsShuffle (show 1 + (N - 1) = N by omega) (wordProd N (List.range r)) := by
-  cases N with
-  | zero => omega
-  | succ n => exact (firstRun n ⟨r, by omega⟩).property
-
 theorem short_target_of_word (i : I) (v : List I)
     (d : Equiv.Perm (Fin (v ++ [i]).length)) (e : Equiv.Perm (Fin v.length))
     (hd : cw (canWord (v ++ [i]).length d) = cw (canWord v.length e)) :
@@ -209,21 +203,6 @@ theorem hom_eq_of_heq {s t u : List I} (e : t = u)
     f ≫ eqToHom (congrArg (fun w => (pres D Sc).obj (ob D w)) e) = g := by
   subst u
   simpa only [eqToHom_refl, Category.comp_id] using eq_of_heq h
-
-theorem output_shuffle_cases_of_length (i : I) (v t : List I)
-    (hN : 1 + t.length = (v ++ [i]).length) (d : Shuffle hN) :
-    (∃ (r : ℕ) (_hr : r < v.length),
-      HEq (shPsi D Sc 1 d.1)
-        ((shPsi D Sc 1 (wordProd v.length (List.range r))) ▷
-          (pres D Sc).obj (ob D [i]))) ∨
-      HEq (shPsi D Sc 1 d.1) (lastToFirstHom D Sc i v) := by
-  have ht : t.length = v.length := by
-    have hh := hN
-    simp only [List.length_append, List.length_singleton] at hh
-    omega
-  have hd : IsShuffle (show 1 + v.length = (v ++ [i]).length by simp; omega) d.1 := by
-    simpa only [ht] using d.2
-  exact output_shuffle_cases D Sc i v ⟨d.1, hd⟩
 
 theorem short_eq_of_word (i : I) (v : List I)
     (d : Equiv.Perm (Fin (v ++ [i]).length)) (e : Equiv.Perm (Fin v.length))

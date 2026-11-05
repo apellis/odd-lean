@@ -105,39 +105,4 @@ theorem coefficientDotPolynomial_comp_moveHom (i : I) (l ν : List I) (N : ℕ)
     exact dot_pow_comp_moveHom D Sc i l ν m
   · exact hc
 
-private theorem coefficientTransport_signed_pow {C : Type*} [Category C]
-    [Preadditive C] [Linear k C] {A B : C}
-    (x : End A) (y : End B) (g : A ⟶ B) (q : ZMod 2)
-    (h : x ≫ g = SKM.zsign k q • (g ≫ y)) (m : ℕ) :
-    (x ^ m : End A) ≫ g = SKM.zsign k (m • q) • (g ≫ (y ^ m : End B)) := by
-  induction m with
-  | zero => simp [End.one_def, SKM.zsign]
-  | succ m ih =>
-    rw [pow_succ, End.mul_def, Category.assoc, ih, Linear.comp_smul,
-      ← Category.assoc, h, Linear.smul_comp, smul_smul, ← zsign_add_eq,
-      pow_succ, End.mul_def, succ_nsmul, Category.assoc]
-
-/-- An old strand polynomial has the same total coefficient-and-dot sign,
-using the parity of the entire moving chain. -/
-theorem coefficientDotPolynomial_mem_comp_moveHom (i x : I) (v m l : List I) (N : ℕ)
-    (c : Fin (N + 1) → SKM.SYM D k) (P : ZMod 2)
-    (hc : ∀ a, SKM.SYM.polynomialExteriorEquiv D k (c a) ∈
-      SKM.SYM.polynomialExteriorParity D k (P - a.val • D.parity x)) :
-    coefficientDotPolynomial D Sc (l ++ i :: (m ++ x :: v)) (l.length + 1 + m.length) N c ≫
-        sourceCoefficientHom D Sc 1 (moveHom D Sc i l (m ++ x :: v)) =
-      sign k (P * (D.parity i * wordSumParity D (m ++ x :: v))) •
-        (sourceCoefficientHom D Sc 1 (moveHom D Sc i l (m ++ x :: v)) ≫
-          coefficientDotPolynomial D Sc (l ++ (m ++ x :: v) ++ [i]) (l.length + m.length) N c) := by
-  apply coefficientTransport_sum D Sc _ _ _ (D.parity x)
-    (D.parity i * wordSumParity D (m ++ x :: v)) P N c
-  · have he : (l ++ m) ++ x :: (v ++ [i]) = l ++ (m ++ x :: v) ++ [i] := by simp
-    have hy := positionedDot_parity D Sc (l ++ m) (v ++ [i]) x
-    rw [he] at hy
-    simpa only [List.length_append] using hy
-  · exact moveHom_parity D Sc i l (m ++ x :: v)
-  · intro a
-    rw [← coefficientTransport_zsign]
-    exact coefficientTransport_signed_pow _ _ _ _
-      (dot_mem_comp_moveHom D Sc i x v m l (m ++ x :: v) (by simp)) a
-  · exact hc
 end OddMath.QuiverHecke

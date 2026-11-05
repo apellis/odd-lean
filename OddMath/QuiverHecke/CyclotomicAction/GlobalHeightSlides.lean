@@ -121,10 +121,6 @@ def heightCompositionRightMul {u : C} (hu : CornerMulData D Sc i a ha n u) : T �
   ⟨heightCompositionRightMulLinear D Sc i a ha n hu,
     heightCompositionRightMulLinear_isHom D Sc i a ha n hu⟩
 
-theorem heightCompositionRightMul_parity {u : C} (hu : CornerMulData D Sc i a ha n u) :
-    heightCompositionRightMul D Sc i a ha n hu ∈ parity (R := k) T T d :=
-  SuperBimodule.mem_parity_iff.2 (heightCompositionRightMulLinear_parity D Sc i a ha n hu)
-
 theorem heightCompositionRightMul_apply {u : C} (hu : CornerMulData D Sc i a ha n u)
     {p : ZMod 2} (x : (T).toSVec) (hx : x ∈ (T).toSVec.part p) :
     ((heightCompositionRightMul D Sc i a ha n hu).1 x).val = koszulSign p d • (x.val * u) := by

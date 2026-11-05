@@ -13,9 +13,9 @@ Research issue #345, toward Brundan–Ellis, *Super Kac–Moody 2-categories*, �
 
 Leftward data satisfying the positive inverse equations at the vacuum sector give
 an explicit cap inverse of the native cap window of the evaluated A6 bend
-(`vacuumLeftwardCapInverse_native_odd`), whose column products with the native cap
+(`vacuumLeftwardCapInverse_odd`), whose column products with the native cap
 rows are the conjugated evaluated left bubble entries `dcup n ≫ ε xᴺ`
-(`vacuumLeftwardColumn_cap_native`). At the tensor vacuum this inverse is one to
+(`vacuumLeftwardColumn_cap_eq`). At the tensor vacuum this inverse is one to
 which `tensorVacuumCapInverse_odd_moments` applies, so the conjugated evaluated
 left bubble entries `dcup (h - 1) ≫ ε x^(h - 1 + 2s)` and `dcup (h - 1) ≫ ε x^(h + 2s)`
 are the columns with the substituted-series moments
@@ -114,11 +114,11 @@ theorem vacuumLeftwardCapInverse_bubbleEntries (Z : (P).H ((0, 0) : Sector I))
         c.inv ≫ (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).map
           (dc n (.nil _) p₀ ≫ (P).epsEntry cc i N ν₀ p₀ (.nil _) Z) ≫ c.hom := by
   subst hZ
-  obtain ⟨j, hj⟩ := vacuumLeftwardCapInverse_native_odd D Sc m cutoff bound ΛP ΛR hcP hcR H
+  obtain ⟨j, hj⟩ := vacuumLeftwardCapInverse_odd D Sc m cutoff bound ΛP ΛR hcP hcR H
     sy hc i _ rfl lc dc HP hP hi
   exact ⟨paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H, j, _,
     paddedVacuumCapTargetIso_hom_eq_eqToHom D Sc m cutoff bound ΛP ΛR hcP hcR H, hj,
-    fun n N => vacuumLeftwardColumn_cap_native D Sc m cutoff bound ΛP ΛR hcP hcR H i dc cc hP
+    fun n N => vacuumLeftwardColumn_cap_eq D Sc m cutoff bound ΛP ΛR hcP hcR H i dc cc hP
       n N⟩
 
 end Generic

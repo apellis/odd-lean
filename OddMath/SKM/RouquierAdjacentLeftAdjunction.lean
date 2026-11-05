@@ -50,14 +50,4 @@ def negativeLeftAdjunction : ShiftedSuperAdjunction (k := k) F₂ E₂ (p * ((h 
     rw [TwoSupercategory.zsmul_whiskerRight (R := k), Preadditive.zsmul_comp,
       Preadditive.comp_zsmul, Preadditive.comp_zsmul, Preadditive.comp_zsmul, he]
 
-/-- The inverse-defined cup is left unchanged by the specified normalization. -/
-theorem negativeLeftAdjunction_unit :
-    (L.negativeLeftAdjunction U hh hsq hsq' hB).unit = U.cupL := rfl
-
-/-- At negative height `c=c⁻¹=(-1)^σ`; this exact factor remains on the
-native counit. In particular an odd raw last row acquires a minus sign. -/
-theorem negativeLeftAdjunction_counit :
-    (L.negativeLeftAdjunction U hh hsq hsq' hB).counit =
-      koszulSign (p * ((h : ZMod 2) + 1)) (p * ((h : ZMod 2) + 1)) • L.capL := rfl
-
 end OddMath.SKM.SuperRouquierLoc

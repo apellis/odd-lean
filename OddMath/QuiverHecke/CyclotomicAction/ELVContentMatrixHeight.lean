@@ -46,26 +46,12 @@ theorem crossingHeight_eq_content (i : I) (v : List I) :
       contentCrossingHeight D cutoff i (v : Multiset I) := by
   rw [contentCrossingHeight_coe, endpointQPDegree_sub_outputSDegree]
 
-/-- Reordering coefficient words cannot change the raw matrix height. -/
-theorem crossingHeight_eq_of_perm (i : I) {v w : List I} (h : v.Perm w) :
-    (endpointQPDegree D cutoff i v : ℤ) - outputSDegree D i v =
-      (endpointQPDegree D cutoff i w : ℤ) - outputSDegree D i w := by
-  rw [crossingHeight_eq_content, crossingHeight_eq_content,
-    Multiset.coe_eq_coe.mpr h]
-
 /-- Every actual untruncated content object has the same matrix height. -/
 theorem oldContent_crossingHeight (i : I) (ν : List I)
     (v : OldContentCategory D Sc cutoff ν) :
     (endpointQPDegree D cutoff i v.obj.word : ℤ) - outputSDegree D i v.obj.word =
       contentCrossingHeight D cutoff i (ν : Multiset I) := by
   rw [crossingHeight_eq_content, Multiset.coe_eq_coe.mpr v.wordPerm]
-
-/-- Every actual truncated content object has the same matrix height. -/
-theorem contentCategory_crossingHeight (i : I) (N : ℕ) (β : Multiset I)
-    (v : ContentCategory D Sc cutoff N β) :
-    (endpointQPDegree D cutoff i v.obj.word : ℤ) - outputSDegree D i v.obj.word =
-      contentCrossingHeight D cutoff i β := by
-  rw [crossingHeight_eq_content, v.content]
 
 /-- A single explicit count satisfies the positive matrix degree equality on the old block. -/
 theorem oldContent_unitCount_height (i : I) (ν : List I)
@@ -85,24 +71,6 @@ theorem oldContent_capCount_height (i : I) (ν : List I)
       contentCapCount D cutoff i (ν : Multiset I) := by
   have hv := oldContent_crossingHeight D Sc cutoff i ν v
   have hm := contentCapCount_cast D cutoff i (ν : Multiset I) h
-  omega
-
-/-- The same positive count is valid on the actual truncated content category. -/
-theorem contentCategory_unitCount_height (i : I) (N : ℕ) (β : Multiset I)
-    (h : 0 ≤ contentCrossingHeight D cutoff i β) (v : ContentCategory D Sc cutoff N β) :
-    endpointQPDegree D cutoff i v.obj.word = outputSDegree D i v.obj.word +
-      contentUnitCount D cutoff i β := by
-  have hv := contentCategory_crossingHeight D Sc cutoff i N β v
-  have hm := contentUnitCount_cast D cutoff i β h
-  omega
-
-/-- The same negative count is valid on the actual truncated content category. -/
-theorem contentCategory_capCount_height (i : I) (N : ℕ) (β : Multiset I)
-    (h : contentCrossingHeight D cutoff i β ≤ 0) (v : ContentCategory D Sc cutoff N β) :
-    outputSDegree D i v.obj.word = endpointQPDegree D cutoff i v.obj.word +
-      contentCapCount D cutoff i β := by
-  have hv := contentCategory_crossingHeight D Sc cutoff i N β v
-  have hm := contentCapCount_cast D cutoff i β h
   omega
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

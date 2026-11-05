@@ -380,7 +380,6 @@ theorem sum_blockPath {M : Type*} [AddCommMonoid M]
 
 /-! ## The transported crossings -/
 
-
 /-- Conjugating the right-letter crossing on `RPP` back to `PPR` gives `D`; this is (5A). -/
 private theorem pprToRppIso_conj_preCrossSame :
     (P.pprToRppIso i t hR Z).hom ≫

@@ -98,16 +98,6 @@ theorem inductionSuperDot_parity :
     inductionSuperDot D Sc i a ha n ∈ parity (R := k) P P d :=
   SuperBimodule.mem_parity_iff.2 (inductionDotLinear_parity D Sc i a ha n)
 
-/-- On a homogeneous corner element the sign is explicit. -/
-theorem inductionSuperDot_apply {p : ZMod 2} (x : (P).toSVec)
-    (hx : x ∈ (P).toSVec.part p) :
-    ((inductionSuperDot D Sc i a ha n).1 x).val =
-      koszulSign p d • (x.val * c) := by
-  change ((P).toSVec.sgn d x).val * c = _
-  rw [SVec.sgn_apply_of_mem d hx]
-  change (sign k (p * d) • x.val) * c = _
-  rw [smul_mul_assoc, Supercategory.sign_mul, Int.cast_smul_eq_zsmul]
-
 /-- The last dot as a supernatural endomorphism of balanced-tensor induction. -/
 def cyclotomicSuperInductionDot :
     SuperNatTrans k (cyclotomicSuperInduction D Sc i a ha n)
@@ -129,12 +119,5 @@ def cyclotomicSuperInductionDot :
       rw [SuperBimodule.super_interchange P f (inductionSuperDot_parity D Sc i a ha n) hf,
         koszulSign_smul_smul]
     · simp
-
-/-- Only the component of the induction colour's parity is nonzero. -/
-theorem cyclotomicSuperInductionDot_homogeneous :
-    (cyclotomicSuperInductionDot D Sc i a ha n).IsHomogeneous d := by
-  intro q h
-  funext M
-  simp [cyclotomicSuperInductionDot, h]
 
 end OddMath.QuiverHecke

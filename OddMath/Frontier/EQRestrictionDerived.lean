@@ -33,7 +33,6 @@ open OddMath.Frontier.EQSkewDifferential (osymDG)
 open OddMath.Frontier.EQOnhDG (ONH)
 open DG MulOpposite
 
-
 /-! ### `ONH^♮` is K-projective over `ONH_a ⊗ ONH_b` -/
 
 variable (a b : ℕ)

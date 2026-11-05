@@ -105,7 +105,6 @@ theorem map_probeToReservoirBend (c : P.CrossCoeff) :
   dsimp
   simp only [Functor.map_comp]
 
-
 local notation "φ" => probeToReservoirBendCoefficientEvaluation P i t Z L
 local notation "β" => probeToReservoirBendInsertion P i t Z L
 
@@ -132,22 +131,6 @@ theorem probeToReservoirBend_odd_expansion (c : P.CrossCoeff) (hc : c.IsInverse)
           φ (P.rpPostDot i s h U) ^ r) := by
   rw [map_probeToReservoirBend,
     P.crossCoeff_odd_evaluate c i s h U φ hc hi hx n hn, map_sum]
-
-/-- The finite even XP-to-YR expansion, packaged for specialization to
-a factor constructor without unfolding that constructor in its type. -/
-def ProbeToReservoirEvenExpansion (c : P.CrossCoeff) : Prop :=
-  ∃ n : ℕ, φ (P.rpPostDot i s h U) ^ n = 0 ∧
-    L.map (P.probeToReservoirBend c i t Z) =
-      -∑ r ∈ Finset.range n,
-        β (Ring.inverse (φ (P.rpPreDot i s h U)) ^ (r+1) * φ (P.rpPostDot i s h U) ^ r)
-
-/-- The finite signed odd XP-to-YR expansion. -/
-def ProbeToReservoirOddExpansion (c : P.CrossCoeff) : Prop :=
-  ∃ n : ℕ, φ (P.rpPostDot i s h U) ^ n = 0 ∧
-    L.map (P.probeToReservoirBend c i t Z) =
-      ∑ r ∈ Finset.range (2*n),
-        β ((-1 : End (L.obj ((FR).obj ((ER).obj ((E).obj ((F).obj Z)))))) ^ r *
-          Ring.inverse (φ (P.rpPreDot i s h U)) ^ (r+1) * φ (P.rpPostDot i s h U) ^ r)
 
 end ProbeToReservoir
 
@@ -193,7 +176,6 @@ theorem map_reservoirToProbeBend (c : P.CrossCoeff) :
   simp only [Functor.map_comp, Functor.map_neg,
     Preadditive.comp_neg, Preadditive.neg_comp]
 
-
 local notation "φ" => reservoirToProbeBendCoefficientEvaluation P i t hb hv Z L
 local notation "β" => reservoirToProbeBendInsertion P i t hb hv Z L
 
@@ -221,22 +203,6 @@ theorem reservoirToProbeBend_odd_expansion (c : P.CrossCoeff) (hc : c.IsInverse)
           φ (P.rpPostDot i s hv U) ^ r) := by
   rw [map_reservoirToProbeBend,
     P.crossCoeff_odd_evaluate c i s hv U φ hc hi hx n hn, map_sum]
-
-/-- The finite even XR-to-YP expansion, including cancellation of the
-prescribed PR minus against the even coefficient's negative series. -/
-def ReservoirToProbeEvenExpansion (c : P.CrossCoeff) : Prop :=
-  ∃ n : ℕ, φ (P.rpPostDot i s hv U) ^ n = 0 ∧
-    L.map (P.reservoirToProbeBend c i t hb hv Z) =
-      ∑ r ∈ Finset.range n,
-        β (Ring.inverse (φ (P.rpPreDot i s hv U)) ^ (r+1) * φ (P.rpPostDot i s hv U) ^ r)
-
-/-- The finite signed odd XR-to-YP expansion, retaining its PR minus. -/
-def ReservoirToProbeOddExpansion (c : P.CrossCoeff) : Prop :=
-  ∃ n : ℕ, φ (P.rpPostDot i s hv U) ^ n = 0 ∧
-    L.map (P.reservoirToProbeBend c i t hb hv Z) =
-      -∑ r ∈ Finset.range (2*n),
-        β ((-1 : End (L.obj ((FP).obj ((EP).obj ((ER).obj ((FR).obj Z)))))) ^ r *
-          Ring.inverse (φ (P.rpPreDot i s hv U)) ^ (r+1) * φ (P.rpPostDot i s hv U) ^ r)
 
 end ReservoirToProbe
 end OddMath.QuiverHecke.SwappedAssembly

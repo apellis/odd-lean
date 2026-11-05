@@ -107,13 +107,6 @@ def signedEqualInductionCross (i : I) :
     doubleInductionFunctor D Sc cutoff i ⟶ doubleInductionFunctor D Sc cutoff i :=
   -Superfunctor.homMk (equalCrossOnDoubleInduction_supernatural D Sc cutoff i).toSuperNatTrans
 
-theorem signedEqualInductionCross_mem (i : I) :
-    signedEqualInductionCross D Sc cutoff i ∈ parity (R := k) _ _
-      (D.parity i * D.parity i) :=
-  Submodule.neg_mem _
-    (Superfunctor.IsSupernatural.toSuperNatTrans_mem
-      (equalCrossOnDoubleInduction_supernatural D Sc cutoff i))
-
 @[simp] theorem signedEqualInductionCross_app (i : I) (q : ZMod 2)
     (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :
     (signedEqualInductionCross D Sc cutoff i).app q M =

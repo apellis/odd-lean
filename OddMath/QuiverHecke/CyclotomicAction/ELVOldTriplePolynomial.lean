@@ -19,15 +19,6 @@ open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
 open BalancedInduction Distinct
 universe u
-private theorem source_naturality_congr
-    {k C B : Type u} [CommRing k]
-    [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
-    [Category.{u} B] [Preadditive B] [Linear k B] [Supercategory k B]
-    {F G : C ⥤ B} {p : ZMod 2} {a b : ∀ s, F.obj s ⟶ G.obj s}
-    (he : ∀ s, a s = b s) (hb : IsSupernatural k p b) : IsSupernatural k p a := by
-  have h : a = b := funext he
-  rw [h]
-  exact hb
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -80,18 +71,6 @@ theorem tripleLastDot_affine (i j : I) (s : OldCategory D Sc cutoff) :
   simp only [List.length_append, List.length_singleton, Nat.add_assoc]
   rfl
 
-theorem tripleFirstDot_supernatural (i j : I) :
-    IsSupernatural k (D.parity i) (tripleFirstDot D Sc cutoff i j) :=
-  ((oldAppendDot_supernatural D Sc cutoff i).whiskerRight (A j)).whiskerRight (A i)
-
-theorem tripleMiddleDot_supernatural (i j : I) :
-    IsSupernatural k (D.parity j) (tripleMiddleDot D Sc cutoff i j) :=
-  ((oldAppendDot_supernatural D Sc cutoff j).whiskerLeft (A i)).whiskerRight (A i)
-
-theorem tripleLastDot_supernatural (i j : I) :
-    IsSupernatural k (D.parity i) (tripleLastDot D Sc cutoff i j) :=
-  (oldAppendDot_supernatural D Sc cutoff i).whiskerLeft ((A i) ⋙ (A j))
-
 /-- The coefficient correction is exactly the polynomial of the three chosen OLD dots. -/
 theorem tripleCorrection_tripleDots (i j : I) (s : OldCategory D Sc cutoff) :
     tripleCorrection D Sc cutoff i j s =
@@ -104,34 +83,5 @@ theorem tripleCorrection_tripleDots (i j : I) (s : OldCategory D Sc cutoff) :
   congr 1
   simp only [coefficientCorrection, positionalCorrection, tripleDotCorrectionPolynomial,
     tripleDotCorrectionSum, pow_zero, mul_one]
-
-/-- Naturality of the explicit coefficient correction is constructed from the actual dots. -/
-theorem tripleCorrection_supernatural {i j : I} (hij : i ≠ j) :
-    IsSupernatural k (D.parity i) (F := tripleAppend D Sc cutoff i j i) (G := tripleAppend D Sc cutoff i j i)
-      (tripleCorrection D Sc cutoff i j) := by
-  have ht := tripleSourcePolynomial_supernatural (tripleAppend D Sc cutoff i j i) D Sc i j
-    (tripleFirstDot_supernatural D Sc cutoff i j) (tripleMiddleDot_supernatural D Sc cutoff i j)
-    (tripleLastDot_supernatural D Sc cutoff i j) hij
-  exact source_naturality_congr (tripleCorrection_tripleDots D Sc cutoff i j) ht
-
-/-- The original-Sc correction is the whole balanced transform of the literal OLD braid coefficient. -/
-theorem oldTriplePolynomial_operator {i j : I} (hij : i ≠ j)
-    (N : Superfunctor k (OldCategory D (parameterTwist D Sc) cutoff) (SVec k))
-    (w : OldCategory D (parameterTwist D Sc) cutoff) :
-    tripleDotCorrectionPolynomial D Sc i j
-        (transformLinear (tripleFirstDot_supernatural D (parameterTwist D Sc) cutoff i j) N w)
-        (transformLinear (tripleMiddleDot_supernatural D (parameterTwist D Sc) cutoff i j) N w)
-        (transformLinear (tripleLastDot_supernatural D (parameterTwist D Sc) cutoff i j) N w) =
-      sign k (D.parity i * D.parity j) •
-        transformLinear (tripleCorrection_supernatural D (parameterTwist D Sc) cutoff hij) N w := by
-  apply hom_ext
-  intro s g z
-  rw [LinearMap.smul_apply, transformLinear_tensor,
-    transformLinear_triplePolynomial_tensor (tripleAppend D (parameterTwist D Sc) cutoff i j i)
-      D Sc i j (tripleFirstDot_supernatural D (parameterTwist D Sc) cutoff i j)
-      (tripleMiddleDot_supernatural D (parameterTwist D Sc) cutoff i j)
-      (tripleLastDot_supernatural D (parameterTwist D Sc) cutoff i j) hij N w s g z,
-    tripleCorrection_tripleDots]
-  rfl
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

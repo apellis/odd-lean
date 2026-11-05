@@ -42,37 +42,6 @@ theorem paired_source_low (cs : CScalars Sc) (i : I) (μ : X) (s b : ℕ)
   rw [← Category.assoc, hL_cpow_uR]
   exact hL_epsP_lt cs i μ (s + b) hlt
 
-/-- One actual target-side paired row under the principal crossing. -/
-theorem paired_target_step (cs : CScalars Sc) (i : I) (μ : X) (b : ℕ) :
-    etaP cs i μ ≫ cpow (uLM D Sc i μ) (b + 1) ≫ sgM D Sc i μ =
-      zsign k (D.parity i) •
-        (etaP cs i μ ≫ cpow (uLM D Sc i μ) b ≫ sgM D Sc i μ ≫ uRM D Sc i μ -
-         etaP cs i μ ≫ eLM D Sc i μ b ≫ hLM D Sc i μ 0) := by
-  rw [cpow_succ, Category.assoc, uL_sg, Linear.comp_smul,
-    Preadditive.comp_sub, Linear.comp_smul, Preadditive.comp_sub]
-  have he : cpow (uLM D Sc i μ) b ≫ eLM D Sc i μ 0 ≫ hLM D Sc i μ 0 =
-      eLM D Sc i μ b ≫ hLM D Sc i μ 0 := by
-    rw [← Category.assoc, cpow_uL_eL, Nat.add_zero]
-  rw [he]
-
-/-- The source-side paired recurrence uses the same right adjunction. -/
-theorem paired_source_step (cs : CScalars Sc) (i : I) (μ : X) (b : ℕ) :
-    sgM D Sc i μ ≫ cpow (uRM D Sc i μ) (b + 1) ≫ epsP cs i μ =
-      zsign k (D.parity i) •
-        (uLM D Sc i μ ≫ sgM D Sc i μ ≫ cpow (uRM D Sc i μ) b ≫ epsP cs i μ) +
-      eLM D Sc i μ 0 ≫ hLM D Sc i μ b ≫ epsP cs i μ := by
-  have hs := sg_uR (Sc := Sc) i μ
-  rw [sub_eq_iff_eq_add] at hs
-  rw [cpow_succ']
-  simp only [← Category.assoc]
-  rw [hs]
-  simp only [Preadditive.add_comp, Linear.smul_comp, Category.assoc]
-  have he : hLM D Sc i μ 0 ≫ cpow (uRM D Sc i μ) b ≫ epsP cs i μ =
-      hLM D Sc i μ b ≫ epsP cs i μ := by
-    rw [← Category.assoc, hL_cpow_uR, Nat.zero_add]
-  rw [he]
-  abel
-
 /-- The nonpositive-height initial target row has one unit leading cup;
 every inverse-block correction has a strictly smaller cup index. -/
 theorem paired_target_initial (cs : CScalars Sc) (i : I) (μ : X)
@@ -310,15 +279,4 @@ theorem paired_source_initial_pivot_isUnit (cs : CScalars Sc) (i : I) (μ : X) (
     (((paired_sign_isUnit (k := k) (D.parity i * (D.h i μ : ZMod 2))).mul
       (cs.c μ i)⁻¹.isUnit).neg)).neg
 
-/-- Both shifted inverse-block index orders are strictly below the pivot. -/
-theorem paired_inverse_indices_lower (N b j : ℕ) (hj : j ∈ Finset.range N) :
-    j + b < N + b ∧ b + j < b + N := by
-  have := Finset.mem_range.mp hj
-  omega
-
-/-- Every dot-slide correction is below either opposite-height pivot. -/
-theorem paired_slide_indices_lower (N b s : ℕ) (hs : s ∈ Finset.range b) :
-    s < N + b ∧ s < b + N := by
-  have := Finset.mem_range.mp hs
-  omega
 end OddMath.SKM

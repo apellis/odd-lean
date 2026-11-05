@@ -147,17 +147,6 @@ theorem homParityShift_component_isNilpotent (p : ZMod 2) (F : A ⟶ B)
     change IsNilpotent (ψ (End.of (f.app 0 M δ) + End.of (f.app 1 M δ))) at h
     exact (ψ.map_add (End.of (f.app 0 M δ)) (End.of (f.app 1 M δ))) ▸ h
 
-/-- Probe precomposition changes only the probe input. Its fixed output
-parity shift preserves the bound at the original reservoir block. -/
-theorem shiftedPrecomposition_component_isNilpotent
-    (A' : PiSCat.{u,u,u+1} k) (K : A' ⟶ A) (p : ZMod 2)
-    (F : A ⟶ B) (f : End F) (M : A') (δ : WeightBlocks D Λ x)
-    (hf : IsNilpotent (End.of (f.total (K.obj M) δ))) :
-    IsNilpotent
-      (End.of (((SKM.homPre (k := k) K ⋙ SKM.homParityShift (k := k) p).map f).total M δ)) := by
-  exact homParityShift_component_isNilpotent D Sc cutoff bound Λ x A' p
-    ((SKM.homPre (k := k) K).obj F) ((SKM.homPre (k := k) K).map f) M δ hf
-
 end Components
 
 section Restriction

@@ -53,5 +53,4 @@ theorem reversedVector_single {k M : Type*} [CommRing k]
       exact hi hh
     simp [hi, hr]
 
-
 end OddMath.LowPolynomialCoordinates

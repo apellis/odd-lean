@@ -101,9 +101,6 @@ theorem comp_endSub {X Y : C} (h : Y ⟶ X) (f g : End X) : h ≫ (f - g) = h �
 theorem endAdd_comp {X Y : C} (f g : End X) (h : X ⟶ Y) : (f + g) ≫ h = f ≫ h + g ≫ h :=
   Preadditive.add_comp _ _ _ f g h
 
-theorem comp_endAdd {X Y : C} (h : Y ⟶ X) (f g : End X) : h ≫ (f + g) = h ≫ f + h ≫ g :=
-  Preadditive.comp_add _ _ _ h f g
-
 /-- Conjugating the odd variant `g` by a pair of morphisms that transport the dots. -/
 theorem conj_element {A Bo : C} (P : A ⟶ Bo) (P' : Bo ⟶ A) (u v T : End Bo) (x y : End A)
     (σ : k) (hσ : σ * σ = 1) (hPu : P ≫ u = σ • (x ≫ P)) (hPv : P ≫ v = σ • (y ≫ P))
@@ -365,7 +362,6 @@ theorem meetRight_iji (l v : List I) {i j : I} (hij : i ≠ j) :
     eqToHom_cl D Sc (t' := l ++ i :: j :: i :: v) (gs' := [.cross l.length]) (by simp) (by simp)
       rfl _ (sChain_jii_left l v i j)]
 
-
 theorem slide_right_ne_gen {t t' : List I} (l r : List I) (i j : I) (hij : i ≠ j) {p : ℕ}
     (hp : l.length = p) (ht : t = l ++ [i, j] ++ r) (ht' : t' = l ++ [j, i] ++ r)
     (h₁ : SChain t (pl t [.cross p, .dot p]) t')
@@ -451,7 +447,6 @@ theorem push_v_P1' :
 
 end Push
 
-
 theorem crossSq_gen {t : List I} (l' r : List I) {i j : I} (hij : i ≠ j) (hd : D.d i j ≠ 0)
     (ht : t = l' ++ [i, j] ++ r) {p : ℕ} (hp : l'.length = p)
     (h : SChain t (pl t [.cross p, .cross p]) t) :
@@ -517,7 +512,6 @@ theorem conj_braid :
   rw [crossE, crossE, genE_eq D Sc (sChain_cross (l ++ [j]) v i (by simp) (by simp)),
     genE_eq D Sc (sChain_cross l (j :: v) i (by simp) rfl), cl_comp, cl_comp, cl_comp, cl_comp]
   exact braid_iji_gen D Sc l v hij (by simp) rfl _ _
-
 
 /-- KKO I (8.13) on colours `(i, j, i)` with `j ≠ i`: `τ_{a+1} g_a τ_{a+1} = τ_a g_{a+1} τ_a`. -/
 theorem meet_iji : meetLeft D Sc l v i j i = meetRight D Sc l v i j i := by

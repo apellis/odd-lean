@@ -144,7 +144,6 @@ theorem qpNat_action {A : Type*} [AddCommGroup A] [Module (LaurentPolynomial Zπ
     ring
   · simp [mul_comm]
 
-
 /-- A positive quantum integer is the class of its explicit shifted summands. -/
 theorem qpNat_blockClass (μ ν : X) (s : List (Letter I)) (hs : wt D ν s = μ)
     (d : ℤ) (p : ZMod 2) (m : ℕ) :

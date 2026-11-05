@@ -145,40 +145,4 @@ theorem realize_reconstruct (η : Centre D Sc cutoff N β) :
   · rw [ite_eq_right h, Superfunctor.app_eq_zero_of_mem (moduleMap_mem D Sc cutoff N β η p M) h]
     exact M.toFunctor.map_zero v v
 
-theorem reconstruct_realize (c : ContentCoefficient D Sc cutoff N β) :
-    reconstruct D Sc cutoff N β (contentRealize D Sc cutoff N β c) = c := by
-  apply contentRealize_injective D Sc cutoff N β
-  exact realize_reconstruct D Sc cutoff N β _
-
-/-- Every module-supercentral transformation comes from the full source supercentre. -/
-theorem contentRealize_surjective : Function.Surjective (contentRealize D Sc cutoff N β) :=
-  fun η => ⟨reconstruct D Sc cutoff N β η, realize_reconstruct D Sc cutoff N β η⟩
-
-/-- Source and module supercentres are linearly equivalent, with the explicit inverse. -/
-def centreEquiv : ContentCoefficient D Sc cutoff N β ≃ₗ[k] Centre D Sc cutoff N β where
-  toFun := contentRealize D Sc cutoff N β
-  invFun := reconstruct D Sc cutoff N β
-  left_inv := reconstruct_realize D Sc cutoff N β
-  right_inv := realize_reconstruct D Sc cutoff N β
-  map_add' := (contentRealizeLinear D Sc cutoff N β).map_add
-  map_smul' := (contentRealizeLinear D Sc cutoff N β).map_smul
-
-/-- Explicit component formula for the inverse centre map. -/
-theorem reconstruct_app (η : Centre D Sc cutoff N β) (p : ZMod 2)
-    (v : ContentCategory D Sc cutoff N β) :
-    (reconstruct D Sc cutoff N β η).app p v =
-      ContentYoneda.componentMap D Sc cutoff N β
-        (moduleMap D Sc cutoff N β η p (contentRepresentable D Sc cutoff N β v)) p v (𝟙 v) := rfl
-
-theorem reconstruct_proj (η : Centre D Sc cutoff N β) (p : ZMod 2) :
-    reconstruct D Sc cutoff N β (proj k p η) = proj k p (reconstruct D Sc cutoff N β η) := by
-  apply contentRealize_injective D Sc cutoff N β
-  rw [realize_reconstruct, contentRealize_proj, realize_reconstruct]
-
-/-- The same equivalence has exactly the existing content-module PiSCat target.
-Its Pi structure is the one supplied by `contentModulePiIso`. -/
-def centrePiEquiv : ContentCoefficient D Sc cutoff N β ≃ₗ[k]
-    (𝟙 (contentModuleTarget D Sc cutoff N β) ⟶ 𝟙 (contentModuleTarget D Sc cutoff N β)) :=
-  centreEquiv D Sc cutoff N β
-
 end OddMath.QuiverHecke.ELVOld.ModuleCentre

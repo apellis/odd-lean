@@ -45,13 +45,6 @@ def gridCapRowTransformation (n : ℕ) :
     Superfunctor.id k (Superfunctor k A (SVec k)) :=
   (gridCapDotRow_supernatural J hα n).toSuperNatTrans
 
-/-- Evaluation retains the literal chosen module mate. -/
-theorem gridMateTransformation_total (N : Superfunctor k A (SVec k)) :
-    (gridMateTransformation J K hγ).total N = orderedGridMateComponent J K hγ N :=
-  OddMath.HomogeneousSuperfunctorIso.homogeneous_total
-    (F := ⟨restriction J ⋙ induction J⟩) (G := ⟨induction K ⋙ restriction K⟩)
-    (orderedGridMateComponent_supernatural J K hγ) N
-
 /-- Evaluation retains the ordinary unit column, with no coordinate shift. -/
 theorem gridUnitColumnTransformation_total (n : ℕ) (N : Superfunctor k A (SVec k)) :
     (gridUnitColumnTransformation K hβ n).total N = unitDotColumn K hβ N n :=

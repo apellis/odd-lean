@@ -260,5 +260,4 @@ theorem globalRouquierData_braid [DecidableEq I] :
 
 end Weight
 
-
 end OddMath.QuiverHecke.CyclotomicAction

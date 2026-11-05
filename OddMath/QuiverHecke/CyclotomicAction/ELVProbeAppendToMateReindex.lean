@@ -60,7 +60,7 @@ variable {k C A B : Type u} [CommRing k]
   (K : A ⥤ B) [K.Additive] [K.Linear k] [IsSuperfunctor k K]
   {p : ZMod 2} {γ : ∀ s, (J ⋙ K).obj s ⟶ (J ⋙ K).obj s}
   (hγ : IsSupernatural k p γ)
-private theorem nativeMate_app (q : ZMod 2) (N : Superfunctor k A (SVec k)) :
+private theorem mate_app (q : ZMod 2) (N : Superfunctor k A (SVec k)) :
     (SKM.rouquierMate (inductionModuleAdjunction (k := k) J)
       (inductionModuleAdjunction (k := k) K) (inductionModuleCross J K hγ)).app q N =
       if q = p then orderedGridMateComponent J K hγ N else 0 := by
@@ -99,7 +99,6 @@ local notation "K₀" => oldContentAppendTo D Sc cut (i :: ν) i (i :: i :: ν) 
 local notation "hγ₀" => oldAppendToEqualCross_supernatural D Sc cut ν i
   (List.Perm.refl (i :: ν)) (List.Perm.refl (i :: i :: ν))
 
-
 attribute [local irreducible] probeEvaluatedLocalMate
 
 private theorem transportedMate_app (q : ZMod 2)
@@ -113,7 +112,7 @@ private theorem transportedMate_app (q : ZMod 2)
   exact mapped_probeEvaluatedLocalMate_app D Sc m ν i h₁ q
     ((probeEvaluatedReindex D Sc m h₁.symm).obj N)
 
-private theorem native_mate_square (q : ZMod 2)
+private theorem mate_square (q : ZMod 2)
     (N : ProbeEvaluatedModules D Sc m ν₁) :
     (oldModuleReindex D Sc cut h₁).map
       ((SKM.rouquierMate (inductionModuleAdjunction (k := k) J₀)
@@ -127,7 +126,7 @@ private theorem native_mate_square (q : ZMod 2)
           (inductionModuleCross (oldContentAppendTo D Sc cut ν i ν₁ h₁)
             (oldContentAppendTo D Sc cut ν₁ i ν₂ h₂)
             (oldAppendToEqualCross_supernatural D Sc cut ν i h₁ h₂))).app q N.obj := by
-  rw [nativeMate_app, nativeMate_app]
+  rw [mate_app, mate_app]
   exact map_ite_square (oldModuleReindex D Sc cut h₁) _ _ _ _
     (oldReindexLoopModuleHom_mate D Sc cut ν i h₁ h₂ ((reindexInv).obj N).obj) (D.parity i) q
 
@@ -138,10 +137,10 @@ private theorem mate_component_square (q : ZMod 2)
       (((lowerIso).hom.total N).hom) ≫ ((probeAppendToMate D Sc m ν i h₁ h₂).app q N).hom := by
   exact square_of_four_eq
     (transportedMate_app D Sc m ν i h₁ q N)
-    (probeReindexUpperLoopSuperIso_hom_total_native D Sc m ν i h₁ h₂ N)
-    (probeReindexLowerLoopSuperIso_hom_total_native D Sc m ν i h₁ N)
+    (probeReindexUpperLoopSuperIso_hom_total_eq D Sc m ν i h₁ h₂ N)
+    (probeReindexLowerLoopSuperIso_hom_total_eq D Sc m ν i h₁ N)
     (probeAppendToMate_app D Sc m ν i h₁ h₂ q N)
-    (native_mate_square D Sc m ν i h₁ h₂ q N)
+    (mate_square D Sc m ν i h₁ h₂ q N)
 
 /-- The selected evaluated mate follows the prescribed even loop comparisons. -/
 theorem probeAppendToMate_reindex :

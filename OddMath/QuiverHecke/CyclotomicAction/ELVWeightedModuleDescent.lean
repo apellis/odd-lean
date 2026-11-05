@@ -177,15 +177,6 @@ theorem weightedRestriction_kills (N : ℕ)
       (coefficientIdentity D Sc cutoff v (SKM.SYM.coefficientBasis D k a))) = 0
   rw [hz, map_zero]
 
-/-- Descent after restriction preserves every prescribed module map literally. -/
-theorem weightedModule_restriction_map (N : ℕ)
-    (M : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k))
-    (v w : TruncatedCategory D Sc cutoff N) (f : v ⟶ w) :
-    (weightedModule D Sc cutoff N (weightedRestriction D Sc cutoff N M)
-      (weightedRestriction_kills D Sc cutoff N M)).map f = M.map f := by
-  obtain ⟨a, rfl⟩ := (truncatedIdeal D Sc cutoff N v.word w.word).mkQ_surjective f
-  rfl
-
 /-- Natural module maps descend componentwise, retaining both parities. -/
 def weightedModuleHom (N : ℕ)
     (M L : Superfunctor k (OldCategory D Sc cutoff) (SVec k))

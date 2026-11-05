@@ -134,7 +134,6 @@ theorem forms_eq_of_positive_words
     _ = C (x * ∑ η ∈ s, weightOne D η) y := (hC _ _ _).symm
     _ = C x y := by rw [hx]
 
-
 /-- Endpoint orthogonality, adjointness for all actual modified elements, and
 normalization on all positive-half pairs uniquely determine the constructed form.
 No homogeneity or independence of the simple roots is assumed. -/

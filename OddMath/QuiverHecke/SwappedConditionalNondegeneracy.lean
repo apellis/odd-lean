@@ -113,11 +113,6 @@ def SwappedVacuumObservation.toSwappedVacuumBlock {μ : X} {t t' : List I} {d : 
   SwappedVacuumBlock.ofCornerEvaluation cs O.action O.vacuum O.raw O.bubbles.vacuumMoments
     O.corner O.ideal_le
 
-/-- The vacuum block of an observation acts through the swapped action. -/
-theorem SwappedVacuumObservation.toSwappedVacuumBlock_A {μ : X} {t t' : List I} {d : ℕ}
-    (O : SwappedVacuumObservation B D Sc cs μ t t' d) : O.toSwappedVacuumBlock.A = O.action :=
-  rfl
-
 end Observation
 
 section Conclusion

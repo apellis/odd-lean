@@ -92,10 +92,6 @@ def probeOldOrdinarySuperfunctor (ν : List I) :
     Superfunctor k (ELVOld.OldContentCategory D Sc cut ν) (OrdinaryContentCategory D Sc a ν) :=
   ⟨probeOldOrdinaryFunctor D Sc m ν⟩
 
-def probeOrdinaryAppendSuperfunctor (ν : List I) (i : I) :
-    Superfunctor k (OrdinaryContentCategory D Sc a ν) (OrdinaryContentCategory D Sc a (i :: ν)) :=
-  ⟨probeOrdinaryAppend D Sc m ν i⟩
-
 variable (ν : List I)
   (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
   (hN : ProbeEvaluatesCoefficients D m Sc ν N)

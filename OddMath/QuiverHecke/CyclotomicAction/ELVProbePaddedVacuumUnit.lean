@@ -12,7 +12,7 @@ are the prescribed padded post-cups `centralPaddedUnit false n`. This file
 evaluates them on the regular probe: through the cap-target chart
 `paddedVacuumCapTargetIso` (the source of every column) and the target chart
 of the padded Dx entry (`paddedVacuumTargetIso`), the `n`-th unit column is
-the native unit followed by `n` canonical dots (`paddedVacuumUnit_native`).
+the native unit followed by `n` canonical dots (`paddedVacuumUnit_eq`).
 No parity, moment or unit compatibility is assumed.
 -/
 noncomputable section
@@ -94,7 +94,7 @@ variable (H : ProbeVacuumCap.modulePiCategory D (parameterTwist D Sc) m ⟶
 post-cup `n` is the native unit followed by `n` canonical dots, through the
 cap-target chart and the target chart of the padded Dx entry. No parity,
 moment or unit compatibility is assumed. -/
-theorem paddedVacuumUnit_native (i : I) (n : ℕ) :
+theorem paddedVacuumUnit_eq (i : I) (n : ℕ) :
     (P).centralPaddedUnit i (((0, 0) : Sector I))
         (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
         (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) false n ≫
@@ -149,7 +149,7 @@ theorem paddedVacuumUnit_native (i : I) (n : ℕ) :
       (emptyBlock D ΛR) := by
     simp only [cup₀, E₀, unitVacuumEvaluation, homContentEvaluation, Functor.comp_map,
       Pi.eval_map, homTotalEvaluation]
-  have hn₁ := vacuumBendPostCup_native D (parameterTwist D Sc) m cutoff bound ΛP ΛR hcP hcR i
+  have hn₁ := vacuumBendPostCup_eq D (parameterTwist D Sc) m cutoff bound ΛP ΛR hcP hcR i
     er₀ 0 H n
   have hn : E₀.map cup₀ ≫ f.hom = q ≫ col := by
     rw [hc₀]

@@ -159,7 +159,6 @@ theorem sigmaTerm_eq_of_paths (gens : P.Generators) (i j : I) (ν : X)
     compLayer_eq_of_path gens _ pu₃ pg₃ qg₃ pv₃ _ _ hp₃ hq₃]
   simp only [Category.assoc, eqToHom_trans, eqToHom_trans_assoc]
 
-
 /-- The probe mate of the mixed interchange at the sector `t`, written with the strand functors
 of the sectors, is invertible. -/
 theorem isIso_probeMixedMate (i : I) {t : Sector I} (hw₁ : StepValid (false, i) true t)
@@ -204,8 +203,6 @@ theorem isIso_probeMixedMate (i : I) {t : Sector I} (hw₁ : StepValid (false, i
     (homContentShift D i ((nextSector (false, i) true t).1 + Finsupp.single i 1))
     (homContentShift D i (nextSector (false, i) true t).1)
     (P.mixedJ i i _ hv₁ Zj).hom rfl x₁ x₂ x₃ x₄ x₅ x₆ x₇ x₈ x₉ x₁₀ xY (eq_of_heq xZ)
-
-
 
 -- Comparisons of distinct sectors are decided on the sector expressions, not by computing with
 -- finitely supported functions.

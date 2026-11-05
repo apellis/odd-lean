@@ -64,15 +64,6 @@ omit [J.Linear k] [IsSuperfunctor k J] in
       tensor J M.toFunctor v (α v ≫ twist k p h) m := by
   rw [transformLinear, lift_tensor, transformSummand_tmul]
 
-omit [J.Linear k] [IsSuperfunctor k J] in
-/-- Signed right multiplication on a homogeneous kernel element. -/
-theorem transformLinear_tensor_of_mem (w : D) (v : C) {r : ZMod 2}
-    (h : K.obj v ⟶ w) (hh : h ∈ parity (R := k) _ _ r) (m : M.obj v) :
-    transformLinear hα M w (tensor K M.toFunctor v h m) =
-      sign k (p * r) • tensor J M.toFunctor v (α v ≫ h) m := by
-  rw [transformLinear_tensor, twist_of_mem p hh, Linear.comp_smul]
-  simp only [tensor, ← smul_tmul', map_smul]
-
 theorem transformLinear_mem (w : D) :
     (transformLinear hα M w : superspace K M.toFunctor w ⟶ superspace J M.toFunctor w) ∈
       parity (R := k) (superspace K M.toFunctor w) (superspace J M.toFunctor w) p := by
@@ -172,21 +163,6 @@ theorem transform_unit (v : C) (m : M.obj v) :
     transformLinear hα M (K.obj v) (unit K M.toFunctor v m) =
       postcompose J M.toFunctor (α v) (unit J M.toFunctor v m) := by
   rw [unit_apply, transformLinear_tensor, twist_id, Category.comp_id, postcompose_unit]
-
-/-- Counit compatibility with evaluation of the original transformation on restriction. -/
-theorem transform_counit (N : Superfunctor k D (SVec k)) (w : D) (v : C)
-    (h : K.obj v ⟶ w) (m : N.obj (J.obj v)) :
-    counit J N.toFunctor w
-      (transformLinear hα ((restriction J).obj N) w
-        (tensor K (J ⋙ N.toFunctor) v h m)) =
-      counit K N.toFunctor w
-        (tensor K (K ⋙ N.toFunctor) v (twist k p h) (N.map (α v) m)) := by
-  have ht := congrArg (counit J N.toFunctor w)
-    (transformLinear_tensor hα ((restriction J).obj N) w v h m)
-  refine ht.trans ?_
-  change counit J N.toFunctor w (tensor J (J ⋙ N.toFunctor) v (α v ≫ twist k p h) m) = _
-  rw [counit_tensor, counit_tensor, N.toFunctor.map_comp]
-  rfl
 
 end OddMath.QuiverHecke.ELVOld.BalancedInduction
 

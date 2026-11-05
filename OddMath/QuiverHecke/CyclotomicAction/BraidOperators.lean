@@ -75,13 +75,6 @@ theorem regularSignedRight_apply_mem {p q : ZMod 2} {a x : A}
   rw [regularSignedRight_apply G p a x hx]
   exact (G (q + p)).toAddSubgroup.zsmul_mem (SetLike.GradedMul.mul_mem hx ha) _
 
-/-- The three-multiplier sign is invariant under reversing the degree list. -/
-theorem regularSignedRight_triple_sign (p a b c : ZMod 2) :
-    koszulSign (p + a + b) c * (koszulSign (p + a) b * koszulSign p a) =
-      koszulSign (p + c + b) a * (koszulSign (p + c) b * koszulSign p c) := by
-  revert p a b c
-  decide
-
 /-- Evaluate three homogeneous signed right multipliers, retaining their order. -/
 theorem regularSignedRight_triple_apply {p q r s : ZMod 2} {a b c x : A}
     (ha : a ∈ G p) (hb : b ∈ G q) (hx : x ∈ G s) :
@@ -93,16 +86,6 @@ theorem regularSignedRight_triple_apply {p q r s : ZMod 2} {a b c x : A}
     regularSignedRight_apply G q b _ (regularSignedRight_apply_mem G ha hx),
     regularSignedRight_apply G p a x hx]
   simp only [smul_mul_assoc, smul_smul, mul_assoc]
-
-/-- A braid relation on homogeneous elements gives a braid of signed regular operators. -/
-theorem regularSignedRight_braid {p q r s : ZMod 2} {a b c a' b' c' x : A}
-    (ha : a ∈ G p) (hb : b ∈ G q) (ha' : a' ∈ G r) (hb' : b' ∈ G q)
-    (hx : x ∈ G s) (hbraid : a * (b * c) = a' * (b' * c')) :
-    regularSignedRight G r c (regularSignedRight G q b (regularSignedRight G p a x)) =
-      regularSignedRight G p c' (regularSignedRight G q b' (regularSignedRight G r a' x)) := by
-  rw [regularSignedRight_triple_apply G ha hb hx,
-    regularSignedRight_triple_apply G ha' hb' hx, hbraid,
-    regularSignedRight_triple_sign]
 
 /-- The repeated-outside-colour sign separates the total degree and the crossing degree. -/
 theorem regularSignedRight_correction_sign (s d e : ZMod 2) :
@@ -127,30 +110,6 @@ theorem regularSignedRight_braid_correction {d e s : ZMod 2} {a b c a' b' c' z x
     regularSignedRight_apply G e z x hx, smul_smul]
 
 end Regular
-
-/-- The concrete cyclotomic braid as an equality of signed regular-module operators. -/
-theorem cyclotomicSignedTriple_braid (i j c : I) (hb : ¬ (i = c ∧ i ≠ j))
-    (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
-    {s : ZMod 2} (x : CyclotomicAlgebra D Sc a (n + 2))
-    (hx : x ∈ cyclotomicParity D Sc a ha (n + 2) s) :
-    regularSignedRight (cyclotomicParity D Sc a ha (n + 2)) (D.parity i * D.parity j)
-      (cyclotomicMk D Sc a (n + 2) (affineTripleLeft D Sc i j c n))
-      (regularSignedRight (cyclotomicParity D Sc a ha (n + 2)) (D.parity i * D.parity c)
-        (cyclotomicMk D Sc a (n + 2) (affineTripleRight D Sc j i c n))
-        (regularSignedRight (cyclotomicParity D Sc a ha (n + 2)) (D.parity j * D.parity c)
-          (cyclotomicMk D Sc a (n + 2) (affineTripleLeft D Sc j c i n)) x)) =
-      regularSignedRight (cyclotomicParity D Sc a ha (n + 2)) (D.parity j * D.parity c)
-        (cyclotomicMk D Sc a (n + 2) (affineTripleRight D Sc i j c n))
-        (regularSignedRight (cyclotomicParity D Sc a ha (n + 2)) (D.parity i * D.parity c)
-          (cyclotomicMk D Sc a (n + 2) (affineTripleLeft D Sc i c j n))
-          (regularSignedRight (cyclotomicParity D Sc a ha (n + 2)) (D.parity i * D.parity j)
-            (cyclotomicMk D Sc a (n + 2) (affineTripleRight D Sc c i j n)) x)) := by
-  apply regularSignedRight_braid _
-    (cyclotomicMk_parity D Sc a ha (n + 2) (affineTripleLeft_parity D Sc j c i n))
-    (cyclotomicMk_parity D Sc a ha (n + 2) (affineTripleRight_parity D Sc j i c n))
-    (cyclotomicMk_parity D Sc a ha (n + 2) (affineTripleRight_parity D Sc c i j n))
-    (cyclotomicMk_parity D Sc a ha (n + 2) (affineTripleLeft_parity D Sc i c j n)) hx
-  exact cyclotomicTriple_braid D Sc i j c hb a n
 
 /-- The concrete signed repeated-colour braid, with its explicit polynomial correction. -/
 theorem cyclotomicSignedTriple_braid_correction (i j : I) (hij : i ≠ j)

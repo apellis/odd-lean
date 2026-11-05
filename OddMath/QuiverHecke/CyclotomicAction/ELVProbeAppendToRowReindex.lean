@@ -24,7 +24,7 @@ local notation "R" => oldModuleReindex D Sc cut h₁
 local notation "R⁻¹" => probeEvaluatedReindex D Sc m h₁.symm
 
 /-- The total selected cap row retains its literal OLD dotted counit. -/
-theorem probeAppendToCapRow_total_native (n : ℕ) (N : ProbeEvaluatedModules D Sc m ν₁) :
+theorem probeAppendToCapRow_total_eq (n : ℕ) (N : ProbeEvaluatedModules D Sc m ν₁) :
     ((probeAppendToCapRow D Sc m ν i h₁ n).total N).hom =
       capDotRow J (probeAppendToDot_supernatural D Sc m ν i ν₁ h₁) N.obj n := by
   change ((probeAppendToCapRow D Sc m ν i h₁ n).app 0 N).hom +
@@ -47,8 +47,8 @@ theorem probeAppendToCapRow_reindex (n : ℕ) :
         ((R⁻¹).obj N)).hom) =
     ((probeReindexLowerLoopSuperIso D Sc m ν i h₁).hom.total N).hom ≫
       ((probeAppendToCapRow D Sc m ν i h₁ n).total N).hom
-  rw [probeAppendToCapRow_total_native, probeAppendToCapRow_total_native,
-    probeReindexLowerLoopSuperIso_hom_total_native]
+  rw [probeAppendToCapRow_total_eq, probeAppendToCapRow_total_eq,
+    probeReindexLowerLoopSuperIso_hom_total_eq]
   exact oldAppendReindexIso_capDotRow D Sc m ν i h₁ ((R⁻¹).obj N).obj n
 
 /-- Reindexing preserves every unit column through the chosen upper loop map. -/
@@ -66,8 +66,8 @@ theorem probeAppendToUnitColumn_reindex (n : ℕ) :
         (List.Perm.refl (i :: i :: ν)) n).total ((R⁻¹).obj N)).hom) ≫
     ((probeReindexUpperLoopSuperIso D Sc m ν i h₁ h₂).hom.total N).hom =
       ((probeAppendToUnitColumn D Sc m ν₁ i h₂ n).total N).hom
-  rw [probeAppendToUnitColumn_total_native, probeAppendToUnitColumn_total_native,
-    probeReindexUpperLoopSuperIso_hom_total_native]
+  rw [probeAppendToUnitColumn_total_eq, probeAppendToUnitColumn_total_eq,
+    probeReindexUpperLoopSuperIso_hom_total_eq]
   exact oldAppendReindexIso_unitDotColumn D Sc m ν i h₁ h₂ ((R⁻¹).obj N).obj n
 
 local notation "C₀" => probeEvaluatedTarget D Sc m ν

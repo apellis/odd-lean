@@ -59,26 +59,6 @@ def homPostWeightIso : (K).obj Q ≅ Q' := by
   subst b'
   exact Iso.refl _
 
-/-- Every prescribed cap/unit word has its equality-transport square.
-No identification of a bend or a moment map is an input. -/
-theorem homCapCup_weight_square
-    (hdot : ∀ {x y : X} (h : x + D.α i = y), IsIso (T.dot i h)) (n s : ℕ) :
-    (K).map (letI := hdot hp;
-      homPreNegativeCap T W.obj i b hp n Z ≫
-        homContentPostCup T.obj W i β a hr s Z) ≫
-      (homPostWeightIso T W ha hb i hr β Z).hom =
-    (homPreWeightIso T W ha hb i hp Z).hom ≫
-      (letI := hdot hp';
-        homPreNegativeCap T W.obj i b' hp' n ((K).obj Z) ≫
-          homContentPostCup T.obj W i β a' hr' s ((K).obj Z)) := by
-  subst a'
-  subst b'
-  change (letI := hdot hp;
-    homPreNegativeCap T W.obj i b hp n Z ≫ homContentPostCup T.obj W i β a hr s Z) ≫ 𝟙 _ =
-    𝟙 _ ≫ (letI := hdot hp;
-      homPreNegativeCap T W.obj i b hp n Z ≫ homContentPostCup T.obj W i β a hr s Z)
-  simp only [Category.comp_id, Category.id_comp]
-
 section Pullback
 variable (Z' : homWeightSector T.obj W.obj a' b')
 local notation "Zₚ" => (homWeightEquivalence T W ha hb).inverse.obj Z'

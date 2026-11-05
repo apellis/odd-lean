@@ -96,8 +96,6 @@ end Transport
 namespace ProbeReservoir
 variable {P : ProbeReservoir k B D Sc}
 
-
-
 private theorem pathFunctor_functor_heq_of_nil {a b : Sector I}
     (p : SPath ([] : List (Col I X)) a b) : HEq (P.pathFunctor p) (𝟭 (P.H b)) := by
   cases p
@@ -214,27 +212,6 @@ theorem sigmaEntry_reservoir_mate (c : P.CrossCoeff) (i : I) (ν : X) (t : Secto
       ((homContentPostF P.T.obj P.W i t.1 (P.muP t) (P.muM_postF i t)).obj)
       (eq_of_heq hh)
     simpa only [Functor.comp_obj, Functor.id_obj, SPath.castTgt, tU, nextSector, muP] using he
-
-/-- The actual pure reservoir principal entry, in the fixed native
-factor charts, is the original factor's local rightward crossing. -/
-theorem sigmaEntry_reservoir_coordinates (c : P.CrossCoeff) (i : I) (ν : X) (t : Sector I)
-    (hv : StepValid (true, i) false t) (Z : P.H t) :
-    (reservoirCapFactorIso i ν hv (by trivial) (SPath.next_upDn_false_false hv) Z ≪≫
-      homContentPostSourceIso P.T.obj P.W i t.1 (P.muP t) (P.muM_postE i hv) Z).inv ≫
-      P.sigmaEntry c i i ν
-        (SPath.two false false hv (by trivial) (SPath.next_upDn_false_false hv))
-        (SPath.two false false (by trivial) (by simp [StepValid, nextSector])
-          (SPath.next_dnUp_false_false t)) Z ≫
-      (reservoirCupFactorIso i ν (by trivial) (by simp [StepValid, nextSector])
-        (SPath.next_dnUp_false_false t) Z ≪≫
-        homContentPostTargetIso P.T.obj P.W i t.1 (P.muP t) (P.muM_postF i t) Z).hom =
-    (associator Z (P.W.F i (P.muM_postE i hv)) (P.W.E i (P.muM_postE i hv))).hom ≫
-      Z ◁ (P.W.loc i (P.muM_postE i hv) (P.muM_postF i t)).sig ≫
-      (associator Z (P.W.E i (P.muM_postF i t)) (P.W.F i (P.muM_postF i t))).inv := by
-  rw [sigmaEntry_reservoir_mate]
-  simp only [Iso.trans_hom, Iso.trans_inv, Category.assoc, Iso.inv_hom_id_assoc]
-  exact homContentPostCrossing_principal P.T.obj P.W i t.1 (P.muP t)
-    (P.muM_postE i hv) (P.muM_postF i t) Z
 
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

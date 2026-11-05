@@ -47,12 +47,4 @@ theorem induction_dot_slide (i : I) {n : ℕ} (s t : Word I n) {p : ZMod 2}
         (inductionLastDot D Sc i s ≫ appendHom D Sc i s t f) :=
   MonoidalSupercategory.super_interchange hf (inductionStrandDot_parity D Sc i)
 
-/-- An odd dot slides with a minus sign past an odd old morphism. -/
-theorem induction_dot_slide_odd (i : I) (hi : D.parity i = 1)
-    {n : ℕ} (s t : Word I n) (f : wordObj D Sc s ⟶ wordObj D Sc t)
-    (hf : f ∈ Supercategory.parity (R := k) (wordObj D Sc s) (wordObj D Sc t) 1) :
-    appendHom D Sc i s t f ≫ inductionLastDot D Sc i t =
-      -(inductionLastDot D Sc i s ≫ appendHom D Sc i s t f) := by
-  simpa [hi] using induction_dot_slide D Sc i s t f hf
-
 end OddMath.QuiverHecke

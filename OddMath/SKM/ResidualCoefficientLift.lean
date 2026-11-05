@@ -27,25 +27,6 @@ def residualUnitColumn
     (t : F.Labels) : F.residualUnitColumn cs μ R 0 t = Finsupp.single t 1 := by
   simp [residualUnitColumn]
 
-theorem residualUnitColumn_neg
-    (R : ℤ → F.Labels → ((pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ b)))
-    (n : ℤ) (hn : n < 0) (t : F.Labels) : F.residualUnitColumn cs μ R n t = 0 := by
-  simp only [residualUnitColumn, ite_eq_left hn]
-
-theorem residualUnitColumn_eval
-    (R : ℤ → F.Labels → ((pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ b)))
-    (hneg : ∀ n, n < 0 → ∀ t, R n t = 0)
-    (hzero : ∀ t, R 0 t = xev cs μ a b (F.layers t)) (n : ℤ) (t : F.Labels) :
-    F.expansion cs μ (F.residualUnitColumn cs μ R n t) = R n t := by
-  by_cases hn : n < 0
-  · rw [F.residualUnitColumn_neg cs μ R n hn t, map_zero, hneg n hn t]
-  · by_cases hz : n = 0
-    · subst n
-      rw [F.residualUnitColumn_zero, F.expansion_single, hzero]
-      exact rightAction_one cs μ _
-    · simp only [residualUnitColumn, ite_eq_right hn, ite_eq_right hz]
-      exact (F.expansion_surjective cs μ (R n t)).choose_spec
-
 /-- Extend the fixed unit column linearly in the input coefficient, optionally
 using a prescribed full-SYM parity twist. No new choice depends on that input. -/
 def residualCoefficientColumn
@@ -54,55 +35,12 @@ def residualCoefficientColumn
   (MatchingTransition.rightColumn (k := k) (F.residualUnitColumn cs μ R n t)).comp
     (SYM.parityTwist D k q)
 
-theorem residualCoefficientColumn_eval
-    (R : ℤ → F.Labels → ((pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ b)))
-    (hneg : ∀ n, n < 0 → ∀ t, R n t = 0)
-    (hzero : ∀ t, R 0 t = xev cs μ a b (F.layers t))
-    (n : ℤ) (t : F.Labels) (q : ZMod 2) (p : SYM D k) :
-    F.expansion cs μ (F.residualCoefficientColumn cs μ R n t q p) =
-      rightAction cs μ (R n t) (SYM.parityTwist D k q p) := by
-  change F.expansion cs μ (MatchingTransition.rightColumn (k := k)
-    (F.residualUnitColumn cs μ R n t) (SYM.parityTwist D k q p)) = _
-  rw [F.expansion_rightColumn, F.residualUnitColumn_eval cs μ R hneg hzero]
-
 @[simp] theorem residualCoefficientColumn_zero
     (R : ℤ → F.Labels → ((pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ b)))
     (t : F.Labels) (q : ZMod 2) (p : SYM D k) :
     F.residualCoefficientColumn cs μ R 0 t q p =
       Finsupp.single t (SYM.parityTwist D k q p) := by
   simp [residualCoefficientColumn, LinearMap.comp_apply]
-
-/-- Actual postcomposition by residual loops, still evaluated at the fixed
-global external weight. No unwhiskered bubble formula is substituted. -/
-theorem residualPostColumn_eval
-    (q : ℤ → End ((pres D Sc).obj (ob D μ b)))
-    (hqneg : ∀ n, n < 0 → q n = 0) (hqzero : q 0 = 𝟙 _)
-    (n : ℤ) (t : F.Labels) (ε : ZMod 2) (p : SYM D k) :
-    F.expansion cs μ (F.residualCoefficientColumn cs μ
-      (fun n t => xev cs μ a b (F.layers t) ≫ q n) n t ε p) =
-      rightAction cs μ (xev cs μ a b (F.layers t) ≫ q n)
-        (SYM.parityTwist D k ε p) := by
-  apply F.residualCoefficientColumn_eval
-  · intro n hn t
-    rw [hqneg n hn, Limits.comp_zero]
-  · intro t
-    rw [hqzero, Category.comp_id]
-
-/-- Actual precomposition by residual loops, with the same global weight
-and no independence hypothesis on the residual family. -/
-theorem residualPreColumn_eval
-    (q : ℤ → End ((pres D Sc).obj (ob D μ a)))
-    (hqneg : ∀ n, n < 0 → q n = 0) (hqzero : q 0 = 𝟙 _)
-    (n : ℤ) (t : F.Labels) (ε : ZMod 2) (p : SYM D k) :
-    F.expansion cs μ (F.residualCoefficientColumn cs μ
-      (fun n t => q n ≫ xev cs μ a b (F.layers t)) n t ε p) =
-      rightAction cs μ (q n ≫ xev cs μ a b (F.layers t))
-        (SYM.parityTwist D k ε p) := by
-  apply F.residualCoefficientColumn_eval
-  · intro n hn t
-    rw [hqneg n hn, Limits.zero_comp]
-  · intro t
-    rw [hqzero, Category.id_comp]
 
 /-- Insert a finite residual coefficient vector at one isolated-strand row. -/
 def residualRow (m : ℕ) :

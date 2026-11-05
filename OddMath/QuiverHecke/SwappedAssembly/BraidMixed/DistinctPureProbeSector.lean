@@ -118,7 +118,6 @@ theorem whisker_braid_distinct {a b₁ b₂ b₃ c₁₂ c₁₃ c₂₃ d e : B
     congrArg (fun f => (tripleRightIso (k := k) E₁ F₁₂ G₁₂ Z).inv ≫ f ▷ Z ≫
       (tripleRightIso (k := k) E₃ F₃₂ G₂₃ Z).hom) hb
 
-
 namespace ProbeReservoir
 /-- The probe factor's distinct-colour braid, right-whiskered and reassociated.
 This is the factor identity before identifying sector-path transports. -/

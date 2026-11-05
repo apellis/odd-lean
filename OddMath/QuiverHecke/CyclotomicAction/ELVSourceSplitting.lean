@@ -119,20 +119,4 @@ def sourceCoordinateEquiv (p : ZMod 2) (i : I) (v : List I) :
     sourceCoordinateEquiv D Sc cutoff p i v (alpha D Sc cutoff i v v a) = (a, 0) := by
   simp only [sourceCoordinateEquiv_apply, extract_alpha, outputLongExtraction_alpha]
 
-/-- The polynomial projection is literally the existing long extraction. -/
-theorem snd_comp_sourceCoordinateEquiv (p : ZMod 2) (i : I) (v : List I) :
-    (LinearMap.snd k _ _) ∘ₗ (sourceCoordinateEquiv D Sc cutoff p i v).toLinearMap =
-      outputLongExtraction D Sc cutoff p i v := rfl
-
-/-- The short part of the prescribed P map is its original crossing-column square. -/
-theorem pMap_sourceCoordinateEquiv_symm (p : ZMod 2) (i : I) (v : List I)
-    (a : PprimeDomain D Sc cutoff i v v) (f : ℕ →₀ Old D Sc cutoff v v) :
-    pMap D Sc cutoff i v (v ++ [i]) ((sourceCoordinateEquiv D Sc cutoff p i v).symm (a, f)) =
-      shortCross D Sc cutoff i v v (pprime D Sc cutoff i v v a) +
-        pMap D Sc cutoff i v (v ++ [i]) (sourceLongSection D Sc cutoff p i v f) := by
-  rw [sourceCoordinateEquiv_symm_apply, map_add]
-  exact congrArg (fun z => z + pMap D Sc cutoff i v (v ++ [i])
-    (sourceLongSection D Sc cutoff p i v f))
-      (LinearMap.congr_fun (shortColumn_square D Sc cutoff i v v) a)
-
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

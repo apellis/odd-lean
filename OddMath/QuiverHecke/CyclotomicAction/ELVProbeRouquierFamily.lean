@@ -50,18 +50,6 @@ def probeOldRouquierFamily :
   braid i _ _ _ _ h₁ h₂ h₃ := probeOldRouquierData_braid D Sc m Λ i h₁ h₂ h₃
   loc i _ _ _ h₁ h₂ := probeOldWeightLoc D Sc m i Λ h₁ h₂ (hcutoff i)
 
-/-- Assembly retains every previously chosen upward generator. -/
-theorem probeOldRouquierFamily_toRouquierData :
-    (probeOldRouquierFamily D Sc m Λ hcutoff).toRouquierData = probeOldRouquierData D Sc m Λ := rfl
-
-/-- The family keeps the selected restriction at every weight. -/
-theorem probeOldRouquierFamily_F (i : I) {x y : X} (h : x + D.α i = y) :
-    (probeOldRouquierFamily D Sc m Λ hcutoff).F i h = probeOldF D Sc m i Λ h := rfl
-
-/-- The family keeps the selected ordinary unit and counit without a rescaling. -/
-theorem probeOldRouquierFamily_adj (i : I) {x y : X} (h : x + D.α i = y) :
-    (probeOldRouquierFamily D Sc m Λ hcutoff).adj i h = probeOldActionAdjunction D Sc m i Λ h := rfl
-
 /-- The chosen dot remains a unit on the assembled probe family. -/
 theorem probeOldRouquierFamily_dot_isUnit [Fintype I] (i : I) {x y : X} (h : x + D.α i = y) :
     IsUnit (End.of ((probeOldRouquierFamily D Sc m Λ hcutoff).dot i h)) :=

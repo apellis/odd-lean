@@ -127,7 +127,7 @@ def probeStoredLastDot (N : ProbeEvaluatedModules D Sc' m ν) :
   probeAppendToDotComponent D Sc' m νij i νt hTopI ((EV).obj ((EJ).obj N))
 
 /-- Every whole native crossing component agrees with the seven-edge OLD grid. -/
-theorem probeStoredMixedBraid_native (N : ProbeEvaluatedModules D Sc' m ν) :
+theorem probeStoredMixedBraid_eq (N : ProbeEvaluatedModules D Sc' m ν) :
     (probeStoredMixedBraid D Sc m ν i j hI hJ hII hIJ hJI hTopJ hTopI N).hom =
       probeOldStoredMixedBraid D Sc m ν i j hI hJ hII hIJ hJI hTopJ hTopI N.obj := by
   simp only [probeStoredMixedBraid, appendTo_obj_obj]
@@ -146,15 +146,15 @@ theorem probeStoredMixedBraid_native (N : ProbeEvaluatedModules D Sc' m ν) :
       · exact congrArg (fun f => (induction M).map f)
           (rectangle_degree_congr J K V W (mul_comm (D.parity j) (D.parity i)) _ _ _)
 
-theorem probeStoredFirstDot_native (N : ProbeEvaluatedModules D Sc' m ν) :
+theorem probeStoredFirstDot_eq (N : ProbeEvaluatedModules D Sc' m ν) :
     (probeStoredFirstDot D Sc m ν i j hI hIJ hTopI N).hom =
       (induction M).map ((induction V).map (dotEnd J hα N.obj)) := rfl
 
-theorem probeStoredMiddleDot_native (N : ProbeEvaluatedModules D Sc' m ν) :
+theorem probeStoredMiddleDot_eq (N : ProbeEvaluatedModules D Sc' m ν) :
     (probeStoredMiddleDot D Sc m ν i j hI hIJ hTopI N).hom =
       (induction M).map (dotEnd V hβ ((induction J).obj N.obj)) := rfl
 
-theorem probeStoredLastDot_native (N : ProbeEvaluatedModules D Sc' m ν) :
+theorem probeStoredLastDot_eq (N : ProbeEvaluatedModules D Sc' m ν) :
     (probeStoredLastDot D Sc m ν i j hI hIJ hTopI N).hom =
       dotEnd M hγ ((induction V).obj ((induction J).obj N.obj)) := rfl
 
@@ -173,8 +173,8 @@ theorem probeStoredMixedBraid_polynomial (hne : i ≠ j) (N : ProbeEvaluatedModu
       (probeStoredFirstDot D Sc m ν i j hI hIJ hTopI N).hom
       (probeStoredMiddleDot D Sc m ν i j hI hIJ hTopI N).hom
       (probeStoredLastDot D Sc m ν i j hI hIJ hTopI N).hom
-  rw [probeStoredMixedBraid_native, probeStoredFirstDot_native,
-    probeStoredMiddleDot_native, probeStoredLastDot_native]
+  rw [probeStoredMixedBraid_eq, probeStoredFirstDot_eq,
+    probeStoredMiddleDot_eq, probeStoredLastDot_eq]
   exact probeOldStoredMixedBraid_polynomial D Sc m ν i j hI hJ hII hIJ hJI hTopJ hTopI hne N.obj
 
 end OddMath.QuiverHecke

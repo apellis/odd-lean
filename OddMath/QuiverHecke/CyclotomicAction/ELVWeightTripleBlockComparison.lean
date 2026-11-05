@@ -55,15 +55,6 @@ local notation "Q" => contentInductionTo D Sc cutoff bound (Subtype.val β) [l,j
 local notation "L" => contentInductionCompTo D Sc cutoff bound (Subtype.val β) [l,j] (Subtype.val δ)
   hp [i] (Subtype.val ε) hc ht
 
-/-- The given triple chart factors through its selected pair chart at a
-common stored second block, independently of the successor word order. -/
-theorem elvWeightTripleComparison_pairBlock :
-    C₃ = eqToIso (elvEFunctor_comp₃_pairBlock D Sc cutoff bound i j l Λ h₁ h₂ h₃ δ ε hε) ≪≫
-      Functor.isoWhiskerRight C₂ U ≪≫ Functor.associator R Q U ≪≫ Functor.isoWhiskerLeft R L := by
-  cases hδ
-  cases hε
-  exact elvWeightTripleComparison_pairFirst D Sc cutoff bound i j l Λ h₁ h₂ h₃ β
-
 /-- The same selected factorization on native module components. -/
 theorem elvWeightTripleComparison_pairBlock_hom
     (M : ELVWeightProduct D Sc cutoff bound Λ x₀) :

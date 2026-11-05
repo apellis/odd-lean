@@ -122,11 +122,4 @@ theorem heightBlockCross_homogeneous (h : {i} + ({j} + β) = δ) :
   fullLiftTrans_homogeneous _ _ _ _ _
     (heightSuperInductionCrossing_homogeneous D Sc i j a ha n)
 
-/-- The same-colour block crossing squares to zero at every height. -/
-theorem heightBlockCross_square (h : {i} + ({i} + β) = δ) :
-    heightBlockCross D Sc a ha i i n β δ h ≫ heightBlockCross D Sc a ha i i n β δ h = 0 :=
-  superTrans_comp_eq_zero (heightBlockCross_homogeneous D Sc a ha i i n β δ h)
-    (heightBlockCross_homogeneous D Sc a ha i i n β δ h) fun M =>
-      InducedCategory.hom_ext (heightSuperInductionCrossing_square D Sc a ha i n M.obj)
-
 end OddMath.QuiverHecke.CyclotomicAction

@@ -143,10 +143,6 @@ def rouquierCupKernel : regular GA ⟶ tensor Q₁ P₁ :=
       change x₁ ^ m * φ₁ (b * b') = x₁ ^ m * φ₁ b * φ₁ b'
       rw [map_mul, mul_assoc]⟩
 
-theorem rouquierCupKernel_parity :
-    rouquierCupKernel D Sc i a ha n m ∈ Supercategory.parity (R := k) _ _ kp :=
-  (mem_parity_iff).mpr (rouquierCupKernelLinear_mem D Sc i a ha n m)
-
 /-- Evaluation of the dotted cup. -/
 theorem rouquierCupKernel_apply (b : A₀) :
     (rouquierCupKernel D Sc i a ha n m).1 b =
@@ -255,9 +251,5 @@ def rouquierCapKernel : tensor P₁ Q₁ ⟶ regular GB :=
         rouquierCapKernelLinear D Sc i a ha n m (btmul P₁ Q₁ x y) * b
       rw [ract_btmul, rouquierCapKernelLinear_btmul, rouquierCapKernelLinear_btmul]
       exact (mul_assoc _ y.val b).symm⟩
-
-theorem rouquierCapKernel_parity :
-    rouquierCapKernel D Sc i a ha n m ∈ Supercategory.parity (R := k) _ _ kp :=
-  (mem_parity_iff).mpr (rouquierCapKernelLinear_mem D Sc i a ha n m)
 
 end OddMath.QuiverHecke.CyclotomicAction

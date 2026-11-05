@@ -36,25 +36,6 @@ def params : SKM.Scalars datum ℚ where
 def i : {i : Bool // datum.parity i = 1} := ⟨false, rfl⟩
 def j : {i : Bool // datum.parity i = 1} := ⟨true, rfl⟩
 
-/-- Recovery works in the common coefficient algebra, retaining both odd
-colours and their products, and not in a tensor of independent actions. -/
-theorem recover_two_odd_series (n : ℕ) :
-    SKM.reservoirDeconvolution
-      (SKM.reservoirConvolution
-        (fun r => SKM.SYM.e datum ℚ false r + SKM.SYM.delta datum ℚ i * SKM.SYM.delta datum ℚ j)
-        (fun r => if r = 0 then 1 else SKM.SYM.e datum ℚ true r))
-      (fun r => if r = 0 then 1 else SKM.SYM.e datum ℚ true r) n =
-        SKM.SYM.e datum ℚ false n + SKM.SYM.delta datum ℚ i * SKM.SYM.delta datum ℚ j :=
-  SKM.reservoirDeconvolution_convolution _ _ (by simp) n
-
-/-- The algebraic detector permits different cutoff parity at adjacent odd
-colours. The external-weight realization is a separate action obligation. -/
-theorem mixed_parity_detect (t t' : List Bool)
-    (f : coefficientObj datum params t ⟶ coefficientObj datum params t')
-    (hf : ∀ m, (ELVRelationSpan datum params
-      (fun b => 2 * m + if b then 1 else 0) t t').mkQ f = 0) : f = 0 :=
-  reservoir_parity_cutoffs_detect datum params (fun b => if b then 1 else 0) t t' f hf
-
 /-- At cutoff five the entire two-strand, degree-two joint span survives,
 including crossing vectors carrying the product of the two exterior variables. -/
 theorem crossing_window_injective :

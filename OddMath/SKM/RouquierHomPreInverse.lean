@@ -86,8 +86,6 @@ def SuperSumInvFrom.mapHomogeneousCoordinates {f : B ⟶ A} {g : ℕ → (Z ⟶ 
     split_ifs <;> simp
 end Transport
 
-
-
 variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
@@ -207,34 +205,6 @@ def homContentPreInvNeg (hh : 0 ≤ D.h i (-nuP))
     rw [hp n] at hm
     exact hm
 
-/-- Principal inverse with its gamma coefficient; the factor entry is `sig`,
-not an assumed inverse of a bare crossing. -/
-theorem homContentPreInvNeg_principal (hh : 0 ≤ D.h i (-nuP))
-    (Z : homWeightSector T.obj W nuP muM) :
-    (homContentPreInvNeg T W i muM h h₂ hh Z).f' =
-      homPreGamma (D.parity i) (D.h i (-nuP)) •
-        ((homContentPreInverseTarget T W i muM h₂ Z).hom ≫
-          (T.loc i h₂ h).sig ▷ Z ≫
-          (homContentPreInverseSource T W i muM h Z).inv) := rfl
-
-/-- Inverse rows retain the finite triangular window inverse and reciprocal
-alpha coefficient (alpha is involutive). Entries outside the window are zero. -/
-theorem homContentPreInvNeg_row (hh : 0 ≤ D.h i (-nuP))
-    (Z : homWeightSector T.obj W nuP muM) (n : ℕ) :
-    (homContentPreInvNeg T W i muM h h₂ hh Z).g' n =
-      koszulSign (leftAdjParity D i (-nuP)) (n * D.parity i) •
-        ((homContentPreInverseTarget T W i muM h₂ Z).hom ≫
-          (T.loc i h₂ h).leftWindowCupRowNat n ▷ Z ≫ (leftUnitor Z).hom) := rfl
-
-/-- At factor height zero the principal inverse still has coefficient (-1)^p. -/
-theorem homContentPreInvNeg_zero_principal (hh : D.h i (-nuP) = 0)
-    (Z : homWeightSector T.obj W nuP muM) :
-    (homContentPreInvNeg T W i muM h h₂ (by omega) Z).f' =
-      koszulSign (D.parity i) (D.parity i) •
-        ((homContentPreInverseTarget T W i muM h₂ Z).hom ≫
-          (T.loc i h₂ h).sig ▷ Z ≫
-          (homContentPreInverseSource T W i muM h Z).inv) := by
-  rw [homContentPreInvNeg_principal, homPreGamma, ite_eq_left hh]
 /-- The entire positive Hom-height inverse, obtained from the reversed
 factor cap window. The forward entries remain the prescribed normalized
 mate and dotted counits, with the source-height scalar in beta. -/
@@ -271,46 +241,6 @@ def homContentPreInvPos (hh : D.h i (-nuP) ≤ 0)
     rw [hp n] at hm
     exact hm
 
-/-- The cap orientation's principal inverse retains gamma, including
-its exceptional zero-height value. -/
-theorem homContentPreInvPos_principal (hh : D.h i (-nuP) ≤ 0)
-    (Z : homWeightSector T.obj W nuP muM) :
-    (homContentPreInvPos T W i muM h h₂ hh Z).f' =
-      homPreGamma (D.parity i) (D.h i (-nuP)) •
-        ((homContentPreInverseTarget T W i muM h₂ Z).hom ≫
-          (T.loc i h₂ h).sig ▷ Z ≫
-          (homContentPreInverseSource T W i muM h Z).inv) := rfl
-
-/-- The inverse cap column retains beta and the ordered transition series. -/
-theorem homContentPreInvPos_column (hh : D.h i (-nuP) ≤ 0)
-    (Z : homWeightSector T.obj W nuP muM) (n : ℕ) :
-    (homContentPreInvPos T W i muM h h₂ hh Z).g' n =
-      homPreBeta (D.parity i) (leftAdjParity D i (-nuP)) (D.h i (-nuP)) n •
-        ((leftUnitor Z).inv ≫
-          (T.loc i h₂ h).leftWindowCapColumnNat n ▷ Z ≫
-          (homContentPreInverseSource T W i muM h Z).inv) := rfl
-
-/-- The two empty-window principal inverses coincide at factor height zero. -/
-theorem homContentPreInv_zero (hh : D.h i (-nuP) = 0)
-    (Z : homWeightSector T.obj W nuP muM) :
-    (homContentPreInvPos T W i muM h h₂ (le_of_eq hh) Z).f' =
-      (homContentPreInvNeg T W i muM h h₂ (le_of_eq hh.symm) Z).f' := by
-  let P := homContentPreInvPos T W i muM h h₂ (le_of_eq hh) Z
-  let N := homContentPreInvNeg T W i muM h h₂ (le_of_eq hh.symm) Z
-  have hn : homContentPreMate T W i muM h h₂ Z ≫ N.f' = 𝟙 _ := N.ff
-  calc P.f' = P.f' ≫ (homContentPreMate T W i muM h h₂ Z ≫ N.f') := by
-         rw [hn, Category.comp_id]
-       _ = N.f' := by rw [← Category.assoc, P.ff, Category.id_comp]
-
-/-- At factor height zero gamma is the odd sign, also in the cap orientation. -/
-theorem homContentPreInvPos_zero_principal (hh : D.h i (-nuP) = 0)
-    (Z : homWeightSector T.obj W nuP muM) :
-    (homContentPreInvPos T W i muM h h₂ (le_of_eq hh) Z).f' =
-      koszulSign (D.parity i) (D.parity i) •
-        ((homContentPreInverseTarget T W i muM h₂ Z).hom ≫
-          (T.loc i h₂ h).sig ▷ Z ≫
-          (homContentPreInverseSource T W i muM h Z).inv) := by
-  rw [homContentPreInvPos_principal, homPreGamma, ite_eq_left hh]
 end Pre
 
 end OddMath.SKM

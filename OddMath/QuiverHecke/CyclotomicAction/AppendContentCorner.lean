@@ -76,13 +76,6 @@ theorem contentCornerVal_injective : Function.Injective (contentCornerVal D Sc a
     (show Subsemigroup.corner (cyclotomicContentIdempotent D Sc a n β) from x) =
       show Subsemigroup.corner (cyclotomicContentIdempotent D Sc a n β) from y)
 
-theorem contentCornerVal_one :
-    contentCornerVal D Sc a n β 1 = cyclotomicContentIdempotent D Sc a n β := rfl
-
-theorem contentCornerVal_mul (x y : CyclotomicContentCorner D Sc a n β) :
-    contentCornerVal D Sc a n β (x * y) =
-      contentCornerVal D Sc a n β x * contentCornerVal D Sc a n β y := rfl
-
 theorem contentCornerVal_e_mul (x : CyclotomicContentCorner D Sc a n β) :
     cyclotomicContentIdempotent D Sc a n β * contentCornerVal D Sc a n β x =
       contentCornerVal D Sc a n β x :=
@@ -105,9 +98,6 @@ def contentCornerValHom :
 instance : SMul (Hn D Sc (n + 1)) (CyclotomicContentCorner D Sc a n β) :=
   ⟨fun r x => contentCornerMk D Sc a n β (r • contentCornerVal D Sc a n β x) (by
     exact cyclotomicContentCorner_mul_mem D Sc a n β (cyclotomicMk D Sc a n r) x)⟩
-
-theorem contentCornerVal_smul (r : Hn D Sc (n + 1)) (x : CyclotomicContentCorner D Sc a n β) :
-    contentCornerVal D Sc a n β (r • x) = r • contentCornerVal D Sc a n β x := rfl
 
 instance : Module (Hn D Sc (n + 1)) (CyclotomicContentCorner D Sc a n β) :=
   Function.Injective.module _ (contentCornerValHom D Sc a n β)

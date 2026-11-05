@@ -296,7 +296,6 @@ theorem push_dot (hS : BubbleSlideOut D Sc cs) {c : ℕ} {ms : List (Mv I)}
 
 end PushDot
 
-
 /-! ## The cap push through a crossing -/
 
 section PushCross

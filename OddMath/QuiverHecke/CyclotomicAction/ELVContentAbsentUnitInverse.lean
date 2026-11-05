@@ -75,16 +75,4 @@ theorem contentAbsentUnitInverse_nonempty :
     simpa only [Functor.id_map, Category.assoc, Iso.hom_inv_id, Category.comp_id] using he.symm
   simpa only [hf, hg] using H
 
-include hi in
-/-- At zero unit count, the proved inverse forces the following F/E target
-itself to be zero; absence alone does not give this conclusion. -/
-theorem contentAbsentUnitTarget_isZero
-    (hc : contentUnitCount D cutoff i β = 0) :
-    Limits.IsZero ((restriction K).obj (induced K M)) := by
-  let J := Classical.choice (contentAbsentUnitInverse_nonempty D Sc cutoff N β i hi M)
-  apply (Limits.IsZero.iff_id_eq_zero _).mpr
-  have ht := J.total
-  simp only [hc, Finset.range_zero, Finset.sum_empty, Limits.comp_zero, zero_add] at ht
-  exact ht.symm
-
 end OddMath.QuiverHecke.ELVOld

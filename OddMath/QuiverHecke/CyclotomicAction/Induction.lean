@@ -171,11 +171,4 @@ def cyclotomicAppend (i : I) (a : I → _root_.Polynomial k) (n : ℕ) :
     rw [← map_mul, cyclotomicAppendLinear_mk, map_mul, map_mul]
     rfl
 
-/-- Induction on underlying modules. Odd transformations require the super
-module enhancement and are not ordinary natural transformations here. -/
-abbrev cyclotomicInduction (i : I) (a : I → _root_.Polynomial k) (n : ℕ) :=
-  Categorification.InductionAlong.functor
-    (cyclotomicAppend D Sc i a n :
-      CyclotomicAlgebra D Sc a n →ₙ+* CyclotomicAlgebra D Sc a (n + 1))
-
 end OddMath.QuiverHecke

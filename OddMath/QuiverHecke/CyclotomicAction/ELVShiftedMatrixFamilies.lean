@@ -81,14 +81,14 @@ theorem inductionDotModule_mem (i : I)
 
 theorem inductionDotModule_total (i : I)
     (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) (t : OldCategory D Sc cutoff) :
-    SVec.toLinearMap ((inductionDotModule D Sc cutoff i M).total t) = actualInductionDot D Sc cutoff i M t := by
+    SVec.toLinearMap ((inductionDotModule D Sc cutoff i M).total t) = inductionDot D Sc cutoff i M t := by
   exact congrArg SVec.toLinearMap (MatrixParity.homogeneous_total
     (BalancedInduction.transformLinear_supernatural (oldAppendDot_supernatural D Sc cutoff i) M) t)
 
 theorem inductionDotModule_power_total (i : I)
     (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) (t : OldCategory D Sc cutoff) (n : ℕ) :
     SVec.toLinearMap (((inductionDotModule D Sc cutoff i M) ^ n).total t) =
-      (actualInductionDot D Sc cutoff i M t) ^ n := by
+      (inductionDot D Sc cutoff i M t) ^ n := by
   exact (MatrixParity.total_power (inductionDotModule D Sc cutoff i M) t n).trans
     (congrArg (fun f : Module.End k (((BalancedInduction.induction (append D Sc cutoff i)).obj M).obj t) => f ^ n)
       (inductionDotModule_total D Sc cutoff i M t))

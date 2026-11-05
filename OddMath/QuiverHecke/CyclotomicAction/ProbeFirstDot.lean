@@ -46,25 +46,4 @@ theorem probe_firstDot_isUnit (m : I → ℕ) {n : ℕ} (s : Word I (n + 1)) :
   simp only [probeDotExponent]
   split_ifs <;> decide
 
-/-- At the first equal-colour pair, the actual cofinal probe relation supplies
-the injectivity premise in either parity, for arbitrary colourwise powers. -/
-theorem probe_secondDot_injective (m : I → ℕ) (post : List I) (i : I) :
-    Function.Injective (fun z : CyclotomicWordCorner D Sc
-      (probePolynomial (probeDotExponent D) m) (probeBlockWord [] post i) =>
-      cyclotomicBlockDot D Sc (probePolynomial (probeDotExponent D) m) [] post i 1 * z) := by
-  apply cyclotomicBlock_dot_injective
-  exact (IsUnit.isUnit_iff_mulLeft_bijective.mp
-    (probe_firstDot_isUnit D Sc m (probeBlockWord [] post i))).1
-
-/-- All dots on a monochromatic cofinal probe word are injective, with
-the first-dot premise supplied by its actual cyclotomic relation. -/
-theorem probeRepeated_dots_injective (m : I → ℕ) (n : ℕ) (i : I) :
-    ∀ r < n + 1, Function.Injective
-      (fun z : CyclotomicWordCorner D Sc (probePolynomial (probeDotExponent D) m)
-        (repeatedWord i (n + 1)) =>
-        cyclotomicRepeatedDot D Sc (probePolynomial (probeDotExponent D) m) n i r * z) := by
-  apply cyclotomicRepeated_dots_injective
-  exact (IsUnit.isUnit_iff_mulLeft_bijective.mp
-    (probe_firstDot_isUnit D Sc m (repeatedWord i (n + 1)))).1
-
 end OddMath.QuiverHecke

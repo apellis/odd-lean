@@ -149,7 +149,6 @@ def probeOldWeightAdjunction :
     · exact (probeOldInductionComponent_isZero D Sc m i Λ h δ hδ _).eq_of_src _ _
   right_triangle_components N := funext fun β => probeOldWeight_right_triangle D Sc m i Λ h β N
 
-
 theorem probeOldBlockAdj_unit_mem (β : WeightBlocks D Λ x)
     (M : ProbeCanonicalModules D Sc m β.1) :
     (probeOldBlockAdj D Sc m i Λ h β).unit.app M ∈ parity (R := k) _ _ 0 :=

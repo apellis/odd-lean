@@ -136,21 +136,4 @@ theorem induced_killsEvenPower (i : I)
         SetLike.mul_mem_graded ih ha
   exact induced_killsCoefficient D Sc cutoff i M hp hM
 
-/-- Every supernatural module map, including an inhomogeneous one,
-commutes with an even coefficient. This applies separately to both maps
-of every chosen module isomorphism; no new inverse is selected. -/
-theorem moduleMap_evenCoefficient
-    (M L : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) (f : M ⟶ L)
-    (v : List I) {a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff}
-    (ha : a ∈ SKM.SYM.elvCoefficientParity D cutoff 0) :
-    M.map (X := ⟨v⟩) (Y := ⟨v⟩) (coefficientEndomorphism D Sc cutoff v a) ≫ f.total ⟨v⟩ =
-      f.total ⟨v⟩ ≫ L.map (X := ⟨v⟩) (Y := ⟨v⟩)
-        (coefficientEndomorphism D Sc cutoff v a) := by
-  have h0 := f.naturality 0 (coefficientEndomorphism D Sc cutoff v a)
-    (coefficientEndomorphism_mem D Sc cutoff v ha)
-  have h1 := f.naturality 1 (coefficientEndomorphism D Sc cutoff v a)
-    (coefficientEndomorphism_mem D Sc cutoff v ha)
-  simpa only [SuperNatTrans.total, Preadditive.comp_add, Preadditive.add_comp,
-    koszulSign_zero_right, one_smul] using congrArg₂ (· + ·) h0 h1
-
 end OddMath.QuiverHecke.ELVOld

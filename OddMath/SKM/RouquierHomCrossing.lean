@@ -56,35 +56,4 @@ theorem homContentCrossing_mem : homContentCrossing T W i muM h h₂ ∈
   funext Z
   simp [homContentCrossing_app, hq]
 
-/-- The normalized mate of the inherited crossing, with the output-shifted
-lowering functors and both specified adjunction components expanded. -/
-theorem homContentCrossing_mate_app
-    (Z : homWeightSector T.obj W nuP muM) :
-    let P := homParityShiftDatum (k := k) (leftAdjParity D i (-nuP))
-    let P₂ := homParityShiftDatum (k := k) (leftAdjParity D i (-rhoP))
-    let H := (homContentPreF T W i muM h).obj Z
-    let Q := T.E i h ≫ H
-    (rouquierMate (homContentSuperAdjunction T W i muM h)
-      (homContentSuperAdjunction T W i muM h₂)
-      (homContentCrossing T W i muM h h₂)).app (D.parity i) Z =
-      ((leftUnitor Q).inv ≫ T.leftCup i h₂ ▷ Q ≫
-        (associator (T.F i h₂) (T.E i h₂) Q).hom ≫
-        (P₂.iso (T.F i h₂ ≫ T.E i h₂ ≫ Q)).inv) ≫
-      (homContentPreF T W i muM h₂).map
-        ((-koszulSign (D.parity i) (D.parity i)) •
-          ((associator (T.E i h₂) (T.E i h) H).inv ≫
-            T.cross i i h₂ h h₂ h ▷ H ≫
-            (associator (T.E i h₂) (T.E i h) H).hom)) ≫
-      (homContentPreF T W i muM h₂).map ((homContentPreE T W i muM h₂).map
-        (koszulSign (leftAdjParity D i (-nuP)) (leftAdjParity D i (-nuP)) •
-          (T.E i h ◁ (P.iso (T.F i h ≫ Z)).hom ≫
-            (associator (T.E i h) (T.F i h) Z).inv ≫
-            ((((T.leftAdjScalar i (-nuP))⁻¹ : kˣ) : k) • T.leftCap i h) ▷ Z ≫
-            (leftUnitor Z).hom))) := by
-  dsimp only
-  rw [homContentSuperAdjunction_mate_app, homContentCrossing_app, ite_eq_left rfl,
-    homContentPreAdjunction_leftAdjoints_unit_app,
-    homContentPreAdjunction_leftAdjoints_counit_app]
-  rfl
-
 end OddMath.SKM

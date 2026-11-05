@@ -233,12 +233,12 @@ theorem moduleUnitCoefficient_dot_window (i : I) (t : OldCategory D Sc cutoff)
     (r : Fin (contentUnitCount D cutoff i (t.word : Multiset I)))
     (a : ℕ) (ha : a < contentUnitCount D cutoff i (t.word : Multiset I)) (z : M.obj t) :
     moduleUnitCoefficient D Sc cutoff M i t hh r
-      (((actualInductionDot D Sc cutoff i M ((append D Sc cutoff i).obj t)) ^ a)
+      (((inductionDot D Sc cutoff i M ((append D Sc cutoff i).obj t)) ^ a)
         ((((BalancedInduction.adjunction (append D Sc cutoff i)).unit.app M).total t) z)) =
       if a = r.val then z else 0 := by
   have hcol := LinearMap.congr_fun (moduleUnitColumn_total D Sc cutoff i M t a) z
   change (moduleUnitColumn D Sc cutoff i M a).total t z =
-    (((actualInductionDot D Sc cutoff i M ((append D Sc cutoff i).obj t)) ^ a)
+    (((inductionDot D Sc cutoff i M ((append D Sc cutoff i).obj t)) ^ a)
       ((((BalancedInduction.adjunction (append D Sc cutoff i)).unit.app M).total t) z)) at hcol
   rw [← hcol]
   by_cases h : a = r.val
@@ -303,30 +303,6 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 def coefficientModule : Superfunctor k (OldCategory D Sc cutoff) (SVec k) :=
   oldRepresentable D Sc cutoff (⟨[]⟩ : OldCategory D Sc cutoff)
 
-theorem restriction_eq_zero (i : I) (t : OldCategory D Sc cutoff)
-    (z : ((BalancedInduction.restriction (append D Sc cutoff i)).obj
-      (coefficientModule D Sc cutoff)).obj t) : z = 0 := by
-  change Old D Sc cutoff [] (t.word ++ [i]) at z
-  apply old_eq_zero_of_not_perm D Sc cutoff (f := z)
-  intro h
-  have hl := h.length_eq
-  simp at hl
-
-/-- The entire induction-after-restriction term vanishes on the vacuum
-module, by balanced-tensor generation and exact content support. -/
-theorem indRes_eq_zero (i : I) (t : OldCategory D Sc cutoff)
-    (z : mateSourceSpace D Sc cutoff i (coefficientModule D Sc cutoff) t) : z = 0 := by
-  let R := (BalancedInduction.restriction (append D Sc cutoff i)).obj
-    (coefficientModule D Sc cutoff)
-  have h : (LinearMap.id : BalancedInduction.Obj (append D Sc cutoff i) R.toFunctor t →ₗ[k]
-      BalancedInduction.Obj (append D Sc cutoff i) R.toFunctor t) = 0 := by
-    apply BalancedInduction.hom_ext
-    intro v f m
-    have hm := restriction_eq_zero D Sc cutoff i v m
-    rw [hm, BalancedInduction.tensor_zero_right]
-    rfl
-  exact LinearMap.congr_fun h z
-
 @[simp] theorem count (i : I) :
     contentUnitCount D cutoff i (([] : List I) : Multiset I) = cutoff i := by
   simp [contentUnitCount, contentCrossingHeight]
@@ -361,7 +337,7 @@ theorem functional_dot_window (i : I) (hN : 0 < cutoff i)
     (a : ℕ) (ha : a < cutoff i)
     (z : (coefficientModule D Sc cutoff).obj (⟨[]⟩ : OldCategory D Sc cutoff)) :
     functional D Sc cutoff i hN
-      (((actualInductionDot D Sc cutoff i (coefficientModule D Sc cutoff)
+      (((inductionDot D Sc cutoff i (coefficientModule D Sc cutoff)
           ((append D Sc cutoff i).obj ⟨[]⟩)) ^ a)
         ((((BalancedInduction.adjunction (append D Sc cutoff i)).unit.app
           (coefficientModule D Sc cutoff)).total ⟨[]⟩) z)) =

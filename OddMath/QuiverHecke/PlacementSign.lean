@@ -66,12 +66,6 @@ def placementSign (t t' : List I) :
 theorem placementSign_apply (t t' : List I) (y : coefficientObj D Sc t ⟶ coefficientObj D Sc t') :
     placementSign D Sc t t' y = placementSignMap D Sc t t' y := rfl
 
-theorem placementSign_symm (t t' : List I) :
-    (placementSign D Sc t t').symm = placementSign D Sc t t' := by
-  ext y
-  rw [LinearEquiv.symm_apply_eq, placementSign_apply, placementSign_apply,
-    placementSignMap_involutive]
-
 /-- On a tensor basis vector the placement sign is the Koszul sign of the coefficient
 parity (the size of its exterior part) against the parity of the normal form. -/
 theorem placementSign_sourceCoefficientHom (t t' : List I) (a : SKM.SYM.CoefficientIndex D)
@@ -86,19 +80,6 @@ theorem placementSign_sourceCoefficientHom (t t' : List I) (a : SKM.SYM.Coeffici
 theorem placementSign_mem_extendedAtMost {t t' : List I} {d : ℕ}
     {y : coefficientObj D Sc t ⟶ coefficientObj D Sc t'} (hy : y ∈ ExtendedAtMost D Sc t t' d) :
     placementSign D Sc t t' y ∈ ExtendedAtMost D Sc t t' d := by
-  induction hy using Submodule.span_induction with
-  | mem y hy =>
-    obtain ⟨x, hx, rfl⟩ := hy
-    rw [placementSign_apply, placementSignMap_basis]
-    exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, hx, rfl⟩)
-  | zero => simp
-  | add y z _ _ hy hz => simpa only [map_add] using Submodule.add_mem _ hy hz
-  | smul c y _ hy => simpa only [map_smul] using Submodule.smul_mem _ c hy
-
-/-- The placement sign also preserves the lower windows `ExtendedAtLeast s`. -/
-theorem placementSign_mem_extendedAtLeast {t t' : List I} {s : ℤ}
-    {y : coefficientObj D Sc t ⟶ coefficientObj D Sc t'} (hy : y ∈ ExtendedAtLeast D Sc t t' s) :
-    placementSign D Sc t t' y ∈ ExtendedAtLeast D Sc t t' s := by
   induction hy using Submodule.span_induction with
   | mem y hy =>
     obtain ⟨x, hx, rfl⟩ := hy

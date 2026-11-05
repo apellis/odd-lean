@@ -108,7 +108,7 @@ theorem negativeAction_evaluate_mem (hh : D.h i x₁ ≤ 0) (j r : ℕ)
 local notation "W" => elvRouquierFamily D Sc cutoff N Λ hcutoff
 
 /-- The literal native positive off-window contraction has the same ideal membership. -/
-theorem positiveNativeBoundary_evaluate_mem
+theorem positiveBoundary_evaluate_mem
     (TF : X → PiSCat.{u,u,u + 1} k) (betaP : I →₀ ℕ) (muP : X)
     (hh : 0 ≤ D.h i x₁) (j r : ℕ) (hj : j < (D.h i x₁).toNat) (hjr : j < r)
     {V Z Y : TF (-muP) ⟶ elvWeightSpace D Sc cutoff N Λ x₁} (a : V ⟶ Z) (b : Z ⟶ Y) :
@@ -121,7 +121,7 @@ theorem positiveNativeBoundary_evaluate_mem
     positiveAction_evaluate_mem D Sc cutoff N Λ hcutoff i h₁ h₂ β sy hc (TF (-muP)) hh j r hj hjr a b
 
 /-- The literal native negative off-window contraction has the same ideal membership. -/
-theorem negativeNativeBoundary_evaluate_mem
+theorem negativeBoundary_evaluate_mem
     (TF : X → PiSCat.{u,u,u + 1} k) (betaP : I →₀ ℕ) (muP : X)
     (hh : D.h i x₁ ≤ 0) (j r : ℕ) (hj : j < (-D.h i x₁).toNat) (hjr : j < r)
     {V Z Y : TF (-muP) ⟶ elvWeightSpace D Sc cutoff N Λ x₁} (a : V ⟶ Z) (b : Z ⟶ Y) :

@@ -46,13 +46,6 @@ def unitColumnModuleInverseRow (r : Fin m) :
   OddMath.FiniteSupermodule.inverseCoordinateRow rIso e r
 
 include he in
-/-- Restoring the r-th source shift retains exactly its prescribed degree. -/
-theorem unitColumnModuleInverseRow_mem (r : Fin m) :
-    unitColumnModuleInverseRow J M m e r ∈ parity (R := k) _ _ (r.val • p) :=
-  OddMath.FiniteSupermodule.inverseCoordinateRow_mem rIso rParity rMem column columnMem e
-    (he.trans (unitModuleMap_restored J hα M m)) r
-
-include he in
 /-- The finite ordinary unit columns and extracted inverse rows are dual. -/
 theorem unitDotColumn_inverseRow (a r : Fin m) :
     unitDotColumn J hα M a.val ≫ unitColumnModuleInverseRow J M m e r =

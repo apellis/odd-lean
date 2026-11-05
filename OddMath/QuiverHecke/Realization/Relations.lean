@@ -56,7 +56,6 @@ theorem oddAt_iff {par : J → ZMod 2} {ν : Seq J} {p : ℕ} {i : J} (h : ν p 
   · rintro ⟨i', hi', hp⟩; rw [h] at hi'; cases hi'; exact hp
   · exact fun hp => ⟨i, h, hp⟩
 
-
 /-- The vector `f · m` on the component `ν`, for a scalar `f`. -/
 abbrev cv (ν : Seq J) (m : M k) (f : K k) : V k J :=
   sgl ν (Finsupp.mapRange.linearMap (scalar f) m)

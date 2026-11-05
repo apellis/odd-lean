@@ -85,12 +85,6 @@ theorem exists_eq_one {c : Col I X} {t t' : Sector I} (p : SPath [c] t t') :
     cases p
     exact ⟨σ, hv, rfl, rfl⟩
 
-/-- Every path of the empty word is the transport of the trivial path. -/
-theorem exists_eq_nil {t t' : Sector I} (p : SPath ([] : List (Col I X)) t t') :
-    ∃ e : t = t', p = e ▸ .nil t := by
-  cases p
-  exact ⟨rfl, rfl⟩
-
 end SPath
 
 variable [AddCommGroup X] {k : Type u} [CommRing k]

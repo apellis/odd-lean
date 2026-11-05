@@ -38,20 +38,6 @@ def moduleMateLinear (i j : I) (N : Superfunctor k (OldCategory D Sc cutoff) (SV
   BalancedInduction.orderedMixedMateCoend_tensor (append D Sc cutoff i) (append D Sc cutoff j)
     (cross_supernatural D Sc cutoff i j) N s t g b
 
-/-- The fixed-endpoint map is the existing rectangular categorical mate. -/
-theorem moduleMateLinear_eq_rectangular (i j : I)
-    (N : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) (t : OldCategory D Sc cutoff) :
-    moduleMateLinear D Sc cutoff i j N t =
-      SVec.toLinearMap (((moduleMate D Sc cutoff i j).app (D.parity i * D.parity j) N).total t) := by
-  rw [moduleMateLinear, BalancedInduction.orderedMixedMateCoend_eq_linear]
-  have h := moduleMate_eq_ordered D Sc cutoff i j N
-  exact (congrArg (fun f :
-    BalancedInduction.induced (append D Sc cutoff i)
-      ((BalancedInduction.restriction (append D Sc cutoff j)).obj N) ⟶
-      (BalancedInduction.restriction (append D Sc cutoff j)).obj
-        (BalancedInduction.induced (append D Sc cutoff i) N) =>
-      SVec.toLinearMap (f.total t)) h).symm
-
 private theorem moduleMate_evaluate (i j : I)
     (N : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) (v t : OldCategory D Sc cutoff)
     (m : N.obj v) :
@@ -139,14 +125,5 @@ theorem moduleMateUnderlyingEquiv_toLinearMap (i j : I) (hij : i ≠ j)
   have hA1 := hA0.trans (coend_left_apply (k := k) (append D Sc cutoff i) N.toFunctor
     ((append D Sc cutoff j).obj t) v (kernelMateComponent D Sc cutoff i j v t) m x)
   exact hL.trans (hF.trans hA1).symm
-
-/-- Every total component of the prescribed distinct rectangular mate is bijective. -/
-theorem moduleMate_total_bijective (i j : I) (hij : i ≠ j)
-    (N : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) (t : OldCategory D Sc cutoff) :
-    Function.Bijective
-      (SVec.toLinearMap (((moduleMate D Sc cutoff i j).app (D.parity i * D.parity j) N).total t)) := by
-  rw [← moduleMateLinear_eq_rectangular D Sc cutoff i j N t,
-    ← moduleMateUnderlyingEquiv_toLinearMap D Sc cutoff i j hij N t]
-  exact (moduleMateUnderlyingEquiv D Sc cutoff i j hij N t).bijective
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct

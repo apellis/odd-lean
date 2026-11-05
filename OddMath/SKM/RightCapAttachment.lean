@@ -21,12 +21,6 @@ private theorem insAt_right {α : Type*} (s : List α) (z A B : α) {r : ℕ}
   simp only [insAt, List.take_append_of_le_length hr, List.drop_append_of_le_length hr]
   simp [List.append_assoc]
 
-private theorem rmAt_right {α : Type*} (s : List α) (z : α) {r : ℕ}
-    (hr : r + 2 ≤ s.length) :
-    rmAt (s ++ [z]) r = rmAt s r ++ [z] := by
-  simp only [rmAt, List.take_append_of_le_length (show r ≤ s.length by omega),
-    List.drop_append_of_le_length hr, List.append_assoc]
-
 private theorem swapAt_right (s : List (ℕ × Letter I)) (z : ℕ × Letter I) {r : ℕ}
     (hr : r + 1 < s.length) :
     swapAt (s ++ [z]) r = swapAt s r ++ [z] := by
@@ -633,44 +627,6 @@ private theorem dotList_attach (a : List (Letter I)) (R : List (TMove (Letter I)
   congr 1
   funext j
   simp only [strandCounts_apply]
-
-/-- Literal cap attachment transports every strand multiplicity, including
-arbitrary repeated dots and serializers, across the cyclic boundary cut. -/
-theorem attach_decorates {x : Letter I} {a b : List (Letter I)}
-    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (b ++ [flipL x]) R)
-    (q : ℕ → ℕ × ℕ) (n : MatchingStrand a R → ℕ) {ds : List (DTMove I)}
-    (hd : Decorates₂ a R q (strandCounts n) ds) :
-    Decorates₂ (a ++ [x]) (attach b R) (attachPoints hR q)
-      (strandCounts (n ∘ (attachStrandEquiv hR).symm)) (attachMoves b ds) := by
-  classical
-  refine ⟨by rw [tmoves_attachMoves, hd.1], ?_⟩
-  rw [dotPts_attachMoves]
-  apply hd.2.trans
-  rw [dotList_attach, dotList_attach]
-  have he : ((leftEnds₂ (a ++ [x]) (attach b R)).attach.map (attachStrandEquiv hR).symm).Perm
-      (leftEnds₂ a R).attach := by
-    apply (List.perm_ext_iff_of_nodup
-      ((nodup_leftEnds₂ _ _).attach.map (attachStrandEquiv hR).symm.injective)
-      (nodup_leftEnds₂ _ _).attach).mpr
-    intro j
-    simp only [List.mem_attach, iff_true, List.mem_map]
-    exact ⟨attachStrandEquiv hR j, trivial, (attachStrandEquiv hR).symm_apply_apply j⟩
-  have hp := he.symm.flatMap_right (fun j : MatchingStrand a R => List.replicate (n j) (q j.val))
-  simpa only [List.flatMap_map, Function.comp_apply, attachPoints_apply] using hp
-
-/-- Transported distinguished points remain bounded and on their actual strands. -/
-theorem attachPoints_spec {x : Letter I} {a b : List (Letter I)}
-    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (b ++ [flipL x]) R)
-    (q : ℕ → ℕ × ℕ)
-    (hq : ∀ j ∈ leftEnds₂ a R, (q j).1 ≤ R.length ∧ OnStrand₂ a R j (q j))
-    (j : MatchingStrand (a ++ [x]) (attach b R)) :
-    (attachPoints hR q j.val).1 ≤ (attach b R).length ∧
-      OnStrand₂ (a ++ [x]) (attach b R) j.val (attachPoints hR q j.val) := by
-  rw [attachPoints_apply]
-  have h := onStrand_attach hR ((attachStrandEquiv hR).symm j)
-    (hq _ ((attachStrandEquiv hR).symm j).property).1
-    (hq _ ((attachStrandEquiv hR).symm j).property).2
-  simpa only [Equiv.apply_symm_apply] using h
 
 /-- Bend an entire target suffix down, starting at its rightmost endpoint. -/
 def suffixMatching (b : List (Letter I)) : List (Letter I) →

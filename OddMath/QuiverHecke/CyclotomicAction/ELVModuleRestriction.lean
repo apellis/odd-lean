@@ -105,23 +105,4 @@ quotient morphism, not a chosen module endomorphism. -/
     ↓reduceIte, moduleRestrictionComponent, Superfunctor.whiskerRight_app,
     Superfunctor.homMk, truncatedAppendTransform]
 
-/-- The appended dot acting on restriction. No induction normalization is asserted. -/
-def moduleRestrictionDot (i : I) :
-    SuperNatTrans k (moduleRestriction D Sc cutoff N [i])
-      (moduleRestriction D Sc cutoff N [i]) :=
-  moduleRestrictionTransform D Sc cutoff N (by
-    simpa only [pow_one, one_nsmul] using firstDot_pow_parity D Sc i [] 1)
-
-/-- The raw appended crossing acting on restriction, with its specified colour order. -/
-def moduleRestrictionCross (i j : I) :
-    SuperNatTrans k (moduleRestriction D Sc cutoff N [i, j])
-      (moduleRestriction D Sc cutoff N [j, i]) :=
-  moduleRestrictionTransform D Sc cutoff N (crossTwo_mem D Sc i j)
-
-/-- Evaluation transfers equality of quotient composites to every module. -/
-theorem module_map_relation (M : TruncatedModules D Sc cutoff N)
-    {v w z : TruncatedCategory D Sc cutoff N} (a : v ⟶ w) (b : w ⟶ z)
-    (c : v ⟶ z) (h : a ≫ b = c) : M.map a ≫ M.map b = M.map c := by
-  rw [← M.toFunctor.map_comp, h]
-
 end OddMath.QuiverHecke.ELVOld

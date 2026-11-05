@@ -60,7 +60,6 @@ theorem Om_id (μ : X) (s : List (Letter I)) :
   rw [← cl_nil μ s, Om_cl μ (SChain.nil' s), omegaC_nil, one_smul]
   exact cl_nil (-μ) (flipW s)
 
-
 theorem zsign_one' : zsign k (1 : ZMod 2) = -1 := by simp [zsign]
 
 theorem neg_zsign' (a : ZMod 2) : -zsign k a = zsign k (a + 1) := by

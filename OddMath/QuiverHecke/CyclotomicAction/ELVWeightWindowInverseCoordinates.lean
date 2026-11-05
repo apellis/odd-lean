@@ -62,7 +62,6 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (M : ELVWeightProduct D Sc cutoff N Λ x₁) (δ : WeightBlocks D Λ x₁)
 local notation "W" => elvRouquierFamily D Sc cutoff N Λ hcutoff
 
-
 /-- The chosen positive-weight finite cap inverse column on an output block. -/
 def elvChosenCapWindow (hh : 0 ≤ D.h i x₁) (j : ℕ) :=
   ((((W).loc i h₁ h₂).invPos hh).g' j).total M δ

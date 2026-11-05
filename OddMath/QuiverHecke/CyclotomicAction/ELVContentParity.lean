@@ -72,8 +72,4 @@ end Supermodules
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
 
-/-- The exact-content module category uses its existing canonical parity structure. -/
-abbrev contentModulePiSCat (β : Multiset I) : PiSCat.{u, u, u + 1} k :=
-  contentModuleTarget D Sc cutoff N β
-
 end OddMath.QuiverHecke.ELVOld

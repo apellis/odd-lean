@@ -51,23 +51,11 @@ theorem rawMoment_recurrence (i : I) (hN : 0 < cutoff i)
     (single_recurrence D Sc cutoff i a m)
   simpa only [map_sum, map_zero, rawMoment] using h
 
-/-- The monic leading term gives a terminating recurrence on the exact
-power-quotient-valued moments. -/
-theorem rawMoment_leading (i : I) (hN : 0 < cutoff i)
-    (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) (m : ℕ) :
-    rawMoment D Sc cutoff L i hN a (cutoff i + m) =
-      -(∑ j : Fin (cutoff i), rawMoment D Sc cutoff L i hN
-        (a * singleCoefficient D cutoff i j.castSucc) (j.val + m)) := by
-  have h := rawMoment_recurrence D Sc cutoff L i hN a m
-  rw [Fin.sum_univ_castSucc] at h
-  simp only [Fin.val_last, singleCoefficient_top, mul_one] at h
-  exact eq_neg_of_add_eq_zero_right h
-
 /-- Signed higher moments on the ordinary unit of the same power vacuum. -/
 def signedMoment (i : I) (hN : 0 < cutoff i) (n : ℕ) :
     CoefficientPowerQuotient (k := k) D cutoff L :=
   functional D Sc cutoff L i hN
-    ((actualInductionDot D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L)
+    ((inductionDot D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L)
       ((append D Sc cutoff i).obj ⟨[]⟩) ^ n) (unit D Sc cutoff L i 1))
 
 /-- At every exponent the existing signed dot differs from the literal
@@ -151,18 +139,6 @@ theorem rawMoment_coefficient (i : I) (hN : 0 < cutoff i) (n : ℕ) {p : ZMod 2}
   rw [BalancedInduction.postcompose_tensor, singleClass_postcompose] at h
   exact h
 
-/-- The low window for every homogeneous coefficient, including occupied
-odd exterior coefficients. -/
-theorem rawMoment_window (i : I) (hN : 0 < cutoff i) (n : ℕ) (hn : n < cutoff i)
-    {p : ZMod 2} {a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff}
-    (ha : a ∈ SKM.SYM.elvCoefficientParity D cutoff p) :
-    rawMoment D Sc cutoff L i hN a n =
-      koszulSign ((cutoff i - 1) • D.parity i) p •
-        ((coefficientPowerIdeal D cutoff (elementaryCoefficients (k := k) D cutoff) L).ringCon.mkₐ k a *
-          (inductionUnitDotSign (k := k) (D.parity i) n •
-            (if n + 1 = cutoff i then 1 else 0))) := by
-  rw [rawMoment_coefficient D Sc cutoff L i hN n ha, rawMoment_one_window D Sc cutoff L i hN n hn]
-
 /-- The actual monic relation expressed in scalar raw moments on A/T.
 The coefficients remain on their proved left side, with the top-row sign. -/
 theorem rawMoment_one_recurrence (i : I) (hN : 0 < cutoff i) (m : ℕ) :
@@ -180,18 +156,5 @@ theorem rawMoment_one_recurrence (i : I) (hN : 0 < cutoff i) (m : ℕ) :
         (singleCoefficient_mem D cutoff i j)).symm
     _ = 0 := by
       simpa only [one_mul] using rawMoment_recurrence D Sc cutoff L i hN 1 m
-
-/-- The monic old relation expressed directly in higher signed-dot
-moments of the ordinary unit of literal A/T. Both the top-row coefficient
-sign and triangular dot-power scalar are retained. -/
-theorem signedMoment_recurrence (i : I) (hN : 0 < cutoff i) (m : ℕ) :
-    (∑ j : Fin (cutoff i + 1),
-      koszulSign ((cutoff i - 1) • D.parity i)
-        ((cutoff i : ZMod 2) * D.parity i - j.val • D.parity i) •
-      ((coefficientPowerIdeal D cutoff (elementaryCoefficients (k := k) D cutoff) L).ringCon.mkₐ k
-        (singleCoefficient D cutoff i j) *
-          (inductionUnitDotSign (k := k) (D.parity i) (j.val + m) •
-            signedMoment D Sc cutoff L i hN (j.val + m)))) = 0 := by
-  simpa only [rawMoment_signedMoment] using rawMoment_one_recurrence D Sc cutoff L i hN m
 
 end OddMath.QuiverHecke.ELVOld.PowerVacuumCoefficient

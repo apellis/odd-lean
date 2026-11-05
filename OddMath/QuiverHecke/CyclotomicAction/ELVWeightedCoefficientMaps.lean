@@ -43,14 +43,6 @@ private def weightedCoefficientProjection
     OddMath.FiniteSupermodule.product V ⟶ V a :=
   SuperNatTrans.ofNatTrans (weightedCoefficientProjectionNat V a) (weightedCoefficientProjectionNat_mem V a)
 
-private theorem weightedCoefficientProjection_mem
-    {k C : Type u} [CommRing k] [Category.{u} C]
-    [Preadditive C] [Linear k C] [Supercategory k C]
-    {ι : Type} (V : ι → Superfunctor k C (SVec k)) (a : ι) :
-    weightedCoefficientProjection V a ∈ parity (R := k) _ _ 0 := by
-  apply Superfunctor.mem_parity_iff_isHomogeneous.mpr
-  exact SuperNatTrans.ofNatTrans_isHomogeneous _ _
-
 private theorem weightedCoefficientProjection_total
     {k C : Type u} [CommRing k] [Category.{u} C]
     [Preadditive C] [Linear k C] [Supercategory k C]
@@ -66,23 +58,6 @@ private theorem weightedCoefficientRestriction_total
     (Q : C ⥤ A) [Q.Additive] [Q.Linear k] [IsSuperfunctor k Q]
     {F G : Superfunctor k A (SVec k)} (f : F ⟶ G) (t : C) :
     ((restriction Q).map f).total t = f.total (Q.obj t) := rfl
-
-private theorem homogeneousModule_total_naturality
-    {k C : Type u} [CommRing k] [Category.{u} C]
-    [Preadditive C] [Linear k C] [Supercategory k C]
-    {F G : Superfunctor k C (SVec k)} (f : F ⟶ G) {p : ZMod 2}
-    (hf : f ∈ parity (R := k) _ _ p) {v w : C} {q : ZMod 2}
-    (g : v ⟶ w) (hg : g ∈ parity (R := k) _ _ q) :
-    SVec.toLinearMap (f.total w) ∘ₗ SVec.toLinearMap (F.map g) =
-      koszulSign p q • (SVec.toLinearMap (G.map g) ∘ₗ SVec.toLinearMap (f.total v)) := by
-  have ht (t : C) : f.total t = f.app p t := by
-    rcases parity_eq_zero_or_one p with rfl | rfl
-    · rw [SuperNatTrans.total, Superfunctor.app_eq_zero_of_mem hf (by decide : (1 : ZMod 2) ≠ 0) t,
-        add_zero]
-    · rw [SuperNatTrans.total, Superfunctor.app_eq_zero_of_mem hf (by decide : (0 : ZMod 2) ≠ 1) t,
-        zero_add]
-  rw [ht v, ht w]
-  exact f.naturality p g hg
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ) (i : I)
@@ -104,39 +79,6 @@ def weightedContentCoefficientMap (β : Multiset I)
     (restriction (contentInclusion D Sc cutoff N β)).map
       (weightedCoefficientProjection (weightedUnitMatrixFamily D Sc cutoff N i M _) (some r) ≫
         ((SKM.homParityShiftDatum (k := k) (r.val • D.parity i)).iso M).hom)
-
-/-- The module coefficient row has precisely degree r*p, on odd as well
-as even and inhomogeneous output arrows. -/
-theorem weightedContentCoefficientMap_mem (β : Multiset I)
-    (hh : 0 ≤ contentCrossingHeight D cutoff i β)
-    (r : Fin (contentUnitCount D cutoff i β)) :
-    weightedContentCoefficientMap D Sc cutoff N i M β hh r ∈
-      parity (R := k) _ _ (r.val • D.parity i) := by
-  have hp := weightedCoefficientProjection_mem (weightedUnitMatrixFamily D Sc cutoff N i M _) (some r)
-  have hs := (SKM.homParityShiftDatum (k := k) (r.val • D.parity i)).hom_mem M
-  have hc := comp_mem hp hs
-  have hr := map_mem (restriction (contentInclusion D Sc cutoff N β)) hc
-  have hi := weightedContentUnitMatrixIso_inv_mem D Sc cutoff N i M β hh
-  change (weightedContentUnitMatrixIso D Sc cutoff N i M β hh).inv ∈ parity (R := k)
-    ((restriction (contentInclusion D Sc cutoff N β)).obj
-      ((restriction T).obj ((induction T).obj M))) _ 0 at hi
-  simpa only [weightedContentCoefficientMap, zero_add] using comp_mem hi hr
-
-/-- Homogeneous output endomorphisms satisfy the actual inverse-row
-Koszul rule. This includes odd coefficient arrows; no unsigned coefficient
-linearity is substituted for the row's prescribed degree. -/
-theorem weightedContentCoefficientMap_end_naturality (β : Multiset I)
-    (hh : 0 ≤ contentCrossingHeight D cutoff i β)
-    (r : Fin (contentUnitCount D cutoff i β))
-    (w : ContentCategory D Sc cutoff N β) {q : ZMod 2}
-    (f : w ⟶ w) (hf : f ∈ parity (R := k) _ _ q) :
-    SVec.toLinearMap ((weightedContentCoefficientMap D Sc cutoff N i M β hh r).total w) ∘ₗ
-      SVec.toLinearMap (((restriction (contentInclusion D Sc cutoff N β)).obj
-        ((restriction T).obj ((induction T).obj M))).map f) =
-      koszulSign (r.val • D.parity i) q •
-        (SVec.toLinearMap (((restriction (contentInclusion D Sc cutoff N β)).obj M).map f) ∘ₗ
-          SVec.toLinearMap ((weightedContentCoefficientMap D Sc cutoff N i M β hh r).total w)) :=
-  homogeneousModule_total_naturality _ (weightedContentCoefficientMap_mem D Sc cutoff N i M β hh r) f hf
 
 /-- At genuine empty output, the canonical-content inverse has exactly
 the given weighted component inverse; equality follows from its forward
@@ -196,13 +138,6 @@ def weightedCoefficientCap (hN : 0 < cutoff i) :
     (restriction Q₀).obj ((restriction T₀).obj ((induction T₀).obj W)) ⟶
       (restriction Q₀).obj W :=
   weightedContentCoefficientMap D Sc cutoff bound i W 0
-    (coefficientCap_height D cutoff i) (coefficientCap_top D cutoff i hN)
-
-/-- Its native module-map degree is exactly the last-row degree. -/
-theorem weightedCoefficientCap_mem (hN : 0 < cutoff i) :
-    weightedCoefficientCap D Sc cutoff i L hN ∈
-      parity (R := k) _ _ ((cutoff i - 1) • D.parity i) :=
-  weightedContentCoefficientMap_mem D Sc cutoff bound i W 0
     (coefficientCap_height D cutoff i) (coefficientCap_top D cutoff i hN)
 
 /-- The literal-T scalar-valued row is the actual canonical-content

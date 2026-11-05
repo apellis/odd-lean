@@ -141,21 +141,4 @@ theorem coefficient_unit_class (s : List I) (a : SKM.SYM D k) :
     (OldCategory.mk s.reverse) (PowerWordYoneda.unitVector D (parameterTwist D Sc) cutoff L s.reverse) = _ at h
   rw [h, coordinate_mk]
 
-/-- The actual coefficient action followed by the actual signed old-Hom
-affine map gives the prescribed source-order class, for arbitrary full
-coefficients and affine arrows. -/
-theorem affine_coefficient_class {s t : List I} (a : SKM.SYM D k)
-    (f : (pres D Sc).obj (ob D s) ⟶ (pres D Sc).obj (ob D t)) :
-    coordinate D Sc cutoff L s t
-      ((PowerWordComposition.sourceMap D Sc cutoff L s t (sourceCoefficientHom D Sc 1 f)).total
-        (OldCategory.mk s.reverse)
-        ((coefficientModuleAction D (parameterTwist D Sc) cutoff
-          (powerWordModule D (parameterTwist D Sc) cutoff L s.reverse)
-          (SKM.SYM.elvCoefficientQuotient D cutoff a)).total (OldCategory.mk s.reverse)
-          (PowerWordYoneda.unitVector D (parameterTwist D Sc) cutoff L s.reverse))) =
-      (kernel D Sc cutoff L s t).mkQ
-        (reservoirSourceOrder D Sc s t (sourceCoefficientHom D Sc a f)) := by
-  rw [reservoirSourceOrder_source]
-  exact coordinate_action D Sc cutoff L _ _ _ (coefficient_unit_class D Sc cutoff L s a)
-
 end OddMath.QuiverHecke.PowerWordQuotientCoordinates

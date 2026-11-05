@@ -87,7 +87,6 @@ theorem cls_mul_cls (μ ρ ν : X) (s t : List (SKM.Letter I)) (hs : SKM.wt D ρ
   exact raw_congr (word_comp sy hc μ ρ ν s t hs ht) (heq_of_eq_of_heq (hcomp_id sy hc _ _)
     (by rw [word_comp sy hc μ ρ ν s t hs ht])) _ _ _ _ _ _ _ _
 
-
 /-! ### Lemma 11.5 in the Grothendieck ring -/
 
 section Coefficients
@@ -135,7 +134,6 @@ variable (i : I)
 theorem dpIdem_eq_even (hi : D.parity i = 0) (r : ℕ) :
     dpIdem D Sc i r = evenCornerProjector D Sc i hi r := by
   rw [evenCornerProjector_eq_idem, dpIdem, eps, hi]; rfl
-
 
 theorem comp_id_eq {a b : SKM.UGr D Sc sy hc} (f : a ⟶ b) : f ≫ 𝟙 b = f := by
   apply Presentation.Bicat.Hom.ext

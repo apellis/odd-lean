@@ -104,10 +104,6 @@ def homDistinctMixedMateDot
       ((homMixedInterchange (k := k) E E' κ τ ((homParityShift (k := k) κ).obj H ≫ F')).inv ≫
         Φ ≫ E ◁ (homShiftPostAdjunction A b κ).counit.app H) ▷ F'
 
-theorem homDistinctMixedMateDot_id :
-    homDistinctMixedMateDot E A κ τ H (𝟙 _) = homDistinctMixedMate E A κ τ H := by
-  rw [homDistinctMixedMateDot, homDistinctMixedMate, Category.id_comp]
-
 /-- The dotted mate as a `k`-linear map of the dot. -/
 def homDistinctMixedMateDotLinear :
     End (E ≫ (homParityShift (k := k) κ).obj

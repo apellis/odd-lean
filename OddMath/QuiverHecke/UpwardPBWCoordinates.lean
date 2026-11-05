@@ -66,10 +66,4 @@ def upwardPBWExpansion (μ : X) (t t' : List I) :
       SKM.bubAt D Sc μ (upWord t) (SKM.betaSYM cs μ a) ≫ (alpha D Sc μ).map i.nf := by
   simp [upwardPBWExpansion]
 
-theorem upwardPBWExpansion_injective_of_observations (μ : X) (t t' : List I)
-    (h : FiniteUpwardObservations D Sc cs μ t t') :
-    Function.Injective (upwardPBWExpansion D Sc cs μ t t') :=
-  (upwardCoefficientMap_injective_of_observations D Sc cs μ t t' h).comp
-    (coefficientPBWExpansion_injective D Sc t t')
-
 end OddMath.QuiverHecke

@@ -215,12 +215,6 @@ theorem longHomSection_independent (p : ZMod 2) (i : I) {v t : List I}
   | single m b =>
     rw [longHomSection, Finsupp.lsum_single, longHomExtraction_lift]
 
-/-- Every finite row over the full off-diagonal Hom has an explicitly reconstructed lift. -/
-theorem longHomExtraction_surjective (p : ZMod 2) (i : I) {v t : List I}
-    (y : NFIdx v t) : Function.Surjective (longHomExtraction D Sc cutoff p i y) := by
-  intro f
-  exact ⟨longHomSection D Sc cutoff p i y f, longHomExtraction_section D Sc cutoff p i y f⟩
-
 private theorem homCoordinate_pair_transport (p : ZMod 2) {i : I} {v w : List I}
     (x y : PrependIdx i v w) (e : x.oldTarget = y.oldTarget)
     (ht : HEq (prependTail D Sc x) (prependTail D Sc y))
@@ -363,17 +357,5 @@ theorem offDiagonalLongSection_eq (p : ZMod 2) (i : I) {v t : List I}
       ext n
       exact old_eq_zero_of_no_normal_form D Sc cutoff h (f n)
     rw [hf, map_zero, map_zero]
-
-theorem offDiagonalLongExtraction_surjective (p : ZMod 2) (i : I) (v t : List I) :
-    Function.Surjective (offDiagonalLongExtraction D Sc cutoff p i v t) := by
-  intro f
-  exact ⟨offDiagonalLongSection D Sc cutoff p i v t f,
-    offDiagonalLongExtraction_section D Sc cutoff p i v t f⟩
-
-theorem offDiagonalLongSection_injective (p : ZMod 2) (i : I) (v t : List I) :
-    Function.Injective (offDiagonalLongSection D Sc cutoff p i v t) := by
-  intro f g h
-  have he := congrArg (offDiagonalLongExtraction D Sc cutoff p i v t) h
-  simpa only [offDiagonalLongExtraction_section] using he
 
 end OddMath.QuiverHecke.ELVOld

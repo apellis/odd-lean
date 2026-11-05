@@ -210,25 +210,6 @@ def restrictDiagram {a b : Obj (sig D)} (f : a ⟶ b) (hf : diagramColours D f �
   Diagram.mk (restrictLayers D J (Diagram.layers f) (diagram_layer_supported D J f hf))
     (restrict_chain D J _ (Diagram.chain f) _ _ (diagram_layer_supported D J f hf))
 
-/-- Inclusion recovers the complete free expression; the transports use only
-proved source and target object equalities. -/
-theorem diagram_restrictDiagram {a b : Obj (sig D)} (f : a ⟶ b)
-    (hf : diagramColours D f ⊆ J) :
-    Diagram.cast ((inclusion D J).toLayerMap.map (restrictDiagram D J f hf))
-      (obj_restrictObj D J a _) (obj_restrictObj D J b _) = f := by
-  apply Diagram.ext
-  exact layers_restrictLayers D J (Diagram.layers f) (diagram_layer_supported D J f hf)
-
-/-- Every supported free diagram has a restricted lift with the full original
-layer list recovered by the actual signature inclusion. -/
-theorem supported_diagram_lift {a b : Obj (sig D)} (f : a ⟶ b)
-    (hf : diagramColours D f ⊆ J) :
-    ∃ (a' b' : Obj (sig (D.restrictColours J))) (f' : a' ⟶ b')
-      (ha : (inclusion D J).obj a' = a) (hb : (inclusion D J).obj b' = b),
-      Diagram.cast ((inclusion D J).toLayerMap.map f') ha hb = f :=
-  ⟨_, _, restrictDiagram D J f hf, obj_restrictObj D J a _, obj_restrictObj D J b _,
-    diagram_restrictDiagram D J f hf⟩
-
 /-- Inclusion of the raw parameters of superinterchange. -/
 def includeInterchange (x : InterchangeData (sig (D.restrictColours J))) :
     InterchangeData (sig D) :=
@@ -291,10 +272,6 @@ be erased by cancellation of the corresponding linear relation. -/
 def interchangeColours (x : InterchangeData (sig D)) : Finset I :=
   x.g.1.colours.toFinset ∪ wordColours x.mid ∪ x.h.1.colours.toFinset
 
-theorem allRelColours_interchange {k : Type w} [CommRing k] (Sc : Scalars D k)
-    (x : InterchangeData (sig D)) (hv : x.Valid) :
-    allRelColours D Sc (.interchange x hv) = interchangeColours D x := rfl
-
 /-- Restrict both vertices and every intervening strand. -/
 def restrictInterchange (x : InterchangeData (sig D)) (hx : interchangeColours D x ⊆ J) :
     InterchangeData (sig (D.restrictColours J)) where
@@ -321,18 +298,6 @@ theorem restrictInterchange_valid (x : InterchangeData (sig D))
   apply (includeInterchange_valid_iff D J _).mp
   rw [interchange_restrictInterchange]
   exact hv
-
-/-- Both generating parities are retained, not merely their product. -/
-theorem restrictInterchange_odd (x : InterchangeData (sig D))
-    (hx : interchangeColours D x ⊆ J) :
-    (sig (D.restrictColours J)).odd (restrictInterchange D J x hx).g = (sig D).odd x.g ∧
-    (sig (D.restrictColours J)).odd (restrictInterchange D J x hx).h = (sig D).odd x.h := by
-  have he := interchange_restrictInterchange D J x hx
-  constructor
-  · have h := congrArg (fun z : InterchangeData (sig D) => (sig D).odd z.g) he
-    exact (inclusion_odd D J _).symm.trans h
-  · have h := congrArg (fun z : InterchangeData (sig D) => (sig D).odd z.h) he
-    exact (inclusion_odd D J _).symm.trans h
 
 @[simp] theorem restrictInterchange_sign (x : InterchangeData (sig D))
     (hx : interchangeColours D x ⊆ J) :

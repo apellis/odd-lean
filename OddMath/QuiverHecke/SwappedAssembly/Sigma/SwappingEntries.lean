@@ -171,7 +171,6 @@ theorem sigmaEntry_eq_sum (c : P.CrossCoeff) {t s : Sector I}
   compList_three (P.upwardGens c) (sigL₁ i j ν) (sigL₂ i j ν) (sigL₃ i j ν)
     ((SKM.sChain_sigmaL i j).chain D ν) p q Z
 
-
 /-- The summands of the intermediate paths of a nonzero term of the sideways crossing: the cup
 and the cap stay in the summands of the left strand of the target and of the right strand of
 the source. -/

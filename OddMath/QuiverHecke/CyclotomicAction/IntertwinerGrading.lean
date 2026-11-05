@@ -265,28 +265,6 @@ theorem ind_map_mem {U : SVec k} {d : ZMod 2}
   balanced_map_mem (B := B) _ _ _ _ _ f
     (fun p q x y hx hy => hf p q x y ((cornerSpace_mem ℬ φ _).mp hx) hy)
 
-/-- The induced left action has the degree of its homogeneous algebra element. -/
-theorem ind_smul_mem {d q : ZMod 2} {b : B} {z : InductionAlong.Ind W φ}
-    (hb : b ∈ ℬ d) (hz : z ∈ (indSpace W 𝒜 ℬ φ hφ hW).part q) :
-    b • z ∈ (indSpace W 𝒜 ℬ φ hφ hW).part (d + q) := by
-  let : Module B (indSpace W 𝒜 ℬ φ hφ hW) := inferInstanceAs (Module B (InductionAlong.Ind W φ))
-  let : IsScalarTower k B (indSpace W 𝒜 ℬ φ hφ hW) :=
-    inferInstanceAs (IsScalarTower k B ((InductionAlong.Corner φ ⊗[ℤ] W) ⧸
-      (BalancedTensor.rel ℤ B A (InductionAlong.Corner φ) W)))
-  let f : indSpace W 𝒜 ℬ φ hφ hW →ₗ[k] indSpace W 𝒜 ℬ φ hφ hW :=
-    { toFun := fun z => b • (show InductionAlong.Ind W φ from z)
-      map_add' := smul_add b
-      map_smul' := fun c z => smul_comm b c z }
-  have hf : SVec.ofHom f ∈ SVec.parityHom _ _ d := by
-    apply ind_map_mem W 𝒜 ℬ φ hφ hW f
-    intro p r x y hx hy
-    change b • InductionAlong.Ind.tmul x y ∈ _
-    rw [InductionAlong.Ind.smul_tmul]
-    have h := ind_tmul_mem W 𝒜 ℬ φ hφ hW (x := b • x) (SetLike.GradedMul.mul_mem hb hx) hy
-    convert h using 1; abel_nf
-  have h := SVec.apply_mem_part hf hz
-  rw [add_comm q d] at h
-  exact h
 end Ind
 end OddMath.QuiverHecke.InducedParity
 namespace OddMath.QuiverHecke
@@ -349,19 +327,6 @@ def qTargetSpace (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
     (affineParity D Sc (n + 1)) (affineParity D Sc (n + 1 + 1))
     (prependAlgebra D Sc i (n + 1)) (fun _ _ h => prependAlgebra_parity D Sc i (n + 1) h)
     (qCoefficient_smul_mem D Sc i β a ha n)
-/-- Source tensor degrees add the affine corner and cyclotomic coefficient parities. -/
-theorem qSourceSpace_tmul_mem (i : I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n : ℕ) {p q : ZMod 2}
-    {x : InductionAlong.Corner (appendAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))}
-    {b : CyclotomicAlgebra D Sc a n} (hx : x.val ∈ affineParity D Sc (n + 1 + 1) p)
-    (hb : b ∈ cyclotomicParity D Sc a ha n q) :
-    InductionAlong.Ind.tmul x b ∈ (qSourceSpace D Sc i a ha n).part (p + q) :=
-  by
-    let : Module (Hn D Sc (n + 1)) (cyclotomicSuperspace D Sc a ha n) :=
-      inferInstanceAs (Module (Hn D Sc (n + 1)) (CyclotomicAlgebra D Sc a n))
-    exact InducedParity.ind_tmul_mem _ _ _ _
-      (fun _ _ h => appendAlgebra_parity D Sc i (n + 1) h)
-      (cyclotomicCoefficient_smul_mem D Sc a ha n) hx hb
 
 /-- Target tensor degrees use the canonical shifted coefficient, not the unshifted one. -/
 theorem qTargetSpace_tmul_mem (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
@@ -374,33 +339,6 @@ theorem qTargetSpace_tmul_mem (i : I) (β : Multiset I) (a : I → _root_.Polyno
   InducedParity.ind_tmul_mem _ _ _ _
     (fun _ _ h => prependAlgebra_parity D Sc i (n + 1) h)
     (qCoefficient_smul_mem D Sc i β a ha n) hx hb
-/-- The actual source induced action is graded, with no action-grading hypothesis. -/
-theorem qSourceSpace_smul_mem (i : I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n : ℕ) {p q : ZMod 2}
-    {r : Hn D Sc (n + 1 + 1)}
-    {z : InductionAlong.Ind (CyclotomicAlgebra D Sc a n)
-      (appendAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))}
-    (hr : r ∈ affineParity D Sc (n + 1 + 1) p)
-    (hz : z ∈ (qSourceSpace D Sc i a ha n).part q) :
-    r • z ∈ (qSourceSpace D Sc i a ha n).part (p + q) := by
-  let : Module (Hn D Sc (n + 1)) (cyclotomicSuperspace D Sc a ha n) :=
-    inferInstanceAs (Module (Hn D Sc (n + 1)) (CyclotomicAlgebra D Sc a n))
-  exact InducedParity.ind_smul_mem _ _ _ _
-    (fun _ _ h => appendAlgebra_parity D Sc i (n + 1) h)
-    (cyclotomicCoefficient_smul_mem D Sc a ha n) hr hz
-
-/-- The shifted target induced action is graded, with no action-grading hypothesis. -/
-theorem qTargetSpace_smul_mem (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n : ℕ) {p q : ZMod 2}
-    {r : Hn D Sc (n + 1 + 1)}
-    {z : InductionAlong.Ind (qCoefficient D Sc i β a ha n).toSVec
-      (prependAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))}
-    (hr : r ∈ affineParity D Sc (n + 1 + 1) p)
-    (hz : z ∈ (qTargetSpace D Sc i β a ha n).part q) :
-    r • z ∈ (qTargetSpace D Sc i β a ha n).part (p + q) :=
-  InducedParity.ind_smul_mem _ _ _ _
-    (fun _ _ h => prependAlgebra_parity D Sc i (n + 1) h)
-    (qCoefficient_smul_mem D Sc i β a ha n) hr hz
 
 omit [Fintype I] in
 theorem positionedDot_parity (l r : List I) (i : I) :

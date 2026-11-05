@@ -42,26 +42,5 @@ variable {k : Type u} [CommRing k] (V W : SVec k)
   (C : V →ₗ[k] W) (hC : C ∈ SVec.parityHom V W 0)
 include hC
 
-/-- An even comparison preserves the whole output parity involution.
-This is an identity of superspace maps, not a claim that parity is an
-ordinary bimodule endomorphism. -/
-theorem intertwine_sgn (q : ZMod 2) :
-    C ∘ₗ V.sgn q = W.sgn q ∘ₗ C := by
-  have h := SVec.sgn_comp_of_mem hC q
-  simpa only [zero_mul, sign_zero, one_smul, SVec.toLinearMap] using h.symm
-
-/-- The prescribed cap scalar and whole output parity correction commute
-with an even comparison of the given signed dot operators. -/
-theorem intertwine_capRowSign_apply
-    (f : Module.End k V) (g : Module.End k W) (h : C ∘ₗ f = g ∘ₗ C)
-    (n : ℕ) (x : V) :
-    C (capRowSign (k := k) n • V.sgn ((n + 1 : ℕ) : ZMod 2) ((f ^ n) x)) =
-      capRowSign (k := k) n • W.sgn ((n + 1 : ℕ) : ZMod 2) ((g ^ n) (C x)) := by
-  rw [map_smul]
-  have hs := LinearMap.congr_fun (intertwine_sgn V W C hC ((n + 1 : ℕ) : ZMod 2)) ((f ^ n) x)
-  exact congrArg (fun y => capRowSign (k := k) n • y)
-    (hs.trans (congrArg (W.sgn ((n + 1 : ℕ) : ZMod 2))
-      (intertwine_pow_apply C f g (fun x => LinearMap.congr_fun h x) n x)))
-
 end Parity
 end OddMath.QuiverHecke.ELVOld

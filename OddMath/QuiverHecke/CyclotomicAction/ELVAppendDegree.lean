@@ -68,18 +68,6 @@ theorem appendBoundedOldMap_mem_degree (N : ℕ) (i : I) (v t w : List I)
     (GradedSupercategory.comp_mem_degree
       (rightContext_mem_degree D Sc cutoff sy hc [i] hr) hh)
 
-/-- Homogeneity of every actual map in the finite append range spanning family. -/
-theorem appendCrossingSkeleton_map_mem_degree (N : ℕ) (i : I) (v w : List I)
-    (q : AppendCrossingSkeleton i v w) (j : ℕ) {a : ℤ}
-    {r : TruncatedOld D Sc cutoff N v q.index.oldTarget}
-    (hr : r ∈ truncatedDegree D Sc cutoff sy hc N v q.index.oldTarget a) :
-    appendBoundedOldMap D Sc cutoff N i v q.index.oldTarget w j
-      (affineUnit D Sc cutoff _ _ (appendTail D Sc q.index)) r ∈
-    truncatedDegree D Sc cutoff sy hc N (v ++ [i]) w
-      (2 * sy.d i * j + (a + appendTailDegree D sy q.index)) :=
-  appendBoundedOldMap_mem_degree D Sc cutoff sy hc N i v q.index.oldTarget w j
-    (affineUnit_mem_degree D Sc cutoff sy hc (appendTail_mem_degree D Sc sy q.index)) hr
-
 /-- A supported smaller quotient gives supported range, with the concrete shift. -/
 theorem appendBoundedOldMap_range_le (N : ℕ) (i : I) (v t w : List I)
     (j : ℕ) {h : hom D Sc cutoff (t ++ [i]) w} {b : ℤ}
@@ -123,40 +111,5 @@ theorem appendFiniteRange_degree_support (N : ℕ) (i : I) (v w : List I)
     q.index.oldTarget w j.val
     (affineUnit_mem_degree D Sc cutoff sy hc (appendTail_mem_degree D Sc sy q.index))
     (S q) (hS q)) (le_iSup_of_le q (le_iSup_of_le j le_rfl))
-
-/-- Outside all shifted smaller supports, the actual quotient projection vanishes. -/
-theorem appendFiniteRange_dproj_eq_zero (N : ℕ) (i : I) (v w : List I)
-    (S : AppendCrossingSkeleton i v w → Set ℤ)
-    (hS : ∀ q, (⊤ : Submodule k (TruncatedOld D Sc cutoff N v q.index.oldTarget)) =
-      ⨆ a ∈ S q, truncatedDegree D Sc cutoff sy hc N v q.index.oldTarget a)
-    (n : ℤ)
-    (hn : ∀ (q : AppendCrossingSkeleton i v w)
-      (j : Fin (monicELVEndpointProduct D Sc cutoff i v).natDegree)
-      (a : ℤ), a ∈ S q → 2 * sy.d i * j.val + (a + appendTailDegree D sy q.index) ≠ n)
-    (z : TruncatedOld D Sc cutoff N (v ++ [i]) w) :
-    truncatedDproj D Sc cutoff sy hc N (v ++ [i]) w n z = 0 := by
-  have hle : (⊤ : Submodule k (TruncatedOld D Sc cutoff N (v ++ [i]) w)) ≤
-      LinearMap.ker (truncatedDproj D Sc cutoff sy hc N (v ++ [i]) w n) := by
-    rw [appendFiniteRange_degree_support D Sc cutoff sy hc N i v w S hS]
-    refine iSup_le fun q => iSup_le fun j => iSup_le fun a => iSup_le fun ha => ?_
-    intro f hf
-    exact (truncatedDproj_of_mem D Sc cutoff sy hc N hf n).trans (ite_eq_right (hn q j a ha))
-  exact hle (Submodule.mem_top)
-
-/-- The homogeneous part itself is zero outside the shifted smaller supports. -/
-theorem appendFiniteRange_degree_eq_bot (N : ℕ) (i : I) (v w : List I)
-    (S : AppendCrossingSkeleton i v w → Set ℤ)
-    (hS : ∀ q, (⊤ : Submodule k (TruncatedOld D Sc cutoff N v q.index.oldTarget)) =
-      ⨆ a ∈ S q, truncatedDegree D Sc cutoff sy hc N v q.index.oldTarget a)
-    (n : ℤ)
-    (hn : ∀ (q : AppendCrossingSkeleton i v w)
-      (j : Fin (monicELVEndpointProduct D Sc cutoff i v).natDegree)
-      (a : ℤ), a ∈ S q → 2 * sy.d i * j.val + (a + appendTailDegree D sy q.index) ≠ n) :
-    truncatedDegree D Sc cutoff sy hc N (v ++ [i]) w n = ⊥ := by
-  apply bot_unique
-  intro z hz
-  have he := truncatedDproj_of_mem D Sc cutoff sy hc N hz n
-  rw [ite_eq_left rfl, appendFiniteRange_dproj_eq_zero D Sc cutoff sy hc N i v w S hS n hn] at he
-  exact he.symm
 
 end OddMath.QuiverHecke.ELVOld

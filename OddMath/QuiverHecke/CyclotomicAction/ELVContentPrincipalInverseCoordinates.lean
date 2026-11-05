@@ -187,29 +187,6 @@ local notation "P" => induced (contentInclusion D Sc cutoff N γ) M
 local notation "Source" => contentPrincipalSourceIso D Sc cutoff N β γ i hγ M
 local notation "Target" => contentPrincipalTargetIso D Sc cutoff N γ δ i hδ M
 
-/-- Stored successor contents preserve the forced weighted unit principal. -/
-theorem contentTargetsLocalInverseFrom_principal
-    (L : SKM.SuperSumInvFrom (k := k) (orderedGridMateComponent J K hCross M)
-      (unitDotColumn K hDotK M) (D.parity i) (fun n => n • D.parity i)
-      (contentUnitCount D cutoff i γ))
-    (hh : 0 ≤ contentCrossingHeight D cutoff i γ) :
-    L.f' = (Target).hom ≫ (weightedContentLocalInverseFrom D Sc cutoff N i P γ hh).f' ≫
-      (Source).inv := by
-  subst δ
-  subst γ
-  exact contentSupportedLocalInverseFrom_principal D Sc cutoff N β i M L hh
-
-/-- Stored successor contents preserve the forced weighted cap principal. -/
-theorem contentTargetsLocalInverseTo_principal
-    (L : SKM.SuperSumInvTo (k := k) (orderedGridMateComponent J K hCross M)
-      (capDotRow J hDotJ M) (D.parity i) (fun n => n • D.parity i)
-      (contentCapCount D cutoff i γ))
-    (hh : contentCrossingHeight D cutoff i γ ≤ 0) :
-    L.f' = (Target).hom ≫ (weightedContentLocalInverseTo D Sc cutoff N i P γ hh).f' ≫
-      (Source).inv := by
-  subst δ
-  subst γ
-  exact contentSupportedLocalInverseTo_principal D Sc cutoff N β i M L hh
 end Targets
 
 end OddMath.QuiverHecke.ELVOld

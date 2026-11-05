@@ -53,37 +53,4 @@ local notation "φ" => SKM.rouquierMate
 local notation "τ" n => elvActionUnit D Sc cutoff N i Λ h₂ ≫
   SKM.rouquierPower (elvActionDot D Sc cutoff N i Λ h₂) n ▷ F₂
 
-/-- The prescribed principal field is supernatural after output-block evaluation. -/
-theorem elvWeightPrincipal_block_supernatural :
-    IsSupernatural k (D.parity i) (F := (EF).toFunctor) (G := (FE).toFunctor)
-      (fun M => (φ).app (D.parity i) M δ) :=
-  ((φ).isSupernatural (D.parity i)).whiskerRight Ev
-
-/-- Literal upper unit/power totals retain every odd input naturality sign. -/
-theorem elvWeightUnitPower_block_supernatural (n : ℕ) :
-    IsSupernatural k (n • D.parity i) (F := (IdEv).toFunctor) (G := (FE).toFunctor)
-      (fun M => (τ n).total M δ) := by
-  have hu : elvActionUnit D Sc cutoff N i Λ h₂ ∈ parity (R := k) _ _ 0 :=
-    (elvActionAdjunction D Sc cutoff N i Λ h₂).unit_mem
-  have hd := SKM.rouquierPower_mem (elvActionDot_mem D Sc cutoff N i Λ h₂) n
-  have ht : (τ n) ∈ parity (R := k) _ _ (n • D.parity i) := by
-    simpa only [zero_add, nsmul_eq_mul] using comp_mem hu (TwoSupercategory.whiskerRight_mem F₂ hd)
-  exact homogeneousTotal_postcompose (τ n) ht Ev
-
-/-- The constructed absent-block inverse bundles on all input weight modules. -/
-theorem elvWeightAbsentUnitFamily_nonempty
-    (hcutoff : (cutoff i : ℤ) = D.h i Λ)
-    (hδ : ¬ ∃ β, blockSucc D Λ i h₁ β = δ) :
-    Nonempty (SKM.SuperSumInvFrom (k := k)
-      (Superfunctor.homMk (F := EF) (G := FE)
-        (elvWeightPrincipal_block_supernatural D Sc cutoff N i Λ h₁ h₂ δ).toSuperNatTrans)
-      (fun n => Superfunctor.homMk (F := IdEv) (G := FE)
-        (elvWeightUnitPower_block_supernatural D Sc cutoff N i Λ h₂ δ n).toSuperNatTrans)
-      (D.parity i) (fun n => n • D.parity i) (-D.h i x₁).toNat) := by
-  exact ⟨SKM.SuperSumInvFrom.ofSupernaturalComponents
-    (fun M => Classical.choice
-      (elvWeightAbsentUnitInverse_nonempty D Sc cutoff N i Λ h₁ h₂ δ hcutoff hδ M))
-    (elvWeightPrincipal_block_supernatural D Sc cutoff N i Λ h₁ h₂ δ)
-    (elvWeightUnitPower_block_supernatural D Sc cutoff N i Λ h₂ δ)⟩
-
 end OddMath.QuiverHecke.ELVOld

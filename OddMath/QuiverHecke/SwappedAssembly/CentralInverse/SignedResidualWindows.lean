@@ -28,7 +28,6 @@ def ReservoirCupConditions (J : CoefficientIdeal C) {XR YR O : C}
     (∀ r s, J.mem 1 (uR r ≫ j ≫ vR s)) ∧
     (∀ (n : Fin h) (m : ℕ), h ≤ m → J.mem 1 (uR m ≫ B n))
 
-
 /-- All positive fused-height cases, including a negative probe height.
 The three closed residual errors are consequences, not hypotheses. -/
 theorem isIso_posMap_of_signed_windows (J : CoefficientIdeal C)

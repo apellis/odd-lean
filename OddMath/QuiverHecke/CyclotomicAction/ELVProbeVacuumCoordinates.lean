@@ -87,11 +87,6 @@ def heightZeroScalarEquiv : k ≃ₐ[k] Hn D Sc 0 :=
     (by rw [heightZeroLinearEquiv_one, heightZeroIdempotent_one])
     (by intro x y; simp only [heightZeroLinearEquiv_scalar, map_mul])
 
-/-- The ground coordinate sends one to the original empty idempotent. -/
-theorem heightZeroScalarEquiv_one_idempotent :
-    heightZeroScalarEquiv D Sc 1 = Hn.wordIdempotent (vacuumWord (I := I)) :=
-  heightZeroLinearEquiv_one D Sc
-
 variable (m : I → ℕ)
 
 private theorem probeVacuumVector_val :

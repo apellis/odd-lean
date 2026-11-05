@@ -189,10 +189,6 @@ def leftAdjoints : RouquierLeftAdjoints (k := k) T where
           Linear.comp_smul, Linear.comp_smul, hE, smul_smul, mul_left_comm, Units.inv_mul,
           mul_one, Int.cast_smul_eq_zsmul] }
 
-/-- The normalized unit is the inverse-defined cup at the target of the edge. -/
-theorem leftAdjoints_unit (i : I) {x y : X} (h : x + D.α i = y) :
-    (T.leftAdjoints.adjL i h).unit = T.leftCup i h := rfl
-
 /-- The normalized counit is the inverse-defined cap at the source of the edge. -/
 theorem leftAdjoints_counit (i : I) {x y : X} (h : x + D.α i = y) :
     (T.leftAdjoints.adjL i h).counit =

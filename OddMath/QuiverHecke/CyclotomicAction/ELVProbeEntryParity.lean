@@ -55,14 +55,4 @@ theorem elvProbeHeightWordEntry_target {n : ℕ} (s t : Word I n)
   obtain ⟨f, rfl⟩ := (ELVOld.ideal D Sc cut s.val t.val).mkQ_surjective f
   rw [ELVOld.oldComp_mk, Category.comp_id]
 
-/-- The same entry is supported on its actual source word summand on the right. -/
-theorem elvProbeHeightWordEntry_source {n : ℕ} (s t : Word I n)
-    (f : ELVOld.Old D Sc cut s.val t.val) :
-    elvProbeHeightWordEntry D m Sc s t f *
-      probeHeightMk D m Sc n (Hn.wordIdempotent s) = elvProbeHeightWordEntry D m Sc s t f := by
-  rw [← elvProbeHeightWordEntry_id D m Sc s,
-    ← elvProbeHeightWordEntry_comp D m Sc s s t]
-  obtain ⟨f, rfl⟩ := (ELVOld.ideal D Sc cut s.val t.val).mkQ_surjective f
-  rw [ELVOld.oldComp_mk, Category.id_comp]
-
 end OddMath.QuiverHecke

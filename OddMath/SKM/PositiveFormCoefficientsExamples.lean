@@ -111,7 +111,6 @@ theorem repeated_family (σ : ℚ) (hσ : σ ^ 2 = 1) :
   obtain ⟨hf, hc⟩ := h (-2)
   exact ⟨p, hp, L, hL, hm, hf, hc, hc.trans (repeated_negative_coeff σ hσ).1⟩
 
-
 /-- The empty canonical family realizes the empty modified-form coefficient. -/
 theorem empty_family (σ : ℚ) (hσ : σ ^ 2 = 1) :
     ∃ p : ∀ R : {R : List (TMove (Letter Unit)) // R ∈ ({[]} : Set _)},

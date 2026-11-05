@@ -30,20 +30,6 @@ theorem moduleIsoOfEvenNatIso_inv_mem (F G : Superfunctor k C (SVec k))
   Supercategory.inv_mem (moduleIsoOfEvenNatIso F G e hh hi)
     (moduleIsoOfEvenNatIso_hom_mem F G e hh hi)
 
-private theorem fiveIsoHom_mem
-    {B : Type*} [Category* B] [Preadditive B] [Linear k B] [Supercategory k B]
-    {F₀ F₁ F₂ F₃ F₄ F₅ : B}
-    (e₁ : F₀ ≅ F₁) (e₂ : F₁ ≅ F₂) (e₃ : F₂ ≅ F₃)
-    (e₄ : F₃ ≅ F₄) (e₅ : F₄ ≅ F₅)
-    (h₁ : e₁.hom ∈ parity (R := k) _ _ 0)
-    (h₂ : e₂.hom ∈ parity (R := k) _ _ 0)
-    (h₃ : e₃.hom ∈ parity (R := k) _ _ 0)
-    (h₄ : e₄.hom ∈ parity (R := k) _ _ 0)
-    (h₅ : e₅.hom ∈ parity (R := k) _ _ 0) :
-    (e₁ ≪≫ e₂ ≪≫ e₃ ≪≫ e₄ ≪≫ e₅).hom ∈ parity (R := k) _ _ 0 := by
-  simpa only [Iso.trans_hom, zero_add] using
-    comp_mem h₁ (comp_mem h₂ (comp_mem h₃ (comp_mem h₄ h₅)))
-
 end OddMath.QuiverHecke.ELVOld
 
 namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
@@ -52,15 +38,6 @@ variable {k : Type u} [CommRing k]
   {C D : Type u} [Category.{u} C] [Category.{u} D]
   [Preadditive C] [Linear k C] [Supercategory k C]
   [Preadditive D] [Linear k D] [Supercategory k D]
-
-theorem inducedIsoOfFunctorEq_hom_mem (J K : C ⥤ D)
-    [J.Additive] [J.Linear k] [IsSuperfunctor k J]
-    [K.Additive] [K.Linear k] [IsSuperfunctor k K] (h : J = K)
-    (M : Superfunctor k C (SVec k)) :
-    (inducedIsoOfFunctorEq J K h M).hom ∈ parity (R := k) _ _ 0 := by
-  subst K
-  change (𝟙 (induced J M)) ∈ parity (R := k) _ _ 0
-  exact id_mem _
 
 end OddMath.QuiverHecke.ELVOld.BalancedInduction
 
@@ -77,57 +54,10 @@ theorem weightedRestrictionModuleIso_hom_mem
   unfold weightedRestrictionModuleIso
   exact moduleIsoOfEvenNatIso_hom_mem _ _ _ _ _
 
-theorem weightedRestrictionModuleIso_inv_mem
-    (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
-    (hM : KillsWeightedCoefficients D Sc cutoff N M) :
-    (weightedRestrictionModuleIso D Sc cutoff N M hM).inv ∈ parity (R := k) _ _ 0 :=
-  Supercategory.inv_mem (weightedRestrictionModuleIso D Sc cutoff N M hM)
-    (weightedRestrictionModuleIso_hom_mem D Sc cutoff N M hM)
-
 theorem quotientInductionCounitIso_hom_mem
     (M : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k)) :
     (quotientInductionCounitIso D Sc cutoff N M).hom ∈ parity (R := k) _ _ 0 := by
   rw [quotientInductionCounitIso_hom]
   exact BalancedInduction.adjunctionCounit_mem Q M
-
-theorem quotientInducedWeightedModuleIso_hom_mem
-    (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
-    (hM : KillsWeightedCoefficients D Sc cutoff N M) :
-    (quotientInducedWeightedModuleIso D Sc cutoff N M hM).hom ∈ parity (R := k) _ _ 0 := by
-  let e := weightedRestrictionModuleIso D Sc cutoff N M hM
-  let c := quotientInductionCounitIso D Sc cutoff N (weightedModule D Sc cutoff N M hM)
-  have he : e.inv ∈ parity (R := k) _ _ 0 :=
-    weightedRestrictionModuleIso_inv_mem D Sc cutoff N M hM
-  have hc : c.hom ∈ parity (R := k) _ _ 0 :=
-    quotientInductionCounitIso_hom_mem D Sc cutoff N _
-  have hm := IsSuperfunctor.map_mem (F := BalancedInduction.induction Q) he
-  change (BalancedInduction.induction Q).map e.inv ≫ c.hom ∈ parity (R := k) _ _ 0
-  simpa only [zero_add] using comp_mem hm hc
-
-theorem quotientInducedWeightedModuleIso_inv_mem
-    (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
-    (hM : KillsWeightedCoefficients D Sc cutoff N M) :
-    (quotientInducedWeightedModuleIso D Sc cutoff N M hM).inv ∈ parity (R := k) _ _ 0 :=
-  Supercategory.inv_mem (quotientInducedWeightedModuleIso D Sc cutoff N M hM)
-    (quotientInducedWeightedModuleIso_hom_mem D Sc cutoff N M hM)
-
-/-- Every leg of the chosen old/truncated append comparison is even. -/
-theorem appendWeightedModuleIso_hom_mem (i : I)
-    (M : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k)) :
-    (appendWeightedModuleIso D Sc cutoff N i M).hom ∈ parity (R := k) _ _ 0 := by
-  unfold appendWeightedModuleIso
-  apply fiveIsoHom_mem
-  · exact quotientInducedWeightedModuleIso_inv_mem D Sc cutoff N _ _
-  · exact BalancedInduction.inductionComp_hom_mem _ _ _
-  · exact BalancedInduction.inducedIsoOfFunctorEq_hom_mem _ _ _ _
-  · exact BalancedInduction.inductionComp_inv_mem _ _ _
-  · exact IsSuperfunctor.map_mem (F := BalancedInduction.induction _)
-      (quotientInductionCounitIso_hom_mem D Sc cutoff N M)
-
-theorem appendWeightedModuleIso_inv_mem (i : I)
-    (M : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k)) :
-    (appendWeightedModuleIso D Sc cutoff N i M).inv ∈ parity (R := k) _ _ 0 :=
-  Supercategory.inv_mem (appendWeightedModuleIso D Sc cutoff N i M)
-    (appendWeightedModuleIso_hom_mem D Sc cutoff N i M)
 
 end OddMath.QuiverHecke.ELVOld

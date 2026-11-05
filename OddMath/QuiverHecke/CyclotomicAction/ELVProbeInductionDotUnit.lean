@@ -95,12 +95,4 @@ def probeOrdinaryInductionDotUnit
     val_inv := ELVOld.BalancedInduction.transformLinear_inverse_right J e he M t
     inv_val := ELVOld.BalancedInduction.transformLinear_inverse_left J e he M t }
 
-/-- No invertibility premise on the induced operator is assumed. -/
-theorem probeOrdinaryInductionDot_isUnit
-    (t : OrdinaryContentCategory D Sc (probePolynomial (k := k) (probeDotExponent D) m) (i :: ν)) :
-    IsUnit (End.of (ELVOld.BalancedInduction.transformLinear
-      (probeOrdinaryAppendDot_supernatural D Sc m ν i) M t) :
-        End (ELVOld.BalancedInduction.superspace (probeOrdinaryAppend D Sc m ν i) M.toFunctor t)) :=
-  (probeOrdinaryInductionDotUnit D Sc m ν i M t).isUnit
-
 end OddMath.QuiverHecke

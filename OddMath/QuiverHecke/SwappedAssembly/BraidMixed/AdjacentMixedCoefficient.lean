@@ -93,17 +93,5 @@ theorem adjacentMixedMove_coeff (hij : i ≠ j) :
     rw [Category.comp_id, Category.comp_id] at hcancel
     exact hcancel
 
-/-- The squared coefficient passes through the same two-crossing map. -/
-theorem adjacentMixedMove_coeff_sq (hij : i ≠ j) :
-    (c.a i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z)) ≫
-      c.a i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z))) ≫
-      P.adjacentMixedMove i j s hR hs Z =
-    P.adjacentMixedMove i j s hR hs Z ≫
-      (P.step (true, j) true s trivial).map
-        (c.a i (nextSector (true, j) true s) hR Z ≫
-          c.a i (nextSector (true, j) true s) hR Z) := by
-  have ht := P.adjacentMixedMove_coeff c hc h i j s hR hs Z hij
-  rw [Functor.map_comp, Category.assoc, ht, ← Category.assoc, ht, Category.assoc]
-
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

@@ -50,11 +50,6 @@ local notation "b₀" => elvWeightPrefixCross D Sc cutoff bound i j i Λ hab hbc
 local notation "b₁" => elvWeightSuffixCross D Sc cutoff bound i i j Λ haf hfc hcd hfc hcd
 local notation "b₂" => elvWeightPrefixCross D Sc cutoff bound i i j Λ haf hfc hab hbc hcd
 
-/-- The first independently prescribed path in the repeated-outer braid. -/
-abbrev elvWeightMixedBraidLeft := a₀ ≫ a₁ ≫ a₂
-/-- The second independently prescribed path in the repeated-outer braid. -/
-abbrev elvWeightMixedBraidRight := b₀ ≫ b₁ ≫ b₂
-
 variable (β : WeightBlocks D Λ a)
 local notation "β₁" => blockSucc D Λ i hab β
 local notation "δ" => blockSucc₂ D j i Λ hab hbc β

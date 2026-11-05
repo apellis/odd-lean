@@ -72,14 +72,14 @@ theorem probeOldBlockBraidPrefix_native_total (β : WeightBlocks D Λ x₀)
       (induction (L β)).map ((inductionModuleCross (J β) (K β) (hγ β)).total M.obj) := by
   rw [probeOldBlockBraidPrefix_total]
   change (induction (L β)).map (((probeOldBlockEqualCross D Sc m i Λ h₁ h₂ β).total M).hom) = _
-  rw [probeOldBlockEqualCross_native_total]
+  rw [probeOldBlockEqualCross_total]
 
 /-- The second chosen block crossing retains the exact OLD pair crossing at its true input. -/
 theorem probeOldBlockBraidSuffix_native_total (β : WeightBlocks D Λ x₀)
     (M : ProbeCanonicalModules D Sc m β.1) :
     ((probeOldBlockBraidSuffix D Sc m i Λ h₁ h₂ h₃ β).total M).hom =
       (inductionModuleCross (K β) (L β) (hδ β)).total ((induction (J β)).obj M.obj) := by
-  rw [probeOldBlockBraidSuffix_total, probeOldBlockEqualCross_native_total]
+  rw [probeOldBlockBraidSuffix_total, probeOldBlockEqualCross_total]
   rfl
 
 /-- The given negative block crossings satisfy the braid on all evaluated inputs. -/

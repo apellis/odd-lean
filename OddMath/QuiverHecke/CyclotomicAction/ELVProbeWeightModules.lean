@@ -118,30 +118,6 @@ abbrev probeOldBlockRes (β : WeightBlocks D Λ x) :
       change {i} + (β.1.toList : Multiset I) = (blockSucc D Λ i h β).1
       rw [Multiset.coe_toList, blockSucc_val])⟩
 
-/-- The chosen block induction is the literal old balanced induction. -/
-theorem probeOldBlockInd_native (β : WeightBlocks D Λ x)
-    (M : ProbeCanonicalModules D Sc m β.1) :
-    ((probeOldBlockInd D Sc m i Λ h β).obj M).obj =
-      BalancedInduction.induced (probeOldBlockAppend D Sc m i Λ h β) M.obj := rfl
-
-/-- The chosen block restriction is literal old precomposition. -/
-theorem probeOldBlockRes_native (β : WeightBlocks D Λ x)
-    (M : ProbeCanonicalModules D Sc m (blockSucc D Λ i h β).1) :
-    ((probeOldBlockRes D Sc m i Λ h β).obj M).obj =
-      (BalancedInduction.restriction (probeOldBlockAppend D Sc m i Λ h β)).obj M.obj := rfl
-
-/-- Every even or odd input map is sent by the prescribed old induction map. -/
-theorem probeOldBlockInd_map_native (β : WeightBlocks D Λ x)
-    {M M' : ProbeCanonicalModules D Sc m β.1} (f : M ⟶ M') :
-    ((probeOldBlockInd D Sc m i Λ h β).map f).hom =
-      (BalancedInduction.induction (probeOldBlockAppend D Sc m i Λ h β)).map f.hom := rfl
-
-/-- Restriction retains every old module map at the chosen predecessor. -/
-theorem probeOldBlockRes_map_native (β : WeightBlocks D Λ x)
-    {M M' : ProbeCanonicalModules D Sc m (blockSucc D Λ i h β).1} (f : M ⟶ M') :
-    ((probeOldBlockRes D Sc m i Λ h β).map f).hom =
-      (BalancedInduction.restriction (probeOldBlockAppend D Sc m i Λ h β)).map f.hom := rfl
-
 def probeOldBlockEval (β : WeightBlocks D Λ x) :
     Superfunctor k (ProbeOldWeightProduct D Sc m Λ x)
       (ProbeCanonicalModules D Sc m β.1) := ⟨Pi.eval _ β⟩
@@ -222,7 +198,6 @@ theorem probeOldInductionComponent_map_blockSucc (β : WeightBlocks D Λ x)
         (probeOldBlockInd D Sc m i Λ h β).map (f β) ≫
           eqToHom (probeOldInductionComponent_obj_blockSucc D Sc m i Λ h β M').symm :=
   superfunctor_map_of_eq (probeOldInductionComponent_blockSucc D Sc m i Λ h β) f
-
 
 end Weight
 end OddMath.QuiverHecke

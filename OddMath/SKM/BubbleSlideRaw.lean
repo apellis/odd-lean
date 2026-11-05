@@ -57,8 +57,6 @@ theorem bubbleR_slide_zero_raw (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j 
     (epsP_mem cs i _), plcL_cl]
   rfl
 
-
-
 abbrev bubbleL_left (i j : I) (μ : X) (n : ℤ) := lbub j μ (bubL cs i (wt D μ [up j]) n)
 abbrev bubbleL_right (i j : I) (μ : X) (n : ℤ) := rbub j μ (bubL cs i (wt D μ []) n)
 

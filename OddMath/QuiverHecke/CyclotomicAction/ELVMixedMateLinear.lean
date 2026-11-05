@@ -63,5 +63,4 @@ theorem orderedMixedMateCoend_eq_linear (N : Superfunctor k C (SVec k)) (t : C) 
   have ht := orderedMixedMateLinear_tensor (k := k) A B hα N s t g b
   exact he.trans ((congrArg (orderedMixedMateLinear (k := k) A B hα N t) hs).trans ht)
 
-
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

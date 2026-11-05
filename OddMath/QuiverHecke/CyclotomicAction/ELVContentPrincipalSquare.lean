@@ -20,12 +20,6 @@ private def rawValue {k V W : Type u} [CommRing k]
     [AddCommMonoid V] [Module k V] [AddCommMonoid W] [Module k W]
     (f : V →ₗ[k] W) (x : V) : W := f x
 
-private def nativeValue
-    {k C : Type u} [CommRing k] [Category.{u} C]
-    [Preadditive C] [Linear k C] [Supercategory k C]
-    {F G : Superfunctor k C (SVec k)} (f : F ⟶ G) (w : C) (x : F.obj w) : G.obj w :=
-  f.total w x
-
 private theorem module_map_id_apply
     {k C : Type u} [CommRing k] [Category.{u} C]
     [Preadditive C] [Linear k C] [Supercategory k C]
@@ -148,51 +142,6 @@ private theorem sourcePostcomposeOrdinary_total_apply
   have h1 := congrArg (fun f => g.total (U.obj w) (f x))
     (fullSquareOrdinarySourceLinear_eq_source J U Q T h R L G e he w)
   exact h0.trans h1.symm
-
-private theorem sourceOrdinaryMate_raw
-    {k C A E : Type u} [CommRing k]
-    [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
-    [Category.{u} A] [Preadditive A] [Linear k A] [Supercategory k A]
-    [Category.{u} E] [Preadditive E] [Linear k E] [Supercategory k E]
-    (J : C ⥤ A) [J.Additive] [J.Linear k] [IsSuperfunctor k J]
-    (U : A ⥤ E) [U.Additive] [U.Linear k] [IsSuperfunctor k U] [U.Full] [U.Faithful]
-    (Q : C ⥤ E) [Q.Additive] [Q.Linear k] [IsSuperfunctor k Q]
-    (T : E ⥤ E) [T.Additive] [T.Linear k] [IsSuperfunctor k T]
-    (h : J ⋙ U = Q ⋙ T) (R : Superfunctor k C (SVec k))
-    (G : Superfunctor k E (SVec k)) (e : induced Q R ≅ (restriction T).obj G)
-    (he : e.hom ∈ parity (R := k) _ _ 0)
-    {p : ZMod 2} {χ : ∀ s, (T ⋙ T).obj s ⟶ (T ⋙ T).obj s} (hχ : IsSupernatural k p χ)
-    (w : A) (x : (induced J R).obj w) :
-    ((fullSquareSourceIso J U Q T h R ((restriction T).obj G) e).hom ≫
-        (restriction U).map (orderedMateComponent T hχ G)).total w x =
-      (orderedMateLinear T hχ G (U.obj w)
-        (fullSquareOrdinarySourceLinear J U Q T h R T G e w x)) :=
-  sourcePostcomposeOrdinary_total_apply J U Q T h R T G e he
-    ((restriction T).obj (induced T G)) (orderedMateComponent T hχ G) w x
-
-private theorem gridMateSquare_apply
-    {k C A B E : Type u} [CommRing k]
-    [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
-    [Category.{u} A] [Preadditive A] [Linear k A] [Supercategory k A]
-    [Category.{u} B] [Preadditive B] [Linear k B] [Supercategory k B]
-    [Category.{u} E] [Preadditive E] [Linear k E] [Supercategory k E]
-    (J : C ⥤ A) [J.Additive] [J.Linear k] [IsSuperfunctor k J]
-    (K : A ⥤ B) [K.Additive] [K.Linear k] [IsSuperfunctor k K]
-    (Q : A ⥤ E) [Q.Additive] [Q.Linear k] [IsSuperfunctor k Q]
-    (T : E ⥤ E) [T.Additive] [T.Linear k] [IsSuperfunctor k T]
-    {p q : ZMod 2} {α : ∀ s, (J ⋙ K).obj s ⟶ (J ⋙ K).obj s}
-    {χ : ∀ s, (T ⋙ T).obj s ⟶ (T ⋙ T).obj s}
-    (hα : IsSupernatural k p α) (hχ : IsSupernatural k q χ)
-    (M : Superfunctor k A (SVec k)) (w : A)
-    (c : Obj K M.toFunctor (K.obj w) →ₗ[k] Obj T (induced Q M).toFunctor (T.obj (Q.obj w)))
-    (d : Obj J ((restriction J).obj M).toFunctor w →ₗ[k]
-      Obj T ((restriction T).obj (induced Q M)).toFunctor (Q.obj w))
-    (h : c ∘ₗ orderedGridMateLinear J K hα M w = orderedMateLinear T hχ (induced Q M) (Q.obj w) ∘ₗ d)
-    (x : (induced J ((restriction J).obj M)).obj w) :
-    @Eq (((restriction Q).obj ((restriction T).obj (induced T (induced Q M)))).obj w)
-      (rawValue c ((orderedGridMateComponent J K hα M).total w x))
-      (orderedMateLinear T hχ (induced Q M) (Q.obj w) (d x)) :=
-  LinearMap.congr_fun h x
 
 private theorem gridMate_congr
     {k C A B : Type u} [CommRing k]

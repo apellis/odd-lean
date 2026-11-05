@@ -41,11 +41,6 @@ theorem TransformedIdeal.comp_mem {cutoff : I → ℕ} {T : Set (SKM.SYM D k)} {
   | add x y _ _ hx hy => rw [Preadditive.add_comp]; exact add_mem hx hy
   | smul c x _ hx => rw [Linear.smul_comp]; exact Submodule.smul_mem _ c hx
 
-/-- A presented single layer of `H` is the contextual generator of its contexts. -/
-theorem ofLayer_eq_mkD (L : Layer (sig D)) (hv : L.Valid) :
-    Diagram.ofLayer L hv =
-      mkD D (t := L.dom.word) (t' := L.cod.word) [(L.left, L.gen, L.right)] ⟨rfl, rfl⟩ := rfl
-
 /-- The unit coefficient extension of a presented single layer is the source
 coefficient extension of its contextual affine generator. -/
 theorem coefficientHom_one_ofLayer (L : Layer (sig D)) (hv : L.Valid) :

@@ -186,16 +186,6 @@ theorem probeOldWeightMixedMate_isIso (hij : i ≠ j) :
   isIso_of_homogeneous_components _ (probeOldWeightMixedMate_mem D Sc m i j Λ h₁ h₂ h₃ h₄)
     (probeOldWeightMixedMate_component_isIso D Sc m i j Λ h₁ h₂ h₃ h₄ hij)
 
-/-- The inverse is natural for all maps and retains the mixed degree. -/
-theorem probeOldWeightMixedMate_inverse_mem (hij : i ≠ j) :
-    inv (I := probeOldWeightMixedMate_isIso D Sc m i j Λ h₁ h₂ h₃ h₄ hij)
-      (probeOldWeightMixedMate D Sc m i j Λ h₁ h₂ h₃ h₄) ∈
-        parity (R := k) _ _ (D.parity i * D.parity j) := by
-  let : IsIso (probeOldWeightMixedMate D Sc m i j Λ h₁ h₂ h₃ h₄) :=
-    probeOldWeightMixedMate_isIso D Sc m i j Λ h₁ h₂ h₃ h₄ hij
-  exact Supercategory.inv_mem (asIso (probeOldWeightMixedMate D Sc m i j Λ h₁ h₂ h₃ h₄))
-    (probeOldWeightMixedMate_mem D Sc m i j Λ h₁ h₂ h₃ h₄)
-
 /-- The presentation mate uses the same chosen global adjunction maps. -/
 theorem probeOldActionCrossMate_eq :
     SKM.crossMate

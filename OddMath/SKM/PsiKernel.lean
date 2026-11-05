@@ -52,7 +52,6 @@ theorem psiLin_relation_context (t : k) (ht : t ^ 2 = -1) (cs : CScalars Sc)
     psiLin_relation t ht cs R ν hs hr]
   simp
 
-
 /-- Each interchange generator of the presentation is killed after boundary retyping. -/
 theorem psiLin_interchange (t : k) (cs : CScalars Sc) (ν μ : X)
     (x : InterchangeData (sig D)) (hx : x.Valid) {s r : List (Letter I)}
@@ -85,7 +84,6 @@ theorem psiLin_interchange (t : k) (cs : CScalars Sc) (ν μ : X)
   have he : (x.sign : k) = zsign k (x.g.1.parity D * x.h.1.parity D) :=
     interchange_sign x.g.1 x.h.1 x.h.2 x.g.2 x.mid x.start
   rw [psiRaw_swap₀, he, sub_self]
-
 
 /-- All imposed relations, including super-interchange, vanish after boundary retyping. -/
 theorem psiLin_allRel (t : k) (ht : t ^ 2 = -1) (cs : CScalars Sc) (ν μ : X)
@@ -133,7 +131,6 @@ private theorem psiAllRel_endR (R : (pres D Sc).AllRel) : R.cod.endR = R.dom.end
   cases R with
   | user R => exact (ob_endR D R.ν R.cod).trans (ob_endR D R.ν R.dom).symm
   | interchange x hx => exact (Diagram.chain (InterchangeData.ghDiagram hx)).endR_eq
-
 
 private theorem psiLin_weight_zero (t : k) (cs : CScalars Sc) (ν ν' μ : X)
     {s r : List (Letter I)} (hs : wt D μ s = ν) (hr : wt D μ r = ν)
@@ -208,7 +205,6 @@ theorem psiLin_allRel_whisker (t : k) (ht : t ^ 2 = -1) (cs : CScalars Sc) (ν �
     (whiskerOK_ob D μ l q a) ha hb (ob_whisker D μ l q a a rfl) (ob_whisker D μ l q a b eab)]
   rw [psiLin_place t cs μ l q a b eab,
     psiLin_allRel t ht cs _ _ R rfl eab ea eb, map_zero]
-
 
 private theorem psiObj_normal (A : Obj (sig D)) (hA : A.Ok) (μ : X) (he : A.endR = μ) :
     A = ob D μ (A.word.map Col.l) := by
@@ -285,7 +281,6 @@ theorem psiLin_ideal (t : k) (ht : t ^ 2 = -1) (cs : CScalars Sc) (ν μ : X)
   | zero => exact map_zero _
   | add f g _ _ ih ih' => rw [map_add, ih, ih', add_zero]
   | smul c f _ ih => rw [map_smul, ih, smul_zero]
-
 
 /-- The linear evaluation respects the congruence defining the presented category. -/
 theorem psiLin_homRel (t : k) (ht : t ^ 2 = -1) (cs : CScalars Sc) (ν μ : X)

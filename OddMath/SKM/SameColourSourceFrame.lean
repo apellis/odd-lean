@@ -73,13 +73,6 @@ def swappedPairedInclusion : ((F.residual.Labels × ℕ) →₀ SYM D k) →ₗ[
     (F.swapped.Labels →₀ SYM D k) :=
   Finsupp.lmapDomain (SYM D k) k (fun r => F.swappedPaired (r.2, r.1))
 
-theorem originalPairedInclusion_injective :
-    Function.Injective (F.originalPairedInclusion (D := D) (k := k)) := by
-  apply Finsupp.mapDomain_injective
-  intro r s he
-  have H := F.paired.injective he
-  exact Prod.ext (congrArg Prod.snd H) (congrArg Prod.fst H)
-
 theorem swappedPairedInclusion_injective :
     Function.Injective (F.swappedPairedInclusion (D := D) (k := k)) := by
   apply Finsupp.mapDomain_injective

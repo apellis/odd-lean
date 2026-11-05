@@ -28,7 +28,6 @@ omit [Finite I] in
     toIntegrableTensor D Λ Μ (x ⊗ₜ[Coefficients.Ring] y) =
       toIntegrable D Λ x ⊗ₜ[Coefficients.Ring] toIntegrable D Μ y := rfl
 
-
 /-- Any finite set of actual tensors, including arbitrary finite sums, has one
 bound for injectivity on its ENTIRE covering-ring span. No flatness, freeness,
 root independence, or tensor faithfulness is a hypothesis. -/

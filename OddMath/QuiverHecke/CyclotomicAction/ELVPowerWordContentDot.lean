@@ -65,46 +65,6 @@ theorem append_dot (ν : List I) (i : I) :
   rw [total_of_mem hn]
   exact PowerWordAppend.appendLinear_dot D Sc cutoff L ν i w
 
-private theorem comparison_even {C B E : Type u}
-    [Category.{u} C] [Category.{u} B] [Category.{u} E]
-    [Preadditive C] [Linear k C] [Supercategory k C]
-    [Preadditive B] [Linear k B] [Supercategory k B]
-    [Preadditive E] [Linear k E] [Supercategory k E]
-    (J : C ⥤ B) (K : B ⥤ E) (P : C ⥤ E)
-    [J.Additive] [J.Linear k] [IsSuperfunctor k J]
-    [K.Additive] [K.Linear k] [IsSuperfunctor k K]
-    [P.Additive] [P.Linear k] [IsSuperfunctor k P] (e : J ⋙ K = P)
-    (R : Superfunctor k C (SVec k)) :
-    ((inductionCompOfEq J K P e).app R).hom ∈ parity (R := k) _ _ 0 := by
-  subst P
-  simpa only [inductionCompOfEq, eqToIso_refl, Iso.trans_refl, Iso.app_hom] using
-    BalancedInduction.inductionComp_hom_mem J K R
-
-private theorem iso_trans_even {C : Type*} [Category* C]
-    [Preadditive C] [Linear k C] [Supercategory k C]
-    {A B E : C} (e : A ≅ B) (f : B ≅ E)
-    (he : e.hom ∈ parity (R := k) _ _ 0) (hf : f.hom ∈ parity (R := k) _ _ 0) :
-    (e ≪≫ f).hom ∈ parity (R := k) _ _ 0 := by
-  simpa only [Iso.trans_hom, zero_add] using comp_mem he hf
-
-omit [Fintype I] in
-theorem wordAppend_even (ν : List I) (i : I) :
-    (powerWordAppendIso D Sc cutoff L ν i).hom ∈ parity (R := k) _ _ 0 := by
-  rw [PowerWordPair.selectedAppend_eq]
-  exact comparison_even _ _ _ _ _
-
-/-- The selected weighted comparison is even before transporting operators. -/
-theorem weightedAppend_even (ν : List I) (i : I) :
-    (PowerWordContent.weightedAppendIso D Sc cutoff L ν i).hom ∈ parity (R := k) _ _ 0 := by
-  unfold PowerWordContent.weightedAppendIso
-  apply iso_trans_even
-  · exact appendWeightedModuleIso_inv_mem D Sc cutoff _ i _
-  · apply weightedModuleHom_mem
-    apply iso_trans_even
-    · exact IsSuperfunctor.map_mem (F := BalancedInduction.induction (append D Sc cutoff i))
-        (weightedRestrictionModuleIso_hom_mem D Sc cutoff _ _ _)
-    · exact wordAppend_even D Sc cutoff L ν i
-
 /-- The content extension counit is even on the scheduled word model. -/
 theorem contentExtension_even (ν : List I) :
     (PowerWordContent.contentExtensionIso D Sc cutoff L ν).hom ∈ parity (R := k) _ _ 0 := by

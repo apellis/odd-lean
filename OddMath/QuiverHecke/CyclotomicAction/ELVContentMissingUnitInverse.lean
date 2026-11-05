@@ -88,15 +88,4 @@ theorem contentMissingUnitMatrixIso_hom :
     (oldContentFEChart D Sc cutoff γ i N w).toLinearMap
     (content_unitColumn_square D Sc cutoff γ i N w) count
 
-/-- The given forward map is even in the canonical shifted source coordinates. -/
-theorem contentMissingUnitMatrixIso_hom_mem :
-    (contentMissingUnitMatrixIso D Sc cutoff γ i hi N w).hom ∈ parity (R := k) _ _ 0 := by
-  rw [contentMissingUnitMatrixIso_hom]
-  exact unitColumnMatrix_mem K dK N count w
-
-/-- The inverse retains the same module-value grading. -/
-theorem contentMissingUnitMatrixIso_inv_mem :
-    (contentMissingUnitMatrixIso D Sc cutoff γ i hi N w).inv ∈ parity (R := k) _ _ 0 :=
-  inv_mem _ (contentMissingUnitMatrixIso_hom_mem D Sc cutoff γ i hi N w)
-
 end OddMath.QuiverHecke.ELVOld

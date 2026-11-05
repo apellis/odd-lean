@@ -147,12 +147,6 @@ theorem comm_phiEven {u v T Y : B} (hu : Y * u = u * Y) (hv : Y * v = v * Y)
   simp only [phiEven, mul_add, add_mul, mul_sub, sub_mul, mul_assoc, mul_one, one_mul, hu', hv',
     hT]
 
-/-- An element commuting with `u`, `v` and `T` commutes with the even variant `g`. -/
-theorem comm_gEven {u v T Y : B} (hu : Y * u = u * Y) (hv : Y * v = v * Y)
-    (hT : Y * T = T * Y) : Y * gEven u v T = gEven u v T * Y := by
-  rw [gEven, ← mul_assoc, mul_sub, hv, hu, ← sub_mul, mul_assoc, comm_phiEven hu hv hT,
-    mul_assoc]
-
 namespace EvenTwo
 
 variable {u v T : B} (h : EvenTwo u v T)
@@ -226,11 +220,6 @@ theorem eq_of_one_smul {x y : B} (h : x * y = ((1 : ℤˣ) : ℤ) • (y * x)) :
 
 theorem mul_mul_of_mul_eq {x y z : B} (h : x * y = z) (r : B) : x * (y * r) = z * r := by
   rw [← mul_assoc, h]
-
-theorem mul_mul_mul_of_mul_mul_eq {x y z w : B} (h : x * (y * z) = w) (r : B) :
-    x * (y * (z * r)) = w * r := by
-  rw [← h]
-  simp only [mul_assoc]
 
 namespace IsSignedNilHeckeFamily
 

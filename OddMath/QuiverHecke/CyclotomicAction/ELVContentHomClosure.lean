@@ -128,25 +128,6 @@ private def comparisonComponent
   else (superfunctor_isZero _ (fun M => hF M δ hδ)).iso
     (superfunctor_isZero _ (fun M => hF' M δ hδ))
 
-private theorem comparisonComponent_hom_mem
-    (F F' : probeOldWeightSpace D Sc m ΛP x ⟶ elvWeightSpace D Sc cutoff bound ΛR y)
-    (q : F.comp (elvBlockEval D Sc cutoff bound ΛR γ) =
-      F'.comp (elvBlockEval D Sc cutoff bound ΛR γ))
-    (hF : ∀ M δ, δ ≠ γ → Limits.IsZero ((F.obj M) δ))
-    (hF' : ∀ M δ, δ ≠ γ → Limits.IsZero ((F'.obj M) δ)) (δ : WeightBlocks D ΛR y) :
-    (comparisonComponent D Sc m cutoff bound γ F F' q hF hF' δ).hom ∈ parity (R := k) _ _ 0 := by
-  by_cases hδ : δ = γ
-  · subst δ
-    unfold comparisonComponent
-    rw [dite_eq_left rfl]
-    exact eqToHom_mem_parity_zero q
-  · have hz := superfunctor_isZero
-      (F.comp (elvBlockEval D Sc cutoff bound ΛR δ)) (fun M => hF M δ hδ)
-    have he : (comparisonComponent D Sc m cutoff bound γ F F' q hF hF' δ).hom = 0 :=
-      hz.eq_of_src _ _
-    rw [he]
-    exact Submodule.zero_mem _
-
 private def comparisonIso
     (F F' : probeOldWeightSpace D Sc m ΛP x ⟶ elvWeightSpace D Sc cutoff bound ΛR y)
     (q : F.comp (elvBlockEval D Sc cutoff bound ΛR γ) =
@@ -155,18 +136,6 @@ private def comparisonIso
     (hF' : ∀ M δ, δ ≠ γ → Limits.IsZero ((F'.obj M) δ)) : F ≅ F' :=
   productIso D Sc m cutoff bound F F'
     (comparisonComponent D Sc m cutoff bound γ F F' q hF hF')
-
-private theorem comparisonIso_hom_mem
-    (F F' : probeOldWeightSpace D Sc m ΛP x ⟶ elvWeightSpace D Sc cutoff bound ΛR y)
-    (q : F.comp (elvBlockEval D Sc cutoff bound ΛR γ) =
-      F'.comp (elvBlockEval D Sc cutoff bound ΛR γ))
-    (hF : ∀ M δ, δ ≠ γ → Limits.IsZero ((F.obj M) δ))
-    (hF' : ∀ M δ, δ ≠ γ → Limits.IsZero ((F'.obj M) δ)) :
-    (comparisonIso D Sc m cutoff bound γ F F' q hF hF').hom ∈ parity (R := k) _ _ 0 := by
-  rw [Superfunctor.mem_parity_iff]
-  funext M δ
-  exact congrFun (Superfunctor.mem_parity_iff.mp
-    (comparisonComponent_hom_mem D Sc m cutoff bound γ F F' q hF hF' δ)) M
 
 /-- Selected-block factorization and actual zero components place a whole
 functor in the replete exact-content category. -/
@@ -230,26 +199,6 @@ def preFIso (i : I) {x' : X} (h : x + D.α i = x')
     (fun M δ hδ => obj_off_isZero D Sc m cutoff bound β γ G
       ((probeOldF D Sc m i ΛP h).obj M) δ hδ)
     (fun M δ hδ => obj_off_isZero D Sc m cutoff bound (blockSucc D ΛP i h β) γ _ M δ hδ)
-
-theorem postEIso_hom_mem (i : I) {y' : X} (h : y + D.α i = y')
-    (G : Hom D Sc m cutoff bound β γ) :
-    (postEIso D Sc m cutoff bound β γ i h G).hom ∈ parity (R := k) _ _ 0 :=
-  comparisonIso_hom_mem _ _ _ _ _ _ _ _ _ _ _
-
-theorem postFIso_hom_mem (i : I) {y' : X} (h : y + D.α i = y')
-    (G : Hom D Sc m cutoff bound β (blockSucc D ΛR i h γ)) :
-    (postFIso D Sc m cutoff bound β γ i h G).hom ∈ parity (R := k) _ _ 0 :=
-  comparisonIso_hom_mem _ _ _ _ _ _ _ _ _ _ _
-
-theorem preEIso_hom_mem (i : I) {x₀ : X} (h : x₀ + D.α i = x)
-    (β₀ : WeightBlocks D ΛP x₀) (G : Hom D Sc m cutoff bound (blockSucc D ΛP i h β₀) γ) :
-    (preEIso D Sc m cutoff bound γ i h β₀ G).hom ∈ parity (R := k) _ _ 0 :=
-  comparisonIso_hom_mem _ _ _ _ _ _ _ _ _ _ _
-
-theorem preFIso_hom_mem (i : I) {x' : X} (h : x + D.α i = x')
-    (G : Hom D Sc m cutoff bound β γ) :
-    (preFIso D Sc m cutoff bound β γ i h G).hom ∈ parity (R := k) _ _ 0 :=
-  comparisonIso_hom_mem _ _ _ _ _ _ _ _ _ _ _
 
 /-- Post-induction is closed on the replete exact-content Hom categories. -/
 theorem postE_supported (i : I) {y' : X} (h : y + D.α i = y')
@@ -367,10 +316,6 @@ def postShiftIso (p : ZMod 2) (G : Hom D Sc m cutoff bound β γ) :
       rfl)
     (fun M δ hδ => shift_off_isZero D Sc m cutoff bound β γ p G M δ hδ)
     (fun M δ hδ => obj_off_isZero D Sc m cutoff bound β γ _ M δ hδ)
-
-theorem postShiftIso_hom_mem (p : ZMod 2) (G : Hom D Sc m cutoff bound β γ) :
-    (postShiftIso D Sc m cutoff bound β γ p G).hom ∈ parity (R := k) _ _ 0 :=
-  comparisonIso_hom_mem _ _ _ _ _ _ _ _ _ _ _
 
 /-- The replete category is closed under parity shift on the Hom supercategory. -/
 theorem shift_supported (p : ZMod 2)

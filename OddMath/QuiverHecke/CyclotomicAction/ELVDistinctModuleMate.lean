@@ -4,7 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldModuleAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionMixedMateTensor
-import OddMath.QuiverHecke.CyclotomicAction.ELVSCatRectangularMate
+import OddMath.SKM.RouquierMixedMate
+import StringDiagrams.Super.SCat
 
 /-! # The old two-colour crossing and its prescribed mate
 
@@ -59,7 +60,6 @@ theorem cross_supernatural (i j : I) :
     exact congrArg
       (ideal D Sc cutoff (s.word ++ [j] ++ [i]) (t.word ++ [i] ++ [j])).mkQ h.symm
 
-
 /-- Positive two-colour crossing under the canonical induction comparisons. -/
 def moduleCross (i j : I) :
     oldInduction D Sc cutoff i ≫ oldInduction D Sc cutoff j ⟶
@@ -81,35 +81,5 @@ def moduleMate (i j : I) :
   SKM.rectangularMate (k := k) (B := SCat.{u,u,u + 1} k)
     (oldAppendAdjunction D Sc cutoff j) (oldAppendAdjunction D Sc cutoff j)
     (oldInduction D Sc cutoff i) (oldInduction D Sc cutoff i) (moduleCross D Sc cutoff i j)
-
-/-- The SCat rectangular mate is the ordered unit-crossing-counit component. -/
-theorem moduleMate_eq_ordered (i j : I)
-    (N : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :
-    (moduleMate D Sc cutoff i j).app (D.parity i * D.parity j) N =
-      BalancedInduction.orderedMixedMateComponent (append D Sc cutoff i) (append D Sc cutoff j)
-        (cross_supernatural D Sc cutoff i j) N := by
-  rw [moduleMate, SKM.rectangularMate_scat_app]
-  · rw [moduleCross_app, ite_eq_left rfl]
-    rfl
-  · intro Z
-    simp only [oldAppendAdjunction_unit_app, one_ne_zero, ↓reduceIte]
-  · intro Z
-    simp only [oldAppendAdjunction_counit_app, one_ne_zero, ↓reduceIte]
-
-/-- The actual mate on every balanced generator retains the whole kernel twist. -/
-theorem moduleMate_total_tensor (i j : I)
-    (N : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
-    (s t : OldCategory D Sc cutoff) (g : (append D Sc cutoff i).obj s ⟶ t)
-    (b : N.obj ((append D Sc cutoff j).obj s)) :
-    ((moduleMate D Sc cutoff i j).app (D.parity i * D.parity j) N).total t
-      (BalancedInduction.tensor (append D Sc cutoff i)
-        ((BalancedInduction.restriction (append D Sc cutoff j)).obj N).toFunctor s g b) =
-      BalancedInduction.tensor (append D Sc cutoff i) N.toFunctor
-        ((append D Sc cutoff j).obj s)
-        (crossComponent D Sc cutoff i j s ≫
-          twist k (D.parity i * D.parity j) ((append D Sc cutoff j).map g)) b := by
-  rw [moduleMate_eq_ordered]
-  exact BalancedInduction.orderedMixedMateComponent_total_tensor
-    (append D Sc cutoff i) (append D Sc cutoff j) (cross_supernatural D Sc cutoff i j) N s t g b
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct

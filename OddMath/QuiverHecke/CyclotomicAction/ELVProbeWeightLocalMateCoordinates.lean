@@ -92,7 +92,7 @@ theorem probeOldBlockEqualCross_stored_eq :
   apply HomogeneousSuperfunctorIso.total_ext
   intro N
   apply InducedCategory.hom_ext
-  rw [probeOldBlockEqualCross_native_total, probeAppendToEqualCross_total]
+  rw [probeOldBlockEqualCross_total, probeAppendToEqualCross_total]
 
 private theorem cross_comparison (p : ZMod 2) (M : ProbeOldWeightProduct D Sc m Λ x₁) :
     (Cross).app p ((F).obj M) ε =

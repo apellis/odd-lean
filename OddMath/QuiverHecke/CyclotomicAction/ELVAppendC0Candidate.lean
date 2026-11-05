@@ -360,11 +360,6 @@ theorem appendC0Candidate_canonical_crossing (i : I) (v s t : List I)
     split <;> simp
   exact (hu.smul_eq_zero).mp hz
 
-/-- The actual polynomial output embedding is injective over the full ELV old quotient. -/
-theorem appendOutputEmbedding_injective (i : I) (v t : List I) :
-    Function.Injective (appendOutputEmbedding D Sc cutoff i v t) :=
-  Function.LeftInverse.injective (appendC0Candidate_embedding D Sc cutoff i v t)
-
 private def appendShuffleSizeCast {n n' : ℕ} (e : n = n') :
     AppendShuffle (show n + 1 = n + 1 from rfl) ≃
       AppendShuffle (show n' + 1 = n' + 1 from rfl) := by
@@ -569,14 +564,6 @@ theorem appendC0_outputDot_crossing (i : I) (v s t : List I)
       Finsupp.single 0 ((ideal D Sc cutoff v t).mkQ (r ≫ twist k (D.parity i) g)) := by
   rw [appendOutputDot_crossingClass, map_sub, map_smul, map_smul,
     appendC0_crossing, appendC0_embedding, smul_zero, zero_sub, neg_smul]
-
-theorem appendC0_outputDot_crossing_odd (i : I) (hi : D.parity i = 1) (v s t : List I)
-    (r : hom D Sc cutoff v (s ++ [i])) (g : hom D Sc cutoff (s ++ [i]) t) :
-    appendC0 D Sc cutoff i v t
-      (appendOutputDot D Sc cutoff i v t (appendCrossingClass D Sc cutoff i v s t r g)) =
-      Finsupp.single 0 ((ideal D Sc cutoff v t).mkQ (r ≫ twist k 1 g)) := by
-  rw [appendOutputDot_crossingClass_odd D Sc cutoff i hi, map_add, map_neg,
-    appendC0_crossing, neg_zero, appendC0_embedding, zero_add]
 
 private theorem appendRunWord_shape (i : I) (u t : List I) (n : ℕ) (hn : u.length = n)
     (j : Fin (n + 1))
@@ -786,50 +773,5 @@ def appendC0Defect (i : I) (v t : List I) :
         Finsupp.single 0 ((ideal D Sc cutoff v t).mkQ (r ≫ twist k (D.parity i) g)) := by
   simp only [appendC0Defect, LinearMap.sub_apply, LinearMap.comp_apply,
     appendC0_outputDot_crossing, appendC0_crossing, map_zero, sub_zero]
-
-/-- The global output-dot defect has degree zero on every append-target vector. -/
-theorem appendC0Defect_degreeZero (i : I) (v t : List I)
-    (z : AppendTarget D Sc cutoff i v (t ++ [i])) :
-    appendC0Defect D Sc cutoff i v t z =
-      Finsupp.single 0 (appendC0Defect D Sc cutoff i v t z 0) := by
-  have hc : ∀ c ∈ appendCrossingSpan D Sc cutoff i v t,
-      appendC0Defect D Sc cutoff i v t c =
-        Finsupp.single 0 (appendC0Defect D Sc cutoff i v t c 0) := by
-    intro c hc
-    induction hc using Submodule.span_induction with
-    | mem c hc =>
-      obtain ⟨s, r, g, rfl⟩ := hc
-      simp only [appendC0Defect_crossing, Finsupp.single_eq_same,
-        Finsupp.smul_single]
-    | zero => simp only [map_zero, Finsupp.zero_apply, Finsupp.single_zero]
-    | add a b ha hb ha' hb' =>
-      rw [map_add, ha', hb']
-      simp only [Finsupp.add_apply, Finsupp.single_eq_same, Finsupp.single_add]
-    | smul a b hb hb' =>
-      rw [map_smul, hb']
-      simp only [Finsupp.single_eq_same, Finsupp.smul_single]
-  have hh := hc _ (appendC0_residual_mem D Sc cutoff i v t z)
-  simpa only [map_sub, appendC0Defect_embedding, sub_zero] using hh
-
-theorem appendCrossingSpan_disjoint_output (i : I) (v t : List I) :
-    Disjoint (appendCrossingSpan D Sc cutoff i v t)
-      (LinearMap.range (appendOutputEmbedding D Sc cutoff i v t)) := by
-  apply Submodule.disjoint_def.mpr
-  intro z hc hp
-  obtain ⟨f, rfl⟩ := hp
-  have hf : f = 0 := (appendC0_embedding D Sc cutoff i v t f).symm.trans
-    (appendCrossingSpan_le_ker D Sc cutoff i v t hc)
-  simp only [hf, map_zero]
-
-/-- The global output-dot formula, with its required degree-zero defect. -/
-theorem appendC0_outputDot (i : I) (v t : List I)
-    (z : AppendTarget D Sc cutoff i v (t ++ [i])) :
-    appendC0 D Sc cutoff i v t (appendOutputDot D Sc cutoff i v t z) =
-      appendOutputShift D Sc cutoff v t (appendC0 D Sc cutoff i v t z) +
-        Finsupp.single 0 (appendC0Defect D Sc cutoff i v t z 0) := by
-  have h := appendC0Defect_degreeZero D Sc cutoff i v t z
-  change appendC0 D Sc cutoff i v t (appendOutputDot D Sc cutoff i v t z) -
-    appendOutputShift D Sc cutoff v t (appendC0 D Sc cutoff i v t z) = _ at h
-  exact (sub_eq_iff_eq_add.mp h).trans (add_comm _ _)
 
 end OddMath.QuiverHecke.ELVOld

@@ -145,16 +145,4 @@ theorem appendOutputDot_crossingClass (i : I) (v s t : List I)
     pow_zero, End.one_def, affineUnit_id, Category.comp_id]
   simp only [rightContext_comp, Category.assoc]
 
-/-- At an odd moving colour, the defect is the positive degree-zero output term. -/
-theorem appendOutputDot_crossingClass_odd (i : I) (hi : D.parity i = 1)
-    (v s t : List I) (r : hom D Sc cutoff v (s ++ [i]))
-    (g : hom D Sc cutoff (s ++ [i]) t) :
-    appendOutputDot D Sc cutoff i v t (appendCrossingClass D Sc cutoff i v s t r g) =
-      -appendCrossingClass D Sc cutoff i v s t
-        (r ≫ appendMovingPower D Sc cutoff i s 1) (twist k 1 g) +
-      appendOutputEmbedding D Sc cutoff i v t
-        (Finsupp.single 0 ((ideal D Sc cutoff v t).mkQ (r ≫ twist k 1 g))) := by
-  rw [appendOutputDot_crossingClass, hi, mul_one]
-  simp only [SKM.zsign, ite_true, neg_one_smul, sub_neg_eq_add]
-
 end OddMath.QuiverHecke.ELVOld

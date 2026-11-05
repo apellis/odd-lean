@@ -50,7 +50,6 @@ theorem exists_indec_idempotents (s : List I) :
   · rw [← evR_sum, ht]
     rfl
 
-
 section Top
 
 variable (ν : X) (s t : List I) {μ : X} (hw : SKM.wt D (-ν) (upWord s ++ SKM.dnWord t) = μ)

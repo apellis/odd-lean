@@ -99,16 +99,5 @@ def ofCoefficients (hLower : (𝟙 (F₀ ≫ E₀) : _ ⟶ _) = 0)
 
 @[simp] theorem negativeInverse_g' (hLower : (𝟙 (F₀ ≫ E₀) : _ ⟶ _) = 0) (j : ℕ) :
     (negativeInverse A₀ A x p n V hLower).g' j = V.coeff j := rfl
-/-- The local negative inverse keeps the principal zero map after height normalization. -/
-theorem ofCoefficients_invNeg_f' (hLower : (𝟙 (F₀ ≫ E₀) : _ ⟶ _) = 0)
-    (hDouble : (𝟙 (E₀ ≫ E) : _ ⟶ _) = 0) (hh : -(n : ℤ) ≤ 0) :
-    ((ofCoefficients A₀ A x p n V hLower hDouble).invNeg hh).f' = 0 := by
-  cases n <;> rfl
-
-/-- Every prescribed coefficient is the corresponding actual local inverse row. -/
-theorem ofCoefficients_invNeg_g' (hLower : (𝟙 (F₀ ≫ E₀) : _ ⟶ _) = 0)
-    (hDouble : (𝟙 (E₀ ≫ E) : _ ⟶ _) = 0) (hh : -(n : ℤ) ≤ 0) (j : ℕ) :
-    ((ofCoefficients A₀ A x p n V hLower hDouble).invNeg hh).g' j = V.coeff j := by
-  cases n <;> rfl
 
 end OddMath.SKM.RouquierZeroLocal

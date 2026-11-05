@@ -85,20 +85,4 @@ theorem oldContentMatrixCharts_mate_comp
       (tensor J₀ ((restriction J₀).obj N).toFunctor s a b))
   exact h.trans hm.symm
 
-/-- The given principal mate field through the genuine chosen charts,
-on every vector of the entire balanced source. -/
-theorem oldContentMatrixCharts_mate
-    (N : Superfunctor k (OldContentCategory D Sc cutoff (i :: ν)) (SVec k))
-    (t : OldContentCategory D Sc cutoff (i :: ν))
-    (x : Obj J₀ ((restriction J₀).obj N).toFunctor t) :
-    (oldContentFELinearEquiv D Sc cutoff ν i N t).toLinearMap
-      (orderedGridMateLinear J₀ J₁ (oldContentEqualCross_supernatural D Sc cutoff ν i) N t x) =
-    (matrixMateComponent D Sc cutoff i (induced Q₁ N)).total t.obj
-      ((oldContentEFLinearEquiv D Sc cutoff ν i N t).toLinearMap x) := by
-  have h := LinearMap.congr_fun (oldContentMatrixCharts_mate_comp D Sc cutoff ν i N t) x
-  have hm := oldMatrixMateLinear_apply D Sc cutoff i (induced Q₁ N) t.obj
-    ((oldContentEFLinearEquiv D Sc cutoff ν i N t).toLinearMap x)
-  dsimp only [LinearMap.comp_apply] at h
-  exact h.trans hm
-
 end OddMath.QuiverHecke.ELVOld

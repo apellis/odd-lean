@@ -320,18 +320,5 @@ theorem sigmaEntry_reservoirToProbe (c : P.CrossCoeff) (i : I) (ν : X) (t : Sec
       ((homContentPreF P.T P.W.obj i (P.muM t) (P.muP_preF i hb)).obj) (eq_of_heq he)
     simpa only [Functor.comp_obj, Functor.id_obj, SPath.castTgt, tD, tP, nextSector, muM] using hh
 
-/-- The negative augmented matrix retains its additional principal minus. -/
-theorem sigmaEntry_reservoirToProbe_negative (c : P.CrossCoeff) (i : I) (ν : X)
-    (t : Sector I) (hb : StepValid (false, i) true t)
-    (hc : StepValid (true, i) false t) (Z : P.H t) :
-    (reservoirCapFactorIso i ν hc (by trivial) (SPath.next_upDn_false_false hc) Z).inv ≫
-      (-P.sigmaEntry c i i ν
-        (SPath.two false false hc (by trivial) (SPath.next_upDn_false_false hc))
-        (SPath.two true true hb (by trivial) (SPath.next_dnUp_true_true hb)) Z) ≫
-      (probeCupFactorIso i ν hb (by trivial) (SPath.next_dnUp_true_true hb) Z).hom =
-      -reservoirToProbeBend c i t hb hc Z := by
-  erw [Preadditive.neg_comp, Preadditive.comp_neg, sigmaEntry_reservoirToProbe]
-  simp only [Category.assoc, Iso.inv_hom_id_assoc, Iso.inv_hom_id, Category.comp_id]
-
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

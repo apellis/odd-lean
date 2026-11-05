@@ -22,15 +22,6 @@ private theorem tripleEvaluation_reencode
   cases h₂
   simp only [eqToIso_refl, Iso.refl_trans]
 
-private theorem tripleEvaluation_component
-    {C B E : Type*} [Category* C] [Category* B] [Category* E]
-    (R : C ⥤ B) {F : C ⥤ E} {G H : B ⥤ E}
-    (h : F = R ⋙ G) (e : G ≅ H) (s : F ≅ R ⋙ H)
-    (hs : s = eqToIso h ≪≫ Functor.isoWhiskerLeft R e) (M : C) :
-    s.hom.app M = (eqToIso h).hom.app M ≫ e.hom.app (R.obj M) := by
-  cases hs
-  rfl
-
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
 
@@ -68,13 +59,6 @@ theorem contentTripleComparisonVia_assoc :
   simp only [contentTripleComparisonViaFirst, contentTripleComparisonViaLast,
     contentInductionCompTo_eq]
   exact inductionCompOfEq_assoc _ _ _ _ _ _ _ _ _ _
-
-/-- Component coherence keeps the native induction-module endpoints. -/
-theorem contentTripleComparisonVia_assoc_hom
-    (M : ContentModules D Sc cutoff bound β) :
-    (contentTripleComparisonViaFirst D Sc cutoff bound β a b c δ₁ δ₂ γ h₁ h₂ h₃ hp h).hom.app M =
-      (contentTripleComparisonViaLast D Sc cutoff bound β a b c δ₁ δ₂ γ h₁ h₂ h₃ hq h).hom.app M := by
-  rw [contentTripleComparisonVia_assoc D Sc cutoff bound β a b c δ₁ δ₂ γ h₁ h₂ h₃ hp hq h]
 
 /-- First-pair flattening retains exactly the canonical triple comparison. -/
 theorem contentTripleComparisonViaFirst_eq :
@@ -141,33 +125,7 @@ theorem elvWeightTripleComparison_viaLast :
     (elvBlockTripleInd_content_eq D Sc cutoff bound i j l Λ h₁ h₂ h₃ β)
     (elvEFunctor_comp₃_contentTriple_eq D Sc cutoff bound i j l Λ h₁ h₂ h₃ β β₃ rfl)
     (contentETripleComparison D Sc cutoff bound β.1 l j i β₃.1 hT)
-/-- The actual first-pair component formula keeps native module endpoints. -/
-theorem elvWeightTripleComparison_viaFirst_hom
-    (M : ELVWeightProduct D Sc cutoff bound Λ x₀) :
-    (elvWeightTripleComparison D Sc cutoff bound i j l Λ h₁ h₂ h₃ β β₃ rfl).hom.app M =
-      (eqToIso (elvEFunctor_comp₃_blockSucc D Sc cutoff bound i j l Λ h₁ h₂ h₃ β)).hom.app M ≫
-        (contentTripleComparisonViaFirst D Sc cutoff bound β.1 l j i
-          β₁.1 β₂.1 β₃.1 hc₁ hc₂ hc₃ hP hT).hom.app (M β) :=
-  tripleEvaluation_component (elvBlockEval D Sc cutoff bound Λ β).toFunctor
-    (elvEFunctor_comp₃_blockSucc D Sc cutoff bound i j l Λ h₁ h₂ h₃ β)
-    (contentTripleComparisonViaFirst D Sc cutoff bound β.1 l j i
-      β₁.1 β₂.1 β₃.1 hc₁ hc₂ hc₃ hP hT)
-    (elvWeightTripleComparison D Sc cutoff bound i j l Λ h₁ h₂ h₃ β β₃ rfl)
-    (elvWeightTripleComparison_viaFirst D Sc cutoff bound i j l Λ h₁ h₂ h₃ β) M
 
-/-- Last-pair flattening evaluates to that identical chosen component. -/
-theorem elvWeightTripleComparison_viaLast_hom
-    (M : ELVWeightProduct D Sc cutoff bound Λ x₀) :
-    (elvWeightTripleComparison D Sc cutoff bound i j l Λ h₁ h₂ h₃ β β₃ rfl).hom.app M =
-      (eqToIso (elvEFunctor_comp₃_blockSucc D Sc cutoff bound i j l Λ h₁ h₂ h₃ β)).hom.app M ≫
-        (contentTripleComparisonViaLast D Sc cutoff bound β.1 l j i
-          β₁.1 β₂.1 β₃.1 hc₁ hc₂ hc₃ hQ hT).hom.app (M β) :=
-  tripleEvaluation_component (elvBlockEval D Sc cutoff bound Λ β).toFunctor
-    (elvEFunctor_comp₃_blockSucc D Sc cutoff bound i j l Λ h₁ h₂ h₃ β)
-    (contentTripleComparisonViaLast D Sc cutoff bound β.1 l j i
-      β₁.1 β₂.1 β₃.1 hc₁ hc₂ hc₃ hQ hT)
-    (elvWeightTripleComparison D Sc cutoff bound i j l Λ h₁ h₂ h₃ β β₃ rfl)
-    (elvWeightTripleComparison_viaLast D Sc cutoff bound i j l Λ h₁ h₂ h₃ β) M
 end Weight
 
 end OddMath.QuiverHecke.ELVOld

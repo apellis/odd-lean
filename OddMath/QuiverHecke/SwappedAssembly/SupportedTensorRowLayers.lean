@@ -85,7 +85,6 @@ def tensorVacuumRowProjection :=
     (congrArg (fun Z : H D (parameterTwist D Sc) m cutoff (PowerWordContent.powerBound D cutoff L)
       ΛP ΛR (0,0) => Z.obj) (tensorTargetFamily_zero D Sc m cutoff ΛP ΛR L))
 
-
 /-- The constructed supported tensor matrix action is literal postcomposition at its chosen vacuum. -/
 theorem tensorVacuumRowProjection_layer
     (gens : (elvProbeReservoir D Sc m cutoff (PowerWordContent.powerBound D cutoff L) ΛP ΛR hP hR).Generators)

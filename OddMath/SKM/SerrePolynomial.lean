@@ -12,7 +12,7 @@ import Mathlib.Algebra.Ring.GeomSum
 Brundan–Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2,
 Proposition 11.2, via Hill–Wang, arXiv:1202.2769v2, Theorem 5.9.
 The use of condition (C6) in Hill–Wang's polynomial lemma can be replaced
-by the odd-exponent vanishing already included in BE2 (1.6).
+by the odd-exponent vanishing already included in BE2 (1.4).
 
 The finitely supported functions below record **ordered** monomials
 `z^a x^b y^c`. They are coefficient modules, not commutative algebra models
@@ -117,7 +117,7 @@ theorem serreWindow_braidPolynomial (S : Scalars D R) (i j : I) {k : ℕ}
   rw [hz, add_zero, Finsupp.smul_single]
   rfl
 
-/-- The potentially forbidden exponents vanish directly by BE2 (1.6),
+/-- The potentially forbidden exponents vanish directly by BE2 (1.4),
 without Hill–Wang's condition (C6). -/
 theorem odd_exponent_coefficient_zero (S : Scalars D R) {i : I}
     (hi : D.parity i = 1) (j : I) {p : ℕ} (hp : Odd p) (q : ℕ) :
@@ -137,7 +137,7 @@ def quadraticValue {A : Type*} [Ring A] [Module R A]
       S.s i j p q • (u ^ p * v ^ q)
 
 /-- The admissibility property for which Hill–Wang invokes (C6) follows
-instead from BE2 (1.4) and (1.6), for every BE2 parameter family. -/
+instead from BE2 (1.2) and (1.4), for every BE2 parameter family. -/
 theorem quadraticValue_neg_left {A : Type*} [Ring A] [Module R A]
     (S : Scalars D R) {i j : I} (hij : i ≠ j) (hi : D.parity i = 1)
     (u v : A) : quadraticValue S i j (-u) v = quadraticValue S i j u v := by

@@ -174,15 +174,6 @@ instance induction_super : IsSuperfunctor k (induction (k := k) J) where
     rw [mapComponent_tensor, Superfunctor.app_eq_zero_of_mem hf hq]
     exact tensor_zero_right J N.toFunctor v _
 
-/-- The component formula on homogeneous arrows displays the Koszul sign. -/
-theorem mapComponent_tensor_of_mem (p : ZMod 2) (w : D) (v : C)
-    {q : ZMod 2} (h : J.obj v ⟶ w) (hh : h ∈ parity (R := k) (J.obj v) w q)
-    (m : M.obj v) :
-    mapComponent J f p w (tensor J M.toFunctor v h m) =
-      sign k (p * q) • tensor J N.toFunctor v h (f.app p v m) := by
-  rw [mapComponent_tensor, twist_of_mem p hh]
-  simp only [tensor, ← smul_tmul', map_smul]
-
 /-- The total action includes both parity components, including odd module maps. -/
 theorem moduleMap_total_tensor (w : D) (v : C) (h : J.obj v ⟶ w) (m : M.obj v) :
     (moduleMap J f).total w (tensor J M.toFunctor v h m) =

@@ -187,7 +187,6 @@ theorem eq_5_11 (i : I) (μ : X) (n : ℕ) (hn : (n : ℤ) < D.h i μ) :
           eq_5_14 cs i μ m n (by omega) hn]
     _ = dcupRHS cs i μ n := by rw [cl_nil, Category.comp_id]
 
-
 /-! ## (5.12) -/
 
 /-- The right-hand side of (5.12). -/
@@ -285,7 +284,6 @@ theorem eq_5_12 (i : I) (μ : X) (n : ℕ) (hn : (n : ℤ) < -D.h i μ) :
           eq_5_14' cs i μ m n (by omega) hn]
     _ = dcapRHS cs i μ n := by rw [cl_nil, Category.id_comp]
 
-
 /-! ## Corollary 5.3 -/
 
 /-- **Brundan–Ellis, Corollary 5.3, (5.15)**: `σ ≫` (leftward crossing) on `Eᵢ Fᵢ 1_λ` is
@@ -382,7 +380,6 @@ theorem eq_5_17_a (i : I) (μ : X) :
       congr 1
       simp [isg]
 
-
 /-- `(η with -⟨hᵢ,λ⟩ dots) ≫ (right-hand side of (5.12))` for `n < -⟨hᵢ,λ⟩`, computed with
 `bubble_key`: `-(-1)^{|i|(⟨hᵢ,λ⟩+n)} c_{λ;i}⁻¹` times the counterclockwise bubble with `-n-1`
 dots. -/
@@ -422,7 +419,6 @@ theorem etaL_dcapRHS (i : I) (μ : X) (n : ℕ) (hn : (n : ℤ) < -D.h i μ) :
     smul_smul, ← neg_smul]
   congr 1
   rw [isg_congr _ (n := D.h i μ + n) (by omega)]; ring
-
 
 /-- **Brundan–Ellis, Corollary 5.4, (5.17)**, second relation: `η' ≫ σ` on `1_λ → Fᵢ Eᵢ 1_λ` is
 `-∑_{n=0}^{-⟨hᵢ,λ⟩} (-1)^{|i|(n+1)}` (the counterclockwise bubble with `-n-1` dots) followed by

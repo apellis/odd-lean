@@ -86,11 +86,6 @@ theorem emptyProbe_regular (Λ : X) :
   rw [dite_eq_left rfl]
   exact forget_regular D Sc m _ Multiset.toList_zero
 
-theorem regularProbe_isZero (Λ : X) (β : WeightBlocks D Λ (-Λ)) (h : β.1 ≠ 0) :
-    Limits.IsZero (regularProbe D Sc m Λ β) := by
-  simp only [regularProbe, dite_eq_right h]
-  exact probeOldZeroModule_isZero D Sc m β.1
-
 private theorem probeScalar_mem :
     SVec.ofHom (probeVacuumScalarEquiv D Sc m).symm.toLinearMap ∈
       parity (R := k) ((probeOldVacuumRegular D Sc m).obj (probeOldVacuumObject D Sc m))
@@ -163,31 +158,6 @@ theorem regularIso_hom_mem :
   intro β
   exact comp_mem (eqToHom_mem_parity_zero (regularBlock_eq D Sc m cutoff bound ΛP ΛR W β))
     (VacuumTensor.scalarTensorIso_hom_mem _ _ _ _)
-
-theorem regularIso_inv_mem :
-    (regularIso D Sc m cutoff bound ΛP ΛR W).inv ∈ parity (R := k) _ _ 0 :=
-  inv_mem _ (regularIso_hom_mem D Sc m cutoff bound ΛP ΛR W)
-
-/-- On every vector the comparison is the original probe scalar coordinate
-and tensor right unitor, after the proved regular-probe evaluation. -/
-theorem regularIso_hom_apply
-    (β : WeightBlocks D ΛR (ReservoirWord.weight D ΛR 0))
-    (c : ContentCategory D Sc cutoff bound β.1)
-    (z : (((hom D Sc m cutoff bound ΛP ΛR W).obj (regularProbe D Sc m ΛP)) β).obj c) :
-    ((regularIso D Sc m cutoff bound ΛP ΛR W).hom β).total c z =
-      VacuumTensor.scalarTensorEquiv ((W β).obj c)
-        ((probeOldVacuumRegular D Sc m).obj (probeOldVacuumObject D Sc m))
-        (probeVacuumScalarEquiv D Sc m).symm
-        ((eqToHom (regularBlock_eq D Sc m cutoff bound ΛP ΛR W β)).total c z) := by
-  change ((eqToHom (regularBlock_eq D Sc m cutoff bound ΛP ΛR W β) ≫
-    (VacuumTensor.scalarTensorIso (W β) _
-    (probeVacuumScalarEquiv D Sc m).symm (probeScalar_mem D Sc m)).hom).total c) z = _
-  rw [Superfunctor.comp_total]
-  change (VacuumTensor.scalarTensorIso (W β) _
-    (probeVacuumScalarEquiv D Sc m).symm (probeScalar_mem D Sc m)).hom.total c _ = _
-  rw [VacuumTensor.scalarTensorIso,
-    OddMath.HomogeneousSuperfunctorIso.ofComponents_hom_total]
-  rfl
 
 /-- The regular tensor vector carrying an arbitrary reservoir coefficient. -/
 def tensorVector (β : WeightBlocks D ΛR (ReservoirWord.weight D ΛR 0))

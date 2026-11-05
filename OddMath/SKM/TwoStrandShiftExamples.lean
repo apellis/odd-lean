@@ -47,7 +47,6 @@ def symmetrizer : Symmetrizer datum where
   pos := fun _ => one_pos
   symm := fun _ _ => rfl
 
-
 /-- Positive exponent two in the existing Q equivalence. -/
 def positiveShift (ν : ℤ) :=
   qPowRawIso scalars symmetrizer homogeneous () ν rfl 2 0

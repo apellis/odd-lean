@@ -96,48 +96,5 @@ variable {p : ZMod 2} {γ : ∀ s, (J ⋙ K).obj s ⟶ (J ⋙ K).obj s}
   {α : ∀ s, J.obj s ⟶ J.obj s} (hα : IsSupernatural k p α)
   {β : ∀ s, K.obj s ⟶ K.obj s} (hβ : IsSupernatural k p β)
 
-/-- The actual shifted unit fields are natural on ALL input module maps. -/
-def gridUnitMatrixEntryNatTrans (m : ℕ) (a : Option (Fin m)) :
-    gridUnitMatrixSummandFunctor (k := k) J p m a ⟶ induction (k := k) K ⋙ restriction (k := k) K :=
-  match a with
-  | none => (SKM.IsSupernatural.shiftSource (orderedGridMateComponent_supernatural J K hγ)).toNatTrans
-  | some r => (SKM.IsSupernatural.shiftSource (gridUnitDotColumn_supernatural K hβ r.val)).toNatTrans
-
-/-- The actual shifted cap fields are natural on ALL input module maps. -/
-def gridCapMatrixEntryNatTrans (m : ℕ) (a : Option (Fin m)) :
-    restriction (k := k) J ⋙ induction (k := k) J ⟶ gridCapMatrixSummandFunctor (k := k) K p m a :=
-  match a with
-  | none => (SKM.IsSupernatural.shiftTarget (orderedGridMateComponent_supernatural J K hγ)).toNatTrans
-  | some r => (SKM.IsSupernatural.shiftTarget (gridCapDotRow_supernatural J hα r.val)).toNatTrans
-
-/-- The input functor has the given literal canonical unit summand. -/
-theorem gridUnitMatrixSummandFunctor_obj (q : ZMod 2) (m : ℕ) (a : Option (Fin m))
-    (M : Superfunctor k A (SVec k)) :
-    (gridUnitMatrixSummandFunctor (k := k) J q m a).obj M = gridUnitMatrixFamily J q M m a := by
-  cases a <;> rfl
-
-/-- The input functor has the given literal canonical cap summand. -/
-theorem gridCapMatrixSummandFunctor_obj (q : ZMod 2) (m : ℕ) (a : Option (Fin m))
-    (M : Superfunctor k A (SVec k)) :
-    (gridCapMatrixSummandFunctor (k := k) K q m a).obj M = gridCapMatrixFamily K q M m a := by
-  cases a <;> rfl
-
-/-- The natural unit field is exactly the prescribed component, with only
-its explicit literal-module endpoint equality. -/
-theorem gridUnitMatrixEntryNatTrans_app (m : ℕ) (a : Option (Fin m))
-    (M : Superfunctor k A (SVec k)) :
-    (gridUnitMatrixEntryNatTrans J K hγ hβ m a).app M =
-      eqToHom (gridUnitMatrixSummandFunctor_obj J p m a M) ≫
-        gridUnitMatrixEntry J K hγ hβ M m a := by
-  cases a <;> exact (Category.id_comp _).symm
-
-/-- The natural cap field is exactly the prescribed component, with only
-its explicit literal-module endpoint equality. -/
-theorem gridCapMatrixEntryNatTrans_app (m : ℕ) (a : Option (Fin m))
-    (M : Superfunctor k A (SVec k)) :
-    (gridCapMatrixEntryNatTrans J K hγ hα m a).app M =
-      gridCapMatrixEntry J K hγ hα M m a ≫
-        eqToHom (gridCapMatrixSummandFunctor_obj K p m a M).symm := by
-  cases a <;> exact (Category.comp_id _).symm
 end Families
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

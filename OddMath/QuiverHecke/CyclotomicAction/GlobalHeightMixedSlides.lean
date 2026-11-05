@@ -121,10 +121,6 @@ def heightTwoColourRightMul {u : C} (hu : TwoColourCornerMulData D Sc i j c a ha
   ⟨heightTwoColourRightMulLinear D Sc i j c a ha n hu,
     heightTwoColourRightMulLinear_isHom D Sc i j c a ha n hu⟩
 
-theorem heightTwoColourRightMul_parity {u : C} (hu : TwoColourCornerMulData D Sc i j c a ha n u) :
-    heightTwoColourRightMul D Sc i j c a ha n hu ∈ parity (R := k) T T d :=
-  SuperBimodule.mem_parity_iff.2 (heightTwoColourRightMulLinear_parity D Sc i j c a ha n hu)
-
 theorem heightTwoColourRightMul_apply {u : C} (hu : TwoColourCornerMulData D Sc i j c a ha n u)
     {p : ZMod 2} (x : (T).toSVec) (hx : x ∈ (T).toSVec.part p) :
     ((heightTwoColourRightMul D Sc i j c a ha n hu).1 x).val = koszulSign p d • (x.val * u) := by

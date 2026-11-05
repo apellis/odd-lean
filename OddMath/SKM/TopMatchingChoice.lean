@@ -80,25 +80,18 @@ def atTop : MatchingBasisChoice (List.ofFn fun r : Fin c => (true, a r)) (List.o
   serialize R n := topDotMoves (List.ofFn fun r : Fin c => (true, a r)) R.val (fun j => (F.topPosition a b R j).val) n
   decorates R n := topDotMoves_decorates (List.ofFn fun r : Fin c => (true, a r)) R.val _ n
 
-
 theorem atTop_bounded (R : (F.atTop a b).members) (j : ℕ) :
     ((F.atTop a b).points R j).1 ≤ R.val.length := le_rfl
-
-theorem atTop_valid (R : (F.atTop a b).members) (n : MatchingStrand (List.ofFn fun r : Fin c => (true, a r)) R.val → ℕ) :
-    DOk₂ (List.ofFn fun r : Fin c => (true, a r)) ((F.atTop a b).serialize R n) :=
-  topDotMoves_valid b (F.matching R.val R.property).1 (F.topPosition a b R) n
 
 theorem atTop_layers (t : (F.atTop a b).Labels) :
     (F.atTop a b).layers t = tLay (List.ofFn fun r : Fin c => (true, a r)) t.1.val ++
       (topDotLayers b (F.topPosition a b t.1) t.2).map ofL :=
   dLay_topDotMoves b (F.matching t.1.val t.1.property).1 (F.topPosition a b t.1) t.2
 
-
 /-- Positions of the literal top dots, in the serializer's strand order. -/
 def topPositions (R : F.members) (n : MatchingStrand (List.ofFn fun r : Fin c => (true, a r)) R.val → ℕ) : List ℕ :=
   (leftEnds₂ (List.ofFn fun r : Fin c => (true, a r)) R.val).attach.flatMap
     (fun j => List.replicate (n j) (F.topPosition a b R j).val)
-
 
 theorem topPositions_length (R : F.members) (n) :
     (F.topPositions a b R n).length = ∑ j, n j := by
@@ -144,26 +137,12 @@ private theorem count_flatMap_replicate {α β : Type*} [BEq β] [LawfulBEq β]
         z (List.mem_cons_of_mem _ hz)) hj
       simp [List.count_replicate, Ne.symm hne, hi]
 
-
 theorem topPositions_count (R : F.members) (n) (j : MatchingStrand (List.ofFn fun r : Fin c => (true, a r)) R.val) :
     (F.topPositions a b R n).count (F.topPosition a b R j).val = n j := by
   unfold topPositions
   exact count_flatMap_replicate _ (nodup_leftEnds₂ _ _).attach
     (fun j => (F.topPosition a b R j).val) n
     (fun x _ y _ h => (F.topPosition a b R).injective (Fin.ext h)) (List.mem_attach _ j)
-
-
-theorem topPositions_count_eq (R : F.members) (n) (i : ℕ) :
-    (F.topPositions a b R n).count i = (F.topCountsEquiv a b R n).val i := by
-  by_cases hi : i < d
-  · let j := (F.topPosition a b R).symm ⟨i, hi⟩
-    have hj : (F.topPosition a b R j).val = i := by simp [j]
-    rw [← hj, F.topPositions_count, F.topCountsEquiv_apply]
-  · have hc : (F.topCountsEquiv a b R n).val i = 0 := by
-      by_contra hn
-      exact hi ((F.topCountsEquiv a b R n).property i (Finsupp.mem_support_iff.mpr hn))
-    rw [hc]
-    exact List.count_eq_zero.mpr (fun h => hi (F.topPositions_bound a b R n i h))
 
 private theorem dLay_dt_list (v : List (Letter I)) (is : List ℕ) :
     dLay v (is.map (.dt (I := I))) = dotsOn v is := by
@@ -188,7 +167,6 @@ theorem atTop_layers_dotsOn (t : (F.atTop a b).Labels) :
   change dLay _ _ = _
   rw [F.atTop_moves a b, dLay_append, dLay_map_tm, tmoves_map_tm,
     (F.matching t.1.val t.1.property).1.2, dLay_dt_list]
-
 
 /-- Every top-decorated upward representative has ordinary layers, exactly
 rather than up to a scalar or matching isomorphism. -/
