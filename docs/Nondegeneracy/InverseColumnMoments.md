@@ -189,10 +189,17 @@ Still open:
    It uses that the old empty-content category has only the empty object
    (`emptyObject_eq`), that its endomorphisms are coefficients
    (`vacuumEnd_eq`, `vacuum_map_eq`), and the morphisms `vacuumHom` out of the
-   regular empty probe. Remaining for faithfulness: restrict an endomorphism of
-   `WeightTensorVacuum.hom` to each weight block, apply
-   `hom_ext_of_generating` there, and pass through the input-weight transport
-   of `tensorHomAt`.
+   regular empty probe. Faithfulness is checked
+   (`SupportedVacuumDecodeFaithful.lean`): `WeightTensorVacuum.selectedHom_end_ext`
+   determines an endomorphism of the selected Hom input by its total at
+   `regularProbe` on the vacuum block (off-vacuum blocks are zero objects),
+   `tensorVacuumEndDecode_injective` holds since the content-zero category has one
+   object, and `SupportedSectors.vacuumDecodeFaithful_tensorTarget` gives, for every
+   comparison `c : E Z ≅ V`, injectivity of
+   `f ↦ tensorVacuumEndDecode (c.inv ≫ E.map f ≫ c.hom)` on endomorphisms of the
+   vacuum object `Z` of the tensor target family, `E = vacuumSectorEvaluation`.
+   Remaining for item 1: evaluate the vacuum entry through this reading and compare
+   with the moment identity.
 2. The odd bubble `oddBubble` at positive height, the same way.
 3. Even colours need an even moment result; nonpositive height is handled
    separately.

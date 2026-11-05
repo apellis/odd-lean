@@ -2617,6 +2617,7 @@ import OddMath.QuiverHecke.SwappedAssembly.Sigma.FactorWindowInverse
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseCapInverse
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseCupInverse
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseBubbleEntry
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseRightBubbleEntry
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SupportedFactorWindowInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirBoundaries
 import OddMath.SKM.RouquierHomBendMonomials
@@ -2775,6 +2776,7 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedActionLayers
 import OddMath.QuiverHecke.SwappedAssembly.SupportedClosedAction
 import OddMath.QuiverHecke.SwappedAssembly.SupportedClosedCoefficients
 import OddMath.QuiverHecke.SwappedAssembly.SupportedRightBubbleCoefficients
+import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumEntryLift
 import OddMath.SKM.PairingExtensionBubbles
 import OddMath.QuiverHecke.PairingExtensionAffine
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumBendSeries
@@ -2804,3 +2806,4 @@ import OddMath.QuiverHecke.VacuumRouteSwappedBases
 import OddMath.QuiverHecke.VacuumRouteSwappedCharts
 import OddMath.QuiverHecke.VacuumRouteSwappedNonpositiveBubbles
 import OddMath.QuiverHecke.VacuumRouteSwappedPositiveBubbles
+import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumDecodeFaithful
