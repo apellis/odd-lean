@@ -102,14 +102,4 @@ theorem compositionSuperCrossing_parity :
     compositionSuperCrossing D Sc i j a ha n ∈ parity (R := k) P Q d :=
   SuperBimodule.mem_parity_iff.2 (compositionCrossingLinear_parity D Sc i j a ha n)
 
-/-- Evaluation on a homogeneous element displays the sign explicitly. -/
-theorem compositionSuperCrossing_apply {p : ZMod 2} (x : (P).toSVec)
-    (hx : x ∈ (P).toSVec.part p) :
-    ((compositionSuperCrossing D Sc i j a ha n).1 x).val =
-      koszulSign p d • (x.val * c) := by
-  change ((P).toSVec.sgn d x).val * c = _
-  rw [SVec.sgn_apply_of_mem d hx]
-  change (sign k (p * d) • x.val) * c = _
-  rw [smul_mul_assoc, Supercategory.sign_mul, Int.cast_smul_eq_zsmul]
-
 end OddMath.QuiverHecke

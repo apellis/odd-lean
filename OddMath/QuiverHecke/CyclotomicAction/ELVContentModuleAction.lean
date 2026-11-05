@@ -101,19 +101,6 @@ def contentGradedSupercategory (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
       id_mem_degree := fun v => GradedSupercategory.id_mem_degree v.obj
       comp_mem_degree := fun hf hg => GradedSupercategory.comp_mem_degree hf hg }
 
-/-- Right append preserves the inherited integer grading as well as parity. -/
-def contentAppendGraded (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
-    (β : Multiset I) (σ : List I) :
-    letI := contentGradedSupercategory D Sc cutoff N sy hc β
-    letI := contentGradedSupercategory D Sc cutoff N sy hc (β + (σ : Multiset I))
-    GradedSuperfunctor k (ContentCategory D Sc cutoff N β)
-      (ContentCategory D Sc cutoff N (β + (σ : Multiset I))) := by
-  letI := contentGradedSupercategory D Sc cutoff N sy hc β
-  letI := contentGradedSupercategory D Sc cutoff N sy hc (β + (σ : Multiset I))
-  exact { toFunctor := contentAppend D Sc cutoff N β σ
-          isGraded := { map_mem_degree := fun hf =>
-            truncatedAppend_mem_degree D Sc cutoff N sy hc σ hf } }
-
 /-- All parity-graded modules and all supernatural maps at exact content. -/
 abbrev ContentModules (β : Multiset I) :=
   Superfunctor k (ContentCategory D Sc cutoff N β) (SVec.{u} k)
@@ -123,24 +110,7 @@ abbrev contentInduction (β : Multiset I) (σ : List I) :
     ContentModules D Sc cutoff N β ⥤ ContentModules D Sc cutoff N (β + (σ : Multiset I)) :=
   BalancedInduction.induction (contentAppend D Sc cutoff N β σ)
 
-/-- Precomposition restriction from content `β + σ` to content `β`. -/
-abbrev contentRestriction (β : Multiset I) (σ : List I) :
-    ContentModules D Sc cutoff N (β + (σ : Multiset I)) ⥤ ContentModules D Sc cutoff N β :=
-  BalancedInduction.restriction (contentAppend D Sc cutoff N β σ)
-
-/-- The right adjoint of content induction is the constructed restriction functor. -/
-def contentAdjunction (β : Multiset I) (σ : List I) :
-    contentInduction D Sc cutoff N β σ ⊣ contentRestriction D Sc cutoff N β σ :=
-  BalancedInduction.adjunction (contentAppend D Sc cutoff N β σ)
-
 /-- The one-colour raising functor (`E` in the source convention). -/
 abbrev contentE (β : Multiset I) (i : I) := contentInduction D Sc cutoff N β [i]
-/-- The one-colour lowering functor (`F` in the source convention). -/
-abbrev contentF (β : Multiset I) (i : I) := contentRestriction D Sc cutoff N β [i]
-
-/-- The source right adjunction: raising induction `E` is left adjoint to `F`. -/
-def contentEFAdjunction (β : Multiset I) (i : I) :
-    contentE D Sc cutoff N β i ⊣ contentF D Sc cutoff N β i :=
-  contentAdjunction D Sc cutoff N β [i]
 
 end OddMath.QuiverHecke.ELVOld

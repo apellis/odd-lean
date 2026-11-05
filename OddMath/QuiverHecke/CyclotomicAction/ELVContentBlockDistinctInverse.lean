@@ -76,10 +76,6 @@ private theorem blockSquare_eqToHom (δ : Multiset I) (σ : List I) (ε : Multis
     (h : δ + (σ : Multiset I) = ε) (s : ContentCategory D Sc cutoff N δ) :
     eqToHom (congrArg (fun F => F.obj s) (contentAppendTo_inclusion D Sc cutoff N δ σ ε h)) =
       𝟙 ((truncatedAppend D Sc cutoff N σ).obj ((contentInclusion D Sc cutoff N δ).obj s)) := rfl
-private theorem blockSquare_eqToHom_symm (δ : Multiset I) (σ : List I) (ε : Multiset I)
-    (h : δ + (σ : Multiset I) = ε) (s : ContentCategory D Sc cutoff N δ) :
-    eqToHom (congrArg (fun F => F.obj s) (contentAppendTo_inclusion D Sc cutoff N δ σ ε h)).symm =
-      𝟙 ((truncatedAppend D Sc cutoff N σ).obj ((contentInclusion D Sc cutoff N δ).obj s)) := rfl
 
 /-- The selected F chart takes its source inclusion unit to the transported target unit. -/
 theorem contentBlockDistinctRestriction_unit
@@ -143,28 +139,5 @@ theorem contentBlockDistinctMate_isIso (hij : i ≠ j)
   rw [← BalancedInduction.rectangularMateModuleIso_hom J K L U hα M
     (contentBlockDistinctMateLinear_bijective D Sc cutoff N β i j hij M)]
   infer_instance
-
-/-- The given positive family has an inverse natural in every input-module map. -/
-theorem contentBlockDistinctMateFunctor_isIso (hij : i ≠ j) :
-    IsIso (BalancedInduction.rectangularMateHom J K L U hα) := by
-  rw [← BalancedInduction.rectangularMateFunctorIso_hom J K L U hα
-    (contentBlockDistinctMateLinear_bijective D Sc cutoff N β i j hij)]
-  infer_instance
-
-/-- The specified homogeneous module inverse retains exactly the crossing degree. -/
-theorem contentBlockDistinctMateInverse_mem (hij : i ≠ j)
-    (M : ContentModules D Sc cutoff N (β + ([j] : Multiset I))) :
-    (BalancedInduction.rectangularMateModuleIso J K L U hα M
-      (contentBlockDistinctMateLinear_bijective D Sc cutoff N β i j hij M)).inv ∈
-        parity (R := k) _ _ (D.parity i * D.parity j) :=
-  BalancedInduction.rectangularMateModuleIso_inv_mem J K L U hα M
-    (contentBlockDistinctMateLinear_bijective D Sc cutoff N β i j hij M)
-
-theorem contentBlockDistinctMateFunctorInverse_mem (hij : i ≠ j) :
-    (BalancedInduction.rectangularMateFunctorIso J K L U hα
-      (contentBlockDistinctMateLinear_bijective D Sc cutoff N β i j hij)).inv ∈
-        parity (R := k) _ _ (D.parity i * D.parity j) :=
-  BalancedInduction.rectangularMateFunctorIso_inv_mem J K L U hα
-    (contentBlockDistinctMateLinear_bijective D Sc cutoff N β i j hij)
 
 end OddMath.QuiverHecke.ELVOld

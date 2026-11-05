@@ -116,10 +116,6 @@ theorem probeVacuumIso_hom_mem :
     (probeVacuumIso D Sc m cutoff bound W).hom ∈ parity (R := k) _ _ 0 :=
   scalarTensorIso_hom_mem _ _ _ _
 
-theorem probeVacuumIso_inv_mem :
-    (probeVacuumIso D Sc m cutoff bound W).inv ∈ parity (R := k) _ _ 0 :=
-  inv_mem _ (probeVacuumIso_hom_mem D Sc m cutoff bound W)
-
 /-- The occupied tensor vector goes to the same reservoir coefficient,
 without a scalar rescaling or a parity sign. -/
 theorem probeVacuumIso_hom_tmul (c : ContentCategory D Sc cutoff bound 0) (v : W.obj c) :

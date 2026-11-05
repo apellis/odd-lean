@@ -41,17 +41,6 @@ def probeAppendToEqualCross :
   fullLiftTrans P₀ P₂ (appendPair_closed D Sc m ν i h₁ h₂)
     (appendPair_closed D Sc m ν i h₁ h₂) (inductionModuleCross J K hγ)
 
-theorem probeAppendToEqualCross_mem :
-    probeAppendToEqualCross D Sc m ν i h₁ h₂ ∈ parity (R := k) _ _ (D.parity i) :=
-  Superfunctor.mem_parity_iff_isHomogeneous.mpr
-    (fullLiftTrans_homogeneous P₀ P₂ (appendPair_closed D Sc m ν i h₁ h₂)
-      (appendPair_closed D Sc m ν i h₁ h₂) (inductionModuleCross J K hγ)
-      (Superfunctor.mem_parity_iff_isHomogeneous.mp (inductionModuleCross_mem J K hγ)))
-
-theorem probeAppendToEqualCross_app (q : ZMod 2) (N : ProbeEvaluatedModules D Sc m ν) :
-    ((probeAppendToEqualCross D Sc m ν i h₁ h₂).app q N).hom =
-      (inductionModuleCross J K hγ).app q N.obj := rfl
-
 theorem probeAppendToEqualCross_total (N : ProbeEvaluatedModules D Sc m ν) :
     ((probeAppendToEqualCross D Sc m ν i h₁ h₂).total N).hom =
       (inductionModuleCross J K hγ).total N.obj := rfl

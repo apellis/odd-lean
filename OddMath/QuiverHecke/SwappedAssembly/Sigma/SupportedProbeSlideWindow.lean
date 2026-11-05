@@ -46,36 +46,6 @@ def probeWindowY [Finite I] (i : I) (t : Sector I)
   (P).centralPaddedProbeY i t Z.obj E
     (fun {_a _b} h => probeWindowDot_isIso D Sc m cutoff bound ΛP ΛR hP hR i h)
 
-/-- At an absent target, exact support compares the literal padded zero
-with the actual native normalized precomposition roundtrip. -/
-def probeWindowTargetZeroIso (i : I) (t : Sector I)
-    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
-    (E : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t ⥤ C) [E.Additive]
-    (hb : ¬StepValid (dn i) true t) {ρ : X} (h : -ρ + D.α i = -(P).muP t) :
-    sectorFamilyCorner (fun a => StepValid (dn i) a t)
-      (fun a => E.obj ((P).centralTargetFactor i t Z.obj a)) true ≅
-      E.obj ((homContentPreF (P).T (P).W.obj i ((P).muM t) h).obj
-        ((homContentPreE (P).T (P).W.obj i ((P).muM t) h).obj Z.obj)) :=
-  sectorFamilyZeroCornerIso (fun a => StepValid (dn i) a t)
-    (fun a => E.obj ((P).centralTargetFactor i t Z.obj a)) true hb _
-    (E.map_isZero (probeTarget_absent_isZero D Sc m cutoff bound ΛP ΛR hP hR i t Z hb h))
-
-/-- The absent-target convention is literally the transported actual
-probe dot unit. The needed native vanishing is proved from exact support. -/
-theorem probeWindowY_of_absent_native [Finite I] (i : I) (t : Sector I)
-    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
-    (E : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t ⥤ C) [E.Additive]
-    (hb : ¬StepValid (dn i) true t) {ρ : X} (h : -ρ + D.α i = -(P).muP t) :
-    probeWindowY D Sc m cutoff bound ΛP ΛR hP hR i t Z E =
-      ProbeWindow.cornerAut (probeWindowTargetZeroIso D Sc m cutoff bound ΛP ΛR hP hR i t Z E hb h)
-        (Functor.mapAut _ E (Functor.mapAut _
-          (homContentPreF (P).T (P).W.obj i ((P).muM t) h)
-          ((P).nativeProbeDotAut i
-            (fun {_a _b} h' => probeWindowDot_isIso D Sc m cutoff bound ΛP ΛR hP hR i h') h Z.obj))) :=
-  (P).centralPaddedProbeY_of_absent_native i t Z.obj E
-    (fun {_a _b} h' => probeWindowDot_isIso D Sc m cutoff bound ΛP ΛR hP hR i h') hb h
-    (probeTarget_absent_isZero D Sc m cutoff bound ΛP ΛR hP hR i t Z hb h)
-
 /-- Every literal padded cap row uses the same raw probe automorphism
 as the mixed-bend series, at every nonnegative exponent and local height. -/
 theorem probe_cap_power [Finite I] (i : I) (t : Sector I)

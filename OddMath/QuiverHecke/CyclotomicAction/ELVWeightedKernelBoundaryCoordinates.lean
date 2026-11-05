@@ -66,68 +66,6 @@ theorem weightedContentCapBoundaryValue_atWord (w : OldCategory D Sc cutoff)
   rw [hi] at h
   exact h.symm
 
-/-- The original source coefficient representing the weighted unit boundary. -/
-def weightedUnitBoundaryCoefficient (w : OldCategory D Sc cutoff)
-    (hh : 0 ≤ contentCrossingHeight D cutoff i (w.word : Multiset I))
-    (j : Fin (contentUnitCount D cutoff i (w.word : Multiset I))) (r : ℕ) :
-    (Q).obj w ⟶ (Q).obj w :=
-  truncateOld D Sc cutoff N w.word w.word
-    (positiveKernelBoundary D Sc cutoff i w w hh j r (𝟙 w))
-
-/-- The original source coefficient representing the weighted cap boundary. -/
-def weightedCapBoundaryCoefficient (w : OldCategory D Sc cutoff)
-    (hh : contentCrossingHeight D cutoff i (w.word : Multiset I) ≤ 0)
-    (r : ℕ) (j : Fin (contentCapCount D cutoff i (w.word : Multiset I))) :
-    (Q).obj w ⟶ (Q).obj w :=
-  truncateOld D Sc cutoff N w.word w.word
-    (negativeKernelBoundary D Sc cutoff i w w hh r j (𝟙 w))
-
-/-- Evaluation of the chosen unit boundary is the action of the source coefficient. -/
-theorem weightedContentUnitBoundaryValue_coefficient (w : OldCategory D Sc cutoff)
-    (hh : 0 ≤ contentCrossingHeight D cutoff i (w.word : Multiset I))
-    (j : Fin (contentUnitCount D cutoff i (w.word : Multiset I))) (r : ℕ) (b : (RM).obj w) :
-    weightedContentUnitBoundaryValue D Sc cutoff N i M (w.word : Multiset I) hh
-      (⟨(Q).obj w,rfl⟩ : ContentCategory D Sc cutoff N (w.word : Multiset I)) j r b =
-    M.map (X := (Q).obj w) (Y := (Q).obj w)
-      (weightedUnitBoundaryCoefficient D Sc cutoff N i w hh j r) b := by
-  rw [weightedContentUnitBoundaryValue_atWord]
-  rfl
-
-/-- Evaluation of the chosen cap boundary is the action of the source coefficient. -/
-theorem weightedContentCapBoundaryValue_coefficient (w : OldCategory D Sc cutoff)
-    (hh : contentCrossingHeight D cutoff i (w.word : Multiset I) ≤ 0)
-    (r : ℕ) (j : Fin (contentCapCount D cutoff i (w.word : Multiset I))) (b : (RM).obj w) :
-    weightedContentCapBoundaryValue D Sc cutoff N i M (w.word : Multiset I) hh
-      (⟨(Q).obj w,rfl⟩ : ContentCategory D Sc cutoff N (w.word : Multiset I)) r j b =
-    M.map (X := (Q).obj w) (Y := (Q).obj w)
-      (weightedCapBoundaryCoefficient D Sc cutoff N i w hh r j) b := by
-  rw [weightedContentCapBoundaryValue_atWord]
-  rfl
-
 variable (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
-
-/-- The chosen weighted unit boundary's represented source coefficient has difference degree. -/
-theorem weightedUnitBoundaryCoefficient_degree (w : OldCategory D Sc cutoff)
-    (hh : 0 ≤ contentCrossingHeight D cutoff i (w.word : Multiset I))
-    (j : Fin (contentUnitCount D cutoff i (w.word : Multiset I))) (r : ℕ) :
-    weightedUnitBoundaryCoefficient D Sc cutoff N i w hh j r ∈
-      truncatedDegree D Sc cutoff sy hc N w.word w.word
-        (2 * sy.d i * ((r : ℤ) - j.val)) := by
-  apply truncateOld_mem_degree
-  simpa only [zero_add] using
-    positiveKernelBoundary_degree D Sc cutoff sy hc i w w hh j r
-      ((oldCategoryGradedSupercategory D Sc cutoff sy hc).id_mem_degree w)
-
-/-- The chosen weighted cap boundary's represented source coefficient has difference degree. -/
-theorem weightedCapBoundaryCoefficient_degree (w : OldCategory D Sc cutoff)
-    (hh : contentCrossingHeight D cutoff i (w.word : Multiset I) ≤ 0)
-    (r : ℕ) (j : Fin (contentCapCount D cutoff i (w.word : Multiset I))) :
-    weightedCapBoundaryCoefficient D Sc cutoff N i w hh r j ∈
-      truncatedDegree D Sc cutoff sy hc N w.word w.word
-        (2 * sy.d i * ((r : ℤ) - j.val)) := by
-  apply truncateOld_mem_degree
-  simpa only [zero_add] using
-    negativeKernelBoundary_degree D Sc cutoff sy hc i w w hh r j
-      ((oldCategoryGradedSupercategory D Sc cutoff sy hc).id_mem_degree w)
 
 end OddMath.QuiverHecke.ELVOld

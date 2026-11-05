@@ -121,7 +121,7 @@ theorem oldContentEFLinearEquiv_dot
     (oldContentEFLinearEquiv D Sc cutoff ν i N t).toLinearMap ∘ₗ
       transformLinear (oldContentAppendDot_supernatural D Sc cutoff ν i)
         ((restriction J₀).obj N) t =
-    actualInductionDot D Sc cutoff i ((restriction J).obj (induced Q₁ N)) t.obj ∘ₗ
+    inductionDot D Sc cutoff i ((restriction J).obj (induced Q₁ N)) t.obj ∘ₗ
       (oldContentEFLinearEquiv D Sc cutoff ν i N t).toLinearMap := by
   let C₁ := oldContentAppendRestrictionLinear D Sc cutoff ν i ((restriction J₀).obj N) t
   let C₂ := mapComponent J (oldContentRestrictionExtensionIso D Sc cutoff ν i N).hom 0 t.obj
@@ -130,7 +130,7 @@ theorem oldContentEFLinearEquiv_dot
     (induced Q₀ ((restriction J₀).obj N))
     (oldContentRestrictionExtensionIso D Sc cutoff ν i N).hom 0 t.obj
   simp only [mul_zero, sign_zero, one_smul] at h₂
-  dsimp only [actualInductionDot] at h₁ ⊢
+  dsimp only [inductionDot] at h₁ ⊢
   have hcomp := compose_intertwine _ _ _ _ _ h₁ h₂.symm
   have hfactor : (oldContentEFLinearEquiv D Sc cutoff ν i N t).toLinearMap = C₂ ∘ₗ C₁ := by
     apply LinearMap.ext
@@ -158,7 +158,7 @@ theorem oldContentEFLinearEquiv_capDot
   have ht := BalancedInduction.capDotLinear_apply_power J
     (oldAppendDot_supernatural D Sc cutoff i) (induced Q₁ N) n t.obj
     (oldContentEFLinearEquiv D Sc cutoff ν i N t x)
-  dsimp only [actualInductionDot] at hp
+  dsimp only [inductionDot] at hp
   exact hp.trans ht.symm
 
 end OddMath.QuiverHecke.ELVOld

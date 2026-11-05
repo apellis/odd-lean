@@ -81,5 +81,4 @@ theorem linearSquare_reencode
   rw [hc, hf, hg, hd]
   exact h
 
-
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

@@ -71,31 +71,6 @@ theorem cornerPairing_mem :
     ((inductionCorner_mem_part_iff D Sc i a ha n).mp hx)
     ((restrictionCorner_mem_part_iff D Sc i a ha n).mp hy)
 
-/-- The even evaluation `B e ⊗_A e B → B`. -/
-def cornerEvaluation : tensor P Q ⟶ regular GB :=
-  ⟨SVec.ofHom (cornerPairingLinear D Sc i a ha n), by
-    apply (isHom_iff_of_mem (cornerPairing_mem D Sc i a ha n)).mpr
-    constructor
-    · intro p b _
-      simp only [mul_zero, Supercategory.sign_zero, one_smul]
-      apply tensor_hom_ext P Q
-      intro x y
-      change cornerPairingLinear D Sc i a ha n ((tensor P Q).lact b (btmul P Q x y)) =
-        b * cornerPairingLinear D Sc i a ha n (btmul P Q x y)
-      rw [lact_btmul, cornerPairingLinear_btmul, cornerPairingLinear_btmul]
-      exact mul_assoc b x.1 y.1
-    · intro b
-      apply tensor_hom_ext P Q
-      intro x y
-      change cornerPairingLinear D Sc i a ha n ((tensor P Q).ract b (btmul P Q x y)) =
-        cornerPairingLinear D Sc i a ha n (btmul P Q x y) * b
-      rw [ract_btmul, cornerPairingLinear_btmul, cornerPairingLinear_btmul]
-      exact (mul_assoc x.1 y.1 b).symm⟩
-
-theorem cornerEvaluation_mem :
-    cornerEvaluation D Sc i a ha n ∈ Supercategory.parity (R := k) _ _ 0 :=
-  (mem_parity_iff).mpr (cornerPairing_mem D Sc i a ha n)
-
 /-- The even colour-cut idempotent in the induction bimodule. -/
 def inductionCornerIdempotent : (P).toSVec :=
   ⟨φ 1, by change φ 1 * φ 1 = φ 1; rw [← map_mul, mul_one]⟩
@@ -152,25 +127,6 @@ theorem cornerUnit_mem :
   · apply (restrictionCorner_mem_part_iff D Sc i a ha n).mpr
     exact cyclotomicAppend_parity D Sc i a ha n ((mem_regularSVec_part_iff GA).mp hr)
   · exact inductionCornerIdempotent_mem D Sc i a ha n
-
-/-- The even coevaluation `A → e B ⊗_B B e`. -/
-def cornerCoevaluation : regular GA ⟶ tensor Q P :=
-  ⟨SVec.ofHom (cornerUnitLinear D Sc i a ha n), by
-    apply (isHom_iff_of_mem (cornerUnit_mem D Sc i a ha n)).mpr
-    constructor
-    · intro p r _
-      simp only [mul_zero, Supercategory.sign_zero, one_smul]
-      apply SVec.hom_ext
-      intro s
-      exact cornerUnitLinear_lact D Sc i a ha n r s
-    · intro r
-      apply SVec.hom_ext
-      intro s
-      exact cornerUnitLinear_ract D Sc i a ha n s r⟩
-
-theorem cornerCoevaluation_mem :
-    cornerCoevaluation D Sc i a ha n ∈ Supercategory.parity (R := k) _ _ 0 :=
-  (mem_parity_iff).mpr (cornerUnit_mem D Sc i a ha n)
 
 /-- The first elementary triangular identity for the corner pairing. -/
 @[simp] theorem cornerPairing_right_unit (x : (P).toSVec) :

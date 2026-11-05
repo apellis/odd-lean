@@ -84,13 +84,6 @@ def cyclotomicSuperInductionCrossing : SuperNatTrans k F G where
       exact inductionCrossingApp_naturality D Sc i j a ha n f hf
     · simp
 
-/-- All components except parity `|i||j|` vanish. -/
-theorem cyclotomicSuperInductionCrossing_homogeneous :
-    (cyclotomicSuperInductionCrossing D Sc i j a ha n).IsHomogeneous d := by
-  intro q h
-  funext M
-  simp [cyclotomicSuperInductionCrossing, h]
-
 /-- The component of parity `|i||j|` is precisely the transported corner crossing. -/
 @[simp] theorem cyclotomicSuperInductionCrossing_app
     (M : CyclotomicSupermodules D Sc a ha n) :

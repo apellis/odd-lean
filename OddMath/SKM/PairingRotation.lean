@@ -118,18 +118,6 @@ theorem iso_rotate_iff (s t : List (ℕ × α)) (n : ℕ) :
   rw [rotate_undo, hlen, rotate_undo] at hh
   exact hh
 
-theorem valid_rotate_iff (s : List (ℕ × α)) (n : ℕ) :
-    Valid (s.rotate n) ↔ Valid s := by
-  refine ⟨fun h => ?_, fun h => h.rotate n⟩
-  have hh := h.rotate (s.length - n % s.length)
-  rwa [rotate_undo] at hh
-
-theorem lettered_rotate_iff {d : α → α} (hd : Function.Involutive d)
-    (s : List (ℕ × α)) (n : ℕ) : Lettered d (s.rotate n) ↔ Lettered d s := by
-  refine ⟨fun h => ?_, fun h => h.rotate hd n⟩
-  have hh := h.rotate hd (s.length - n % s.length)
-  rwa [rotate_undo] at hh
-
 end StringDiagrams.Chord
 
 namespace OddMath.SKM.RightCapAttachment

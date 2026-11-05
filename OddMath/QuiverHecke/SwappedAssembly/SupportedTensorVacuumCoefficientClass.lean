@@ -272,12 +272,4 @@ theorem tensorWordQuotientObservation_coefficient_vacuum (a : SYM D k) :
   (coefficient_vacuum_unfold D Sc cutoff L m ΛP ΛR hP hR s a).trans
     (coefficient_vacuum_class D Sc cutoff L m ΛP ΛR hP hR s a)
 
-/-- The coefficient-one specialization is the canonical source identity class. -/
-theorem tensorWordQuotientObservation_vacuum :
-    tensorWordQuotientObservation D Sc cutoff L m ΛP ΛR hP hR s s pS
-      (tensorMatrixVacuum D Sc m cutoff ΛP ΛR L s) =
-      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
-        (sourceCoefficientHom D Sc 1 (𝟙 _)) := by
-  simpa only [map_one,Module.End.one_apply] using
-    (tensorWordQuotientObservation_coefficient_vacuum D Sc cutoff L m ΛP ΛR hP hR s 1)
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

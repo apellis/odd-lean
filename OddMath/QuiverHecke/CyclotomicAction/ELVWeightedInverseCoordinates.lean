@@ -103,65 +103,6 @@ theorem weightedContentCapInverse_atWord (w : OldCategory D Sc cutoff)
   apply inverse_total
   rw [weightedContentCapMatrixIso_hom_total,weightedCapMatrixComponentIso_hom]
 
-/-- At arbitrary content, the only reindexing is the object's proven content
-identity; no inverse comparison is an input. -/
-theorem weightedContentUnitInverse_component (β : Multiset I)
-    (hh : 0 ≤ contentCrossingHeight D cutoff i β) (w : ContentCategory D Sc cutoff N β) :
-    HEq ((weightedContentUnitMatrixIso D Sc cutoff N i M β hh).inv.total w)
-      ((weightedUnitMatrixComponentIso D Sc cutoff N i M ⟨w.obj.word⟩
-        (by rw [w.content]; exact hh)).inv) := by
-  rcases w with ⟨⟨l⟩,hl⟩
-  subst β
-  exact heq_of_eq (weightedContentUnitInverse_atWord D Sc cutoff N i M ⟨l⟩ hh)
-
-theorem weightedContentCapInverse_component (β : Multiset I)
-    (hh : contentCrossingHeight D cutoff i β ≤ 0) (w : ContentCategory D Sc cutoff N β) :
-    HEq ((weightedContentCapMatrixIso D Sc cutoff N i M β hh).inv.total w)
-      ((weightedCapMatrixComponentIso D Sc cutoff N i M ⟨w.obj.word⟩
-        (by rw [w.content]; exact hh)).inv) := by
-  rcases w with ⟨⟨l⟩,hl⟩
-  subst β
-  exact heq_of_eq (weightedContentCapInverse_atWord D Sc cutoff N i M ⟨l⟩ hh)
-
-/-- The literal weighted principal after removing its named value and parity
-charts. This is a coordinate description, with no new choice of inverse. -/
-def weightedUnitPrincipalInverseValue (w : OldCategory D Sc cutoff)
-    (hh : 0 ≤ contentCrossingHeight D cutoff i (w.word : Multiset I))
-    (z : mateTargetSpace D Sc cutoff i RM w) :=
-  moduleIsoLinearEquiv (unitMatrixFirstSourceIso D Sc cutoff i RM
-    (contentUnitCount D cutoff i (w.word : Multiset I))) w
-    ((weightedUnitFamilyValueEquiv D Sc cutoff N i M _ w none).symm
-      (((weightedUnitMatrixComponentIso D Sc cutoff N i M w hh).inv
-        (weightedMateTargetLinearEquiv D Sc cutoff N i M w z)) none))
-
-/-- This is the principal of the already selected OLD inverse. -/
-theorem weightedUnitPrincipalInverseValue_eq (w : OldCategory D Sc cutoff)
-    (hh : 0 ≤ contentCrossingHeight D cutoff i (w.word : Multiset I))
-    (z : mateTargetSpace D Sc cutoff i RM w) :
-    weightedUnitPrincipalInverseValue D Sc cutoff N i M w hh z =
-    moduleIsoLinearEquiv (unitMatrixFirstSourceIso D Sc cutoff i RM
-      (contentUnitCount D cutoff i (w.word : Multiset I))) w
-      (((moduleUnitMatrixIso D Sc cutoff RM i w hh).inv z) none) := by
-  unfold weightedUnitPrincipalInverseValue
-  apply congrArg (moduleIsoLinearEquiv (unitMatrixFirstSourceIso D Sc cutoff i RM
-    (contentUnitCount D cutoff i (w.word : Multiset I))) w)
-  apply (weightedUnitFamilyValueEquiv D Sc cutoff N i M _ w none).injective
-  rw [LinearEquiv.apply_symm_apply]
-  exact (weightedUnitInverse_none D Sc cutoff N i M w hh z).symm
-
-/-- The weighted principal inverse applies the raw positive kernel principal
-inverse to the coefficient of a pure upper-Hom tensor. -/
-theorem weightedUnitPrincipalInverseValue_tensor (w : OldCategory D Sc cutoff)
-    (hh : 0 ≤ contentCrossingHeight D cutoff i (w.word : Multiset I))
-    (v : OldCategory D Sc cutoff)
-    (y : (append D Sc cutoff i).obj v ⟶ (append D Sc cutoff i).obj w) (b : (RM).obj v) :
-    weightedUnitPrincipalInverseValue D Sc cutoff N i M w hh
-      (BalancedInduction.tensor (append D Sc cutoff i) (RM).toFunctor v y b) =
-    IndResKernel.evaluate (append D Sc cutoff i) (RM).toFunctor v w b
-      (positiveKernelPrincipalInverse D Sc cutoff i v w hh y) := by
-  rw [weightedUnitPrincipalInverseValue_eq]
-  exact moduleUnitMatrixIso_principal_inv_tensor D Sc cutoff RM i w hh v y b
-
 /-- The literal cap inverse after removal of the named source chart. -/
 def weightedCapPrincipalInverseValue (w : OldCategory D Sc cutoff)
     (hh : contentCrossingHeight D cutoff i (w.word : Multiset I) ≤ 0)
@@ -170,31 +111,5 @@ def weightedCapPrincipalInverseValue (w : OldCategory D Sc cutoff)
   (weightedMateSourceLinearEquiv D Sc cutoff N i M w).symm
     ((weightedCapMatrixComponentIso D Sc cutoff N i M w hh).inv
       (weightedCapMatrixValueEquiv D Sc cutoff N i M _ w z))
-
-/-- The literal weighted cap inverse is the selected OLD inverse. -/
-theorem weightedCapPrincipalInverseValue_eq (w : OldCategory D Sc cutoff)
-    (hh : contentCrossingHeight D cutoff i (w.word : Multiset I) ≤ 0)
-    (z : capMatrixTargetSpace D Sc cutoff i RM
-      (contentCapCount D cutoff i (w.word : Multiset I)) w) :
-    weightedCapPrincipalInverseValue D Sc cutoff N i M w hh z =
-    (moduleCapMatrixIso D Sc cutoff RM i w hh).inv z := by
-  unfold weightedCapPrincipalInverseValue
-  apply (weightedMateSourceLinearEquiv D Sc cutoff N i M w).injective
-  rw [LinearEquiv.apply_symm_apply]
-  exact (weightedCapInverse_coordinates D Sc cutoff N i M w hh z).symm
-
-/-- The weighted cap principal is the raw negative kernel principal on the
-literal upper-Hom coefficient insertion. -/
-theorem weightedCapPrincipalInverseValue_tensor (w : OldCategory D Sc cutoff)
-    (hh : contentCrossingHeight D cutoff i (w.word : Multiset I) ≤ 0)
-    (v : OldCategory D Sc cutoff)
-    (y : (append D Sc cutoff i).obj v ⟶ (append D Sc cutoff i).obj w) (b : (RM).obj v) :
-    weightedCapPrincipalInverseValue D Sc cutoff N i M w hh
-      (TensorMatrixCoordinates.negativeKernelCoordinates D Sc cutoff RM i _ w
-        (BalancedKernelTensor.tensor _ (RM).toFunctor v (Pi.single none y) b)) =
-    IndResKernel.evaluate (append D Sc cutoff i) (RM).toFunctor v w b
-      (negativeKernelPrincipalInverse D Sc cutoff i v w hh y) := by
-  rw [weightedCapPrincipalInverseValue_eq]
-  exact moduleCapMatrixIso_principal_inv_tensor D Sc cutoff RM i w hh v y b
 
 end OddMath.QuiverHecke.ELVOld

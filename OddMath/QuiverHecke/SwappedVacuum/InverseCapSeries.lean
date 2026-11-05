@@ -63,24 +63,6 @@ theorem probe_cap_convolution {R : Type*} [AddCommGroup R] [Module k R] (c : ℕ
     rw [ite_eq_left (show P - n ≤ P by omega), show P - (P - n) = n by omega,
       show B + l - (P - n) = n + m by omega]
 
-/-- The convolution is the product of the reversed probe series with the
-shifted moment series. -/
-theorem capSeries_eq {R : Type*} [Ring R] [Algebra k R] (c : ℕ → k) (P B : ℕ)
-    (K t : ℕ → R) (hK : ∀ l, K l = ∑ r ∈ range (l + 1),
-      if r ≤ P then c (P - r) • t (B + l - r) else 0) :
-    PowerSeries.mk K =
-      PowerSeries.mk (fun r => if r ≤ P then algebraMap k R (c (P - r)) else 0) *
-        PowerSeries.mk (fun l => t (B + l)) := by
-  ext l
-  rw [PowerSeries.coeff_mk, hK, PowerSeries.coeff_mul, Nat.sum_antidiagonal_eq_sum_range_succ_mk]
-  apply sum_congr rfl
-  intro r hr
-  rw [mem_range] at hr
-  simp only [PowerSeries.coeff_mk]
-  split_ifs with h
-  · rw [Algebra.smul_def, show B + l - r = B + (l - r) by omega]
-  · rw [zero_mul]
-
 variable {C : Type u} [Category.{v} C] [Preadditive C] [Linear k C] {V X Y : C}
 
 /-- The linear scalar action on `V ⟶ V` is left multiplication by `algebraMap` in `End V`. -/

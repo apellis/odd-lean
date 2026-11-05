@@ -58,14 +58,4 @@ theorem monicELVEndpointProduct_eval_mem_ideal (i : I) (v : List I) :
   rw [he, affineUnitEndHom_smul, End.mul_def, Linear.smul_comp]
   exact Submodule.smul_mem _ c (endpointNorm_endpointELV_mem_ideal D Sc cutoff i v)
 
-def monicELVEndpointValue (i : I) (v : List I) : End (obj D Sc cutoff (v ++ [i])) :=
-  (monicELVEndpointProduct D Sc cutoff i v).eval₂ (RingHom.id _)
-    (affineUnitEndHom D Sc cutoff (v ++ [i]) (dotE D Sc (v ++ [i]) v.length))
-
-/-- A concrete monic polynomial kills the last dot in the full cyclotomic quotient. -/
-theorem monicELVEndpointProduct_annihilates (i : I) (v : List I) :
-    (ideal D Sc cutoff (v ++ [i]) (v ++ [i])).mkQ
-      (monicELVEndpointValue D Sc cutoff i v) = 0 :=
-  (Submodule.Quotient.mk_eq_zero _).mpr (monicELVEndpointProduct_eval_mem_ideal D Sc cutoff i v)
-
 end OddMath.QuiverHecke.ELVOld

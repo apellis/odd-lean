@@ -66,7 +66,6 @@ theorem component_generator (m : (F).obj v) (p : ZMod 2) (w : OldCategory D Sc c
   rw [LinearMap.quotKerEquivOfSurjective_symm_apply]
   rfl
 
-
 private theorem tensor_proj_even {C B : Type u} [Category.{u} C] [Category.{u} B]
     [Preadditive C] [Linear k C] [Supercategory k C]
     [Preadditive B] [Linear k B] [Supercategory k B]
@@ -142,7 +141,6 @@ def fromElement (m : (F).obj v) : W ⟶ F :=
         twist_comp, twist_of_mem p ha, Linear.comp_smul, koszulSign_smul (R := k)]
       simp only [Superfunctor.map, Functor.map_smul, Functor.map_comp, SVec.smul_apply,
         SVec.comp_apply] }
-
 
 /-- The actual regular-power generator at the identity old arrow. -/
 def unitVector : (W).obj v := powerWordGenerator D Sc cutoff L ν v (𝟙 v)
@@ -234,47 +232,5 @@ theorem evaluate_proj (t : W ⟶ F) (p : ZMod 2) :
       (proj k 1 t).app 1 v (unitVector D Sc cutoff L ν) = _
     simp only [Superfunctor.proj_app, ite_true, zero_ne_one, ite_false]
     exact zero_add _
-
-
-/-- Actual coend balancing, with arbitrary full coefficient algebra input. -/
-theorem tensor_eq_generator (w : OldCategory D Sc cutoff) (h : v ⟶ w)
-    (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) :
-    BalancedInduction.tensor (powerWordCoefficientSource D Sc cutoff ν)
-      (liftedPowerRegular D cutoff L).toFunctor (powerCoefficientStar D cutoff) h
-      ((coefficientPowerIdeal D cutoff (elementaryCoefficients (k := k) D cutoff) L).ringCon.mkₐ k a) =
-      powerWordGenerator D Sc cutoff L ν w (coefficientEndomorphism D Sc cutoff ν a ≫ h) := by
-  let J := powerWordCoefficientSource D Sc cutoff ν
-  let R := (liftedPowerRegular (k := k) D cutoff L).toFunctor
-  let f : powerCoefficientStar D cutoff ⟶ powerCoefficientStar D cutoff := a
-  have hb := BalancedInduction.balance J R f h
-    (1 : CoefficientPowerQuotient (k := k) D cutoff L)
-  change BalancedInduction.tensor J R _ (coefficientEndomorphism D Sc cutoff ν a ≫ h)
-    (1 : CoefficientPowerQuotient (k := k) D cutoff L) =
-    BalancedInduction.tensor J R _ h
-      ((coefficientPowerIdeal D cutoff (elementaryCoefficients (k := k) D cutoff) L).ringCon.mkₐ k a * 1) at hb
-  rw [mul_one] at hb
-  exact hb.symm
-
-/-- The complete signed chart on ALL coefficient vectors. Both the old arrow
-and the exterior coefficient lie inside the parity twist. -/
-theorem fromElement_tensor (m : (F).obj v) (p : ZMod 2) (w : OldCategory D Sc cutoff)
-    (h : v ⟶ w) (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) :
-    (fromElement D Sc cutoff L ν M m).app p w
-      (BalancedInduction.tensor (powerWordCoefficientSource D Sc cutoff ν)
-        (liftedPowerRegular D cutoff L).toFunctor (powerCoefficientStar D cutoff) h
-        ((coefficientPowerIdeal D cutoff (elementaryCoefficients (k := k) D cutoff) L).ringCon.mkₐ k a)) =
-      (F).map (twist k p (coefficientEndomorphism D Sc cutoff ν a ≫ h)) (((F).obj v).proj p m) := by
-  rw [tensor_eq_generator]
-  exact component_generator D Sc cutoff L ν M m p w _
-
-theorem app_tensor (t : W ⟶ F) (p : ZMod 2) (w : OldCategory D Sc cutoff)
-    (h : v ⟶ w) (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) :
-    t.app p w
-      (BalancedInduction.tensor (powerWordCoefficientSource D Sc cutoff ν)
-        (liftedPowerRegular D cutoff L).toFunctor (powerCoefficientStar D cutoff) h
-        ((coefficientPowerIdeal D cutoff (elementaryCoefficients (k := k) D cutoff) L).ringCon.mkₐ k a)) =
-      (F).map (twist k p (coefficientEndomorphism D Sc cutoff ν a ≫ h))
-        (((F).obj v).proj p (evaluate D Sc cutoff L ν M t)) := by
-  rw [tensor_eq_generator, app_generator, evaluate_component]
 
 end OddMath.QuiverHecke.ELVOld.PowerWordYoneda

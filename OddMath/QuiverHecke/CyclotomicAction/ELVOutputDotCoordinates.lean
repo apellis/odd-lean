@@ -24,16 +24,6 @@ universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
 
-/-- The full coefficient long coordinate annihilates lower crossing errors. -/
-theorem prependAffineEquiv_long_low (i : I) (s t : List I)
-    (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff)
-    (f : (pres D Sc).obj (ob D (i :: s)) ⟶ (pres D Sc).obj (ob D t))
-    (hf : f ∈ Low D Sc (i :: s) t s.length)
-    (x : PrependIdx i s t) (hx : x.1.2.2.2 = longPrependShuffle s.length) :
-    prependAffineEquiv D Sc cutoff i s t (a ⊗ₜ[k] f) x = 0 := by
-  rw [prependAffineEquiv_tmul,
-    prependBasis_long_repr_eq_zero_of_low D Sc i s t f hf x hx, zero_smul]
-
 /-- Output dots on the long crossing have the signed input coordinates,
 with the full exterior coefficient retained over the ground ring. -/
 theorem prependAffineEquiv_long_output_dots (i : I) (s t : List I)

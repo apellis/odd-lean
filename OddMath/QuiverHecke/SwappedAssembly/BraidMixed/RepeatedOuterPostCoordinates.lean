@@ -132,15 +132,6 @@ lemma coefficientAlg_post :
   rw [coefficientAlg_apply, h, Functor.map_smul,
     Linear.smul_comp, Linear.comp_smul, firstIso_conj_post, smul_smul]
 
-/-- The map is applied to the supplied coefficient, not a replacement coefficient. -/
-lemma coefficientAlg_coeff (c : P.CrossCoeff Sc) :
-    coefficientAlg P i j s hj0 hi0 Z
-      (c.a i (nextSector (true, j) false s) hi0 Z) =
-    (comparison P i j s hj0 hi0 Z).hom ≫
-      (P.step (true, j) false s hj0).map
-        (c.a i (nextSector (true, j) false s) hi0 Z) ≫
-      (comparison P i j s hj0 hi0 Z).inv := rfl
-
 private lemma alg_even {R T : Type wB} [Ring R] [Ring T] [Algebra k R] [Algebra k T]
     (φ : R →ₐ[k] T) (a x₀ z₀ : R) (x z : T)
     (hx : φ x₀ = x) (hz : φ z₀ = z) (ha : a * (z₀ - x₀) = 1) :
@@ -233,7 +224,6 @@ lemma q_correction (c : P.CrossCoeff Sc) (hc : c.IsInverse) :
   exact RepeatedOuterQCorrection.qExpr_correction Sc _ _ _ _ i j
     (dots_xz P i j s hj0 hi0 Z) (dots_zy P i j s hj0 hi0 Z)
     (coeff_even P i j s hj0 hi0 Z c hc) (coeff_odd P i j s hj0 hi0 Z c hc)
-
 
 end RepeatedOuterPost
 end OddMath.QuiverHecke.SwappedAssembly

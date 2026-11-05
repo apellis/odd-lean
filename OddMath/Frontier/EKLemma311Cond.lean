@@ -221,9 +221,7 @@ theorem dom_transpose {μ ν : YoungDiagram} (hc : μ.card = ν.card) (h : Dom �
   change _ = ν.card at htν
   omega
 
-
 /-! ## Degree-d algebra -/
-
 
 theorem lexLT_trichotomy (a b : YoungDiagram) : LexLT a b ∨ a = b ∨ LexLT b a := by
   rcases lt_trichotomy a.rowLens b.rowLens with h | h | h

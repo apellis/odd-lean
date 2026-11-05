@@ -167,7 +167,6 @@ theorem right_peel (n : ℕ) (γ' : Fin (n+2) → ℕ) (h : ∑ j, γ' j = (n+2)
     exact (mul_right_cancel₀ (pow_ne_zero _ (by norm_num)) hδ).symm
   rw [hκ γ' h, hκv]
 
-
 /-! ## Valleys -/
 
 /-- `γ` strictly decreases on indices `< k` and strictly increases on indices `≥ k`. -/

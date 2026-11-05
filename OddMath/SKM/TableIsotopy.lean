@@ -73,7 +73,6 @@ theorem tableDegree_diagram (μ : X) {s t : List (Letter I)} (L : List (LayerDat
     xpar D μ (xCupL a) = cupPar D μ a := by
   obtain ⟨_ | _, i⟩ := a <;> simp [xCupL, xpar, xlpar, cupPar, Shape.parity]
 
-
 @[simp] theorem wt_pair_cancel_table (μ : X) (a : Letter I) (w : List (Letter I)) :
     wt D μ (a :: flipL a :: w) = wt D μ w := by
   obtain ⟨_ | _, i⟩ := a <;> simp [wt, sh, flipL]
@@ -237,7 +236,6 @@ theorem tableDegree_xpar_step (μ : X) {L R : List (Move (Letter I))}
     · simp only [xpar_map_xwhL, xpar_append, xpar_cross, xpar_cup]
       simp [flipL, mul_comm]
 
-
 /-- Numeric degrees of the two branches used by `etaPDiagram`. -/
 theorem tableDegree_etaP_source (μ : X) (i : I) :
     tableDegree D sy μ [([], .lcup i, [])] =
@@ -299,6 +297,5 @@ theorem tableDegree_xpar_equiv (μ : X) {P Q : List (Move (Letter I))}
     obtain ⟨hd, hp⟩ := ih hf
     obtain ⟨hd', hp'⟩ := ih' hf'
     exact ⟨hd.trans hd', hp.trans hp'⟩
-
 
 end OddMath.SKM

@@ -124,13 +124,4 @@ theorem weight_append_even (Λ : X) :
     rw [hz]
     exact Submodule.zero_mem _
 
-/-- Equal presentations of the weights retain the parity of the same chart. -/
-theorem append_at_weights_even (Λ x y : X)
-    (hx : x = PowerWordWeight.wordWeight D Λ ν)
-    (hy : y = PowerWordWeight.wordWeight D Λ (ν ++ [i])) (h : x + D.α i = y) :
-    (PowerWordWeightCross.appendIsoAtWeights D Sc cutoff L Λ ν i x y hx hy h).hom ∈
-      parity (R := k) _ _ 0 := by
-  cases hx
-  cases hy
-  exact weight_append_even D Sc cutoff L ν i Λ
 end OddMath.QuiverHecke.ELVOld.PowerWordChartParity

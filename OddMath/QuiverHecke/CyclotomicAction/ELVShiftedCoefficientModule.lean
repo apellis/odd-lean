@@ -125,7 +125,6 @@ def coefficientParityModuleIso (i : I) (v : List I) :
       ext b
       simp <;> rfl
 
-
 /-- The prescribed moving-parity coefficient is packaged before taking its coend. -/
 instance movingCoefficient_additive (j : {j : I // D.parity j = 1}) (v : List I) :
     (coefficient D Sc cutoff (D.parity j.1) j.1 v).Additive := by

@@ -36,12 +36,6 @@ theorem neg_oddRight_comp (σ : A →+* A) (hσ : Function.Involutive σ)
     -oddRight σ u (-oddRight σ v h) = -(h * (v * u)) := by
   simpa only [oddRight, map_neg, neg_mul, neg_neg] using oddRight_comp σ hσ u v hv h
 
-/-- Opposite signs on the two directed odd crossings repair the constant square. -/
-theorem asymmetric_oddRight_comp (σ : A →+* A) (hσ : Function.Involutive σ)
-    (u v : A) (hv : σ v = -v) (h : A) :
-    -oddRight σ u (oddRight σ v h) = h * (v * u) := by
-  rw [oddRight_comp σ hσ u v hv, neg_neg]
-
 /-- The two word idempotents are the diagonal matrix units. -/
 abbrev TwoWordAlgebra := Matrix (Fin 2) (Fin 2) ℚ
 
@@ -67,37 +61,5 @@ def matrixParity : TwoWordAlgebra →+* TwoWordAlgebra where
 
 /-- Sum of the two directed crossings in the disconnected odd/odd example. -/
 def oddUnit : TwoWordAlgebra := !![0, 1; 1, 0]
-
-theorem matrixParity_involutive : Function.Involutive matrixParity := by
-  intro h
-  change parityMatrix * (parityMatrix * h * parityMatrix) * parityMatrix = h
-  calc
-    _ = (parityMatrix * parityMatrix) * h * (parityMatrix * parityMatrix) := by
-      simp only [mul_assoc]
-    _ = h := by rw [parityMatrix_square]; simp
-
-theorem oddUnit_parity : matrixParity oddUnit = -oddUnit := by
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    norm_num [matrixParity, parityMatrix, oddUnit, Matrix.mul_apply, Fin.sum_univ_two]
-
-theorem oddUnit_square : oddUnit * oddUnit = 1 := by
-  ext i j
-  fin_cases i <;> fin_cases j <;> norm_num [oddUnit, Matrix.mul_apply, Fin.sum_univ_two]
-
-/-- Exact regular-module failure of an unchanged constant quadratic relation. -/
-theorem uniform_crossing_sign_fails :
-    -oddRight matrixParity oddUnit (-oddRight matrixParity oddUnit (1 : TwoWordAlgebra)) ≠ 1 := by
-  rw [neg_oddRight_comp matrixParity matrixParity_involutive oddUnit oddUnit oddUnit_parity,
-    oddUnit_square, mul_one]
-  intro h
-  have := congrArg (fun m : TwoWordAlgebra => m 0 0) h
-  norm_num at this
-
-/-- Negating only one multiplier repairs the composition in this test. -/
-theorem directed_crossing_sign_passes :
-    -oddRight matrixParity oddUnit (oddRight matrixParity oddUnit (1 : TwoWordAlgebra)) = 1 := by
-  rw [asymmetric_oddRight_comp matrixParity matrixParity_involutive oddUnit oddUnit oddUnit_parity,
-    oddUnit_square, mul_one]
 
 end OddMath.QuiverHecke.CyclotomicAction

@@ -43,19 +43,6 @@ theorem forgetEmpty_boundary_cap (ν : List I) (hν : ν = []) (i : I)
     (contentMissingBoundaryCoefficients D Sc (probeCutoff D m) [] i (by simp)).cap.total N.obj
   exact probeEvaluatedMissingCoefficients_cap_total D Sc m [] i (by simp) N
 
-/-- The selected product evaluator uses exactly this empty-content map. -/
-theorem emptyProbe_obj_component (Λ : X) (M : ProbeOldWeightProduct D Sc m Λ (-Λ)) :
-    (emptyProbe D Sc m Λ).obj M =
-      (emptyContentForget D Sc m (0 : Multiset I).toList Multiset.toList_zero).obj
-        (M (emptyBlock D Λ)) := rfl
-
-/-- Every original-weight map retains its empty-content component. -/
-theorem emptyProbe_map_component (Λ : X)
-    {M N : ProbeOldWeightProduct D Sc m Λ (-Λ)} (f : M ⟶ N) :
-    (emptyProbe D Sc m Λ).map f =
-      (emptyContentForget D Sc m (0 : Multiset I).toList Multiset.toList_zero).map
-        (f (emptyBlock D Λ)) := rfl
-
 private def totalEvaluation {k C A : Type*} [CommRing k]
     [Category C] [Preadditive C] [Linear k C] [Supercategory k C]
     [Category A] [Preadditive A] [Linear k A] [Supercategory k A] (M : C) :
@@ -64,27 +51,6 @@ private def totalEvaluation {k C A : Type*} [CommRing k]
   map f := f.total M
   map_id F := SuperNatTrans.id_total F.toFunctor M
   map_comp f g := Superfunctor.comp_total f g M
-
-private theorem map_total_iso_even {k B C A : Type*} [CommRing k]
-    [Category B] [Preadditive B] [Linear k B] [Supercategory k B]
-    [Category C] [Preadditive C] [Linear k C] [Supercategory k C]
-    [Category A] [Preadditive A] [Linear k A] [Supercategory k A]
-    (L : C ⥤ A) [L.Additive] [L.Linear k] [IsSuperfunctor k L]
-    {F G : Superfunctor k B C} (e : F ≅ G)
-    (he : e.hom ∈ parity (R := k) _ _ 0) (N : B) :
-    (L.mapIso ((totalEvaluation N).mapIso e)).hom ∈ parity (R := k) _ _ 0 := by
-  change L.map (e.hom.total N) ∈ parity (R := k) _ _ 0
-  apply Supercategory.map_mem L
-  rw [HomogeneousSuperfunctorIso.total_eq_app e.hom he]
-  exact e.hom.app_mem 0 N
-
-private theorem four_iso_even {k C : Type*} [CommRing k] [Category C]
-    [Preadditive C] [Linear k C] [Supercategory k C]
-    {A B E F G : C} (a : A ≅ B) (b : B ≅ E) (c : E ≅ F) (d : F ≅ G)
-    (ha : a.hom ∈ parity (R := k) _ _ 0) (hb : b.hom ∈ parity (R := k) _ _ 0)
-    (hc : c.hom ∈ parity (R := k) _ _ 0) (hd : d.hom ∈ parity (R := k) _ _ 0) :
-    (a ≪≫ b ≪≫ c ≪≫ d).hom ∈ parity (R := k) _ _ 0 := by
-  simpa only [Iso.trans_hom, add_zero] using comp_mem ha (comp_mem hb (comp_mem hc hd))
 
 private theorem family_eqToHom {C : Type*} [Category C] (G : C ⥤ C)
     (a : ∀ M, G.obj M ⟶ M) {M N : C} (h : M = N) :
@@ -114,20 +80,6 @@ def vacuumCapSourceIso [Fintype I] :
       (probeAppendUpperLoopSuperIso D Sc m γ₀ i perm).symm) ≪≫
     eqToIso (forgetEmpty_upper_obj D Sc m γ₀ (emptyBlock_list D Λ) i (N₀ δ₀)) ≪≫
     ((induction K) ⋙ (restriction K)).mapIso (eqToIso (emptyProbe_regular D Sc m Λ))
-
-/-- Every coordinate change in the regular-probe source chart is even. -/
-theorem vacuumCapSourceIso_hom_mem [Fintype I] :
-    (vacuumCapSourceIso D Sc m Λ i edge).hom ∈ parity (R := k) _ _ 0 := by
-  unfold vacuumCapSourceIso
-  apply four_iso_even (k := k)
-  · exact Supercategory.map_mem (F₀)
-      (eqToHom_mem_parity_zero (k := k) (probeOldWeightFollowing_obj D Sc m i Λ edge δ₀ N₀))
-  · exact map_total_iso_even (F₀) (probeAppendUpperLoopSuperIso D Sc m γ₀ i perm).symm
-      (inv_mem _ (probeAppendUpperLoopSuperIso_hom_mem D Sc m γ₀ i perm)) (N₀ δ₀)
-  · exact eqToHom_mem_parity_zero (k := k)
-      (forgetEmpty_upper_obj D Sc m γ₀ (emptyBlock_list D Λ) i (N₀ δ₀))
-  · exact Supercategory.map_mem ((induction K) ⋙ (restriction K))
-      (eqToHom_mem_parity_zero (k := k) (emptyProbe_regular D Sc m Λ))
 
 /-- The normalized whole-weight left counit at the regular probe is the
 prescribed native vacuum cap under the actual FE source chart. The

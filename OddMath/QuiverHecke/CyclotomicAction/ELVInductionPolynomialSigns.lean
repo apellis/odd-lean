@@ -68,40 +68,6 @@ universe u v w
 variable {k : Type w} {A : Type u} [CommRing k] [Category.{v} A] [Preadditive A] [Linear k A]
   {V W : A}
 
-private theorem leftComp_pow (x : End V) (n : ℕ) :
-    Linear.leftComp k W (x ^ n) = (Linear.leftComp k W x) ^ n := by
-  induction n with
-  | zero =>
-    apply LinearMap.ext
-    intro f
-    change (𝟙 V) ≫ f = f
-    exact Category.id_comp f
-  | succ n ih =>
-    rw [pow_succ' x n, pow_succ (Linear.leftComp k W x) n, End.mul_def]
-    apply LinearMap.ext
-    intro f
-    change ((x ^ n) ≫ x) ≫ f = ((Linear.leftComp k W x) ^ n) (x ≫ f)
-    rw [← ih]
-    exact Category.assoc _ _ _
-
-private theorem leftComp_square_add_one (x : End V) :
-    Linear.leftComp k W (x ^ 2 + 1) = (Linear.leftComp k W x) ^ 2 + 1 := by
-  rw [← leftComp_pow]
-  apply LinearMap.ext
-  intro f
-  change (x ^ 2 + 1 : End V) ≫ f = (x ^ 2) ≫ f + f
-  rw [Preadditive.add_comp, End.one_def, Category.id_comp]
-
-/-- Literal precomposition on the full Hom space preserves the signed probe
-polynomial. No extra total-Hom twist is inserted into precomposition. -/
-theorem precompose_odd_probe_polynomial (x : End V) (m : ℕ)
-    (h : (x ^ 2 + 1) ^ m = 0) :
-    ((Linear.leftComp k W x) ^ 2 + 1) ^ m = 0 := by
-  rw [← leftComp_square_add_one, ← leftComp_pow, h]
-  apply LinearMap.ext
-  intro f
-  exact Limits.zero_comp
-
 end OddMath.QuiverHecke.ELVOld.BalancedInduction
 
 namespace OddMath.QuiverHecke.ELVOld.BalancedInduction

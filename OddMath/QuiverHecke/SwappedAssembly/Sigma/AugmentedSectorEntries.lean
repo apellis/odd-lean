@@ -58,7 +58,6 @@ variable (P : ProbeReservoir k B D Sc)
 local instance entryPathFintype (w : List (Col I X)) (s t : Sector I) : Fintype (SPath w s t) :=
   Fintype.ofFinite _
 
-
 variable {C : Type*} [Category C] [Preadditive C] [Limits.HasZeroObject C]
 
 /-- The inverse source index is the prescribed pure cap path. -/

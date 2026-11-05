@@ -184,12 +184,6 @@ theorem elementaryEvenSeries_mul_inverse (i : I) :
   rw [← map_mul, ← map_mul, PowerSeries.mul_invOfUnit _ _ (generatorSeries_constantCoeff (k := k) i),
     map_one, map_one]
 
-theorem elementaryEvenInverse_mul_series (i : I) :
-    elementaryEvenInverse (k := k) D cutoff L i * elementaryEvenSeries D cutoff L i = 1 := by
-  unfold elementaryEvenSeries elementaryEvenInverse
-  rw [← map_mul, ← map_mul, PowerSeries.invOfUnit_mul _ _ (generatorSeries_constantCoeff (k := k) i),
-    map_one, map_one]
-
 /-- The complete actual remainder series has its original exterior linear
 factor on the left of the mapped inverse elementary series. -/
 theorem remainderSeries_factor (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i) :
@@ -322,11 +316,6 @@ private theorem completeCoefficient_eq (i : I) (r : ℕ) :
     rw [Algebra.smul_def, mul_one, map_pow, map_neg, map_one]
   rw [hs, smul_mul_assoc, one_mul, map_smul]
 
-theorem completeCoefficient_zero (i : I) : completeCoefficient (k := k) D cutoff L i 0 = 1 := by
-  rw [completeCoefficient, PowerSeries.coeff_zero_eq_constantCoeff_apply,
-    PowerSeries.constantCoeff_invOfUnit]
-  simp
-
 private theorem choose_even_parity (r : ℕ) :
     (((2 * r).choose 2 : ℕ) : ZMod 2) = (r : ZMod 2) := by
   by_cases hr : r = 0
@@ -368,15 +357,5 @@ theorem signedMoment_odd (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i) (r : 
     remainder_odd D Sc cutoff L i hi hN, sign_natCast, completeCoefficient_eq]
   simp only [mul_smul_comm, smul_smul]
   rw [mul_comm ((-1 : k) ^ r) ((-1 : k) ^ (cutoff i + 1))]
-
-/-- The first higher odd reservoir moment is its original exterior class,
-with the sign determined by the positive cutoff. -/
-theorem signedMoment_first_odd (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i) :
-    signedMoment D Sc cutoff L i hN (cutoff i) =
-      (-1 : k) ^ (cutoff i + 1) •
-        coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩) := by
-  have h := signedMoment_odd D Sc cutoff L i hi hN 0
-  rw [show cutoff i - 1 + (2 * 0 + 1) = cutoff i by omega, completeCoefficient_zero, mul_one] at h
-  exact h
 
 end OddMath.QuiverHecke.ELVOld.PowerVacuumCoefficient

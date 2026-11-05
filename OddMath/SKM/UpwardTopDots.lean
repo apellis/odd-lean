@@ -46,27 +46,4 @@ theorem upDotsOnly_eq_dotsOn {W : List (Letter I)} {L : List (LayerData I)}
       · simp
       · exact hb j hj
 
-/-- A nonempty closure correction appended to top dots strictly increases
-their number while leaving the skeleton untouched. -/
-theorem positiveWordDots_append_top {t : List (Letter I)} (L : PositiveWordDots t)
-    (P : List (XLayer I)) (is : List ℕ) :
-    ∃ js : List ℕ,
-      P ++ dotsOn t is ++ L.val.map ofL = P ++ dotsOn t js ∧
-      is.length < js.length ∧ ∀ j ∈ js, j ∈ is ∨ j < t.length := by
-  obtain ⟨ns, hns, hn, hb⟩ := upDotsOnly_eq_dotsOn L.property.1 L.property.2.1
-  refine ⟨is ++ ns, ?_, ?_, ?_⟩
-  · rw [hns, dotsOn_append, List.append_assoc]
-  · rw [List.length_append, hn]
-    exact Nat.lt_add_of_pos_right L.property.2.2
-  · intro j hj
-    rcases List.mem_append.mp hj with hj | hj
-    · exact Or.inl hj
-    · exact Or.inr (hb j hj)
-
-/-- Dot-only correction layers carry no crossings. -/
-theorem upDotsOnly_xcnt {W : List (Letter I)} {L : List (LayerData I)}
-    (hL : SChain W L W) (hd : UpDotsOnly L) : xcnt (L.map ofL) = 0 := by
-  obtain ⟨is, his, _, _⟩ := upDotsOnly_eq_dotsOn hL hd
-  rw [his, xcnt_dotsOn]
-
 end OddMath.SKM

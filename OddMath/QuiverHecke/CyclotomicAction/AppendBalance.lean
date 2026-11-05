@@ -58,18 +58,6 @@ theorem whiskerLeft_comp_whiskerRight_twist {A A' B B' : (pres D Sc).Presented} 
       MonoidalSupercategory.add_whiskerRight (R := k), Preadditive.comp_add,
       Preadditive.add_comp, hg, hh]
 
-/-- The parity twist commutes with left whiskering. -/
-theorem twist_whiskerLeft_obj (p : ZMod 2) {A B : (pres D Sc).Presented} (Z : (pres D Sc).Presented)
-    (f : A ⟶ B) :
-    Supercategory.twist k p (Z ◁ f) = Z ◁ Supercategory.twist k p f := by
-  refine Supercategory.induction_on (R := k) f ?_ (fun q g hg => ?_) (fun g h hg hh => ?_)
-  · rw [map_zero, MonoidalSupercategory.whiskerLeft_zero (R := k), map_zero]
-  · rw [Supercategory.twist_of_mem p hg,
-      Supercategory.twist_of_mem p (MonoidalSupercategory.whiskerLeft_mem (R := k) Z hg),
-      MonoidalSupercategory.whiskerLeft_smul (R := k)]
-  · rw [MonoidalSupercategory.whiskerLeft_add (R := k), map_add, map_add, hg, hh,
-      MonoidalSupercategory.whiskerLeft_add (R := k)]
-
 theorem sign_eq_zsign (p : ZMod 2) : Supercategory.sign k p = zsign k p := by
   rcases (by decide : ∀ x : ZMod 2, x = 0 ∨ x = 1) p with rfl | rfl <;>
     simp [Supercategory.sign, zsign]
@@ -77,18 +65,6 @@ theorem sign_eq_zsign (p : ZMod 2) : Supercategory.sign k p = zsign k p := by
 end Interchange
 
 section Whisker
-
-/-- The parity twist commutes with right whiskering. -/
-theorem twist_whiskerRight_obj' (p : ZMod 2) {A B : (pres D Sc).Presented} (f : A ⟶ B)
-    (Z : (pres D Sc).Presented) :
-    Supercategory.twist k p (f ▷ Z) = Supercategory.twist k p f ▷ Z := by
-  refine Supercategory.induction_on (R := k) f ?_ (fun q g hg => ?_) (fun g h hg hh => ?_)
-  · rw [map_zero, MonoidalSupercategory.zero_whiskerRight k Z, map_zero]
-  · rw [Supercategory.twist_of_mem p hg,
-      Supercategory.twist_of_mem p (MonoidalSupercategory.whiskerRight_mem (R := k) Z hg),
-      MonoidalSupercategory.smul_whiskerRight (R := k)]
-  · rw [MonoidalSupercategory.add_whiskerRight (R := k), map_add, map_add, hg, hh,
-      MonoidalSupercategory.add_whiskerRight (R := k)]
 
 /-- The parity twist commutes with right whiskering, on words. -/
 theorem twist_whiskerRight_word (p : ZMod 2) {ν ν' : List I} (f : O[ν] ⟶ O[ν']) (σ : List I) :
@@ -183,13 +159,6 @@ def whiskerRightLin {A B : (pres D Sc).Presented} (Z : (pres D Sc).Presented) :
   toFun f := f ▷ Z
   map_add' f g := MonoidalSupercategory.add_whiskerRight (R := k) f g Z
   map_smul' c f := MonoidalSupercategory.smul_whiskerRight (R := k) c f Z
-
-/-- The left whiskering by a fixed object, as a `k`-linear map. -/
-def whiskerLeftLin {A B : (pres D Sc).Presented} (Z : (pres D Sc).Presented) :
-    (A ⟶ B) →ₗ[k] (Z ⊗ A ⟶ Z ⊗ B) where
-  toFun f := Z ◁ f
-  map_add' f g := MonoidalSupercategory.whiskerLeft_add (R := k) Z f g
-  map_smul' c f := MonoidalSupercategory.whiskerLeft_smul (R := k) Z c f
 
 theorem sub_whiskerRight' {A B : (pres D Sc).Presented} (f g : A ⟶ B)
     (Z : (pres D Sc).Presented) : (f - g) ▷ Z = f ▷ Z - g ▷ Z :=

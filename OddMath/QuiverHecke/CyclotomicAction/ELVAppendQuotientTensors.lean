@@ -12,14 +12,6 @@ universe u
 variable {k : Type u} [CommRing k]
   {C : Type u} [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
 
-theorem moduleIsoOfEvenNatIso_hom_total (F G : Superfunctor k C (SVec k))
-    (e : F.toFunctor ≅ G.toFunctor)
-    (hh : ∀ w, e.hom.app w ∈ parity (R := k) _ _ 0)
-    (hi : ∀ w, e.inv.app w ∈ parity (R := k) _ _ 0) (w : C) :
-    (moduleIsoOfEvenNatIso F G e hh hi).hom.total w = e.hom.app w := by
-  change e.hom.app w + (0 : F.obj w ⟶ G.obj w) = e.hom.app w
-  exact add_zero _
-
 theorem moduleIsoOfEvenNatIso_inv_total (F G : Superfunctor k C (SVec k))
     (e : F.toFunctor ≅ G.toFunctor)
     (hh : ∀ w, e.hom.app w ∈ parity (R := k) _ _ 0)
@@ -36,21 +28,6 @@ variable {k : Type u} [CommRing k]
   {C D : Type u} [Category.{u} C] [Category.{u} D]
   [Preadditive C] [Linear k C] [Supercategory k C]
   [Preadditive D] [Linear k D] [Supercategory k D]
-
-theorem inducedIsoOfFunctorEq_tensor (J K : C ⥤ D)
-    [J.Additive] [J.Linear k] [IsSuperfunctor k J]
-    [K.Additive] [K.Linear k] [IsSuperfunctor k K] (h : J = K)
-    (M : Superfunctor k C (SVec k)) (v : C) (w : D)
-    (g : J.obj v ⟶ w) (m : M.obj v) :
-    (inducedIsoOfFunctorEq J K h M).hom.total w (tensor J M.toFunctor v g m) =
-      tensor K M.toFunctor v
-        (eqToHom (congrArg (fun F : C ⥤ D => F.obj v) h).symm ≫ g) m := by
-  subst K
-  simp only [inducedIsoOfFunctorEq, Iso.refl_hom, SuperNatTrans.total,
-    Superfunctor.id_app_zero, Superfunctor.id_app_one, add_zero,
-    eqToHom_refl, Category.id_comp]
-  rfl
-
 
 omit [Supercategory k D] in
 private theorem tensor_identity_add_zero (J : C ⥤ D)

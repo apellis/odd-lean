@@ -90,7 +90,6 @@ variable [AddCommGroup X] {k : Type u} [CommRing k]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
   {D : Datum I X} {Sc : Scalars D k}
 
-
 namespace ProbeReservoir
 
 variable (P : ProbeReservoir k B D Sc)

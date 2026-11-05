@@ -57,7 +57,6 @@ private lemma coefficient_alg_commute (c : P.CrossCoeff Sc) (hc : c.IsInverse)
       (hy.trans (one_smul _ _).symm) ha ha
       (Units.map φ.toMonoidHom (P.crossDenom h i t hv V)) hd'
 
-
 lemma mixedQ_coefficient_comm (c : P.CrossCoeff Sc) (hc : c.IsInverse)
     (h : P.CrossDenominatorUnits)
     (Z : P.H (nextSector (true, j) false

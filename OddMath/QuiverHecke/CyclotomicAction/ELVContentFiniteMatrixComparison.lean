@@ -80,7 +80,6 @@ private theorem columns_sum (V : ι → SVec k) (W : SVec k) (f : ∀ a, V a ⟶
   rfl
 end SuperspaceColumns
 
-
 section GridProjection
 variable {k C A B : Type u} [CommRing k]
   [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]

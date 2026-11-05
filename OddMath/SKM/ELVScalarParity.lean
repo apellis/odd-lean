@@ -79,7 +79,6 @@ theorem scalarEvaluation_odd_zero (values : I × ℕ → k) {x : SYM D k}
   change scalarEvaluation D values (P x) = 0 at h
   rwa [hP] at h
 
-
 private theorem scalarPolyExterior_proj_sum (x : PolynomialExterior D k) :
     GradedAlgebra.proj (polynomialExteriorParity D k) 0 x +
       GradedAlgebra.proj (polynomialExteriorParity D k) 1 x = x := by

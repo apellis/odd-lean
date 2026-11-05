@@ -22,7 +22,6 @@ local notation "T" => probeOrdinaryAppend D Sc m ν i
 local notation "Q" => probeOldOrdinaryFunctor D Sc m ν
 local notation "U" => probeOldOrdinaryFunctor D Sc m (i :: ν)
 
-
 /-- Restriction preserves the full scalar coefficient evaluation condition,
 including the odd coefficient kernel. -/
 theorem probeOldRestriction_evaluatesCoefficients
@@ -79,17 +78,5 @@ theorem probeOrdinaryRestrictionModule_eq
           ((J).obj sv) ((J).obj sw) ((J).map g₀)).symm
       _ = _ := congrArg
         (probeOrdinaryModuleHom D m Sc (i :: ν) N hN ((J).obj sv) ((J).obj sw)) hs
-
-/-- The restriction equality transports the same vectors by the identity in
-parity zero and has no parity-one component. -/
-theorem probeRestrictionEqToHom_app
-    (N : Superfunctor k (ELVOld.OldContentCategory D Sc cut (i :: ν)) (SVec k))
-    (hN : ProbeEvaluatesCoefficients D m Sc (i :: ν) N) (p : ZMod 2)
-    (v : OrdinaryContentCategory D Sc a ν) :
-    (eqToHom (probeOrdinaryRestrictionModule_eq D Sc m ν i N hN)).app p v =
-      if p = 0 then LinearMap.id else 0 := by
-  have h := scalarModuleEqToHom_app (probeOrdinaryRestrictionModule_eq D Sc m ν i N hN) p v
-  refine h.trans ?_
-  split_ifs <;> rfl
 
 end OddMath.QuiverHecke

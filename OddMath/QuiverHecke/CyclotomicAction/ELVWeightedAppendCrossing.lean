@@ -14,12 +14,6 @@ noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 namespace OddMath.QuiverHecke.ELVOld
 universe u
-private theorem mapFamily_heq {ι : Type*} {A B : ι → Type*}
-    (F : ∀ i, A i → B i) {i j : ι} (h : i = j)
-    {a : A i} {b : A j} (hab : HEq a b) : HEq (F i a) (F j b) := by
-  cases h
-  cases hab
-  rfl
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
@@ -38,27 +32,6 @@ def truncatedEqualCrossComponent (s : TruncatedCategory D Sc cutoff N) :
 theorem oldTruncateFunctor_map_equalCross (s : OldCategory D Sc cutoff) :
     (Q).map (CyclotomicCrossingTensor.equalCrossComponent D Sc cutoff i s) =
       truncatedEqualCrossComponent D Sc cutoff N i ((Q).obj s) := rfl
-
-/-- This is the existing appended `crossTwo`, with only word associativity
-changing its endpoints. In particular no alternate crossing is selected. -/
-theorem truncatedEqualCrossComponent_heq (s : TruncatedCategory D Sc cutoff N) :
-    HEq (truncatedEqualCrossComponent D Sc cutoff N i s)
-      (truncatedAppendComponent D Sc cutoff N (crossTwo D Sc i i) s) := by
-  have hw : (s.word ++ [i] ++ [i], s.word ++ [i] ++ [i]) =
-      (s.word ++ [i, i], s.word ++ [i, i]) := by simp only [List.append_assoc, List.cons_append, List.nil_append]
-  have hc := (conj_eqToHom_iff_heq _ _
-    (congrArg (fun w => (pres D Sc).obj (ob D w)) (List.append_assoc s.word [i] [i]))
-    (congrArg (fun w => (pres D Sc).obj (ob D w)) (List.append_assoc s.word [i] [i]))).mp
-      (crossLast_eq D Sc s.word i i)
-  have ha := mapFamily_heq
-    (A := fun z : List I × List I =>
-      (pres D Sc).obj (ob D z.1) ⟶ (pres D Sc).obj (ob D z.2))
-    (B := fun z : List I × List I => hom D Sc cutoff z.1 z.2)
-    (fun z f => affineUnit D Sc cutoff z.1 z.2 f) hw hc
-  exact mapFamily_heq
-    (A := fun z : List I × List I => hom D Sc cutoff z.1 z.2)
-    (B := fun z : List I × List I => TruncatedOld D Sc cutoff N z.1 z.2)
-    (fun z f => (truncatedIdeal D Sc cutoff N z.1 z.2).mkQ f) hw ha
 
 /-- Full coefficient supernaturality descends from the old crossing. -/
 theorem truncatedEqualCross_supernatural :
@@ -80,30 +53,5 @@ theorem truncatedEqualCross_supernatural :
 
 variable (M : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k))
 local notation "RM" => weightedRestriction D Sc cutoff N M
-
-/-- The selected pair comparison intertwines the prescribed crossing on
-composed induction, retaining the twist on arbitrary coefficient arrows. -/
-theorem pairWeightedModuleIso_hom_crossing (w : OldCategory D Sc cutoff) :
-    pairAppendComparisonLinear D Sc cutoff N i i M w ∘ₗ
-        BalancedInduction.transformLinear
-          (CyclotomicCrossingTensor.equalCross_supernatural D Sc cutoff i) RM w =
-      BalancedInduction.transformLinear (truncatedEqualCross_supernatural D Sc cutoff N i)
-        M ((Q).obj w) ∘ₗ pairAppendComparisonLinear D Sc cutoff N i i M w := by
-  apply BalancedInduction.hom_ext
-  intro s g b
-  simp only [LinearMap.comp_apply, BalancedInduction.transformLinear_tensor,
-    pairWeightedModuleIso_hom_tensor]
-  rw [(Q).map_comp, map_twist, oldTruncateFunctor_map_equalCross]
-  rfl
-
-/-- The prescribed extra minus in the action crossing is preserved. -/
-theorem pairWeightedModuleIso_hom_signedCrossing (w : OldCategory D Sc cutoff) :
-    pairAppendComparisonLinear D Sc cutoff N i i M w ∘ₗ
-        (-BalancedInduction.transformLinear
-          (CyclotomicCrossingTensor.equalCross_supernatural D Sc cutoff i) RM w) =
-      (-BalancedInduction.transformLinear (truncatedEqualCross_supernatural D Sc cutoff N i)
-        M ((Q).obj w)) ∘ₗ pairAppendComparisonLinear D Sc cutoff N i i M w := by
-  rw [LinearMap.comp_neg, LinearMap.neg_comp,
-    pairWeightedModuleIso_hom_crossing D Sc cutoff N i M w]
 
 end OddMath.QuiverHecke.ELVOld

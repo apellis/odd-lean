@@ -214,16 +214,5 @@ theorem repeatedOuterPureProbe_path_eq (ν : X) (i j : I) {s t : Sector I}
     (p q : SPath (wd D ν [up i, up j, up i]) s t) : p = q := by
   exact (pureProbePath_unique ht p).trans (pureProbePath_unique ht q).symm
 
-/-- Off-diagonal entries in a pure-probe sector vanish by path uniqueness. -/
-theorem repeatedOuterPureProbe_offdiag [∀ a b : B, PiSupercategory k (a ⟶ b)]
-    (P : ProbeReservoir k B D Sc)
-    (ν : X) (i j : I) {s t : Sector I} (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (ht : nextSector (true, i) true (nextSector (true, j) true
-      (nextSector (true, i) true s)) = t) (p q : SPath (wd D ν [up i, up j, up i]) s t)
-    (hpq : p ≠ q) (Z : P.H t) :
-    braidLeft (P.swappedGens c L) i j i ν p q Z = 0 ∧
-      braidRight (P.swappedGens c L) i j i ν p q Z = 0 := by
-  exact (hpq (repeatedOuterPureProbe_path_eq ν i j ht p q)).elim
-
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

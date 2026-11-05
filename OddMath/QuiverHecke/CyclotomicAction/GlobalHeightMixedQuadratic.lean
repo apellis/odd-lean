@@ -46,11 +46,6 @@ theorem map_pairQuadPoly {R S : Type*} [Ring R] [Algebra k R] [Ring S] [Algebra 
   unfold pairQuadPoly
   split_ifs <;> simp [map_add, map_sum, map_smul, map_mul, map_pow]
 
-/-- `wordQuadratic` is the polynomial in the two positioned dots. -/
-theorem wordQuadratic_eq_pairQuadPoly (i j : I) (t : List I) (r : ℕ) :
-    wordQuadratic D Sc i j t r = pairQuadPoly D Sc i j (dotE D Sc t r) (dotE D Sc t (r + 1)) :=
-  rfl
-
 variable [Fintype I]
 
 section PairDiag

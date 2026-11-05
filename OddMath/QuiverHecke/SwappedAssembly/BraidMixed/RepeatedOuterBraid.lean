@@ -47,20 +47,6 @@ variable (P : ProbeReservoir k B D Sc) (ν : X) (i j : I) (s : Sector I)
     nextSector (true, j) true (nextSector (true, i) true (nextSector (true, i) false s)))
   (Z : P.H (nextSector (true, j) true (nextSector (true, i) true (nextSector (true, i) false s))))
 
-/-- The Q-weighted outer edge, with its endpoint transport. -/
-theorem repeatedOuter_outer_heq (hij : i ≠ j) :
-    HEq (crossEntry (P.swappedGens c L) ν [] i j [up i]
-      (SPath.three false true true hR trivial trivial hs)
-      (SPath.three true false true trivial hR trivial hs) Z)
-      ((P.mixedJ j i s hR
-        ((P.step (true, i) true _ trivial).obj ((P.castH hs).obj Z))).inv ≫
-       P.mixedQ j i s hR
-        ((P.step (true, i) true _ trivial).obj ((P.castH hs).obj Z))) := by
-  generalize ht : nextSector (true, j) true (nextSector (true, i) true
-    (nextSector (true, i) false s)) = t at Z hs
-  subst hs
-  exact heq_of_eq (P.adjacentMixed_mixed ν i j s hR c L Z hij)
-
 /-- The return probe crossing is the actual opposite crossing, not an inverse. -/
 theorem repeatedOuter_back_heq (hij : i ≠ j) :
     HEq (crossEntry (P.swappedGens c L) ν [up i] i j []

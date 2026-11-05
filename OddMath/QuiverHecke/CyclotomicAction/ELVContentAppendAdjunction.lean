@@ -22,14 +22,6 @@ private theorem even_comp_app_one
     (f ≫ g).app 1 v = 0 :=
   Superfunctor.app_eq_zero_of_mem (comp_mem hf hg) (by decide) v
 
-private theorem counit_zeroComponent
-    {k C A : Type u} [CommRing k] [Category.{u} C] [Category.{u} A]
-    [Preadditive C] [Linear k C] [Supercategory k C]
-    [Preadditive A] [Linear k A] [Supercategory k A]
-    (J : C ⥤ A) [J.Additive] [J.Linear k] [IsSuperfunctor k J]
-    (N : Superfunctor k A (SVec k)) (w : A)
-    (z : Obj J ((restriction J).obj N).toFunctor w) :
-    ((adjunctionCounit J).app N).app 0 w z = restrictionCounitLinear J N w z := rfl
 end BalancedInduction
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -151,92 +143,5 @@ def oldContentInducedCounitLinear
       BalancedInduction.Obj (oldContentInclusion D Sc cutoff (i :: ν)) N.toFunctor w :=
     BalancedInduction.mapComponent (oldContentInclusion D Sc cutoff (i :: ν))
       ((BalancedInduction.adjunctionCounit (oldContentAppend D Sc cutoff ν i)).app N) 0 w
-
-/-- On every nested generator, the selected append extension and restriction
-extension carry the ordinary content cap to the ordinary old cap. -/
-theorem oldContentAppendExtensionIso_counit_tensor
-    (N : Superfunctor k (OldContentCategory D Sc cutoff (i :: ν)) (SVec k))
-    (s : OldContentCategory D Sc cutoff ν)
-    (t : OldContentCategory D Sc cutoff (i :: ν)) (w : OldCategory D Sc cutoff)
-    (h : t.obj ⟶ w) (g : (append D Sc cutoff i).obj s.obj ⟶ t.obj)
-    (b : N.obj ((oldContentAppend D Sc cutoff ν i).obj s)) :
-    oldContentCounitComparisonLinear D Sc cutoff ν i N w
-      (BalancedInduction.tensor (oldContentInclusion D Sc cutoff (i :: ν))
-        (BalancedInduction.induced (oldContentAppend D Sc cutoff ν i)
-          ((BalancedInduction.restriction (oldContentAppend D Sc cutoff ν i)).obj N)).toFunctor
-        t h (BalancedInduction.tensor (oldContentAppend D Sc cutoff ν i)
-          ((BalancedInduction.restriction (oldContentAppend D Sc cutoff ν i)).obj N).toFunctor s g b)) =
-    oldContentInducedCounitLinear D Sc cutoff ν i N w
-      (BalancedInduction.tensor (oldContentInclusion D Sc cutoff (i :: ν))
-        (BalancedInduction.induced (oldContentAppend D Sc cutoff ν i)
-          ((BalancedInduction.restriction (oldContentAppend D Sc cutoff ν i)).obj N)).toFunctor
-        t h (BalancedInduction.tensor (oldContentAppend D Sc cutoff ν i)
-          ((BalancedInduction.restriction (oldContentAppend D Sc cutoff ν i)).obj N).toFunctor s g b)) := by
-  simp only [oldContentCounitComparisonLinear, oldContentInducedCounitLinear,
-    LinearMap.comp_apply]
-  rw [oldContentAppendExtensionLinear_tensor]
-  unfold BalancedInduction.inductionInsertedTensor
-  rw [BalancedInduction.mapComponent_tensor, twist_zero]
-  have hf := oldContentRestrictionExtensionComponent_zero D Sc cutoff ν i N s.obj
-  have hs := oldContentRestrictionExtensionLinear_tensor D Sc cutoff ν i N s.obj s (𝟙 _) b
-  have hx : (oldContentRestrictionExtensionIso D Sc cutoff ν i N).hom.app 0 s.obj
-      (BalancedInduction.tensor (oldContentInclusion D Sc cutoff ν)
-        ((BalancedInduction.restriction (oldContentAppend D Sc cutoff ν i)).obj N).toFunctor
-        s (𝟙 _) b) =
-      BalancedInduction.tensor (oldContentInclusion D Sc cutoff (i :: ν)) N.toFunctor
-        ((oldContentAppend D Sc cutoff ν i).obj s) (𝟙 _) b := by
-    change oldContentRestrictionExtensionComponent D Sc cutoff ν i 0 N s.obj _ = _
-    rw [hf]
-    exact hs.trans (congrArg (fun a => BalancedInduction.tensor
-      (oldContentInclusion D Sc cutoff (i :: ν)) N.toFunctor
-      ((oldContentAppend D Sc cutoff ν i).obj s) a b) ((append D Sc cutoff i).map_id s.obj))
-  refine (congrArg (fun z => restrictionCounitLinear (append D Sc cutoff i)
-    (BalancedInduction.induced (oldContentInclusion D Sc cutoff (i :: ν)) N) w
-    (BalancedInduction.tensor (append D Sc cutoff i)
-      ((BalancedInduction.restriction (append D Sc cutoff i)).obj
-        (BalancedInduction.induced (oldContentInclusion D Sc cutoff (i :: ν)) N)).toFunctor
-      s.obj (g ≫ h) z)) hx).trans ?_
-  rw [restrictionCounitLinear_tensor]
-  have hp := BalancedInduction.postcompose_tensor
-    (oldContentInclusion D Sc cutoff (i :: ν)) N.toFunctor (g ≫ h)
-    ((oldContentAppend D Sc cutoff ν i).obj s) (𝟙 ((append D Sc cutoff i).obj s.obj)) b
-  have hid := congrArg (fun a : (append D Sc cutoff i).obj s.obj ⟶ w =>
-    BalancedInduction.tensor (oldContentInclusion D Sc cutoff (i :: ν)) N.toFunctor
-      ((oldContentAppend D Sc cutoff ν i).obj s) a b) (Category.id_comp (g ≫ h))
-  refine (hp.trans hid).trans ?_
-  have hr := BalancedInduction.mapComponent_tensor
-    (oldContentInclusion D Sc cutoff (i :: ν))
-    ((BalancedInduction.adjunctionCounit (oldContentAppend D Sc cutoff ν i)).app N)
-    0 w t h (BalancedInduction.tensor (oldContentAppend D Sc cutoff ν i)
-      ((BalancedInduction.restriction (oldContentAppend D Sc cutoff ν i)).obj N).toFunctor s g b)
-  have he := BalancedInduction.counit_zeroComponent (oldContentAppend D Sc cutoff ν i)
-    N t (BalancedInduction.tensor (oldContentAppend D Sc cutoff ν i)
-      ((BalancedInduction.restriction (oldContentAppend D Sc cutoff ν i)).obj N).toFunctor s g b)
-  have hc := restrictionCounitLinear_tensor (oldContentAppend D Sc cutoff ν i) N s t g b
-  have hright := hr.trans (congrArg₂
-    (fun a z => BalancedInduction.tensor (oldContentInclusion D Sc cutoff (i :: ν))
-      N.toFunctor t a z) (twist_zero h) (he.trans hc))
-  have hb := BalancedInduction.balance (oldContentInclusion D Sc cutoff (i :: ν))
-    N.toFunctor (show (oldContentAppend D Sc cutoff ν i).obj s ⟶ t from g) h b
-  have hmap : (oldContentInclusion D Sc cutoff (i :: ν)).map
-      (show (oldContentAppend D Sc cutoff ν i).obj s ⟶ t from g) = g := rfl
-  have ha := congrArg (fun a : (append D Sc cutoff i).obj s.obj ⟶ t.obj => a ≫ h) hmap
-  have ht := congrArg (fun a : (append D Sc cutoff i).obj s.obj ⟶ w =>
-    BalancedInduction.tensor (oldContentInclusion D Sc cutoff (i :: ν)) N.toFunctor
-      ((oldContentAppend D Sc cutoff ν i).obj s) a b) ha
-  have hresult := (ht.symm.trans hb).trans hright.symm
-  exact hresult
-
-/-- The whole chosen content-extension square preserves the ordinary counit. -/
-theorem oldContentAppendExtensionIso_counit
-    (N : Superfunctor k (OldContentCategory D Sc cutoff (i :: ν)) (SVec k))
-    (w : OldCategory D Sc cutoff) :
-    oldContentCounitComparisonLinear D Sc cutoff ν i N w =
-      oldContentInducedCounitLinear D Sc cutoff ν i N w := by
-  apply BalancedInduction.nested_hom_ext (oldContentAppend D Sc cutoff ν i)
-    (oldContentInclusion D Sc cutoff (i :: ν))
-    ((BalancedInduction.restriction (oldContentAppend D Sc cutoff ν i)).obj N) w
-  intro s t h g b
-  exact oldContentAppendExtensionIso_counit_tensor D Sc cutoff ν i N s t w h g b
 
 end OddMath.QuiverHecke.ELVOld

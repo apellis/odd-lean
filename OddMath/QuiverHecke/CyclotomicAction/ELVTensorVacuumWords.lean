@@ -228,24 +228,6 @@ def homEquiv (ν τ : List I) :
   (Linear.homCongr k (valueIso D Sc m cutoff L ΛP ΛR ν) (Iso.refl _)).trans
     (PowerWordHomCoordinates.homEquiv D Sc cutoff L ΛR ν τ)
 
-/-- Every old full-coefficient word generator has its unchanged coordinate
-on the actual tensor-Hom word value. -/
-theorem homEquiv_from_old (ν τ : List I)
-    (g : (OldCategory.mk τ : OldCategory D Sc cutoff) ⟶ OldCategory.mk ν) :
-    homEquiv D Sc m cutoff L ΛP ΛR ν τ
-      ((chart D Sc m cutoff L ΛP ΛR ν).hom ≫
-        PowerWordWeightWhiskering.wordFamilyArrow D Sc cutoff L ΛR
-          (PowerWordWeight.wordWeight D ΛR ν) ν τ g) =
-    PowerWordContentCyclicity.generator D Sc cutoff L τ (ν : Multiset I)
-      (PowerWordContentCyclicity.wordObject D Sc cutoff L ν (ν : Multiset I) rfl) g := by
-  change PowerWordHomCoordinates.homEquiv D Sc cutoff L ΛR ν τ
-    (((valueIso D Sc m cutoff L ΛP ΛR ν).inv ≫
-      ((chart D Sc m cutoff L ΛP ΛR ν).hom ≫
-        PowerWordWeightWhiskering.wordFamilyArrow D Sc cutoff L ΛR
-          (PowerWordWeight.wordWeight D ΛR ν) ν τ g)) ≫ 𝟙 _) = _
-  simp only [chart, Iso.trans_hom, Category.assoc, Iso.inv_hom_id_assoc, Category.comp_id]
-  exact PowerWordHomCoordinates.homEquiv_from_old D Sc cutoff L ΛR ν τ g
-
 /-- The dot identity on every vector of every full original-weight block. -/
 theorem dot_apply (ν : List I) (i : I)
     (β : WeightBlocks D ΛR (PowerWordWeight.wordWeight D ΛR (ν ++ [i])))

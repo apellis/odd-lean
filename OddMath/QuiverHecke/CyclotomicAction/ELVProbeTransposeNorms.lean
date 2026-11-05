@@ -28,8 +28,6 @@ local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR
 
 attribute [local irreducible] SKM.mixedPostSourcePreDot SKM.mixedPostSourcePostDot
 
-
-
 /-- All three transposed source norms are units for the specified factor pair. -/
 theorem ELVProbeCrossTransposeNormUnits [Finite I]
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) : (P).CrossTransposeNormUnits := by

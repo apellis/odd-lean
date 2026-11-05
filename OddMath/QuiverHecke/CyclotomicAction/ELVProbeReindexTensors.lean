@@ -151,10 +151,4 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   {ν μ : List I} (h : ν.Perm μ) (i : I)
   {ν' μ' : List I} (hν : (i :: ν).Perm ν') (hμ : (i :: μ).Perm μ') (h' : ν'.Perm μ')
 
-/-- The evaluated comparison retains the specified forward tensor map. -/
-theorem probeAppendReindexIso_hom_linear (N : ProbeEvaluatedModules D Sc m ν)
-    (w : OldContentCategory D Sc (probeCutoff D m) μ') :
-    (((probeAppendReindexIso D Sc m h i hν hμ h').hom.app N).hom).total w =
-      oldAppendReindexLinear D Sc (probeCutoff D m) h i hν hμ h' N.obj w := rfl
-
 end OddMath.QuiverHecke

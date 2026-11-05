@@ -177,41 +177,6 @@ def targetRightCoefficientLinear (i : I) (β : Multiset I) (a : I → _root_.Pol
           BalancedTensor.rel ℤ (Hn D Sc (n + 1 + 1)) (Hn D Sc (n + 1)) _ _))
     (targetRightCoefficient D Sc i β a ha n c).restrictScalars k
 
-
-/-- A homogeneous coefficient acts with its own degree on the source. -/
-theorem sourceRightCoefficient_parity (i : I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n : ℕ) (q : ZMod 2)
-    (c : CyclotomicAlgebra D Sc a n) (hc : c ∈ cyclotomicParity D Sc a ha n q) :
-    SVec.ofHom (sourceRightCoefficientLinear D Sc i a ha n c) ∈
-      SVec.parityHom (qSourceSpace D Sc i a ha n) (qSourceSpace D Sc i a ha n) q := by
-  let : Module (Hn D Sc (n + 1)) (cyclotomicSuperspace D Sc a ha n) :=
-    inferInstanceAs (Module (Hn D Sc (n + 1)) (CyclotomicAlgebra D Sc a n))
-  apply InducedParity.ind_map_mem (cyclotomicSuperspace D Sc a ha n)
-    (affineParity D Sc (n + 1)) (affineParity D Sc (n + 1 + 1))
-    (appendAlgebra D Sc i (n + 1))
-    (fun _ _ h => appendAlgebra_parity D Sc i (n + 1) h)
-    (cyclotomicCoefficient_smul_mem D Sc a ha n)
-  intro p r x b hx hb
-  change InductionAlong.Ind.tmul x ((show CyclotomicAlgebra D Sc a n from b) * c) ∈ _
-  simpa only [add_assoc] using qSourceSpace_tmul_mem D Sc i a ha n hx
-    (SetLike.GradedMul.mul_mem hb hc)
-
-/-- The shifted right action has the coefficient degree, without an extra shift. -/
-theorem targetRightCoefficient_parity (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n : ℕ) (q : ZMod 2)
-    (c : CyclotomicAlgebra D Sc a n) (hc : c ∈ cyclotomicParity D Sc a ha n q) :
-    SVec.ofHom (targetRightCoefficientLinear D Sc i β a ha n c) ∈
-      SVec.parityHom (qTargetSpace D Sc i β a ha n) (qTargetSpace D Sc i β a ha n) q := by
-  apply InducedParity.ind_map_mem (qCoefficient D Sc i β a ha n).toSVec
-    (affineParity D Sc (n + 1)) (affineParity D Sc (n + 1 + 1))
-    (prependAlgebra D Sc i (n + 1))
-    (fun _ _ h => prependAlgebra_parity D Sc i (n + 1) h)
-    (qCoefficient_smul_mem D Sc i β a ha n)
-  intro p r x b hx hb
-  change InductionAlong.Ind.tmul x ((qCoefficient D Sc i β a ha n).ract c b) ∈ _
-  simpa only [add_assoc] using qTargetSpace_tmul_mem D Sc i β a ha n hx
-    (SVec.apply_mem_part ((qCoefficient D Sc i β a ha n).ract_mem q c hc) hb)
-
 /-- The coefficient involution produces the supertensor sign on the source. -/
 theorem rightDotCoefficient_mul (i : I) (a : I → _root_.Polynomial k)
     (ha : CyclotomicPolynomialParity D a) (n : ℕ) (q : ZMod 2)
@@ -301,7 +266,6 @@ theorem targetRightDot_coefficient (i : I) (β : Multiset I) (a : I → _root_.P
         (targetRightDot D Sc i β a ha n (InductionAlong.Ind.tmul x b)))
       simp only [targetRightCoefficient_tmul, targetRightDot_tmul, hcoeff]
       exact BalancedTensor.tmul_neg _ _
-
 
 /-- Additive coefficient law for the descended source action. -/
 theorem sourceRightCoefficient_zero (i : I) (a : I → _root_.Polynomial k)

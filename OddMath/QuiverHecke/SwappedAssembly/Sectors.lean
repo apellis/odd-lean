@@ -207,7 +207,6 @@ def step : (l : Letter I) → (side : Bool) → (s : Sector I) → StepValid l s
       (show P.muM s + D.α i = P.muM (s.1, s.2 + Finsupp.single i 1) by
         simp only [muM, contentWeight_add_single]; abel)
 
-
 /-- The Hom-sector functor of a path, from its rightmost sector to its leftmost sector. -/
 def pathFunctor : {w : List (Col I X)} → {s t : Sector I} → SPath w s t → (P.H t ⥤ P.H s)
   | _, _, _, .nil _ => 𝟭 _

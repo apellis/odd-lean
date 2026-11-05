@@ -52,7 +52,6 @@ theorem offDiagonalInputDefect_shortCross_pprime (p : ZMod 2)
   rw [← hs]
   exact offDiagonalInputDefect_pMap_alpha D Sc cutoff p j v t a
 
-
 namespace CyclotomicCrossingTensor
 
 /-- The actual polynomial-constant contraction before the cyclotomic quotient. -/
@@ -89,30 +88,11 @@ def offDiagonalInputContraction (j : {j : I // D.parity j = 1}) (v t : List I) :
   simp only [offDiagonalInputContraction, LinearMap.comp_apply, LinearEquiv.coe_coe,
     LinearMap.quotKerEquivOfSurjective_symm_apply, Submodule.liftQ_apply]
 
-/-- The descended row retains the whole old-coefficient twist on representatives. -/
-theorem offDiagonalInputContraction_representative (j : {j : I // D.parity j = 1})
-    (v s t : List I) (r : hom D Sc cutoff v (s ++ [j.1]))
-    (g : hom D Sc cutoff (s ++ [j.1]) t) :
-    offDiagonalInputContraction D Sc cutoff j v t
-      (q D Sc cutoff j.1 v t
-        (shortTensor D Sc cutoff j.1 v s t g ((ideal D Sc cutoff v (s ++ [j.1])).mkQ r))) =
-      -(SKM.zsign k (D.parity j.1 * D.parity j.1)) •
-        (ideal D Sc cutoff v t).mkQ (twist k (D.parity j.1) r ≫ g) := by
-  rw [offDiagonalInputContraction_q]
-  change appendC0InputDefect D Sc cutoff j.1 v t
-    (shortCross D Sc cutoff j.1 v t
-      (shortTensor D Sc cutoff j.1 v s t g ((ideal D Sc cutoff _ _).mkQ r))) 0 = _
-  rw [ShortCrossCoordinates.column_mk, appendC0InputDefect_crossing]
-  simp only [Finsupp.smul_apply, Finsupp.single_eq_same]
-
-
-
 def offDiagonalCrossingInputDotAffine (j : {j : I // D.parity j = 1}) (v t : List I) :
     ShortTarget D Sc cutoff j.1 v t →ₗ[k] ShortTarget D Sc cutoff j.1 v t :=
   ShortCrossCoordinates.decode D Sc cutoff j.1 v t ∘ₗ
     appendMovingPowerTarget D Sc cutoff j.1 v (t ++ [j.1]) 1 ∘ₗ
       shortCross D Sc cutoff j.1 v t
-
 
 /-- The moving input dot sends every Pprime relation to another Pprime relation. -/
 theorem offDiagonalCrossingInputDotAffine_pprime (j : {j : I // D.parity j = 1}) (v t : List I)
@@ -163,7 +143,6 @@ def offDiagonalCrossingInputDot (j : {j : I // D.parity j = 1}) (v t : List I) :
   simp only [offDiagonalCrossingInputDot, LinearMap.comp_apply, LinearEquiv.coe_coe,
     LinearMap.quotKerEquivOfSurjective_symm_apply, Submodule.mapQ_apply,
     LinearMap.quotKerEquivOfSurjective_apply_mk]
-
 
 /-- Signed source-dot formula on full-coefficient representatives. -/
 theorem offDiagonalCrossingInputDotAffine_representative (j : {j : I // D.parity j = 1})

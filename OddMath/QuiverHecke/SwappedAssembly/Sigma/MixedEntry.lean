@@ -40,7 +40,6 @@ variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
   {D : Datum I X} {Sc : Scalars D k}
 
-
 omit [AddCommGroup X] in
 /-- A chain whose transports are endo-transports is invertible when the chain without
 them is. -/

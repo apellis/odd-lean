@@ -55,7 +55,6 @@ theorem elvProbeSigmaPermutation_of_pureEntries
       (SPath.sides_two ..) (SPath.sides_two ..) Z
   · exact hpure i j hij ν t s _ _ true (SPath.sides_two ..) (SPath.sides_two ..) Z
 
-
 /-- Intermediate factor assembly. The reservoir and both mixed entries are
 constructed; only the canonical probe left-mate input remains explicit. -/
 theorem elvProbeSigmaPermutation_of_leftMateInvertible

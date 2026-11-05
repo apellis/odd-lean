@@ -42,9 +42,6 @@ def scalarsCast {Sc₁ Sc₂ : SKM.Scalars D k} (e : Sc₁ = Sc₂) {s s' t t' :
       (coefficientObj D Sc₂ s' ⟶ coefficientObj D Sc₂ t') := by
   subst e hs ht; exact LinearEquiv.refl k _
 
-theorem scalarsCast_refl {s t : List I} (x : coefficientObj D Sc s ⟶ coefficientObj D Sc t) :
-    scalarsCast D (rfl : Sc = Sc) (rfl : s = s) (rfl : t = t) x = x := rfl
-
 theorem scalarsCast_scalarsCast {Sc₁ Sc₂ Sc₃ : SKM.Scalars D k} (e : Sc₁ = Sc₂) (e' : Sc₂ = Sc₃)
     {s s' s'' t t' t'' : List I} (hs : s = s') (ht : t = t') (hs' : s' = s'') (ht' : t' = t'')
     (x : coefficientObj D Sc₁ s ⟶ coefficientObj D Sc₁ t) :

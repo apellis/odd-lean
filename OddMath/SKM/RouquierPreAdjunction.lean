@@ -103,7 +103,6 @@ theorem unshiftedPreAdjunction_counit_app (H : a ⟶ c) :
     TwoSupercategory.whiskerLeft_id (R := k), TwoSupercategory.whiskerLeft_id (R := k),
     Category.id_comp, koszulSign_smul (R := k)]
 
-
 /-- The canonical shift comparisons evenize the given left unit. -/
 theorem unshiftedPreAdjunction_unit_mem (H : b ⟶ c) :
     (unshiftedPreAdjunction A c).unit.app H ∈ parity (R := k) _ _ 0 := by

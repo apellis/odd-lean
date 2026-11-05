@@ -15,18 +15,6 @@ universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k)
 
-private def emptyProbeNF : NFIdx ([] : List I) [] := by
-  have hc : Categorification.TypeA.canWord 0 (1 : Equiv.Perm (Fin 0)) = [] := by
-    apply List.length_eq_zero_iff.mp
-    rw [Categorification.TypeA.length_canWord, Categorification.TypeA.length_one]
-  refine ⟨([], 1), by simp, by simp, ?_⟩
-  simp only [List.map_nil, List.length_nil, hc, cw, List.reverse_nil, List.nil_append, pl, SChain]
-
-private theorem affineEmptyIdentity_ne_zero [Nontrivial k] :
-    (𝟙 ((pres D Sc).obj (ob D []))) ≠ 0 := by
-  rw [← ELVOld.vacuum_nf D Sc (emptyProbeNF (I := I)), ← basisNF_apply]
-  exact (basisNF D Sc [] []).ne_zero (emptyProbeNF (I := I))
-
 variable [Fintype I] (m : I → ℕ)
 
 /-- The original empty object in the old scalar-probe source category. -/
@@ -49,15 +37,5 @@ def probeOldVacuumVector :
     change Hn.wordIdempotent (vacuumWord (I := I)) * Hn.wordIdempotent (vacuumWord (I := I)) =
       Hn.wordIdempotent (vacuumWord (I := I))
     exact Hn.wordIdempotent_sq _⟩
-
-/-- The height-zero matrix entry is the nonzero original empty PBW identity. -/
-theorem probeOldVacuumVector_ne_zero [Nontrivial k] : probeOldVacuumVector D Sc m ≠ 0 := by
-  intro hz
-  have he := congrArg Subtype.val hz
-  change Hn.wordIdempotent (vacuumWord (I := I)) = 0 at he
-  have hh := congrArg (fun f : Hn D Sc 0 => f (vacuumWord, vacuumWord)) he
-  simp only [Hn.wordIdempotent, OddMath.FiniteHomMatrix.idem, OddMath.FiniteHomMatrix.single,
-    DFinsupp.single_eq_same, DFinsupp.zero_apply] at hh
-  exact affineEmptyIdentity_ne_zero D Sc hh
 
 end OddMath.QuiverHecke

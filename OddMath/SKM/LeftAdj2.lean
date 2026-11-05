@@ -202,7 +202,6 @@ theorem T2_crossFE (i : I) (μ : X) (m : ℕ) :
   generalize (m : ZMod 2) = z
   revert a x y z; decide
 
-
 /-- `η'` on the right followed by `σ` on the two right strands: by (5.17). -/
 theorem reta_sigma (i : I) (μ : X) :
     reta cs i μ ≫ cl D Sc μ [up i, up i, dn i] [up i, dn i, up i] ((sigmaL i i).map (whL [up i] [])) =
@@ -267,7 +266,6 @@ theorem check_6_2a (i : I) (μ : X) (hh : -1 ≤ D.h i μ) :
   · have hM : (-D.h i (wt D μ [])).toNat = 0 := by simp only [wt_nil]; omega
     rw [hM, sum_range_one, sum_range_zero, smul_zero, neg_zero, dsc', ite_eq_right (by omega),
       zero_smul, neg_zero]
-
 
 /-- The right curl with `s` dots on the loop after the crossing (the left-hand side of (5.20)). -/
 abbrev curl20 (i : I) (μ : X) (s : ℕ) :
@@ -368,7 +366,6 @@ theorem check_6_2b (i : I) (μ : X) (hh : -1 ≤ D.h i μ) (m : ℕ)
         rw [curl20_eq_zero cs i μ s (by omega), Limits.zero_comp, smul_zero, smul_zero]),
         smul_zero, neg_zero]
 
-
 /-- **The claim for (6.2)** (Brundan–Ellis, proof of Lemma 6.1): for `⟨hᵢ,λ⟩ ≥ -1`, minus the strand
 crossing `η'` (on its right) equals `η'` on the left of `↑` minus `δ_{⟨hᵢ,λ⟩,-1} c_{λ;i}` times
 `↑ ⊗ η`. -/
@@ -454,7 +451,6 @@ theorem eq_6_2 (i : I) (μ : X) (hh : -1 ≤ D.h i μ) :
       congr 1
     rw [hz, smul_zero]
   · rw [zero_smul]
-
 
 /-! ## Proposition 6.2, first relation -/
 

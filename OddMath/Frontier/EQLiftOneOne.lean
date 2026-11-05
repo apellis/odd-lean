@@ -37,7 +37,6 @@ open OddMath.Frontier.EQK0Int (ONHAll ONHTensor)
 open OddMath.Frontier.EQFunctor
 open DG MulOpposite
 
-
 /-! ### `Z_{1,1} ≅ Z_2` -/
 
 theorem osymAB_one_one_eq_top (f : SkewPolynomial (1 + 1)) : f ∈ osymAB 1 1 := by

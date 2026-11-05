@@ -95,9 +95,6 @@ def endoPower {𝒞 : Type*} [Category 𝒞] {Y : 𝒞} (f : Y ⟶ Y) : ℕ → 
 @[simp] theorem endoPower_zero {𝒞 : Type*} [Category 𝒞] {Y : 𝒞} (f : Y ⟶ Y) :
     endoPower f 0 = 𝟙 Y := rfl
 
-theorem endoPower_succ {𝒞 : Type*} [Category 𝒞] {Y : 𝒞} (f : Y ⟶ Y) (m : ℕ) :
-    endoPower f (m + 1) = endoPower f m ≫ f := rfl
-
 /-- The successor power, with the new factor applied first. -/
 theorem endoPower_succ' {𝒞 : Type*} [Category 𝒞] {Y : 𝒞} (f : Y ⟶ Y) (m : ℕ) :
     endoPower f (m + 1) = f ≫ endoPower f m := by

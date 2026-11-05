@@ -19,7 +19,7 @@ private abbrev coefficientProjection :=
   (coefficientPowerIdeal D cutoff (elementaryCoefficients (k := k) D cutoff) L).ringCon.mkₐ k
 private abbrev target (i : I) := mateTargetSpace D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L) ⟨[]⟩
 private def dot (i : I) : Module.End k (target D Sc cutoff L i) :=
-  actualInductionDot D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L)
+  inductionDot D Sc cutoff i (coefficientPowerVacuum D Sc cutoff L)
     ((append D Sc cutoff i).obj ⟨[]⟩)
 private def outputCoefficient (i : I)
     (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) :
@@ -34,9 +34,6 @@ def momentMap (i : I) (hN : 0 < cutoff i) (n : ℕ) :
     Module.End k (CoefficientPowerQuotient (k := k) D cutoff L) :=
   (functional D Sc cutoff L i hN).comp
     ((dot D Sc cutoff L i ^ n).comp (unit D Sc cutoff L i))
-
-theorem momentMap_one (i : I) (hN : 0 < cutoff i) (n : ℕ) :
-    momentMap D Sc cutoff L i hN n 1 = signedMoment D Sc cutoff L i hN n := rfl
 
 private theorem unit_eq (i : I) (z : CoefficientPowerQuotient (k := k) D cutoff L) :
     unit D Sc cutoff L i z = BalancedInduction.unit (append D Sc cutoff i)
@@ -255,13 +252,5 @@ theorem momentMap_odd (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i) (r : ℕ
         (coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩) *
           completeCoefficient D cutoff L i r)) := by
   rw [momentMap_eq_mulLeft, signedMoment_odd D Sc cutoff L i hi hN r]
-
-/-- The first higher odd moment is the original left exterior operator
-on the entire regular power vacuum, for either cutoff parity. -/
-theorem momentMap_first_odd (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i) :
-    momentMap D Sc cutoff L i hN (cutoff i) =
-      LinearMap.mulLeft k ((-1 : k) ^ (cutoff i + 1) •
-        coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) := by
-  rw [momentMap_eq_mulLeft, signedMoment_first_odd D Sc cutoff L i hi hN]
 
 end OddMath.QuiverHecke.ELVOld.PowerVacuumCoefficient

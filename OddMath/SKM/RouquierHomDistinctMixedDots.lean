@@ -90,12 +90,6 @@ def homDistinctMixedPreMateDot (H : a ⟶ c)
           ((homParityShift (k := k) σ).obj (F ≫ H))).hom ≫
         (homParityShift (k := k) u).map (Φ ≫ adjc.counit.app H ▷ E'))
 
-/-- The dotless mate is the dotted mate at `Φ = 𝟙`. -/
-theorem homDistinctMixedPreMateDot_id (H : a ⟶ c) :
-    homDistinctMixedPreMateDot E E' t u adjd adjc H (𝟙 _) =
-      homDistinctMixedPreMate E E' t u adjd adjc H := by
-  rw [homDistinctMixedPreMateDot, homDistinctMixedPreMate, Category.id_comp]
-
 /-- The dotted mate only depends on `Φ` through `Φ ≫ ε ▷ E'`. -/
 theorem homDistinctMixedPreMateDot_congr (H : a ⟶ c)
     {Φ Ψ : (E ≫ (homParityShift (k := k) σ).obj (F ≫ H)) ≫ E' ⟶
@@ -136,12 +130,6 @@ theorem MixedTransport.smul {Z : b ⟶ c} {g Φ} (h : MixedTransport (k := k) (E
   unfold MixedTransport at *
   rw [Functor.map_smul, Linear.comp_smul, h, TwoSupercategory.whiskerLeft_smul (R := k),
     Linear.smul_comp]
-
-theorem mixedTransport_id (Z : b ⟶ c) :
-    MixedTransport (k := k) (E := E) (E' := E') (t := t) (u := u) (Z := Z) (𝟙 _) (𝟙 _) := by
-  unfold MixedTransport
-  rw [CategoryTheory.Functor.map_id, Category.comp_id, TwoSupercategory.whiskerLeft_id (R := k),
-    Category.id_comp]
 
 /-- The even post dot transports to the source side. -/
 theorem mixedTransport_post (Z : b ⟶ c) {y : E' ⟶ E'} (hy : y ∈ parity (R := k) _ _ 0) :
@@ -253,25 +241,6 @@ theorem homPreDotConj_inv {x w : E ⟶ E} (hx : x ∈ parity (R := k) E E 0)
     congr
   · rw [← homPreDotConj_comp, ← homPreDotConj_id adj]
     congr
-
-/-- The conjugate of an even dot is even when the unit and counit are. -/
-theorem homPreDotConj_mem
-    (hunit : ∀ Y, adj.unit.app Y ∈ parity (R := k) _ _ 0)
-    (hcounit : ∀ H, adj.counit.app H ∈ parity (R := k) _ _ 0)
-    (x : E ⟶ E) (hx : x ∈ parity (R := k) E E 0) (H : a ⟶ c) :
-    (homPreDotConj adj x hx).app H ∈ parity (R := k) _ _ 0 := by
-  simp only [homPreDotConj, conjugateEquiv_apply_app]
-  rw [← Functor.map_comp]
-  have hm : (homPre (k := k) (c := c) F ⋙ homParityShift (k := k) σ).map
-      ((homPreDot c x hx).app ((homPre (k := k) F ⋙ homParityShift (k := k) σ).obj H) ≫
-        adj.counit.app H) ∈ parity (R := k) _ _ 0 := by
-    refine IsSuperfunctor.map_mem (R := k) (F := homParityShift (k := k) σ)
-      (TwoSupercategory.whiskerLeft_mem F ?_)
-    have h := comp_mem (TwoSupercategory.whiskerRight_mem
-      ((homPre (k := k) F ⋙ homParityShift (k := k) σ).obj H) hx) (hcounit H)
-    rw [add_zero] at h
-    exact h
-  simpa using comp_mem (hunit _) hm
 
 end Conjugate
 

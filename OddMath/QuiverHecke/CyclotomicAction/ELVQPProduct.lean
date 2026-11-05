@@ -173,22 +173,6 @@ theorem projection_affine_whiskerRight_eq (i : I) (μ τ : List I)
     rightContext_relation] at he
   exact he
 
-/-- The no-spectator induction hypothesis implies the required equality in every
-larger spectator context, with arbitrary full-coefficient continuation. -/
-theorem qpEval_whiskerRight_of_projection_eq (i : I) (μ τ σ z : List I)
-    (f g : End ((pres D Sc).obj (ob D (i :: μ))))
-    (hfg : projection D Sc cutoff i μ (i :: μ)
-        (affineUnit D Sc cutoff _ _ f ≫ relation D Sc cutoff i μ) =
-      projection D Sc cutoff i μ (i :: μ)
-        (affineUnit D Sc cutoff _ _ g ≫ relation D Sc cutoff i μ))
-    (h : hom D Sc cutoff ((i :: (μ ++ τ)) ++ σ) z) :
-    qpEval D Sc cutoff i (μ ++ τ) σ z h
-        (f ▷ (pres D Sc).obj (ob D τ)) =
-      qpEval D Sc cutoff i (μ ++ τ) σ z h
-        (g ▷ (pres D Sc).obj (ob D τ)) := by
-  exact qpEval_of_projection_eq D Sc cutoff i (μ ++ τ) σ z _ _
-    (projection_affine_whiskerRight_eq D Sc cutoff i μ τ f g hfg) h
-
 /-- Raw projected all-word identity, before adjoining spectators. -/
 theorem qp_projection_product (i : I) (μ : List I) :
     projection D Sc cutoff i μ (i :: μ)

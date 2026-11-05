@@ -63,27 +63,4 @@ private theorem comparison_step {C B E : Type*} [Category* C] [Category* B] [Cat
   simp only [Functor.comp_map, Iso.trans_hom, Functor.mapIso_hom, Category.assoc]
   rw [← Category.assoc, ← H.map_comp, h₀, H.map_comp, Category.assoc, h₁]
 
-/-- Every chosen right-context functor has the prescribed full old-Hom map
-under its recursively selected comparison. Both arrow parities and all
-coefficient classes are retained. -/
-theorem context_fromArrow (s t η : List I)
-    (g : (OldCategory.mk t : OldCategory D Sc cutoff) ⟶ OldCategory.mk s) :
-    contextEquation D Sc cutoff L s t η g := by
-  induction η generalizing s t with
-  | nil =>
-      change (𝟭 _).map _ ≫ (Iso.refl _).hom = (Iso.refl _).hom ≫ _
-      simp only [Functor.id_map, Iso.refl_hom, Category.comp_id, Category.id_comp]
-      rfl
-  | cons i η ih =>
-      exact comparison_step (BalancedInduction.induction (append D Sc cutoff i))
-        (contextInduction D Sc cutoff η)
-        (powerWordAppendIso D Sc cutoff L s i) (powerWordAppendIso D Sc cutoff L t i)
-        (contextIso D Sc cutoff L (s ++ [i]) η) (contextIso D Sc cutoff L (t ++ [i]) η)
-        (PowerWordMorphisms.fromArrow D Sc cutoff L s t g)
-        (PowerWordMorphisms.fromArrow D Sc cutoff L (s ++ [i]) (t ++ [i]) ((append D Sc cutoff i).map g))
-        (PowerWordMorphisms.fromArrow D Sc cutoff L (extendedWord (s ++ [i]) η) (extendedWord (t ++ [i]) η)
-          (extendedArrow D Sc cutoff (s ++ [i]) (t ++ [i]) η ((append D Sc cutoff i).map g)))
-        (PowerWordWhiskering.append_fromArrow_all D Sc cutoff L s t i g)
-        (ih (s ++ [i]) (t ++ [i]) ((append D Sc cutoff i).map g))
-
 end OddMath.QuiverHecke.ELVOld.PowerWordContexts

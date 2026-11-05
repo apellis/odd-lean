@@ -2,7 +2,9 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.CyclotomicAction.ELVQPNumerator
+import OddMath.QuiverHecke.CyclotomicAction.ELVMonicPolynomial
+import OddMath.QuiverHecke.CyclotomicAction.ELVEndpointLeading
+import Mathlib.Algebra.Polynomial.Div
 /-! # Signed old-Hom division by the ordered endpoint–QP numerator
 
 `endpointQP_top` and `endpointQP_above` assemble the actual unit highest action,
@@ -517,41 +519,5 @@ theorem endpointQP_division (i : I) (v w : List I)
   apply bounded ((E z).support.sup (fun t => t.1.1) + 1) z
   intro t ht
   exact Nat.lt_succ_of_le (Finset.le_sup (f := fun t => t.1.1) ht)
-
-theorem appendQPInverseUnit_mul_productUnit (i : I) (v : List I) :
-    appendQPInverseUnit D Sc i v * appendQPProductUnit D Sc i v = 1 := by
-  unfold appendQPInverseUnit appendQPProductUnit
-  have H (l : List ℕ) :
-      ((l.map fun b => (appendQPUnit D Sc i (v.getD b i))⁻¹).prod) *
-        ((l.map fun b => appendQPUnit D Sc i (v.getD b i)).prod) = 1 := by
-    induction l with
-    | nil => simp
-    | cons b l ih =>
-      simp only [List.map_cons, List.prod_cons]
-      rw [mul_mul_mul_comm, inv_mul_cancel, one_mul, ih]
-  exact H _
-
-/-- The normalized literal numerator has precisely the invertible total old-Hom twist
-as its highest action, not an assumed identity action on exterior coefficients. -/
-theorem normalizedEndpointQPNumerator_top (i : I) (v w : List I)
-    (h : hom D Sc cutoff (v ++ [i]) w) (q : AppendIdx.Tail i v w)
-    (hm : ∀ t ∈ (appendOldCoordinateEquiv D Sc cutoff 0 i v w
-      (appendProjection D Sc cutoff i v w h)).support, t.1.1 ≤ q.1.1) :
-    appendOldCoordinate D Sc cutoff 0 (q.representative.shift (endpointQPDegree D cutoff i v))
-      (appendProjection D Sc cutoff i v w
-        (normalizedEndpointQPNumerator D Sc cutoff i v ≫ h)) =
-      oldTwist D Sc cutoff (cutoff i • D.parity i) v q.representative.oldTarget
-        ((appendOldCoordinateEquiv D Sc cutoff 0 i v w
-          (appendProjection D Sc cutoff i v w h)) q) := by
-  rw [normalizedEndpointQPNumerator_eq, Linear.smul_comp, map_smul, map_smul,
-    Category.assoc]
-  unfold endpointQPDegree
-  rw [endpointQP_top D Sc cutoff i v w h q hm]
-  change (appendQPInverseUnit D Sc i v : k) •
-    ((appendQPProductUnit D Sc i v : k) •
-      oldTwist D Sc cutoff (cutoff i • D.parity i) v q.representative.oldTarget
-        ((appendOldCoordinateEquiv D Sc cutoff 0 i v w
-          (appendProjection D Sc cutoff i v w h)) q)) = _
-  rw [smul_smul, ← Units.val_mul, appendQPInverseUnit_mul_productUnit, Units.val_one, one_smul]
 
 end OddMath.QuiverHecke.ELVOld

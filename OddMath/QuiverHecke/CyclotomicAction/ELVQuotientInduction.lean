@@ -33,7 +33,6 @@ theorem unit_counit_of_full (v₀ : C) :
       rw [Category.comp_id, Functor.map_preimage] at hb
       exact hb.symm
 
-
 end OddMath.QuiverHecke.ELVOld.BalancedInduction
 
 namespace OddMath.QuiverHecke.ELVOld

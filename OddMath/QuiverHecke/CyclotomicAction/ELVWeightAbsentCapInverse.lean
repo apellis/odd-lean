@@ -78,20 +78,4 @@ local notation "EF" => Superfunctor.comp (F₁ ≫ E₁) (Superfunctor.mk Ev)
 local notation "IdEv" => Superfunctor.comp
   (Superfunctor.id k (ELVWeightProduct D Sc cutoff N Λ x₁)) (Superfunctor.mk Ev)
 
-/-- No inverse-naturality premise is needed for the absent zero-height cap family. -/
-theorem elvWeightAbsentCapFamily_nonempty
-    (hcutoff : (cutoff i : ℤ) = D.h i Λ)
-    (hδ : ¬ ∃ β, blockSucc D Λ i h₁ β = δ) (hpos : 0 ≤ D.h i x₁) :
-    Nonempty (SKM.SuperSumInvTo (k := k)
-      (Superfunctor.homMk (F := EF) (G := FE)
-        (elvWeightPrincipal_block_supernatural D Sc cutoff N i Λ h₁ h₂ δ).toSuperNatTrans)
-      (fun n => Superfunctor.homMk (F := EF) (G := IdEv)
-        (elvWeightCapPower_block_supernatural D Sc cutoff N i Λ h₁ δ n).toSuperNatTrans)
-      (D.parity i) (fun n => n • D.parity i) (D.h i x₁).toNat) := by
-  exact ⟨SKM.SuperSumInvTo.ofSupernaturalComponents
-    (fun M => Classical.choice
-      (elvWeightAbsentCapInverse_nonempty D Sc cutoff N i Λ h₁ h₂ δ hcutoff hδ hpos M))
-    (elvWeightPrincipal_block_supernatural D Sc cutoff N i Λ h₁ h₂ δ)
-    (elvWeightCapPower_block_supernatural D Sc cutoff N i Λ h₁ δ)⟩
-
 end OddMath.QuiverHecke.ELVOld

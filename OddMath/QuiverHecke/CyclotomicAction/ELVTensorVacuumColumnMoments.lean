@@ -100,7 +100,6 @@ theorem column_moments_of_slide (D : SKM.Datum I' X') {R : Type*} [Ring R] [Alge
 
 end Generic
 
-
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) [Fintype I]
   (m : I → ℕ) (cutoff : I → ℕ) (L : I × ℕ → ℕ)
@@ -147,7 +146,6 @@ theorem tensorVacuumEndDecode_eq_of (f : End V) (g : Module.End k AQ)
   refine LinearMap.ext fun w => ?_
   obtain ⟨z, rfl⟩ := (tensorVacuumDecodeEquiv D Sc m cutoff L).surjective w
   exact (tensorVacuumEndDecode_apply D Sc m cutoff L f z).trans (hfg z)
-
 
 /-- Left multiplication by the polynomial coefficients on the coefficient quotient. -/
 private def coefficientLmul : MvPolynomial (I × ℕ) k →ₐ[k] Module.End k AQ :=

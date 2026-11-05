@@ -58,7 +58,6 @@ theorem leading_mem_lower_of_cyclic_eq_zero (s : Bool) (N n : ℕ) (hn : n ≤ N
   simpa only [error, LinearMap.sub_apply, LinearMap.comp_apply, hzero,
     zero_sub, neg_mem_iff] using he
 
-
 /-- Finite-filtration induction using quotient injectivity on the SAME full square.
 The only injectivity hypothesis here is discharged by the next theorem. -/
 theorem cyclic_kernel_truncation (s : Bool) (N : ℕ)

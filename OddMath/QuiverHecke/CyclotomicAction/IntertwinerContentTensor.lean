@@ -189,22 +189,6 @@ abbrev contentSourceTensor := ContentTensor.Source
   (cyclotomicMk D Sc a n).toRingHom (contentIdempotent D Sc (n + 1) β)
   (contentIdempotent_sq D Sc (n + 1) β)
 
-
-/-- The append left ideal is already supported on the enlarged content block. -/
-theorem contentSourceCorner_support
-    (x : InductionAlong.Corner (ContentTensor.append
-      (appendAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))
-      (contentIdempotent D Sc (n + 1) β) (contentIdempotent_sq D Sc (n + 1) β))) :
-    contentIdempotent D Sc (n + 1 + 1) ({i} + β) * x.1 = x.1 := by
-  have hx : x.1 * appendAlgebra D Sc i (n + 1) (contentIdempotent D Sc (n + 1) β) = x.1 := x.2
-  calc
-    _ = contentIdempotent D Sc (n + 1 + 1) ({i} + β) *
-        (x.1 * appendAlgebra D Sc i (n + 1) (contentIdempotent D Sc (n + 1) β)) := congrArg _ hx.symm
-    _ = x.1 * (contentIdempotent D Sc (n + 1 + 1) ({i} + β) *
-        appendAlgebra D Sc i (n + 1) (contentIdempotent D Sc (n + 1) β)) := by
-      rw [← mul_assoc, contentIdempotent_central, mul_assoc]
-    _ = x.1 := by rw [contentIdempotent_appendAlgebra, contentIdempotent_sq, hx]
-
 /-- Inclusion of both factors of the fixed-content source tensor. -/
 def contentSourceForward : contentSourceTensor D Sc i β a n →ₗ[Hn D Sc (n + 1 + 1)]
     InductionAlong.Ind (CyclotomicAlgebra D Sc a n)

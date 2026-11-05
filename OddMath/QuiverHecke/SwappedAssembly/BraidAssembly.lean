@@ -74,10 +74,5 @@ theorem crossBraidOfInputs (c : P.CrossCoeff Sc) (L : P.LeftwardData)
     (hc : c.IsInverse) (h : P.CrossCoeffInputs) : CrossBraid (P.swappedGens c L) :=
   P.crossBraidOfDenominatorUnits c L hc (h : P.CrossDenominatorUnits)
 
-theorem braidRelationsOfInputs (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) {Gs Ys : ∀ s, P.H s} :
-    BraidRelations Sc (P.layerRep Gs Ys (P.swappedGens c L)) :=
-  P.braidRelationsOfDenominatorUnits c L hc (h : P.CrossDenominatorUnits)
-
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

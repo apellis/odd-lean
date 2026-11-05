@@ -233,7 +233,6 @@ theorem truncatedParity_internal (v w : List I) :
         (obj D Sc cutoff v) (obj D Sc cutoff w))).submodule_iSup_eq_top, Submodule.map_top]
     exact LinearMap.range_eq_top.mpr (Submodule.mkQ_surjective _)
 
-
 /-- Degree parts in the further quotient are images of the original Hom parts. -/
 def truncatedDegree (v w : List I) (n : ℤ) : Submodule k (TruncatedOld D Sc cutoff N v w) :=
   (elvHomDegree D sy Sc hc cutoff v w n).map (truncatedIdeal D Sc cutoff N v w).mkQ
@@ -285,149 +284,11 @@ theorem mkQ_mem_truncatedDegree {v w : List I} {n : ℤ} {f : hom D Sc cutoff v 
     (truncatedIdeal D Sc cutoff N v w).mkQ f ∈ truncatedDegree D Sc cutoff sy hc N v w n :=
   Submodule.mem_map_of_mem hf
 
-
-/-- The one-strand class after imposing the coefficient ideal. -/
-def truncatedSingle (i : I) (a : SKM.SYM D k) (n : ℕ) :
-    TruncatedOld D Sc cutoff N [i] [i] :=
-  truncateOld D Sc cutoff N [i] [i]
-    (singleClass D Sc cutoff i (SKM.SYM.elvCoefficientQuotient D cutoff a) n)
-
 private def truncatedSingleLinear (i : I) (n : ℕ) :
     SKM.SYM D k →ₗ[k] TruncatedOld D Sc cutoff N [i] [i] :=
   (truncatedIdeal D Sc cutoff N [i] [i]).mkQ.comp
     (((TensorProduct.mk k _ _).flip (dotE D Sc [i] 0 ^ n : End _)).comp
       (SKM.SYM.elvCoefficientQuotient D cutoff).toLinearMap)
-
-private theorem singleTerm_coefficientIdentity (i : I) (a : SKM.SYM D k) (n : ℕ) :
-    singleTerm D Sc cutoff i 1 n ≫ coefficientIdentity D Sc cutoff [i] a =
-      singleTerm D Sc cutoff i (SKM.SYM.elvCoefficientQuotient D cutoff a) n := by
-  change BoxProd.tmulHom (X := obj D Sc cutoff [i]) (Y := obj D Sc cutoff [i])
-    (𝟙 _) (dotE D Sc [i] 0 ^ n) ≫
-    BoxProd.tmulHom (X := obj D Sc cutoff [i]) (Y := obj D Sc cutoff [i])
-      (SKM.SYM.elvCoefficientQuotient D cutoff a) (𝟙 _) = _
-  dsimp only [obj, elvQuotientObj, coefficientObj]
-  rw [BoxProd.tmulHom_comp_tmulHom_eq]
-  simp only [Supercategory.proj_id, ↓reduceIte, one_ne_zero, Category.id_comp,
-    Limits.zero_comp, BoxProd.tmulHom_def, TensorProduct.zero_tmul, Category.comp_id, add_zero]
-  rfl
-
-theorem truncatedSingle_basis_eq_zero (i : I) (a : SKM.SYM.CoefficientIndex D)
-    (ha : N ≤ SKM.SYM.coefficientWeight D a) (n : ℕ) :
-    truncatedSingle D Sc cutoff N i (SKM.SYM.coefficientBasis D k a) n = 0 := by
-  apply (Submodule.Quotient.mk_eq_zero _).mpr
-  apply Submodule.mem_sup_right
-  apply Submodule.subset_span
-  refine ⟨[i], a, ha, singleTerm D Sc cutoff i 1 n, 𝟙 _, ?_⟩
-  rw [Category.comp_id, singleTerm_coefficientIdentity]
-  rfl
-
-/-- The same weight ideal as in `BubbleELVGrading` vanishes in positive content. -/
-theorem truncatedSingle_coefficientIdeal (i : I) {a : SKM.SYM D k}
-    (ha : a ∈ SKM.SYM.coefficientIdeal D k N) (n : ℕ) :
-    truncatedSingle D Sc cutoff N i a n = 0 := by
-  rw [SKM.SYM.mem_coefficientIdeal_iff] at ha
-  change truncatedSingleLinear D Sc cutoff N i n a = 0
-  induction ha using Submodule.span_induction with
-  | mem a ha =>
-    obtain ⟨b, hb, rfl⟩ := ha
-    exact truncatedSingle_basis_eq_zero D Sc cutoff N i b hb n
-  | zero => exact map_zero _
-  | add a b _ _ ha hb => rw [map_add, ha, hb, add_zero]
-  | smul c a _ ha => rw [map_smul, ha, smul_zero]
-
-/-- Equality of bounded ELV coefficients implies equality of their dot classes. -/
-theorem truncatedSingle_eq_of_coefficient_eq (i : I) (n : ℕ) (a b : SKM.SYM D k)
-    (h : SKM.SYM.truncatedELVCoefficientQuotient D cutoff N a =
-      SKM.SYM.truncatedELVCoefficientQuotient D cutoff N b) :
-    truncatedSingle D Sc cutoff N i a n = truncatedSingle D Sc cutoff N i b n := by
-  have hm : a - b ∈ SKM.SYM.truncatedELVCoefficientIdeal D cutoff N :=
-    (TwoSidedIdeal.rel_iff _ _ _).mp (Quotient.exact h)
-  obtain ⟨x, hx, y, hy, he⟩ := TwoSidedIdeal.mem_sup.mp hm
-  apply sub_eq_zero.mp
-  change truncatedSingleLinear D Sc cutoff N i n a -
-    truncatedSingleLinear D Sc cutoff N i n b = 0
-  rw [← map_sub, ← he, map_add]
-  have hx' : SKM.SYM.elvCoefficientQuotient D cutoff x = 0 :=
-    SKM.SYM.elvCoefficientQuotient_eq_zero D hx
-  have hy' := truncatedSingle_coefficientIdeal D Sc cutoff N i hy n
-  change truncatedSingleLinear D Sc cutoff N i n x +
-    truncatedSingle D Sc cutoff N i y n = 0
-  rw [hy', add_zero]
-  change (truncatedIdeal D Sc cutoff N [i] [i]).mkQ
-    (SKM.SYM.elvCoefficientQuotient D cutoff x ⊗ₜ[k] (dotE D Sc [i] 0 ^ n : End _)) = 0
-  rw [hx', TensorProduct.zero_tmul, map_zero]
-
-theorem truncatedSingle_basis_degree (i : I) (a : SKM.SYM.CoefficientIndex D) (n : ℕ) :
-    truncatedSingle D Sc cutoff N i (SKM.SYM.coefficientBasis D k a) n ∈
-      truncatedDegree D Sc cutoff sy hc N [i] [i]
-        (SKM.SYM.coefficientDegree D sy a + 2 * sy.d i * n) := by
-  apply mkQ_mem_truncatedDegree
-  have hf := firstDotPower_mem_gdeg D sy Sc i [] n
-  have he : firstDotPower D Sc [i] n = (dotE D Sc [i] 0 ^ n : End _) := by
-    simp only [dotE_pow, firstDotPower, List.map_replicate]
-  rw [he] at hf
-  have ha : SKM.SYM.coefficientBasis D k a ∈
-      SKM.SYM.coefficientDegreePart D k sy (SKM.SYM.coefficientDegree D sy a) :=
-    Submodule.subset_span ⟨a, rfl, rfl⟩
-  have h := elvQuotientMap_source_mem_degree D sy Sc hc cutoff ha hf
-  rw [elvQuotientMap_source] at h
-  exact h
-
-/-- Explicit upper support: coefficient bound plus the largest retained dot degree.
-No assertion is made about the untruncated old quotient or other contents. -/
-theorem truncatedSingle_degree_eq_bot (i : I) (M : ℤ) (hM : 0 ≤ M)
-    (hbound : ∀ a, SKM.SYM.coefficientDegree D sy a ≤ M * SKM.SYM.coefficientWeight D a)
-    (d : ℤ) (hd : M * N + 2 * sy.d i * (cutoff i - 1 : ℕ) < d) :
-    truncatedDegree D Sc cutoff sy hc N [i] [i] d = ⊥ := by
-  have hkill : ∀ z : TruncatedOld D Sc cutoff N [i] [i],
-      truncatedDproj D Sc cutoff sy hc N [i] [i] d z = 0 := by
-    intro z
-    obtain ⟨z, rfl⟩ := truncateOld_surjective D Sc cutoff N [i] [i] z
-    have hz : z ∈ singleSpan D Sc cutoff i := by
-      rw [singleSpan_eq_top]; trivial
-    let L := (truncatedDproj D Sc cutoff sy hc N [i] [i] d).comp
-      (truncateOld D Sc cutoff N [i] [i])
-    change L z = 0
-    induction hz using Submodule.span_induction with
-    | mem z hz =>
-      obtain ⟨a, n, hn, rfl⟩ := hz
-      obtain ⟨a, rfl⟩ := RingCon.mkₐ_surjective (α := k) (SKM.SYM.elvCoefficientIdeal D k cutoff).ringCon a
-      let T := (truncatedDproj D Sc cutoff sy hc N [i] [i] d).comp
-        (truncatedSingleLinear D Sc cutoff N i n)
-      change T a = 0
-      have ha : a ∈ Submodule.span k (Set.range (SKM.SYM.coefficientBasis D k)) := by
-        rw [Module.Basis.span_eq]; trivial
-      induction ha using Submodule.span_induction with
-      | mem a ha =>
-        obtain ⟨b, rfl⟩ := ha
-        change truncatedDproj D Sc cutoff sy hc N [i] [i] d
-          (truncatedSingle D Sc cutoff N i (SKM.SYM.coefficientBasis D k b) n) = 0
-        by_cases hb : N ≤ SKM.SYM.coefficientWeight D b
-        · rw [truncatedSingle_basis_eq_zero D Sc cutoff N i b hb n, map_zero]
-        · rw [truncatedDproj_of_mem D Sc cutoff sy hc N
-            (truncatedSingle_basis_degree D Sc cutoff sy hc N i b n) d, ite_eq_right]
-          have hw : (SKM.SYM.coefficientWeight D b : ℤ) ≤ N := by exact_mod_cast (by omega : SKM.SYM.coefficientWeight D b ≤ N)
-          have hcoef := (hbound b).trans (mul_le_mul_of_nonneg_left hw hM)
-          have hdot : (n : ℤ) ≤ (cutoff i - 1 : ℕ) := by exact_mod_cast (by omega : n ≤ cutoff i - 1)
-          have hdot' := mul_le_mul_of_nonneg_left hdot (by linarith [sy.pos i] : 0 ≤ 2 * sy.d i)
-          omega
-      | zero => exact map_zero _
-      | add a b _ _ ha hb => rw [map_add, ha, hb, add_zero]
-      | smul c a _ ha => rw [map_smul, ha, smul_zero]
-    | zero => exact map_zero _
-    | add a b _ _ ha hb => rw [map_add, ha, hb, add_zero]
-    | smul c a _ ha => rw [map_smul, ha, smul_zero]
-  apply le_antisymm _ bot_le
-  intro z hz
-  have h := hkill z
-  rw [truncatedDproj_of_mem D Sc cutoff sy hc N hz d, ite_eq_left rfl] at h
-  exact h
-
-/-- Cutoff zero annihilates the corner before or after coefficient truncation. -/
-theorem truncatedSingle_eq_zero_of_cutoff_zero (i : I) (hi : cutoff i = 0)
-    (z : TruncatedOld D Sc cutoff N [i] [i]) : z = 0 := by
-  obtain ⟨x, rfl⟩ := truncateOld_surjective D Sc cutoff N [i] [i] z
-  rw [single_eq_zero_of_cutoff_zero D Sc cutoff i hi x, map_zero]
 
 /-- The quotient map preserves the inherited integer degree. -/
 theorem truncateOld_mem_degree {v w : List I} {n : ℤ} {f : Old D Sc cutoff v w}
@@ -435,22 +296,5 @@ theorem truncateOld_mem_degree {v w : List I} {n : ℤ} {f : Old D Sc cutoff v w
     truncateOld D Sc cutoff N v w f ∈ truncatedDegree D Sc cutoff sy hc N v w n := by
   obtain ⟨a, ha, rfl⟩ := hf
   exact Submodule.mem_map_of_mem ha
-
-/-- Total parity still commutes with the independent integer grading. -/
-theorem truncatedProj_truncatedDproj (p : ZMod 2) (n : ℤ) (v w : List I)
-    (f : TruncatedOld D Sc cutoff N v w) :
-    truncatedProj D Sc cutoff N v w p (truncatedDproj D Sc cutoff sy hc N v w n f) =
-      truncatedDproj D Sc cutoff sy hc N v w n (truncatedProj D Sc cutoff N v w p f) := by
-  let _ := elvHomGrading D sy Sc hc cutoff
-  obtain ⟨a, rfl⟩ := (truncatedIdeal D Sc cutoff N v w).mkQ_surjective f
-  simp only [truncatedDproj_mk, truncatedProj_mk]
-  exact congrArg (truncatedIdeal D Sc cutoff N v w).mkQ (proj_dproj p n a)
-
-/-- Finite colours are needed only to obtain a uniform coefficient bound. -/
-theorem truncatedSingle_boundedAbove [Finite I] (i : I) :
-    ∃ B : ℤ, ∀ d, B < d → truncatedDegree D Sc cutoff sy hc N [i] [i] d = ⊥ := by
-  obtain ⟨M, hM, hb⟩ := SKM.SYM.exists_coefficientDegree_bound D sy
-  exact ⟨M * N + 2 * sy.d i * (cutoff i - 1 : ℕ), fun d hd =>
-    truncatedSingle_degree_eq_bot D Sc cutoff sy hc N i M hM hb d hd⟩
 
 end OddMath.QuiverHecke.ELVOld

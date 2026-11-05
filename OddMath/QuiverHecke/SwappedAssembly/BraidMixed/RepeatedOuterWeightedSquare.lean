@@ -240,17 +240,6 @@ lemma repeatedOuter_weighted_square (c : P.CrossCoeff Sc) (hc : c.IsInverse)
     exact (congrArg (fun q => q ≫ (P.adjacentReverseProbeCross i j s hR hs₀ Z ≫
       (P.step (true, i) true s trivial).map
         (P.mixedJ j i (nextSector (true, i) true s) hR Z).hom)) hm.symm).trans he
-lemma repeatedOuter_forward_outer_heq (ν : X) (c : P.CrossCoeff Sc)
-    (L : P.LeftwardData) (hij : i ≠ j) :
-    HEq (crossEntry (P.swappedGens c L) ν [] i j [up i]
-      (SPath.three false true true hR trivial trivial hs)
-      (SPath.three true false true trivial hR trivial hs) Z)
-      ((P.mixedJ j i s hR ((P.step (true, i) true _ trivial).obj ((P.castH hs).obj Z))).inv ≫
-        P.mixedQ j i s hR ((P.step (true, i) true _ trivial).obj ((P.castH hs).obj Z))) := by
-  generalize ht : nextSector (true, j) true (nextSector (true, i) true
-    (nextSector (true, i) false s)) = t at Z hs
-  subst hs
-  exact heq_of_eq (P.adjacentMixed_mixed ν i j s hR c L Z hij)
 
 lemma repeatedOuter_forward_inner (ν : X) (c : P.CrossCoeff Sc)
     (L : P.LeftwardData) (hij : i ≠ j) :

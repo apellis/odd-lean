@@ -485,19 +485,6 @@ theorem selected_pair_cross :
 local notation "HJI" => pairContentEq β δj γ i j hj hSource
 local notation "HIJ" => pairContentEq β δi γ j i hi hTarget
 
-/-- The ORIGINAL chosen content-induction crossing, with its original composition
-comparisons, agrees with the full signed old-Hom word operator. -/
-theorem chosen_pair_cross :
-    (((contentInductionCompTo D Sc cutoff (PowerWordContent.powerBound D cutoff L)
-        β [j] δj hj [i] γ hSource HJI).hom.app CM ≫
-      (contentInductionTransform D Sc cutoff (PowerWordContent.powerBound D cutoff L)
-        (σ := [i] ++ [j]) (τ := [j] ++ [i]) HIJ HJI
-        (contentCrossAffine_reverse_mem D Sc j i)).app (D.parity j * D.parity i) CM) ≫
-      (contentInductionCompTo D Sc cutoff (PowerWordContent.powerBound D cutoff L)
-        β [i] δi hi [j] γ hTarget HIJ).inv.app CM) ≫ (ET).hom = (ES).hom ≫ WW := by
-  rw [normalizedContentTargetsCross_comparison D Sc cutoff (PowerWordContent.powerBound D cutoff L)
-    β j i δi δj γ hi hj hTarget hSource HIJ HJI CM]
-  exact selected_pair_cross D Sc cutoff L ν β hν i j δj δi γ hj hi hSource hTarget
 end UnitWord
 
 end OddMath.QuiverHecke.ELVOld.PowerWordContentCross

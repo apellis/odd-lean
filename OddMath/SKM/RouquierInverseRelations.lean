@@ -69,16 +69,8 @@ theorem cupN_of_nonneg (hh : 0 ≤ h) (n : ℕ) : L.cupN n = (L.invPos hh).g' n 
   rw [cupN, dite_eq_left hh]
 
 omit [TwoSupercategory k B] in
-theorem cupN_of_neg (hh : h < 0) (n : ℕ) : L.cupN n = 0 := by
-  rw [cupN, dite_eq_right (not_le.mpr hh)]
-
-omit [TwoSupercategory k B] in
 theorem capN_of_nonpos (hh : h ≤ 0) (n : ℕ) : L.capN n = (L.invNeg hh).g' n := by
   rw [capN, dite_eq_left hh]
-
-omit [TwoSupercategory k B] in
-theorem capN_of_pos (hh : 0 < h) (n : ℕ) : L.capN n = 0 := by
-  rw [capN, dite_eq_right (not_le.mpr hh)]
 
 omit [TwoSupercategory k B] in
 /-- Brundan (3.3): for `h > 0` the leftward cup is the last dotted inverse cup. -/

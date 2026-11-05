@@ -23,47 +23,6 @@ variable {C : Type*} [Category C] [Preadditive C] [Limits.HasZeroObject C]
   (v : ∀ a, V a ≅ X (e.symm (.inl a))) (w : ∀ n, O ≅ X (e.symm (.inr n)))
 
 omit [Preadditive C] in
-/-- At a pure index the component is exactly its selected factor chart,
-with the enumeration and conditional-corner equality transports. -/
-theorem sectorFamilyComponentIso_pure (a : {a : Bool // p a}) :
-    sectorFamilyComponentIso p e X V O v w ((Fintype.equivFin α) (e.symm (.inl a))) =
-    eqToIso (by
-      simp only [sectorFamilyEmbedding, Function.Embedding.coeFn_mk,
-        Equiv.symm_apply_apply, Equiv.apply_symm_apply]
-      rcases a with ⟨a, ha⟩
-      cases a <;> simp only [sectorFamilyIndex, sectorFamilyCorner, dite_eq_left ha]) ≪≫
-    v a ≪≫ eqToIso (congrArg X
-      ((Fintype.equivFin α).symm_apply_apply (e.symm (.inl a))).symm) := by
-  apply Iso.ext
-  dsimp only [sectorFamilyComponentIso]
-  simp only [Iso.trans_hom, eqToIso.hom]
-  rw [isoHomCongr (sectorFamilyChartAt p e X V O v w)
-    ((congrArg e ((Fintype.equivFin α).symm_apply_apply _)).trans
-      (e.apply_symm_apply (Sum.inl a)))]
-  rcases a with ⟨a, ha⟩
-  cases a <;>
-    simp only [sectorFamilyChartAt, Iso.trans_hom, eqToIso.hom, Category.assoc,
-      eqToHom_trans_assoc, eqToHom_trans]
-
-omit [Preadditive C] in
-/-- At a window index the component is exactly the selected identity
-window chart and the finite-enumeration transports. -/
-theorem sectorFamilyComponentIso_window (n : ι) :
-    sectorFamilyComponentIso p e X V O v w ((Fintype.equivFin α) (e.symm (.inr n))) =
-    eqToIso (by
-      simp only [sectorFamilyEmbedding, Function.Embedding.coeFn_mk,
-        Equiv.symm_apply_apply, Equiv.apply_symm_apply, sectorFamilyIndex]) ≪≫
-    w n ≪≫ eqToIso (congrArg X
-      ((Fintype.equivFin α).symm_apply_apply (e.symm (.inr n))).symm) := by
-  apply Iso.ext
-  dsimp only [sectorFamilyComponentIso]
-  simp only [Iso.trans_hom, eqToIso.hom]
-  rw [isoHomCongr (sectorFamilyChartAt p e X V O v w)
-    ((congrArg e ((Fintype.equivFin α).symm_apply_apply _)).trans
-      (e.apply_symm_apply (Sum.inr n)))]
-  simp only [sectorFamilyChartAt, Category.assoc, eqToHom_trans]
-
-omit [Preadditive C] in
 /-- Normalize the enumeration at an arbitrary classified index before
 substituting a factor object. -/
 theorem sectorFamilyComponentIso_at (z : Sum {a : Bool // p a} ι) :

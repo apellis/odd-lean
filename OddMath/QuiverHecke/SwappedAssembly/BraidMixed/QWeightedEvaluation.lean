@@ -131,37 +131,6 @@ variable {B : Type uB} [BicategoryStruct.{wB, vB} B]
   (Z : P.H (nextSector (true, r) false
     (nextSector (true, i) true (nextSector (true, i) true s))))
 
-/-- Actual transported Q product, with a supplied commutative realization of the compressed dots.
-This does not assume centrality or a braid equation. Constructing this realization and its
-crossing-slide data is the remaining application obligation. -/
-theorem probePairQProduct_eq_eval_product
-    {K S : Type*} [CommRing K] [Algebra k K] [CommRing S] [Algebra k S]
-    (c : K →ₐ[k] S)
-    (φ : S →ₐ[k] End ((P.step (true, i) true s trivial).obj
-      (P.prObj i r (nextSector (true, i) true s) hR Z)))
-    (v : K) (a b : S)
-    (ha : φ a = if D.parity i = 1 then
-      (P.ppLeftDot i s ((P.step (true, r) false
-        (nextSector (true, i) true (nextSector (true, i) true s)) hR).obj Z)) ^ 2 else
-      P.ppLeftDot i s ((P.step (true, r) false
-        (nextSector (true, i) true (nextSector (true, i) true s)) hR).obj Z))
-    (hb : φ b = if D.parity i = 1 then
-      (P.ppRightDot i s ((P.step (true, r) false
-        (nextSector (true, i) true (nextSector (true, i) true s)) hR).obj Z)) ^ 2 else
-      P.ppRightDot i s ((P.step (true, r) false
-        (nextSector (true, i) true (nextSector (true, i) true s)) hR).obj Z))
-    (hv : φ (c v) = if D.parity r = 1 then
-      (P.probePairSpectatorDot i r s hR Z) ^ 2 else P.probePairSpectatorDot i r s hR Z) :
-    ((P.probePairFirstIso i r s hR Z).hom ≫
-      P.mixedQ i r s hR ((P.step (true, i) true
-        (nextSector (true, r) false (nextSector (true, i) true s)) trivial).obj Z) ≫
-      (P.probePairFirstIso i r s hR Z).inv) ≫
-      (P.step (true, i) true s trivial).map
-        (P.mixedQ i r (nextSector (true, i) true s) hR Z) =
-      φ ((qCoefficientPolynomial Sc i r v).eval₂ c.toRingHom b *
-        (qCoefficientPolynomial Sc i r v).eval₂ c.toRingHom a) := by
-  rw [P.probePairFirstIso_conj_mixedQ, P.probePair_map_mixedQ]
-  exact qExpr_pair_eq_eval_product Sc c φ i r v a b _ _ _ ha hb hv
 end ActualProbePair
 
 end OddMath.QuiverHecke.SwappedAssembly.ProbeReservoir

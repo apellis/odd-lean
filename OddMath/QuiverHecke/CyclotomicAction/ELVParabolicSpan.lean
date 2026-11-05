@@ -125,16 +125,6 @@ theorem ideal_nil (w : List I) : ideal D Sc cutoff [] w = ⊥ := by
     (j :: t).length) a, Limits.zero_comp]
   exact Submodule.zero_mem _
 
-/-- In particular the append-old span is zero when the old word is empty. -/
-theorem appendRelations_nil (i : I) (w : List I) :
-    appendRelations D Sc cutoff i [] w = ⊥ := by
-  apply le_antisymm _ bot_le
-  apply Submodule.span_le.mpr
-  rintro _ ⟨t, r, hr, b, rfl⟩
-  rw [ideal_nil, Submodule.mem_bot] at hr
-  rw [hr, map_zero, Limits.zero_comp]
-  exact Submodule.zero_mem _
-
 /-- Output-parabolic reduction of full ideal containment. The remaining hypothesis is
 on explicit shuffle terms, not on the ideal itself or a cyclotomic quotient. -/
 theorem ideal_le_of_parabolic_terms (v w : List I)

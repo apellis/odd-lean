@@ -90,21 +90,4 @@ theorem vacuumAppend_parity (i : I) (a : I → _root_.Polynomial k)
     vacuumAppend D Sc i a x ∈ cyclotomicParity D Sc a ha 0 p :=
   cyclotomicMk_parity D Sc a ha 0 (appendAlgebra_parity D Sc i 0 hx)
 
-theorem vacuumColourCut_parity (i : I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) :
-    vacuumColourCut D Sc i a ∈ cyclotomicParity D Sc a ha 0 0 := by
-  rw [← vacuumAppend_one]
-  exact vacuumAppend_parity D Sc i a ha (SetLike.one_mem_graded _)
-
-/-- Distinct first-strand colours remain orthogonal in the quotient. -/
-theorem vacuumColourCut_orthogonal (i j : I) (hij : i ≠ j)
-    (a : I → _root_.Polynomial k) :
-    vacuumColourCut D Sc i a * vacuumColourCut D Sc j a = 0 := by
-  unfold vacuumColourCut
-  rw [← map_mul, Hn.wordIdempotent_orthogonal, map_zero]
-  intro h
-  apply hij
-  have h' := congrArg Subtype.val h
-  simpa [appendWord, vacuumWord] using h'
-
 end OddMath.QuiverHecke

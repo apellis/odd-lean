@@ -52,7 +52,6 @@ local notation "b₂" => Iso.inv (associator (E j haf) (E i hfc) (E i hcd)) ≫
   cross i j haf hfc hab hbc ▷ E i hcd ≫
   Iso.hom (associator (E i hab) (E j hbc) (E i hcd))
 
-
 private theorem mixedBraid_of_generators
     (h : a₀ ≫ a₁ ≫ a₂ - b₀ ≫ b₁ ≫ b₂ =
       tripleDotCorrectionPolynomial (R := End (F₁ ≫ F₂ ≫ F₃)) D Sc i j
@@ -80,7 +79,6 @@ local notation "b₂" => probeOldWeightCrossPrefix D Sc' m i i j Λ haf hab hfc 
 local notation "x₀" => probeOldWeightTripleFirstDot D Sc' m i j i Λ hab hbc hcd
 local notation "x₁" => probeOldWeightTripleMiddleDot D Sc' m i j i Λ hab hbc hcd
 local notation "x₂" => probeOldWeightTripleLastDot D Sc' m i j i Λ hab hbc hcd
-
 
 private theorem probeMixedBraidField_of_polynomial
     (h : a₀ ≫ a₁ ≫ a₂ - b₀ ≫ b₁ ≫ b₂ =

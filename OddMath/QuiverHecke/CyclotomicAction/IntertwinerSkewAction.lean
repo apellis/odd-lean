@@ -201,15 +201,6 @@ def sourceRightSkew (i : I) (a : I → _root_.Polynomial k)
   simpa only [coefficientParityAction_smul, Nat.cast_one, one_mul] using
     sourceRightCoefficientRing_twist D Sc i a ha n b
 
-/-- Coefficient-first normal order applies the coefficient before the dot power. -/
-theorem sourceRightSkew_monomial (i : I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n m : ℕ) (c : CyclotomicAlgebra D Sc a n) :
-    (sourceRightSkew D Sc i a ha n (_root_.SkewPolynomial.monomial m c)).unop =
-      sourceRightDotLinear D Sc i a ha n ^ m * sourceRightCoefficientLinear D Sc i a ha n c := by
-  simp [ sourceRightSkew, _root_.SkewPolynomial.monomial_def,
-    SkewMonoidAlgebra.liftNCRingHom, SkewMonoidAlgebra.liftNC_single,
-    sourceRightCoefficientRing, dotPowers]
-
 /-- Multiplication-preserving right representation of the parity-skew polynomial ring. -/
 def targetRightSkew (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
     (ha : CyclotomicPolynomialParity D a) (n : ℕ) :
@@ -224,105 +215,5 @@ def targetRightSkew (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
   intro b
   simpa only [coefficientParityAction_smul, Nat.cast_one, one_mul] using
     targetRightCoefficientRing_twist D Sc i β a ha n b
-
-/-- Coefficient-first normal order applies the coefficient before the dot power. -/
-theorem targetRightSkew_monomial (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n m : ℕ) (c : CyclotomicAlgebra D Sc a n) :
-    (targetRightSkew D Sc i β a ha n (_root_.SkewPolynomial.monomial m c)).unop =
-      targetRightDotLinear D Sc i β a ha n ^ m * targetRightCoefficientLinear D Sc i β a ha n c := by
-  simp [ targetRightSkew, _root_.SkewPolynomial.monomial_def,
-    SkewMonoidAlgebra.liftNCRingHom, SkewMonoidAlgebra.liftNC_single,
-    targetRightCoefficientRing, dotPowers]
-
-/-- Dot-first order is coefficient-first order with the `m`th parity twist. -/
-theorem sourceRightSkew_dotFirst (i : I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n m : ℕ) (c : CyclotomicAlgebra D Sc a n) :
-    (sourceRightSkew D Sc i a ha n (_root_.SkewPolynomial.monomial m
-      (coefficientParityHom D Sc a ha n ((m : ZMod 2) * D.parity i) c))).unop =
-      sourceRightMonomial D Sc i a ha n m c := by
-  let := coefficientParityAction D Sc i a ha n
-  have h := skew_power_relation (sourceRightCoefficientRing D Sc i a ha n)
-    (MulOpposite.op (sourceRightDotLinear D Sc i a ha n))
-    (fun b => by simpa only [coefficientParityAction_smul, Nat.cast_one, one_mul] using
-      sourceRightCoefficientRing_twist D Sc i a ha n b) m c
-  rw [sourceRightSkew_monomial]
-  exact congrArg MulOpposite.unop h
-
-/-- The inverse order conversion uses the same twist, since it is involutive. -/
-theorem sourceRightSkew_coefficientFirst (i : I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n m : ℕ) (c : CyclotomicAlgebra D Sc a n) :
-    (sourceRightSkew D Sc i a ha n (_root_.SkewPolynomial.monomial m c)).unop =
-      sourceRightMonomial D Sc i a ha n m
-        (coefficientParityHom D Sc a ha n ((m : ZMod 2) * D.parity i) c) := by
-  have h := sourceRightSkew_dotFirst D Sc i a ha n m
-    (coefficientParityHom D Sc a ha n ((m : ZMod 2) * D.parity i) c)
-  simpa only [coefficientParityHom, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk,
-    SVec.sgn_sgn_apply] using h
-
-/-- The right-action multiplication law is reverse composition of endomorphisms. -/
-theorem sourceRightSkew_mul (i : I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n : ℕ) :
-    letI := coefficientParityAction D Sc i a ha n
-    ∀ f g : _root_.SkewPolynomial (CyclotomicAlgebra D Sc a n),
-      (sourceRightSkew D Sc i a ha n (f * g)).unop =
-        (sourceRightSkew D Sc i a ha n g).unop * (sourceRightSkew D Sc i a ha n f).unop := by
-  let := coefficientParityAction D Sc i a ha n
-  intro f g
-  exact congrArg MulOpposite.unop ((sourceRightSkew D Sc i a ha n).map_mul f g)
-
-/-- Dot-first order is coefficient-first order with the `m`th parity twist. -/
-theorem targetRightSkew_dotFirst (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n m : ℕ) (c : CyclotomicAlgebra D Sc a n) :
-    (targetRightSkew D Sc i β a ha n (_root_.SkewPolynomial.monomial m
-      (coefficientParityHom D Sc a ha n ((m : ZMod 2) * D.parity i) c))).unop =
-      targetRightMonomial D Sc i β a ha n m c := by
-  let := coefficientParityAction D Sc i a ha n
-  have h := skew_power_relation (targetRightCoefficientRing D Sc i β a ha n)
-    (MulOpposite.op (targetRightDotLinear D Sc i β a ha n))
-    (fun b => by simpa only [coefficientParityAction_smul, Nat.cast_one, one_mul] using
-      targetRightCoefficientRing_twist D Sc i β a ha n b) m c
-  rw [targetRightSkew_monomial]
-  exact congrArg MulOpposite.unop h
-
-/-- The inverse order conversion uses the same twist, since it is involutive. -/
-theorem targetRightSkew_coefficientFirst (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n m : ℕ) (c : CyclotomicAlgebra D Sc a n) :
-    (targetRightSkew D Sc i β a ha n (_root_.SkewPolynomial.monomial m c)).unop =
-      targetRightMonomial D Sc i β a ha n m
-        (coefficientParityHom D Sc a ha n ((m : ZMod 2) * D.parity i) c) := by
-  have h := targetRightSkew_dotFirst D Sc i β a ha n m
-    (coefficientParityHom D Sc a ha n ((m : ZMod 2) * D.parity i) c)
-  simpa only [coefficientParityHom, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk,
-    SVec.sgn_sgn_apply] using h
-
-/-- The right-action multiplication law is reverse composition of endomorphisms. -/
-theorem targetRightSkew_mul (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n : ℕ) :
-    letI := coefficientParityAction D Sc i a ha n
-    ∀ f g : _root_.SkewPolynomial (CyclotomicAlgebra D Sc a n),
-      (targetRightSkew D Sc i β a ha n (f * g)).unop =
-        (targetRightSkew D Sc i β a ha n g).unop * (targetRightSkew D Sc i β a ha n f).unop := by
-  let := coefficientParityAction D Sc i a ha n
-  intro f g
-  exact congrArg MulOpposite.unop ((targetRightSkew D Sc i β a ha n).map_mul f g)
-
-/-- Q intertwines the two right representations for every skew polynomial. -/
-theorem rightSkew_Q (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n : ℕ)
-    (f : _root_.SkewPolynomial (CyclotomicAlgebra D Sc a n)) :
-    (targetRightSkew D Sc i β a ha n f).unop.comp
-        (parityCyclotomicContentQLinear D Sc i β a ha n) =
-      (parityCyclotomicContentQLinear D Sc i β a ha n).comp
-        (sourceRightSkew D Sc i a ha n f).unop := by
-  induction f using SkewMonoidAlgebra.induction_on with
-  | zero => simp
-  | single m c =>
-    change (targetRightSkew D Sc i β a ha n (_root_.SkewPolynomial.monomial m.toAdd c)).unop.comp _ =
-      (parityCyclotomicContentQLinear D Sc i β a ha n).comp (sourceRightSkew D Sc i a ha n (_root_.SkewPolynomial.monomial m.toAdd c)).unop
-    rw [targetRightSkew_coefficientFirst, sourceRightSkew_coefficientFirst]
-    exact rightMonomial_Q D Sc i β a ha n m.toAdd _
-  | add f g hf hg =>
-    rw [(targetRightSkew D Sc i β a ha n).map_add, (sourceRightSkew D Sc i a ha n).map_add]
-    simp only [MulOpposite.unop_add, LinearMap.add_comp, LinearMap.comp_add, hf, hg]
 
 end OddMath.QuiverHecke

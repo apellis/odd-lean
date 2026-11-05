@@ -36,7 +36,6 @@ private lemma route_left {C : Type*} [Category C] [Preadditive C]
   rw [hg, hr]
   simp only [Limits.comp_zero, add_zero]
 
-
 private lemma route_reverse {C : Type*} [Category C] [Preadditive C]
     {A B₀ B₁ C₀ C₁ T : C} (f₀ : A ⟶ B₀) (f₁ : A ⟶ B₁)
     (g₀₀ : B₀ ⟶ C₀) (g₁₀ : B₁ ⟶ C₀) (g₀₁ : B₀ ⟶ C₁) (g₁₁ : B₁ ⟶ C₁)

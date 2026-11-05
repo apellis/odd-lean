@@ -76,34 +76,4 @@ def cyclotomicPairQuadratic (i j : I) (a : I → _root_.Polynomial k) (n : ℕ) 
     CyclotomicAlgebra D Sc a (n + 1 + 1) :=
   cyclotomicMk D Sc a (n + 1 + 1) (affinePairQuadratic D Sc i j (n + 1))
 
-/-- Mixed crossing square in the concrete cyclotomic quotient. -/
-theorem cyclotomicLastCrossing_mixed (i j : I) (hij : i ≠ j)
-    (a : I → _root_.Polynomial k) (n : ℕ) :
-    cyclotomicLastCrossing D Sc j i a n * cyclotomicLastCrossing D Sc i j a n =
-      cyclotomicPairQuadratic D Sc i j a n := by
-  simp only [cyclotomicLastCrossing, cyclotomicPairQuadratic, ← map_mul]
-  rw [affineLastCrossing_mixed D Sc i j hij]
-
-/-- The sign of two homogeneous right multipliers is independent of their input parity. -/
-theorem crossing_square_sign (p d : ZMod 2) :
-    koszulSign (p + d) d * koszulSign p d = koszulSign d d := by
-  rw [koszulSign_add_left, mul_right_comm, koszulSign_mul_self, one_mul]
-
-/-- On the actual corner superbimodules the mixed square has the super-opposite sign. -/
-theorem compositionSuperCrossing_mixed_apply (i j : I) (hij : i ≠ j)
-    (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
-    {p : ZMod 2} (x : (compositionCorner D Sc i j a ha n).toSVec)
-    (hx : x ∈ (compositionCorner D Sc i j a ha n).toSVec.part p) :
-    ((compositionSuperCrossing D Sc j i a ha n).1
-      ((compositionSuperCrossing D Sc i j a ha n).1 x)).val =
-      koszulSign (D.parity i * D.parity j) (D.parity i * D.parity j) •
-        (x.val * cyclotomicPairQuadratic D Sc j i a n) := by
-  have hf : (compositionSuperCrossing D Sc i j a ha n).1 x ∈
-      (compositionCorner D Sc j i a ha n).toSVec.part (p + D.parity i * D.parity j) :=
-    SVec.apply_mem_part (compositionCrossingLinear_parity D Sc i j a ha n) hx
-  erw [compositionSuperCrossing_apply D Sc j i a ha n _ hf,
-    compositionSuperCrossing_apply D Sc i j a ha n x hx]
-  rw [smul_mul_assoc, smul_smul, mul_comm (D.parity j) (D.parity i), crossing_square_sign,
-    mul_assoc, cyclotomicLastCrossing_mixed D Sc j i hij.symm]
-
 end OddMath.QuiverHecke

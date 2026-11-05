@@ -67,27 +67,12 @@ def globalBlockCross (h : {i} + ({j} + β) = δ) :
     ((globalBlockCross D Sc a ha i j n β δ h).app p M).hom =
       (cyclotomicSuperInductionCrossing D Sc i j a ha n).app p M.obj := rfl
 
-/-- The crossing on content blocks has the parity of its two colours. -/
-theorem globalBlockCross_homogeneous (h : {i} + ({j} + β) = δ) :
-    (globalBlockCross D Sc a ha i j n β δ h).IsHomogeneous (D.parity i * D.parity j) :=
-  fullLiftTrans_homogeneous _ _ _ _ _
-    (cyclotomicSuperInductionCrossing_homogeneous D Sc i j a ha n)
-
 /-- The Rouquier crossing of the even file: `-ψ` for equal colours, `ψ` otherwise. -/
 def globalBlockSignedCross [DecidableEq I] (h : {i} + ({j} + β) = δ) :
     globalBlockInduction₂ D Sc a ha i j n β δ h ⟶
       globalBlockInduction₂ D Sc a ha j i n β δ (swapped_content i j β δ h) :=
   if i = j then -globalBlockCross D Sc a ha i j n β δ h
   else globalBlockCross D Sc a ha i j n β δ h
-
-theorem globalBlockSignedCross_of_ne [DecidableEq I] {i j : I} (hij : i ≠ j)
-    (h : {i} + ({j} + β) = δ) :
-    globalBlockSignedCross D Sc a ha i j n β δ h = globalBlockCross D Sc a ha i j n β δ h :=
-  by simp [globalBlockSignedCross, hij]
-
-theorem globalBlockSignedCross_self [DecidableEq I] (h : {i} + ({i} + β) = δ) :
-    globalBlockSignedCross D Sc a ha i i n β δ h = -globalBlockCross D Sc a ha i i n β δ h :=
-  by simp [globalBlockSignedCross]
 
 /-- Two homogeneous transformations of the same parity whose components of that parity
 compose to zero have zero composite. -/
@@ -115,34 +100,5 @@ theorem superTrans_comp_eq_zero {C₁ C₂ : Type*} [Category C₁] [Preadditive
       rw [Superfunctor.comp_app_one, hx' 0 (by decide) M, hy' 0 (by decide) M,
         Superfunctor.zero_app]
       simp
-
-/-- The same-colour crossing on composed superinduction squares to zero. -/
-theorem cyclotomicSuperInductionCrossing_square (M : CyclotomicSupermodules D Sc a ha n) :
-    (cyclotomicSuperInductionCrossing D Sc i i a ha n).app (D.parity i * D.parity i) M ≫
-      (cyclotomicSuperInductionCrossing D Sc i i a ha n).app (D.parity i * D.parity i) M = 0 := by
-  have hw : SuperBimodule.whiskerRight (compositionSuperCrossing D Sc i i a ha n) M ≫
-      SuperBimodule.whiskerRight (compositionSuperCrossing D Sc i i a ha n) M = 0 := by
-    rw [← SuperBimodule.comp_whiskerRight, compositionSuperCrossing_square]
-    have h0 := SuperBimodule.smul_whiskerRight (0 : compositionCorner D Sc i i a ha n ⟶
-      compositionCorner D Sc i i a ha n) M (0 : k)
-    rwa [zero_smul, zero_smul] at h0
-  rw [cyclotomicSuperInductionCrossing_app]
-  simp only [Category.assoc, Iso.inv_hom_id_app_assoc]
-  rw [reassoc_of% hw]
-  simp
-
-/-- The same-colour crossing on content blocks squares to zero (even `globalCross_sq`). -/
-theorem globalBlockCross_square (h : {i} + ({i} + β) = δ) :
-    globalBlockCross D Sc a ha i i n β δ h ≫ globalBlockCross D Sc a ha i i n β δ h = 0 :=
-  superTrans_comp_eq_zero (globalBlockCross_homogeneous D Sc a ha i i n β δ h)
-    (globalBlockCross_homogeneous D Sc a ha i i n β δ h) fun M =>
-      InducedCategory.hom_ext (cyclotomicSuperInductionCrossing_square D Sc a ha i n M.obj)
-
-/-- The signed same-colour crossing also squares to zero. -/
-theorem globalBlockSignedCross_square [DecidableEq I] (h : {i} + ({i} + β) = δ) :
-    globalBlockSignedCross D Sc a ha i i n β δ h ≫
-      globalBlockSignedCross D Sc a ha i i n β δ h = 0 := by
-  rw [globalBlockSignedCross_self, Preadditive.neg_comp, Preadditive.comp_neg, neg_neg,
-    globalBlockCross_square]
 
 end OddMath.QuiverHecke.CyclotomicAction

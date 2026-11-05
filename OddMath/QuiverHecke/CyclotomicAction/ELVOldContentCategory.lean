@@ -60,18 +60,9 @@ instance (ν : List I) : (oldContentInclusion D Sc cutoff ν).Linear k where
 instance (ν : List I) : IsSuperfunctor k (oldContentInclusion D Sc cutoff ν) where
   map_mem h := h
 
-/-- The existing finite content-word coordinate is an actual old-content object. -/
-def oldContentObject (ν : List I) (v : ContentWords ν) :
-    OldContentCategory D Sc cutoff ν :=
-  ⟨contentObject D Sc cutoff ν v, v.property⟩
-
 /-- Extract the same finite content coordinate from an actual content object. -/
 def oldContentWord (ν : List I) (v : OldContentCategory D Sc cutoff ν) : ContentWords ν :=
   ⟨v.obj.word,v.wordPerm⟩
-
-/-- The word-coordinate height is exact, including the empty content. -/
-theorem oldContentWord_length (ν : List I) (v : OldContentCategory D Sc cutoff ν) :
-    v.obj.word.length = ν.length := v.wordPerm.length_eq
 
 /-- Append uses the existing canonical untruncated old functor. -/
 def oldContentAppend (ν : List I) (i : I) :

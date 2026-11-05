@@ -84,9 +84,6 @@ noncomputable def coefficients : Polynomial k →+* carrier (k := k) a b v d :=
 @[simp] theorem embedding_correction :
     embedding k a b v d (correction k a b v d) = d := rfl
 
-theorem embedding_injective : Function.Injective (embedding k a b v d) :=
-  Subtype.val_injective
-
 @[simp] theorem embedding_coefficients (p : Polynomial k) :
     embedding k a b v d (coefficients k a b v d p) = Polynomial.aeval v p := by
   have h : (carrier (k := k) a b v d).val.comp

@@ -74,11 +74,6 @@ lemma sub_mem {n : ℕ} {X Y : C} {f g : X ⟶ Y} (hf : J.mem n f) (hg : J.mem n
     J.mem n (f - g) := by
   rw [sub_eq_add_neg]; exact J.add_mem hf (J.neg_mem hg)
 
-lemma mono_le {m n : ℕ} (h : m ≤ n) {X Y : C} {f : X ⟶ Y} (hf : J.mem n f) : J.mem m f := by
-  induction n, h using Nat.le_induction with
-  | base => exact hf
-  | succ n _ ih => exact ih (J.mono hf)
-
 lemma matSub_apply {M N : Mat_ C} (f g : M ⟶ N) (i j) : (f - g) i j = f i j - g i j := by
   rw [eq_sub_iff_add_eq, ← Mat_.add_apply, sub_add_cancel]
 

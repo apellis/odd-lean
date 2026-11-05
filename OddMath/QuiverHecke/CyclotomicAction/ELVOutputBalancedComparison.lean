@@ -80,38 +80,4 @@ theorem outputLongExtraction_boundaryRho (p : ZMod 2)
     rw [Finsupp.mapDomain_apply_of_injective Nat.succ_injective]
     rfl
 
-/-- Corrected rho preserves exactly the chronological short submodule. -/
-theorem boundaryRho_chronologicalShortSpan (p : ZMod 2)
-    (j : {j : I // D.parity j = 1}) (v : List I)
-    {z : Target D Sc cutoff j.1 v (v ++ [j.1])}
-    (hz : z ∈ chronologicalShortSpan D Sc cutoff j.1 v v) :
-    boundaryRho D Sc cutoff j v (v ++ [j.1]) z ∈ chronologicalShortSpan D Sc cutoff j.1 v v := by
-  rw [← ker_outputLongExtraction_eq_chronologicalShortSpan D Sc cutoff p j.1 v] at hz ⊢
-  change outputLongExtraction D Sc cutoff p j.1 v z = 0 at hz
-  change outputLongExtraction D Sc cutoff p j.1 v _ = 0
-  rw [outputLongExtraction_boundaryRho, hz, map_zero]
-
-/-- The ordered endpoint-polynomial comparison holds with arbitrary old
-quotient coefficients in the signed balanced tensor, not just scalars. -/
-theorem outputLongExtraction_balanced_move (p : ZMod 2) (i : I) (v : List I)
-    (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) (b : Old D Sc cutoff v v) :
-    outputLongExtraction D Sc cutoff p i v
-      (balancedForward D Sc cutoff p i v (v ++ [i])
-        (balancedTmul D Sc cutoff p i (a ⊗ₜ[k] moveHom D Sc i [] v) b)) =
-    outputLongExtraction D Sc cutoff p i v
-      (balancedForward D Sc cutoff p i v (v ++ [i])
-        (balancedTmul D Sc cutoff p i
-          (a ⊗ₜ[k] (leadingMoveEndpointPolynomial D Sc i [] v ≫
-            cl D Sc _ _ (cw (leadingMoveWord [] v)) (leadingMoveWord_sChain i [] v))) b)) := by
-  ext m
-  simp only [outputLongExtraction_apply]
-  exact (outputLongCoordinate_balanced D Sc cutoff p i v m
-    (a ⊗ₜ[k] moveHom D Sc i [] v) b).trans
-    ((congrArg (oldComp D Sc cutoff v v v b)
-      (congrArg (fun f : ℕ →₀ Old D Sc cutoff v v => f m)
-        (outputLongExtraction_move_endpointPolynomial D Sc cutoff p i v a))).trans
-      (outputLongCoordinate_balanced D Sc cutoff p i v m
-        (a ⊗ₜ[k] (leadingMoveEndpointPolynomial D Sc i [] v ≫
-          cl D Sc _ _ (cw (leadingMoveWord [] v)) (leadingMoveWord_sChain i [] v))) b).symm)
-
 end OddMath.QuiverHecke.ELVOld

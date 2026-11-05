@@ -36,12 +36,12 @@ theorem coend_total_ext
     exact h s g b
   exact LinearMap.congr_fun hm z
 
-private theorem actualParityCoefficientMap_one (i : I) (v : List I)
+private theorem parityCoefficientMap_one (i : I) (v : List I)
     (s : OldCategory D Sc cutoff)
     (b : ((BalancedInduction.restriction (append D Sc cutoff i)).obj
       (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).obj s) :
-    (actualParityCoefficientMap D Sc cutoff i v).app 1 s b = b := by
-  rw [actualParityCoefficientMap, Superfunctor.comp_app]
+    (parityCoefficientMap D Sc cutoff i v).app 1 s b = b := by
+  rw [parityCoefficientMap, Superfunctor.comp_app]
   simp only [coefficientModuleBackward_app, one_ne_zero, ↓reduceIte,
     SVec.zmod2_one_add_one, CategoryTheory.Limits.comp_zero, zero_add]
   rfl
@@ -61,15 +61,15 @@ theorem shiftedSourceParityIso_hom_total_tensor (i : I) (v s t : List I)
         (Y := (⟨t⟩ : OldCategory D Sc cutoff)) g) b := by
   rw [shiftedSourceParityIso_hom_eq_induction_map]
   change (BalancedInduction.moduleMap (append D Sc cutoff i)
-    (actualParityCoefficientMap D Sc cutoff i v)).total _ _ = _
+    (parityCoefficientMap D Sc cutoff i v)).total _ _ = _
   rw [BalancedInduction.moduleMap_total_tensor]
-  rw [Superfunctor.app_eq_zero_of_mem (actualParityCoefficientMap_mem D Sc cutoff i v)
+  rw [Superfunctor.app_eq_zero_of_mem (parityCoefficientMap_mem D Sc cutoff i v)
     (show (0 : ZMod 2) ≠ 1 by decide)]
   simp only [SVec.zero_apply]
   rw [BalancedInduction.tensor_zero_right (append D Sc cutoff i)
     (coefficientOneModule D Sc cutoff i v).toFunctor
     (⟨s⟩ : OldCategory D Sc cutoff) g, zero_add,
-    actualParityCoefficientMap_one D Sc cutoff i v (⟨s⟩ : OldCategory D Sc cutoff) b]
+    parityCoefficientMap_one D Sc cutoff i v (⟨s⟩ : OldCategory D Sc cutoff) b]
 
 theorem shiftedSourceCanonicalEquiv_tensor (j : {j : I // D.parity j = 1})
     (v s t : List I) (g : Old D Sc cutoff (s ++ [j.1]) t)
@@ -164,7 +164,7 @@ theorem oldModuleMate_firstRow_tensor (j : {j : I // D.parity j = 1})
 
 /-- The fixed actual odd mate is the already inverted crossing row after canonical J. -/
 theorem oldModuleMate_firstRow (j : {j : I // D.parity j = 1}) (v t : List I)
-    (z : (actualUnshiftedSourceModule D Sc cutoff j.1 v).obj
+    (z : (unshiftedSourceModule D Sc cutoff j.1 v).obj
       (⟨t⟩ : OldCategory D Sc cutoff)) :
     OldInductionRepresentable.upperHomEquiv D Sc cutoff j.1
       (⟨v⟩ : OldCategory D Sc cutoff) (⟨t⟩ : OldCategory D Sc cutoff)

@@ -87,7 +87,7 @@ theorem positiveKernelBoundary_evaluate
       (((moduleUnitMatrixIso D Sc cutoff M i t hh).inv
         ((moduleUnitColumn D Sc cutoff i M r).total t (M.map y b))) (some j)) := by
   rw [positiveKernelBoundary, LinearMap.comp_apply,
-    ← moduleUnitMatrixIso_window_inv_tensor, actualUnitKernel_evaluate]
+    ← moduleUnitMatrixIso_window_inv_tensor, unitKernel_evaluate]
 
 /-- Negative raw boundary coefficients evaluate by finite cap inverse insertion and cap. -/
 theorem negativeKernelBoundary_evaluate
@@ -102,6 +102,6 @@ theorem negativeKernelBoundary_evaluate
           ((moduleIsoLinearEquiv ((SKM.homParityShiftDatum (k := k)
             (j.val • D.parity i)).iso M) t).symm (M.map y b)))) := by
   rw [negativeKernelBoundary, LinearMap.comp_apply,
-    actualCapKernel_evaluate_moduleCapRow, ← moduleCapMatrixIso_window_inv_tensor]
+    capKernel_evaluate_moduleCapRow, ← moduleCapMatrixIso_window_inv_tensor]
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

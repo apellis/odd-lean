@@ -423,52 +423,6 @@ theorem distinctPureReservoir_left (c : P.CrossCoeff Sc) (L : P.LeftwardData)
     (P.crossNeEntry i j _ _ _ _) (t := s) false false false false
     hi hj hj' hi' hs rfl rfl _ _ HEq.rfl
 
-/-- The left braid sum has one term for every intermediate distinct-colour
-word. This applies in particular to the canonical all-reservoir paths. -/
-theorem distinctPureReservoir_braidLeft_sum (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (ν : X) (i j r : I) (hij : i ≠ j) (hir : i ≠ r) (hjr : j ≠ r)
-    {s t : Sector I} (p : SPath (wd D ν [up i, up j, up r]) s t)
-    (m₁ : SPath (wd D ν [up j, up i, up r]) s t)
-    (m₂ : SPath (wd D ν [up j, up r, up i]) s t)
-    (q : SPath (wd D ν [up r, up j, up i]) s t) (Z : P.H t) :
-    braidLeft (P.swappedGens c L) i j r ν p q Z =
-      (crossEntry (P.swappedGens c L) ν [] i j [up r] p m₁ Z ≫
-        crossEntry (P.swappedGens c L) ν [up j] i r [] m₁ m₂ Z) ≫
-        crossEntry (P.swappedGens c L) ν [] j r [up i] m₂ q Z := by
-  let : Subsingleton (SPath (wd D ν [up j, up i, up r]) s t) :=
-    ⟨path_eq_three_distinct hij.symm hjr hir⟩
-  let : Subsingleton (SPath (wd D ν [up j, up r, up i]) s t) :=
-    ⟨path_eq_three_distinct hjr hij.symm hir.symm⟩
-  let : Fintype (SPath (wd D ν [up j, up i, up r]) s t) := Fintype.ofFinite _
-  let : Fintype (SPath (wd D ν [up j, up r, up i]) s t) := Fintype.ofFinite _
-  unfold braidLeft
-  exact (Fintype.sum_subsingleton _ m₂).trans
-    (congrArg (fun f => f ≫ crossEntry (P.swappedGens c L) ν [] j r [up i] m₂ q Z)
-      (Fintype.sum_subsingleton _ m₁))
-
-/-- The right braid sum has one term for every intermediate distinct-colour
-word. No relation assumption is used in collapsing the sum. -/
-theorem distinctPureReservoir_braidRight_sum (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (ν : X) (i j r : I) (hij : i ≠ j) (hir : i ≠ r) (hjr : j ≠ r)
-    {s t : Sector I} (p : SPath (wd D ν [up i, up j, up r]) s t)
-    (m₁ : SPath (wd D ν [up i, up r, up j]) s t)
-    (m₂ : SPath (wd D ν [up r, up i, up j]) s t)
-    (q : SPath (wd D ν [up r, up j, up i]) s t) (Z : P.H t) :
-    braidRight (P.swappedGens c L) i j r ν p q Z =
-      (crossEntry (P.swappedGens c L) ν [up i] j r [] p m₁ Z ≫
-        crossEntry (P.swappedGens c L) ν [] i r [up j] m₁ m₂ Z) ≫
-        crossEntry (P.swappedGens c L) ν [up r] i j [] m₂ q Z := by
-  let : Subsingleton (SPath (wd D ν [up i, up r, up j]) s t) :=
-    ⟨path_eq_three_distinct hir hij hjr.symm⟩
-  let : Subsingleton (SPath (wd D ν [up r, up i, up j]) s t) :=
-    ⟨path_eq_three_distinct hir.symm hjr.symm hij⟩
-  let : Fintype (SPath (wd D ν [up i, up r, up j]) s t) := Fintype.ofFinite _
-  let : Fintype (SPath (wd D ν [up r, up i, up j]) s t) := Fintype.ofFinite _
-  unfold braidRight
-  exact (Fintype.sum_subsingleton _ m₂).trans
-    (congrArg (fun f => f ≫ crossEntry (P.swappedGens c L) ν [up r] i j [] m₂ q Z)
-      (Fintype.sum_subsingleton _ m₁))
-
 /-- Normalize a reservoir crossing at freely chosen weight vertices. -/
 theorem postCrossNe_normalized_heq (i j : I) (s : Sector I)
     (hi : StepValid (true, i) false s)

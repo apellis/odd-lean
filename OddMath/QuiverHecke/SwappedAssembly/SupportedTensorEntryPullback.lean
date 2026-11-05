@@ -88,7 +88,6 @@ local instance originalInputInverse_linear (z : X) :
     (tensorHomEquivalence D Sc m cutoff L ΛP ΛR z).inverse.Linear k :=
   inverseInput_linear D Sc m cutoff ΛP ΛR L (probeWeight_vacuum D ΛP).symm
 
-
 variable (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
   (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR) (s : List I)
 local notation "cS" => tensorSourceContent D ΛP ΛR s
@@ -109,27 +108,6 @@ def tensorOriginalRowEntry {a : Obj (SKM.sig D)}
   (TensorEntryPullback.linear (E) e).comp
     (tensorVacuumRowProjection D Sc m cutoff ΛP ΛR L hP hR s hEnd p)
 
-/-- The canonical original-weight row entry retains the entire actual supported matrix. -/
-theorem tensorOriginalRowEntry_injective {a : Obj (SKM.sig D)}
-    (hEnd : (ΛP - contentWeight D (0 : I →₀ ℕ)) + (-ΛR + contentWeight D (0 : I →₀ ℕ)) = a.endR)
-    (p : SPath a.word (0,cS) (0,0))
-    (A : probeOldWeightSpace D Tw m ΛP (-ΛP) ⟶
-      elvWeightSpace D Tw cutoff N ΛR (ReservoirWord.weight D ΛR cS))
-    (e : ((P).pathFunctor p).obj (tensorVacuum D Sc m cutoff L ΛP ΛR).obj ≅ (E).functor.obj A)
-    (hup : ∀ c ∈ a.word, c.l.1 = true) :
-    Function.Injective (tensorOriginalRowEntry D Sc m cutoff ΛP ΛR L hP hR s (a := a) hEnd p A e) :=
-  (TensorEntryPullback.map_injective (E) e).comp
-    ((Linear.homCongr k
-      (Iso.refl (tensorSourceFamily D Sc m cutoff ΛP ΛR L s (0,cS)).obj)
-      (eqToIso (congrArg ((P).pathFunctor p).obj
-        (congrArg (fun Z : H D Tw m cutoff N ΛP ΛR (0,0) => Z.obj)
-          (tensorTargetFamily_zero D Sc m cutoff ΛP ΛR L))))).injective.comp
-      (MatrixSourceRow.projection_injective D Sc m cutoff N ΛP ΛR hP hR
-        (tensorSourceFamily D Sc m cutoff ΛP ΛR L s) (tensorTargetFamily D Sc m cutoff ΛP ΛR L)
-        (0,cS) hEnd p hup
-        (tensorSourceFamily_isZero D Sc m cutoff ΛP ΛR L s)
-        (tensorTargetFamily_isZero D Sc m cutoff ΛP ΛR L)))
-
 /-- The prescribed global path chart in the selected tensor Hom. -/
 def tensorRowTargetIso {a : Obj (SKM.sig D)}
     (p : SPath a.word (0,cS) (0,0)) (hup : ∀ c ∈ a.word, c.l.1 = true) :
@@ -148,15 +126,6 @@ def tensorOriginalWordEntry {a : Obj (SKM.sig D)}
   tensorOriginalRowEntry D Sc m cutoff ΛP ΛR L hP hR s (a := a) hEnd p
     (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hup)
     (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s (a := a) p hup)
-
-/-- Every actual matrix arrow survives its original-weight whole-Hom observation. -/
-theorem tensorOriginalWordEntry_injective {a : Obj (SKM.sig D)}
-    (hEnd : (ΛP - contentWeight D (0 : I →₀ ℕ)) + (-ΛR + contentWeight D (0 : I →₀ ℕ)) = a.endR)
-    (p : SPath a.word (0,cS) (0,0)) (hup : ∀ c ∈ a.word, c.l.1 = true) :
-    Function.Injective (tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s (a := a) hEnd p hup) :=
-  tensorOriginalRowEntry_injective D Sc m cutoff ΛP ΛR L hP hR s (a := a) hEnd p
-    (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hup)
-    (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s (a := a) p hup) hup
 
 include hP hR in
 /-- The inverse input-weight transport retains the same actual source-word Hom. -/

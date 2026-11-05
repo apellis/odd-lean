@@ -109,14 +109,4 @@ def probeEvaluatedInductionDotIso :
     (probeEvaluatedInductionDotIso D Sc m ν i).hom = probeEvaluatedInductionDot D Sc m ν i :=
   OddMath.HomogeneousSuperfunctorIso.ofHom_hom _ _ _ _
 
-/-- Whole-functor invertibility is proved, rather than assumed componentwise. -/
-theorem probeEvaluatedInductionDot_isUnit : IsUnit (End.of (probeEvaluatedInductionDot D Sc m ν i)) := by
-  apply (isUnit_iff_isIso _).2
-  rw [← probeEvaluatedInductionDotIso_hom]
-  infer_instance
-
-theorem probeEvaluatedInductionDotIso_inv_mem :
-    (probeEvaluatedInductionDotIso D Sc m ν i).inv ∈ parity (R := k) _ _ (D.parity i) :=
-  OddMath.HomogeneousSuperfunctorIso.ofHom_inv_mem _ _ _ _
-
 end OddMath.QuiverHecke

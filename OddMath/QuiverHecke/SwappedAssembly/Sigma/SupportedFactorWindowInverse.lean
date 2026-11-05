@@ -58,40 +58,6 @@ theorem probeTarget_absent_isZero (i : I) (t : Sector I)
 
 variable {C : Type*} [Category C] [Preadditive C] [Limits.HasZeroObject C]
 
-/-- The prescribed reservoir cap inverse on every supported sector,
-including the absent source and the empty height-zero window. -/
-theorem reservoir_capInverse
-    (c : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).CrossCoeff)
-    (i : I) (t : Sector I)
-    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
-    (E : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t ⥤ C) [E.Additive]
-    (hh : 0 ≤ D.h i ((P).muM t)) :
-    ∃ j A, ProbeWindow.IsCapInverse ((P).centralPaddedSigma c i t Z.obj E false false)
-      (fun a : Fin (D.h i ((P).muM t)).toNat => (P).centralPaddedCap i t Z.obj E false a) j A :=
-  if ha : StepValid (up i) false t then
-    (P).centralPaddedReservoir_capInverse c i t Z.obj E ha hh
-  else
-    let h : ((P).muM t - D.α i) + D.α i = (P).muM t := sub_add_cancel _ _
-    (P).centralPaddedReservoir_capInverse_of_source_isZero c i t Z.obj E ha h
-      (reservoirSource_absent_isZero D Sc m cutoff bound ΛP ΛR hP hR i t Z ha h) hh
-
-/-- The prescribed reservoir unit inverse on every supported sector,
-with all unit columns retained at absent source corners. -/
-theorem reservoir_cupInverse
-    (c : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).CrossCoeff)
-    (i : I) (t : Sector I)
-    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
-    (E : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t ⥤ C) [E.Additive]
-    (hh : D.h i ((P).muM t) ≤ 0) :
-    ∃ j B, ProbeWindow.IsCupInverse ((P).centralPaddedSigma c i t Z.obj E false false)
-      (fun a : Fin (-D.h i ((P).muM t)).toNat => (P).centralPaddedUnit i t Z.obj E false a) j B :=
-  if ha : StepValid (up i) false t then
-    (P).centralPaddedReservoir_cupInverse c i t Z.obj E ha hh
-  else
-    let h : ((P).muM t - D.α i) + D.α i = (P).muM t := sub_add_cancel _ _
-    (P).centralPaddedReservoir_cupInverse_of_source_isZero c i t Z.obj E ha h
-      (reservoirSource_absent_isZero D Sc m cutoff bound ΛP ΛR hP hR i t Z ha h) hh
-
 /-- The normalized probe cap inverse on every supported sector,
 including a missing probe target and all inverse cap columns. -/
 theorem probe_capInverse

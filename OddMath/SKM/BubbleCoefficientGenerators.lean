@@ -66,12 +66,4 @@ theorem coefficientAtLeast_antitone {m n : ℕ} (h : m ≤ n) :
   rintro _ ⟨a, ha, rfl⟩
   exact ⟨a, h.trans ha, rfl⟩
 
-/-- ELV's even-cutoff coefficient relation has weight one above the cutoff.
-The elementary index is zero based: `e i r` denotes `chi_(r+1)`. -/
-theorem elvTopRelation_mem_coefficientAtLeast (i : {i : I // D.parity i = 1}) (r : ℕ) :
-    delta D k i * e D k i.1 r ∈ CoefficientAtLeast D k (2 * (r + 1) + 1) := by
-  have h := coefficientAtLeast_mul D k (delta_mem_coefficientAtLeast D k i)
-    (elementary_mem_coefficientAtLeast D k i.1 r)
-  simpa [elementaryWeight, i.property, Nat.add_comm] using h
-
 end OddMath.SKM.SYM

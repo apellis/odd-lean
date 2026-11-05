@@ -112,10 +112,6 @@ theorem contentMatrixSourceIso_hom_mem : (Source).hom ∈ parity (R := k) _ _ 0 
     (contentAppendToRestrictionExtensionIso D Sc cutoff N β i γ hJ M)
     (contentBlockRestrictionExtension_even D Sc cutoff N β i M)
 
-/-- The inverse of the same selected lower E/F chart is even. -/
-theorem contentMatrixSourceIso_inv_mem : (Source).inv ∈ parity (R := k) _ _ 0 :=
-  inv_mem _ (contentMatrixSourceIso_hom_mem D Sc cutoff N β i M)
-
 /-- Every literal dotted cap row commutes with the same whole E/F and value charts. -/
 theorem contentMatrixCapDotRow_square (n : ℕ) :
     capDotRow J hDot M n ≫ (Value).hom =

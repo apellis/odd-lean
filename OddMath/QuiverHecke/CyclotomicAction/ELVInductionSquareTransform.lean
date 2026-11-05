@@ -92,37 +92,5 @@ variable {k : Type u} [CommRing k]
   {p : ZMod 2} {α : ∀ v, J.obj v ⟶ K.obj v} {β : ∀ v, T.obj v ⟶ S.obj v}
   (hα : IsSupernatural k p α) (hβ : IsSupernatural k p β)
 
-private theorem twist_endpoint (p : ZMod 2) {X Y : D} (e : X = Y) :
-    twist k p (eqToHom e) = eqToHom e := by
-  subst Y
-  exact twist_id (R := k) p X
-
-omit [J.Linear k] [IsSuperfunctor k J] [T.Linear k] [IsSuperfunctor k T] in
-/-- A homogeneous transformation commutes with the canonical square map when
-its literal coefficient family does. This is a comparison lemma; in the
-weighted application the coefficient equality is the quotient map of the
-same appended affine diagram, rather than an additional action hypothesis. -/
-theorem coendSquareMap_transform
-    (hcoeff : ∀ v, eqToHom (congrArg (fun F : C ⥤ D => F.obj v) hJ).symm ≫ U.map (α v) =
-      β (Q.obj v) ≫ eqToHom (congrArg (fun F : C ⥤ D => F.obj v) hK).symm)
-    (w : A) :
-    coendSquareMap J U Q T hJ M.toFunctor w ∘ₗ
-      transformLinear hα (⟨Q ⋙ M.toFunctor⟩ : Superfunctor k C (SVec k)) w =
-    transformLinear hβ M (U.obj w) ∘ₗ coendSquareMap K U Q S hK M.toFunctor w := by
-  apply hom_ext
-  intro v g b
-  change coendSquareMap J U Q T hJ M.toFunctor w
-      (transformLinear hα (⟨Q ⋙ M.toFunctor⟩ : Superfunctor k C (SVec k)) w
-        (tensor K (Q ⋙ M.toFunctor) v g b)) = _
-  have ht : transformLinear hα (⟨Q ⋙ M.toFunctor⟩ : Superfunctor k C (SVec k)) w
-      (tensor K (Q ⋙ M.toFunctor) v g b) =
-    tensor J (Q ⋙ M.toFunctor) v (α v ≫ twist k p g) b :=
-    transformLinear_tensor hα (⟨Q ⋙ M.toFunctor⟩ : Superfunctor k C (SVec k)) w v g b
-  rw [ht, coendSquareMap_tensor]
-  simp only [LinearMap.comp_apply, coendSquareMap_tensor, transformLinear_tensor]
-  rw [U.map_comp, map_twist, ← Category.assoc, hcoeff v, Category.assoc,
-    twist_comp, twist_endpoint]
-  rfl
-
 end Transform
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

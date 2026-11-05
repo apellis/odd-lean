@@ -109,17 +109,6 @@ theorem independentSBoundaryRemainder_above (p : ZMod 2)
   simp only [Finsupp.mapRange.linearMap_apply, Finsupp.mapRange_apply, LinearMap.flip_apply]
   rw [outputPolynomialBoundary_iterate_high, inputCoefficientShift_apply_add]
 
-theorem independentSBoundaryRemainder_support (p : ZMod 2)
-    (j : {j : I // D.parity j = 1}) (v : List I)
-    (f : ℕ →₀ Old D Sc cutoff v v) :
-    (independentSBoundaryRemainder D Sc cutoff p j v f).support ⊆
-      Finset.range (outputSDegree D j.1 v) := by
-  intro m hm
-  rw [Finset.mem_range]
-  by_contra h
-  exact (Finsupp.mem_support_iff.mp hm)
-    (independentSBoundaryRemainder_above D Sc cutoff p j v f m (by omega))
-
 /-- On odd moving colour this is literal untwisted chronological convolution
 on every full old coefficient, not merely on scalar identities. -/
 theorem independentSRightProduct_single (j : {j : I // D.parity j = 1})

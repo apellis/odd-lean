@@ -44,7 +44,6 @@ variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
   [CommRing k] (Sc : SKM.Scalars D k) [Fintype I] [DecidableEq I]
   (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a)
 
-
 section SCatEven
 variable {A B : SCat k}
 

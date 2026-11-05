@@ -107,33 +107,6 @@ def appendContentP : appendContentSource D Sc a n β i →+
       (contentCorner_appendQ_smul D Sc a n β i)
     exact (P.map_smul (ψ 1) z.1).symm.trans (congrArg P z.2)
 
-/-- The unchanged right coefficient action on the source corner. -/
-def appendContentSourceRightMul (b : B) :
-    appendContentSource D Sc a n β i →+ appendContentSource D Sc a n β i :=
-  AddMonoidHom.codRestrict
-    ((Ind.map (φ := prependTwist D Sc i n eps)
-      (appendCoefficientMulRight D Sc n B b)).toAddMonoidHom.comp
-        (appendContentSource D Sc a n β i).subtype) _ fun z => by
-    change (ψ 1 : Hn D Sc (n + 1 + 1)) • _ = _
-    let R := Ind.map (φ := prependTwist D Sc i n eps) (appendCoefficientMulRight D Sc n B b)
-    exact (R.map_smul (ψ 1) z.1).symm.trans (congrArg R z.2)
-
-/-- The source transport field `P_r`, with the right action of
-`appendContentMackeyTarget` and no extra annihilation assumptions. -/
-theorem appendContentP_rightMul (b : B) (z : appendContentSource D Sc a n β i) :
-    appendContentP D Sc a n β i ha (appendContentSourceRightMul D Sc a n β i b z) =
-      appendTensorRightMul D Sc i n B b (appendContentP D Sc a n β i ha z) := by
-  apply Subtype.ext
-  let P := appendMackeyMap D Sc (i := i) (n := n) (ε := eps) (N := B) ha (contentCorner_cyclotomic_smul D Sc a n β)
-    (contentCorner_appendQ_smul D Sc a n β i)
-  change P (Ind.map (appendCoefficientMulRight D Sc n B b) z.1) =
-    Ind.map (appendCoefficientMulRight D Sc n B b) (P z.1)
-  dsimp only [P]
-  induction z.1 using Ind.induction_on with
-  | zero => simp only [map_zero]
-  | add x y hx hy => simp only [map_add, hx, hy]
-  | tmul x y => rw [Ind.map_tmul, appendMackeyMap_tmul, appendMackeyMap_tmul, Ind.map_tmul]
-
 /-- The first-dot operator with the constant content sign. -/
 def appendContentRho : appendContentSource D Sc a n β i →+
     appendContentSource D Sc a n β i :=
@@ -145,24 +118,5 @@ def appendContentRho : appendContentSource D Sc a n β i →+
     let R := appendSourceDot D Sc i n eps (contentCornerParity D Sc a n β i ha).toAddMonoidHom
       (contentCornerParity_smul D Sc a n β i ha)
     exact (R.map_smul (ψ 1) z.1).symm.trans (congrArg R z.2)
-
-/-- The exact source transport field `P_ρ` for the cyclotomic content corner. -/
-theorem appendContentP_rho (z : appendContentSource D Sc a n β i) :
-    appendContentP D Sc a n β i ha (appendContentRho D Sc a n β i ha z) =
-      (appendContentMackeyTarget D Sc a n β i ha).Rt
-        (appendContentP D Sc a n β i ha z) := by
-  apply Subtype.ext
-  let P := appendMackeyMap D Sc (i := i) (n := n) (ε := eps) (N := B) ha
-    (contentCorner_cyclotomic_smul D Sc a n β) (contentCorner_appendQ_smul D Sc a n β i)
-  let θ := (contentCornerParity D Sc a n β i ha).toAddMonoidHom
-  let hθ := contentCornerParity_smul D Sc a n β i ha
-  change P (zsign ℤ (appendSourceSign D a i eps) • appendSourceDot D Sc i n eps θ hθ z.1) =
-    appendTensorRightDot D Sc i n B θ hθ (P z.1)
-  have h := appendMackeyMap_appendSourceDot D Sc i n eps θ hθ ha
-    (contentCorner_cyclotomic_smul D Sc a n β) (contentCorner_appendQ_smul D Sc a n β i) z.1
-  change P (appendSourceDot D Sc i n eps θ hθ z.1) =
-    zsign ℤ (appendSourceSign D a i eps) • appendTensorRightDot D Sc i n B θ hθ (P z.1) at h
-  rw [map_zsmul, h, smul_smul, ← zsign_add_eq, CharTwo.add_self_eq_zero]
-  simp [zsign]
 
 end OddMath.QuiverHecke

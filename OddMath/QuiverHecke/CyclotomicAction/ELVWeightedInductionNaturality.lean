@@ -21,14 +21,6 @@ def inductionFunctorIsoOfEq (J K : C ⥤ D)
   subst K
   exact Iso.refl _
 
-theorem inductionFunctorIsoOfEq_app (J K : C ⥤ D)
-    [J.Additive] [J.Linear k] [IsSuperfunctor k J]
-    [K.Additive] [K.Linear k] [IsSuperfunctor k K] (h : J = K)
-    (M : Superfunctor k C (SVec k)) :
-    (inductionFunctorIsoOfEq J K h).app M = inducedIsoOfFunctorEq J K h M := by
-  subst K
-  rfl
-
 end OddMath.QuiverHecke.ELVOld.BalancedInduction
 
 namespace OddMath.QuiverHecke.ELVOld
@@ -117,7 +109,6 @@ theorem quotientInducedWeightedModuleIso_naturality
     _ = IQ.map uM.inv ≫ (cM ≫ wf) := by rw [hc]
     _ = (IQ.map uM.inv ≫ cM) ≫ wf := (Category.assoc _ _ _).symm
 
-
 private theorem iso_inv_naturality {C : Type*} [Category C]
     {A B A' B' : C} (e : A ≅ B) (e' : A' ≅ B') (f : A ⟶ A') (g : B ⟶ B')
     (h : f ≫ e'.hom = e.hom ≫ g) :
@@ -195,38 +186,5 @@ def appendWeightedNaturalIso (i : I) :
       (Functor.isoWhiskerLeft RQ (BalancedInduction.inductionComp Q T)).symm ≪≫
       Functor.isoWhiskerRight (quotientInductionCounitModuleIso D Sc cutoff N)
         (BalancedInduction.induction T)
-
-theorem appendWeightedNaturalIso_app (i : I)
-    (M : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k)) :
-    (appendWeightedNaturalIso D Sc cutoff N i).app M =
-      appendWeightedModuleIso D Sc cutoff N i M := by
-  let J := CyclotomicCrossingTensor.append D Sc cutoff i
-  let T := truncatedAppend D Sc cutoff N [i]
-  let R := weightedRestriction D Sc cutoff N M
-  let F := BalancedInduction.induced J R
-  let hF := induced_killsWeightedCoefficients D Sc cutoff N i R
-    (weightedRestriction_kills D Sc cutoff N M)
-  apply Iso.ext
-  change ((quotientInducedWeightedModuleIso D Sc cutoff N F hF).symm ≪≫
-    (BalancedInduction.inductionComp J Q).app R ≪≫
-      (BalancedInduction.inductionFunctorIsoOfEq (J ⋙ Q) (Q ⋙ T)
-        (oldAppend_truncate D Sc cutoff N i)).app R ≪≫
-      ((BalancedInduction.inductionComp Q T).app R).symm ≪≫
-      (BalancedInduction.induction T).mapIso (quotientInductionCounitIso D Sc cutoff N M)).hom =
-    (appendWeightedModuleIso D Sc cutoff N i M).hom
-  rw [BalancedInduction.inductionFunctorIsoOfEq_app]
-  rfl
-
-
-/-- Naturality of the existing pointwise append comparison, for arbitrary
-sums of even and odd module maps. -/
-theorem appendWeightedModuleIso_naturality (i : I)
-    {M L : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k)} (f : M ⟶ L) :
-    (weightedAppendFunctor D Sc cutoff N i).map f ≫
-        (appendWeightedModuleIso D Sc cutoff N i L).hom =
-      (appendWeightedModuleIso D Sc cutoff N i M).hom ≫
-        (BalancedInduction.induction (truncatedAppend D Sc cutoff N [i])).map f := by
-  rw [← appendWeightedNaturalIso_app, ← appendWeightedNaturalIso_app]
-  exact (appendWeightedNaturalIso D Sc cutoff N i).hom.naturality f
 
 end OddMath.QuiverHecke.ELVOld

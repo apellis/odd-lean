@@ -46,8 +46,6 @@ private theorem bijective_square {k V W X Y : Type u} [CommRing k]
 
 private def isoOfBijectiveMap {k : Type u} [CommRing k] {V W : SVec k} (f : V ⟶ W)
     (hf : Function.Bijective f) : V ≅ W := SVec.isoOfLinearEquiv (LinearEquiv.ofBijective f hf)
-private theorem isoOfBijectiveMap_hom {k : Type u} [CommRing k] {V W : SVec k} (f : V ⟶ W)
-    (hf : Function.Bijective f) : (isoOfBijectiveMap f hf).hom = f := rfl
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ) (i : I)
@@ -127,57 +125,5 @@ theorem weightedCapMatrixComponentIso_hom (w : OldCategory D Sc cutoff)
     (weightedCapMatrixComponentIso D Sc cutoff N i M w hh).hom =
       weightedCapMatrixComponent D Sc cutoff N i M
         (contentCapCount D cutoff i (w.word : Multiset I)) ((Q).obj w) := rfl
-
-theorem weightedUnitMatrixComponentIso_hom_mem (w : OldCategory D Sc cutoff)
-    (hh : 0 ≤ contentCrossingHeight D cutoff i (w.word : Multiset I)) :
-    (weightedUnitMatrixComponentIso D Sc cutoff N i M w hh).hom ∈ parity (R := k) _ _ 0 := by
-  rw [weightedUnitMatrixComponentIso_hom]
-  exact weightedUnitMatrixComponent_even D Sc cutoff N i M _ ((Q).obj w)
-
-theorem weightedUnitMatrixComponentIso_inv_mem (w : OldCategory D Sc cutoff)
-    (hh : 0 ≤ contentCrossingHeight D cutoff i (w.word : Multiset I)) :
-    (weightedUnitMatrixComponentIso D Sc cutoff N i M w hh).inv ∈ parity (R := k) _ _ 0 :=
-  Supercategory.inv_mem (weightedUnitMatrixComponentIso D Sc cutoff N i M w hh)
-    (weightedUnitMatrixComponentIso_hom_mem D Sc cutoff N i M w hh)
-
-theorem weightedCapMatrixComponentIso_hom_mem (w : OldCategory D Sc cutoff)
-    (hh : contentCrossingHeight D cutoff i (w.word : Multiset I) ≤ 0) :
-    (weightedCapMatrixComponentIso D Sc cutoff N i M w hh).hom ∈ parity (R := k) _ _ 0 := by
-  rw [weightedCapMatrixComponentIso_hom]
-  exact weightedCapMatrixComponent_even D Sc cutoff N i M _ ((Q).obj w)
-
-theorem weightedCapMatrixComponentIso_inv_mem (w : OldCategory D Sc cutoff)
-    (hh : contentCrossingHeight D cutoff i (w.word : Multiset I) ≤ 0) :
-    (weightedCapMatrixComponentIso D Sc cutoff N i M w hh).inv ∈ parity (R := k) _ _ 0 :=
-  Supercategory.inv_mem (weightedCapMatrixComponentIso D Sc cutoff N i M w hh)
-    (weightedCapMatrixComponentIso_hom_mem D Sc cutoff N i M w hh)
-
-theorem weightedUnitMatrixComponent_hom_inv_id (w : OldCategory D Sc cutoff)
-    (hh : 0 ≤ contentCrossingHeight D cutoff i (w.word : Multiset I)) :
-    weightedUnitMatrixComponent D Sc cutoff N i M (contentUnitCount D cutoff i (w.word : Multiset I)) ((Q).obj w) ≫
-        (weightedUnitMatrixComponentIso D Sc cutoff N i M w hh).inv = 𝟙 _ := by
-  rw [← weightedUnitMatrixComponentIso_hom D Sc cutoff N i M w hh]
-  exact (weightedUnitMatrixComponentIso D Sc cutoff N i M w hh).hom_inv_id
-
-theorem weightedUnitMatrixComponent_inv_hom_id (w : OldCategory D Sc cutoff)
-    (hh : 0 ≤ contentCrossingHeight D cutoff i (w.word : Multiset I)) :
-    (weightedUnitMatrixComponentIso D Sc cutoff N i M w hh).inv ≫
-        weightedUnitMatrixComponent D Sc cutoff N i M (contentUnitCount D cutoff i (w.word : Multiset I)) ((Q).obj w) = 𝟙 _ := by
-  rw [← weightedUnitMatrixComponentIso_hom D Sc cutoff N i M w hh]
-  exact (weightedUnitMatrixComponentIso D Sc cutoff N i M w hh).inv_hom_id
-
-theorem weightedCapMatrixComponent_hom_inv_id (w : OldCategory D Sc cutoff)
-    (hh : contentCrossingHeight D cutoff i (w.word : Multiset I) ≤ 0) :
-    weightedCapMatrixComponent D Sc cutoff N i M (contentCapCount D cutoff i (w.word : Multiset I)) ((Q).obj w) ≫
-        (weightedCapMatrixComponentIso D Sc cutoff N i M w hh).inv = 𝟙 _ := by
-  rw [← weightedCapMatrixComponentIso_hom D Sc cutoff N i M w hh]
-  exact (weightedCapMatrixComponentIso D Sc cutoff N i M w hh).hom_inv_id
-
-theorem weightedCapMatrixComponent_inv_hom_id (w : OldCategory D Sc cutoff)
-    (hh : contentCrossingHeight D cutoff i (w.word : Multiset I) ≤ 0) :
-    (weightedCapMatrixComponentIso D Sc cutoff N i M w hh).inv ≫
-        weightedCapMatrixComponent D Sc cutoff N i M (contentCapCount D cutoff i (w.word : Multiset I)) ((Q).obj w) = 𝟙 _ := by
-  rw [← weightedCapMatrixComponentIso_hom D Sc cutoff N i M w hh]
-  exact (weightedCapMatrixComponentIso D Sc cutoff N i M w hh).inv_hom_id
 
 end OddMath.QuiverHecke.ELVOld

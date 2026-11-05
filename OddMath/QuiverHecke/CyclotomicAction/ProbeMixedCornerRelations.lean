@@ -129,7 +129,6 @@ theorem probeMixedCorner_remainders_connected (pre post : List I) (i j : I)
           q ((Sc.t i j : k) • u^(D.dn i j)) + z) (q.map_mul' v Rleft)
     exact congrArg (fun z : CyclotomicWordCorner D Sc a s => z.val) hq
 
-
 /-- The disconnected quadratic supplies the same two remainder statements,
 with zero remainders and its single scalar unit leading term. -/
 theorem probeMixedCorner_remainders (pre post : List I) (i j : I)
@@ -213,18 +212,5 @@ theorem probeMixedCorner_dot_isUnit (pre post : List I) (i j : I) (hij : i ≠ j
   exact cyclotomicWordEntry_distinct_isUnit_twoRemainders D Sc a s t
     (probeMixedCross D Sc pre post i j) (probeMixedCross D Sc pre post j i)
     v W U Rright Rleft hW hU hslide hslide' hr hl
-
-
-
-/-- A prescribed cofinal probe supplies both preceding first-dot units.
-This is the first genuinely mixed-colour step with no unit premise left. -/
-theorem probeMixed_secondDot_isUnit (m : I → ℕ) (post : List I)
-    (i j : I) (hij : i ≠ j) :
-    IsUnit (probeMixedCornerDot D Sc (probePolynomial (probeDotExponent D) m)
-      [] post i j 1) := by
-  apply probeMixedCorner_dot_isUnit D Sc (probePolynomial (probeDotExponent D) m)
-    [] post i j hij
-  · exact probe_firstDot_isUnit D Sc m (probeMixedWord [] post i j)
-  · exact probe_firstDot_isUnit D Sc m (probeMixedWord [] post j i)
 
 end OddMath.QuiverHecke

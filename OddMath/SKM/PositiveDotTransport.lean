@@ -245,39 +245,4 @@ theorem betaSYM_slide_difference (μ : X) (j : I) (p : SYM D k) :
     simp only [Preadditive.sub_comp, Preadditive.comp_sub]
     abel
 
-/-- Actual evaluation of finitely many strictly positive dot powers with full coefficients. -/
-def positiveDotExpansion (μ : X) (j : I) :
-    ({n : ℕ // 0 < n} →₀ SYM D k) →ₗ[k]
-      ((pres D Sc).obj (ob D μ [up j]) ⟶ (pres D Sc).obj (ob D μ [up j])) :=
-  Finsupp.lsum k (fun n =>
-    { toFun := fun p => cl D Sc μ [up j] [up j] (dotsLay (up j) n.val) ≫
-        rbub j μ (betaSYM cs (wt D μ []) p)
-      map_add' := by intros; simp only [map_add, rbub, Preadditive.comp_add]
-      map_smul' := by intros; simp only [map_smul, rbub, Linear.comp_smul, RingHom.id_apply] })
-
-theorem positiveDotExpansion_single (μ : X) (j : I) (n : {n : ℕ // 0 < n}) (p : SYM D k) :
-    positiveDotExpansion cs μ j (Finsupp.single n p) =
-      cl D Sc μ [up j] [up j] (dotsLay (up j) n.val) ≫ rbub j μ (betaSYM cs (wt D μ []) p) :=
-  Finsupp.lsum_single k _ n p
-
-/-- The positive-dot error span has finite coefficient lifts; a global lift of
-bubbles is neither selected nor assumed. -/
-theorem dotSlideAtLeast_one_le_range (μ : X) (j : I) :
-    dotSlideAtLeast cs μ (up j) 1 ≤ (positiveDotExpansion cs μ j).range := by
-  apply Submodule.span_le.mpr
-  rintro f ⟨a, ha, γ, hγ, _, rfl⟩
-  change γ ∈ bubbleSpan cs (wt D μ []) at hγ
-  rw [← betaSYM_range cs (wt D μ [])] at hγ
-  obtain ⟨p, rfl⟩ := hγ
-  exact ⟨Finsupp.single ⟨a, ha⟩ p, positiveDotExpansion_single cs μ j ⟨a, ha⟩ p⟩
-
-/-- Finite full-SYM slide with prescribed, unchanged constant coefficient `p`.
-No independence, field, finite-color, or scalar-normalization assumption is used. -/
-theorem betaSYM_exists_positiveDotExpansion (μ : X) (j : I) (p : SYM D k) :
-    ∃ z : {n : ℕ // 0 < n} →₀ SYM D k,
-      lbub j μ (betaSYM cs (wt D μ [up j]) p) =
-        rbub j μ (betaSYM cs (wt D μ []) p) + positiveDotExpansion cs μ j z := by
-  obtain ⟨z, hz⟩ := dotSlideAtLeast_one_le_range cs μ j (betaSYM_slide_difference cs μ j p)
-  exact ⟨z, by rw [hz]; abel⟩
-
 end OddMath.SKM

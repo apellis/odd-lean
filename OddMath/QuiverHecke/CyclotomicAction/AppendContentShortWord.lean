@@ -101,36 +101,8 @@ theorem canWord_prependShort_lt (n : ℕ) (u : PrependShuffle (n + 1))
   intro x hx
   simpa only [hl] using lt_of_mem_codeWord hx
 
-/-- Restriction to one fewer strand preserves the chosen word literally. -/
-theorem canWord_prependShort_restrict (n : ℕ) (u : PrependShuffle (n + 1))
-    (hu : u ≠ longPrependShuffle (n + 1)) :
-    canWord (n + 1) (wordProd (n + 1) (canWord (n + 2) u.1⁻¹)) =
-      canWord (n + 2) u.1⁻¹ := by
-  obtain ⟨c, hc, hl, he⟩ := canWord_eq_short_codeWord n u.1⁻¹
-    (prependShuffle_inv_last_of_ne_long n u hu)
-  rw [he]
-  exact canWord_wordProd_codeWord hc (by omega)
-
 universe u v w
 variable {I : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
   {k : Type w} [CommRing k] (Sc : SKM.Scalars D k)
-
-/-- The short canonical crossing diagram is a right whiskering of the same word.
-The equality does not pass through braid equivalence. -/
-theorem prependShort_cl_whiskerRight (n : ℕ) (u : PrependShuffle (n + 1))
-    (hu : u ≠ longPrependShuffle (n + 1)) (s : List I) (hs : s.length = n + 1)
-    (j : I) :
-    ∃ h : SChain (s ++ [j]) (pl (s ++ [j]) (cw (canWord (n + 2) u.1⁻¹)))
-        (tgt s (cw (canWord (n + 2) u.1⁻¹)) ++ [j]),
-      cl D Sc (s ++ [j]) _ (cw (canWord (n + 2) u.1⁻¹)) h =
-        cl D Sc s _ (cw (canWord (n + 2) u.1⁻¹)) (sChain_pl _ _) ▷
-          (pres D Sc).obj (ob D [j]) := by
-  have hf : Fits s.length (cw (canWord (n + 2) u.1⁻¹)) := by
-    apply fits_cw
-    intro x hx
-    have := canWord_prependShort_lt n u hu x hx
-    rw [hs]
-    omega
-  exact ⟨_, (cl_whiskerRight D Sc _ (sChain_pl _ _) [j] hf).symm⟩
 
 end OddMath.QuiverHecke

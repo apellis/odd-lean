@@ -46,29 +46,6 @@ local notation "F" => elvProbeMixedBase D Sc m cutoff bound ΛP ΛR hP hR i t Z
 abbrev elvProbeMixedPreDot : End F := (P).T.dot i ((P).muP_preE i tR) ▷ Z
 local notation "α" => elvProbeMixedPreDot D Sc m cutoff bound ΛP ΛR hP hR i t Z
 
-/-- The RP carrier is the prescribed shifted native ELV induction. -/
-theorem elvProbe_rpObj :
-    (P).rpObj i i t hv Z = elvShiftedPostInduction D Sc' cutoff bound i ΛR h F κ := rfl
-
-/-- The inner probe dot uses that same shift, including its action on odd maps. -/
-theorem elvProbe_rpPreDot :
-    (P).rpPreDot i t hv Z = elvShiftedPostEnd D Sc' cutoff bound i ΛR h F
-      (elvPostProbeDot D Sc' cutoff bound i ΛR h F α) κ := rfl
-
-/-- The outer reservoir dot is the literal chosen shifted postdot. -/
-theorem elvProbe_rpPostDot :
-    (P).rpPostDot i t hv Z = elvShiftedPostDot D Sc' cutoff bound i ΛR h F κ := rfl
-
-/-- The native prewhiskered map has the chosen colour parity. -/
-theorem elvProbeMixedPreDot_mem : α ∈ parity (R := k) _ _ (D.parity i) :=
-  probeELVMixedPreDot_mem (D := D) (Sc := Sc) (m := m) (cutoff := cutoff) (bound := bound)
-    (ΛP := ΛP) (ΛR := ΛR) (i := i) (β := t.1) (Z := Z)
-
-/-- The actual whole probe unit is the generator-level native unit. -/
-theorem elvProbeMixedPreDot_isUnit [Finite I] : IsUnit α :=
-  probeELVMixedPreDot_isUnit (D := D) (Sc := Sc) (m := m) (cutoff := cutoff) (bound := bound)
-    (ΛP := ΛP) (ΛR := ΛR) (i := i) (β := t.1) (Z := Z)
-
 /-- Total evaluation of the literal mixed carrier at one input and reservoir block. -/
 def elvProbeMixedEndEvaluation (M : (P).T.obj (-(P).muP t))
     (δ : WeightBlocks D ΛR ((P).muM t)) :
@@ -83,14 +60,6 @@ theorem elvProbeMixedPostDot_isNilpotent [Finite I]
       ((P).rpPostDot i t hv Z)) :=
   elvShiftedPostEndEvaluation_dot_isNilpotent D Sc' cutoff bound i ΛR h F sy
     (parameterTwist_homogeneous D Sc hc) κ M δ
-
-/-- The selected inner dot remains a unit at the same component. -/
-theorem elvProbeMixedInnerDot_isUnit [Finite I]
-    (M : (P).T.obj (-(P).muP t)) (δ : WeightBlocks D ΛR ((P).muM t)) :
-    IsUnit (elvProbeMixedEndEvaluation D Sc m cutoff bound ΛP ΛR hP hR i t hv Z M δ
-      ((P).rpPreDot i t hv Z)) :=
-  elvShiftedPostEndEvaluation_probe_isUnit D Sc' cutoff bound i ΛR h F α
-    (elvProbeMixedPreDot_isUnit D Sc m cutoff bound ΛP ΛR hP hR i t Z) κ M δ
 
 end Mixed
 

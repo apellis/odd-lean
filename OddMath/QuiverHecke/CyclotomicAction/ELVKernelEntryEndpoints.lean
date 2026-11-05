@@ -45,7 +45,7 @@ def kernelMateEvaluationEndpoint (v t : OldCategory D Sc cutoff) (m : M.obj v) :
     IndResKernel.Component (k := k) (append D Sc cutoff i) v t →ₗ[k]
       mateTargetSpace D Sc cutoff i M t :=
   (mateCoefficientEvaluation D Sc cutoff i M v t m).comp
-    (actualMateKernelComponent D Sc cutoff i v t)
+    (mateKernelComponent D Sc cutoff i v t)
 
 def moduleMateEvaluationEndpoint (v t : OldCategory D Sc cutoff) (m : M.obj v) :
     IndResKernel.Component (k := k) (append D Sc cutoff i) v t →ₗ[k]
@@ -57,7 +57,7 @@ def moduleMateEvaluationEndpoint (v t : OldCategory D Sc cutoff) (m : M.obj v) :
     (m : M.obj v) (z : IndResKernel.Component (k := k) (append D Sc cutoff i) v t) :
     kernelMateEvaluationEndpoint D Sc cutoff i M v t m z =
       mateCoefficientEvaluation D Sc cutoff i M v t m
-        (actualMateKernelComponent D Sc cutoff i v t z) := rfl
+        (mateKernelComponent D Sc cutoff i v t z) := rfl
 
 @[simp] theorem moduleMateEvaluationEndpoint_apply (v t : OldCategory D Sc cutoff)
     (m : M.obj v) (z : IndResKernel.Component (k := k) (append D Sc cutoff i) v t) :
@@ -101,6 +101,6 @@ theorem mateEvaluationEndpoints_eq (v t : OldCategory D Sc cutoff) (m : M.obj v)
   intro s g b
   rw [kernelMateEvaluationEndpoint_apply, moduleMateEvaluationEndpoint_apply,
     mateCoefficientEvaluation_apply, mateSourceEvaluation_tensor, moduleMateLinear_apply]
-  exact actualMateKernel_evaluate_tensor D Sc cutoff i M v t m s g b
+  exact mateKernel_evaluate_tensor D Sc cutoff i M v t m s g b
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

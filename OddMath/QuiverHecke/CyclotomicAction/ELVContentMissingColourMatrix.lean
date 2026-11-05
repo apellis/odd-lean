@@ -49,22 +49,4 @@ theorem missingColourUnitMatrixIso_hom (w : OldContentCategory D Sc cutoff γ) :
   rw [contentUnitMatrixComponentIso_hom]
   exact dropZeroPrincipalEquiv_columns _ _ _ _
 
-/-- The restricted unit matrix is even on its actual remaining shifted family. -/
-theorem missingColourUnitMatrixIso_hom_mem (w : OldContentCategory D Sc cutoff γ) :
-    (missingColourUnitMatrixIso D Sc cutoff γ i hi N w).hom ∈
-      parity (R := k) (missingColourUnitSource D Sc cutoff γ i N w)
-        (mateTargetSpace D Sc cutoff i G w.obj) 0 := by
-  change (SVec.isoOfLinearEquiv (dropZeroPrincipalEquiv _ _)).inv ≫
-    (contentUnitMatrixComponentIso D Sc cutoff G i γ _ w).hom ∈ _
-  rw [contentUnitMatrixComponentIso_hom]
-  simpa only [zero_add, missingColourUnitSource] using comp_mem
-    (dropZeroPrincipalEquiv_inv_mem _ _) (unitMatrixComponent_even D Sc cutoff i G count w.obj)
-
-/-- The inverse is even on the same given superspace gradings. -/
-theorem missingColourUnitMatrixIso_inv_mem (w : OldContentCategory D Sc cutoff γ) :
-    (missingColourUnitMatrixIso D Sc cutoff γ i hi N w).inv ∈
-      parity (R := k) (mateTargetSpace D Sc cutoff i G w.obj)
-        (missingColourUnitSource D Sc cutoff γ i N w) 0 :=
-  inv_mem _ (missingColourUnitMatrixIso_hom_mem D Sc cutoff γ i hi N w)
-
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

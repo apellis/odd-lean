@@ -34,8 +34,14 @@ axiom audit and the non-vacuity library) is the check that nothing retained depe
 a removed module.
 
 A module is removed only if no declaration of any retained module, used or not, refers
-to it, so that retained modules compile unchanged. Unused declarations inside retained
-modules are treated in a later step.
+to it, so that retained modules compile unchanged.
+
+Unused declarations inside the remaining research modules were then removed with the
+graph of the reduced tree. A theorem or definition is removed only if no retained
+theorem and no declaration of a retained module depends on it, and its name occurs in no
+non-vacuity file, documentation note or remaining Lean code (outside comments). Structures,
+instances and examples are kept, and the removal is closed under dependencies. Modules
+left without declarations were then removed in the same way as unused modules.
 
 ## Sizes
 
@@ -43,6 +49,7 @@ modules are treated in a later step.
 |---|---|---|---|---|
 | research tip before cleanup | 3109 | 644,846 | 1383 | 116,479 |
 | after removing unused modules | 2929 | 621,573 | 103 | 4,620 |
+| after removing unused declarations (3236) and empty modules (37) | 2893 | 583,261 | 104 | 4,726 |
 | `master` | 1321 | | 90 | |
 
 The Phase 1 theorem alone uses declarations from 1584 modules; the remaining research
@@ -244,13 +251,51 @@ exercised intermediate lemmas only and are removed with them. Git history keeps 
 
 </details>
 
-## Next steps
+## Documentation
 
-1. Remove unused declarations inside live research modules (about 5,600 named theorems and
-   definitions that no retained result uses), then modules that become empty.
-2. Prune topic notes in `docs/Nondegeneracy/` for removed routes; keep STATUS and
-   HANDOFF short and accurate; remove the exploratory scripts in `scripts/Nondegeneracy/`.
-3. Inside the retained code: inline single-use wrappers, merge duplicate statements,
-   rename stage-label names to mathematical names, and correct docstrings that describe
-   proved steps as open or conditional.
-4. A proposal for merging the branch into `master`.
+The topic notes in `docs/Nondegeneracy/` went from 847 files to 84 (23,227 lines): notes of
+removed routes, per-topic checkpoints and superseded inventories were deleted (git history
+keeps them). STATUS and HANDOFF were rewritten in place; notes that describe intermediate
+steps as open carry a header pointing to STATUS, and the notes on the final route state
+which declarations prove them.
+
+## Not done
+
+* Names: the prefix "actual" was dropped from 67 declaration names. About 75 names still
+  carry "actual" or "native" as a suffix or infix (for example `capRowNative_mem`), and
+  many module names in `QuiverHecke/CyclotomicAction/` carry the construction label
+  `ELV`/`ELVOld`. Renaming these touches several hundred files and conflicts with open
+  pull requests; it is left for after the merge decision.
+* Inlining single-use wrappers and merging duplicate statements inside the retained
+  route: not attempted beyond the removal of unused declarations.
+
+## Merging into `master` (proposal, not done)
+
+State: `master` has 7 commits not on this branch (merge base `b8822997`): the revert of the
+exploratory nondegeneracy additions (`8a8b9820`, removing `Diagrams/OddNilHecke/ExteriorDeformation`,
+`SKM/BubbleSpecialization`, `SKM/BubbleTruncation` and their checks), the AGENTS rule keeping
+research off `master`, and the cached `NonVacuity` library (already on this branch in another form).
+
+Hazard: a plain merge of this branch into `master` keeps master's deletion of every file this branch
+has not changed since the merge base. `BubbleSpecialization` and `BubbleTruncation` are removed
+here anyway; `ExteriorDeformation` is unchanged here, so the merge would delete it. The merge must
+be checked file by file for these six paths.
+
+Proposed procedure:
+1. Finish the cleanup here, with green CI.
+2. On a topic branch from this branch, merge `master` with the conflicts resolved toward this
+   branch: keep this branch's `OddMath.lean`, `lakefile.lean`, `.github/workflows/build.yml`,
+   README; take master's AGENTS text only where it does not conflict, and replace the
+   "research stays off master" rule by a statement of what is now on master. Keep or remove
+   `ExteriorDeformation` deliberately.
+3. Green CI on that branch (full build, axiom audit, NonVacuity).
+4. Open a PR into `master` from that branch. Because it already contains `master`, the merge into
+   `master` is conflict-free and the result equals the tested tree. Merge commit, then check the
+   `master` CI run.
+5. Afterwards: README status rows become the headline rows; STATUS/HANDOFF keep only the Phase 2
+   work; decide whether `research/odd-nondegeneracy` continues for Phase 2 or Phase 2 moves to
+   topic branches against `master` (Alex's decision; AGENTS currently routes uncertain research
+   to the research branch).
+
+Size after the cleanup: 2893 `OddMath` modules (583,261 lines) against 1321 on `master`;
+104 non-vacuity files against 90. About 1570 research modules would enter `master`.

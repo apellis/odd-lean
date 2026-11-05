@@ -180,18 +180,6 @@ def adjunction (i : I) :
     ((adjunction D Sc cutoff c L hc i).counit.app M).hom =
       (BalancedInduction.adjunction (CyclotomicCrossingTensor.append D Sc cutoff i)).counit.app M.obj := rfl
 
-theorem adjunction_unit_mem (i : I) (M : CoefficientPowerModules D Sc cutoff c L) :
-    (adjunction D Sc cutoff c L hc i).unit.app M ∈ parity (R := k) M
-      (((induction D Sc cutoff c L hc i).toFunctor ⋙
-        (restriction D Sc cutoff c L i).toFunctor).obj M) 0 :=
-  BalancedInduction.adjunctionUnit_mem (CyclotomicCrossingTensor.append D Sc cutoff i) M.obj
-
-theorem adjunction_counit_mem (i : I) (M : CoefficientPowerModules D Sc cutoff c L) :
-    (adjunction D Sc cutoff c L hc i).counit.app M ∈ parity (R := k)
-      (((restriction D Sc cutoff c L i).toFunctor ⋙
-        (induction D Sc cutoff c L hc i).toFunctor).obj M) M 0 :=
-  BalancedInduction.adjunctionCounit_mem (CyclotomicCrossingTensor.append D Sc cutoff i) M.obj
-
 /-- The chosen induction dot restricts as the same supernatural
 transformation, including its original parity. -/
 def inductionDot (i : I) : SuperNatTrans k
@@ -201,12 +189,6 @@ def inductionDot (i : I) : SuperNatTrans k
     (fun M hM => coefficientPowerProperty_induction D Sc cutoff c L hc i ⟨M, hM⟩)
     (fun M hM => coefficientPowerProperty_induction D Sc cutoff c L hc i ⟨M, hM⟩)
     (BalancedInduction.transform (CyclotomicCrossingTensor.oldAppendDot_supernatural D Sc cutoff i))
-
-theorem inductionDot_homogeneous (i : I) :
-    (inductionDot D Sc cutoff c L hc i).IsHomogeneous (D.parity i) := by
-  exact CyclotomicAction.fullLiftTrans_homogeneous _ _ _ _ _
-    (BalancedInduction.transformComponent_supernatural
-      (CyclotomicCrossingTensor.oldAppendDot_supernatural D Sc cutoff i)).toSuperNatTrans_isHomogeneous
 
 @[simp] theorem inductionDot_app_hom (i : I) (p : ZMod 2)
     (M : CoefficientPowerModules D Sc cutoff c L) :

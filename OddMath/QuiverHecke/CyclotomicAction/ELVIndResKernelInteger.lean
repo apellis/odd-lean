@@ -187,17 +187,6 @@ theorem iSup_integerDegree_eq_top (v t : D) : (⨆ n : ℤ, integerDegree (k := 
   intro x _
   exact (Submodule.Quotient.mk_eq_zero S).mp (LinearMap.congr_fun hq x)
 
-/-- The intrinsic Hom-tensor degrees form an internal direct sum on the
-literal represented induction-restriction quotient. -/
-theorem integerDegree_internal (v t : D) : DirectSum.IsInternal (integerDegree (k := k) J v t) := by
-  apply DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top
-  · refine iSupIndep_of_projections _ (integerProjection J v t) (fun n => ?_) (fun n m hmn => ?_)
-    · intro x hx
-      exact (integerProjection_of_mem J v t hx).trans (ite_eq_left rfl)
-    · intro x hx
-      exact (integerProjection_of_mem J v t hx).trans (ite_eq_right hmn)
-  · exact iSup_integerDegree_eq_top J v t
-
 /-- Integer projection has its image in the prescribed intrinsic part. -/
 theorem integerProjection_mem (v t : D) (n : ℤ) (x : Component (k := k) J v t) :
     integerProjection J v t n x ∈ integerDegree (k := k) J v t n := by
@@ -213,17 +202,5 @@ theorem integerProjection_mem (v t : D) (n : ℤ) (x : Component (k := k) J v t)
     · simp only [ite_eq_right h, Submodule.zero_mem]
   rw [iSup_integerDegree_eq_top J v t] at hle
   exact hle (Submodule.mem_top : x ∈ (⊤ : Submodule k _))
-
-/-- The represented kernel's degree is characterized by its selected
-integer projection, independently of its parity. -/
-theorem mem_integerDegree_iff_projection (v t : D) (n : ℤ) (x : Component (k := k) J v t) :
-    x ∈ integerDegree (k := k) J v t n ↔ integerProjection J v t n x = x := by
-  constructor
-  · intro hx
-    exact (integerProjection_of_mem J v t hx).trans (ite_eq_left rfl)
-  · intro hx
-    have h := integerProjection_mem J v t n x
-    rw [hx] at h
-    exact h
 
 end OddMath.QuiverHecke.ELVOld.IndResKernel

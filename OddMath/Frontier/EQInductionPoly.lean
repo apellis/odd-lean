@@ -149,7 +149,6 @@ theorem sAlpha_zAlpha_eq :
       · rw [ha, show (a + j.val) % 2 = 1 by omega]; norm_num
       · rw [ha, show (a + j.val) % 2 = 0 by omega]; norm_num
 
-
 section BlockRevRing
 
 open DG
@@ -234,7 +233,6 @@ def blockRevDG : osymABDG a b →ᵈᵍ+* osymABDG a b where
 theorem blockRevDG_val (g : osymABDG a b) :
     (OPol.equiv _).symm ((blockRevDG a b g : osymABDG a b) : OPol (a + b)) =
       blockRev a b ((OPol.equiv _).symm (g : OPol (a + b))) := rfl
-
 
 end BlockRevRing
 

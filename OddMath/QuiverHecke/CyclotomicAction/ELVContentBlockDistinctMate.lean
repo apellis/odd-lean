@@ -76,30 +76,4 @@ theorem contentBlockRestrictionExtension_even
     dsimp only [BalancedInduction.induction, contentAppend, BalancedInduction.adjunction] at h ⊢
   simpa only [zero_add] using h
 
-/-- The selected source chart retains the entire coefficient and the actual input inclusion unit. -/
-theorem contentBlockDistinctSourceLinear_tensor
-    (M : ContentModules D Sc cutoff N (β + ([j] : Multiset I)))
-    (s : ContentCategory D Sc cutoff N β)
-    (t : ContentCategory D Sc cutoff N (β + ([i] : Multiset I)))
-    (g : (K).obj s ⟶ t) (b : M.obj ((J).obj s)) :
-    BalancedInduction.fullSquareOrdinarySourceLinear (k := k) K Qi Q₀ A
-      (contentAppendTo_inclusion D Sc cutoff N β [i] _ (contentBlockCanonicalSum β [i]))
-      ((BalancedInduction.restriction J).obj M) B (BalancedInduction.induced Qj M)
-      (contentAppendToRestrictionExtensionIso D Sc cutoff N β j _ (contentBlockCanonicalSum β [j]) M) t
-      (BalancedInduction.tensor K ((BalancedInduction.restriction J).obj M).toFunctor s g b) =
-      BalancedInduction.tensor A ((B) ⋙ (BalancedInduction.induced Qj M).toFunctor) ((Q₀).obj s)
-        (eqToHom (congrArg (fun F => F.obj s)
-          (contentAppendTo_inclusion D Sc cutoff N β [i] _ (contentBlockCanonicalSum β [i]))).symm ≫ (Qi).map g)
-        (BalancedInduction.unit Qj M.toFunctor ((J).obj s) b) := by
-  have hEven := contentBlockRestrictionExtension_even D Sc cutoff N β j M
-  have hF := contentAppendToRestrictionExtensionIso_tensor D Sc cutoff N β j _
-    (contentBlockCanonicalSum β [j]) M ((Q₀).obj s) s (𝟙 ((Q₀).obj s)) b
-  have hF' := hF.trans (congrArg (fun a => BalancedInduction.tensor Qj M.toFunctor
-    ((J).obj s) a b) ((B).map_id ((Q₀).obj s)))
-  exact BalancedInduction.fullSquareOrdinarySourceLinear_tensor_of_image (k := k) K Qi Q₀ A
-    (contentAppendTo_inclusion D Sc cutoff N β [i] _ (contentBlockCanonicalSum β [i]))
-    ((BalancedInduction.restriction J).obj M) B (BalancedInduction.induced Qj M)
-    (contentAppendToRestrictionExtensionIso D Sc cutoff N β j _ (contentBlockCanonicalSum β [j]) M)
-    hEven s t g b (BalancedInduction.unit Qj M.toFunctor ((J).obj s) b) hF'
-
 end OddMath.QuiverHecke.ELVOld

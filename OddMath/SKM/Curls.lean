@@ -74,7 +74,6 @@ theorem curlLList_eq_sigma (i : I) (μ : X) :
   rw [E1, E2]
   exact E3.symm
 
-
 /-- The cup `η` on the right of an upward strand followed by the cap `ε` with `m` dots on its
 upward leg (on the left) is `m` dots on the strand (zigzag). -/
 theorem cup_epsL (i : I) (μ : X) (m : ℕ) :
@@ -134,7 +133,6 @@ theorem curlL_eq (i : I) (μ : X) :
     (bubR_mem cs i _ _), ← Category.assoc, cup_epsL]
   rfl
 
-
 /-! ## (5.19) -/
 
 theorem dotsL_add (u : List (Letter I)) (i : I) (v : List (Letter I)) (m n : ℕ) :
@@ -174,7 +172,6 @@ theorem cup_dotsR (i : I) (μ : X) (n : ℕ) (L : List (LayerData I)) (t : List 
   simp only [dotsL, List.map_replicate, List.map_cons, List.map_nil, whL, List.nil_append,
     List.append_nil, List.cons_append] at E ⊢
   exact E
-
 
 theorem etaL_mem (i : I) (μ : X) (m : ℕ) :
     cl D Sc μ [] [dn i, up i] (etaL i m) ∈ homPar D Sc μ [] [dn i, up i] (parsum D (etaL i m)) :=
@@ -257,7 +254,6 @@ theorem eq_5_19' (i : I) (μ : X) (n : ℕ) :
     congr 2
     · rw [zmod2_mul_self']; push_cast; ring
     · congr 2; push_cast; ring
-
 
 /-! ## (5.18) -/
 

@@ -101,7 +101,6 @@ section Split
 
 variable (m m' : ℕ)
 
-
 /-- `e_a ⊗ e_b ∈ B`. -/
 def eB : tensorImage m m' := (pairB m m').ι₁ (projector m) * (pairB m m').ι₂ (projector m')
 

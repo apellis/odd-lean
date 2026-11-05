@@ -99,7 +99,6 @@ local notation "K₀" => oldContentAppendTo D Sc cut (i :: ν) i (i :: i :: ν) 
 local notation "hγ₀" => oldAppendToEqualCross_supernatural D Sc cut ν i
   (List.Perm.refl (i :: ν)) (List.Perm.refl (i :: i :: ν))
 
-
 attribute [local irreducible] probeEvaluatedLocalMate
 
 private theorem transportedMate_app (q : ZMod 2)

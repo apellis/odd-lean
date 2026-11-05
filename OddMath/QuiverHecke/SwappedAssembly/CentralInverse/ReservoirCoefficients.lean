@@ -306,12 +306,6 @@ def coeffGrading (μ : X) : CoeffGrading k (P.W.obj μ) :=
   letI := G.graded μ μ
   CoeffGrading.ofGraded k (P.W.obj μ)
 
-omit [TwoSupercategory k B] in
-theorem mem_coeffGrading_deg {μ : X} {m : ℤ} {c : 𝟙 (P.W.obj μ) ⟶ 𝟙 (P.W.obj μ)} :
-    c ∈ (P.coeffGrading G μ).deg m ↔ c ∈ G.deg _ _ m := by
-  unfold coeffGrading CoeffGrading.ofGraded
-  exact Iff.rfl
-
 /-- **The coefficient ideal on the Hom sector `P.H t`**: post-whiskering by the
 positive-degree reservoir coefficients at `P.muM t`, filtered by degree, with nilpotence bound
 from `BoundedAbove`. This is the `ProbeWindow.CoefficientIdeal` hypothesis of the central
@@ -321,11 +315,6 @@ def homCoefficientIdeal (hG : G.BoundedAbove) (t : Sector I) :
   reservoirCoefficientIdeal (P.T.obj (-P.muP t)) (P.coeffGrading G (P.muM t))
     (P.exists_degree_eq_zero G hG (P.muM t)).choose
     (P.exists_degree_eq_zero G hG (P.muM t)).choose_spec
-
-theorem homCoefficientIdeal_mem (hG : G.BoundedAbove) (t : Sector I)
-    (n : ℕ) {Z Y : P.H t} (f : Z ⟶ Y) :
-    (P.homCoefficientIdeal G hG t).mem n f ↔
-      f ∈ coeffIdeal (P.coeffGrading G (P.muM t)) n Z Y := Iff.rfl
 
 /-- **Positive-degree reservoir coefficients lie in `J₁`** on the Hom sector, with arbitrary
 Hom-sector morphisms (probe words included) on either side. -/

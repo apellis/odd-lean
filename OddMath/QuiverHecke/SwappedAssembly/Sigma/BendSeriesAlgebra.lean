@@ -20,13 +20,6 @@ theorem bend_inverse_eq {x z : A} (hx : IsUnit x) (hz : x * z = 1) :
     Ring.inverse x = Ring.inverse x * (x * z) := by rw [hz, mul_one]
     _ = z := by rw [← mul_assoc, Ring.inverse_mul_cancel x hx, one_mul]
 
-/-- Ring evaluation preserves the inverse of the probe unit. -/
-theorem bend_map_inverse (φ : A →+* A') {x : A} (hx : IsUnit x) :
-    Ring.inverse (φ x) = φ (Ring.inverse x) := by
-  apply bend_inverse_eq (hx.map φ.toMonoidHom)
-  change φ x * φ (Ring.inverse x) = 1
-  rw [← φ.map_mul, Ring.mul_inverse_cancel x hx, map_one]
-
 /-- Negating a unit negates its inverse, also in a zero ring. -/
 theorem bend_inverse_neg {x : A} (hx : IsUnit x) :
     Ring.inverse (-x) = -Ring.inverse x := by
@@ -69,14 +62,6 @@ theorem bend_odd_probe_series (β : A →+ G) (z : ℕ → A) (n : ℕ) :
       -∑ r ∈ Finset.range n, ((-1 : ℤ)^(r+1)) • β (z r) := by
   simp only [bendInsertion_alternating, pow_succ, mul_neg_one, neg_smul, Finset.sum_neg_distrib,
     neg_neg]
-
-/-- The negative PR bend and negative chart monomial yield the literal
-`q^(r+2)` convention at odd parity. -/
-theorem bend_odd_reservoir_series (β : A →+ G) (z : ℕ → A) (n : ℕ) :
-    -(∑ r ∈ Finset.range n, β ((-1 : A)^r * (-z r))) =
-      ∑ r ∈ Finset.range n, ((-1 : ℤ)^(r+2)) • β (z r) := by
-  simp only [mul_neg, map_neg, Finset.sum_neg_distrib, neg_neg,
-    bendInsertion_alternating, pow_add, neg_one_sq, mul_one]
 
 end Additive
 end OddMath.QuiverHecke.SwappedAssembly

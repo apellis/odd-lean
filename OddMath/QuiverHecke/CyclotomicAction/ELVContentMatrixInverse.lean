@@ -199,17 +199,4 @@ theorem contentUnitMatrixIso_even (i : I) (ν : List I)
     exact ite_eq_right hq
   exact ⟨h, Supercategory.inv_mem _ h⟩
 
-/-- Both directions of the cap inversion preserve module parity. -/
-theorem contentCapMatrixIso_even (i : I) (ν : List I)
-    (hh : contentCrossingHeight D cutoff i (ν : Multiset I) ≤ 0) :
-    (contentCapMatrixIso D Sc cutoff M i ν hh).hom ∈ parity (R := k) _ _ 0 ∧
-      (contentCapMatrixIso D Sc cutoff M i ν hh).inv ∈ parity (R := k) _ _ 0 := by
-  have h : (contentCapMatrixIso D Sc cutoff M i ν hh).hom ∈ parity (R := k) _ _ 0 := by
-    apply Superfunctor.mem_parity_iff_isHomogeneous.mpr
-    intro q hq
-    funext t
-    change (if q = 0 then _ else 0) = 0
-    exact ite_eq_right hq
-  exact ⟨h, Supercategory.inv_mem _ h⟩
-
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

@@ -250,16 +250,4 @@ theorem moveHom_sub_leading_mem_low (i : I) (l ν : List I) :
       Low D Sc (l ++ i :: ν) (l ++ ν ++ [i]) ν.length :=
   (moveHom_leading_bounds D Sc i l ν).2.2
 
-/-- The full moving-shuffle coordinates ignore all discarded summands of the
-prescribed chain, including coordinates with nontrivial old permutations. -/
-theorem moveHom_long_prepend_repr (i : I) (ν : List I)
-    (x : PrependIdx i ν (ν ++ [i]))
-    (hx : x.1.2.2.2 = longPrependShuffle ν.length) :
-    (prependBasis D Sc (i := i) (s := ν) (t := ν ++ [i])).repr (moveHom D Sc i [] ν) x =
-      (prependBasis D Sc (i := i) (s := ν) (t := ν ++ [i])).repr (leadingMoveHom D Sc i [] ν) x := by
-  have h := prependBasis_long_repr_eq_zero_of_low D Sc i ν (ν ++ [i])
-    (moveHom D Sc i [] ν - leadingMoveHom D Sc i [] ν)
-    (moveHom_sub_leading_mem_low D Sc i [] ν) x hx
-  simpa only [map_sub, Finsupp.sub_apply, sub_eq_zero] using h
-
 end OddMath.QuiverHecke

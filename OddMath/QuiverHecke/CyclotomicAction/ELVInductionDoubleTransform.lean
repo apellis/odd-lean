@@ -87,24 +87,4 @@ theorem doubleTransformLinear_eq_total (w : B)
   unfold flattenLinear unflattenLinear
   rfl
 
-omit [Supercategory k B] [K.Additive] [K.Linear k] [IsSuperfunctor k K] in
-/-- A linear map on iterated induction is determined by its nested tensors. -/
-theorem doubleHom_ext {V : Type u} [AddCommGroup V] [Module k V]
-    {w : B} {f g : Obj K (induced J M).toFunctor w →ₗ[k] V}
-    (h : ∀ (s : C) (v : A) (a : J.obj s ⟶ v) (t : K.obj v ⟶ w) (b : M.obj s),
-      f (tensor K (induced J M).toFunctor v t (tensor J M.toFunctor s a b)) =
-        g (tensor K (induced J M).toFunctor v t (tensor J M.toFunctor s a b))) : f = g := by
-  apply hom_ext
-  intro v t x
-  let e : Obj J M.toFunctor v →ₗ[k] Obj K (induced J M).toFunctor w :=
-    { toFun := tensor K (induced J M).toFunctor v t
-      map_add' := tensor_add_right K (induced J M).toFunctor v t
-      map_smul' := by
-        intro r b
-        change inclusion K (induced J M).toFunctor w v (t ⊗ₜ[k] (r • b)) =
-          r • inclusion K (induced J M).toFunctor w v (t ⊗ₜ[k] b)
-        rw [TensorProduct.tmul_smul, map_smul] }
-  have he : f ∘ₗ e = g ∘ₗ e := hom_ext J M.toFunctor (fun s a b => h s v a t b)
-  exact LinearMap.congr_fun he x
-
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

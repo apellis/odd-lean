@@ -131,7 +131,6 @@ theorem projection_old_ideal (i : I) {v t w : List I}
   exact (Submodule.Quotient.mk_eq_zero (relations D Sc cutoff i v w)).mpr
     (Submodule.subset_span ⟨t, r, hr, h, rfl⟩)
 
-
 theorem relation_mem (j : I) (t : List I) :
     relation D Sc cutoff j t ∈ ideal D Sc cutoff (j :: t) (j :: t) := by
   apply Submodule.subset_span
@@ -289,27 +288,6 @@ theorem pair_balance (p : ZMod 2) (i : I) {v s t w : List I}
     pair D Sc cutoff p i (insert D Sc cutoff i s t r ≫ h) ((ideal D Sc cutoff v s).mkQ b) =
       pair D Sc cutoff p i h ((ideal D Sc cutoff v t).mkQ (b ≫ twist k p r)) := by
   simp only [pair_mk, twist_comp, twist_twist, insert_comp, Category.assoc]
-
-/-- Homogeneous balance uses total degree, not just affine degree. -/
-theorem pair_balance_homogeneous (p : ZMod 2) (i : I) {v s t w : List I}
-    (h : hom D Sc cutoff (i :: t) w) {r : hom D Sc cutoff s t} {q : ZMod 2}
-    (hr : r ∈ parity (R := k) _ _ q) (b : hom D Sc cutoff v s) :
-    pair D Sc cutoff p i (insert D Sc cutoff i s t r ≫ h) ((ideal D Sc cutoff v s).mkQ b) =
-      sign k (p * q) • pair D Sc cutoff p i h ((ideal D Sc cutoff v t).mkQ (b ≫ r)) := by
-  rw [pair_balance, twist_of_mem p hr, Linear.comp_smul, map_smul, map_smul]
-
-/-- The even-cutoff coefficient relation is already zero before imposing any old polynomial. -/
-theorem projection_top (i : I) (v w : List I)
-    (j : {j : I // D.parity j = 1}) (he : cutoff j.1 % 2 = 0)
-    (f : (pres D Sc).obj (ob D (i :: v)) ⟶ (pres D Sc).obj (ob D w)) :
-    projection D Sc cutoff i v w ((elvQuotientFunctor D Sc cutoff).map
-      (sourceCoefficientHom D Sc (SKM.SYM.delta D k j *
-        SKM.SYM.elvChi D k j (cutoff j.1 / 2)) f)) = 0 := by
-  have hz : (elvQuotientFunctor D Sc cutoff).map
-      (sourceCoefficientHom D Sc (SKM.SYM.delta D k j *
-        SKM.SYM.elvChi D k j (cutoff j.1 / 2)) f) = 0 :=
-    elvQuotientMap_kills D Sc (TwoSidedIdeal.subset_span (Or.inr ⟨j, he, rfl⟩)) f
-  exact (congrArg (projection D Sc cutoff i v w) hz).trans (map_zero _)
 
 private theorem affineInsert_dot (i j : I) (v : List I) :
     affineInsert D Sc i (j :: v) (j :: v) (dotE D Sc (j :: v) 0) =

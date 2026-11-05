@@ -499,9 +499,4 @@ theorem probeSubstitution_mem_coefficientAtMost (M N : I → ℕ) (n : ℕ) {x :
     probeSubstitution D k M N x ∈ CoefficientAtMost D k n :=
   substitutionHom_mem_coefficientAtMost D k _ _ n hx
 
-theorem probeSubstitution_symm_mem_coefficientAtMost (M N : I → ℕ) (n : ℕ) {x : SYM D k}
-    (hx : x ∈ CoefficientAtMost D k n) :
-    (probeSubstitution D k M N).symm x ∈ CoefficientAtMost D k n :=
-  substitutionHom_mem_coefficientAtMost D k _ _ n hx
-
 end OddMath.SKM.SYM

@@ -157,7 +157,6 @@ theorem proj_tensor (q : ZMod 2) (v : C) (x : K.obj (op v)) (m : M.obj v) :
     abel
   · simpa only [SVec.proj_one, SVec.zmod2_one_add_one] using odd_tensor K G M hK v x m
 
-
 /-- Even coefficient-kernel maps preserve the quotient sum grading. -/
 theorem map_even {L : Cᵒᵖ ⥤ ModuleCat.{u} k} [L.Additive]
     (H : CoefficientGrading L) (hL : IsGradedKernel L H)

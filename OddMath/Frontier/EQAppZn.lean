@@ -373,7 +373,6 @@ theorem init_five (q : RevStair 5) :
       omega
     · omega
 
-
 /-- The dimension of the hypercube of an initial vector `q`: its empty urns are the `x_i` with
 `i` odd (`0`-based; one-based even) and the `x_i` with `q_i ≠ 0`. -/
 theorem card_uAddable_init {q : RevStair N} (hq : uRemovable q = ∅) :
@@ -456,7 +455,6 @@ theorem homologyU_small_symm_one (hN : N ≤ 1) :
   rw [show (Finsupp.uniqueLinearEquiv ℤ ℤ (zeroCrit hN)).symm 1 = Finsupp.single (zeroCrit hN) 1
     from rfl]
   exact (homologyBasisU N).repr_symm_single_one _
-
 
 /-! ### The finite-cell filtration of `Z_n` -/
 

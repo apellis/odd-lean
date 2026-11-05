@@ -107,14 +107,6 @@ theorem cap_ok (L Q : List (Letter I)) (x : Letter I) :
       List.length_map, List.length_reverse] at *
     split_ifs <;> simp_all
 
-/-- The cap layer is `xCapL x`: upward second endpoint gives `lcap`,
-downward second endpoint gives the presentation cap. -/
-theorem cap_layers (L Q : List (Letter I)) (x : Letter I)
-    (R : List (TMove (Letter I))) :
-    tLay (L ++ flipL x :: x :: Q) (.cap L.length :: R) =
-      (xCapL x).map (xwhL L Q) ++ tLay (L ++ Q) R := by
-  simp only [tLay, (tmLay_cap L Q (flipL x) x).1, (tmLay_cap L Q (flipL x) x).2]
-
 /-- The two actual active strand IDs; the frozen order is reversed. -/
 theorem cap_ids (L Q : List (Letter I)) (x : Letter I) :
     idD (tStart (L ++ flipL x :: x :: Q)).st
@@ -143,23 +135,6 @@ theorem cap_crit (L Q : List (Letter I)) (x : Letter I) (cl : List ℕ) :
       cl (.cap L.length) = cl.map (rlId (2 * Q.length) (2 * Q.length + 2)) ++
         [2 * Q.length + 2] := by
   simp only [critStep, (cap_ids L Q x).1, (cap_ids L Q x).2]
-
-/-- All remaining validity obligations start at the explicit capped state. -/
-theorem fits_cap (L Q : List (Letter I)) (x : Letter I)
-    (R : List (TMove (Letter I))) :
-    TFits flipL (L ++ flipL x :: x :: Q).length (tStart (L ++ flipL x :: x :: Q))
-      (.cap L.length :: R) ↔
-    TFits flipL (L ++ flipL x :: x :: Q).length (capped L Q x) R := by
-  simp only [TFits, cap_ok L Q x, start_cap, true_and]
-
-/-- The complete run, including all later ID renamings and crossings. -/
-theorem run_cap (L Q : List (Letter I)) (x : Letter I)
-    (R : List (TMove (Letter I))) :
-    tRun flipL (L ++ flipL x :: x :: Q).length (tStart (L ++ flipL x :: x :: Q))
-      (.cap L.length :: R) =
-    tRun flipL (L ++ flipL x :: x :: Q).length (capped L Q x) R := by
-  change tRun flipL _ (tStep flipL _ _ _) R = _
-  rw [start_cap]
 
 /-- Exact distinguished-point transport through an initial cap and suffix. -/
 theorem ren_cap (L Q : List (Letter I)) (x : Letter I)
@@ -198,40 +173,10 @@ theorem residual_start (L Q : List (Letter I)) :
   congr 1
   omega
 
-/-- Both frozen endpoints of the isolated cap carry the surviving ID. -/
-theorem frozen_cap_ids (L Q : List (Letter I)) (x : Letter I) :
-    idAt (capped L Q x).st Q.length = some (2 * Q.length + 2) ∧
-    idAt (capped L Q x).st (Q.length + 1) = some (2 * Q.length + 2) := by
-  have hl : (before Q).length = Q.length := by simp [before, length_dualW]
-  simp only [capped, List.map_append, List.map_cons, idAt, List.getElem?_append,
-    List.length_map, List.length_append, List.length_cons, hl]
-  have h0 : Q.length < Q.length + ((after L Q).length + 1 + 1) + (after L Q).length := by omega
-  have h1 : Q.length + 1 < Q.length + ((after L Q).length + 1 + 1) + (after L Q).length := by omega
-  simp [rl, rlId, h0, h1]
-
 /-- A lone contextual initial cap is a valid matching to the residual word. -/
 theorem cap_matching (L Q : List (Letter I)) (x : Letter I) :
     IsMatching₂ (L ++ flipL x :: x :: Q) (L ++ Q) [.cap L.length] := by
   refine ⟨⟨cap_ok L Q x, trivial⟩, ?_⟩
   exact (tmLay_cap L Q (flipL x) x).2
-
-/-- The isolated cap has no crossings and exactly one critical point. -/
-theorem cap_strict (L Q : List (Letter I)) (x : Letter I) :
-    StrictReduced₂ (L ++ flipL x :: x :: Q) [.cap L.length] := by
-  unfold StrictReduced₂ Reduced₂ critPts₂
-  rw [run_cap, crit_cap]
-  simp [tRun, tCrit, capped]
-
-/-- Strictness after attachment is an exact condition on the complete capped
-run, including the initial cap in the critical-ID list. -/
-theorem strict_cap_iff (L Q : List (Letter I)) (x : Letter I)
-    (R : List (TMove (Letter I))) :
-    StrictReduced₂ (L ++ flipL x :: x :: Q) (.cap L.length :: R) ↔
-      ((tRun flipL (L ++ flipL x :: x :: Q).length (capped L Q x) R).xs.Nodup ∧
-        ∀ z ∈ (tRun flipL (L ++ flipL x :: x :: Q).length (capped L Q x) R).xs,
-          ¬ z.IsDiag) ∧
-      (tCrit flipL (L ++ flipL x :: x :: Q).length (capped L Q x)
-        [2 * Q.length + 2] R).Nodup := by
-  simp only [StrictReduced₂, Reduced₂, critPts₂, run_cap, crit_cap]
 
 end OddMath.SKM.SourceCapState

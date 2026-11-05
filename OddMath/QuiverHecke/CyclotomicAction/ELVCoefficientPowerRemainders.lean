@@ -21,59 +21,6 @@ private theorem sign_natCast (n : ℕ) : sign k (n : ZMod 2) = (-1 : k) ^ n := b
   | zero => simp
   | succ n ih => rw [Nat.cast_add, Nat.cast_one, sign_add, ih, sign_one, pow_succ]
 
-private theorem odd_coefficient_parity (N j : ℕ) (hN : 0 < N) (hj : j ≤ N) :
-    (((N - 1 : ℕ) : ZMod 2) * ((N : ZMod 2) - j)) +
-      ((N * (j + 1) : ℕ) : ZMod 2) = ((N - j : ℕ) : ZMod 2) := by
-  rw [Nat.cast_sub (by omega : 1 ≤ N), Nat.cast_one, Nat.cast_sub hj,
-    Nat.cast_mul, Nat.cast_add, Nat.cast_one]
-  have hNN : (N : ZMod 2) * N = N := by
-    rcases parity_eq_zero_or_one (N : ZMod 2) with h | h <;> rw [h] <;> decide
-  calc
-    _ = (N : ZMod 2) * N + j := by ring
-    _ = (N : ZMod 2) + j := by rw [hNN]
-    _ = (N : ZMod 2) - j := by
-      rw [sub_eq_add_neg]
-      congr 1
-      rcases parity_eq_zero_or_one (j : ZMod 2) with h | h <;> rw [h] <;> decide
-
-/-- The top-row coefficient sign combines with the monic normalization
-to give the uniform alternating odd coefficient, independently of N's parity. -/
-theorem odd_effective_coefficient (i : I) (hi : D.parity i = 1)
-    (hN : 0 < cutoff i) (j : Fin (cutoff i + 1)) :
-    koszulSign ((cutoff i - 1) • D.parity i)
-      ((cutoff i : ZMod 2) * D.parity i - j.val • D.parity i) •
-      ((coefficientPowerIdeal D cutoff (elementaryCoefficients (k := k) D cutoff) L).ringCon.mkₐ k
-        (singleCoefficient D cutoff i j)) =
-      (-1 : k) ^ (cutoff i - j.val) •
-        coefficientPowerQuotientMap (k := k) D cutoff L
-          (SKM.SYM.elvCoefficient D k ⟨i, hi⟩ (cutoff i - j.val)) := by
-  rw [hi]
-  simp only [nsmul_eq_mul, mul_one]
-  unfold singleCoefficient
-  rw [dite_eq_left hi, SKM.SYM.elvMonicCoefficient, map_smul, map_smul]
-  change koszulSign (((cutoff i - 1 : ℕ) : ZMod 2)) ((cutoff i : ZMod 2) - j.val) •
-    (((-1 : k) ^ (cutoff i * (j.val + 1))) •
-      coefficientPowerQuotientMap D cutoff L
-        (SKM.SYM.elvCoefficient D k ⟨i, hi⟩ (cutoff i - j.val))) = _
-  rw [koszulSign_smul (R := k), smul_smul,
-    ← sign_natCast (k := k) (cutoff i * (j.val + 1)),
-    ← sign_natCast (k := k) (cutoff i - j.val), ← sign_add,
-    odd_coefficient_parity (cutoff i) j.val hN (Nat.le_of_lt_succ j.isLt)]
-
-/-- The actual scalar raw moments satisfy the ordered alternating
-coefficient recurrence of the odd monic remainder, after the proved
-inverse-row parity conversion. -/
-theorem odd_rawMoment_recurrence (i : I) (hi : D.parity i = 1)
-    (hN : 0 < cutoff i) (m : ℕ) :
-    (∑ j : Fin (cutoff i + 1),
-      ((-1 : k) ^ (cutoff i - j.val) •
-        coefficientPowerQuotientMap (k := k) D cutoff L
-          (SKM.SYM.elvCoefficient D k ⟨i, hi⟩ (cutoff i - j.val))) *
-        rawMoment D Sc cutoff L i hN 1 (j.val + m)) = 0 := by
-  have h := rawMoment_one_recurrence D Sc cutoff L i hN m
-  simp_rw [← smul_mul_assoc, odd_effective_coefficient D cutoff L i hi hN] at h
-  exact h
-
 /-- The parity correction from the actual signed inverse row to the
 ordinary coefficient of the top monic remainder, for an odd moving colour. -/
 def ordinaryMomentSign (i : I) (n : ℕ) : k :=

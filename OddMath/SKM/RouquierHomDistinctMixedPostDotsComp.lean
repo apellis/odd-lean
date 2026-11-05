@@ -288,9 +288,6 @@ def isoConjRingHom {C : Type*} [Category C] [Preadditive C] {X Y : C} (α : X �
     change α.inv ≫ (f + g : X ⟶ X) ≫ α.hom = (α.inv ≫ f ≫ α.hom) + (α.inv ≫ g ≫ α.hom)
     rw [Preadditive.add_comp, Preadditive.comp_add]
 
-theorem isoConjRingHom_apply {C : Type*} [Category C] [Preadditive C] {X Y : C} (α : X ≅ Y)
-    (f : End X) : isoConjRingHom α f = α.inv ≫ f ≫ α.hom := rfl
-
 theorem isoConjRingHom_smul {k : Type*} [CommRing k] {C : Type*} [Category C] [Preadditive C]
     [Linear k C] {X Y : C} (α : X ≅ Y) (c : k) (f : End X) :
     isoConjRingHom α (c • f) = c • isoConjRingHom α f := by

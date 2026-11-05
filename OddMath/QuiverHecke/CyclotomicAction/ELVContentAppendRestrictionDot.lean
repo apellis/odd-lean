@@ -113,7 +113,7 @@ theorem oldContentAppendRestrictionIso_dot
     oldContentAppendRestrictionLinear D Sc cutoff ν i M t ∘ₗ
       BalancedInduction.transformLinear
         (oldContentAppendDot_supernatural D Sc cutoff ν i) M t =
-      actualInductionDot D Sc cutoff i
+      inductionDot D Sc cutoff i
         (BalancedInduction.induced (oldContentInclusion D Sc cutoff ν) M) t.obj ∘ₗ
           oldContentAppendRestrictionLinear D Sc cutoff ν i M t := by
   simp only [oldContentAppendRestrictionLinear_eq]

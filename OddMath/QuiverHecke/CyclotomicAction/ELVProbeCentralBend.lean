@@ -16,24 +16,14 @@ namespace OddMath.QuiverHecke.ELVOld
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 
-
 local instance centralBendHomPi {k : Type u} [CommRing k] (A B : PiSCat.{u,u,u+1} k) :
     PiSupercategory k (A ⟶ B) := PiTwoSupercategory.homPiLeft A B
-
-private theorem superCounit_total {k : Type u} [CommRing k]
-    {A B R : PiSCat.{u,u,u+1} k} {E : A ⟶ B} {F : B ⟶ A} {σ : ZMod 2}
-    (L : SKM.ShiftedSuperAdjunction (k := k) F E σ) (H : A ⟶ R) :
-    (SKM.unshiftedPreSuperAdjunction L R).counit.total H =
-      (SKM.unshiftedPreAdjunction L R).counit.app H := by
-  simp [SKM.unshiftedPreSuperAdjunction, SKM.superAdjunctionOfEven,
-    SuperNatTrans.total, SuperNatTrans.ofNatTrans]
 
 private theorem isUnit_of_square_plus_one_pow {R : Type*} [Ring R] (x : R) (m : ℕ)
     (hx : (x ^ 2 + 1) ^ m = 0) : IsUnit x := by
   have hn : IsNilpotent (x ^ 2 + 1) := ⟨m, hx⟩
   have hu : IsUnit (x ^ 2) := by simpa only [add_sub_cancel_right] using hn.isUnit_sub_one
   exact (isUnit_pow_iff (by decide : (2 : ℕ) ≠ 0)).mp hu
-
 
 private theorem homogeneous_total_mem
     {k C R : Type*} [CommRing k] [Category C] [Category R]
@@ -47,7 +37,6 @@ private theorem homogeneous_total_mem
     exact f.app_mem 0 M
   · rw [SuperNatTrans.total, Superfunctor.app_eq_zero_of_mem hf (by decide : (0 : ZMod 2) ≠ 1), zero_add]
     exact f.app_mem 1 M
-
 
 private theorem inverse_mem_of_isUnit
     {k C : Type*} [CommRing k] [Category* C] [Preadditive C] [Linear k C] [Supercategory k C]
@@ -114,7 +103,6 @@ private def postBend (M N : Superfunctor k C (SVec k)) (v : M ⟶ N)
   (adjunction J).unit.app M ≫ (restriction J).map a ≫
     (restriction J).map ((induction J).map v)
 
-
 private def postBendLinear (M N : Superfunctor k C (SVec k)) (v : M ⟶ N) :
     End ((induction J).obj M) →ₗ[k] (M ⟶ (restriction J).obj ((induction J).obj N)) :=
   (Linear.leftComp k _ ((adjunction J).unit.app M)).comp
@@ -150,7 +138,6 @@ private theorem postBend_monomial (M N : Superfunctor k C (SVec k))
       congrArg (fun g => g ≫ (restriction J).map (dotEnd J hα N ^ r)) hu.symm
     _ = _ := by rw [hp]; simp only [Category.assoc]
 
-
 private theorem dot_inverse_powers_exchange (M : Superfunctor k C (SVec k))
     (x : End M) (hx : IsUnit x) (hm : x ∈ parity (R := k) _ _ p) (r : ℕ) :
     (induction J).map (Ring.inverse x ^ (r + 1)) ≫ dotEnd J hα M ^ r =
@@ -172,7 +159,6 @@ theorem postBend_sum (M N : Superfunctor k C (SVec k))
   rw [map_zsmul]
   change c r • postBend J M N v _ = _
   rw [postBend_monomial J hα M N v hv (f r) r]
-
 
 private theorem odd_diagonal_expansion (M : Superfunctor k C (SVec k))
     (x : End M) (hx : IsUnit x) (hm : x ∈ parity (R := k) _ _ p) (hodd : p = 1)
@@ -218,8 +204,6 @@ This does not assert invertibility on arbitrary old modules. -/
 theorem shiftedPreDot_isUnit (R : PiSCat.{u,u,u+1} k) (i : I) (hi : D.parity i = 1)
     (H : modulePiCategory D Sc m ⟶ R) : IsUnit (shiftedPreDot D Sc m R i H) :=
   isUnit_of_square_plus_one_pow _ _ (shiftedPreDot_odd_polynomial D Sc m R i hi H)
-
-
 
 /-- The same raw pre-E dot retains the moving-colour degree before its
 post induction and before any coordinate comparison removes a shift. -/
@@ -278,15 +262,6 @@ def evaluatedMixedBend (i : I) (hP : 0 < probeCutoff D m i)
     (shiftedPreSourceObject D Sc m R₀ i H) (H.obj N₀)
     (shiftedPreCap D Sc m R₀ i hP H) (evaluatedMixedDiagonal D Sc m reservoirCutoff bound i H)
 
-/-- Post induction preserves the unit of the raw pre-dot on this specified
-regular-probe carrier. -/
-theorem diagonalPreDot_isUnit (i : I) (hi : D.parity i = 1)
-    (H : modulePiCategory D Sc m ⟶ R₀) :
-    IsUnit (diagonalPreDot D Sc m reservoirCutoff bound i H) :=
-  (shiftedPreDot_isUnit D Sc m R₀ i hi H).map
-    ((induction (contentAppend D Sc reservoirCutoff bound (0 : Multiset I) [i])).mapEnd _)
-
-
 /-- The actual mixed dots have their given super-interchange sign, on
 this regular-probe induced carrier. -/
 theorem diagonal_dots_exchange (i : I) (H : modulePiCategory D Sc m ⟶ R₀) :
@@ -308,8 +283,6 @@ theorem diagonalPostDot_pow_zero (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) 
   have h := hp (shiftedPreSourceObject D Sc m R₀ i H)
   rw [contentInductionDot_component] at h
   exact h
-
-
 
 /-- The target's restricted reservoir dot has a positive nilpotence
 exponent at this fixed content, on every regular-probe Hom object. -/
@@ -382,26 +355,6 @@ variable {Z : PiSCat.{u,u,u+1} k}
       ((associator E₀ (inductionCell D Sc m i) E₃).inv ≫ t ▷ E₃ ≫
         (associator E₀ (inductionCell D Sc m i) E₃).hom))
 
-
-
-/-- The evaluated bend uses exactly the two-morphism counit of the
-constructed finite-local pre-Hom adjunction. It is not a freely specified
-cap having the same moments. -/
-theorem evaluatedMixedBend_constructed_counit (H : modulePiCategory D Sc m ⟶ R₀) :
-    evaluatedMixedBend D Sc m reservoirCutoff bound i hP H =
-      (adjunction (contentAppend D Sc reservoirCutoff bound (0 : Multiset I) [i])).unit.app
-        (shiftedPreSourceObject D Sc m R₀ i H) ≫
-      (restriction (contentAppend D Sc reservoirCutoff bound (0 : Multiset I) [i])).map
-        (evaluatedMixedDiagonal D Sc m reservoirCutoff bound i H) ≫
-      (restriction (contentAppend D Sc reservoirCutoff bound (0 : Multiset I) [i])).map
-        ((induction (contentAppend D Sc reservoirCutoff bound (0 : Multiset I) [i])).map
-          (((localPreSuperAdjunction D Sc m i A₀ x₀ t L A₃ x₃ t' U hP hsq hsq' hB R₀).counit.total H).total N₀)) := by
-  have hc : (((localPreSuperAdjunction D Sc m i A₀ x₀ t L A₃ x₃ t' U hP hsq hsq' hB R₀).counit.total H).total N₀) =
-      shiftedPreCap D Sc m R₀ i hP H := by
-    rw [localPreSuperAdjunction, superCounit_total]
-    exact localPreAdjunction_counit_total D Sc m i A₀ x₀ t L A₃ x₃ t' U hP hsq hsq' hB R₀ H
-  rw [hc]
-  rfl
 end Adjacent
 end Local
 

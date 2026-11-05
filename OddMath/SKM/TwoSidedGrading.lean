@@ -144,7 +144,6 @@ theorem numericTPush (μ : X) {k : ℕ} {T : TState (Letter I)} (I₀ : TInv T)
       rw [hcap, map_xwhL_xwhL]
       simpa using H
 
-
 theorem numericTProcess (μ : X) {k : ℕ} {u : List (Letter I)} (hu : u.length = k) :
     ∀ (R : List (TMove (Letter I))) (T : TState (Letter I)) (l : List (Letter I))
       (E : List (Move (Letter I))), TInv T → Fits 0 E → Iso (run flipL E) T.st →

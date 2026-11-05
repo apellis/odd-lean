@@ -103,10 +103,6 @@ theorem vacuumClass_basis_degree (a : SKM.SYM.CoefficientIndex D) :
   have h := elvQuotientMap_source_mem_degree D sy Sc hc cutoff ha hf
   rw [elvQuotientMap_source, add_zero] at h
   exact h
-theorem truncatedVacuum_eq_zero {w : List I} (hw : w ≠ [])
-    (z : TruncatedOld D Sc cutoff N [] w) : z = 0 := by
-  obtain ⟨f, rfl⟩ := (truncatedIdeal D Sc cutoff N [] w).mkQ_surjective z
-  rw [vacuum_hom_eq_zero D Sc cutoff hw f, map_zero]
 
 /-- Actual vacuum support from a bound on coefficient degree versus total weight. -/
 theorem truncatedVacuum_support_of_bound (M : ℤ) (hM : 0 ≤ M)
@@ -150,14 +146,5 @@ theorem truncatedVacuum_support_of_bound (M : ℤ) (hM : 0 ≤ M)
     | smul c a _ ha => simpa only [map_smul] using Submodule.smul_mem _ c ha
   · rw [vacuum_hom_eq_zero D Sc cutoff hw f, map_zero]
     exact Submodule.zero_mem _
-
-/-- Finite colours supply the bound; no support premise is assumed. -/
-theorem truncatedVacuum_finite_support [Finite I] (w : List I) :
-    ∃ S : Set ℤ, S.Finite ∧
-      (⊤ : Submodule k (TruncatedOld D Sc cutoff N [] w)) =
-        ⨆ n ∈ S, truncatedDegree D Sc cutoff sy hc N [] w n := by
-  obtain ⟨M, hM, hb⟩ := SKM.SYM.exists_coefficientDegree_bound D sy
-  exact ⟨Set.Icc 0 (M * N), Set.finite_Icc _ _,
-    truncatedVacuum_support_of_bound D Sc cutoff sy hc N M hM hb w⟩
 
 end OddMath.QuiverHecke.ELVOld

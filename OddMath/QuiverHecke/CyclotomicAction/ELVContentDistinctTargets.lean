@@ -48,12 +48,4 @@ theorem contentDistinctTargetsMate_isIso (hij : i ≠ j) (M : ContentModules D S
   subst γ
   exact contentBlockDistinctMate_isIso D Sc cutoff bound β i j hij M
 
-/-- The whole input-natural family retains its inverse at those literal target contents. -/
-theorem contentDistinctTargetsFunctor_isIso (hij : i ≠ j) :
-    IsIso (BalancedInduction.rectangularMateHom J K L U hα) := by
-  subst δj
-  subst δi
-  subst γ
-  exact contentBlockDistinctMateFunctor_isIso D Sc cutoff bound β i j hij
-
 end OddMath.QuiverHecke.ELVOld

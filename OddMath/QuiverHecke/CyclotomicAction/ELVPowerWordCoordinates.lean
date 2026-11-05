@@ -41,10 +41,6 @@ instance powerWordCoefficientSource_linear : (powerWordCoefficientSource D Sc cu
 instance powerWordCoefficientSource_super : IsSuperfunctor k (powerWordCoefficientSource D Sc cutoff ν) where
   map_mem hf := coefficientEndomorphism_mem D Sc cutoff ν hf
 
-/-- At the empty word this is the chosen coefficient embedding, literally. -/
-theorem powerWordCoefficientSource_nil : powerWordCoefficientSource D Sc cutoff [] =
-    powerCoefficientEmbedding D Sc cutoff := rfl
-
 /-- The actual right-append functor preserves these coefficient maps. -/
 theorem powerWordCoefficientSource_append (i : I) :
     powerWordCoefficientSource D Sc cutoff ν ⋙ CyclotomicCrossingTensor.append D Sc cutoff i =
@@ -303,9 +299,6 @@ theorem powerWordGenerator_ker (w : OldCategory D Sc cutoff) :
 power quotient along coefficient insertion at that word. -/
 def powerWordModule : Superfunctor k (OldCategory D Sc cutoff) (SVec k) :=
   BalancedInduction.induced (powerWordCoefficientSource D Sc cutoff ν) (liftedPowerRegular D cutoff L)
-
-/-- Its empty value is the previously chosen regular-power vacuum, literally. -/
-theorem powerWordModule_nil : powerWordModule D Sc cutoff L [] = coefficientPowerVacuum D Sc cutoff L := rfl
 
 /-- The selected existing induction-composition comparison identifies actual
 right append of a word value with the next word value. -/

@@ -174,31 +174,6 @@ theorem ren (δ : ℕ) {I : Type*} (f : ℕ → ℕ) (hf : Function.Injective f)
     rw [stepRen_map δ f hf k T m hR.1, step δ flipL f hf k T (hfix _ le_rfl) m hR.1]
     exact ih _ (fun n hn => hfix n ((next_le flipL k T m).trans hn)) hR.2 _
 
-/-- Relabelling preserves the complete reducedness data at a valid state:
-no repeated crossings, no diagonal crossings, and no repeated critical IDs. -/
-theorem reducedData_iff (δ : ℕ) (d : α → α) (f : ℕ → ℕ) (hf : Function.Injective f)
-    (k : ℕ) (T : TState α) (hfix : ∀ n, T.nxt ≤ n → f n = n + δ)
-    (R : List (TMove α)) (hR : TFits d k T R) (cl : List ℕ) :
-    ((tRun d k (rename δ f T) R).xs.Nodup ∧
-      (∀ z ∈ (tRun d k (rename δ f T) R).xs, ¬ z.IsDiag) ∧
-      (tCrit d k (rename δ f T) (cl.map f) R).Nodup) ↔
-    ((tRun d k T R).xs.Nodup ∧
-      (∀ z ∈ (tRun d k T R).xs, ¬ z.IsDiag) ∧
-      (tCrit d k T cl R).Nodup) := by
-  rw [run δ d f hf k T hfix R hR, crit δ d f hf k T hfix R hR cl]
-  simp only [rename, List.nodup_map_iff (Sym2.map.injective hf),
-    List.nodup_map_iff hf, List.mem_map, forall_exists_index, and_imp]
-  constructor
-  · rintro ⟨hn, hd, hc⟩
-    refine ⟨hn, ?_, hc⟩
-    intro z hz
-    exact fun h => hd _ z hz rfl (h.map)
-  · rintro ⟨hn, hd, hc⟩
-    refine ⟨hn, ?_, hc⟩
-    intro z x hx he
-    subst z
-    exact fun h => hd x hx ((Sym2.isDiag_map hf).mp h)
-
 end Shift
 
 namespace Frozen

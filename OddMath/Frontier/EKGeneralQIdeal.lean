@@ -296,7 +296,6 @@ theorem coproduct_radical_annihilates {x : L k} (hx : x ∈ radical q) (z : LL k
     exact hx (a*b)
   | add u v hu hv => simp only [map_add, hu, hv, add_zero]
 
-
 /-! ## The q-twisted product descends to `Λ ⊗ Λ` (any `k`) -/
 
 /-- Degree twist `w ↦ q^{deg w · n} w`, needed when a factor crosses an arbitrary element. -/

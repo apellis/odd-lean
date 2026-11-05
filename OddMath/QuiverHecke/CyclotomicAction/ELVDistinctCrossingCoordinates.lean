@@ -143,7 +143,6 @@ theorem decode_pair (i j : I) (v t : List I)
   rw [← hm, ← hd]
   exact (data_transport D Sc cutoff i j ht _ _ r).symm
 
-
 /-- The mixed crossing word in the old-only append quotient. -/
 def crossingClass (i j : I) (v s t : List I)
     (r : hom D Sc cutoff v (s ++ [j])) (c : hom D Sc cutoff (s ++ [i]) t) :
@@ -230,7 +229,6 @@ theorem decode_crossing_tail (i j : I) (hij : i ≠ j) (v s t : List I)
   rw [appendTail_power_cross]
   exact hh
 
-
 /-- Full affine balance in the independently defined short source. -/
 theorem tensor_balance (i j : I) (v s s' t : List I)
     (r : hom D Sc cutoff s s') (c : hom D Sc cutoff (s' ++ [i]) t)
@@ -307,8 +305,6 @@ theorem decode_comp_shortCross (i j : I) (hij : i ≠ j) (v t : List I) :
 theorem shortCross_injective (i j : I) (hij : i ≠ j) (v t : List I) :
     Function.Injective (shortCross D Sc cutoff i j v t) :=
   Function.LeftInverse.injective (decode_shortCross D Sc cutoff i j hij v t)
-
-
 
 /-- Every mixed append tail lies in the crossing column; distinct support
 leaves no polynomial row. -/

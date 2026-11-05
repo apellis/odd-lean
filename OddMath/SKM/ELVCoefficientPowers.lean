@@ -31,16 +31,6 @@ theorem elementary_pow_mem_coefficientAtLeast (a : I × ℕ) (n : ℕ) :
     rw [pow_succ, Nat.succ_mul]
     exact coefficientAtLeast_mul D k ih (elementary_mem_coefficientAtLeast D k a.1 a.2)
 
-/-- High-weight power generators generate a subideal of the weight ideal. -/
-theorem coefficientPowerIdeal_le_weight (L : I × ℕ → ℕ) (N : ℕ)
-    (hL : ∀ a, N ≤ L a * elementaryWeight D a) :
-    coefficientPowerIdeal D k L ≤ coefficientIdeal D k N := by
-  apply TwoSidedIdeal.span_le.mpr
-  rintro x ⟨a, rfl⟩
-  exact (mem_coefficientIdeal_iff D k _ _).mpr
-    (coefficientAtLeast_antitone D k (hL a)
-      (elementary_pow_mem_coefficientAtLeast D k a (L a)))
-
 /-- A coefficient monomial factors by the entire power of a selected
 elementary variable; its exterior factor is kept in its original order. -/
 theorem coefficientBasis_factor_elementary (b : CoefficientIndex D) (a : I × ℕ) :
@@ -128,61 +118,5 @@ theorem coefficientBasis_mem_elv_sup_power (cutoff : I → ℕ) (L : I × ℕ �
       _ ≤ _ := Finset.sum_le_sum fun a _ => Nat.mul_le_mul_right _ (he a)
   have ho : b.2.card ≤ Fintype.card {i : I // D.parity i = 1} := Finset.card_le_univ _
   exact (Nat.not_lt_of_ge (Nat.add_le_add hp ho)) hb
-
-/-- The upper side of the power/weight ideal sandwich, before taking any
-coefficient quotient. It does not assert equality of the two ideals. -/
-theorem coefficientIdeal_le_elv_sup_power (cutoff : I → ℕ) (L : I × ℕ → ℕ) :
-    coefficientIdeal D k (elvPowerWeightBound D cutoff L + 1) ≤
-      elvCoefficientIdeal D k cutoff ⊔ coefficientPowerIdeal D k L := by
-  intro x hx
-  have hx' : x ∈ CoefficientAtLeast D k (elvPowerWeightBound D cutoff L + 1) :=
-    (mem_coefficientIdeal_iff D k _ _).mp hx
-  clear hx
-  induction hx' using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨b, hb, rfl⟩ := hx
-    change elvPowerWeightBound D cutoff L + 1 ≤ coefficientWeight D b at hb
-    exact coefficientBasis_mem_elv_sup_power D k cutoff L b (by omega)
-  | zero => exact TwoSidedIdeal.zero_mem _
-  | add x y _ _ hx hy => exact TwoSidedIdeal.add_mem _ hx hy
-  | smul r x _ hx =>
-    simpa only [Algebra.smul_def] using
-      (elvCoefficientIdeal D k cutoff ⊔ coefficientPowerIdeal D k L).mul_mem_left
-        (algebraMap k _ r) x hx
-
-omit [Fintype I] in
-/-- The lower side of the sandwich uses the actual numerical cutoff and
-power-weight hypotheses, rather than identifying power and weight truncation. -/
-theorem elv_sup_power_le_coefficientIdeal (cutoff : I → ℕ) (L : I × ℕ → ℕ) (N : ℕ)
-    (hc : ∀ i, N ≤ cutoff i) (hL : ∀ a, N ≤ L a * elementaryWeight D a) :
-    elvCoefficientIdeal D k cutoff ⊔ coefficientPowerIdeal D k L ≤ coefficientIdeal D k N := by
-  apply sup_le
-  · intro x hx
-    exact (mem_coefficientIdeal_iff D k _ _).mpr
-      (coefficientAtLeast_antitone D k (Nat.le_succ N)
-        ((mem_coefficientIdeal_iff D k _ _).mp (elvCoefficientIdeal_le_weight D k hc hx)))
-  · exact coefficientPowerIdeal_le_weight D k L N hL
-
-omit [Fintype I] in
-/-- The paper's power quotient retains the bounded polynomial/exterior
-window when all its generators have sufficiently high weight. -/
-theorem elvPower_quotient_injective (cutoff : I → ℕ) (L : I × ℕ → ℕ) (d N : ℕ)
-    (hd : d < N) (hc : ∀ i, N ≤ cutoff i)
-    (hL : ∀ a, N ≤ L a * elementaryWeight D a) :
-    Function.Injective (fun x : CoefficientAtMost D k d =>
-      (elvCoefficientIdeal D k cutoff ⊔ coefficientPowerIdeal D k L).ringCon.mk'
-        (x : SYM D k)) := by
-  intro x y hxy
-  apply Subtype.ext
-  apply sub_eq_zero.mp
-  have hmem : (x : SYM D k) - y ∈
-      elvCoefficientIdeal D k cutoff ⊔ coefficientPowerIdeal D k L :=
-    (TwoSidedIdeal.rel_iff _ _ _).mp (Quotient.exact hxy)
-  have hw : (x : SYM D k) - y ∈ CoefficientAtLeast D k N :=
-    (mem_coefficientIdeal_iff D k _ _).mp
-      (elv_sup_power_le_coefficientIdeal D k cutoff L N hc hL hmem)
-  exact Submodule.disjoint_def.mp
-    (disjoint_coefficientAtMost_coefficientAtLeast D k hd) _
-    (Submodule.sub_mem _ x.property y.property) hw
 
 end OddMath.SKM.SYM

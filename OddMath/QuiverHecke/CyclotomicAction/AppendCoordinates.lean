@@ -60,12 +60,6 @@ def appendPBWTerm (i : I) {n : ℕ} (u : AppendShuffleAt n) (m : ℕ)
     (b : Hn D Sc n) : Hn D Sc (n + 1) :=
   appendShuffleElement D Sc i u * affineLastDot D Sc i n ^ m * appendAlgebra D Sc i n b
 
-theorem appendPBWTerm_right (i : I) {n : ℕ} (u : AppendShuffleAt n) (m : ℕ)
-    (b r : Hn D Sc n) :
-    appendPBWTerm D Sc i u m (b * r) =
-      appendPBWTerm D Sc i u m b * appendAlgebra D Sc i n r := by
-  simp only [appendPBWTerm, map_mul, mul_assoc]
-
 theorem appendPBWTerm_corner (i : I) {n : ℕ} (u : AppendShuffleAt n) (m : ℕ)
     (b : Hn D Sc n) :
     appendPBWTerm D Sc i u m b * appendAlgebra D Sc i n 1 = appendPBWTerm D Sc i u m b := by
@@ -76,11 +70,6 @@ def appendPBWCorner (i : I) {n : ℕ} (u : AppendShuffleAt n) (m : ℕ)
     (b : Hn D Sc n) :
     InductionAlong.Corner (appendAlgebra D Sc i n : Hn D Sc n →ₙ+* Hn D Sc (n + 1)) :=
   ⟨appendPBWTerm D Sc i u m b, appendPBWTerm_corner D Sc i u m b⟩
-
-theorem appendPBWCorner_right (i : I) {n : ℕ} (u : AppendShuffleAt n) (m : ℕ)
-    (b r : Hn D Sc n) :
-    appendPBWCorner D Sc i u m (b * r) = MulOpposite.op r • appendPBWCorner D Sc i u m b :=
-  Subtype.ext (appendPBWTerm_right D Sc i u m b r)
 
 /-! ## Matrix entries -/
 

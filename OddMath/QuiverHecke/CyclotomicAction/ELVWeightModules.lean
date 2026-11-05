@@ -313,7 +313,6 @@ def elvWeightAdjunction :
     · exact (elvInductionComponent_isZero D Sc cutoff bound i Λ h δ hδ _).eq_of_src _ _
   right_triangle_components N := funext fun β => elvWeight_right_triangle D Sc cutoff bound i Λ h β N
 
-
 theorem elvBlockAdj_unit_mem (β : WeightBlocks D Λ x)
     (M : ContentModules D Sc cutoff bound β.1) :
     (elvBlockAdj D Sc cutoff bound i Λ h β).unit.app M ∈ parity (R := k) _ _ 0 := by

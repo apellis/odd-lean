@@ -13,10 +13,6 @@ def inversions (e : Bool) : List (Letter I) → ℕ
   | [] => 0
   | x :: a => inversions e a + if x.1 == e then 0 else countSign e a
 
-theorem countSign_append (e : Bool) (a b : List (Letter I)) :
-    countSign e (a ++ b) = countSign e a + countSign e b := by
-  simp [countSign]
-
 theorem inversions_append (e : Bool) (a b : List (Letter I)) :
     inversions e (a ++ b) = inversions e a + inversions e b + countSign (!e) a * countSign e b := by
   induction a with

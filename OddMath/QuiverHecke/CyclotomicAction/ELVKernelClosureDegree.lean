@@ -21,17 +21,17 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 def positiveKernelClosure (i : I) (v t : OldCategory D Sc cutoff)
     (hh : 0 ≤ contentCrossingHeight D cutoff i (t.word : Multiset I)) (r s : ℕ) :
     (v ⟶ t) →ₗ[k] (v ⟶ t) :=
-  actualCapKernelComponent D Sc cutoff i s v t ∘ₗ
+  capKernelComponent D Sc cutoff i s v t ∘ₗ
     positiveKernelPrincipalInverse D Sc cutoff i v t hh ∘ₗ
-      actualUnitKernelComponent D Sc cutoff i r v t
+      unitKernelComponent D Sc cutoff i r v t
 
 /-- The same literal closure using the negative principal inverse. -/
 def negativeKernelClosure (i : I) (v t : OldCategory D Sc cutoff)
     (hh : contentCrossingHeight D cutoff i (t.word : Multiset I) ≤ 0) (r s : ℕ) :
     (v ⟶ t) →ₗ[k] (v ⟶ t) :=
-  actualCapKernelComponent D Sc cutoff i s v t ∘ₗ
+  capKernelComponent D Sc cutoff i s v t ∘ₗ
     negativeKernelPrincipalInverse D Sc cutoff i v t hh ∘ₗ
-      actualUnitKernelComponent D Sc cutoff i r v t
+      unitKernelComponent D Sc cutoff i r v t
 
 variable (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
 
@@ -41,9 +41,9 @@ theorem positiveKernelClosure_degree (i : I) (v t : OldCategory D Sc cutoff)
     {n : ℤ} {b : v ⟶ t} (hb : b ∈ oldDegree D sy Sc hc cutoff v.word t.word n) :
     positiveKernelClosure D Sc cutoff i v t hh r s b ∈
       oldDegree D sy Sc hc cutoff v.word t.word (n + 2 * sy.d i * (r + s + 1 : ℕ)) := by
-  have h := actualCapKernelComponent_degree D Sc cutoff sy hc i v t s
+  have h := capKernelComponent_degree D Sc cutoff sy hc i v t s
     (positiveKernelPrincipalInverse_degree D Sc cutoff sy hc i v t hh
-      (actualUnitKernelComponent_degree D Sc cutoff sy hc i v t r hb))
+      (unitKernelComponent_degree D Sc cutoff sy hc i v t r hb))
   have he : n + 2 * sy.d i * r + 2 * sy.d i + 2 * sy.d i * s =
       n + 2 * sy.d i * (r + s + 1 : ℕ) := by push_cast; ring
   simpa only [positiveKernelClosure, LinearMap.comp_apply, he] using h
@@ -54,17 +54,12 @@ theorem negativeKernelClosure_degree (i : I) (v t : OldCategory D Sc cutoff)
     {n : ℤ} {b : v ⟶ t} (hb : b ∈ oldDegree D sy Sc hc cutoff v.word t.word n) :
     negativeKernelClosure D Sc cutoff i v t hh r s b ∈
       oldDegree D sy Sc hc cutoff v.word t.word (n + 2 * sy.d i * (r + s + 1 : ℕ)) := by
-  have h := actualCapKernelComponent_degree D Sc cutoff sy hc i v t s
+  have h := capKernelComponent_degree D Sc cutoff sy hc i v t s
     (negativeKernelPrincipalInverse_degree D Sc cutoff sy hc i v t hh
-      (actualUnitKernelComponent_degree D Sc cutoff sy hc i v t r hb))
+      (unitKernelComponent_degree D Sc cutoff sy hc i v t r hb))
   have he : n + 2 * sy.d i * r + 2 * sy.d i + 2 * sy.d i * s =
       n + 2 * sy.d i * (r + s + 1 : ℕ) := by push_cast; ring
   simpa only [negativeKernelClosure, LinearMap.comp_apply, he] using h
-
-/-- Every represented closure degree is strictly positive. -/
-theorem kernelClosureDegree_pos (i : I) (r s : ℕ) :
-    0 < 2 * sy.d i * (r + s + 1 : ℕ) := by
-  exact mul_pos (mul_pos (by norm_num) (sy.pos i)) (by positivity)
 
 omit sy hc in
 /-- On every OLD module, the positive closure acts by the prescribed unit,
@@ -81,9 +76,9 @@ theorem positiveKernelClosure_evaluate
           (((moduleUnitMatrixIso D Sc cutoff M i t hh).inv
             ((moduleUnitColumn D Sc cutoff i M r).total t (M.map b m))) none)) := by
   rw [positiveKernelClosure, LinearMap.comp_apply, LinearMap.comp_apply,
-    actualCapKernel_evaluate_moduleCapRow,
+    capKernel_evaluate_moduleCapRow,
     ← moduleUnitMatrixIso_principal_inv_tensor,
-    actualUnitKernel_evaluate]
+    unitKernel_evaluate]
 
 omit sy hc in
 /-- Inserting the upper-Hom coefficient before realization is exactly the
@@ -128,8 +123,8 @@ theorem negativeKernelClosure_evaluate
               (contentCapCount D cutoff i (t.word : Multiset I))) t).symm
               ((moduleUnitColumn D Sc cutoff i M r).total t (M.map b m))))) := by
   rw [negativeKernelClosure, LinearMap.comp_apply, LinearMap.comp_apply,
-    actualCapKernel_evaluate_moduleCapRow,
+    capKernel_evaluate_moduleCapRow,
     ← moduleCapMatrixIso_principal_inv_tensor,
-    negativeKernelCoordinates_single_tensor, actualUnitKernel_evaluate]
+    negativeKernelCoordinates_single_tensor, unitKernel_evaluate]
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

@@ -372,13 +372,6 @@ theorem leftwardOfInvertible_isInverse (c : P.CrossCoeff) (h : P.AugmentedInvert
     exact (congrArg₂ (P.NegInverse c i ν t s) e₁ e₂).mpr
       ((h i ν t s hw).2 hh).choose_spec.choose_spec
 
-/-- The leftward data (A7) vanish off the weight-matched sectors. -/
-theorem leftwardOfInvertible_vanishesOffWeight (c : P.CrossCoeff) (h : P.AugmentedInvertible c) :
-    (P.leftwardOfInvertible c h).VanishesOffWeight :=
-  ⟨fun i ν t s p p' Z hw => by simp [leftwardOfInvertible, hw],
-    fun i n ν t s p p' Z hw => by simp [leftwardOfInvertible, hw],
-    fun i n ν t s p p' Z hw => by simp [leftwardOfInvertible, hw]⟩
-
 end ProbeReservoir
 
 end OddMath.QuiverHecke.SwappedAssembly

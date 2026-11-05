@@ -133,7 +133,6 @@ private theorem shifted_counts_coeff {I J k : Type*} [Fintype J] [CommRing k]
       simp only [Set.Finite.mem_toFinset, heq, Set.mem_empty_iff_false, Finset.notMem_empty]
     rw [ht, Finset.sum_empty, ite_eq_right hz]
 
-
 variable {I X : Type*} [AddCommGroup X]
 
 /-- One undecorated matching and its independent strand normalization factors. -/

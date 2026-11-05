@@ -34,36 +34,6 @@ def offDiagonalCorrectedBoundaryRow (p : ZMod 2) (j : {j : I // D.parity j = 1})
   simp only [offDiagonalCorrectedBoundaryRow, LinearMap.comp_apply, LinearEquiv.coe_coe,
     offDiagonalCorrectedCoordinateEquiv_single]
 
-/-- All source terms strictly below a pivot have zero coefficient at that pivot. -/
-theorem offDiagonalCorrectedBoundaryRow_above (p : ZMod 2)
-    (j : {j : I // D.parity j = 1}) (v t : List I)
-    (f : ℕ →₀ Old D Sc cutoff v t) (n : ℕ)
-    (hf : ∀ d ∈ f.support, d + endpointQPDegree D cutoff j.1 v < n + outputSDegree D j.1 v) :
-    offDiagonalCorrectedBoundaryRow D Sc cutoff p j v t f n = 0 := by
-  exact OddMath.Algebra.DegreeShiftRow.above (offDiagonalCorrectedBoundaryRow D Sc cutoff p j v t) (outputSDegree D j.1 v) (endpointQPDegree D cutoff j.1 v)
-    (by
-      intro d n b hn
-      rw [offDiagonalCorrectedBoundaryRow_single]
-      exact offDiagonalBoundary_corrected_above D Sc cutoff p j v t d n b hn) f n hf
-
-/-- The maximal corrected coefficient is detected by the invertible leading map. -/
-theorem offDiagonalCorrectedBoundaryRow_top (p : ZMod 2)
-    (j : {j : I // D.parity j = 1}) (v t : List I)
-    (f : ℕ →₀ Old D Sc cutoff v t) (d n : ℕ)
-    (hf : ∀ e ∈ f.support, e ≤ d)
-    (hn : n + outputSDegree D j.1 v = d + endpointQPDegree D cutoff j.1 v) :
-    offDiagonalCorrectedBoundaryRow D Sc cutoff p j v t f n = offDiagonalBoundaryLeadingEquiv D Sc cutoff p j v t n (f d) := by
-  exact OddMath.Algebra.DegreeShiftRow.top (offDiagonalCorrectedBoundaryRow D Sc cutoff p j v t)
-    (offDiagonalBoundaryLeadingEquiv D Sc cutoff p j v t) (outputSDegree D j.1 v) (endpointQPDegree D cutoff j.1 v)
-    (by
-      intro d n b hn
-      rw [offDiagonalCorrectedBoundaryRow_single]
-      exact offDiagonalBoundary_corrected_above D Sc cutoff p j v t d n b hn)
-    (by
-      intro d n b hn
-      rw [offDiagonalCorrectedBoundaryRow_single]
-      exact offDiagonalBoundary_corrected_top D Sc cutoff p j v t d n b hn) f d n hf hn
-
 /-- Exact low-window kernel, with the height difference left untruncated. -/
 theorem offDiagonalCorrectedBoundaryRow_eq_zero_iff (p : ZMod 2)
     (j : {j : I // D.parity j = 1}) (v t : List I) (f : ℕ →₀ Old D Sc cutoff v t) :
@@ -189,20 +159,5 @@ theorem offDiagonalBoundaryRowDivisionEquiv_apply (p : ZMod 2)
     offDiagonalBoundaryRowDivisionEquiv D Sc cutoff p j v t x =
       offDiagonalPolynomialBoundary D Sc cutoff p j.1 v t
         (offDiagonalCorrectedCoordinateEquiv D Sc cutoff p j v t x.1) + x.2 := rfl
-
-/-- In nonpositive height the polynomial boundary is surjective. -/
-theorem offDiagonalPolynomialBoundary_surjective (p : ZMod 2)
-    (j : {j : I // D.parity j = 1}) (v t : List I)
-    (h : endpointQPDegree D cutoff j.1 v ≤ outputSDegree D j.1 v) :
-    Function.Surjective (offDiagonalPolynomialBoundary D Sc cutoff p j.1 v t) := by
-  intro f
-  obtain ⟨q, r, he, _, hr⟩ := offDiagonalCorrectedBoundaryRow_division D Sc cutoff p j v t f
-  have hr0 : r = 0 := by
-    ext n
-    by_contra hh
-    have := hr n (Finsupp.mem_support_iff.mpr hh)
-    omega
-  refine ⟨offDiagonalCorrectedCoordinateEquiv D Sc cutoff p j v t q, ?_⟩
-  simpa only [hr0, add_zero, offDiagonalCorrectedBoundaryRow, LinearMap.comp_apply, LinearEquiv.coe_coe] using he
 
 end OddMath.QuiverHecke.ELVOld

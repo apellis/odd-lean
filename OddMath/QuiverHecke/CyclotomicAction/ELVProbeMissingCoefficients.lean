@@ -149,18 +149,6 @@ def probeEvaluatedMissingCoefficients (hi : i ∉ γ) :
     SKM.RouquierBoundary.Coefficients A x (D.parity i) count :=
   evaluatedCoefficients D Sc m γ i (contentMissingBoundaryCoefficients D Sc cut γ i hi)
 
-/-- Every homogeneous component is the originally constructed full OLD inverse row. -/
-theorem probeEvaluatedMissingCoefficients_coeff_app (hi : i ∉ γ) (n : ℕ) (q : ZMod 2)
-    (N : ProbeEvaluatedModules D Sc m γ) :
-    (((probeEvaluatedMissingCoefficients D Sc m γ i hi).coeff n).app q N).hom =
-      ((contentMissingBoundaryCoefficients D Sc cut γ i hi).coeff n).app q N.obj := rfl
-
-/-- Total evaluation forgets only the scalar-evaluation certificate, retaining the original row. -/
-theorem probeEvaluatedMissingCoefficients_coeff_total (hi : i ∉ γ) (n : ℕ)
-    (N : ProbeEvaluatedModules D Sc m γ) :
-    (((probeEvaluatedMissingCoefficients D Sc m γ i hi).coeff n).total N).hom =
-      ((contentMissingBoundaryCoefficients D Sc cut γ i hi).coeff n).total N.obj := rfl
-
 /-- The top cap, including the empty-window convention, retains the original full OLD cap. -/
 theorem probeEvaluatedMissingCoefficients_cap_total (hi : i ∉ γ)
     (N : ProbeEvaluatedModules D Sc m γ) :

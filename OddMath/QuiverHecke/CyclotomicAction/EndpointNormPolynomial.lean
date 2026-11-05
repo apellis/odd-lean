@@ -55,33 +55,6 @@ theorem qLeft_polynomial_leadingCoeff (u : B) (d e : ℕ) (he : 0 < e)
   · rw [degree_C_mul_X_pow e ht]
     exact (degree_add_le _ _).trans_lt (max_lt hlow hconst)
 
-theorem endpointNormFactor_polynomial_isUnit_leadingCoeff (j i : I) (u : B) :
-    IsUnit (endpointNormFactor D Sc j i (C u) (X : Polynomial B)).leadingCoeff := by
-  unfold endpointNormFactor
-  split_ifs with hji hp hd
-  · have hm : (((X : Polynomial B) ^ 2 - C u ^ 2) ^ 2 *
-        (C u ^ 2 + X ^ 2)).Monic := by
-      apply Monic.mul
-      · apply Monic.pow
-        simpa only [← map_pow] using
-          (monic_X_pow_sub_C (u ^ 2) (by decide : (2 : ℕ) ≠ 0))
-      · simpa only [← map_pow, add_comm] using
-          (monic_X_pow_add_C (u ^ 2) (by decide : (2 : ℕ) ≠ 0))
-    rw [leadingCoeff_neg, hm.leadingCoeff]
-    exact isUnit_one.neg
-  · have hm : (((X : Polynomial B) - C u) ^ 2).Monic :=
-      (monic_X_sub_C u).pow 2
-    rw [leadingCoeff_neg, hm.leadingCoeff]
-    exact isUnit_one.neg
-  · simpa only [Polynomial.algebraMap_apply, leadingCoeff_C] using
-      (Sc.t j i).isUnit.map (algebraMap k B)
-  · have he : 0 < D.dn i j := by
-      have hc := D.dn_cast (Ne.symm hji)
-      have hz : D.d i j ≠ 0 := fun hz => hd ((D.d_eq_zero_iff j i).mpr hz)
-      omega
-    rw [qLeft_polynomial_leadingCoeff u _ _ he]
-    exact (Sc.t i j).isUnit.map (algebraMap k B)
-
 /-- The literal leading scalar: diagonal minus sign, or the appropriate t unit. -/
 def endpointNormLeadingUnit (j i : I) : kˣ :=
   if j = i then -1 else if D.d j i = 0 then Sc.t j i else Sc.t i j

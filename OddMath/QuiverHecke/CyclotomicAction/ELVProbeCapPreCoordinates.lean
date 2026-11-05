@@ -94,19 +94,6 @@ private theorem sourceCapRow_total
     e.hom.total M ≫ H.map (η.total M)
   erw [Category.comp_id]
 
-private theorem coordinate_window {C : Type*} [Category C] [Preadditive C]
-    {M S T : C} (e : T ≅ S) (u : M ⟶ S) (d : End S) (v : S ⟶ M)
-    (a : ℕ) (q : Prop) [Decidable q]
-    (h : (u ≫ d ^ a) ≫ v = if q then 𝟙 M else 0) :
-    ((u ≫ e.inv) ≫ (e.hom ≫ (d ^ a) ≫ e.inv)) ≫ (e.hom ≫ v) =
-      if q then 𝟙 M else 0 := by
-  simpa only [Category.assoc, Iso.inv_hom_id_assoc] using h
-
-private theorem coordinate_power {C : Type*} [Category C]
-    {S T : C} (e : T ≅ S) (d : End S) (a : ℕ) :
-    e.symm.conj (d ^ a) = (e.symm.conj d) ^ a :=
-  e.symm.conj_pow d a
-
 private theorem coordinate_polynomial {C : Type*} [Category C] [Preadditive C]
     {S T : C} (e : T ≅ S) (d : End S) (n : ℕ) (h : (d ^ 2 + 1) ^ n = 0) :
     ((e.symm.conj d) ^ 2 + 1) ^ n = 0 := by
@@ -199,23 +186,6 @@ def coordinatePreDotPower (R : PiSCat.{u,u,u+1} k) (i : I)
   (preSourceComponent D Sc m R i H).hom ≫
     (preDotEnd D Sc m R i H ^ a) ≫ (preSourceComponent D Sc m R i H).inv
 
-/-- The given ordinary unit transported into the same shifted source. -/
-def shiftedPreUnit (R : PiSCat.{u,u,u+1} k) (i : I)
-    (H : modulePiCategory D Sc m ⟶ R) :
-    H.obj N ⟶ shiftedPreSourceObject D Sc m R i H :=
-  H.map ((adjunction (K i)).unit.app N) ≫ (preSourceComponent D Sc m R i H).inv
-
-/-- Source parity transport preserves the normalized last-row window on
-the literal chosen Hom carrier, with its full Π comparison intact. -/
-theorem shiftedPreCap_dot_unit (R : PiSCat.{u,u,u+1} k) (i : I) (hP : 0 < cut i)
-    (H : modulePiCategory D Sc m ⟶ R) (a : ℕ) (ha : a < cut i) :
-    (shiftedPreUnit D Sc m R i H ≫ coordinatePreDotPower D Sc m R i H a) ≫
-      shiftedPreCap D Sc m R i hP H =
-      if a + 1 = cut i then 𝟙 (H.obj N) else 0 := by
-  rw [shiftedPreCap_eq, ← preCap_total D Sc m R i hP H]
-  exact coordinate_window (preSourceComponent D Sc m R i H) _ _ _ a _
-    (preCap_dot_unit D Sc m R i hP H a ha)
-
 /-- In the chosen source coordinates the normalized cap is even, because
 the source comparison and prescribed cap both have degree `(P-1)p`. -/
 theorem shiftedPreCap_mem (R : PiSCat.{u,u,u+1} k) (i : I) (hP : 0 < cut i)
@@ -223,13 +193,6 @@ theorem shiftedPreCap_mem (R : PiSCat.{u,u,u+1} k) (i : I) (hP : 0 < cut i)
     shiftedPreCap D Sc m R i hP H ∈ parity (R := k) _ _ 0 := by
   exact total_mem (sourceCapRow_mem H (preSource D Sc m R i H)
     (capCell D Sc m i hP) (preSource_mem D Sc m R i H) (capCell_mem D Sc m i hP)) N
-
-/-- The transported powers are powers of the transported same dot. -/
-theorem coordinatePreDotPower_eq (R : PiSCat.{u,u,u+1} k) (i : I)
-    (H : modulePiCategory D Sc m ⟶ R) (a : ℕ) :
-    coordinatePreDotPower D Sc m R i H a = coordinatePreDotPower D Sc m R i H 1 ^ a := by
-  simpa only [coordinatePreDotPower, pow_one, Iso.conj_apply, Iso.symm_inv, Iso.symm_hom] using
-    coordinate_power (preSourceComponent D Sc m R i H) (preDotEnd D Sc m R i H) a
 
 /-- The same signed polynomial survives canonical source parity transport. -/
 theorem coordinatePreDot_odd_polynomial (R : PiSCat.{u,u,u+1} k) (i : I) (hi : D.parity i = 1)

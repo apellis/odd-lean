@@ -82,7 +82,6 @@ def weakChoice
       (U.decorates ((representativesEquiv U F).symm S) _)
     simpa only [Function.comp_def, Equiv.apply_symm_apply] using hd
 
-
 /-- Reindex the actual weak serializer by its original upward matching and
 strand counts. The direction makes the literal evaluation identity definitional. -/
 def sourceLabelsEquiv

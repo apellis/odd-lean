@@ -24,7 +24,7 @@ def capKernelForward :
     BalancedKernelTensor.Obj (IndResKernel.kernel (k := k) (append D Sc cutoff i) t)
       M.toFunctor →ₗ[k] capMatrixTargetSpace D Sc cutoff i M m t :=
   (negativeKernelCoordinates D Sc cutoff M i m t).toLinearMap.comp
-    (BalancedKernelTensor.map M.toFunctor (actualNegativeKernelMap D Sc cutoff i m t))
+    (BalancedKernelTensor.map M.toFunctor (negativeKernelMap D Sc cutoff i m t))
 
 /-- The prescribed categorical cap matrix on the same kernel quotient source. -/
 def capModuleForward :
@@ -61,10 +61,10 @@ theorem capKernelForward_none_tensor (v : OldCategory D Sc cutoff)
         (BalancedKernelTensor.tensor (IndResKernel.kernel (k := k) (append D Sc cutoff i) t)
           M.toFunctor v x b) none) =
       mateCoefficientEvaluation D Sc cutoff i M v t b
-        (actualMateKernelComponent D Sc cutoff i v t x) := by
+        (mateKernelComponent D Sc cutoff i v t x) := by
   change moduleIsoLinearEquiv (capMatrixFirstTargetIso D Sc cutoff i M m) t
     (negativeKernelCoordinates D Sc cutoff M i m t
-      (BalancedKernelTensor.map M.toFunctor (actualNegativeKernelMap D Sc cutoff i m t)
+      (BalancedKernelTensor.map M.toFunctor (negativeKernelMap D Sc cutoff i m t)
         (BalancedKernelTensor.tensor (IndResKernel.kernel (k := k) (append D Sc cutoff i) t)
           M.toFunctor v x b)) none) = _
   rw [BalancedKernelTensor.map_tensor, negativeKernelCoordinates_apply,
@@ -72,8 +72,8 @@ theorem capKernelForward_none_tensor (v : OldCategory D Sc cutoff)
   change resIndKernelCoordinates D Sc cutoff M i t
     (BalancedKernelTensor.tensor (BalancedKernelTensor.inductionKernel (k := k)
       (append D Sc cutoff i) ((append D Sc cutoff i).obj t)) M.toFunctor v
-      ((actualNegativeKernelMap D Sc cutoff i m t).app (op v) x none) b) = _
-  have hc := actualNegativeKernelMap_none D Sc cutoff i m v t x
+      ((negativeKernelMap D Sc cutoff i m t).app (op v) x none) b) = _
+  have hc := negativeKernelMap_none D Sc cutoff i m v t x
   exact (congrArg (fun g => resIndKernelCoordinates D Sc cutoff M i t
     (BalancedKernelTensor.tensor (BalancedKernelTensor.inductionKernel (k := k)
       (append D Sc cutoff i) ((append D Sc cutoff i).obj t)) M.toFunctor v g b)) hc).trans
@@ -101,10 +101,10 @@ theorem capKernelForward_some_tensor (v : OldCategory D Sc cutoff)
       (capKernelForward D Sc cutoff M i m t
         (BalancedKernelTensor.tensor (IndResKernel.kernel (k := k) (append D Sc cutoff i) t)
           M.toFunctor v x b) (some r)) =
-      M.map (actualCapKernelComponent D Sc cutoff i r.val v t x) b := by
+      M.map (capKernelComponent D Sc cutoff i r.val v t x) b := by
   change moduleIsoLinearEquiv ((SKM.homParityShiftDatum (k := k) (r.val • D.parity i)).iso M) t
     (negativeKernelCoordinates D Sc cutoff M i m t
-      (BalancedKernelTensor.map M.toFunctor (actualNegativeKernelMap D Sc cutoff i m t)
+      (BalancedKernelTensor.map M.toFunctor (negativeKernelMap D Sc cutoff i m t)
         (BalancedKernelTensor.tensor (IndResKernel.kernel (k := k) (append D Sc cutoff i) t)
           M.toFunctor v x b)) (some r)) = _
   rw [BalancedKernelTensor.map_tensor, negativeKernelCoordinates_apply,
@@ -112,8 +112,8 @@ theorem capKernelForward_some_tensor (v : OldCategory D Sc cutoff)
   change identityKernelCoordinates D Sc cutoff M t
     (BalancedKernelTensor.tensor (BalancedKernelTensor.inductionKernel (k := k)
       (𝟭 (OldCategory D Sc cutoff)) t) M.toFunctor v
-      ((actualNegativeKernelMap D Sc cutoff i m t).app (op v) x (some r)) b) = _
-  have hc := actualNegativeKernelMap_some D Sc cutoff i m v t r x
+      ((negativeKernelMap D Sc cutoff i m t).app (op v) x (some r)) b) = _
+  have hc := negativeKernelMap_some D Sc cutoff i m v t r x
   exact (congrArg (fun g => identityKernelCoordinates D Sc cutoff M t
     (BalancedKernelTensor.tensor (BalancedKernelTensor.inductionKernel (k := k)
       (𝟭 (OldCategory D Sc cutoff)) t) M.toFunctor v g b)) hc).trans
@@ -151,6 +151,6 @@ theorem capKernelForward_eq_moduleForward :
     apply (moduleIsoLinearEquiv
       ((SKM.homParityShiftDatum (k := k) (r.val • D.parity i)).iso M) t).injective
     rw [capKernelForward_some_tensor, capModuleForward_some, indResKernelCoordinates_tensor]
-    exact actualCapKernel_evaluate_moduleCapRow D Sc cutoff i M v t b r.val x
+    exact capKernel_evaluate_moduleCapRow D Sc cutoff i M v t b r.val x
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.TensorMatrixCoordinates
