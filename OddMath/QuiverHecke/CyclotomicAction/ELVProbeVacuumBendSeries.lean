@@ -1,5 +1,6 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumBendMonomials
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCentralBend
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvenCentralBend
 
 /-! # The ordered odd vacuum bend series
 
@@ -70,5 +71,26 @@ theorem vacuumBendWordSum_odd_exists (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneo
         ProbeVacuumCap.evaluatedMixedBend D Sc m cutoff bound i hP (vacuumBendBlock D Sc m cutoff bound ΛR H) := by
   obtain ⟨n, hn, hp⟩ := ProbeVacuumCap.diagonalPostDot_pow_zero D Sc m cutoff bound sy hc i
   exact ⟨n, hn, vacuumBendWordSum_odd D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H hP hi n (hp (vacuumBendBlock D Sc m cutoff bound ΛR H))⟩
+
+/-- Even colour: at any given native reservoir nilpotence exponent `n`, the actual
+finite pre-cap/post-unit word sum of length `n` is exactly the evaluated even A6 bend. -/
+theorem vacuumBendWordSum_even (hP : 0 < probeCutoff D m i) (hi : D.parity i = 0)
+    (n : ℕ)
+    (hn : ProbeVacuumCap.diagonalPostDot D Sc m cutoff bound i (vacuumBendBlock D Sc m cutoff bound ΛR H) ^ n = 0) :
+    vacuumBendWordSum D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H n ≫
+      (vacuumPostTarget D Sc m cutoff bound ΛP ΛR hcP hcR i edgeR β H).hom =
+    (vacuumPreBlockSourceIso D Sc m cutoff bound ΛP ΛR hcP i edgeP H).hom ≫
+      ProbeVacuumCap.evaluatedMixedBend D Sc m cutoff bound i hP (vacuumBendBlock D Sc m cutoff bound ΛR H) := by
+  rw [ProbeVacuumCap.evaluatedMixedBend_even_expansion D Sc m cutoff bound i hi hP (vacuumBendBlock D Sc m cutoff bound ΛR H) n hn]
+  simp only [vacuumBendWordSum, Preadditive.neg_comp, Preadditive.sum_comp,
+    Preadditive.zsmul_comp, Preadditive.comp_sum, Preadditive.comp_zsmul,
+    ← Finset.sum_neg_distrib]
+  apply Finset.sum_congr rfl
+  intro r hr
+  rw [vacuumBendMonomial_native_even D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H hP hi (r + 1) r]
+  have hs : -((koszulSign (D.parity i) (D.parity i)) ^ (r + 1)) = (-1 : ℤ) := by
+    rw [hi, koszulSign_zero_left, one_pow]
+  rw [← neg_zsmul, hs]
+  congr 1
 
 end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
