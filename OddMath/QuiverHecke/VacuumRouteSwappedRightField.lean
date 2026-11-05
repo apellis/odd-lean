@@ -39,6 +39,7 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
   (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
   (sy : Symmetrizer D) (hc : Sc.Homogeneous)
+set_option quotPrecheck false
 local notation "ν₀" => (elvProbeReservoir D Sc m cutoff (PowerWordContent.powerBound D cutoff L)
   ΛP ΛR hP hR).wt ((0, 0) : Sector I)
 
