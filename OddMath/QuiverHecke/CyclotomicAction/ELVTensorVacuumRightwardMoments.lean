@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeRightwardVacuumCupInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumLeftwardMoments
-import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumRightwardColumn
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumCapMoments
 
 /-! # Odd moments of the rightward vacuum bubble entries
 
