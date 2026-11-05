@@ -2465,6 +2465,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVKernelEntryDegrees
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelEntryDegreesOver
 import OddMath.Algebra.IntegerMatrixGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelMatrixInteger
+import OddMath.QuiverHecke.CyclotomicAction.ELVKernelMatrixIntegerOver
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentPrincipalInverseCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInverseKernelCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelClosureDegree
