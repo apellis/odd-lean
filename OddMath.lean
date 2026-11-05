@@ -1306,6 +1306,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ProbeGlobalDotInverse
 import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightDotInverse
 import OddMath.SKM.Beta
 import OddMath.SKM.Bubbles
+import OddMath.SKM.BubblesNegativeHeight
 import OddMath.SKM.BubbleSeries
 import OddMath.SKM.BubbleSlideObstruction
 import OddMath.SKM.BubbleSlideRaw
