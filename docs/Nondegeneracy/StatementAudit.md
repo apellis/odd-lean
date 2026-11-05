@@ -19,13 +19,13 @@ exist.
 
 `SKM.Datum I X` is a Cartan datum on an additive group `X`, with simple roots `αᵢ` and simple
 coroots `⟨hᵢ, -⟩`. Its Cartan matrix is a generalized Cartan matrix, and it carries a parity
-`|i|` with `dᵢⱼ` even whenever `|i|` is odd. This is assumption (1.4).
+`|i|` with `dᵢⱼ` even whenever `|i|` is odd. This is assumption (1.2).
 
 The paper uses a complex vector space with linearly independent roots and coroots, the weight
 lattice `P` and the root lattice `Q`. That is the special case in which `X = P` and the roots
 are independent.
 
-`SKM.Scalars` matches (1.5)–(1.6):
+`SKM.Scalars` matches (1.3)–(1.4):
 
 - units `tᵢⱼ` with `tᵢᵢ = 1`, and `tᵢⱼ = tⱼᵢ` when `dᵢⱼ = 0`;
 - scalars `sᵢⱼ^{pq}` with `sᵢⱼ^{pq} = sⱼᵢ^{qp}`, vanishing when `p|i|` is odd;

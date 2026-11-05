@@ -40,7 +40,7 @@ Everything between these inputs and the conjecture is proved:
   series by the infinite Grassmannian relations (`AdjunctionBubbleSeries.vacuumMoments`), and
   (A18) from the corner evaluation (`SwappedVacuumBlock.ofCornerEvaluation`);
 * `nondegeneracy_of_swapped_vacuum_observations`: observations at every equal-weight upward
-  word pair, external weight and degree bound give the conjecture over a field
+  word pair, external weight and degree bound give the conjecture over any commutative ring
   (`nondegeneracy_of_vacuum_blocks`, hence `upward_independence_of_coefficientMap` and
   `SKM.nondegeneracy_of_upward_independence`);
 * `nondegeneracy_of_restrictColours_swapped_vacuum_observations`: the same with observations
@@ -115,15 +115,15 @@ def SwappedVacuumObservation.toSwappedVacuumBlock {μ : X} {t t' : List I} {d : 
 
 end Observation
 
-section Field
-variable {I X k : Type u} [AddCommGroup X] [Field k]
+section Conclusion
+variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (B : Type uB) [BicategoryStruct.{w, v} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cs : SKM.CScalars Sc)
 
-/-- **Conditional field theorem from swapped vacuum observations.** If at every
+/-- **Conditional theorem from swapped vacuum observations.** If at every
 equal-weight pair of upward words, every external weight `μ` and every degree bound `d` there
 is a swapped vacuum observation in `B`, then the Nondegeneracy Conjecture holds for `cs`.
 The observations are hypotheses; see the module docstring for the list of open inputs. -/
@@ -134,7 +134,7 @@ theorem nondegeneracy_of_swapped_vacuum_observations
   nondegeneracy_of_vacuum_blocks D Sc cs fun t t' hw μ d =>
     (h t t' hw μ d).map SwappedVacuumObservation.toSwappedVacuumBlock
 
-/-- **Conditional field theorem, finite-colour form.** For an arbitrary colour set, swapped
+/-- **Conditional theorem, finite-colour form.** For an arbitrary colour set, swapped
 vacuum observations in `B` for every restriction of `D` to a finite set of colours, at every
 equal-weight upward word pair, external weight and degree bound, give the Nondegeneracy
 Conjecture for `D` (`SwappedNondegeneracy.md` §5). The observations are hypotheses. -/
@@ -148,6 +148,6 @@ theorem nondegeneracy_of_restrictColours_swapped_vacuum_observations
   nondegeneracy_of_restrictColours_vacuum_evaluations D Sc cs fun J tJ t'J hw μ d =>
     (h J tJ t'J hw μ d).map fun O => O.toSwappedVacuumBlock.toSwappedVacuumEvaluation
 
-end Field
+end Conclusion
 
 end OddMath.QuiverHecke

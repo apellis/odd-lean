@@ -9,7 +9,7 @@ import Mathlib.RingTheory.MvPolynomial.Homogeneous
 # Graded coefficient rings and lower-degree parameters
 
 J. Brundan, A. P. Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2, §1,
-(1.5), (1.6) and the homogeneity condition (1.31); the Nondegeneracy Conjecture of §8.
+(1.3), (1.4) and the homogeneity condition (1.31); the Nondegeneracy Conjecture of §8.
 J. Brundan, W. Wang, B. Webster, arXiv:2505.22929v2, §2.2 (the parameters (2.3) over an
 `ℕ`-graded commutative ring) and Theorem 5.6, proof (reduction to the generic graded
 parameter ring).
@@ -22,7 +22,7 @@ With a symmetrizer `dᵢ` the dot on a strand of colour `i` has degree `2dᵢ`, 
 * `Scalars.GradedHomogeneous`: over an `ℕ`-graded commutative ring `k = ⨁ₙ 𝒜 n`, the units
   `tᵢⱼ` lie in degree `0` and every nonzero `sᵢⱼ^{pq}` lies in its coefficient degree, which
   is therefore nonnegative. This is the parameter condition of Brundan–Wang–Webster §2.2,
-  restricted to the monomials that occur in Brundan–Ellis (1.6), namely `0 < p < dᵢⱼ`,
+  restricted to the monomials that occur in Brundan–Ellis (1.4), namely `0 < p < dᵢⱼ`,
   `0 < q < dⱼᵢ`.
 * `Scalars.LowerDegree`: over an arbitrary commutative ring, every nonzero `sᵢⱼ^{pq}` has
   nonnegative coefficient degree: `Qᵢⱼ` has no monomial above its leading terms.
@@ -64,7 +64,7 @@ theorem coefficientDegree_symm (sy : Symmetrizer D) (i j : I) (p q : ℕ) :
 variable {k : Type w} [CommRing k]
 
 /-- The parameter condition over an `ℕ`-graded commutative ring `k = ⨁ₙ 𝒜 n`
-(Brundan–Wang–Webster §2.2, on the monomials of Brundan–Ellis (1.6)): the units `tᵢⱼ` have
+(Brundan–Wang–Webster §2.2, on the monomials of Brundan–Ellis (1.4)): the units `tᵢⱼ` have
 degree `0`, and each nonzero `sᵢⱼ^{pq}` is homogeneous of its coefficient degree, which is
 in particular nonnegative. -/
 def Scalars.GradedHomogeneous {σ : Type*} [SetLike σ k] (sy : Symmetrizer D) (𝒜 : ℕ → σ)

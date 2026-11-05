@@ -134,11 +134,11 @@ def toSwappedVacuumEvaluation (B : SwappedVacuumBlock D Sc cs μ t t' d) :
 
 end SwappedVacuumBlock
 
-section Field
-variable {I X k : Type u} [AddCommGroup X] [Field k]
+section Conclusion
+variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cs : SKM.CScalars Sc)
 
-/-- **Conditional field theorem.** Vacuum blocks at every equal-weight upward word
+/-- **Conditional theorem.** Vacuum blocks at every equal-weight upward word
 pair, external weight and degree bound imply the Nondegeneracy Conjecture. -/
 theorem nondegeneracy_of_vacuum_blocks
     (h : ∀ (t t' : List I), SKM.wt D 0 (SKM.ups t) = SKM.wt D 0 (SKM.ups t') →
@@ -147,6 +147,6 @@ theorem nondegeneracy_of_vacuum_blocks
   nondegeneracy_of_vacuum_evaluations fun t t' hw μ d =>
     (h t t' hw μ d).map SwappedVacuumBlock.toSwappedVacuumEvaluation
 
-end Field
+end Conclusion
 
 end OddMath.QuiverHecke
