@@ -41,7 +41,7 @@ theorem d_ne {i j : Bool} (h : i ≠ j) : datum.d i j = 3 := by
 def symmetrizer : Symmetrizer datum where
   d := fun _ => 1
   pos := by intro i; norm_num
-  symm := by intro i j; simp
+  symm := by intro i j; cases i <;> cases j <;> rfl
 
 /-- `sᵢⱼ^{11} = 1` for `i ≠ j`, all other mixed coefficients zero. -/
 def scalars : Scalars datum ℚ where
