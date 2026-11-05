@@ -163,6 +163,18 @@ theorem smul_mem_basisPart [SetLike.GradedMul 𝒜] {e n : ℤ} {r : R} (hr : r 
   rw [map_smul, Finsupp.smul_apply, smul_eq_mul, add_sub_assoc]
   exact SetLike.GradedMul.mul_mem hr (hx i)
 
+omit [Decomposition 𝒜] in
+/-- If the base grading is bounded below by `a` and the basis degrees by `c`, the degrees of the
+free module are bounded below by `a + c`. -/
+theorem basisPart_eq_bot_of_lower_bound {a c n : ℤ} (h𝒜 : ∀ m, m < a → 𝒜 m = ⊥)
+    (hδ : ∀ i, c ≤ δ i) (hn : n < a + c) : basisPart 𝒜 δ b n = ⊥ := by
+  refine eq_bot_iff.2 fun x hx => (Submodule.mem_bot K).2 ?_
+  refine b.repr.injective (Finsupp.ext fun i => ?_)
+  have hi := hx i
+  rw [h𝒜 _ (by have := hδ i; omega), Submodule.mem_bot] at hi
+  rw [map_zero, Finsupp.zero_apply]
+  exact hi
+
 variable (𝒜 δ b)
 
 /-- **Graded free modules with a homogeneous basis.** -/
@@ -174,5 +186,57 @@ theorem isInternal_basisPart : DirectSum.IsInternal (basisPart 𝒜 δ b) := by
   rw [Function.comp_def, ← o.symm.map_iSup, iSup_part, map_top]
 
 end Basis
+
+section LowerBound
+
+variable {M : Type*} [AddCommGroup M] [Module R M] [Module K M] {ι' : Type*}
+
+omit [Decomposition 𝒜] in
+/-- **Lower bounds from a spanning family.** Let `R` be graded in nonnegative degrees and let
+`𝒢` be a `K`-grading of an `R`-module `M` along which homogeneous scalars shift degrees. If `M`
+is spanned over `R` by homogeneous elements of degrees at least `N`, then `𝒢 d = 0` for
+`d < N`. -/
+theorem eq_bot_of_span_lower_bound [Decomposition 𝒜] {𝒢 : ℤ → Submodule K M}
+    (h𝒢 : iSupIndep 𝒢) (h𝒜 : ∀ m, m < 0 → 𝒜 m = ⊥)
+    (hsmul : ∀ {e n : ℤ} {r : R} {y : M}, r ∈ 𝒜 e → y ∈ 𝒢 n → r • y ∈ 𝒢 (e + n))
+    {v : ι' → M} {δ' : ι' → ℤ} (hv : ∀ i, v i ∈ 𝒢 (δ' i))
+    (hspan : Submodule.span R (Set.range v) = ⊤) {N d : ℤ} (hN : ∀ i, N ≤ δ' i)
+    (hd : d < N) : 𝒢 d = ⊥ := by
+  let S : Submodule K M := ⨆ (m : ℤ) (_ : N ≤ m), 𝒢 m
+  have hS : ∀ {m}, N ≤ m → 𝒢 m ≤ S := fun {m} hm =>
+    le_iSup₂_of_le (f := fun (m : ℤ) (_ : N ≤ m) => 𝒢 m) m hm le_rfl
+  have hsmulS : ∀ (r : R) {y : M}, y ∈ S → r • y ∈ S := by
+    intro r y hy
+    induction r using DirectSum.Decomposition.inductionOn 𝒜 with
+    | zero => rw [zero_smul]; exact zero_mem _
+    | add r s hr hs => rw [add_smul]; exact add_mem hr hs
+    | @homogeneous e r =>
+      by_cases he : e < 0
+      · have hr : (r : R) ∈ (⊥ : Submodule K R) := h𝒜 e he ▸ r.2
+        rw [(Submodule.mem_bot K).1 hr, zero_smul]
+        exact zero_mem S
+      · have h0 : (r : R) • (0 : M) ∈ S := by rw [smul_zero]; exact zero_mem S
+        have hadd : ∀ z z' : M, (r : R) • z ∈ S → (r : R) • z' ∈ S → (r : R) • (z + z') ∈ S :=
+          fun z z' hz hz' => by rw [smul_add]; exact add_mem hz hz'
+        refine Submodule.iSup_induction (motive := fun y => (r : R) • y ∈ S)
+          (fun m : ℤ => ⨆ (_ : N ≤ m), 𝒢 m) hy (fun m z hz => ?_) h0 hadd
+        exact Submodule.iSup_induction (motive := fun z => (r : R) • z ∈ S) _ hz
+          (fun hm z hz => hS (by omega) (hsmul r.2 hz)) h0 hadd
+  have hall : ∀ y : M, y ∈ S := by
+    intro y
+    have hy : y ∈ Submodule.span R (Set.range v) := by rw [hspan]; trivial
+    induction hy using Submodule.span_induction with
+    | mem y hy =>
+      obtain ⟨i, rfl⟩ := hy
+      exact hS (hN i) (hv i)
+    | zero => exact zero_mem _
+    | add y z _ _ hy hz => exact add_mem hy hz
+    | smul r y _ hy => exact hsmulS r hy
+  refine eq_bot_iff.2 fun x hx => ?_
+  have hle : S ≤ ⨆ (m : ℤ) (_ : m ≠ d), 𝒢 m :=
+    iSup₂_mono' fun m hm => ⟨m, by omega, le_rfl⟩
+  exact (Submodule.disjoint_def.1 (h𝒢 d)) x hx (hle (hall x)) ▸ zero_mem _
+
+end LowerBound
 
 end OddMath.Diagrams.BasisGrading

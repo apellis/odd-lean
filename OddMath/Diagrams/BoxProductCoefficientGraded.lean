@@ -171,6 +171,28 @@ theorem algebraMap_smul_mem_homDegree {X Y : BoxProd R C D} {n : ℤ} (c : K) {y
   letI := Linear.restrictScalars K R (BoxProd R C D)
   (homDegree (K := K) X Y n).smul_mem c hy
 
+/-- Lower bounds on the degrees of the two factors give a lower bound on the degrees of the
+box product. -/
+theorem homDegree_eq_bot_of_lower_bound {X Y : BoxProd R C D} {a b n : ℤ}
+    (hX : ∀ p, p < a → degree (R := K) X.fst Y.fst p = ⊥)
+    (hY : ∀ q, q < b → degree (R := K) X.snd Y.snd q = ⊥) (hn : n < a + b) :
+    homDegree (K := K) X Y n = ⊥ := by
+  let _ := Linear.restrictScalars K R (BoxProd R C D)
+  refine eq_bot_iff.2 fun y hy => (Submodule.mem_bot K).2 ?_
+  refine homDegree_induction (motive := fun y => y = 0) rfl ?_ ?_ ?_ hy
+  · rintro y y' rfl rfl
+    exact add_zero 0
+  · rintro c y rfl
+    exact smul_zero _
+  · intro p q hpq f hf g hg
+    by_cases hp : p < a
+    · rw [hX p hp, Submodule.mem_bot] at hf
+      subst f
+      simp [BoxProd.tmulHom_def]
+    · rw [hY q (by omega), Submodule.mem_bot] at hg
+      subst g
+      simp [BoxProd.tmulHom_def]
+
 variable {𝒜}
   (hC : ∀ {X Y : C} {a n : ℤ} {r : R} {f : X ⟶ Y}, r ∈ 𝒜 a → f ∈ degree (R := K) X Y n →
     r • f ∈ degree (R := K) X Y (a + n))

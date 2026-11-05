@@ -234,6 +234,20 @@ modules is graded by the `K`-spans of homogeneous pure tensors, with no flatness
 because the balancing relations are homogeneous. With `R` trivially graded it is the existing
 tensor grading; with `K` trivially graded it grades `SYM_R ≅ R ⊗_K SYM_K`.
 
+*Checked pieces of this grading.* `OddMath/Diagrams/BasisGrading.lean`: a free `R`-module
+with a basis of assigned degrees is graded over `K` by coefficientwise degree
+(`BasisGrading.isInternal_basisPart`, `smul_mem_basisPart`).
+`OddMath/SKM/BubbleCoefficientGradedBase.lean`: `SYM D R` and the ELV coefficient algebra over
+`R` are graded `K`-algebras for this degree (`coefficientDegreeGradedAlgebraOver`,
+`elvCoefficientDegreeGradedAlgebraOver`), compatible with parity
+(`elvCoefficientDegreeOver_parity`) and with homogeneous base scalars
+(`smul_mem_elvCoefficientDegreeOver`). `OddMath/Diagrams/SuperalgebraGradedBase.lean`: the
+one-object supercategory of such a superalgebra is a graded supercategory over `K`.
+`OddMath/Diagrams/BoxProductCoefficientGraded.lean` grades box products over `R` of graded
+supercategories over `K` whose degrees are compatible with the base grading, and
+`OddMath/QuiverHecke/CyclotomicAction/ELVHomGradingOver.lean` assembles these into
+`elvHomGradingOver`, the grading of the ELV coefficient category over a graded base.
+
 **Field-only steps, read over `K`.** The uses of the grading in the deformed reservoir
 argument are: finite dimension of each graded piece over the degree-zero field, finite
 support of the weight spaces, positive closure degree `2dᵢ(r + s + 1)` (joint nilpotence),
