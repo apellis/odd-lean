@@ -264,9 +264,9 @@ theorem tensorMatrixQuotientObservation_sameCross
     ν u v i hv hw pL hl pR hr a] at hout
   exact TensorDotObservation.pair_observation D Sc m cutoff L ΛP ΛR νR ηL i i
     (ReservoirContexts.word_weight D ΛR pL hl) _ _ h₁ h₂ _ hout
-    (crossFunctor_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i i _ _)
-    (crossFunctor_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i i _ _)
-    (crossCell_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i i _ _ _ _) _ _
+    (OddMath.QuiverHecke.ELVOld.ReservoirLayerCells.crossFunctor_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i i _ _)
+    (OddMath.QuiverHecke.ELVOld.ReservoirLayerCells.crossFunctor_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i i _ _)
+    (OddMath.QuiverHecke.ELVOld.ReservoirLayerCells.crossCell_heq D Sc m cutoff L ΛP ΛR pL hl pR hr i i _ _ _ _) _ _
     (samePathWord D ν u v i) (samePathWord D ν u v i) _ _
     (tensorPathValueChart_pair_heq D Sc m cutoff ΛP ΛR L p hp νR ηL i i _ _
       ((samePathWord D ν u v i).trans (PowerWordContexts.extendedWord_eq _ _)))
@@ -388,9 +388,9 @@ theorem tensorMatrixQuotientObservation_cross (hij : i ≠ j)
     ν u v i j hv₁ hv₂ hw₁ hw₂ hs pL hl pR hr a hij] at hout
   exact TensorDotObservation.pair_observation D Sc m cutoff L ΛP ΛR νR ηL i j
     (ReservoirContexts.word_weight D ΛR pL hl) _ _ h₁ h₂ _ hout
-    (crossFunctor_heq D Sc m cutoff L ΛP ΛR pL hl _ hr i j _ _)
-    (crossFunctor_heq D Sc m cutoff L ΛP ΛR pL hl _ hr j i _ _)
-    (crossCell_heq D Sc m cutoff L ΛP ΛR pL hl _ hr i j _ _ _ _) _ _
+    (OddMath.QuiverHecke.ELVOld.ReservoirLayerCells.crossFunctor_heq D Sc m cutoff L ΛP ΛR pL hl _ hr i j _ _)
+    (OddMath.QuiverHecke.ELVOld.ReservoirLayerCells.crossFunctor_heq D Sc m cutoff L ΛP ΛR pL hl _ hr j i _ _)
+    (OddMath.QuiverHecke.ELVOld.ReservoirLayerCells.crossCell_heq D Sc m cutoff L ΛP ΛR pL hl _ hr i j _ _ _ _) _ _
     (crossSourcePathWord D ν u v i j) (crossTargetPathWord D ν u v i j) _ _
     (tensorPathValueChart_pair_heq D Sc m cutoff ΛP ΛR L p hp νR ηL i j _ _
       ((crossSourcePathWord D ν u v i j).trans (PowerWordContexts.extendedWord_eq _ _)))
