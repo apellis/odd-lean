@@ -75,8 +75,13 @@ form a basis of the homogeneous component `SYM_z` over every commutative ring
 (`SYM.componentBasis`, `OddMath/SKM/SymComponentBasis.lean`), so `dim SYM_z` is the number of
 monomials of bidegree `z` over every field (`SYM.finrank_component`) and the coefficients of
 `S = symDimension` in BE2 (dum) count monomials (`symDimension_coeff_eq_card`). This is the
-coefficientwise form of the corrected product of ERRATA [BE2] 8; the product identity as
-formal power series is not stated.
+coefficientwise form of the corrected product of ERRATA [BE2] 8. The product identity itself
+is `SKM.hasProd_symFactor` / `SKM.symDimension_eq_tprod` (`OddMath/SKM/SymProductFormula.lean`):
+`S` is the coefficientwise convergent product in `PowerSeries ℚ` of `(1 - q^{deg e_{i,r}})⁻¹`
+over the even generators and `1 + π q^{2 d_i}` over the odd generators, under
+`DegreeLocallyFinite`; composed with (dum) it is
+`QuiverHecke.homDimension_eq_form_mul_tprod_symFactor`. Consumer:
+[SymProductFormula](../../scripts/NonVacuity/SymProductFormula.lean).
 
 ## Scope
 
