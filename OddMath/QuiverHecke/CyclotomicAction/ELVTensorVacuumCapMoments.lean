@@ -63,8 +63,9 @@ private theorem map_probe_convolution {R : Type*} [Ring R] [Algebra k' R]
   rw [mem_range] at hr
   rw [PowerSeries.coeff_mk, PowerSeries.coeff_mk]
   by_cases h : r ≤ P
-  · rw [if_pos h, if_pos h, map_smul, Algebra.smul_def, show B + l - r = B + (l - r) by omega]
-  · rw [if_neg h, if_neg h, map_zero, zero_mul]
+  · rw [ite_eq_left h, ite_eq_left h, map_smul, Algebra.smul_def,
+      show B + l - r = B + (l - r) by omega]
+  · rw [ite_eq_right h, ite_eq_right h, map_zero, zero_mul]
 
 variable {I' X' : Type u} [AddCommGroup X']
 
@@ -142,7 +143,6 @@ private theorem odd_zero_cap_moments_of_slide (D : SKM.Datum I' X') {R : Type*} 
   have h₁ := (SwappedVacuum.odd_cap_moments D φ P i hi (2 * P i - 1) e
     (fun l => ρ (SwappedVacuum.zeroHeightMoment y s u v l)) (fun n => ρ (u ≫ (y ^ n) ≫ ell))
     hK hT (r + 1)).1
-  dsimp only at h₀ h₁
   rw [SwappedVacuum.zeroHeightMoment, ite_eq_right (show 2 * r + 1 ≠ 0 by omega),
     show 2 * r + 1 - 1 = 2 * r by omega] at h₀
   rw [SwappedVacuum.zeroHeightMoment, ite_eq_right (show 2 * (r + 1) ≠ 0 by omega),
@@ -210,7 +210,6 @@ private theorem even_zero_cap_moments_of_slide (D : SKM.Datum I' X') {R : Type*}
   have h := SwappedVacuum.even_cap_moments D φ P i hi (P i - 1)
     (fun l => ρ (SwappedVacuum.zeroHeightMoment y s u v l)) (fun n => ρ (u ≫ (y ^ n) ≫ ell))
     hK hT (l + 1)
-  dsimp only at h
   rw [SwappedVacuum.zeroHeightMoment, ite_eq_right (show l + 1 ≠ 0 by omega),
     Nat.add_sub_cancel] at h
   exact h
@@ -316,9 +315,11 @@ private theorem even_reservoir_coefficient (hi : D.parity i = 0) (hN : 0 < cutof
       (capCoefficientLmul D cutoff L).toRingHom (PowerSeries.coeff l
         (PowerSeries.invOfUnit (PowerSeries.rescale (-1) (SKM.SYM.generatorSeries k i)) 1)) := by
   refine tensorVacuumEndDecode_eq_of D Sc m cutoff L _ _ fun z => ?_
-  rw [unit_cap_moment D Sc m cutoff L i hN, capCoefficientLmul_ringHom_apply,
-    tensorPowerVacuumCap_moment_apply, even_colour_signedMoment D Sc cutoff L i hi hN l,
-    completeCoefficient]
+  rw [unit_cap_moment D Sc m cutoff L i hN, capCoefficientLmul_ringHom_apply]
+  have hm := tensorPowerVacuumCap_moment_apply D Sc m cutoff L i hN (cutoff i - 1 + l) z
+  rw [even_colour_signedMoment D Sc cutoff L i hi hN l] at hm
+  show _ = completeCoefficient D cutoff L i l * _
+  convert hm using 3
 
 /-- The reservoir series of the tensor vacuum at an even colour, in the decode
 chart: `T(z) = 1/E(-z)`, the complete coefficients. -/
@@ -434,8 +435,8 @@ theorem tensorVacuumNegativeCap_odd_moments
   rw [tensorVacuumEndDecode_apply, capCoefficientLmul_apply] at e1
   rw [tensorVacuumEndDecode_apply, cap_end_mul_apply, capCoefficientLmul_apply,
     cap_lmul_apply] at e2
-  refine ⟨e1, ?_⟩
-  rw [e2, ← mul_assoc, ← mul_assoc, (delta_commute D cutoff L i hi _).eq]
+  refine ⟨e1, e2.trans ?_⟩
+  rw [← mul_assoc, ← mul_assoc, (delta_commute D cutoff L i hi _).eq]
 
 include sy hc in
 /-- **Odd colour, zero height, on the tensor vacuum.** For `cutoff i = 2 M`,
