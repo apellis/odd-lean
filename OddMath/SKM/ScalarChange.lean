@@ -8,7 +8,7 @@ import OddMath.SKM.MoreGenerators
 # Transport of Brundan–Ellis scalar parameters
 
 Brundan–Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2,
-(1.5), (1.6), (1.17). A commutative ring homomorphism carries the prescribed
+(1.3), (1.4), (1.17). A commutative ring homomorphism carries the prescribed
 unit and homogeneous parameters, and the shifted bubble units, to a new
 admissible choice over the target ring. The induced map on presented
 Hom spaces is constructed in `ScalarChangePresentation.lean`.
