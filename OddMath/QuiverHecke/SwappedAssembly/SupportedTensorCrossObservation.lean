@@ -179,7 +179,7 @@ section Same
 variable (ν : X) (u v : List (Letter I)) (i : I)
   {c : I →₀ ℕ} (hv : StepValid (true,i) false (0,c))
   (hw : StepValid (true,i) false (nextSector (true,i) false (0,c)))
-  (pL : SPath (SKM.lay D ν u (.cross i i) v).left (0,cS) (0,c))
+  (pL : SPath (SKM.lay D ν u (.cross i i) v).left (0,tensorSourceContent D ΛP ΛR s) (0,c))
   (hl : ∀ a ∈ (SKM.lay D ν u (.cross i i) v).left, a.l.1 = true)
   (pR : SPath (SKM.lay D ν u (.cross i i) v).right
     (0,c - Finsupp.single i 1 - Finsupp.single i 1) (0,0))
@@ -288,7 +288,7 @@ variable (ν : X) (u v : List (Letter I)) (i j : I)
   (hw₂ : StepValid (true,i) false (nextSector (true,j) false (0,c)))
   (hs : nextSector (true,j) false (nextSector (true,i) false (0,c)) =
     nextSector (true,i) false (nextSector (true,j) false (0,c)))
-  (pL : SPath (SKM.lay D ν u (.cross i j) v).left (0,cS) (0,c))
+  (pL : SPath (SKM.lay D ν u (.cross i j) v).left (0,tensorSourceContent D ΛP ΛR s) (0,c))
   (hl : ∀ a ∈ (SKM.lay D ν u (.cross i j) v).left, a.l.1 = true)
   (pR : SPath (SKM.lay D ν u (.cross i j) v).right
     (0,c - Finsupp.single j 1 - Finsupp.single i 1) (0,0))

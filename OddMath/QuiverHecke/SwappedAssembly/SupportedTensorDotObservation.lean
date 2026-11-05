@@ -276,7 +276,7 @@ local notation "colApp" =>
 section Dot
 variable (ν : X) (u v : List (Letter I)) (i : I)
   {c : I →₀ ℕ} (hv : StepValid (true,i) false (0,c))
-  (pL : SPath (SKM.lay D ν u (.dot i) v).left (0,cS) (0,c))
+  (pL : SPath (SKM.lay D ν u (.dot i) v).left (0,tensorSourceContent D ΛP ΛR s) (0,c))
   (hl : ∀ a ∈ (SKM.lay D ν u (.dot i) v).left, a.l.1 = true)
   (pR : SPath (SKM.lay D ν u (.dot i) v).right (0,c - Finsupp.single i 1) (0,0))
   (hr : ∀ a ∈ (SKM.lay D ν u (.dot i) v).right, a.l.1 = true)
