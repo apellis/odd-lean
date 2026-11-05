@@ -51,7 +51,6 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
 local notation "bound" => PowerWordContent.powerBound D cutoff L
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR
 local notation "ν₀" => (P).wt ((0, 0) : Sector I)
-local notation "Zt" => (SupportedSectors.tensorVacuum D Sc m cutoff L ΛP ΛR).obj
 local notation "H" => VacuumTensor.probeFunctor D (parameterTwist D Sc) m cutoff bound
   ((BalancedInduction.restriction
     (contentInclusion D (parameterTwist D Sc) cutoff bound (0 : Multiset I))).obj
@@ -82,7 +81,8 @@ vacuum make the evaluated bend an isomorphism `s`, and the decoded moment
 `momentSeries (probeSeriesInv)` at `i`. -/
 theorem tensorVacuum_zeroHeight_even_moments (hi : D.parity i = 0)
     (hP : 0 < probeCutoff D m i) (hcut : cutoff i = m i)
-    (Z : (P).H ((0, 0) : Sector I)) (hZ : Z = Zt)
+    (Z : (P).H ((0, 0) : Sector I))
+    (hZ : Z = tensorSectorInput D Sc m cutoff L ΛR ΛP hcP hcR)
     (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
         ((0, 0) : Sector I))
       (p : SPath (SKM.wd D ν₀ [SKM.up i, SKM.dn i]) ((0, 0) : Sector I) ((0, 0) : Sector I)),
@@ -111,7 +111,7 @@ theorem tensorVacuum_zeroHeight_even_moments (hi : D.parity i = 0)
     omega
   have hex := (vacuumRightwardCupInverse_native_even D Sc m cutoff bound ΛP ΛR hcP hcR
     (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) sy hc i Z
-    (hZ.trans (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hcP hcR).symm) lc dc HN
+    hZ lc dc HN
     hP hi).imp fun _ hB => ProbeWindow.IsCupInverse.inv_of_eq_zero hlen hB
   rw [show vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR
       (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) = H from
@@ -136,7 +136,8 @@ at `i` times the normalized odd coefficient, and `unit ≫ y^(2r+1) ≫ s⁻¹ �
 `(r + 1)`-th coefficient. -/
 theorem tensorVacuum_zeroHeight_odd_moments (hi : D.parity i = 1)
     (hP : 0 < probeCutoff D m i) (hcut : cutoff i = 2 * m i)
-    (Z : (P).H ((0, 0) : Sector I)) (hZ : Z = Zt)
+    (Z : (P).H ((0, 0) : Sector I))
+    (hZ : Z = tensorSectorInput D Sc m cutoff L ΛR ΛP hcP hcR)
     (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
         ((0, 0) : Sector I))
       (p : SPath (SKM.wd D ν₀ [SKM.up i, SKM.dn i]) ((0, 0) : Sector I) ((0, 0) : Sector I)),
@@ -174,7 +175,7 @@ theorem tensorVacuum_zeroHeight_odd_moments (hi : D.parity i = 1)
     omega
   have hex := (vacuumRightwardCupInverse_native_odd D Sc m cutoff bound ΛP ΛR hcP hcR
     (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) sy hc i Z
-    (hZ.trans (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hcP hcR).symm) lc dc HN
+    hZ lc dc HN
     hP hi).imp fun _ hB => ProbeWindow.IsCupInverse.inv_of_eq_zero hlen hB
   rw [show vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR
       (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) = H from
