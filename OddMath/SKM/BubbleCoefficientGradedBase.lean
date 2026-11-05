@@ -65,8 +65,10 @@ theorem coefficientDegreePartOver_mul {m n : ℤ} {x y : SYM D R}
     ← (coefficientBasis D R).linearCombination_repr y, Finsupp.linearCombination_apply,
     Finsupp.linearCombination_apply, Finsupp.sum_mul]
   refine Submodule.sum_mem _ fun a _ => ?_
+  dsimp only
   rw [Finsupp.mul_sum]
   refine Submodule.sum_mem _ fun c _ => ?_
+  dsimp only
   rw [smul_mul_smul_comm]
   by_cases h : Disjoint a.2 c.2
   · obtain ⟨z, hz⟩ := coefficientBasis_mul_int D R h
@@ -102,19 +104,22 @@ def coefficientDegreeGradedAlgebraOver : GradedAlgebra (coefficientDegreePartOve
 theorem elvCoefficientRelation_degreeOver {cutoff : I → ℕ} {x : SYM D R}
     (hx : ELVCoefficientRelation D R cutoff x) :
     ∃ n, x ∈ coefficientDegreePartOver D sy 𝒜 n := by
+  have he : ∀ (i : I) (r : ℕ), ∃ n, e D R i r ∈ coefficientDegreePartOver D sy 𝒜 n := by
+    intro i r
+    have h := coefficientBasis_mem_over (sy := sy) (𝒜 := 𝒜)
+      ((Finsupp.single (i, r) 1, ∅) : CoefficientIndex D)
+    rw [coefficientBasis_elementary D R i r] at h
+    exact ⟨_, h⟩
   rcases hx with ⟨i, r, _, rfl⟩ | ⟨i, _, rfl⟩
-  · exact ⟨_, by simpa using coefficientBasis_mem_over (sy := sy) (𝒜 := 𝒜)
-      ((Finsupp.single (i, r) 1, ∅) : CoefficientIndex D)⟩
-  · have hd : delta D R i ∈ coefficientDegreePartOver D sy 𝒜 _ := by
-      simpa using coefficientBasis_mem_over (sy := sy) (𝒜 := 𝒜)
-        ((0, {i}) : CoefficientIndex D)
+  · exact he i r
+  · have hd := coefficientBasis_mem_over (sy := sy) (𝒜 := 𝒜) ((0, {i}) : CoefficientIndex D)
+    rw [coefficientBasis_delta D R i] at hd
     cases h : cutoff i.1 / 2 with
-    | zero => exact ⟨_, by simpa [elvChi, h] using hd⟩
+    | zero =>
+      simpa [elvChi, h] using (⟨_, hd⟩ : ∃ n, delta D R i ∈ coefficientDegreePartOver D sy 𝒜 n)
     | succ r =>
-      have he : e D R i.1 r ∈ coefficientDegreePartOver D sy 𝒜 _ := by
-        simpa using coefficientBasis_mem_over (sy := sy) (𝒜 := 𝒜)
-          ((Finsupp.single (i.1, r) 1, ∅) : CoefficientIndex D)
-      exact ⟨_, by simpa [elvChi, h] using coefficientDegreePartOver_mul hd he⟩
+      obtain ⟨n, hn⟩ := he i.1 r
+      exact ⟨_, coefficientDegreePartOver_mul hd (by simpa [elvChi, h] using hn)⟩
 
 attribute [local instance] coefficientDegreeGradedAlgebraOver
 
@@ -176,6 +181,7 @@ theorem elvCoefficientDegreeOver_parity (cutoff : I → ℕ) {n : ℤ}
   rw [← (coefficientBasis D R).linearCombination_repr y, Finsupp.linearCombination_apply,
     map_finsuppSum, map_finsuppSum]
   refine Submodule.sum_mem _ fun a _ => ?_
+  dsimp only
   rw [map_smul, map_smul, GradedAlgebra.proj_apply]
   by_cases h : (a.2.card : ZMod 2) = p
   · subst p
