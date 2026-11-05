@@ -42,7 +42,6 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
 local notation "bound" => PowerWordContent.powerBound D cutoff L
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR
 local notation "ν₀" => (P).wt ((0, 0) : Sector I)
-local notation "Zt" => (SupportedSectors.tensorVacuum D Sc m cutoff L ΛP ΛR).obj
 local notation "H" => VacuumTensor.probeFunctor D (parameterTwist D Sc) m cutoff bound
   ((BalancedInduction.restriction
     (contentInclusion D (parameterTwist D Sc) cutoff bound (0 : Multiset I))).obj
@@ -70,7 +69,8 @@ decoded moments: the shift `N - 2M - 1 + 2r` gives the `r`-th coefficient of
 normalized odd coefficient. -/
 theorem tensorVacuum_rightward_odd_moments (hi : D.parity i = 1)
     (hP : 0 < probeCutoff D m i) (hPN : 2 * m i < cutoff i)
-    (Z : (P).H ((0, 0) : Sector I)) (hZ : Z = Zt)
+    (Z : (P).H ((0, 0) : Sector I))
+    (hZ : Z = tensorSectorInput D Sc m cutoff L ΛR ΛP hcP hcR)
     (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
         ((0, 0) : Sector I))
       (p : SPath (SKM.wd D ν₀ [SKM.up i, SKM.dn i]) ((0, 0) : Sector I) ((0, 0) : Sector I)),
@@ -118,7 +118,7 @@ theorem tensorVacuum_rightward_odd_moments (hi : D.parity i = 1)
       odd_probeCutoff_right D m i hi]
   have hex := vacuumRightwardCupInverse_bubbleEntries D Sc m cutoff bound ΛP ΛR hcP hcR
     (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) sy hc i Z
-    (hZ.trans (tensorSectorInput_eq_supported D Sc m cutoff L ΛR ΛP hcP hcR).symm) lc dc HN cc
+    hZ lc dc HN cc
     hP hi
   rw [show vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR
       (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) = H from
