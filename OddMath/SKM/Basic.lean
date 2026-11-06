@@ -2,6 +2,7 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
+-- Temporary: forces a full rebuild to measure CI with four Lean threads.
 import LieLean.RepresentationTheory.Crystal.Basic
 import StringDiagrams.Super.Presented
 
