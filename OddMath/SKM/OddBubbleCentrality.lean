@@ -48,7 +48,7 @@ private theorem bubRs_one_slide_ne (i j : I) (μ : X) (hi : D.parity i = 1) (hij
     bubRs_neg cs i _ (show (1 : ℤ) - D.dn i j < 0 by omega)]
   simp only [lbub, map_zero, Limits.zero_comp, smul_zero, add_zero]
   rw [sum_eq_zero (fun p hp => sum_eq_zero (fun q _ => by
-    have hp' := mem_Ioo.mp hp
+    have hp' := mem_range.mp hp
     by_cases ht : (1 : ℤ) + p - D.dn i j < 0
     · rw [bubRs_neg cs i _ ht, map_zero, Limits.zero_comp, smul_zero]
     · have hpval : p + 1 = D.dn i j := by omega
