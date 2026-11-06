@@ -45,6 +45,9 @@ theorem affineUnit_mem_degreeOver {v w : List I} {d : ℤ}
     (SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff))
   letI := Supercategory.restrictScalars K R
     (SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff))
+  haveI : ∀ A B : SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff),
+      IsScalarTower K R (A ⟶ B) :=
+    Linear.isScalarTower_restrictScalars K R _
   letI := elvCoefficientCategoryGradingOver D sy 𝒜 cutoff
   letI := Linear.restrictScalars K R (H D Sc)
   letI := Supercategory.restrictScalars K R (H D Sc)
@@ -62,6 +65,9 @@ theorem rightContext_mem_degreeOver (σ : List I) {v w : List I} {n : ℤ}
     (SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff))
   letI := Supercategory.restrictScalars K R
     (SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff))
+  haveI : ∀ A B : SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff),
+      IsScalarTower K R (A ⟶ B) :=
+    Linear.isScalarTower_restrictScalars K R _
   letI := elvCoefficientCategoryGradingOver D sy 𝒜 cutoff
   letI := Linear.restrictScalars K R (H D Sc)
   letI := Supercategory.restrictScalars K R (H D Sc)
