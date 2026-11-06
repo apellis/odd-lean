@@ -2656,3 +2656,5 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumRightEntriesEven
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumCoefficientDecode
 import OddMath.QuiverHecke.SwappedAssembly.SupportedLeftVacuumEntries
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumRightEntriesOdd
+import OddMath.SKM.BWWEvenDictionary
+import OddMath.SKM.BWWEvenGraded
