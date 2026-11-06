@@ -223,6 +223,15 @@ theorem toBWW_c_of_interior (Sc : Scalars D k) {i j : I} (hij : i ≠ j) {p q : 
   have h3 : 0 < p ∧ p < D.dn i j ∧ 0 < q ∧ q < D.dn j i := ⟨hp, hp', hq, hq'⟩
   simp [toBWW_c, bwwCoeff, hij, h1, h2, h3]
 
+/-- The coefficients of `Sc.toBWW` with `p = 0` or `q = 0` below the corners vanish. -/
+theorem toBWW_c_eq_zero_of_pure (Sc : Scalars D k) {i j : I} (hij : i ≠ j) {p q : ℕ}
+    (hp : p < D.dn i j) (hq : q < D.dn j i) (hpq : p = 0 ∨ q = 0) :
+    Sc.toBWW.c i j p q = 0 := by
+  have h1 : ¬(p = D.dn i j ∧ q = 0) := by omega
+  have h2 : ¬(p = 0 ∧ q = D.dn j i) := by omega
+  have h3 : ¬(0 < p ∧ p < D.dn i j ∧ 0 < q ∧ q < D.dn j i) := by omega
+  simp [toBWW_c, bwwCoeff, hij, h1, h2, h3]
+
 /-- `Sc.toBWW` satisfies (1.31) exactly when `Sc` does. -/
 theorem toBWW_homogeneous_iff (Sc : Scalars D k) : Sc.toBWW.Homogeneous ↔ Sc.Homogeneous := by
   constructor
