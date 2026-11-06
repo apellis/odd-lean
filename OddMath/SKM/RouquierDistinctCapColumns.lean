@@ -157,7 +157,7 @@ theorem distinctCapQuadraticColumn_of_neg (hh : D.h i a < 0) (n : ℕ)
     rw [M.quadNe i j hne hd hj hji hi hij]
     simp only [map_add, map_smul, map_sum]
     rw [hleading, hmiddle, smul_zero, add_zero]
-    have hinterior : (∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+    have hinterior : (∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         Sc.s i j p q • T.distinctCapColumnLinear hj hji hprev n
           (rouquierPower (T.dot j hj) q ▷ T.E i hji ≫
             T.E j hj ◁ rouquierPower (T.dot i hji) p)) = 0 := by

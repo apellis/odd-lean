@@ -66,7 +66,7 @@ theorem probeMixedCross_quadratic_zero (pre post : List I) (i j : I)
 theorem probeMixedCross_quadratic (pre post : List I) (i j : I)
     (hij : i ≠ j) (hd : D.d i j ≠ 0) :
     probeMixedCross D Sc pre post i j ≫ probeMixedCross D Sc pre post j i =
-      (∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+      (∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         Sc.s i j p q • (dotE D Sc (pre ++ [i,j] ++ post) pre.length ^ p *
           dotE D Sc (pre ++ [i,j] ++ post) (pre.length+1) ^ q)) +
       ((Sc.t i j : k) • dotE D Sc (pre ++ [i,j] ++ post) pre.length ^ D.dn i j +
@@ -96,7 +96,7 @@ theorem probeMixedCross_remainder_right (pre post : List I) (i j : I)
           R * dotE D Sc (pre ++ [i,j] ++ post) (pre.length+1) := by
   let u := dotE D Sc (pre ++ [i,j] ++ post) pre.length
   let v := dotE D Sc (pre ++ [i,j] ++ post) (pre.length+1)
-  let C := ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+  let C := ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
     Sc.s i j p q • (u^p * v^(q-1))
   have hdji : D.d j i ≠ 0 := fun h => hd ((D.d_eq_zero_iff i j).mpr h)
   have hdn : 0 < D.dn j i := by
@@ -107,7 +107,7 @@ theorem probeMixedCross_remainder_right (pre post : List I) (i j : I)
     rw [← pow_succ]
     congr 1
     omega
-  have hs : (∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+  have hs : (∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
       Sc.s i j p q • (u^p * v^q)) = C * v := by
     simp only [C, Finset.sum_mul]
     apply Finset.sum_congr rfl
@@ -118,7 +118,7 @@ theorem probeMixedCross_remainder_right (pre post : List I) (i j : I)
   refine ⟨C + (Sc.t j i : k) • v^(D.dn j i-1), ?_⟩
   have hQ := probeMixedCross_quadratic D Sc pre post i j hij hd
   change probeMixedCross D Sc pre post i j ≫ probeMixedCross D Sc pre post j i =
-    (∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+    (∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
       Sc.s i j p q • (u^p * v^q)) +
       ((Sc.t i j : k) • u^(D.dn i j) + (Sc.t j i : k) • v^(D.dn j i)) at hQ
   change probeMixedCross D Sc pre post i j ≫ probeMixedCross D Sc pre post j i =
@@ -165,7 +165,7 @@ theorem probeMixedCross_remainder_left (pre post : List I) (i j : I)
   let u := dotE D Sc (pre ++ [i,j] ++ post) pre.length
   let v := dotE D Sc (pre ++ [i,j] ++ post) (pre.length+1)
   let ε := SKM.zsign k (D.parity i * D.parity j)
-  let C := ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+  let C := ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
     (Sc.s i j p q * ε^p) • (u^p * v^(q-1))
   have hdji : D.d j i ≠ 0 := fun h => hd ((D.d_eq_zero_iff i j).mpr h)
   have hdn : 0 < D.dn j i := by
@@ -176,7 +176,7 @@ theorem probeMixedCross_remainder_left (pre post : List I) (i j : I)
     rw [← pow_succ']
     congr 1
     omega
-  have hs : (∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+  have hs : (∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
       Sc.s i j p q • (u^p * v^q)) = v * C := by
     simp only [C, Finset.mul_sum]
     apply Finset.sum_congr rfl
@@ -190,7 +190,7 @@ theorem probeMixedCross_remainder_left (pre post : List I) (i j : I)
   refine ⟨C + (Sc.t j i : k) • v^(D.dn j i-1), ?_⟩
   have hQ := probeMixedCross_quadratic D Sc pre post i j hij hd
   change probeMixedCross D Sc pre post i j ≫ probeMixedCross D Sc pre post j i =
-    (∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+    (∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
       Sc.s i j p q • (u^p * v^q)) +
       ((Sc.t i j : k) • u^(D.dn i j) + (Sc.t j i : k) • v^(D.dn j i)) at hQ
   change probeMixedCross D Sc pre post i j ≫ probeMixedCross D Sc pre post j i =

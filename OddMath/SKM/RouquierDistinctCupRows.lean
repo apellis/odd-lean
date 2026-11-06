@@ -161,7 +161,7 @@ theorem distinctCupQuadraticRow_of_gt (hh : D.d i j < D.h i b) (n : ℕ)
     rw [M.quadNe j i hne.symm hdji hi hij hj hji]
     simp only [map_add, map_smul, map_sum]
     rw [hmiddle, smul_zero, zero_add, hleading]
-    have hinterior : (∑ p ∈ Finset.Ioo 0 (D.dn j i), ∑ q ∈ Finset.Ioo 0 (D.dn i j),
+    have hinterior : (∑ p ∈ Finset.range (D.dn j i), ∑ q ∈ Finset.range (D.dn i j),
         Sc.s j i p q • T.distinctCupRowLinear hi hij hupper n
           (rouquierPower (T.dot i hi) q ▷ T.E j hij ≫
             T.E i hi ◁ rouquierPower (T.dot j hij) p)) = 0 := by

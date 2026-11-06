@@ -95,7 +95,7 @@ commutative polynomial ring. The disconnected branch has one constant. -/
 def elvSignedPairQuadEval {R : Type*} [Ring R] [Algebra k R]
     (i j : I) (A B : R) : R :=
   if D.d i j = 0 then (Sc.t i j : k) • 1 else
-    ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+    ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
       (SKM.zsign k (D.parity i * (p / 2 : ℕ) + D.parity j * (q / 2 : ℕ)) *
         Sc.s i j p q) • (A ^ p * B ^ q) +
       ((SKM.zsign k (D.parity i * (D.dn i j / 2 : ℕ)) * (Sc.t i j : k)) •

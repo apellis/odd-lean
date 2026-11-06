@@ -719,7 +719,7 @@ theorem cl_braid_iji_of {w : List I} (l r : List I) (hij : i ≠ j)
       ∑ s ∈ Finset.range (D.dn i j),
           (zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
             (dotE D Sc w p ^ (D.dn i j - 1 - s) * dotE D Sc w (p + 2) ^ s) +
-        ∑ p' ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+        ∑ p' ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
           ∑ s ∈ Finset.range p', (zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p' q) •
             (dotE D Sc w p ^ (p' - 1 - s) * dotE D Sc w (p + 1) ^ q *
               dotE D Sc w (p + 2) ^ s) := by
@@ -736,7 +736,7 @@ theorem braid_iji_word (hij : i ≠ j) {b : ℕ} (hb : b + 1 < M) :
           (zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
             (xw D Sc i j M (b + 1) b ^ (D.dn i j - 1 - s) *
               xw D Sc i j M (b + 1) (b + 1 + 1) ^ s) +
-        ∑ p' ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+        ∑ p' ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
           ∑ s ∈ Finset.range p', (zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p' q) •
             (xw D Sc i j M (b + 1) b ^ (p' - 1 - s) * xw D Sc i j M (b + 1) (b + 1) ^ q *
               xw D Sc i j M (b + 1) (b + 1 + 1) ^ s) := by
@@ -771,7 +771,7 @@ theorem interior_corr (hij : i ≠ j) (hM : M = D.dn i j + 1) {b : ℕ} (hb : b 
   change chR (tw D Sc i j M (b + 1)) (b + 1 + 1) (M - (b + 1 + 1)) *
     chL (tw D Sc i j M (b + 1)) 0 b * (_ + _) * eIdem D Sc i j M (b + 1) = _
   simp only [mul_add, add_mul, Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc]
-  rw [Finset.sum_eq_zero (s := Finset.Ioo 0 (D.dn i j)) fun p' hp' =>
+  rw [Finset.sum_eq_zero (s := Finset.range (D.dn i j)) fun p' hp' =>
     Finset.sum_eq_zero fun q _ => Finset.sum_eq_zero fun s hs => by
       rw [Finset.mem_Ioo] at hp'
       rw [Finset.mem_range] at hs
@@ -883,7 +883,7 @@ theorem cl_cross_cross_of {w : List I} (l r : List I) {x y : I} (hxy : x ≠ y) 
     (hw : w = l ++ [x, y] ++ r) {p : ℕ} (hp : l.length = p) {gs : List PG}
     (hgs : gs = [.cross p, .cross p]) (h : SChain w (pl w gs) w) :
     cl D Sc w w gs h =
-      ∑ p' ∈ Finset.Ioo 0 (D.dn x y), ∑ q ∈ Finset.Ioo 0 (D.dn y x),
+      ∑ p' ∈ Finset.range (D.dn x y), ∑ q ∈ Finset.range (D.dn y x),
         Sc.s x y p' q • (dotE D Sc w p ^ p' * dotE D Sc w (p + 1) ^ q) +
       ((Sc.t x y : k) • dotE D Sc w p ^ D.dn x y +
         (Sc.t y x : k) • dotE D Sc w (p + 1) ^ D.dn y x) := by

@@ -28,7 +28,7 @@ def tripleBraidCorrection (i j : I) {n : ℕ} (w : Word I n) :
     (SKM.zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
       (dotE D Sc (tripleWord i j i w).1 w.1.length ^ (D.dn i j - 1 - s) *
         dotE D Sc (tripleWord i j i w).1 (w.1.length + 2) ^ s) +
-    ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+    ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
       ∑ s ∈ Finset.range p,
         (SKM.zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p q) •
           (dotE D Sc (tripleWord i j i w).1 w.1.length ^ (p - 1 - s) *

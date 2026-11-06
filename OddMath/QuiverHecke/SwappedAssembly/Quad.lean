@@ -311,7 +311,7 @@ structure CrossQuad (gens : P.Generators) : Prop where
     crossCross gens i j ν p p Z =
       (Sc.t i j : k) • compPow (leftDot gens i j ν p Z) (D.dn i j) +
         (Sc.t j i : k) • compPow (rightDot gens i j ν p Z) (D.dn j i) +
-        ∑ a ∈ Finset.Ioo 0 (D.dn i j), ∑ b ∈ Finset.Ioo 0 (D.dn j i),
+        ∑ a ∈ Finset.range (D.dn i j), ∑ b ∈ Finset.range (D.dn j i),
           Sc.s i j a b • (compPow (rightDot gens i j ν p Z) b ≫
             compPow (leftDot gens i j ν p Z) a)
 

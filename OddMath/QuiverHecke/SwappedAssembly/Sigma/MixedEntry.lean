@@ -256,7 +256,7 @@ theorem isIso_homDistinctMixedMateDot_param {a b c d : B} (E : a ⟶ b) {E' : c 
         (Sc.t i j : k) • mixedPostTargetPreDot (k := k) E κ H (E' := E') (F' := F') x ^
             D.dn i j +
           (Sc.t j i : k) • mixedPostTargetPostDot (k := k) E κ H (F' := F') y ^ D.dn j i +
-          ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+          ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
             Sc.s i j p q • (mixedPostTargetPreDot (k := k) E κ H (E' := E') (F' := F') x ^ p *
               mixedPostTargetPostDot (k := k) E κ H (F' := F') y ^ q))) := by
   set ex := if D.parity i = 1 then 2 else 1

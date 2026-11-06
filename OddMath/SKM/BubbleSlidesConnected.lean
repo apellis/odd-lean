@@ -26,7 +26,7 @@ def bubbleSlideRHSR (i j : I) (μ : X) (n : ℤ) :=
   (Sc.t i j : k) • lbub j μ (bubRs cs i (wt D μ [up j]) n) +
   (Sc.t j i : k) • (lbub j μ (bubRs cs i (wt D μ [up j]) (n - D.dn i j)) ≫
     cl D Sc μ [up j] [up j] (dotsL [] j [] (D.dn j i))) +
-  ∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+  ∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
     Sc.s i j p q • (lbub j μ (bubRs cs i (wt D μ [up j]) (n + p - D.dn i j)) ≫
       cl D Sc μ [up j] [up j] (dotsL [] j [] q))
 
@@ -34,7 +34,7 @@ def bubbleSlideRHSL (i j : I) (μ : X) (n : ℤ) :=
   (Sc.t i j : k) • rbub j μ (bubLs cs i (wt D μ []) n) +
   (Sc.t j i : k) • (cl D Sc μ [up j] [up j] (dotsL [] j [] (D.dn j i)) ≫
     rbub j μ (bubLs cs i (wt D μ []) (n - D.dn i j))) +
-  ∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+  ∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
     Sc.s i j p q • (cl D Sc μ [up j] [up j] (dotsL [] j [] q) ≫
       rbub j μ (bubLs cs i (wt D μ []) (n + p - D.dn i j)))
 
@@ -74,13 +74,13 @@ theorem bubblePolynomialCoeff_conv_right (i j : I) (μ : X) (hd : 0 < D.dn i j) 
     bubbleConvolution B (bubbleSlidePolynomialCoeff (Sc := Sc) i j μ) n =
     B n + ((↑(Sc.t i j)⁻¹ : k) * (Sc.t j i : k)) •
       (if D.dn i j ≤ n then B (n - D.dn i j) ≫ cl D Sc μ [up j] [up j] (dotsL [] j [] (D.dn j i)) else 0) +
-    ∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+    ∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
       ((↑(Sc.t i j)⁻¹ : k) * Sc.s i j p q) • (if D.dn i j - p ≤ n then
         B (n - (D.dn i j - p)) ≫ cl D Sc μ [up j] [up j] (dotsL [] j [] q) else 0) := by
   rw [bubbleConvolution]
   simp only [bubbleSlidePolynomialCoeff_add i j μ hd, Preadditive.comp_add, Preadditive.comp_sum, sum_add_distrib]
-  rw [sum_comm (s := range (n + 1)) (t := Ioo 0 (D.dn i j))]
-  simp_rw [sum_comm (s := range (n + 1)) (t := Ioo 0 (D.dn j i)), bubbleSlideMonomial_sum_right]
+  rw [sum_comm (s := range (n + 1)) (t := range (D.dn i j))]
+  simp_rw [sum_comm (s := range (n + 1)) (t := range (D.dn j i)), bubbleSlideMonomial_sum_right]
   simp [comp_ite]
 
 theorem bubbleR_conv_normalize (i j : I) (μ : X) (hd : 0 < D.dn i j) (n : ℕ) :
@@ -227,7 +227,7 @@ theorem eq_7_11_connected (i j : I) (μ : X) (hij : i ≠ j) (hd : 0 < D.d i j) 
     (Sc.t i j : k) • lbub j μ (bubRs cs i (wt D μ [up j]) n) +
     (Sc.t j i : k) • (lbub j μ (bubRs cs i (wt D μ [up j]) (n - D.dn i j)) ≫
       cl D Sc μ [up j] [up j] (dotsL [] j [] (D.dn j i))) +
-    ∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+    ∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
       Sc.s i j p q • (lbub j μ (bubRs cs i (wt D μ [up j]) (n + p - D.dn i j)) ≫
         cl D Sc μ [up j] [up j] (dotsL [] j [] q)) := by
   by_cases hn : n < 0
@@ -238,7 +238,7 @@ theorem eq_7_11_connected (i j : I) (μ : X) (hij : i ≠ j) (hd : 0 < D.d i j) 
     intro p hp
     apply sum_eq_zero
     intro q _
-    rw [bubRs_neg cs i _ (by have := mem_Ioo.mp hp; omega), map_zero, Limits.zero_comp, smul_zero]
+    rw [bubRs_neg cs i _ (by have := mem_range.mp hp; omega), map_zero, Limits.zero_comp, smul_zero]
   · change rbub j μ (bubRs cs i (wt D μ []) n) = bubbleSlideRHSR cs i j μ n
     have H := congrFun (bubbleCoeff_connected cs i j μ hij hd).1 n.toNat
     have hdn : 0 < D.dn i j := by have := D.dn_cast hij; omega
@@ -257,7 +257,7 @@ theorem eq_7_12_connected (i j : I) (μ : X) (hij : i ≠ j) (hd : 0 < D.d i j) 
     (Sc.t i j : k) • rbub j μ (bubLs cs i (wt D μ []) n) +
     (Sc.t j i : k) • (cl D Sc μ [up j] [up j] (dotsL [] j [] (D.dn j i)) ≫
       rbub j μ (bubLs cs i (wt D μ []) (n - D.dn i j))) +
-    ∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+    ∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
       Sc.s i j p q • (cl D Sc μ [up j] [up j] (dotsL [] j [] q) ≫
         rbub j μ (bubLs cs i (wt D μ []) (n + p - D.dn i j))) := by
   by_cases hn : n < 0
@@ -268,7 +268,7 @@ theorem eq_7_12_connected (i j : I) (μ : X) (hij : i ≠ j) (hd : 0 < D.d i j) 
     intro p hp
     apply sum_eq_zero
     intro q _
-    rw [bubLs_neg cs i _ (by have := mem_Ioo.mp hp; omega), map_zero, Limits.comp_zero, smul_zero]
+    rw [bubLs_neg cs i _ (by have := mem_range.mp hp; omega), map_zero, Limits.comp_zero, smul_zero]
   · change lbub j μ (bubLs cs i (wt D μ [up j]) n) = bubbleSlideRHSL cs i j μ n
     have H := congrFun (bubbleCoeff_connected cs i j μ hij hd).2 n.toNat
     have hdn : 0 < D.dn i j := by have := D.dn_cast hij; omega

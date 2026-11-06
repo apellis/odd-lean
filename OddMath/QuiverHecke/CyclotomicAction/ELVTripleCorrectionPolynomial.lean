@@ -24,7 +24,7 @@ def tripleDotCorrectionSum {R : Type*} [Ring R] [Algebra k R]
 def tripleDotCorrectionPolynomial {R : Type*} [Ring R] [Algebra k R]
     (Sc : SKM.Scalars D k) (i j : I) (A B C : R) : R :=
   tripleDotCorrectionSum D i j (D.dn i j) 0 (Sc.t i j : k) A B C +
-    ∑ r ∈ Finset.Ioo 0 (D.dn i j), ∑ s ∈ Finset.Ioo 0 (D.dn j i),
+    ∑ r ∈ Finset.range (D.dn i j), ∑ s ∈ Finset.range (D.dn j i),
       tripleDotCorrectionSum D i j r s (Sc.s i j r s) A B C
 
 /-- Algebra maps preserve the ordered summand; no commutativity of the three operators is assumed. -/

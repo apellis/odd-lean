@@ -200,7 +200,7 @@ theorem contentMixedDotSum_tensor (β : Multiset I) (i j : I) (r s : ℕ) (d : k
 theorem contentBraidCorrection_eq_sums (i j : I) :
     contentBraidCorrection D Sc i j =
       contentMixedSourceSum D Sc i j (D.dn i j) 0 (Sc.t i j : k) +
-      ∑ r ∈ Finset.Ioo 0 (D.dn i j), ∑ s ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ r ∈ Finset.range (D.dn i j), ∑ s ∈ Finset.range (D.dn j i),
         contentMixedSourceSum D Sc i j r s (Sc.s i j r s) := by
   simp only [contentBraidCorrection, tripleBraidCorrection, contentMixedSourceSum,
     tripleWord, List.nil_append, List.length_nil, zero_add, pow_zero, mul_one]
@@ -211,7 +211,7 @@ def contentMixedBraidPolynomial (β : Multiset I) (i j : I)
     (M : ContentModules D (parameterTwist D Sc) cutoff N β)
     (w : ContentCategory D (parameterTwist D Sc) cutoff N (β + ([i,j,i] : Multiset I))) :=
   contentMixedDotSum D (parameterTwist D Sc) cutoff N β i j (D.dn i j) 0 (Sc.t i j : k) M w +
-    ∑ r ∈ Finset.Ioo 0 (D.dn i j), ∑ s ∈ Finset.Ioo 0 (D.dn j i),
+    ∑ r ∈ Finset.range (D.dn i j), ∑ s ∈ Finset.range (D.dn j i),
       contentMixedDotSum D (parameterTwist D Sc) cutoff N β i j r s (Sc.s i j r s) M w
 
 theorem contentMixedBraidPolynomial_tensor (β : Multiset I) {i j : I} (hij : i ≠ j)

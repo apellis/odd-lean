@@ -132,7 +132,7 @@ theorem bubLs_slide_difference (μ : X) (i j : I) (n : ℕ) :
       have hA := Submodule.smul_mem (dotSlideAtLeast cs μ (up j) 1) (Sc.t j i : k)
         (dots_rbub_bubLs_mem_positive cs μ j i (D.dn j i) hp ((n : ℤ) - D.dn i j))
       have hB :
-          (∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+          (∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
             Sc.s i j p q • (cl D Sc μ [up j] [up j] (dotsL [] j [] q) ≫
               rbub j μ (bubLs cs i (wt D μ []) ((n : ℤ) + p - D.dn i j)))) ∈
           dotSlideAtLeast cs μ (up j) 1 :=

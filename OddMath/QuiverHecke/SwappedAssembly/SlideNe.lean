@@ -408,7 +408,7 @@ variable (Sc) in
 def qExpr {A : C} (a b : End A) (i j : I) : End A :=
   if D.d i j = 0 then (Sc.t i j : k) • (1 : End A) else
     (Sc.t i j : k) • a ^ D.dn i j + (Sc.t j i : k) • b ^ D.dn j i +
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         Sc.s i j p q • (a ^ p * b ^ q)
 
 private theorem comp_pow_signed {A A' : C} (g : A ⟶ A') (a' : End A) (a : End A') (e : k)
