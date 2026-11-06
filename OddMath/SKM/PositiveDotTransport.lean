@@ -163,7 +163,7 @@ theorem bubLs_slide_difference (μ : X) (i j : I) (n : ℕ) :
         omega
       obtain ⟨m, hm⟩ : ∃ m, D.dn j i = m + 1 := ⟨D.dn j i - 1, by omega⟩
       have h0 : cl D Sc μ [up j] [up j] (dotsL [] j [] 0) = 𝟙 _ := by
-        simp only [dotsL, List.replicate_zero, List.append_nil, cl_nil]
+        simp only [dotsL, List.replicate_zero, cl_nil]
       have E : (∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
             Sc.s i j p q • (cl D Sc μ [up j] [up j] (dotsL [] j [] q) ≫
               rbub j μ (bubLs cs i (wt D μ []) ((n : ℤ) + p - D.dn i j)))) =
@@ -228,8 +228,9 @@ theorem betaSYM_eUp (ν : X) (i : I) (m : ℕ) :
     change betaSYM cs ν (SYM.ι D k (.inl (i, m))) = _
     rw [betaSYM_ι]
     by_cases hi : D.parity i = 0
-    · simp only [betaSYMGen, genWeight, if_pos hi, betaGen, one_mul, Nat.cast_add, Nat.cast_one]
-    · simp only [betaSYMGen, genWeight, if_neg hi, betaDGen, Nat.cast_mul, Nat.cast_ofNat,
+    · simp only [betaSYMGen, genWeight, hi, ↓reduceIte, betaGen, one_mul, Nat.cast_add,
+        Nat.cast_one]
+    · simp only [betaSYMGen, genWeight, hi, ↓reduceIte, betaDGen, Nat.cast_mul, Nat.cast_ofNat,
         Nat.cast_add, Nat.cast_one]
 
 /-- Every generator of `SYM` slides up past an upward `j`-strand with its coefficient changed
@@ -251,11 +252,12 @@ theorem betaSYMGen_slide_difference (μ : X) (j : I) (g : SYMGen D) :
       intro p _ hc
       unfold genWeight
       rcases zmod2_cases (D.parity i) with hi | hi
-      · rw [if_pos hi]
+      · simp only [hi, ↓reduceIte]
         exact one_dvd _
-      · rw [if_neg (show ¬ D.parity i = 0 by rw [hi]; decide)]
+      · have hi' : ¬ D.parity i = 0 := by rw [hi]; decide
+        simp only [hi', ↓reduceIte]
         have hs : Sc.s i j p 0 ≠ 0 := fun h => hc (by rw [h, mul_zero])
-        have h1 := (ScalarData.parity_of_ne_zero hs).1
+        have h1 := (Sc.parity_of_ne_zero hs).1
         rw [hi, mul_one, ZMod.natCast_eq_zero_iff] at h1
         have h2 := parity_mul_dn D i j
         rw [hi, one_mul, ZMod.natCast_eq_zero_iff] at h2
@@ -331,9 +333,13 @@ theorem betaSYM_slide_difference (μ : X) (j : I) (p : SYM D k) :
     rw [betaSYM_ι]
     exact betaSYMGen_slide_difference cs μ j g
   | add p q hp hq =>
-    convert Submodule.add_mem _ hp hq using 1
     simp only [map_add, lbub, rbub]
-    abel
+    change (lbub j μ (betaSYM cs _ (SYM.mk D k p)) + lbub j μ (betaSYM cs _ (SYM.mk D k q))) -
+      (rbub j μ (betaSYM cs _ (slideTwist Sc j (SYM.mk D k p))) +
+        rbub j μ (betaSYM cs _ (slideTwist Sc j (SYM.mk D k q)))) ∈
+      dotSlideAtLeast cs μ (up j) 1
+    rw [add_sub_add_comm]
+    exact Submodule.add_mem _ hp hq
   | mul p q hp hq =>
     have hL := lbub_mem_slideSetR cs μ j (betaSYM_isBub cs _ (SYM.mk D k p))
     have hR := rbub_mem_slideSetR cs μ j (betaSYM_isBub cs _ (slideTwist Sc j (SYM.mk D k q)))
