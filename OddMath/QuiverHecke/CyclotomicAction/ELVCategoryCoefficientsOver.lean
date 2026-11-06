@@ -79,7 +79,6 @@ def contentModuleCoeffGradingOver :
     rintro m n x y ⟨c, hc', rfl⟩ ⟨d, hd, rfl⟩
     refine ⟨c ≫ d, ?_, contentRealize_comp D Sc cutoff N β c d⟩
     intro p v
-    change (c ≫ d).app p v ∈ truncatedDegreeOver D sy 𝒜 Sc hP cutoff N v.obj v.obj (m + n)
     rw [Superfunctor.comp_app]
     exact Submodule.add_mem _
       (comp_mem_truncatedDegreeOver D sy 𝒜 Sc hP cutoff N (hc' 0 v) (hd p v))
@@ -88,7 +87,6 @@ def contentModuleCoeffGradingOver :
     rintro n p x ⟨c, hc', rfl⟩
     refine ⟨proj R p c, ?_, contentRealize_proj D Sc cutoff N β p c⟩
     intro q v
-    change (proj R p c).app q v ∈ truncatedDegreeOver D sy 𝒜 Sc hP cutoff N v.obj v.obj n
     rw [Superfunctor.proj_app]
     split_ifs
     · exact hc' _ v
