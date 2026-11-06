@@ -79,11 +79,17 @@ needs `[Finite I]`. Whether the Phase 2 headline needs it is to be checked when 
 statement is local in the colours of `a` and `b`, so a reduction to the finite subdatum on
 those colours is the natural route.
 
-**(4) Diagram conventions.** The relations (2.11) and (2.12) are given in BWW as pictures.
-The quadratic relation is `Qᵢⱼ` pinned to the dots; the braid correction is the divided
-difference `(Qᵢⱼ(x₁, y) - Qᵢⱼ(x₃, y))/(x₁ - x₃)`. The match with `quadSum` and `braidSum`
-of `presBWW` (signs `ζ = 1` on even data, orientation of `x₁`, `x₃`) is the next step; it
-is a relation-by-relation identity, not a change of the parameter class.
+**(4) Diagram conventions (checked against the figures).** In BWW, (2.11) states that the
+double crossing on `Eᵢ Eⱼ` equals `Qᵢⱼ(x, y)` pinned with `x` on the `i`-strand and `y` on the
+`j`-strand. This is `quadSum`: the coefficient `c i j p q` multiplies `u^p v^q`, with `u` on
+the `i`-strand. In (2.12) the first picture is the composite `σ₁σ₂σ₁` read bottom to top.
+That is the left-hand side of `braidEq` in `relationBWW`: the `SChain` lists layers from the
+domain up. The right-hand side is
+`δᵢₖ (Qᵢⱼ(x, y) - Qᵢⱼ(z, y))/(x - z) = Σ cᵢⱼ(p, q) y^q Σ_{s<p} x^s z^{p-1-s}`. This is `braidSum`
+on purely even data, where `ζ = 1` and the sum is symmetric under `s ↦ p - 1 - s`. So
+`presBWW D (bwwPolynomialsEquiv hD P)` has the relations (2.10)–(2.12) of BWW with
+parameters `P`. This identification is by inspection: BWW's 2-category is not formalized
+independently.
 
 None of these bears on the truth of the odd/mixed conjecture. (1) and (3) are about which
 even data the statement reaches, (2) about the base ring.
@@ -101,5 +107,5 @@ with 2 invertible, and `P : BWWPolynomials D k` with `P.GradedHomogeneous sy �
 (bwwPolynomialsEquiv hD P)`) has the bases of BWW 5.6 for every compatible normalization.
 Proof plan: transport `P` through `bwwPolynomialsEquiv`, the grading through
 `gradedHomogeneous_toBWWScalars_iff`, apply the headline, and identify the conclusion with
-5.6 through `EvenBridge.symEquivMvPolynomial` and the relation comparison of mismatch (4).
+5.6 through `EvenBridge.symEquivMvPolynomial` and the relation comparison of (4).
 Mismatches (1)–(3) are the hypotheses this statement keeps beyond BWW's.
