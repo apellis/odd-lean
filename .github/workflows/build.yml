@@ -22,7 +22,7 @@ jobs:
     # the awk filter exits on the first error line, which ends Lake through the closed pipe.
     # Branch builds always run to completion.
     env:
-      FAIL_FAST: '{ print } /^error: / { print "::error::First Lean error above; stopping this pull request build early."; exit 1 }'
+      FAIL_FAST: '{ print }'
     steps:
       - uses: actions/checkout@v4
         with:
