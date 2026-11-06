@@ -23,7 +23,7 @@ ideal `J` (a truncated Rees base), `Qᵢⱼ(u, 0)` is therefore a unit whenever 
   term and the pure terms in `v`.
 * `BWWScalars.PureIn.of_gradedHomogeneous`: graded-homogeneous parameters satisfy `PureIn` for
   any ideal containing the positive-degree parts.
-* `BWWScalars.PureIn.of_toBWW`: Brundan–Ellis parameters satisfy `PureIn` for every ideal.
+* `BWWScalars.PureIn.of_toBWW`: parameters without pure terms satisfy `PureIn` for every ideal.
 * `BWWScalars.isUnit_lowerPoly`: `Qᵢⱼ(u, 0)` is a unit for `u` a unit and `J` nilpotent.
 * `BWWScalars.exists_isUnit_quad_remainders`: `Qᵢⱼ(u, v) = U + R v = U + v R'` with `U` a unit,
   the form used by the distinct-colour mixed crossing arguments.
@@ -65,12 +65,15 @@ theorem PureIn.of_gradedHomogeneous {σ : Type*} [SetLike σ k] {sy : Symmetrize
   rw [← hn] at hpos
   exact hJ n (by exact_mod_cast hpos) _ hmem
 
-/-- Brundan–Ellis parameters have no lower terms in `Qᵢⱼ(u, 0)`. -/
-theorem PureIn.of_toBWW (Sc : Scalars D k) (J : Ideal k) : Sc.toBWW.PureIn J := by
+/-- Parameters without pure terms below the corners (`ScalarData.NoPure`, as in BE2) have no
+lower terms in `Qᵢⱼ(u, 0)`. -/
+theorem PureIn.of_toBWW (Sc : Scalars D k) (hn : Sc.NoPure) (J : Ideal k) :
+    Sc.toBWW.PureIn J := by
   intro i j p hij hp
   have hji : D.dn j i ≠ 0 := fun h =>
     absurd ((ScalarData.dn_eq_zero_iff (D := D) i j).mpr h) (by omega)
-  rw [ScalarData.toBWW_c_eq_zero_of_pure Sc hij hp (Nat.pos_of_ne_zero hji) (Or.inr rfl)]
+  rw [ScalarData.toBWW_c_of_lt Sc hij hp (Nat.pos_of_ne_zero hji),
+    hn i j p 0 hij hp (Nat.pos_of_ne_zero hji) (Or.inr rfl)]
   exact J.zero_mem
 
 /-- `Qᵢⱼ(u, 0) = tᵢⱼ u^{dᵢⱼ} + Σ_{p<dᵢⱼ} cᵢⱼ(p, 0) u^p` is a unit when `u` is a unit and the
