@@ -1370,6 +1370,8 @@ import OddMath.SKM.PsiInverseLaws
 import OddMath.SKM.PsiFunctorInverses
 import OddMath.SKM.Grading
 import OddMath.SKM.BWWScalars
+import OddMath.SKM.BWWBoxSum
+import OddMath.SKM.BWWPresentation
 import OddMath.QuiverHecke.BWWPresentation
 import OddMath.SKM.Grassmannian
 import OddMath.SKM.GrassmannianCor
@@ -2657,3 +2659,6 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedLeftVacuumEntries
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumRightEntriesOdd
 import OddMath.SKM.BWWEvenDictionary
 import OddMath.SKM.BWWEvenGraded
+import OddMath.SKM.RootCover
+import OddMath.SKM.RootCoverUnits
+import OddMath.SKM.RootCoverPresentation
