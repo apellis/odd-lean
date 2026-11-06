@@ -19,6 +19,9 @@ descend to the quotient as additive maps.
 For `K = R` with the trivial grading this is `ELVOld.oldCategoryGradedSupercategory`.
 -/
 
+-- `letI` keeps the restricted-scalar instances available to instance search in these proofs.
+set_option linter.style.haveILetI false
+
 noncomputable section
 
 open CategoryTheory StringDiagrams OddMath.Diagrams GradedSupercategory

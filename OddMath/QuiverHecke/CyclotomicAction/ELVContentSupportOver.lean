@@ -19,6 +19,9 @@ word with one more strand.
 For `K = R` with the trivial grading (`b = 0`) this is `ELVOld.truncatedContent_bounded`.
 -/
 
+-- `letI` keeps the restricted-scalar instances available to instance search in these proofs.
+set_option linter.style.haveILetI false
+
 noncomputable section
 
 open CategoryTheory StringDiagrams OddMath.Diagrams GradedSupercategory MonoidalCategory

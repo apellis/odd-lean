@@ -21,6 +21,9 @@ For `K = R` with the trivial grading (`b = 0`) these are the statements of
 `OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedNilpotence`.
 -/
 
+-- `letI` keeps the restricted-scalar instances available to instance search in these proofs.
+set_option linter.style.haveILetI false
+
 noncomputable section
 
 open CategoryTheory StringDiagrams OddMath.Diagrams GradedSupercategory MonoidalCategory

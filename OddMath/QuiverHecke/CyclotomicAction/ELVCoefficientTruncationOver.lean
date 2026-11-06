@@ -18,6 +18,9 @@ of the ELV coefficient category, and the degree projections descend as additive 
 For `K = R` with the trivial grading this is `ELVOld.truncatedGradedSupercategory`.
 -/
 
+-- `letI` keeps the restricted-scalar instances available to instance search in these proofs.
+set_option linter.style.haveILetI false
+
 noncomputable section
 
 open CategoryTheory StringDiagrams OddMath.Diagrams GradedSupercategory

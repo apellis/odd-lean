@@ -34,6 +34,9 @@ coefficient degree, these inputs hold (`probeActionInputsOver`). The truncations
 The datum is taken with colours and weights in one universe, as for the swapped route.
 -/
 
+-- `letI` keeps the restricted-scalar instances available to instance search in these proofs.
+set_option linter.style.haveILetI false
+
 noncomputable section
 
 namespace OddMath.QuiverHecke

@@ -18,6 +18,9 @@ coefficient basis vectors, and homogeneous scalars of `R` shift degrees by at mo
 For `K = R` with the trivial grading (`b = 0`) this is `ELVOld.truncatedVacuum_support_of_bound`.
 -/
 
+-- `letI` keeps the restricted-scalar instances available to instance search in these proofs.
+set_option linter.style.haveILetI false
+
 noncomputable section
 
 open CategoryTheory StringDiagrams OddMath.Diagrams GradedSupercategory

@@ -21,6 +21,9 @@ For `K = R` with the trivial grading these are the constructions of
 `OddMath.QuiverHecke.CyclotomicAction.ELVCategoryCoefficients`.
 -/
 
+-- `letI` keeps the restricted-scalar instances available to instance search in these proofs.
+set_option linter.style.haveILetI false
+
 noncomputable section
 
 open CategoryTheory StringDiagrams Supercategory OddMath.Diagrams
