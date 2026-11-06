@@ -72,7 +72,7 @@ theorem distinctMixedBraidLeft_cap_of_zero_disconnected
       (leftUnitor (T.E j hbc)).hom) := by
   have hn : D.dn i j = 0 := by have := D.dn_cast hne; omega
   have hb := T.distinctMixedBraid_correction i j hab haf hbc hbe hfc hcd hed M hne
-  simp only [hn, Finset.range_zero, Finset.sum_empty, Finset.Ioo_self, add_zero] at hb
+  simp only [hn, Finset.range_zero, Finset.sum_empty, add_zero] at hb
   rw [sub_eq_zero] at hb
   rw [hb]
   exact T.distinctMixedBraidRight_cap_of_zero_disconnected M hne hab haf hbc hfc hcd hh hd

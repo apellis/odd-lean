@@ -1,6 +1,7 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputDotBounds
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeFiniteBends
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendWindowEquations
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
 
 /-! # Mixed bends at a whole output-content category
 
@@ -8,6 +9,11 @@ import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendWindowEquations
 while projecting to one reservoir output content. A fixed source-content
 dot bound gives finite series in the same functor Hom category as the
 content coefficient ideal. The exponent may depend on output content.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 set_option quotPrecheck false
@@ -147,7 +153,7 @@ theorem elvProbeCxContentOuterDot_isNilpotent [Finite I]
     ((P).reservoirToProbeCoefficientChart i t hb hv ((FR[i,t,hv]).obj Z)) y hy
 end ReservoirToProbe
 
-private theorem contentBendFactorDot_isIso [Finite I] (i : I) {x y : X} (h : x + D.α i = y) :
+private theorem contentBendFactorDot_isIso [Fact Sc.PureNilpotent] [Finite I] (i : I) {x y : X} (h : x + D.α i = y) :
     IsIso ((P).T.dot i h) := by
   let _ := Fintype.ofFinite I
   exact (isUnit_iff_isIso _).mp
@@ -158,6 +164,7 @@ def ELVProbeDxContentSeparatedAt [Finite I] (i : I) (t : Sector I)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
     (δ : WeightBlocks D ΛR ((P).muM t))
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (N : ℕ) : Prop :=
+  haveI : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   let _ := contentBendFactorDot_isIso D Sc m cutoff bound ΛP ΛR hP hR i ((P).muP_preE i t)
   ProbeToReservoirSeparatedAt (P) i t Z out[t,δ]
     (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc) N
@@ -168,6 +175,7 @@ def ELVProbeCxContentSeparatedAt [Finite I] (i : I) (t : Sector I)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
     (δ : WeightBlocks D ΛR ((P).muM t))
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (N : ℕ) : Prop :=
+  haveI : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   let _ := contentBendFactorDot_isIso D Sc m cutoff bound ΛP ΛR hP hR i ((P).muP_preF i hb)
   ReservoirToProbeSeparatedAt (P) i t hb hv Z out[t,δ]
     (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc) N
@@ -183,6 +191,7 @@ theorem elvProbe_content_central_separated_windows_above [Finite I]
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (minimum : ℕ) :
     ∃ N, minimum ≤ N ∧ ELVProbeDxContentSeparatedAt D Sc m cutoff bound ΛP ΛR hP hR i t Z δ sy hc N ∧
       ELVProbeCxContentSeparatedAt D Sc m cutoff bound ΛP ΛR hP hR i t hb hv Z δ sy hc N := by
+  haveI : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   let _ := contentBendFactorDot_isIso D Sc m cutoff bound ΛP ΛR hP hR i ((P).muP_preE i t)
   let _ := contentBendFactorDot_isIso D Sc m cutoff bound ΛP ΛR hP hR i ((P).muP_preF i hb)
   obtain ⟨nD, hD⟩ := elvProbeDxContentOuterDot_isNilpotent D Sc m cutoff bound ΛP ΛR hP hR i t Z δ sy hc

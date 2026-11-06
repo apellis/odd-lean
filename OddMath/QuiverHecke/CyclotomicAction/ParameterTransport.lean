@@ -55,8 +55,8 @@ def parameterTwist : SKM.Scalars D k where
 
 /-- Signs do not enlarge the coefficient support, so homogeneity is preserved. -/
 theorem parameterTwist_homogeneous (hSc : Sc.Homogeneous) : (parameterTwist D Sc).Homogeneous := by
-  intro i j p q hp hp' hq hq' hs
-  apply hSc i j p q hp hp' hq hq'
+  intro i j p q hij hp' hq' hs
+  apply hSc i j p q hij hp' hq'
   intro hz
   exact hs (by simp [parameterTwist, hz])
 

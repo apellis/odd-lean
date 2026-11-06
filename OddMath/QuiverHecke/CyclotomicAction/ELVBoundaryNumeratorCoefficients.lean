@@ -101,7 +101,7 @@ def qpOutputCoefficientStep (i : I) (v : List I) (b : ℕ)
   if j = i then
     if D.parity i = 1 then O 2 f + T 2 f else -f
   else if D.d i j = 0 then (Sc.t i j : k) • f
-  else (∑ e ∈ Finset.Ioo 0 (D.dn i j), ∑ a ∈ Finset.Ioo 0 (D.dn j i),
+  else (∑ e ∈ Finset.range (D.dn i j), ∑ a ∈ Finset.range (D.dn j i),
       Sc.s i j e a • O a (T e f)) +
     ((Sc.t i j : k) • T (D.dn i j) f + (Sc.t j i : k) • O (D.dn j i) f)
 

@@ -23,10 +23,10 @@ private theorem repeatedOuter_polynomial_heq
     (hx : HEq x x') (hy : HEq y y') (hz : HEq z z') :
     HEq ((∑ a ∈ Finset.range (D.dn i j), (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
         (compPow z a ≫ compPow x (D.dn i j - 1 - a))) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) • (compPow z a ≫ compPow y d ≫ compPow x (b - 1 - a))) ((∑ a ∈ Finset.range (D.dn i j), (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
         (x' ^ (D.dn i j - 1 - a) * z' ^ a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) • (x' ^ (b - 1 - a) * y' ^ d * z' ^ a)) := by
   subst e
   cases hx; cases hy; cases hz
@@ -236,7 +236,7 @@ theorem repeatedOuter_difference_heq (hc : c.IsInverse) (h : P.CrossDenominatorU
     HEq (braidLeft (P.swappedGens c L) i j i ν p p Z -
       braidRight (P.swappedGens c L) i j i ν p p Z) ((∑ a ∈ Finset.range (D.dn i j), (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
         ((P.repeatedOuterX i j s hR hs Z) ^ (D.dn i j - 1 - a) * (P.repeatedOuterZ i j s hR hs Z) ^ a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) • ((P.repeatedOuterX i j s hR hs Z) ^ (b - 1 - a) * (P.repeatedOuterY i j s hR hs Z) ^ d * (P.repeatedOuterZ i j s hR hs Z) ^ a)) := by
   exact (repeatedOuter_sub_heq (P.pathFunctor_three_obj (c₁ := ⟨up i, SKM.wt D ν [up j, up i]⟩)
       (c₂ := ⟨up j, SKM.wt D ν [up i]⟩) (c₃ := ⟨up i, ν⟩)
@@ -251,10 +251,10 @@ theorem repeatedOuter_correction_heq :
       SPath.three false true true hR trivial trivial hs
     HEq ((∑ a ∈ Finset.range (D.dn i j), (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
         (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Z) a ≫ compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] p Z) (D.dn i j - 1 - a))) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) • (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Z) a ≫ compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] p Z) d ≫ compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] p Z) (b - 1 - a))) ((∑ a ∈ Finset.range (D.dn i j), (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
         ((P.repeatedOuterX i j s hR hs Z) ^ (D.dn i j - 1 - a) * (P.repeatedOuterZ i j s hR hs Z) ^ a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) • ((P.repeatedOuterX i j s hR hs Z) ^ (b - 1 - a) * (P.repeatedOuterY i j s hR hs Z) ^ d * (P.repeatedOuterZ i j s hR hs Z) ^ a)) := by
   exact repeatedOuter_polynomial_heq i j (P.pathFunctor_three_obj (c₁ := ⟨up i, SKM.wt D ν [up j, up i]⟩)
       (c₂ := ⟨up j, SKM.wt D ν [up i]⟩) (c₃ := ⟨up i, ν⟩)
@@ -272,7 +272,7 @@ theorem repeatedOuter_braidEq_diag (hc : c.IsInverse) (h : P.CrossDenominatorUni
     braidLeft (P.swappedGens c L) i j i ν p p Z -
       braidRight (P.swappedGens c L) i j i ν p p Z = (∑ a ∈ Finset.range (D.dn i j), (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
         (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Z) a ≫ compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] p Z) (D.dn i j - 1 - a))) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) • (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Z) a ≫ compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] p Z) d ≫ compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] p Z) (b - 1 - a)) := by
   exact eq_of_heq ((P.repeatedOuter_difference_heq ν i j s c L hR hs Z hc h hij).trans
     (P.repeatedOuter_correction_heq ν i j s c L hR hs Z).symm)

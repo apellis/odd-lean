@@ -30,7 +30,7 @@ theorem qLeft_polynomial_leadingCoeff (u : B) (d e : ℕ) (he : 0 < e)
       algebraMap k B (t₂ : k) := by
   nontriviality B
   have ht : algebraMap k B (t₂ : k) ≠ 0 := (t₂.isUnit.map (algebraMap k B)).ne_zero
-  have hlow : (∑ p ∈ Finset.Ioo 0 d, ∑ q ∈ Finset.Ioo 0 e,
+  have hlow : (∑ p ∈ Finset.range d, ∑ q ∈ Finset.range e,
       s p q • ((C u : Polynomial B) ^ p * X ^ q)).degree < (e : WithBot ℕ) := by
     apply (degree_sum_le _ _).trans_lt
     apply (Finset.sup_lt_iff (by simp)).mpr
@@ -41,7 +41,7 @@ theorem qLeft_polynomial_leadingCoeff (u : B) (d e : ℕ) (he : 0 < e)
     apply lt_of_le_of_lt (degree_smul_le _ _)
     rw [← map_pow]
     exact (degree_C_mul_X_pow_le q (u ^ p)).trans_lt
-      (WithBot.coe_lt_coe.mpr (Finset.mem_Ioo.mp hq).2)
+      (WithBot.coe_lt_coe.mpr (Finset.mem_range.mp hq))
   have hconst : ((t₁ • (C u : Polynomial B) ^ d)).degree < (e : WithBot ℕ) := by
     apply lt_of_le_of_lt (degree_smul_le _ _)
     rw [← map_pow]

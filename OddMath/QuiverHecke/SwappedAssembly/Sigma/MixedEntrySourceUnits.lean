@@ -45,7 +45,10 @@ theorem isIso_homDistinctMixedMateDot_of_pow_sourceUnits {a b c d : B} (E : a �
   rw [pow_mul, hX]
   exact homDistinctMixedMateDot_isIso_of_sourceUnits E A κ τ H hx hy hu c n hN
 
-theorem isIso_homDistinctMixedMateDot_param_sourceUnits {a b c d : B} (E : a ⟶ b) {E' : c ⟶ d}
+/-- Source-unit form of `isIso_homDistinctMixedMateDot_param`, for parameters without pure terms
+(`ScalarData.NoPure`, a hypothesis of this route; see `BWWMixedEntry` for the general box). -/
+theorem isIso_homDistinctMixedMateDot_param_sourceUnits (hn : Sc.NoPure) {a b c d : B}
+    (E : a ⟶ b) {E' : c ⟶ d}
     {F' : d ⟶ c} (A : SuperAdjunction (k := k) E' F') (κ τ : ZMod 2) (H : b ⟶ d)
     {i j : I} (hij : i ≠ j) {x : E ⟶ E} (hx : x ∈ parity (R := k) E E (D.parity i))
     {y : E' ⟶ E'} (hy : y ∈ parity (R := k) E' E' (D.parity j))
@@ -58,7 +61,7 @@ theorem isIso_homDistinctMixedMateDot_param_sourceUnits {a b c d : B} (E : a ⟶
         (Sc.t i j : k) • mixedPostTargetPreDot (k := k) E κ H (E' := E') (F' := F') x ^
             D.dn i j +
           (Sc.t j i : k) • mixedPostTargetPostDot (k := k) E κ H (F' := F') y ^ D.dn j i +
-          ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+          ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
             Sc.s i j p q • (mixedPostTargetPreDot (k := k) E κ H (E' := E') (F' := F') x ^ p *
               mixedPostTargetPostDot (k := k) E κ H (F' := F') y ^ q))) := by
   set ex := if D.parity i = 1 then 2 else 1
@@ -104,17 +107,20 @@ theorem isIso_homDistinctMixedMateDot_param_sourceUnits {a b c d : B} (E : a ⟶
       omega
     obtain ⟨hpi, -⟩ := hpar hij hdij
     obtain ⟨hpj, hpos⟩ := hpar hij.symm hdji
-    obtain ⟨n, hn⟩ := dvd_of_mul_parity_ne_one hpi
-    rw [add_assoc, hn]
+    obtain ⟨n, hnd⟩ := dvd_of_mul_parity_ne_one hpi
+    rw [add_assoc, hnd]
     refine isIso_homDistinctMixedMateDot_of_pow_sourceUnits E A κ τ H hx' hy' hu (Sc.t i j) n
       (Submodule.add_mem _ (Submodule.smul_mem _ _ ?_)
-      (Submodule.sum_mem _ fun p _ => Submodule.sum_mem _ fun q hq => ?_))
+      (Submodule.sum_mem _ fun p hp => Submodule.sum_mem _ fun q hq => ?_))
     · simpa only [pow_zero, one_mul] using hmono 0 (D.dn j i) (by simp) hpj hpos
     · by_cases hs : Sc.s i j p q = 0
       · rw [hs, zero_smul]; exact Submodule.zero_mem _
-      · refine Submodule.smul_mem _ _ (hmono p q (fun h => hs (Sc.s_eq_zero i j p q h))
-          (fun h => hs ((Sc.s_symm i j p q).trans (Sc.s_eq_zero j i q p h)))
-          (Finset.mem_Ioo.mp hq).1)
+      · have hq1 : 1 ≤ q := by
+          by_contra h0
+          exact hs (hn i j p q hij (hnd ▸ Finset.mem_range.mp hp) (Finset.mem_range.mp hq)
+            (Or.inr (by omega)))
+        exact Submodule.smul_mem _ _ (hmono p q (fun h => hs (Sc.s_eq_zero i j p q h))
+          (fun h => hs ((Sc.s_symm i j p q).trans (Sc.s_eq_zero j i q p h))) hq1)
 
 variable (P : ProbeReservoir k B D Sc)
 
@@ -122,7 +128,7 @@ attribute [local irreducible] Finsupp.zipWith Finsupp.single Finsupp.onFinset ho
   contentWeight in
 /-- Mixed sideways crossing invertibility from the source-polynomial unit
 criterion. The criterion remains an explicit intermediate hypothesis. -/
-theorem isIso_sigmaEntry_probe_reservoir_sourceUnits (hu : ∀ (i j : I), i ≠ j →
+theorem isIso_sigmaEntry_probe_reservoir_sourceUnits (hn : Sc.NoPure) (hu : ∀ (i j : I), i ≠ j →
       ∀ {a b c d : X} (hT : a + D.α i = b) (hW : c + D.α j = d)
         (κ : ZMod 2) (H : P.T.obj b ⟶ P.W.obj d),
       MixedPostSourceUnits (P.T.E i hT) (P.W.adj j hW) κ H
@@ -239,7 +245,7 @@ theorem isIso_sigmaEntry_probe_reservoir_sourceUnits (hu : ∀ (i j : I), i ≠ 
   case hf2 | hf5 | hf18 | hf21 => eqToHom_witness
   case hm => simp only [muM, u, nextSector, add_tsub_cancel_right]
   case hiso =>
-    exact isIso_homDistinctMixedMateDot_param_sourceUnits _ _ _ _ _ hij.symm (P.T.dot_mem j _)
+    exact isIso_homDistinctMixedMateDot_param_sourceUnits hn _ _ _ _ _ hij.symm (P.T.dot_mem j _)
       (P.W.dot_mem i _) (hu j i hij.symm _ _ _ _)
   case hA =>
     apply eq_of_heq

@@ -4,6 +4,11 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionTransform
 /-! # Signed inverse of the ordinary probe induction dot
 The inverse source dot has the same parity. Its induced transform requires
 the factor (-1)^(p*p), retaining the signed right-multiplication convention.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
@@ -69,7 +74,7 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (m : I → ℕ) (ν : List I) (i : I)
 
 /-- The literal ordinary appended dot is an isomorphism at each source word. -/
-noncomputable def probeOrdinaryAppendDotIso
+noncomputable def probeOrdinaryAppendDotIso [Fact Sc.PureNilpotent]
     (v : OrdinaryContentCategory D Sc (probePolynomial (k := k) (probeDotExponent D) m) ν) :
     (probeOrdinaryAppend D Sc m ν i).obj v ≅ (probeOrdinaryAppend D Sc m ν i).obj v := by
   haveI := (isUnit_iff_isIso (End.of (probeOrdinaryAppendDot D Sc m ν i v))).mp
@@ -81,7 +86,7 @@ variable (M : Superfunctor k
 
 /-- The prescribed signed dot transform has an explicit two-sided inverse
 on the actual ordinary append coend. -/
-def probeOrdinaryInductionDotUnit
+def probeOrdinaryInductionDotUnit [Fact Sc.PureNilpotent]
     (t : OrdinaryContentCategory D Sc (probePolynomial (k := k) (probeDotExponent D) m) (i :: ν)) :
     (End (ELVOld.BalancedInduction.superspace (probeOrdinaryAppend D Sc m ν i) M.toFunctor t))ˣ :=
   let J := probeOrdinaryAppend D Sc m ν i

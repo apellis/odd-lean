@@ -33,7 +33,7 @@ def repeatedOuterReservoirCorrection (P : ProbeReservoir k B D Sc)
         (zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
           (rouquierPower (P.W.dot i hab) s ▷ (P.W.E j hbc ≫ P.W.E i hcd) ≫
             P.W.E i hab ◁ P.W.E j hbc ◁ rouquierPower (P.W.dot i hcd) (D.dn i j - 1 - s)) +
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), ∑ s ∈ Finset.range p,
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), ∑ s ∈ Finset.range p,
         (zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p q) •
           (rouquierPower (P.W.dot i hab) s ▷ (P.W.E j hbc ≫ P.W.E i hcd) ≫
             P.W.E i hab ◁ (rouquierPower (P.W.dot j hbc) q ▷ P.W.E i hcd) ≫

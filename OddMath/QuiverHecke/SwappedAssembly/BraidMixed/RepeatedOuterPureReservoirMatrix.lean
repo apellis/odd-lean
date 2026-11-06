@@ -240,14 +240,14 @@ theorem pureReservoir_polynomial_scalars (i j : I) (x y z : R) (q : ZMod 2) :
       (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
         ((sign k (q * D.parity i) • x) ^ (D.dn i j - 1 - a) *
           (sign k (q * D.parity i) • z) ^ a)) +
-    (∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+    (∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
       (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
         ((sign k (q * D.parity i) • x) ^ (b - 1 - a) *
           (sign k (q * D.parity j) • y) ^ d * (sign k (q * D.parity i) • z) ^ a)) =
     sign k (q * D.parity i) • ((∑ a ∈ Finset.range (D.dn i j),
       (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
         (x ^ (D.dn i j - 1 - a) * z ^ a)) +
-    ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+    ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
       (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
         (x ^ (b - 1 - a) * y ^ d * z ^ a)) := by
   classical
@@ -288,7 +288,7 @@ theorem pureReservoir_factor_polynomial (P : ProbeReservoir k B D Sc) (i j : I)
       (∑ a ∈ Finset.range (D.dn i j),
         (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
           (z ^ (D.dn i j - 1 - a) * x ^ a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
           (z ^ (b - 1 - a) * y ^ d * x ^ a) := by
   classical
@@ -365,10 +365,10 @@ private theorem reservoir_polynomial_heq
     (hx : HEq x x') (hy : HEq y y') (hz : HEq z z') :
     HEq ((∑ a ∈ Finset.range (D.dn i j), (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
         (compPow z a ≫ compPow x (D.dn i j - 1 - a))) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) • (compPow z a ≫ compPow y d ≫ compPow x (b - 1 - a))) ((∑ a ∈ Finset.range (D.dn i j), (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
         (x' ^ (D.dn i j - 1 - a) * z' ^ a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) • (x' ^ (b - 1 - a) * y' ^ d * z' ^ a)) := by
   subst e
   cases hx; cases hy; cases hz
@@ -393,7 +393,7 @@ theorem repeatedOuterPureReservoir_correction_heq
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Z) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] p Z)
               (D.dn i j - 1 - a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Z) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] p Z) d ≫
@@ -471,7 +471,7 @@ theorem repeatedOuterPureReservoir_braidEq_diag {t : Sector I}
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Z) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] p Z)
               (D.dn i j - 1 - a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Z) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] p Z) d ≫

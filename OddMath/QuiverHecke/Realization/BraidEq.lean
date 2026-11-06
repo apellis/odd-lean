@@ -304,13 +304,13 @@ variable (D : SKM.Datum I X) (Sc : SKM.Scalars D k) [DecidableEq I]
 /-- The correction coefficient for odd `i`. -/
 def eOdd (i j : I) (u v w : K k) : K k :=
   algebraMap k (K k) (Sc.t i j) * ddo (D.dn i j / 2) u w +
-    ∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+    ∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
       algebraMap k (K k) (Sc.s i j p q) * (xpow (D.parity j) q v * ddo (p / 2) u w)
 
 /-- The correction coefficient for even `i`. -/
 def eEv (i j : I) (u v w : K k) : K k :=
   algebraMap k (K k) (Sc.t i j) * dde (D.dn i j) u w +
-    ∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+    ∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
       algebraMap k (K k) (Sc.s i j p q) * (xpow (D.parity j) q v * dde p u w)
 
 omit [DecidableEq I] in
@@ -344,11 +344,11 @@ theorem qL_sub_odd {i j : I} (hi : D.parity i = 1) (hij : i ≠ j) (u v w : K k)
       rw [← two_mul, Nat.mul_div_cancel_left _ two_pos, hi]
       linear_combination (algebraMap k (K k) (Sc.s i j (2 * r') q) *
         xpow (D.parity j) q v) * xpow_odd_sub r' u w
-  have hsum : (∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+  have hsum : (∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
       algebraMap k (K k) (Sc.s i j p q) * (xpow (D.parity i) p w * xpow (D.parity j) q v)) -
-      ∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+      ∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
         algebraMap k (K k) (Sc.s i j p q) * (xpow (D.parity i) p u * xpow (D.parity j) q v) =
-      (u ^ 2 - w ^ 2) * ∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+      (u ^ 2 - w ^ 2) * ∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
         algebraMap k (K k) (Sc.s i j p q) * (xpow (D.parity j) q v * ddo (p / 2) u w) := by
     rw [mul_sum, ← sum_sub_distrib]
     refine sum_congr rfl fun p _ => ?_
@@ -378,11 +378,11 @@ theorem qL_sub_even {i j : I} (hi : D.parity i = 0) (hij : i ≠ j) (u v w : K k
     rw [hi, xpow_zero, xpow_zero]
     linear_combination (algebraMap k (K k) (Sc.s i j p q) * xpow (D.parity j) q v) *
       pow_sub_dde p u w
-  have hsum : (∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+  have hsum : (∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
       algebraMap k (K k) (Sc.s i j p q) * (xpow (D.parity i) p u * xpow (D.parity j) q v)) -
-      ∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+      ∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
         algebraMap k (K k) (Sc.s i j p q) * (xpow (D.parity i) p w * xpow (D.parity j) q v) =
-      (u - w) * ∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+      (u - w) * ∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
         algebraMap k (K k) (Sc.s i j p q) * (xpow (D.parity j) q v * dde p u w) := by
     rw [mul_sum, ← sum_sub_distrib]
     refine sum_congr rfl fun p _ => ?_
@@ -562,7 +562,7 @@ theorem braidEq_single {i j : I} (hij : i ≠ j) {ν : Seq I} {a : ℕ} (hi : ν
         crossOp D Sc i j (a + 1) * crossOp D Sc i i a * crossOp D Sc j i (a + 1) -
         ∑ s ∈ range (D.dn i j), (SKM.zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
           (dotOp D i a ^ (D.dn i j - 1 - s) * dotOp D i (a + 2) ^ s) -
-        ∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i), ∑ s ∈ range p,
+        ∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i), ∑ s ∈ range p,
           (SKM.zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p q) •
             (dotOp D i a ^ (p - 1 - s) * dotOp D j (a + 1) ^ q * dotOp D i (a + 2) ^ s) :
           Module.End k (V k I)) (sgl ν m) = 0 := by

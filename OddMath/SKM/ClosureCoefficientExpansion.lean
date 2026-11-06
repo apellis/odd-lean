@@ -50,8 +50,9 @@ theorem rightClosure_bubAt (μ : X) (l r : List I) (u v : List (Letter I))
   | add β γ _ _ hβ hγ => simp only [map_add, Preadditive.comp_add, hβ, hγ]
   | smul a β _ hβ => simp only [map_smul, Linear.comp_smul, hβ]
 
-/-- Full coefficients under the actual right closure: the principal term is
-unchanged, and the error appends a nonempty upward dot diagram. -/
+/-- Full coefficients under the actual right closure: the principal coefficient changes by the
+composite lowering twist of the upward suffix, and the error appends a nonempty upward dot
+diagram. -/
 theorem rightClosure_betaSYM_expansion (cs : CScalars Sc) (μ : X)
     (l r : List I) (u v : List (Letter I))
     (f : (pres D Sc).obj (ob D (wt D μ (ups r)) (u ++ dns r)) ⟶
@@ -59,7 +60,7 @@ theorem rightClosure_betaSYM_expansion (cs : CScalars Sc) (μ : X)
     ∃ z : PositiveWordDots (v ++ [] ++ ups r) →₀ SYM D k,
       rightClosure D Sc μ l r u v
         (f ≫ bubAt D Sc (wt D μ (ups r)) (dns l ++ v) (betaSYM cs (wt D μ (ups r)) p)) =
-      rightClosure D Sc μ l r u v f ≫ bubAt D Sc μ (v ++ ups r) (betaSYM cs μ p) +
+      rightClosure D Sc μ l r u v f ≫ bubAt D Sc μ (v ++ ups r) (betaSYM cs μ (wordTwist Sc r p)) +
         rightClosure D Sc μ l r u v f ≫ wordCast μ (by simp) (by simp)
           (positiveWordExpansion cs μ (v ++ [] ++ ups r) z) := by
   obtain ⟨z, hz⟩ := betaSYM_exists_positiveWordExpansion cs μ r v p
@@ -68,7 +69,7 @@ theorem rightClosure_betaSYM_expansion (cs : CScalars Sc) (μ : X)
 
 /-- The native weak-mate closure coefficient identity. For any actual upward
 layer diagram `A`, bending and closing its coefficient-decorated mate gives
-`A` with the same coefficient, plus `A` followed by strictly positive dots.
+`A` with the coefficient twisted by `wordTwist`, plus `A` followed by strictly positive dots.
 No reducedness or independence is assumed by this identity. -/
 theorem rightClosure_partialMate_betaSYM_expansion (cs : CScalars Sc) (μ : X)
     (l r : List I) (u v : List (Letter I)) {A : List (LayerData I)}
@@ -77,7 +78,7 @@ theorem rightClosure_partialMate_betaSYM_expansion (cs : CScalars Sc) (μ : X)
       rightClosure D Sc μ l r u v
         (cl D Sc (wt D μ (ups r)) (u ++ dns r) (dns l ++ v) (partialRightMateL l r u v A) ≫
           bubAt D Sc (wt D μ (ups r)) (dns l ++ v) (betaSYM cs (wt D μ (ups r)) p)) =
-      cl D Sc μ (ups l ++ u) (v ++ ups r) A ≫ bubAt D Sc μ (v ++ ups r) (betaSYM cs μ p) +
+      cl D Sc μ (ups l ++ u) (v ++ ups r) A ≫ bubAt D Sc μ (v ++ ups r) (betaSYM cs μ (wordTwist Sc r p)) +
         cl D Sc μ (ups l ++ u) (v ++ ups r) A ≫ wordCast μ (by simp) (by simp)
           (positiveWordExpansion cs μ (v ++ [] ++ ups r) z) := by
   obtain ⟨z, hz⟩ := rightClosure_betaSYM_expansion cs μ l r u v

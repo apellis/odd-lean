@@ -2,6 +2,7 @@ import OddMath.SKM.WeakMateLayers
 import OddMath.SKM.WeakMatchingTargetExpansion
 import OddMath.SKM.ClosureCoefficientExpansion
 import OddMath.SKM.PositiveClosureDetector
+import OddMath.SKM.TwistedClosureDetector
 import OddMath.SKM.TopMatchingChoiceList
 import OddMath.SKM.MatchingChoiceCast
 import OddMath.SKM.MatchingEndpointSupport
@@ -42,7 +43,7 @@ theorem closure_decorated_coefficient {l r : List I} {a b : List (Letter I)}
           (dLay (a ++ dualW (ups r)) (moves l b (ups r) ds)) ≫
             bubAt D Sc (wt D μ (ups r)) (dns l ++ b) (betaSYM cs (wt D μ (ups r)) p)) =
       xev cs μ (ups l ++ a) (b ++ ups r) (dLay (ups l ++ a) ds) ≫
-        bubAt D Sc μ (b ++ ups r) (betaSYM cs μ p) +
+        bubAt D Sc μ (b ++ ups r) (betaSYM cs μ (wordTwist Sc r p)) +
       xev cs μ (ups l ++ a) (b ++ ups r) (dLay (ups l ++ a) ds) ≫
         positiveWordExpansion cs μ (b ++ ups r) z := by
   have hmate := dLay_moves hR q hq n hd he
@@ -93,8 +94,9 @@ theorem strict_injective_of_top_data {l r : List I} {a b : List (Letter I)}
     ((U.expansion_injective_iff_target cs μ).mp hU).comp E.injective
   apply W.strict_expansion_injective cs (wt D μ (ups r))
   apply (W.expansion_injective_iff_target cs (wt D μ (ups r))).mpr
-  apply OrientedReduction.injective_of_positive_closure F.openDots
+  apply OrientedReduction.injective_of_positive_closure_twisted F.openDots
     (W.targetExpansion cs (wt D μ (ups r))) strong (closure μ l r a b) hstrong
+    (wordTwist Sc r).toLinearMap.toAddMonoidHom (wordTwist_bijective r).injective
   intro t p
   obtain ⟨L, hL, he⟩ := hOrd (e t)
   have hc := closure_decorated_coefficient cs μ
@@ -114,9 +116,11 @@ theorem strict_injective_of_top_data {l r : List I} {a b : List (Letter I)}
   · rw [W.targetExpansion_single]
     change closure μ l r a b (xev cs (wt D μ (ups r)) _ _ (W.layers t) ≫ _) = _
     rw [weakChoice_layers U F hq t]
-    change closure μ l r a b _ = U.targetExpansion cs μ (E (Finsupp.single t p + E.symm v))
+    change closure μ l r a b _ =
+      U.targetExpansion cs μ (E (Finsupp.single t (wordTwist Sc r p) + E.symm v))
     rw [map_add, E.apply_symm_apply, map_add, hev]
-    have hs : E (Finsupp.single t p) = Finsupp.single (e t) p := by simp [E]
+    have hs : E (Finsupp.single t (wordTwist Sc r p)) =
+        Finsupp.single (e t) (wordTwist Sc r p) := by simp [E]
     rw [hs, U.targetExpansion_single]
     exact hz
 

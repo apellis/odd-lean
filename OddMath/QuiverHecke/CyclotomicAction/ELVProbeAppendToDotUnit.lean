@@ -11,6 +11,11 @@ SwappedActionAssembly F2: every prescribed retargeted append induction
 has its natural signed-dot inverse on all scalar-evaluated OLD modules.
 Only the content certificate changes; the old coend and physical arrow
 are retained. No component invertibility premise is supplied.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
@@ -85,7 +90,7 @@ variable [Fintype I]
 
 /-- Every evaluated old probe module has the prescribed dot isomorphism;
 the inverse comes from the actual scalar quotient, with no inverse premise. -/
-def probeAppendToDotModuleIso (N : ProbeEvaluatedModules D Sc m ν) :
+def probeAppendToDotModuleIso [Fact Sc.PureNilpotent] (N : ProbeEvaluatedModules D Sc m ν) :
     induced J N.obj ≅ induced J N.obj :=
   OddMath.HomogeneousSuperfunctorIso.ofBijectiveTotals
     (transformComponent hDot N.obj) (transformComponent_mem hDot N.obj) (by
@@ -97,34 +102,34 @@ def probeAppendToDotModuleIso (N : ProbeEvaluatedModules D Sc m ν) :
       exact (Module.End.isUnit_iff _).mp h)
 
 /-- The dot isomorphism retains the exact specified module forward. -/
-theorem probeAppendToDotModuleIso_hom (N : ProbeEvaluatedModules D Sc m ν) :
+theorem probeAppendToDotModuleIso_hom [Fact Sc.PureNilpotent] (N : ProbeEvaluatedModules D Sc m ν) :
     (probeAppendToDotModuleIso D Sc m ν i μ h N).hom = transformComponent hDot N.obj :=
   OddMath.HomogeneousSuperfunctorIso.ofBijectiveTotals_hom _ _ _
 
 /-- The pointwise inverse is a morphism of the same full evaluated category. -/
-def probeAppendToDotIso (N : ProbeEvaluatedModules D Sc m ν) : (E).obj N ≅ (E).obj N :=
+def probeAppendToDotIso [Fact Sc.PureNilpotent] (N : ProbeEvaluatedModules D Sc m ν) : (E).obj N ≅ (E).obj N :=
   ObjectProperty.isoMk (ProbeEvaluatesCoefficients D m Sc μ) (probeAppendToDotModuleIso D Sc m ν i μ h N)
 
-private theorem appendToDotIso_hom_total (N : ProbeEvaluatedModules D Sc m ν) :
+private theorem appendToDotIso_hom_total [Fact Sc.PureNilpotent] (N : ProbeEvaluatedModules D Sc m ν) :
     (probeAppendToDotIso D Sc m ν i μ h N).hom = (probeAppendToInductionDot D Sc m ν i μ h).total N := by
   rw [probeAppendToInductionDot_total]
   apply InducedCategory.hom_ext
   exact probeAppendToDotModuleIso_hom D Sc m ν i μ h N
 
 /-- The actual dot inverse is natural on the entire evaluated probe category. -/
-def probeAppendToInductionDotIso :
+def probeAppendToInductionDotIso [Fact Sc.PureNilpotent] :
     (⟨E⟩ : Superfunctor k (ProbeEvaluatedModules D Sc m ν)
       (ProbeEvaluatedModules D Sc m μ)) ≅ ⟨E⟩ :=
   OddMath.HomogeneousSuperfunctorIso.ofHom
     (probeAppendToInductionDot D Sc m ν i μ h) (probeAppendToInductionDot_mem D Sc m ν i μ h)
     (probeAppendToDotIso D Sc m ν i μ h) (appendToDotIso_hom_total D Sc m ν i μ h)
 
-@[simp] theorem probeAppendToInductionDotIso_hom :
+@[simp] theorem probeAppendToInductionDotIso_hom [Fact Sc.PureNilpotent] :
     (probeAppendToInductionDotIso D Sc m ν i μ h).hom = probeAppendToInductionDot D Sc m ν i μ h :=
   OddMath.HomogeneousSuperfunctorIso.ofHom_hom _ _ _ _
 
 /-- Whole-functor invertibility is proved, rather than assumed componentwise. -/
-theorem probeAppendToInductionDot_isUnit : IsUnit (End.of (probeAppendToInductionDot D Sc m ν i μ h)) := by
+theorem probeAppendToInductionDot_isUnit [Fact Sc.PureNilpotent] : IsUnit (End.of (probeAppendToInductionDot D Sc m ν i μ h)) := by
   apply (isUnit_iff_isIso _).2
   rw [← probeAppendToInductionDotIso_hom]
   infer_instance

@@ -86,7 +86,7 @@ def positionalCorrection (t : List I) (n : ℕ) (i j : I) :
       (SKM.zsign k (D.parity i * (D.parity j + r)) * (Sc.t i j : k)) •
         (dotE D Sc t n ^ (D.dn i j - 1 - r) *
           dotE D Sc t (n + 2) ^ r) +
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         ∑ r ∈ Finset.range p,
           (SKM.zsign k (D.parity i * (D.parity j + r)) * Sc.s i j p q) •
             (dotE D Sc t n ^ (p - 1 - r) *

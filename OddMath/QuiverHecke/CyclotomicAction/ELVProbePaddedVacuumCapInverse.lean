@@ -5,6 +5,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumCap
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.VacuumCapInverseWindow
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.FactorWindowInverse
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
 
 /-! # The chosen vacuum cap inverse in the native chart
 
@@ -22,6 +23,11 @@ inverse of exactly the window used by `tensorVacuumCapInverse_odd_moments`.
 The transport uses only additive evaluation (`IsCapInverse.map`), the corner
 charts (`IsCapInverse.coordinates`) and a change of the common window target
 (`IsCapInverse.target`). No inverse, moment or bubble value is assumed.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 
 noncomputable section
@@ -146,7 +152,7 @@ include sy hc in
 supported vacuum input is the given tensor input, the actual positive factor
 matrix supplies an entrywise inverse of the native cap window
 `[bend; x ^ n ≫ v]_(n < h)` of the evaluated A6 bend, `h = h_i(wt)`. -/
-theorem vacuumCapInverse_odd
+theorem vacuumCapInverse_odd [Fact Sc.PureNilpotent]
     (Z : SupportedSectors.H D (parameterTwist D Sc) m cutoff bound ΛP ΛR ((0, 0) : Sector I))
     (hZ : Z.obj = vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1)

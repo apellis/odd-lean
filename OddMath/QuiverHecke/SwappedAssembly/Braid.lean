@@ -243,7 +243,7 @@ structure CrossBraid (gens : P.Generators) : Prop where
         (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
           (compPow (dotEntry gens ν [up i, up j] i [] p Z) a ≫
             compPow (dotEntry gens ν [] i [up j, up i] p Z) (D.dn i j - 1 - a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ c ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ c ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b c) •
           (compPow (dotEntry gens ν [up i, up j] i [] p Z) a ≫
             compPow (dotEntry gens ν [up i] j [up i] p Z) c ≫
@@ -287,7 +287,7 @@ theorem braidRelations {gens : P.Generators} (hb : CrossBraid gens) :
       intro a _
       rw [compEval_smul, compEval_of]
       erw [compDiag_dots_dots gens i j ν a _ _ p q Z]
-    have h₂ : ∀ b ∈ Finset.Ioo 0 (D.dn i j), ∀ c ∈ Finset.Ioo 0 (D.dn j i),
+    have h₂ : ∀ b ∈ Finset.range (D.dn i j), ∀ c ∈ Finset.range (D.dn j i),
         ∀ a ∈ Finset.range b, compEval gens
         ((zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b c) •
           SKM.dg D ν (SKM.dotsL [up i, up j] i [] a ++ SKM.dotsL [up i] j [up i] c ++

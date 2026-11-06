@@ -61,7 +61,7 @@ theorem bubbleR_slide_polynomial_raw (i j : I) (μ : X) (hij : i ≠ j)
       (Sc.t i j : k) • bubbleR_left cs i j μ (n + D.dn i j) +
       (Sc.t j i : k) • (bubbleR_left cs i j μ n ≫
         cl D Sc μ [up j] [up j] (dotsL [] j [] (D.dn j i))) +
-      ∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+      ∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
         Sc.s i j p q • (bubbleR_left cs i j μ (n + p) ≫
           cl D Sc μ [up j] [up j] (dotsL [] j [] q)) := by
   rw [bubbleR_slide_quad cs i j μ hij n]
@@ -140,7 +140,7 @@ theorem bubbleL_slide_polynomial_raw (i j : I) (μ : X) (hij : i ≠ j)
       (Sc.t i j : k) • bubbleL_right cs i j μ (n + D.dn i j) +
       (Sc.t j i : k) • (cl D Sc μ [up j] [up j] (dotsL [] j [] (D.dn j i)) ≫
         bubbleL_right cs i j μ n) +
-      ∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+      ∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
         Sc.s i j p q • (cl D Sc μ [up j] [up j] (dotsL [] j [] q) ≫
           bubbleL_right cs i j μ (n + p)) := by
   change plcL D Sc μ [] [up j] [] [] (bubL cs i (wt D μ [up j]) n) = _
@@ -186,7 +186,7 @@ def bubbleSlidePolynomialCoeff (i j : I) (μ : X) (n : ℕ) :=
     (if n = D.dn i j then
       ((↑(Sc.t i j)⁻¹ : k) * (Sc.t j i : k)) •
         cl D Sc μ [up j] [up j] (dotsL [] j [] (D.dn j i)) else 0) +
-    ∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+    ∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
       if n = D.dn i j - p then
         ((↑(Sc.t i j)⁻¹ : k) * Sc.s i j p q) •
           cl D Sc μ [up j] [up j] (dotsL [] j [] q) else 0

@@ -118,7 +118,7 @@ def bubbleSlideCandidateR (i j : I) (μ : X) (n : ℕ) :=
   (Sc.t j i : k) • (if D.dn i j ≤ n then
     cl D Sc μ [up j] [up j] (dotsL [] j [] (D.dn j i)) ≫
       lbub j μ (bubbleCoeffR cs i (wt D μ [up j]) (n - D.dn i j)) else 0) +
-  ∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+  ∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
     Sc.s i j p q • (if D.dn i j - p ≤ n then
       cl D Sc μ [up j] [up j] (dotsL [] j [] q) ≫
         lbub j μ (bubbleCoeffR cs i (wt D μ [up j]) (n - (D.dn i j - p))) else 0)
@@ -139,8 +139,8 @@ theorem bubbleSlideCandidateR_key (i j : I) (μ : X) (hij : i ≠ j)
   rw [bubbleConvolution_eq_flip]
   simp only [bubbleSlideCandidateR, Preadditive.comp_add, Linear.comp_smul,
     Preadditive.comp_sum, sum_add_distrib, ← smul_sum]
-  rw [sum_comm (s := range (n + 1 + 1)) (t := Ioo 0 (D.dn i j))]
-  simp_rw [sum_comm (s := range (n + 1 + 1)) (t := Ioo 0 (D.dn j i)), ← smul_sum]
+  rw [sum_comm (s := range (n + 1 + 1)) (t := range (D.dn i j))]
+  simp_rw [sum_comm (s := range (n + 1 + 1)) (t := range (D.dn j i)), ← smul_sum]
   simp_rw [sum_range_conv_delay (fun r => rbub j μ (bubbleCoeffL cs i (wt D μ []) r))
     (fun r => lbub j μ (bubbleCoeffR cs i (wt D μ [up j]) r))]
   have hz : (∑ r ∈ range (n + 1 + 1), rbub j μ (bubbleCoeffL cs i (wt D μ []) r) ≫
@@ -150,7 +150,7 @@ theorem bubbleSlideCandidateR_key (i j : I) (μ : X) (hij : i ≠ j)
   rw [hz]
   change (Sc.t i j : k) • bubbleSlideCoeffConv cs i j μ 0 (n + 1) +
     (Sc.t j i : k) • (if D.dn i j ≤ n + 1 then bubbleSlideCoeffConv cs i j μ (D.dn j i) (n + 1 - D.dn i j) else 0) +
-    (∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+    (∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
       Sc.s i j p q • (if D.dn i j - p ≤ n + 1 then bubbleSlideCoeffConv cs i j μ q (n + 1 - (D.dn i j - p)) else 0)) = 0
   simp_rw [bubbleSlideCoeffConv_eq]
   have H := congrArg ((Sc.t i j : k) • ·) (bubble_slide_middle_shift_convolution cs i j μ hij hpos hlt n)
@@ -171,7 +171,7 @@ theorem bubbleSlideCandidateR_middle (i j : I) (μ : X) (hij : i ≠ j)
     have hd0 : ¬ D.dn i j ≤ 0 := by omega
     simp only [bubbleSlideCandidateR, hd0, ite_false, smul_zero, add_zero, bubbleCoeffR_zero,
       lbub, rbub, plcL_id]
-    have hz : (∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+    have hz : (∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
         Sc.s i j p q • (if D.dn i j - p ≤ 0 then
           cl D Sc μ [up j] [up j] (dotsL [] j [] q) ≫
             plcL D Sc μ [] [up j] [] [] (bubbleCoeffR cs i (wt D μ [up j]) (0 - (D.dn i j - p))) else 0)) = 0 := by
@@ -179,7 +179,7 @@ theorem bubbleSlideCandidateR_middle (i j : I) (μ : X) (hij : i ≠ j)
       intro p hp
       apply sum_eq_zero
       intro q _
-      rw [ite_eq_right (by have := mem_Ioo.mp hp; omega), smul_zero]
+      rw [ite_eq_right (by have := mem_range.mp hp; omega), smul_zero]
     rw [hz, add_zero]
     rfl
   · intro n hn
@@ -200,7 +200,7 @@ theorem bubbleSlidePolynomialCoeff_add (i j : I) (μ : X) (hd : 0 < D.dn i j) (n
     bubbleSlidePolynomialCoeff (Sc := Sc) i j μ n =
     (if n = 0 then 𝟙 _ else 0) +
     bubbleSlideMonomial j μ (D.dn i j) (D.dn j i) ((↑(Sc.t i j)⁻¹ : k) * (Sc.t j i : k)) n +
-    ∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+    ∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
       bubbleSlideMonomial j μ (D.dn i j - p) q ((↑(Sc.t i j)⁻¹ : k) * Sc.s i j p q) n := by
   by_cases hn : n = 0
   · subst n
@@ -212,7 +212,7 @@ theorem bubbleSlidePolynomialCoeff_add (i j : I) (μ : X) (hd : 0 < D.dn i j) (n
     intro p hp
     apply sum_eq_zero
     intro q _
-    rw [ite_eq_right (by have := mem_Ioo.mp hp; omega)]
+    rw [ite_eq_right (by have := mem_range.mp hp; omega)]
   · simp only [bubbleSlidePolynomialCoeff, bubbleSlideMonomial, hn, ite_false, zero_add]
 
 theorem bubbleSlideMonomial_sum (j : I) (μ : X) (d q n : ℕ) (a : k)
@@ -226,13 +226,13 @@ theorem bubblePolynomialCoeff_conv_left (i j : I) (μ : X) (hd : 0 < D.dn i j) (
     bubbleConvolution (bubbleSlidePolynomialCoeff (Sc := Sc) i j μ) B n =
     B n + ((↑(Sc.t i j)⁻¹ : k) * (Sc.t j i : k)) •
       (if D.dn i j ≤ n then cl D Sc μ [up j] [up j] (dotsL [] j [] (D.dn j i)) ≫ B (n - D.dn i j) else 0) +
-    ∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+    ∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
       ((↑(Sc.t i j)⁻¹ : k) * Sc.s i j p q) • (if D.dn i j - p ≤ n then
         cl D Sc μ [up j] [up j] (dotsL [] j [] q) ≫ B (n - (D.dn i j - p)) else 0) := by
   rw [bubbleConvolution_eq_flip]
   simp only [bubbleSlidePolynomialCoeff_add i j μ hd, Preadditive.add_comp, Preadditive.sum_comp, sum_add_distrib]
-  rw [sum_comm (s := range (n + 1)) (t := Ioo 0 (D.dn i j))]
-  simp_rw [sum_comm (s := range (n + 1)) (t := Ioo 0 (D.dn j i)), bubbleSlideMonomial_sum]
+  rw [sum_comm (s := range (n + 1)) (t := range (D.dn i j))]
+  simp_rw [sum_comm (s := range (n + 1)) (t := range (D.dn j i)), bubbleSlideMonomial_sum]
   simp [ite_comp]
 
 /-- The actual middle-weight clockwise coefficient identity, with the factor order recorded. -/

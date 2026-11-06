@@ -404,7 +404,7 @@ lemma separatedOuter_braid_difference (c : P.CrossCoeff Sc) (L : P.LeftwardData)
       (∑ a ∈ Finset.range (D.dn i j),
         (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
           (x ^ (D.dn i j - 1 - a) * z ^ a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i),
         ∑ a ∈ Finset.range b,
           (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
             (x ^ (b - 1 - a) * y ^ d * z ^ a) := by
@@ -473,13 +473,13 @@ private lemma correction_coordinates {C : Type*} [Category C] [Preadditive C] [L
     ((∑ a ∈ Finset.range (D.dn i j),
       (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
         (x ^ (D.dn i j - 1 - a) * z ^ a)) +
-    ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+    ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
       (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
         (x ^ (b - 1 - a) * y ^ d * z ^ a)) =
     (∑ a ∈ Finset.range (D.dn i j),
       (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
         (compPow z' a ≫ compPow x' (D.dn i j - 1 - a))) +
-    ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+    ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
       (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
         (compPow z' a ≫ compPow y' d ≫ compPow x' (b - 1 - a)) := by
   subst x'; subst y'; subst z'
@@ -502,7 +502,7 @@ lemma separatedOuter_braidEq_diag (c : P.CrossCoeff Sc) (L : P.LeftwardData)
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] n Z) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] n Z)
               (D.dn i j - 1 - a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] n Z) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] n Z) d ≫
@@ -547,7 +547,7 @@ lemma separatedOuter_braidEq_diag_transport {t : Sector I}
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] n W) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] n W)
               (D.dn i j - 1 - a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] n W) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] n W) d ≫

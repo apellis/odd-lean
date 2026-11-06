@@ -93,8 +93,8 @@ theorem nondegeneracyConjecture_congr {k : Type w} [CommRing k] {P Q : Prop}
 theorem ScalarChange.homogeneous_scalars {R : Type w} {S : Type w'} [CommRing R] [CommRing S]
     (f : R →+* S) {P : Prop} {Sc : ScalarData D R P} (hh : Sc.Homogeneous) :
     (ScalarChange.scalars D f Sc).Homogeneous := by
-  intro i j p q hp hp' hq hq' h
-  exact hh i j p q hp hp' hq hq' (fun h0 => h (by simp [h0]))
+  intro i j p q hij hp' hq' h
+  exact hh i j p q hij hp' hq' (fun h0 => h (by simp [h0]))
 
 namespace MatchingBasisChoice
 

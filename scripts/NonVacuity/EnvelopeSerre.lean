@@ -51,7 +51,7 @@ def symmetrizer : SKM.Symmetrizer datum where
     intro i j
     cases i <;> cases j <;> simp [SKM.Datum.d, SKM.Datum.h, SKM.Datum.α, datum]
 
-theorem homogeneous : scalars.Homogeneous := fun _ _ _ _ _ _ _ _ h => absurd rfl h
+theorem homogeneous : scalars.Homogeneous := fun _ _ _ _ _ _ _ h => absurd rfl h
 
 /-- `i` odd, `M = 3`: the Serre relation for the words `i^{3-r} j i^r`. -/
 example : ∑ r ∈ Finset.range 4, SerreComplex.serreC symmetrizer true false 3 r •

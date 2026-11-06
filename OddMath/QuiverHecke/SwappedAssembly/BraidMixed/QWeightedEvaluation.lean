@@ -37,7 +37,7 @@ def qCoefficientPolynomial {K : Type*} [CommRing K] [Algebra k K]
   if D.d i r = 0 then Polynomial.C (algebraMap k K (Sc.t i r : k)) else
     Polynomial.C (algebraMap k K (Sc.t i r : k)) * Polynomial.X ^ qExponent (D := D) i (D.dn i r) +
     Polynomial.C (algebraMap k K (Sc.t r i : k) * v ^ qExponent (D := D) r (D.dn r i)) +
-    ∑ p ∈ Finset.Ioo 0 (D.dn i r), ∑ q ∈ Finset.Ioo 0 (D.dn r i),
+    ∑ p ∈ Finset.range (D.dn i r), ∑ q ∈ Finset.range (D.dn r i),
       Polynomial.C (algebraMap k K (Sc.s i r p q) * v ^ qExponent (D := D) r q) *
         Polynomial.X ^ qExponent (D := D) i p
 
@@ -48,7 +48,7 @@ theorem qCoefficientPolynomial_eval {K S : Type*} [CommRing K] [Algebra k K]
       if D.d i r = 0 then (Sc.t i r : k) • (1 : S) else
         (Sc.t i r : k) • a ^ qExponent (D := D) i (D.dn i r) +
         (Sc.t r i : k) • c v ^ qExponent (D := D) r (D.dn r i) +
-        ∑ p ∈ Finset.Ioo 0 (D.dn i r), ∑ q ∈ Finset.Ioo 0 (D.dn r i),
+        ∑ p ∈ Finset.range (D.dn i r), ∑ q ∈ Finset.range (D.dn r i),
           Sc.s i r p q • (a ^ qExponent (D := D) i p * c v ^ qExponent (D := D) r q) := by
   have hc (t : k) : c.toRingHom (algebraMap k K t) = algebraMap k S t := c.commutes t
   unfold qCoefficientPolynomial

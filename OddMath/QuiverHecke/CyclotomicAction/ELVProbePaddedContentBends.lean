@@ -38,6 +38,7 @@ theorem elvProbeDx_content_separated_windows_above [Finite I]
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (minimum : ℕ) :
     ∃ N, minimum ≤ N ∧
       ELVProbeDxContentSeparatedAt D Sc m cutoff bound ΛP ΛR hP hR i t Z δ sy hc N := by
+  haveI : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   let := Fintype.ofFinite I
   let : IsIso ((P).T.dot i ((P).muP_preE i t)) :=
     (isUnit_iff_isIso _).mp
@@ -60,6 +61,7 @@ def ELVProbePaddedDxContentSeparatedAt [Finite I] (i : I) (t : Sector I)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
     (δ : WeightBlocks D ΛR ((P).muM t))
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (N : ℕ) : Prop :=
+  haveI : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   (P).CentralPaddedDxSeparatedAt i t Z out[t,δ]
     (fun {_a _b} h => SupportedSectors.probeWindowDot_isIso
       D Sc m cutoff bound ΛP ΛR hP hR i h)
@@ -70,6 +72,7 @@ def ELVProbePaddedCxContentSeparatedAt [Finite I] (i : I) (t : Sector I)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
     (δ : WeightBlocks D ΛR ((P).muM t))
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (N : ℕ) : Prop :=
+  haveI : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   (P).CentralPaddedCxSeparatedAt i t Z out[t,δ]
     (fun {_a _b} h => SupportedSectors.probeWindowDot_isIso
       D Sc m cutoff bound ΛP ΛR hP hR i h)
@@ -85,6 +88,7 @@ theorem elvProbe_content_padded_central_separated_windows_above [Finite I]
     ∃ N, minimum ≤ N ∧
       ELVProbePaddedDxContentSeparatedAt D Sc m cutoff bound ΛP ΛR hP hR i t Z δ sy hc N ∧
       ELVProbePaddedCxContentSeparatedAt D Sc m cutoff bound ΛP ΛR hP hR i t Z δ sy hc N := by
+  haveI : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   let hdot := fun {a b : X} (h : a + D.α i = b) =>
     SupportedSectors.probeWindowDot_isIso D Sc m cutoff bound ΛP ΛR hP hR i h
   let c := elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc

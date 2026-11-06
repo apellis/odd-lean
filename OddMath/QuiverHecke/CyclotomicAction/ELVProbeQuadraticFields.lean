@@ -38,7 +38,7 @@ theorem probeOldRouquierData_quadNe (hij : i ≠ j) (hd : D.d i j ≠ 0) :
     (T).cross i j h₁ h₂ h₃ h₄ ≫ (T).cross j i h₃ h₄ h₁ h₂ =
       (Sc.t i j : k) • ((T).E j h₁ ◁ SKM.rouquierPower ((T).dot i h₂) (D.dn i j)) +
       (Sc.t j i : k) • (SKM.rouquierPower ((T).dot j h₁) (D.dn j i) ▷ (T).E i h₂) +
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         Sc.s i j p q • (SKM.rouquierPower ((T).dot j h₁) q ▷ (T).E i h₂ ≫
           (T).E j h₁ ◁ SKM.rouquierPower ((T).dot i h₂) p) := by
   dsimp only [probeOldRouquierData]

@@ -52,7 +52,7 @@ private theorem braidEq_field
         (SKM.zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
           (SKM.rouquierPower (T.dot i hab) s ▷ (T.E j hbc ≫ T.E i hcd) ≫
             T.E i hab ◁ T.E j hbc ◁ SKM.rouquierPower (T.dot i hcd) (D.dn i j - 1 - s)) +
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), ∑ s ∈ Finset.range p,
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), ∑ s ∈ Finset.range p,
         (SKM.zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p q) •
           (SKM.rouquierPower (T.dot i hab) s ▷ (T.E j hbc ≫ T.E i hcd) ≫
             T.E i hab ◁ (SKM.rouquierPower (T.dot j hbc) q ▷ T.E i hcd) ≫

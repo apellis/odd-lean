@@ -56,7 +56,7 @@ variable {I : Type u} {X : Type v} [AddCommGroup X] {D : SKM.Datum I X}
 /-- Khovanov–Lauda scalars are homogeneous: every `sᵢⱼ^{pq}` vanishes, so the homogeneity
 condition (`SKM.ScalarData.Homogeneous`, Brundan–Ellis (1.31)) holds vacuously. -/
 theorem isKLScalars_homogeneous (hS : IsKLScalars D k Sc) : Sc.Homogeneous :=
-  fun i j p q _ _ _ _ hs => (hs (hS.2 i j p q)).elim
+  fun i j p q _ _ _ hs => (hs (hS.2 i j p q)).elim
 
 /-- **Even data lie in the vacuum route's scope.** A purely even datum compatible with a
 symmetric Cartan datum is symmetrizable (by `EvenBridge.symmetrizer`), and Khovanov–Lauda

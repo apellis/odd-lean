@@ -16,11 +16,11 @@ The polynomial `Qᵢⱼ(u, v)` of parameters `Sc : BWWScalars D k` is a sum over
 the interior monomials of Brundan–Ellis.
 
 * `BWWScalars.sum_box_eq`: the decomposition for arbitrary parameters.
-* `BWWScalars.NoPure`: the parameters without pure monomials. These are exactly the
-  Brundan–Ellis parameters (`NoPure.toScalars_toBWW`, `ScalarData.toBWW_noPure`), and
-  homogeneous parameters have no pure monomials (`Homogeneous.noPure`).
-* `sum_box_toBWW`: over Brundan–Ellis parameters the box sum is the two corners plus the
-  interior sum.
+* `BWWScalars.NoPure`: the boxes without pure monomials, i.e. the Brundan–Ellis parameters
+  (`NoPure.toScalars`, `ScalarData.NoPure.toBWW`); homogeneous parameters have no pure
+  monomials (`Homogeneous.noPure`).
+* `sum_box_toBWW`: the box sum of `Sc.toBWW` is the two corners plus the sum over
+  `[0, dᵢⱼ) × [0, dⱼᵢ)`.
 -/
 
 noncomputable section
@@ -60,33 +60,8 @@ theorem Homogeneous.noPure {Sc : BWWScalars D k} (hh : Sc.Homogeneous) : Sc.NoPu
   have hdn' : (D.dn j i : ℤ) = D.d j i := D.dn_cast (Ne.symm hij)
   exact hh.c_eq_zero hij (by omega) (by omega) hpq
 
-/-- Parameters without pure monomials are Brundan–Ellis parameters. -/
-theorem NoPure.toScalars_toBWW {Sc : BWWScalars D k} (hn : Sc.NoPure) :
-    Sc.toScalars.toBWW = Sc := by
-  refine ext rfl ?_
-  funext i j p q
-  change ScalarData.bwwCoeff Sc.toScalars i j p q = Sc.c i j p q
-  unfold ScalarData.bwwCoeff
-  by_cases hij : i = j
-  · subst hij; simp [Sc.c_self]
-  simp only [hij, ite_false]
-  split_ifs with h1 h2 h3
-  · obtain ⟨rfl, rfl⟩ := h1
-    exact (Sc.c_corner i j hij).symm
-  · obtain ⟨rfl, rfl⟩ := h2
-    exact (Sc.c_corner' hij).symm
-  · rfl
-  · symm
-    by_cases ho : D.dn i j < p ∨ D.dn j i < q
-    · exact Sc.c_outside i j p q ho
-    push Not at ho
-    by_cases hp : p = D.dn i j
-    · subst hp
-      exact Sc.c_top i j q (by omega)
-    by_cases hq : q = D.dn j i
-    · subst hq
-      exact Sc.c_right i j (by omega)
-    exact hn i j p q hij (by omega) (by omega) (by omega)
+/-- The underlying parameters have no pure monomials exactly when the box has none. -/
+theorem NoPure.toScalars {Sc : BWWScalars D k} (hn : Sc.NoPure) : Sc.toScalars.NoPure := hn
 
 /-- **The box decomposition.** For `dᵢⱼ ≠ 0`, a sum over the box `[0, dᵢⱼ] × [0, dⱼᵢ]` is the
 two corners, the pure monomials `u^p` (`p < dᵢⱼ`) and `v^q` (`0 < q < dⱼᵢ`), and the interior. -/
@@ -118,34 +93,36 @@ end BWWScalars
 
 namespace ScalarData
 
-/-- Brundan–Ellis parameters have no pure monomials. -/
-theorem toBWW_noPure (Sc : Scalars D k) : Sc.toBWW.NoPure :=
-  fun _ _ _ _ hij hp hq hpq => Sc.toBWW_c_eq_zero_of_pure hij hp hq hpq
+/-- Parameters without pure monomials give a box without pure monomials. -/
+theorem NoPure.toBWW {Sc : Scalars D k} (hn : Sc.NoPure) : Sc.toBWW.NoPure :=
+  fun _ _ _ _ hij hp hq hpq => by rw [Sc.toBWW_c_of_lt hij hp hq]; exact hn _ _ _ _ hij hp hq hpq
 
 end ScalarData
 
-/-- Over Brundan–Ellis parameters with `dᵢⱼ ≠ 0`, a sum over the box is the two corner terms
-plus the interior sum. -/
+/-- For `dᵢⱼ ≠ 0`, a sum over the box of `Sc.toBWW` is the two corner terms plus the sum over
+`[0, dᵢⱼ) × [0, dⱼᵢ)` with the scalars `sᵢⱼ^{pq}`. -/
 theorem sum_box_toBWW {M : Type*} [AddCommGroup M] [Module k M] (Sc : Scalars D k)
     {i j : I} (hij : i ≠ j) (hd : D.d i j ≠ 0) (f : ℕ → ℕ → M) :
     ∑ p ∈ Finset.range (D.dn i j + 1), ∑ q ∈ Finset.range (D.dn j i + 1),
         Sc.toBWW.c i j p q • f p q =
       (Sc.t i j : k) • f (D.dn i j) 0 + (Sc.t j i : k) • f 0 (D.dn j i) +
-        ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), Sc.s i j p q • f p q := by
+        ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), Sc.s i j p q • f p q := by
   obtain ⟨ha, hb⟩ := dn_pos_of_d_ne_zero hij hd
-  rw [BWWScalars.sum_box_eq Sc.toBWW hij hd]
-  have hp : ∑ p ∈ Finset.range (D.dn i j), Sc.toBWW.c i j p 0 • f p 0 = 0 :=
-    Finset.sum_eq_zero fun p hp => by
-      rw [Sc.toBWW_c_eq_zero_of_pure hij (Finset.mem_range.mp hp) hb (Or.inr rfl), zero_smul]
-  have hq : ∑ q ∈ Finset.Ioo 0 (D.dn j i), Sc.toBWW.c i j 0 q • f 0 q = 0 :=
-    Finset.sum_eq_zero fun q hq => by
-      rw [Sc.toBWW_c_eq_zero_of_pure hij ha (Finset.mem_Ioo.mp hq).2 (Or.inl rfl), zero_smul]
-  have hI : ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+  rw [BWWScalars.sum_box_eq Sc.toBWW hij hd, sum_range_range_eq_edges_add ha hb]
+  have e1 : ∑ p ∈ Finset.range (D.dn i j), Sc.toBWW.c i j p 0 • f p 0 =
+      ∑ p ∈ Finset.range (D.dn i j), Sc.s i j p 0 • f p 0 :=
+    Finset.sum_congr rfl fun p hp => by
+      rw [Sc.toBWW_c_of_lt hij (Finset.mem_range.mp hp) hb]
+  have e2 : ∑ q ∈ Finset.Ioo 0 (D.dn j i), Sc.toBWW.c i j 0 q • f 0 q =
+      ∑ q ∈ Finset.Ioo 0 (D.dn j i), Sc.s i j 0 q • f 0 q :=
+    Finset.sum_congr rfl fun q hq => by
+      rw [Sc.toBWW_c_of_lt hij ha (Finset.mem_Ioo.mp hq).2]
+  have e3 : ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
       Sc.toBWW.c i j p q • f p q =
       ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), Sc.s i j p q • f p q :=
     Finset.sum_congr rfl fun p hp => Finset.sum_congr rfl fun q hq => by
-      rw [Finset.mem_Ioo] at hp hq
-      rw [ScalarData.toBWW_c_of_interior Sc hij hp.1 hp.2 hq.1 hq.2]
-  rw [hp, hq, hI, add_zero, add_zero, ScalarData.toBWW_t]
+      rw [Sc.toBWW_c_of_lt hij (Finset.mem_Ioo.mp hp).2 (Finset.mem_Ioo.mp hq).2]
+  rw [e1, e2, e3, ScalarData.toBWW_t]
+  abel
 
 end OddMath.SKM

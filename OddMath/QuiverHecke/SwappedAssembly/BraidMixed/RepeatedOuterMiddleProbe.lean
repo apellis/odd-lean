@@ -37,7 +37,7 @@ theorem qExpr_comp_sub_reverse (Sc : Scalars D k) (i j : I)
         (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
           (compPow (zsign k (D.parity i * D.parity j) • x₂) a ≫
             compPow (zsign k (D.parity i * D.parity j) • x₁) (D.dn i j - 1 - a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ c ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ b ∈ Finset.range (D.dn i j), ∑ c ∈ Finset.range (D.dn j i),
         ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b c) •
           (compPow (zsign k (D.parity i * D.parity j) • x₂) a ≫
@@ -304,7 +304,7 @@ theorem middleProbe_braidEq_diag (hij : i ≠ j) :
         (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Z) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] p Z) (D.dn i j - 1 - a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Z) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] p Z) d ≫
@@ -365,7 +365,7 @@ theorem middleProbe_braidEq_diag_transport {t : Sector I}
         (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p W) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] p W) (D.dn i j - 1 - a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p W) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] p W) d ≫

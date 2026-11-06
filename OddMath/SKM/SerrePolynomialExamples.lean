@@ -56,7 +56,7 @@ def scalars : Scalars datum ℚ where
 
 /-- The mixed coefficient has the required weighted degree. -/
 theorem homogeneous : scalars.Homogeneous := by
-  intro i j p q _ _ _ _ h
+  intro i j p q _ _ _ h
   have h' : i ≠ j ∧ p = 2 ∧ q = 2 := by
     by_contra hn
     exact h (by simp [scalars, hn])

@@ -1,5 +1,6 @@
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.ProbeSlideWindow
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SupportedFactorWindowInverse
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
 
 /-! # Actual OLD probe slide and windows on supported padded sectors
 
@@ -7,6 +8,11 @@ The probe slide and row/column inputs of CentralInverse/ResidualComparison
 are discharged for the prescribed OLD/ELV construction. Invertible dots
 come from the actual OLD probe factor, with its normalized precomposition
 adjunction. No regular-input replacement or central inverse is assumed.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
@@ -24,7 +30,7 @@ local instance supportedProbeSlideHomPi (A B : PiSCat.{u,u,u+1} k) :
 
 /-- The whole prescribed OLD probe dot is invertible at every native
 edge, before choosing a supported Hom input or an evaluation component. -/
-theorem probeWindowDot_isIso [Finite I] (i : I) {a b : X} (h : a + D.α i = b) :
+theorem probeWindowDot_isIso [Fact Sc.PureNilpotent] [Finite I] (i : I) {a b : X} (h : a + D.α i = b) :
     IsIso ((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).T.dot i h) := by
   let := Fintype.ofFinite I
   exact (isUnit_iff_isIso _).mp
@@ -33,14 +39,14 @@ theorem probeWindowDot_isIso [Finite I] (i : I) {a b : X} (h : a + D.α i = b) :
 variable {C : Type*} [Category C] [Preadditive C] [Limits.HasZeroObject C]
 
 /-- The actual source probe automorphism in the padded source corner. -/
-def probeWindowX [Finite I] (i : I) (t : Sector I)
+def probeWindowX [Fact Sc.PureNilpotent] [Finite I] (i : I) (t : Sector I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
     (E : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t ⥤ C) [E.Additive] :=
   (P).centralPaddedProbeX i t Z.obj E
     (fun {_a _b} h => probeWindowDot_isIso D Sc m cutoff bound ΛP ΛR hP hR i h)
 
 /-- The actual target probe automorphism, with its zero-corner boundary. -/
-def probeWindowY [Finite I] (i : I) (t : Sector I)
+def probeWindowY [Fact Sc.PureNilpotent] [Finite I] (i : I) (t : Sector I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
     (E : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t ⥤ C) [E.Additive] :=
   (P).centralPaddedProbeY i t Z.obj E
@@ -48,7 +54,7 @@ def probeWindowY [Finite I] (i : I) (t : Sector I)
 
 /-- Every literal padded cap row uses the same raw probe automorphism
 as the mixed-bend series, at every nonnegative exponent and local height. -/
-theorem probe_cap_power [Finite I] (i : I) (t : Sector I)
+theorem probe_cap_power [Fact Sc.PureNilpotent] [Finite I] (i : I) (t : Sector I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
     (E : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t ⥤ C) [E.Additive] (n : ℕ) :
     (P).centralPaddedCap i t Z.obj E true n =
@@ -59,7 +65,7 @@ theorem probe_cap_power [Finite I] (i : I) (t : Sector I)
 
 /-- Every literal padded unit column uses the normalized right adjoint
 of that raw dot, including all absent-target and height-zero columns. -/
-theorem probe_unit_power [Finite I] (i : I) (t : Sector I)
+theorem probe_unit_power [Fact Sc.PureNilpotent] [Finite I] (i : I) (t : Sector I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
     (E : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t ⥤ C) [E.Additive] (n : ℕ) :
     (P).centralPaddedUnit i t Z.obj E true n = (P).centralPaddedUnit i t Z.obj E true 0 ≫
@@ -69,7 +75,7 @@ theorem probe_unit_power [Finite I] (i : I) (t : Sector I)
 
 /-- The actual padded pure-probe principal satisfies exactly the slide
 required by the two-sector residual comparison. -/
-theorem probe_slide [Finite I]
+theorem probe_slide [Fact Sc.PureNilpotent] [Finite I]
     (c : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).CrossCoeff)
     (i : I) (t : Sector I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
