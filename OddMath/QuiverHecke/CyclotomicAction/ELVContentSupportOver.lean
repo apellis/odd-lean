@@ -41,14 +41,14 @@ theorem affineUnit_mem_degreeOver {v w : List I} {d : ℤ}
     {f : (pres D Sc).obj (ob D v) ⟶ (pres D Sc).obj (ob D w)}
     (hf : f ∈ CoefficientGrading.presentedPart 𝒜 (gdeg D sy) (pres D Sc) (ob D v) (ob D w) d) :
     affineUnit D Sc cutoff v w f ∈ elvHomDegreeOver D sy 𝒜 Sc hP cutoff v w d := by
-  let _ := Linear.restrictScalars K R
+  letI := Linear.restrictScalars K R
     (SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff))
-  let _ := Supercategory.restrictScalars K R
+  letI := Supercategory.restrictScalars K R
     (SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff))
-  let _ := elvCoefficientCategoryGradingOver D sy 𝒜 cutoff
-  let _ := Linear.restrictScalars K R (H D Sc)
-  let _ := Supercategory.restrictScalars K R (H D Sc)
-  let _ := quiverHeckeGradingOver D sy 𝒜 Sc hP
+  letI := elvCoefficientCategoryGradingOver D sy 𝒜 cutoff
+  letI := Linear.restrictScalars K R (H D Sc)
+  letI := Supercategory.restrictScalars K R (H D Sc)
+  letI := quiverHeckeGradingOver D sy 𝒜 Sc hP
   have h := BoxProdCoefficient.tmulHom_mem_homDegree (X := obj D Sc cutoff v)
     (Y := obj D Sc cutoff w) (id_mem_degree (R := K) (obj D Sc cutoff v).fst) hf
   rw [zero_add] at h
@@ -58,14 +58,14 @@ theorem affineUnit_mem_degreeOver {v w : List I} {d : ℤ}
 theorem rightContext_mem_degreeOver (σ : List I) {v w : List I} {n : ℤ}
     {f : hom D Sc cutoff v w} (hf : f ∈ elvHomDegreeOver D sy 𝒜 Sc hP cutoff v w n) :
     rightContext D Sc cutoff σ v w f ∈ elvHomDegreeOver D sy 𝒜 Sc hP cutoff (v ++ σ) (w ++ σ) n := by
-  let _ := Linear.restrictScalars K R
+  letI := Linear.restrictScalars K R
     (SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff))
-  let _ := Supercategory.restrictScalars K R
+  letI := Supercategory.restrictScalars K R
     (SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff))
-  let _ := elvCoefficientCategoryGradingOver D sy 𝒜 cutoff
-  let _ := Linear.restrictScalars K R (H D Sc)
-  let _ := Supercategory.restrictScalars K R (H D Sc)
-  let _ := quiverHeckeGradingOver D sy 𝒜 Sc hP
+  letI := elvCoefficientCategoryGradingOver D sy 𝒜 cutoff
+  letI := Linear.restrictScalars K R (H D Sc)
+  letI := Supercategory.restrictScalars K R (H D Sc)
+  letI := quiverHeckeGradingOver D sy 𝒜 Sc hP
   refine BoxProdCoefficient.homDegree_induction (X := obj D Sc cutoff v)
     (Y := obj D Sc cutoff w) (motive := fun y => rightContext D Sc cutoff σ v w y ∈
       elvHomDegreeOver D sy 𝒜 Sc hP cutoff (v ++ σ) (w ++ σ) n) ?_ ?_ ?_ ?_ hf
@@ -115,9 +115,9 @@ theorem appendBoundedOldMap_mem_degreeOver (i : I) (v t w : List I)
   obtain ⟨r, hr, rfl⟩ := hr
   rw [appendBoundedOldMap_mk]
   refine mkQ_mem_truncatedDegreeOver D sy 𝒜 Sc hP cutoff N ?_
-  let _ := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
-  let _ := Supercategory.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
-  let _ := elvHomGradingOver D sy 𝒜 Sc hP cutoff
+  letI := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
+  letI := Supercategory.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
+  letI := elvHomGradingOver D sy 𝒜 Sc hP cutoff
   exact comp_mem_degree (appendSourcePower_mem_degreeOver D sy 𝒜 Sc hP cutoff i v j)
     (comp_mem_degree (rightContext_mem_degreeOver D sy 𝒜 Sc hP cutoff [i] hr) hh)
 

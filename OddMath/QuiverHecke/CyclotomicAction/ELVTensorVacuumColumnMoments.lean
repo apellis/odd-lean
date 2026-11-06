@@ -220,14 +220,12 @@ private theorem tensorVacuum_reservoir_series (hi : D.parity i = 1) (hN : 0 < cu
     (reservoir_even_coefficient D Sc m cutoff L i hi hN)
     (reservoir_odd_coefficient D Sc m cutoff L i hi hN)
 
-set_option diagnostics true in
 include hdot in
 private theorem odd_slide_neg (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) :
     evaluatedMixedBend D Sc m cutoff bound i hP H ≫ evaluatedPostDot D Sc m cutoff bound i H -
       (-1 : k) • (shiftedPreDot D Sc m R₀ i H ≫ evaluatedMixedBend D Sc m cutoff bound i hP H) =
       shiftedPreCap D Sc m R₀ i hP H ≫ (adjunction K).unit.app V := by
-  have hs := evaluatedMixedBend_odd_slideOf D Sc m cutoff bound hdot i hi hP H
-  simpa only [hi, koszulSign_one_one, neg_one_zsmul, neg_one_smul] using hs
+  exact evaluatedMixedBend_odd_slide_neg D Sc m cutoff bound hdot i hi hP H
 
 private theorem odd_probe_polynomial (hi : D.parity i = 1) (h : ℕ) (hhN : h + cutoff i = 2 * m i) :
     SwappedVacuum.capPolynomial

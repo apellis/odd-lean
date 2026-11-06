@@ -29,8 +29,10 @@ local instance paddedResidualHomPi (A B : PiSCat.{u,u,u+1} k) :
 /-- The reservoir closures and off-window contractions of every output
 content lie in the first level of one coefficient ideal of that content,
 whose zeroth level contains every morphism. -/
-def ReservoirWindowIdeal : Prop :=
-  ∀ (i : I) (t : Sector I) (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
+structure ReservoirWindowIdeal : Prop where
+  /-- For each colour, sector, object, output block and cross coefficient, one coefficient
+  ideal carries the closures and off-window contractions. -/
+  out : ∀ (i : I) (t : Sector I) (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
     (β : WeightBlocks D ΛR ((P).muM t)) (c : (P).CrossCoeff),
     ∃ J : CoefficientIdeal ((P).T.obj (-((P).muP t)) ⟶
         contentModuleTarget D (parameterTwist D Sc) cutoff bound β.1),
@@ -68,7 +70,7 @@ def ReservoirWindowIdeal : Prop :=
 ideal carries every reservoir window. -/
 theorem reservoirWindowIdeal (sy : Symmetrizer D) (hc : Sc.Homogeneous) :
     ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR := by
-  intro i t Z β c
+  refine ⟨fun i t Z β c => ?_⟩
   refine ⟨contentModuleCoefficientIdeal D (parameterTwist D Sc) cutoff bound β.1 sy
     (parameterTwist_homogeneous D Sc hc) ((P).T.obj (-((P).muP t))), ?_, ?_, ?_, ?_, ?_⟩
   · intro A B f
@@ -103,7 +105,7 @@ theorem centralFactorMatrix_content_isIsoOf
         (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β))) := by
   let E := reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β
   let c := elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot
-  obtain ⟨J, hJ0, hclCap, hclCup, hbdCap, hbdCup⟩ := hwin i t Z β c
+  obtain ⟨J, hJ0, hclCap, hclCup, hbdCap, hbdCup⟩ := hwin.out i t Z β c
   let x := probeWindowX D Sc m cutoff bound ΛP ΛR hP hR i t Z E
   let y := probeWindowY D Sc m cutoff bound ΛP ΛR hP hR i t Z E
   let v := (P).centralPaddedCap i t Z.obj E true 0

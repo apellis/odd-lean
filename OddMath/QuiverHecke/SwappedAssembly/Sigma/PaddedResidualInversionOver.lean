@@ -37,7 +37,7 @@ local instance paddedResidualOverHomPi (A B : PiSCat.{u,u,u+1} k) :
 reservoir window. -/
 theorem reservoirWindowIdealOver :
     ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR := by
-  intro i t Z β c
+  refine ⟨fun i t Z β c => ?_⟩
   refine ⟨contentModuleCoefficientIdealOver D sy 𝒜 (parameterTwist D Sc)
     (isHomogeneous_parameterTwist D sy 𝒜 Sc ht hs) cutoff bound β.1 b h𝒜
     ((P).T.obj (-((P).muP t))), ?_, ?_, ?_, ?_, ?_⟩

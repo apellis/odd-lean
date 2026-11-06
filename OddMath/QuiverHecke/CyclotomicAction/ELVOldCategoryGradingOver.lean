@@ -79,9 +79,9 @@ theorem mkQ_mem_oldDegreeOver {v w : OldCategory D Sc cutoff} {n : ℤ}
 theorem oldDprojOver_of_mem {v w : OldCategory D Sc cutoff} {m : ℤ} {f : v ⟶ w}
     (hf : f ∈ oldDegreeOver D sy 𝒜 Sc hP cutoff v w m) (n : ℤ) :
     oldDprojOver D sy 𝒜 Sc hP cutoff v.word w.word n f = if m = n then f else 0 := by
-  let _ := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
-  let _ := Supercategory.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
-  let _ := elvHomGradingOver D sy 𝒜 Sc hP cutoff
+  letI := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
+  letI := Supercategory.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
+  letI := elvHomGradingOver D sy 𝒜 Sc hP cutoff
   obtain ⟨a, ha, rfl⟩ := hf
   rw [oldDprojOver_mk]
   split_ifs with h
@@ -108,10 +108,10 @@ theorem oldDegreeOver_internal (v w : OldCategory D Sc cutoff) :
   · classical
     refine Submodule.eq_top_iff'.2 fun f => ?_
     obtain ⟨a, rfl⟩ := (ideal D Sc cutoff v.word w.word).mkQ_surjective f
-    let _ := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
-    let _ := Supercategory.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
-    let _ := elvHomGradingOver D sy 𝒜 Sc hP cutoff
-    let _ := degreeDecomposition K (obj D Sc cutoff v.word) (obj D Sc cutoff w.word)
+    letI := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
+    letI := Supercategory.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
+    letI := elvHomGradingOver D sy 𝒜 Sc hP cutoff
+    letI := degreeDecomposition K (obj D Sc cutoff v.word) (obj D Sc cutoff w.word)
     rw [← DirectSum.sum_support_decompose
       (GradedSupercategory.degree (R := K) (obj D Sc cutoff v.word) (obj D Sc cutoff w.word)) a,
       map_sum]
@@ -132,9 +132,9 @@ def oldCategoryGradedSupercategoryOver :
     isInternal_degree := oldDegreeOver_internal D sy 𝒜 Sc hP cutoff
     proj_mem_degree := by
       rintro v w n _ p ⟨a, ha, rfl⟩
-      let _ := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
-      let _ := Supercategory.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
-      let _ := elvHomGradingOver D sy 𝒜 Sc hP cutoff
+      letI := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
+      letI := Supercategory.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
+      letI := elvHomGradingOver D sy 𝒜 Sc hP cutoff
       rw [BoxProdCoefficient.proj_eq_proj (R := R) (fun _ _ _ _ => Submodule.restrictScalars_mem K _ _),
         oldCategory_proj, oldProj_mk]
       refine mkQ_mem_oldDegreeOver D sy 𝒜 Sc hP cutoff ?_
@@ -142,15 +142,15 @@ def oldCategoryGradedSupercategoryOver :
         (fun _ _ _ _ => Submodule.restrictScalars_mem K _ _)]
       exact proj_mem_degree p ha
     id_mem_degree := fun v => by
-      let _ := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
-      let _ := Supercategory.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
-      let _ := elvHomGradingOver D sy 𝒜 Sc hP cutoff
+      letI := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
+      letI := Supercategory.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
+      letI := elvHomGradingOver D sy 𝒜 Sc hP cutoff
       exact mkQ_mem_oldDegreeOver D sy 𝒜 Sc hP cutoff (id_mem_degree (R := K) (obj D Sc cutoff v.word))
     comp_mem_degree := by
       rintro v t w m n _ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩
-      let _ := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
-      let _ := Supercategory.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
-      let _ := elvHomGradingOver D sy 𝒜 Sc hP cutoff
+      letI := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
+      letI := Supercategory.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
+      letI := elvHomGradingOver D sy 𝒜 Sc hP cutoff
       exact mkQ_mem_oldDegreeOver D sy 𝒜 Sc hP cutoff (comp_mem_degree ha hb) }
 
 end OddMath.QuiverHecke.ELVOld

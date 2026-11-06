@@ -171,7 +171,6 @@ local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff N ΛP ΛR h
   (tensorSourceFamily D Sc m cutoff ΛP ΛR L s) (tensorTargetFamily D Sc m cutoff ΛP ΛR L)
 attribute [local irreducible] elvProbeCrossCoeffOf
 
-set_option diagnostics true in
 /-- The generator square of the corner evaluation on one presented layer. -/
 theorem tensorCornerEv_layer (G : Layer (QuiverHecke.sig D)) (hv : G.Valid)
     (v : (action (ΛP - ΛR)).V G.dom.word)

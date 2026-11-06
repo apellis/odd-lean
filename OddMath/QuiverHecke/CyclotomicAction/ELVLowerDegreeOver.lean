@@ -21,6 +21,9 @@ factor has no negative degrees. For `K = R` with the trivial grading this is
 `QuiverHecke.exists_elvHomDegree_lower_bound`.
 -/
 
+-- `letI` keeps the restricted-scalar instances available to instance search in these proofs.
+set_option linter.style.haveILetI false
+
 noncomputable section
 
 open CategoryTheory StringDiagrams OddMath.Diagrams
@@ -56,7 +59,7 @@ theorem exists_presentedSubmodule_lower_bound (h𝒜 : ∀ m, m < 0 → 𝒜 m =
     ∃ L : ℤ, ∀ n, n < L →
       CoefficientGrading.presentedSubmodule (𝒜 := 𝒜) (deg := gdeg D sy) (pres D Sc)
         (ob D v) (ob D w) n = ⊥ := by
-  let _ := Linear.restrictScalars K R (H D Sc)
+  letI := Linear.restrictScalars K R (H D Sc)
   obtain ⟨L, hL⟩ := exists_le_deg D sy v w
   refine ⟨L, fun n hn => ?_⟩
   refine BasisGrading.eq_bot_of_span_lower_bound (𝒜 := 𝒜)
@@ -83,17 +86,17 @@ theorem exists_elvHomDegreeOver_lower_bound (h𝒜 : ∀ m, m < 0 → 𝒜 m = �
         (ELVOld.obj D Sc cutoff w) n = ⊥ := by
   obtain ⟨L, hL⟩ := exists_presentedSubmodule_lower_bound D sy 𝒜 Sc hP h𝒜 v w
   refine ⟨L, fun cutoff n hn => ?_⟩
-  let _ := Linear.restrictScalars K R
+  letI := Linear.restrictScalars K R
     (SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff))
-  let _ := Supercategory.restrictScalars K R
+  letI := Supercategory.restrictScalars K R
     (SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff))
   have : ∀ A B : SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff),
       IsScalarTower K R (A ⟶ B) :=
     Linear.isScalarTower_restrictScalars K R _
-  let _ := elvCoefficientCategoryGradingOver D sy 𝒜 cutoff
-  let _ := Linear.restrictScalars K R (H D Sc)
-  let _ := Supercategory.restrictScalars K R (H D Sc)
-  let _ := quiverHeckeGradingOver D sy 𝒜 Sc hP
+  letI := elvCoefficientCategoryGradingOver D sy 𝒜 cutoff
+  letI := Linear.restrictScalars K R (H D Sc)
+  letI := Supercategory.restrictScalars K R (H D Sc)
+  letI := quiverHeckeGradingOver D sy 𝒜 Sc hP
   refine BoxProdCoefficient.homDegree_eq_bot_of_lower_bound (a := 0) (b := L)
     (fun p hp => eq_bot_iff.2 fun f hf => ?_) (fun q hq => hL q hq) (by omega)
   have hf' : SuperalgebraCat.toElem f ∈ SKM.SYM.elvCoefficientDegreeOver D sy 𝒜 cutoff p := hf

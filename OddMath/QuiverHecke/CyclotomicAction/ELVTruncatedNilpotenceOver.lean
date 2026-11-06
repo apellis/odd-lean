@@ -164,6 +164,6 @@ include sy 𝒜 hP in
 nilpotence of the appended dot. -/
 theorem truncatedAppendDotNilpotentOver [Finite I] (b : ℤ)
     (h𝒜 : ∀ m, m ∉ Set.Icc (0 : ℤ) b → 𝒜 m = ⊥) : TruncatedAppendDotNilpotent D Sc cutoff N :=
-  truncatedAppendDot_pow_zeroOver D sy 𝒜 Sc hP cutoff N b h𝒜
+  ⟨truncatedAppendDot_pow_zeroOver D sy 𝒜 Sc hP cutoff N b h𝒜⟩
 
 end OddMath.QuiverHecke.ELVOld

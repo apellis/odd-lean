@@ -22,6 +22,9 @@ For `K = R` with the trivial grading these are the statements of
 `OddMath.QuiverHecke.CyclotomicAction.ELVReservoirClosureDegree`.
 -/
 
+-- `letI` keeps the restricted-scalar instances available to instance search in these proofs.
+set_option linter.style.haveILetI false
+
 noncomputable section
 set_option backward.dsimp.instances true
 
@@ -42,9 +45,9 @@ variable {I X : Type u} [AddCommGroup X] (D : SKM.Datum I X) (sy : SKM.Symmetriz
 /-- Identities have degree zero in the old quotient, over a graded base. -/
 theorem oldId_mem_degreeOver (v : OldCategory D Sc cutoff) :
     𝟙 v ∈ oldDegreeOver D sy 𝒜 Sc hP cutoff v v 0 := by
-  let _ := Linear.restrictScalars K R (OldCategory D Sc cutoff)
-  let _ := Supercategory.restrictScalars K R (OldCategory D Sc cutoff)
-  let _ := oldCategoryGradedSupercategoryOver D sy 𝒜 Sc hP cutoff
+  letI := Linear.restrictScalars K R (OldCategory D Sc cutoff)
+  letI := Supercategory.restrictScalars K R (OldCategory D Sc cutoff)
+  letI := oldCategoryGradedSupercategoryOver D sy 𝒜 Sc hP cutoff
   exact id_mem_degree (R := K) v
 
 /-- Truncation preserves degrees, over a graded base. -/
@@ -62,9 +65,9 @@ theorem truncateOld_mem_degreeOver {v w : OldCategory D Sc cutoff} {n : ℤ} {f 
 theorem truncatedProj_mem_degreeOver {v w : TruncatedCategory D Sc cutoff N} {n : ℤ}
     (p : ZMod 2) {f : v ⟶ w} (hf : f ∈ truncatedDegreeOver D sy 𝒜 Sc hP cutoff N v w n) :
     proj R p f ∈ truncatedDegreeOver D sy 𝒜 Sc hP cutoff N v w n := by
-  let _ := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
-  let _ := Supercategory.restrictScalars K R (TruncatedCategory D Sc cutoff N)
-  let _ := truncatedGradedSupercategoryOver D sy 𝒜 Sc hP cutoff N
+  letI := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
+  letI := Supercategory.restrictScalars K R (TruncatedCategory D Sc cutoff N)
+  letI := truncatedGradedSupercategoryOver D sy 𝒜 Sc hP cutoff N
   have hf' : f ∈ degree (R := K) v w n := hf
   rw [← Supercategory.proj_restrictScalars K R (TruncatedCategory D Sc cutoff N) p f]
   exact proj_mem_degree (R := K) p hf'

@@ -22,6 +22,9 @@ generators to the span decomposes the scalars into homogeneous parts
 `ELVOld.relation_mem_degree` and `ELVOld.ideal_dproj_mem`.
 -/
 
+-- `letI` keeps the restricted-scalar instances available to instance search in these proofs.
+set_option linter.style.haveILetI false
+
 noncomputable section
 
 open CategoryTheory StringDiagrams OddMath.Diagrams GradedSupercategory
@@ -78,17 +81,17 @@ theorem smul_mem_elvHomDegreeOver {v w : List I} {e n : ℤ} {r : R}
     {y : ELVOld.hom D Sc cutoff v w} (hr : r ∈ 𝒜 e)
     (hy : y ∈ elvHomDegreeOver D sy 𝒜 Sc hP cutoff v w n) :
     r • y ∈ elvHomDegreeOver D sy 𝒜 Sc hP cutoff v w (e + n) := by
-  let _ := Linear.restrictScalars K R
+  letI := Linear.restrictScalars K R
     (SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff))
-  let _ := Supercategory.restrictScalars K R
+  letI := Supercategory.restrictScalars K R
     (SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff))
   have : ∀ A B : SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff),
       IsScalarTower K R (A ⟶ B) :=
     Linear.isScalarTower_restrictScalars K R _
-  let _ := elvCoefficientCategoryGradingOver D sy 𝒜 cutoff
-  let _ := Linear.restrictScalars K R (H D Sc)
-  let _ := Supercategory.restrictScalars K R (H D Sc)
-  let _ := quiverHeckeGradingOver D sy 𝒜 Sc hP
+  letI := elvCoefficientCategoryGradingOver D sy 𝒜 cutoff
+  letI := Linear.restrictScalars K R (H D Sc)
+  letI := Supercategory.restrictScalars K R (H D Sc)
+  letI := quiverHeckeGradingOver D sy 𝒜 Sc hP
   exact BoxProdCoefficient.smul_mem_homDegree (𝒜 := 𝒜)
     (fun {_ _ _ _ _ _} hr hf => by
       change SuperalgebraCat.toElem (_ • _) ∈ SKM.SYM.elvCoefficientDegreeOver D sy 𝒜 cutoff _
@@ -103,17 +106,17 @@ theorem elvQuotientMap_source_mem_degreeOver {v w : List I} {a : SKM.SYM D R}
     elvQuotientMap D Sc cutoff _ _ (sourceCoefficientHom D Sc a f) ∈
       elvHomDegreeOver D sy 𝒜 Sc hP cutoff v w (r + s) := by
   rw [elvQuotientMap_source]
-  let _ := Linear.restrictScalars K R
+  letI := Linear.restrictScalars K R
     (SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff))
-  let _ := Supercategory.restrictScalars K R
+  letI := Supercategory.restrictScalars K R
     (SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff))
   have : ∀ A B : SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff),
       IsScalarTower K R (A ⟶ B) :=
     Linear.isScalarTower_restrictScalars K R _
-  let _ := elvCoefficientCategoryGradingOver D sy 𝒜 cutoff
-  let _ := Linear.restrictScalars K R (H D Sc)
-  let _ := Supercategory.restrictScalars K R (H D Sc)
-  let _ := quiverHeckeGradingOver D sy 𝒜 Sc hP
+  letI := elvCoefficientCategoryGradingOver D sy 𝒜 cutoff
+  letI := Linear.restrictScalars K R (H D Sc)
+  letI := Supercategory.restrictScalars K R (H D Sc)
+  letI := quiverHeckeGradingOver D sy 𝒜 Sc hP
   have ha' : SKM.SYM.elvCoefficientQuotient D cutoff a ∈
       SKM.SYM.elvCoefficientDegreeOver D sy 𝒜 cutoff r :=
     Submodule.mem_map_of_mem (f := ((SKM.SYM.elvCoefficientQuotient D cutoff).restrictScalars
@@ -161,13 +164,13 @@ theorem ELVOld.ideal_dproj_mem_over {v w : List I} {f : ELVOld.hom D Sc cutoff v
     letI := Supercategory.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
     letI := elvHomGradingOver D sy 𝒜 Sc hP cutoff
     dproj K n f ∈ ELVOld.ideal D Sc cutoff v w := by
-  let _ := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
-  let _ := Supercategory.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
-  let _ := elvHomGradingOver D sy 𝒜 Sc hP cutoff
+  letI := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
+  letI := Supercategory.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
+  letI := elvHomGradingOver D sy 𝒜 Sc hP cutoff
   let S : ∀ v w : List I, Set (ELVOld.hom D Sc cutoff v w) := fun v w => {f | ∃ j t,
     ∃ a : ELVOld.hom D Sc cutoff v (j :: t), ∃ b : ELVOld.hom D Sc cutoff (j :: t) w,
       a ≫ ELVOld.relation D Sc cutoff j t ≫ b = f}
-  let _ := degreeDecomposition K (ELVOld.obj D Sc cutoff v) (ELVOld.obj D Sc cutoff w)
+  letI := degreeDecomposition K (ELVOld.obj D Sc cutoff v) (ELVOld.obj D Sc cutoff w)
   rw [dproj_apply]
   refine BasisGrading.decompose_mem_span 𝒜
     (GradedSupercategory.degree (R := K) (ELVOld.obj D Sc cutoff v) (ELVOld.obj D Sc cutoff w))

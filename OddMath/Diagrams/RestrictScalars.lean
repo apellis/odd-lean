@@ -21,6 +21,9 @@ so they do not create instance diamonds when `K = R`.
   parity decompositions.
 -/
 
+-- `letI` keeps the restricted-scalar instances available to instance search in these proofs.
+set_option linter.style.haveILetI false
+
 noncomputable section
 
 namespace OddMath.Diagrams
@@ -95,8 +98,8 @@ theorem Supercategory.proj_restrictScalars [Supercategory R C] (p : ZMod 2) {X Y
     letI := Linear.restrictScalars K R C
     letI := Supercategory.restrictScalars K R C
     Supercategory.proj K p f = Supercategory.proj R p f := by
-  let _ := Linear.restrictScalars K R C
-  let _ := Supercategory.restrictScalars K R C
+  letI := Linear.restrictScalars K R C
+  letI := Supercategory.restrictScalars K R C
   exact Supercategory.proj_eq_of_add (R := K)
     (Supercategory.proj_add_proj_add_one (R := R) p f).symm
     (Supercategory.proj_mem (R := R) p f) (Supercategory.proj_mem (R := R) (p + 1) f)

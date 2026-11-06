@@ -17,6 +17,9 @@ projections are induced by the graded tensor projections of
 
 For `K = R` with the trivial grading this is `IndResKernel.integerDegree`.
 -/
+-- `letI` keeps the restricted-scalar instances available to instance search in these proofs.
+set_option linter.style.haveILetI false
+
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory GradedSupercategory TensorProduct
 open OddMath.Diagrams
@@ -52,8 +55,8 @@ omit [Supercategory R D] in
 theorem homTensorProj_tmul (X Y Z : D) (n : ℤ) (g : Y ⟶ Z) (b : X ⟶ Y) {q r : ℤ}
     (hg : g ∈ degree (R := K) Y Z q) (hb : b ∈ degree (R := K) X Y r) :
     homTensorProj 𝒜 hD X Y Z n (g ⊗ₜ[R] b) = if q + r = n then g ⊗ₜ[R] b else 0 := by
-  let _ := degreeDecomposition K Y Z
-  let _ := degreeDecomposition K X Y
+  letI := degreeDecomposition K Y Z
+  letI := degreeDecomposition K X Y
   change GradedTensor.proj 𝒜 (degree (R := K) Y Z) (degree (R := K) X Y)
     (fun hr hf => hD hr hf) (fun hr hf => hD hr hf) n (g ⊗ₜ[R] b) = _
   rw [GradedTensor.proj_tmul, GradedTensor.projBihom_of_mem_of_mem _ _ hg hb]

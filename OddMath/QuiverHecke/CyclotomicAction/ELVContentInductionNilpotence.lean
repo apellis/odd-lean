@@ -85,7 +85,7 @@ theorem contentInductionDot_module_pow_zero [Finite I] (ν : List I) (i : I) :
     ∃ e : ℕ, 0 < e ∧ ∀ M : ContentModules D Sc cutoff N (ν : Multiset I),
       (show End ((contentE D Sc cutoff N (ν : Multiset I) i).obj M) from
         (contentInductionDot D Sc cutoff N (ν : Multiset I) i).app (D.parity i) M) ^ e = 0 := by
-  obtain ⟨e, he, hp⟩ := hdot ν i
+  obtain ⟨e, he, hp⟩ := hdot.out ν i
   refine ⟨e, he, fun M => ?_⟩
   rw [contentInductionDot_component]
   apply BalancedInduction.transformComponent_pow_zero

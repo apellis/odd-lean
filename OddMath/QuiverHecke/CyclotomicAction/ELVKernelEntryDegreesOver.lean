@@ -19,6 +19,9 @@ dot/cap rows and the unit/dot columns shift it as in the field case
 (`OddMath.QuiverHecke.CyclotomicAction.ELVKernelEntryDegrees`).
 -/
 
+-- `letI` keeps the restricted-scalar instances available to instance search in these proofs.
+set_option linter.style.haveILetI false
+
 noncomputable section
 
 open CategoryTheory StringDiagrams Supercategory GradedSupercategory OddMath.Diagrams
@@ -66,9 +69,9 @@ theorem oldAppend_mem_degreeOver (i : I) {v w : OldCategory D Sc cutoff} {n : �
 theorem oldTwist_mem_degreeOver {v t : OldCategory D Sc cutoff} {n : ℤ} (p : ZMod 2)
     (f : v ⟶ t) (hf : f ∈ oldDegreeOver D sy 𝒜 Sc hP cutoff v t n) :
     twist R p f ∈ oldDegreeOver D sy 𝒜 Sc hP cutoff v t n := by
-  let _ := Linear.restrictScalars K R (OldCategory D Sc cutoff)
-  let _ := Supercategory.restrictScalars K R (OldCategory D Sc cutoff)
-  let _ := oldCategoryGradedSupercategoryOver D sy 𝒜 Sc hP cutoff
+  letI := Linear.restrictScalars K R (OldCategory D Sc cutoff)
+  letI := Supercategory.restrictScalars K R (OldCategory D Sc cutoff)
+  letI := oldCategoryGradedSupercategoryOver D sy 𝒜 Sc hP cutoff
   have hf' : f ∈ degree (R := K) v t n := hf
   rw [twist_apply, ← Supercategory.proj_restrictScalars K R (OldCategory D Sc cutoff) 0 f,
     ← Supercategory.proj_restrictScalars K R (OldCategory D Sc cutoff) 1 f]
@@ -81,9 +84,9 @@ theorem oldComp_mem_degreeOver {v t w : OldCategory D Sc cutoff} {m n : ℤ}
     (hf : f ∈ oldDegreeOver D sy 𝒜 Sc hP cutoff v t m)
     (hg : g ∈ oldDegreeOver D sy 𝒜 Sc hP cutoff t w n) :
     f ≫ g ∈ oldDegreeOver D sy 𝒜 Sc hP cutoff v w (m + n) := by
-  let _ := Linear.restrictScalars K R (OldCategory D Sc cutoff)
-  let _ := Supercategory.restrictScalars K R (OldCategory D Sc cutoff)
-  let _ := oldCategoryGradedSupercategoryOver D sy 𝒜 Sc hP cutoff
+  letI := Linear.restrictScalars K R (OldCategory D Sc cutoff)
+  letI := Supercategory.restrictScalars K R (OldCategory D Sc cutoff)
+  letI := oldCategoryGradedSupercategoryOver D sy 𝒜 Sc hP cutoff
   exact comp_mem_degree (R := K) (C := OldCategory D Sc cutoff) hf hg
 
 /-- The prescribed last dot has degree `2 dᵢ`, over a graded base. -/
@@ -120,9 +123,9 @@ theorem actualMateKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cut
     actualMateKernelComponent D Sc cutoff i v t x ∈
       oldDegreeOver D sy 𝒜 Sc hP cutoff ((append D Sc cutoff i).obj v)
         ((append D Sc cutoff i).obj t) (n - 2 * sy.d i) := by
-  let _ := Linear.restrictScalars K R (OldCategory D Sc cutoff)
-  let _ := Supercategory.restrictScalars K R (OldCategory D Sc cutoff)
-  let _ := oldCategoryGradedSupercategoryOver D sy 𝒜 Sc hP cutoff
+  letI := Linear.restrictScalars K R (OldCategory D Sc cutoff)
+  letI := Supercategory.restrictScalars K R (OldCategory D Sc cutoff)
+  letI := oldCategoryGradedSupercategoryOver D sy 𝒜 Sc hP cutoff
   let _ : ∀ X Y : OldCategory D Sc cutoff, IsScalarTower K R (X ⟶ Y) :=
     Linear.isScalarTower_restrictScalars K R _
   refine ((IndResKernel.integerDegreeOver_le_iff (K := K) (R := R) (append D Sc cutoff i) v t n
@@ -147,9 +150,9 @@ theorem actualDotKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cuto
     (hx : x ∈ representedKernelDegreeOver D sy 𝒜 Sc hP cutoff i v t n) :
     actualDotKernelComponent D Sc cutoff i v t x ∈
       representedKernelDegreeOver D sy 𝒜 Sc hP cutoff i v t (n + 2 * sy.d i) := by
-  let _ := Linear.restrictScalars K R (OldCategory D Sc cutoff)
-  let _ := Supercategory.restrictScalars K R (OldCategory D Sc cutoff)
-  let _ := oldCategoryGradedSupercategoryOver D sy 𝒜 Sc hP cutoff
+  letI := Linear.restrictScalars K R (OldCategory D Sc cutoff)
+  letI := Supercategory.restrictScalars K R (OldCategory D Sc cutoff)
+  letI := oldCategoryGradedSupercategoryOver D sy 𝒜 Sc hP cutoff
   let _ : ∀ X Y : OldCategory D Sc cutoff, IsScalarTower K R (X ⟶ Y) :=
     Linear.isScalarTower_restrictScalars K R _
   refine ((IndResKernel.integerDegreeOver_le_iff (K := K) (R := R) (append D Sc cutoff i) v t n
@@ -187,9 +190,9 @@ theorem actualCounitKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc c
     {n : ℤ} {x : IndResKernel.Component (k := R) (append D Sc cutoff i) v t}
     (hx : x ∈ representedKernelDegreeOver D sy 𝒜 Sc hP cutoff i v t n) :
     actualCounitKernelComponent D Sc cutoff i v t x ∈ oldDegreeOver D sy 𝒜 Sc hP cutoff v t n := by
-  let _ := Linear.restrictScalars K R (OldCategory D Sc cutoff)
-  let _ := Supercategory.restrictScalars K R (OldCategory D Sc cutoff)
-  let _ := oldCategoryGradedSupercategoryOver D sy 𝒜 Sc hP cutoff
+  letI := Linear.restrictScalars K R (OldCategory D Sc cutoff)
+  letI := Supercategory.restrictScalars K R (OldCategory D Sc cutoff)
+  letI := oldCategoryGradedSupercategoryOver D sy 𝒜 Sc hP cutoff
   let _ : ∀ X Y : OldCategory D Sc cutoff, IsScalarTower K R (X ⟶ Y) :=
     Linear.isScalarTower_restrictScalars K R _
   refine ((IndResKernel.integerDegreeOver_le_iff (K := K) (R := R) (append D Sc cutoff i) v t n
@@ -217,7 +220,7 @@ theorem actualUnitKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cut
     actualUnitKernelComponent D Sc cutoff i m v t b ∈
       oldDegreeOver D sy 𝒜 Sc hP cutoff ((append D Sc cutoff i).obj v)
         ((append D Sc cutoff i).obj t) (n + 2 * sy.d i * m) := by
-  let _ := Linear.restrictScalars K R (OldCategory D Sc cutoff)
+  letI := Linear.restrictScalars K R (OldCategory D Sc cutoff)
   cases v with
   | mk v =>
     cases t with
