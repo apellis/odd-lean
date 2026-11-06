@@ -89,7 +89,7 @@ theorem appendQP_qPoly_top (i j : I) (hij : i ≠ j) (v w : List I)
   rw [qPoly, ite_eq_right hd]
   simp only [map_add, map_sum, map_smul, Preadditive.add_comp, Preadditive.sum_comp,
     Linear.smul_comp]
-  have hl : (∑ e ∈ Finset.Ioo 0 (D.dn i j), ∑ a ∈ Finset.Ioo 0 (D.dn j i),
+  have hl : (∑ e ∈ Finset.range (D.dn i j), ∑ a ∈ Finset.range (D.dn j i),
       Sc.s i j e a • appendOldCoordinate D Sc cutoff 0 (q.representative.shift (D.dn i j))
         (appendProjection D Sc cutoff i v w
           (affineUnit D Sc cutoff _ _

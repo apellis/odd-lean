@@ -74,7 +74,7 @@ theorem distinctMixedBraidLeft_cap_of_zero_connected
     Linear.smul_comp] at hb
   rw [T.distinctMixedBraidRight_cap_of_neg hab haf hbc hfc hcd hcneg, sub_zero] at hb
   rw [hb]
-  have hinterior : (∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+  have hinterior : (∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
       ∑ s ∈ Finset.range p,
       (zsign k (D.parity i * s) * Sc.s i j p q) •
         (T.distinctMixedBraidOuterMate i j hab hbc hcd

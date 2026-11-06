@@ -265,7 +265,7 @@ lemma full_diag (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] n Z) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] n Z)
               (D.dn i j - 1 - a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] n Z) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] n Z) d ≫
@@ -292,7 +292,7 @@ lemma full_diag_transport (ν : X) {t : Sector I}
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] n Z) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] n Z)
               (D.dn i j - 1 - a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] n Z) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] n Z) d ≫

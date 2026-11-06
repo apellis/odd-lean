@@ -389,7 +389,7 @@ theorem omega_braidEq (i j : I) (ν : X) (hij : i ≠ j) :
       ((D.dn i j / 2 : ℕ) : ZMod 2) hfl hd)
     simp only [zsign_add] at e
     linear_combination (Sc.t i j : k) * e
-  have hS2 : ∑ x ∈ Finset.Ioo 0 (D.dn i j), ∑ x_1 ∈ Finset.Ioo 0 (D.dn j i), ∑ x_2 ∈ Finset.range x,
+  have hS2 : ∑ x ∈ Finset.range (D.dn i j), ∑ x_1 ∈ Finset.range (D.dn j i), ∑ x_2 ∈ Finset.range x,
       (zsign k (D.parity i * (D.parity j + (x_2 : ZMod 2))) * Sc.s i j x x_1) •
         (zsign k ((x_2 : ZMod 2) * D.parity i * ((x_1 : ZMod 2) * D.parity j +
             ((x - 1 - x_2 : ℕ) : ZMod 2) * D.parity i)) *
@@ -401,7 +401,7 @@ theorem omega_braidEq (i j : I) (ν : X) (hij : i ≠ j) :
           ((ddotsL i (x - 1 - x_2)).map (whL [] [dn j, dn i]) ++
             ((ddotsL j x_1).map (whL [dn i] [dn i]) ++ (ddotsL i x_2).map (whL [dn i, dn j] []))) =
       zsign k (D.parity i * (1 + D.parity j)) •
-        ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), ∑ r ∈ Finset.range p,
+        ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), ∑ r ∈ Finset.range p,
           (zsign k (D.parity i * (((p / 2 : ℕ) : ZMod 2) + r + 1) +
               D.parity j * ((q / 2 : ℕ) : ZMod 2)) * Sc.s i j p q) •
             cl D Sc (-ν) [dn i, dn j, dn i] [dn i, dn j, dn i] (dots3 i j r q (p - 1 - r)) := by

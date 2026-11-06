@@ -124,7 +124,7 @@ def mixedQ (i j : I) (t : Sector I)
   if D.d i j = 0 then (Sc.t i j : k) • (1 : End (P.prObj i j t hR Z)) else
     (Sc.t i j : k) • P.prPreDot i j t hR Z ^ D.dn i j +
       (Sc.t j i : k) • P.prPostDot i j t hR Z ^ D.dn j i +
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         Sc.s i j p q • (P.prPreDot i j t hR Z ^ p * P.prPostDot i j t hR Z ^ q)
 
 /-! ## The distinct-colour crossing -/

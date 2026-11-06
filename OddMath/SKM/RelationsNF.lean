@@ -81,7 +81,7 @@ theorem cl_quadNe (i j : I) (ν : X) (hij : i ≠ j) (hd : D.d i j ≠ 0) :
     cl D Sc ν [up i, up j] [up i, up j] (crossL [] i j [] ++ crossL [] j i []) =
       (Sc.t i j : k) • cl D Sc ν [up i, up j] [up i, up j] (dotsL [] i [up j] (D.dn i j)) +
       (Sc.t j i : k) • cl D Sc ν [up i, up j] [up i, up j] (dotsL [up i] j [] (D.dn j i)) +
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         Sc.s i j p q • cl D Sc ν [up i, up j] [up i, up j]
           (dotsL [up i] j [] q ++ dotsL [] i [up j] p) := by
   have := lin_relation Sc (.quadNe i j ν hij hd)

@@ -60,7 +60,7 @@ def qL (i j : I) (u v : K k) : K k :=
   else if D.d i j = 0 then algebraMap k (K k) (Sc.t i j)
   else algebraMap k (K k) (Sc.t i j) * xpow (D.parity i) (D.dn i j) u +
     algebraMap k (K k) (Sc.t j i) * xpow (D.parity j) (D.dn j i) v +
-    ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+    ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
       algebraMap k (K k) (Sc.s i j p q) * (xpow (D.parity i) p u * xpow (D.parity j) q v)
 
 theorem qL_symm (i j : I) (u v : K k) : qL D Sc j i v u = qL D Sc i j u v := by

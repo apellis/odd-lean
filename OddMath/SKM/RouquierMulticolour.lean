@@ -79,7 +79,7 @@ structure RouquierMulticolour (T : RouquierFamily (k := k) (B := B) D)
     T.cross i j h₁ h₂ h₃ h₄ ≫ T.cross j i h₃ h₄ h₁ h₂ =
       (Sc.t i j : k) • (T.E j h₁ ◁ rouquierPower (T.dot i h₂) (D.dn i j)) +
       (Sc.t j i : k) • (rouquierPower (T.dot j h₁) (D.dn j i) ▷ T.E i h₂) +
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         Sc.s i j p q • (rouquierPower (T.dot j h₁) q ▷ T.E i h₂ ≫
           T.E j h₁ ◁ rouquierPower (T.dot i h₂) p)
   /-- (1.8), the left slide for distinct colours. -/
@@ -132,7 +132,7 @@ structure RouquierMulticolour (T : RouquierFamily (k := k) (B := B) D)
         (zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
           (rouquierPower (T.dot i hab) s ▷ (T.E j hbc ≫ T.E i hcd) ≫
             T.E i hab ◁ T.E j hbc ◁ rouquierPower (T.dot i hcd) (D.dn i j - 1 - s)) +
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), ∑ s ∈ Finset.range p,
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), ∑ s ∈ Finset.range p,
         (zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p q) •
           (rouquierPower (T.dot i hab) s ▷ (T.E j hbc ≫ T.E i hcd) ≫
             T.E i hab ◁ (rouquierPower (T.dot j hbc) q ▷ T.E i hcd) ≫

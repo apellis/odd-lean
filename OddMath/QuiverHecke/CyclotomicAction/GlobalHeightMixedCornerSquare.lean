@@ -216,7 +216,7 @@ theorem heightCompositionCorner_square_ne (hd : D.d i j ≠ 0) :
     Cr ≫ Cr' =
       ((parameterTwist D Sc).t i j : k) • (endoPower Dr (D.dn i j)) +
         ((parameterTwist D Sc).t j i : k) • (endoPower Dl (D.dn j i)) +
-        ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+        ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
           (parameterTwist D Sc).s i j p q • ((endoPower Dl q) ≫ (endoPower Dr p)) := by
   have hd' : D.d j i ≠ 0 := fun h => hd ((D.d_eq_zero_iff j i).mp h)
   apply SuperBimodule.hom_ext

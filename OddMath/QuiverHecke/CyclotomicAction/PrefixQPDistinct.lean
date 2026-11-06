@@ -40,7 +40,7 @@ variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X) [CommR
 /-- The KLR polynomial `Q_ix(a, b)` of relation (1.7), in two endomorphisms. -/
 def qPoly {A : (pres D Sc).Presented} (a b : End A) (i x : I) : End A :=
   if D.d i x = 0 then (Sc.t i x : k) • 1 else
-    (∑ p ∈ Finset.Ioo 0 (D.dn i x), ∑ q ∈ Finset.Ioo 0 (D.dn x i),
+    (∑ p ∈ Finset.range (D.dn i x), ∑ q ∈ Finset.range (D.dn x i),
         Sc.s i x p q • (a ^ p * b ^ q)) +
       ((Sc.t i x : k) • a ^ D.dn i x + (Sc.t x i : k) • b ^ D.dn x i)
 

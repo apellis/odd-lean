@@ -34,7 +34,7 @@ lemma braid_repeated_diag (c : P.CrossCoeff Sc) (L : P.LeftwardData)
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Z) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] p Z)
               (D.dn i j - 1 - a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Z) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] p Z) d ≫

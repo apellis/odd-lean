@@ -45,7 +45,7 @@ def scalars : SKM.Scalars datum.toSKM ℚ where
   s_eq_zero := fun _ _ _ _ _ ↦ rfl
   two_isUnit := fun _ ↦ isUnit_iff_ne_zero.mpr (by norm_num)
 
-theorem homogeneous : scalars.Homogeneous := fun _ _ _ _ _ _ _ _ h ↦ absurd rfl h
+theorem homogeneous : scalars.Homogeneous := fun _ _ _ _ _ _ _ h ↦ absurd rfl h
 
 /-- **BE2 Theorem 11.3** for `𝔬𝔰𝔭(1|2)`: the isomorphism sends `θ^{(3)}` to `[P(i^{(3)})]`. -/
 example : theorem_11_3 datum scalars homogeneous
@@ -91,7 +91,7 @@ def scalars₂ : SKM.Scalars datum₂.toSKM ℚ where
   s_eq_zero := fun _ _ _ _ _ ↦ rfl
   two_isUnit := fun _ ↦ isUnit_iff_ne_zero.mpr (by norm_num)
 
-theorem homogeneous₂ : scalars₂.Homogeneous := fun _ _ _ _ _ _ _ _ h ↦ absurd rfl h
+theorem homogeneous₂ : scalars₂.Homogeneous := fun _ _ _ _ _ _ _ h ↦ absurd rfl h
 
 /-- **BE2 Theorem 11.3** for a datum that is not bar-consistent. -/
 example : Function.Bijective (theorem_11_3 datum₂ scalars₂ homogeneous₂) :=

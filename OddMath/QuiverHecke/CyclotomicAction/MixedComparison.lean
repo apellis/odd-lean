@@ -27,7 +27,7 @@ variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
 /-- The explicit two-colour quadratic polynomial evaluated in a word endomorphism ring. -/
 def wordQuadratic (i j : I) (t : List I) (r : ℕ) : End ((pres D Sc).obj (ob D t)) :=
   if D.d i j = 0 then (Sc.t i j : k) • 1 else
-    ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+    ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
       Sc.s i j p q • (dotE D Sc t r ^ p * dotE D Sc t (r + 1) ^ q) +
       ((Sc.t i j : k) • dotE D Sc t r ^ D.dn i j +
         (Sc.t j i : k) • dotE D Sc t (r + 1) ^ D.dn j i)
