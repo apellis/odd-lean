@@ -90,6 +90,15 @@ end Map
 
 variable {k : Type w} [CommRing k]
 
+/-- Parameters are determined by their units and coefficients. -/
+theorem eq_of_t_c {Sc Sc' : BWWScalars D k} (ht : Sc.t = Sc'.t) (hc : Sc.c = Sc'.c) :
+    Sc = Sc' := by
+  obtain ⟨t, _, _, c, _, _, _, _, _, _, _⟩ := Sc
+  obtain ⟨t', _, _, c', _, _, _, _, _, _, _⟩ := Sc'
+  obtain rfl : t = t' := ht
+  obtain rfl : c = c' := hc
+  rfl
+
 /-- Lower-degree parameters: every nonzero coefficient of `u^p v^q` with `p < dᵢⱼ`,
 `q < dⱼᵢ` has nonnegative coefficient degree, i.e. `dᵢp + dⱼq ≤ dᵢdᵢⱼ`. No grading of `k` is
 involved. -/
@@ -186,7 +195,7 @@ def scalars (Sc : BWWScalars D k) : BWWScalars D (MvPolynomial Unit k) where
   t i j := Units.map (C : k →+* MvPolynomial Unit k).toMonoidHom (Sc.t i j)
   t_self i := by rw [Sc.t_self, map_one]
   t_symm_of_d_eq_zero i j h := by rw [Sc.t_symm_of_d_eq_zero i j h]
-  c i j p q := C (Sc.c i j p q) * X () ^ exponent sy i j p q
+  c i j p q := C (Sc.c i j p q) * MvPolynomial.X () ^ exponent sy i j p q
   c_symm i j p q := by rw [Sc.c_symm i j p q, exponent_symm sy i j p q]
   c_parity i j p q h := by rw [Sc.c_parity i j p q h, map_zero, zero_mul]
   c_self i p q := by rw [Sc.c_self i p q, map_zero, zero_mul]
@@ -210,18 +219,20 @@ def cScalars {Sc : BWWScalars D k} (cs : CScalars Sc.toScalars) :
 theorem gradedHomogeneous {Sc : BWWScalars D k} (hl : Sc.LowerDegree sy) :
     (scalars sy Sc).GradedHomogeneous sy (homogeneousSubmodule Unit k) := by
   refine ⟨fun i j => ?_, fun i j p q hij hp hq hs => ?_⟩
-  · exact (mem_homogeneousSubmodule _ _).mpr (isHomogeneous_C _ _)
+  · rw [mem_homogeneousSubmodule]
+    change (C (Sc.t i j : k)).IsHomogeneous 0
+    exact isHomogeneous_C _ _
   · have hs' : Sc.c i j p q ≠ 0 := fun h0 => hs (by simp [scalars, h0])
     refine ⟨(coefficientDegree sy i j p q).toNat,
       Int.toNat_of_nonneg (hl i j p q hij hp hq hs'), ?_⟩
-    change C (Sc.c i j p q) * X () ^ exponent sy i j p q ∈ _
+    change C (Sc.c i j p q) * MvPolynomial.X () ^ exponent sy i j p q ∈ _
     rw [exponent_of_lt sy hp hq]
     exact (mem_homogeneousSubmodule _ _).mpr (isHomogeneous_C_mul_X_pow (Sc.c i j p q) () _)
 
 /-- Specializing the Rees parameters at `h = 1` recovers the given parameters. -/
 theorem map_specialize (Sc : BWWScalars D k) :
     (scalars sy Sc).map ReesParameters.specialize = Sc := by
-  refine BWWScalars.ext ?_ ?_
+  refine BWWScalars.eq_of_t_c ?_ ?_
   · funext i j
     ext
     simp [scalars, BWWScalars.map]
