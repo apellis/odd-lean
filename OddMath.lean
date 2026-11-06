@@ -1827,6 +1827,10 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentCoefficientCaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVMatrixEntryNaturality
 import OddMath.Algebra.FiniteSupermoduleFunctor
 import OddMath.Algebra.NilpotentPerturbation
+import OddMath.Algebra.NilpotentPerturbationRing
+import OddMath.Algebra.BoxPolynomialUnits
+import OddMath.SKM.BWWPureCoefficients
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.BWWMixedEntry
 import OddMath.QuiverHecke.CyclotomicAction.ELVMatrixFunctorNaturality
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixFunctorInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelOffContentMatrices
