@@ -103,11 +103,15 @@ theorem dotE_mem_presentedPart {v : List I} {r : ℕ} {i : I} (hi : v[r]? = some
       (2 * sy.d i) := by
   unfold dotE genE
   split_ifs with h
-  · have hm := cl_mem_presentedPart D sy 𝒜 Sc [PG.dot r] h
-    convert hm using 1
-    obtain ⟨hr, rfl⟩ := List.getElem?_eq_some_iff.mp hi
-    have hdrop : v.drop r = v[r] :: v.drop (r + 1) := List.drop_eq_getElem_cons hr
-    simp [pl, PG.ld, hdrop, gdeg]
+  · obtain ⟨hr, rfl⟩ := List.getElem?_eq_some_iff.mp hi
+    have hld : (PG.dot r).ld v = [(v.take r, Shape.dot v[r], v.drop (r + 1))] := by
+      simp only [PG.ld]
+      rw [List.drop_eq_getElem_cons hr]
+    have hdeg : ((pl v [PG.dot r]).map fun x => gdeg D sy x.2.1).sum = 2 * sy.d v[r] := by
+      rw [pl_cons, pl_nil, List.append_nil, hld, List.map_singleton, List.sum_singleton]
+      rfl
+    rw [← hdeg]
+    exact cl_mem_presentedPart D sy 𝒜 Sc [PG.dot r] h
   · exact Submodule.zero_mem _
 
 /-- A positioned dot of the truncated quotient has its symmetrizer degree, over a graded
