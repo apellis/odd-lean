@@ -773,7 +773,7 @@ theorem interior_corr (hij : i ≠ j) (hM : M = D.dn i j + 1) {b : ℕ} (hb : b 
   simp only [mul_add, add_mul, Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc]
   rw [Finset.sum_eq_zero (s := Finset.range (D.dn i j)) fun p' hp' =>
     Finset.sum_eq_zero fun q _ => Finset.sum_eq_zero fun s hs => by
-      rw [Finset.mem_Ioo] at hp'
+      rw [Finset.mem_range] at hp'
       rw [Finset.mem_range] at hs
       have h0 := interior_ann_zero (D := D) (Sc := Sc) (i := i) (j := j) hb (p := p' - 1 - s)
         (q := q) (r := s) (by omega)
@@ -973,7 +973,7 @@ theorem split_zero (hij : i ≠ j) (hM : M = D.dn i j + 1) :
       simp only [mul_add, add_mul, Finset.mul_sum, Finset.sum_mul, mul_smul_comm,
         smul_mul_assoc, zero_add]
       rw [Finset.sum_eq_zero fun p' _ => Finset.sum_eq_zero fun q hq => by
-        rw [Finset.mem_Ioo] at hq
+        rw [Finset.mem_range] at hq
         rw [hzero p' q (by omega), smul_zero]]
       have h₁ := hzero (D.dn j i) 0 (by omega)
       rw [pow_zero, mul_one] at h₁
@@ -1036,7 +1036,7 @@ theorem split_top (hij : i ≠ j) {b : ℕ} (hM : M = D.dn i j + 1) (hbM : M = b
       simp only [mul_add, add_mul, Finset.mul_sum, Finset.sum_mul, mul_smul_comm,
         smul_mul_assoc]
       rw [Finset.sum_eq_zero fun p' hp' => Finset.sum_eq_zero fun q _ => by
-        rw [Finset.mem_Ioo] at hp'
+        rw [Finset.mem_range] at hp'
         rw [hzero p' q (by omega), smul_zero]]
       have h₁ := hzero 0 (D.dn j i) (by omega)
       rw [pow_zero, one_mul] at h₁

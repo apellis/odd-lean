@@ -244,9 +244,14 @@ theorem isIso_homDistinctMixedMateDot_of_pow {a b c d : B} (E : a ⟶ b) {E' : c
 when the dot `x` (colour `i`) on the precomposed edge is a unit and the dot `y` (colour `j`)
 on the postcomposed edge is nilpotent: `Q_ij = t_ij x^{d_ij} + N` with `N` a combination of
 monomials with a positive power of `y`. Only even powers of an odd dot occur
-(`Scalars.s_eq_zero`, `Datum.even_d_of_odd`), so the even case applies to `x²`, `y²`. -/
-theorem isIso_homDistinctMixedMateDot_param {a b c d : B} (E : a ⟶ b) {E' : c ⟶ d}
-    {F' : d ⟶ c} (A : SuperAdjunction (k := k) E' F') (κ τ : ZMod 2) (H : b ⟶ d)
+(`Scalars.s_eq_zero`, `Datum.even_d_of_odd`), so the even case applies to `x²`, `y²`.
+
+The hypothesis `ScalarData.NoPure` (Brundan–Ellis parameters, as printed in (1.4)) removes the
+pure monomials `x^p`, `p < dᵢⱼ`; it is a hypothesis of this proof route only. For
+Brundan–Wang–Webster parameters the pure part is handled by `BWWScalars.PureIn` with a
+nilpotent ideal (`docs/Nondegeneracy/BWWKind3.md`). -/
+theorem isIso_homDistinctMixedMateDot_param (hn : Sc.NoPure) {a b c d : B} (E : a ⟶ b)
+    {E' : c ⟶ d} {F' : d ⟶ c} (A : SuperAdjunction (k := k) E' F') (κ τ : ZMod 2) (H : b ⟶ d)
     {i j : I} (hij : i ≠ j) {x : E ⟶ E} (hx : x ∈ parity (R := k) E E (D.parity i))
     {y : E' ⟶ E'} (hy : y ∈ parity (R := k) E' E' (D.parity j))
     (hxu : IsUnit (show End E from x)) (hyn : IsNilpotent (show End E' from y)) :
@@ -307,13 +312,16 @@ theorem isIso_homDistinctMixedMateDot_param {a b c d : B} (E : a ⟶ b) {E' : c 
     rw [add_assoc, hn]
     refine isIso_homDistinctMixedMateDot_of_pow E A κ τ H hey hx' hy' hxu hyn (Sc.t i j) n
       (Submodule.add_mem _ (Submodule.smul_mem _ _ ?_)
-      (Submodule.sum_mem _ fun p _ => Submodule.sum_mem _ fun q hq => ?_))
+      (Submodule.sum_mem _ fun p hp => Submodule.sum_mem _ fun q hq => ?_))
     · simpa only [pow_zero, one_mul] using hmono 0 (D.dn j i) (by simp) hpj hpos
     · by_cases hs : Sc.s i j p q = 0
       · rw [hs, zero_smul]; exact Submodule.zero_mem _
-      · refine Submodule.smul_mem _ _ (hmono p q (fun h => hs (Sc.s_eq_zero i j p q h))
-          (fun h => hs ((Sc.s_symm i j p q).trans (Sc.s_eq_zero j i q p h)))
-          (Finset.mem_Ioo.mp hq).1)
+      · have hq1 : 1 ≤ q := by
+          by_contra h0
+          exact hs (hn i j p q hij (Finset.mem_range.mp hp) (Finset.mem_range.mp hq)
+            (Or.inr (by omega)))
+        exact Submodule.smul_mem _ _ (hmono p q (fun h => hs (Sc.s_eq_zero i j p q h))
+          (fun h => hs ((Sc.s_symm i j p q).trans (Sc.s_eq_zero j i q p h))) hq1)
 
 attribute [local irreducible] Finsupp.zipWith Finsupp.single Finsupp.onFinset homContentShift
   contentWeight in
@@ -322,8 +330,9 @@ entry of `σ : Eⱼ Fᵢ → Fᵢ Eⱼ` (Brundan–Ellis, arXiv:1701.04133v2, (1
 path `(P,R)` of `Eⱼ Fᵢ` is the cup, mixed crossing and cap composite of `sigmaEntry_eq`, which
 up to transports is the dotted mixed mate `homDistinctMixedMateDot` of the parameter
 polynomial `Q_ji` (`docs/Nondegeneracy/SwappedDistinctMixedMates.md` (13)–(15)). It is an
-isomorphism when every probe dot is a unit and every reservoir dot is nilpotent. -/
-theorem isIso_sigmaEntry_probe_reservoir (hT : ∀ (i : I) {x y : X} (h : x + D.α i = y),
+isomorphism when every probe dot is a unit and every reservoir dot is nilpotent, for parameters
+without pure terms (`ScalarData.NoPure`). -/
+theorem isIso_sigmaEntry_probe_reservoir (hn : Sc.NoPure) (hT : ∀ (i : I) {x y : X} (h : x + D.α i = y),
       IsUnit (show End (P.T.E i h) from P.T.dot i h))
     (hW : ∀ (i : I) {x y : X} (h : x + D.α i = y),
       IsNilpotent (show End (P.W.E i h) from P.W.dot i h))
@@ -438,7 +447,7 @@ theorem isIso_sigmaEntry_probe_reservoir (hT : ∀ (i : I) {x y : X} (h : x + D.
   case hf2 | hf5 | hf18 | hf21 => eqToHom_witness
   case hm => simp only [muM, u, nextSector, add_tsub_cancel_right]
   case hiso =>
-    exact isIso_homDistinctMixedMateDot_param _ _ _ _ _ hij.symm (P.T.dot_mem j _)
+    exact isIso_homDistinctMixedMateDot_param hn _ _ _ _ _ hij.symm (P.T.dot_mem j _)
       (P.W.dot_mem i _) (hT j _) (hW i _)
   case hA =>
     apply eq_of_heq

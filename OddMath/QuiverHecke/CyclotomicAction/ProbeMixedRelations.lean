@@ -87,8 +87,9 @@ theorem probeMixedDots_slide (pre post : List I) (i j : I) :
   simpa only [Shape.parity, PG.ofShape] using h
 
 /-- The right positive-dot remainder is available before any quotient or
-unit assertion, for every connected distinct-colour quadratic. -/
-theorem probeMixedCross_remainder_right (pre post : List I) (i j : I)
+unit assertion, for every connected distinct-colour quadratic whose parameters have no pure
+terms (`ScalarData.NoPure`; for general box parameters see `exists_isUnit_quad_remainders`). -/
+theorem probeMixedCross_remainder_right (hn : Sc.NoPure) (pre post : List I) (i j : I)
     (hij : i ≠ j) (hd : D.d i j ≠ 0) :
     ∃ R : End ((pres D Sc).obj (ob D (pre ++ [i,j] ++ post))),
       probeMixedCross D Sc pre post i j ≫ probeMixedCross D Sc pre post j i =
@@ -114,7 +115,10 @@ theorem probeMixedCross_remainder_right (pre post : List I) (i j : I)
     intro p hp'
     apply Finset.sum_congr rfl
     intro q hq
-    rw [smul_mul_assoc, mul_assoc, hp q (Finset.mem_Ioo.mp hq).1]
+    rcases Nat.eq_zero_or_pos q with rfl | hq0
+    · rw [hn i j p 0 hij (Finset.mem_range.mp hp') (Finset.mem_range.mp hq) (Or.inr rfl)]
+      simp
+    rw [smul_mul_assoc, mul_assoc, hp q hq0]
   refine ⟨C + (Sc.t j i : k) • v^(D.dn j i-1), ?_⟩
   have hQ := probeMixedCross_quadratic D Sc pre post i j hij hd
   change probeMixedCross D Sc pre post i j ≫ probeMixedCross D Sc pre post j i =
@@ -156,7 +160,7 @@ theorem probeMixedDots_pow_slide (pre post : List I) (i j : I) (p : ℕ) :
 
 /-- The separate left remainder needs no parity support argument on Q's
 coefficients: its explicit sign absorbs the supercommutation. -/
-theorem probeMixedCross_remainder_left (pre post : List I) (i j : I)
+theorem probeMixedCross_remainder_left (hn : Sc.NoPure) (pre post : List I) (i j : I)
     (hij : i ≠ j) (hd : D.d i j ≠ 0) :
     ∃ R : End ((pres D Sc).obj (ob D (pre ++ [i,j] ++ post))),
       probeMixedCross D Sc pre post i j ≫ probeMixedCross D Sc pre post j i =
@@ -183,9 +187,12 @@ theorem probeMixedCross_remainder_left (pre post : List I) (i j : I)
     intro p hp'
     apply Finset.sum_congr rfl
     intro q hq
+    rcases Nat.eq_zero_or_pos q with rfl | hq0
+    · rw [hn i j p 0 hij (Finset.mem_range.mp hp') (Finset.mem_range.mp hq) (Or.inr rfl)]
+      simp
     have hpow := probeMixedDots_pow_slide D Sc pre post i j p
     change u^p * v = ε^p • (v * u^p) at hpow
-    rw [← hp q (Finset.mem_Ioo.mp hq).1, ← mul_assoc, hpow,
+    rw [← hp q hq0, ← mul_assoc, hpow,
       smul_mul_assoc, smul_smul, mul_assoc, mul_smul_comm]
   refine ⟨C + (Sc.t j i : k) • v^(D.dn j i-1), ?_⟩
   have hQ := probeMixedCross_quadratic D Sc pre post i j hij hd

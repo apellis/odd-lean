@@ -165,7 +165,7 @@ theorem distinctCapQuadraticColumn_of_neg (hh : D.h i a < 0) (n : ℕ)
       intro p hp
       apply Finset.sum_eq_zero
       intro q _
-      have hp' := Finset.mem_Ioo.mp hp
+      have hp' := Finset.mem_range.mp hp
       rw [T.distinctCapColumn_monomial_zero hj hji hprev hcneg n p q (by omega), smul_zero]
     rw [hinterior, add_zero]
 

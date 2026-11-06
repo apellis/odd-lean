@@ -88,7 +88,7 @@ theorem distinctMixedBraidLeft_cap_of_zero_connected
     intro q hq
     apply Finset.sum_eq_zero
     intro s hs
-    have hp' := Finset.mem_Ioo.mp hp
+    have hp' := Finset.mem_range.mp hp
     have hs' := Finset.mem_range.mp hs
     rw [heval s q (p - 1 - s) (by omega), hlast, ite_eq_right (by omega), smul_zero]
   rw [hinterior, add_zero]

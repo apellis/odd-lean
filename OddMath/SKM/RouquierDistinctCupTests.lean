@@ -139,7 +139,7 @@ theorem distinctMixedBraidRight_cup_of_gt (hh : D.d i j < D.h i b) :
       intro q _
       apply Finset.sum_eq_zero
       intro s hs
-      have hp' := Finset.mem_Ioo.mp hp
+      have hp' := Finset.mem_range.mp hp
       have hs' := Finset.mem_range.mp hs
       rw [T.distinctMixedBraidOuterMate_cup_zero hne hi hij hupper hnext hh
         s q (p - 1 - s) (by omega), smul_zero]

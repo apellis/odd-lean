@@ -78,7 +78,7 @@ theorem probeMixedCorner_slide_reverse (pre post : List I) (i j : I) (hij : i �
 
 /-- Actual connected Q remainders in the source corner. The leading-term
 unit follows from the preceding source dot and the given scalar unit. -/
-theorem probeMixedCorner_remainders_connected (pre post : List I) (i j : I)
+theorem probeMixedCorner_remainders_connected (hn : Sc.NoPure) (pre post : List I) (i j : I)
     (hij : i ≠ j) (hd : D.d i j ≠ 0)
     (hu : IsUnit (probeMixedCornerDot D Sc a pre post i j pre.length)) :
     ∃ U Rright Rleft : CyclotomicWordCorner D Sc a (probeMixedWord pre post i j),
@@ -92,8 +92,8 @@ theorem probeMixedCorner_remainders_connected (pre post : List I) (i j : I)
     cyclotomicWordEnd D Sc a s
   let u := dotE D Sc (pre ++ [i,j] ++ post) pre.length
   let v := dotE D Sc (pre ++ [i,j] ++ post) (pre.length+1)
-  obtain ⟨Rright, hr⟩ := probeMixedCross_remainder_right D Sc pre post i j hij hd
-  obtain ⟨Rleft, hl⟩ := probeMixedCross_remainder_left D Sc pre post i j hij hd
+  obtain ⟨Rright, hr⟩ := probeMixedCross_remainder_right D Sc hn pre post i j hij hd
+  obtain ⟨Rleft, hl⟩ := probeMixedCross_remainder_left D Sc hn pre post i j hij hd
   refine ⟨q ((Sc.t i j : k) • u^(D.dn i j)), q Rright, q Rleft, ?_, ?_, ?_⟩
   · rw [Algebra.smul_def, map_mul, map_pow]
     exact (((Sc.t i j).isUnit.map

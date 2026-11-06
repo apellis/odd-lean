@@ -183,7 +183,7 @@ theorem comp_qExpr_sub (i j : I) {A : C} (ψ x₁ x₂ y : End A)
   unfold qExpr
   split_ifs with hd
   · have hdn : D.dn i j = 0 := by simp [SKM.Datum.dn, hd]
-    simp only [hdn, Finset.range_zero, Finset.sum_empty, Finset.Ioo_self, add_zero]
+    simp only [hdn, Finset.range_zero, Finset.sum_empty, add_zero]
     rw [End.one_def, Linear.comp_smul, Linear.smul_comp, Category.comp_id, Category.id_comp,
       sub_self]
   have hA : (Sc.t i j : k) • (ψ ≫ (x₁ ^ D.dn i j : End A) - (x₂ ^ D.dn i j : End A) ≫ ψ) =

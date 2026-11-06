@@ -71,6 +71,7 @@ theorem elvProbe_distinct_sigmaEntry_isIso [Finite I]
     IsIso ((P).sigmaEntry c i j ν
       (SPath.cons _ true t trivial (SPath.cons _ false _ trivial (SPath.nil _))) q Z) :=
   (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).isIso_sigmaEntry_probe_reservoir_sourceUnits
+    hc.noPure
     (fun i j _ => elvProbeMixedPostSourceUnits D Sc m cutoff bound ΛP ΛR hP hR sy hc i j)
     c hij ν t q Z
 

@@ -137,7 +137,8 @@ theorem distinctMixedBraidLeft_cap_middle
     apply Finset.sum_eq_zero
     intro s hs
     rw [T.distinctMixedBraidOuterMate_middle_interior hne hab hbc hbe hfc hcd h0 h1
-      p q s (Finset.mem_Ioo.mp hp) (Finset.mem_range.mp hs), neg_zero, smul_zero]
+      p q s ⟨by have := Finset.mem_range.mp hs; omega, Finset.mem_range.mp hp⟩
+      (Finset.mem_range.mp hs), neg_zero, smul_zero]
   rw [hi, zero_add]
   rw [Finset.sum_eq_single (D.h i b).toNat]
   · rw [T.distinctMixedBraidOuterMate_middle_leading hne hab hbc hbe hfc hcd h0 h1 _ hn,

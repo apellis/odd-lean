@@ -169,7 +169,7 @@ theorem distinctCupQuadraticRow_of_gt (hh : D.d i j < D.h i b) (n : ℕ)
       intro p _
       apply Finset.sum_eq_zero
       intro q hq
-      have hq' := Finset.mem_Ioo.mp hq
+      have hq' := Finset.mem_range.mp hq
       rw [T.distinctCupRow_monomial_zero hi hij hupper hbpos n q p (by omega), smul_zero]
     rw [hinterior, add_zero]
 end RouquierFamily
