@@ -1378,6 +1378,8 @@ import OddMath.SKM.PsiRoundtrips
 import OddMath.SKM.PsiInverseLaws
 import OddMath.SKM.PsiFunctorInverses
 import OddMath.SKM.Grading
+import OddMath.SKM.BWWScalars
+import OddMath.QuiverHecke.BWWPresentation
 import OddMath.SKM.Grassmannian
 import OddMath.SKM.GrassmannianCor
 import OddMath.SKM.GrassmannianOdd
@@ -1471,6 +1473,7 @@ import OddMath.SKM.ScalarChangeCoefficientBasis
 import OddMath.SKM.ScalarChangeIntegral
 import OddMath.SKM.IntegralParameters
 import OddMath.SKM.GradedParameters
+import OddMath.SKM.BWWGradedParameters
 import OddMath.SKM.GradedImage
 import OddMath.SKM.LowerDegreeParameters
 import OddMath.SKM.TruncatedReesParameters

@@ -3,8 +3,8 @@
 This note plans the Phase 2 extension of the parameter shape. The target generality is
 [Brundan–Wang–Webster, arXiv:2505.22929v2](https://arxiv.org/pdf/2505.22929v2), §2.2
 and Theorem 5.6. It records the enlarged presentation, its parity constraints, the change
-of basis question and the parts of the proof that must be redone. No Lean is written
-against it yet. The statement-level gap is listed in `Phase2Plan.md`, "Comparison with
+of basis question and the parts of the proof that must be redone. The parameter structure,
+the comparison map and (H) are in `OddMath/SKM/BWWScalars.lean` (§4). The statement-level gap is listed in `Phase2Plan.md`, "Comparison with
 BWW Theorem 5.6".
 
 Notation. We write `dᵢⱼ = -aᵢⱼ` (the Lean `D.d i j`), `dᵢ` for the symmetrizer
@@ -102,6 +102,13 @@ comparison map, so that the Phase 1 statements are untouched.
   relation by relation (the extra summands are zero).
 - `BWWScalars.Homogeneous` and `GradedHomogeneous`, and a proof of (H):
   `Homogeneous Sc' → ∃ Sc, Sc' = Sc.toBWW`.
+
+Done in `OddMath/SKM/BWWScalars.lean`: `BWWScalars` (with `c` zero on the diagonal `i = j`,
+and `Qᵢⱼ = c i j 0 0 = tᵢⱼ` when `dᵢⱼ = 0`), `ScalarData.toBWW` with
+`toBWW_c_of_interior` and `toBWW_homogeneous_iff`, `BWWScalars.toScalars`, and (H) as
+`BWWScalars.Homogeneous.toScalars_toBWW` and `Homogeneous.exists_eq_toBWW`. Here
+`Homogeneous` is (1.31) on every monomial below the corners. `GradedHomogeneous` and
+`presBWW` remain.
 
 Generalize only where the comparison forces it. The relation-level lemmas below are
 restated once for the generic coefficient sum. The current `Ioo 0 × Ioo 0` sums are
