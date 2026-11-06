@@ -168,7 +168,7 @@ sum. -/
 theorem truncatedDegreeOver_internal (v w : TruncatedCategory D Sc cutoff N) :
     letI := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
     DirectSum.IsInternal (truncatedDegreeOver D sy 𝒜 Sc hP cutoff N v w) := by
-  let _ := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
+  letI := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
   apply DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top
   · rw [iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero]
     intro s f hf he n hn

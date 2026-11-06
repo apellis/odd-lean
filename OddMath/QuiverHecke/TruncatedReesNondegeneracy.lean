@@ -88,7 +88,7 @@ Rees parameters truncated to `K[h]/(h^N)`. -/
 theorem truncatedReesNondegeneracy (D : SKM.Datum I X) (sy : SKM.Symmetrizer D) :
     SKM.TruncatedRees.TruncatedReesNondegeneracy D sy := by
   intro K _ _ Sc hl cs N
-  let _ := truncGradedAlgebra K N
+  letI := truncGradedAlgebra K N
   refine nondegeneracy_of_graded_base sy (truncGrading K N) (truncatedRees_t_mem D sy Sc N)
     (truncatedRees_s_mem D sy hl N) N (fun m hm => ?_) _
   by_cases h : m < 0

@@ -49,7 +49,7 @@ theorem truncatedVacuum_support_of_boundOver (b : ℤ)
     letI := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
     z ∈ ⨆ n ∈ Set.Icc (0 : ℤ) (b + M * N),
       truncatedDegreeOver D sy 𝒜 Sc hP cutoff N ⟨[]⟩ ⟨w⟩ n := by
-  let _ := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
+  letI := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
   by_cases hw : w = []
   · subst w
     obtain ⟨f, rfl⟩ := (truncatedIdeal D Sc cutoff N [] []).mkQ_surjective z

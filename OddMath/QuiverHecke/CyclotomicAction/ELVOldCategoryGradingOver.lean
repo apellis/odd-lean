@@ -90,7 +90,7 @@ theorem oldDprojOver_of_mem {v w : OldCategory D Sc cutoff} {m : ℤ} {f : v ⟶
 theorem oldDegreeOver_internal (v w : OldCategory D Sc cutoff) :
     letI := Linear.restrictScalars K R (OldCategory D Sc cutoff)
     DirectSum.IsInternal (oldDegreeOver D sy 𝒜 Sc hP cutoff v w) := by
-  let _ := Linear.restrictScalars K R (OldCategory D Sc cutoff)
+  letI := Linear.restrictScalars K R (OldCategory D Sc cutoff)
   apply DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top
   · rw [iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero]
     intro s f hf he n hn

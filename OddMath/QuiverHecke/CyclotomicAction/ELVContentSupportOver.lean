@@ -130,7 +130,7 @@ theorem truncatedAppend_finite_supportOver (i : I) (v w : List I)
         letI := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
         z ∈ ⨆ n ∈ S, truncatedDegreeOver D sy 𝒜 Sc hP cutoff N ⟨v ++ [i]⟩ ⟨w⟩ n := by
   classical
-  let _ := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
+  letI := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
   choose S hfin hs using ih
   let T : Set ℤ := ⋃ (q : AppendCrossingSkeleton i v w),
     ⋃ (j : Fin (monicELVEndpointProduct D Sc cutoff i v).natDegree),
@@ -190,7 +190,7 @@ theorem truncatedDegreeOver_eq_bot_of_support (v w : List I) (S : Set ℤ)
       z ∈ ⨆ n ∈ S, truncatedDegreeOver D sy 𝒜 Sc hP cutoff N ⟨v⟩ ⟨w⟩ n)
     (n : ℤ) (hn : n ∉ S) :
     truncatedDegreeOver D sy 𝒜 Sc hP cutoff N ⟨v⟩ ⟨w⟩ n = ⊥ := by
-  let _ := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
+  letI := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
   apply bot_unique
   intro z hz
   have hzero : ∀ y : (⟨v⟩ : TruncatedCategory D Sc cutoff N) ⟶ ⟨w⟩,
