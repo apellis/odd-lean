@@ -15,7 +15,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # A cold build takes a few hours with the memory limits below; the build cache saved at the end
+    # A cold build takes a few hours; Lean uses all four runner cores; the build cache saved at the end
     # makes later runs incremental.
     timeout-minutes: 340
     # Pull requests stop at the first Lean error instead of compiling the rest of the library:
@@ -109,7 +109,7 @@ jobs:
       - name: Check changed Lean modules and paired consumers
         if: github.event_name == 'pull_request' && steps.scope.outputs.docs_only != 'true'
         env:
-          LEAN_NUM_THREADS: 2
+          LEAN_NUM_THREADS: 4
           SCOPED_BASE: ${{ github.event.pull_request.base.sha }}
         run: |
           targets=()
@@ -142,7 +142,7 @@ jobs:
       - name: Build
         if: steps.scope.outputs.docs_only != 'true'
         env:
-          LEAN_NUM_THREADS: 2
+          LEAN_NUM_THREADS: 4
         run: |
           if [ "${{ github.event_name }}" = pull_request ]; then
             set -o pipefail
@@ -158,7 +158,7 @@ jobs:
       - name: Non-vacuity checks
         if: steps.scope.outputs.docs_only != 'true'
         env:
-          LEAN_NUM_THREADS: 2
+          LEAN_NUM_THREADS: 4
         run: lake build --wfail NonVacuity < /dev/null
       # Cache directory inputs are archived recursively; nested negative globs do not
       # reliably omit these files. All Lean processes have finished before this cleanup.
