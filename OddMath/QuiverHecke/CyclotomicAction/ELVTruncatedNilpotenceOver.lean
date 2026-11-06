@@ -112,7 +112,7 @@ theorem dotE_mem_presentedPart {v : List I} {r : ℕ} {i : I} (hi : v[r]? = some
       rfl
     rw [← hdeg]
     exact cl_mem_presentedPart D sy 𝒜 Sc [PG.dot r] h
-  · exact Submodule.zero_mem _
+  · exact zero_mem _
 
 /-- A positioned dot of the truncated quotient has its symmetrizer degree, over a graded
 base. -/
