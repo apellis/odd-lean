@@ -1468,6 +1468,7 @@ import OddMath.SKM.BWWGradedParameters
 import OddMath.SKM.GradedImage
 import OddMath.SKM.LowerDegreeParameters
 import OddMath.SKM.TruncatedReesParameters
+import OddMath.SKM.BWWReesParameters
 import OddMath.SKM.GroundRingNondegeneracy
 import OddMath.SKM.IntegralNondegeneracy
 import OddMath.QuiverHecke.GrothendieckIsomorphism
