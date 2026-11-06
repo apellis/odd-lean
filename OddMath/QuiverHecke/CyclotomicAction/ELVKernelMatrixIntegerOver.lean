@@ -11,8 +11,8 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVKernelClosureDegree
 Over a commutative `K`-algebra `R` graded by `𝒜`, the Hom modules of the old quotient carry the
 `K`-linear degrees of `ELVOld.oldCategoryGradedSupercategoryOver`, and the represented kernels
 carry `IndResKernel.integerDegreeOver`. The finite unit/cap matrices have degree zero after the
-prescribed coordinate shifts (`actualPositiveKernelMap_degreeOver`,
-`actualNegativeKernelMap_degreeOver`), so their proved bijectivity gives homogeneous inverses,
+prescribed coordinate shifts (`positiveKernelMap_degreeOver`,
+`negativeKernelMap_degreeOver`), so their proved bijectivity gives homogeneous inverses,
 with principal inverse degree `+2 dᵢ`, and the unit-inverse-cap closures have degree
 `2 dᵢ (r + s + 1)` (`positiveKernelClosure_degreeOver`, `negativeKernelClosure_degreeOver`). The comparison only uses the additive structure
 (`IntegerMatrix.Coordinates.toInt`), since the matrices are `R`-linear and the degrees are
@@ -108,34 +108,34 @@ def negativeKernelIntegerCoordinatesOver (i : I) (m : ℕ) (v t : OldCategory D 
     (negativeKernelShift D sy i m)
 
 /-- The positive matrix preserves the shifted integer degree, over a graded base. -/
-theorem actualPositiveKernelMap_degreeOver (i : I) (m : ℕ) (v t : OldCategory D Sc cutoff)
+theorem positiveKernelMap_degreeOver (i : I) (m : ℕ) (v t : OldCategory D Sc cutoff)
     {n : ℤ}
     {z : (BalancedKernelTensor.piKernel (positiveKernelFamily D Sc cutoff i m t)).obj (op v)}
     (hz : z ∈ (positiveKernelIntegerCoordinatesOver D sy 𝒜 Sc hP cutoff i m v t).degree n) :
-    (actualPositiveKernelMap D Sc cutoff i m t).app (op v) z ∈
+    (positiveKernelMap D Sc cutoff i m t).app (op v) z ∈
       oldDegreeOver D sy 𝒜 Sc hP cutoff ((append D Sc cutoff i).obj v)
         ((append D Sc cutoff i).obj t) n := by
   have hz' := (Coordinates.mem_shiftedDegree
     (positiveEntryCoordinatesOver D sy 𝒜 Sc hP cutoff i m v t)
     (positiveKernelShift D sy i m) n z).1 hz
-  rw [actualPositiveKernelMap_apply]
+  rw [positiveKernelMap_apply]
   apply Submodule.add_mem
   · have h0 : z none ∈ representedKernelDegreeOver D sy 𝒜 Sc hP cutoff i v t
         (n + 2 * sy.d i) := hz' none
-    have h := actualMateKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t h0
+    have h := mateKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t h0
     rwa [add_sub_cancel_right] at h
   · apply Submodule.sum_mem
     intro r _
     have h0 : z (some r) ∈ oldDegreeOver D sy 𝒜 Sc hP cutoff v t
         (n + -(2 * sy.d i * r.val)) := hz' (some r)
-    have h := actualUnitKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t r.val h0
+    have h := unitKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t r.val h0
     rwa [neg_add_cancel_right] at h
 
 /-- The negative matrix preserves the shifted integer degree, over a graded base. -/
-theorem actualNegativeKernelMap_degreeOver (i : I) (m : ℕ) (v t : OldCategory D Sc cutoff)
+theorem negativeKernelMap_degreeOver (i : I) (m : ℕ) (v t : OldCategory D Sc cutoff)
     {n : ℤ} {z : IndResKernel.Component (k := R) (append D Sc cutoff i) v t}
     (hz : z ∈ representedKernelDegreeOver D sy 𝒜 Sc hP cutoff i v t n) :
-    (actualNegativeKernelMap D Sc cutoff i m t).app (op v) z ∈
+    (negativeKernelMap D Sc cutoff i m t).app (op v) z ∈
       (negativeKernelIntegerCoordinatesOver D sy 𝒜 Sc hP cutoff i m v t).degree n := by
   apply (Coordinates.mem_shiftedDegree
     (negativeEntryCoordinatesOver D sy 𝒜 Sc hP cutoff i m v t)
@@ -143,13 +143,13 @@ theorem actualNegativeKernelMap_degreeOver (i : I) (m : ℕ) (v t : OldCategory 
   intro a
   cases a with
   | none =>
-    rw [actualNegativeKernelMap_none]
-    have h := actualMateKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t hz
+    rw [negativeKernelMap_none]
+    have h := mateKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t hz
     rw [sub_eq_add_neg] at h
     exact h
   | some r =>
-    rw [actualNegativeKernelMap_some]
-    exact actualCapKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t r.val hz
+    rw [negativeKernelMap_some]
+    exact capKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t r.val hz
 
 /-- The positive inverse preserves the shifted coordinate degrees, over a graded base. -/
 theorem positiveKernelEquiv_inverse_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
@@ -162,7 +162,7 @@ theorem positiveKernelEquiv_inverse_degreeOver (i : I) (v t : OldCategory D Sc c
         (contentUnitCount D cutoff i (t.word : Multiset I)) v t).degree n :=
   Coordinates.inverse_mem _ (oldHomIntegerCoordinatesOver D sy 𝒜 Sc hP cutoff _ _)
     (positiveKernelEquiv D Sc cutoff i v t hh).toAddEquiv.toIntLinearEquiv
-    (fun _ _ hx => actualPositiveKernelMap_degreeOver D sy 𝒜 Sc hP cutoff i _ v t hx) hy
+    (fun _ _ hx => positiveKernelMap_degreeOver D sy 𝒜 Sc hP cutoff i _ v t hx) hy
 
 /-- The negative inverse preserves the shifted coordinate degrees, over a graded base. -/
 theorem negativeKernelEquiv_inverse_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
@@ -173,7 +173,7 @@ theorem negativeKernelEquiv_inverse_degreeOver (i : I) (v t : OldCategory D Sc c
       representedKernelDegreeOver D sy 𝒜 Sc hP cutoff i v t n :=
   Coordinates.inverse_mem (representedKernelCoordinatesOver D sy 𝒜 Sc hP cutoff i v t) _
     (negativeKernelEquiv D Sc cutoff i v t hh).toAddEquiv.toIntLinearEquiv
-    (fun _ _ hx => actualNegativeKernelMap_degreeOver D sy 𝒜 Sc hP cutoff i _ v t hx) hy
+    (fun _ _ hx => negativeKernelMap_degreeOver D sy 𝒜 Sc hP cutoff i _ v t hx) hy
 
 /-- The principal positive inverse raises degree by `2 dᵢ`, over a graded base. -/
 theorem positiveKernelPrincipalInverse_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
@@ -214,9 +214,9 @@ theorem positiveKernelClosure_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
     {n : ℤ} {b : v ⟶ t} (hb : b ∈ oldDegreeOver D sy 𝒜 Sc hP cutoff v t n) :
     positiveKernelClosure D Sc cutoff i v t hh r s b ∈
       oldDegreeOver D sy 𝒜 Sc hP cutoff v t (n + 2 * sy.d i * (r + s + 1 : ℕ)) := by
-  have h := actualCapKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t s
+  have h := capKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t s
     (positiveKernelPrincipalInverse_degreeOver D sy 𝒜 Sc hP cutoff i v t hh
-      (actualUnitKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t r hb))
+      (unitKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t r hb))
   have he : n + 2 * sy.d i * r + 2 * sy.d i + 2 * sy.d i * s =
       n + 2 * sy.d i * (r + s + 1 : ℕ) := by push_cast; ring
   simpa only [positiveKernelClosure, LinearMap.comp_apply, he] using h
@@ -227,9 +227,9 @@ theorem negativeKernelClosure_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
     {n : ℤ} {b : v ⟶ t} (hb : b ∈ oldDegreeOver D sy 𝒜 Sc hP cutoff v t n) :
     negativeKernelClosure D Sc cutoff i v t hh r s b ∈
       oldDegreeOver D sy 𝒜 Sc hP cutoff v t (n + 2 * sy.d i * (r + s + 1 : ℕ)) := by
-  have h := actualCapKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t s
+  have h := capKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t s
     (negativeKernelPrincipalInverse_degreeOver D sy 𝒜 Sc hP cutoff i v t hh
-      (actualUnitKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t r hb))
+      (unitKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t r hb))
   have he : n + 2 * sy.d i * r + 2 * sy.d i + 2 * sy.d i * s =
       n + 2 * sy.d i * (r + s + 1 : ℕ) := by push_cast; ring
   simpa only [negativeKernelClosure, LinearMap.comp_apply, he] using h

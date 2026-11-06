@@ -82,7 +82,7 @@ theorem positiveKernelBoundary_degreeOver (i : I) (v t : OldCategory D Sc cutoff
     positiveKernelBoundary D Sc cutoff i v t hh m n y ∈
       oldDegreeOver D sy 𝒜 Sc hP cutoff v t (q + 2 * sy.d i * ((n : ℤ) - m.val)) := by
   have h := positiveKernelWindowInverse_degreeOver D sy 𝒜 Sc hP cutoff i v t hh m
-    (actualUnitKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t n hy)
+    (unitKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t n hy)
   have he : q + 2 * sy.d i * n - 2 * sy.d i * m.val =
       q + 2 * sy.d i * ((n : ℤ) - m.val) := by ring
   simpa only [positiveKernelBoundary, LinearMap.comp_apply, he] using h
@@ -94,7 +94,7 @@ theorem negativeKernelBoundary_degreeOver (i : I) (v t : OldCategory D Sc cutoff
     {y : v ⟶ t} (hy : y ∈ oldDegreeOver D sy 𝒜 Sc hP cutoff v t q) :
     negativeKernelBoundary D Sc cutoff i v t hh m n y ∈
       oldDegreeOver D sy 𝒜 Sc hP cutoff v t (q + 2 * sy.d i * ((m : ℤ) - n.val)) := by
-  have h := actualCapKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t m
+  have h := capKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t m
     (negativeKernelWindowInverse_degreeOver D sy 𝒜 Sc hP cutoff i v t hh n hy)
   have he : q - 2 * sy.d i * n.val + 2 * sy.d i * m =
       q + 2 * sy.d i * ((m : ℤ) - n.val) := by ring

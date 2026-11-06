@@ -117,10 +117,10 @@ abbrev representedKernelDegreeOver (i : I) (v t : OldCategory D Sc cutoff) (n : 
   IndResKernel.integerDegreeOver (K := K) (R := R) (append D Sc cutoff i) v t n
 
 /-- The chosen signed mate has degree `-2 dᵢ` on represented kernels, over a graded base. -/
-theorem actualMateKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
+theorem mateKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
     {n : ℤ} {x : IndResKernel.Component (k := R) (append D Sc cutoff i) v t}
     (hx : x ∈ representedKernelDegreeOver D sy 𝒜 Sc hP cutoff i v t n) :
-    actualMateKernelComponent D Sc cutoff i v t x ∈
+    mateKernelComponent D Sc cutoff i v t x ∈
       oldDegreeOver D sy 𝒜 Sc hP cutoff ((append D Sc cutoff i).obj v)
         ((append D Sc cutoff i).obj t) (n - 2 * sy.d i) := by
   letI := Linear.restrictScalars K R (OldCategory D Sc cutoff)
@@ -131,10 +131,10 @@ theorem actualMateKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cut
   refine ((IndResKernel.integerDegreeOver_le_iff (K := K) (R := R) (append D Sc cutoff i) v t n
     ((oldDegreeOver D sy 𝒜 Sc hP cutoff ((append D Sc cutoff i).obj v)
       ((append D Sc cutoff i).obj t) (n - 2 * sy.d i)).comap
-      ((actualMateKernelComponent D Sc cutoff i v t).restrictScalars K))).2 ?_) hx
+      ((mateKernelComponent D Sc cutoff i v t).restrictScalars K))).2 ?_) hx
   intro s q r hqr g hg b hb
   simp only [Submodule.mem_comap, LinearMap.coe_restrictScalars]
-  rw [IndResKernel.componentTensor, actualMateKernelComponent_tensor]
+  rw [IndResKernel.componentTensor, mateKernelComponent_tensor]
   have hd := oldComp_mem_degreeOver D sy 𝒜 Sc hP cutoff
     (oldAppend_mem_degreeOver D sy 𝒜 Sc hP cutoff i hb)
     (oldComp_mem_degreeOver D sy 𝒜 Sc hP cutoff
@@ -145,10 +145,10 @@ theorem actualMateKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cut
   exact Submodule.neg_mem _ hd
 
 /-- The chosen induction dot raises represented degree by `2 dᵢ`, over a graded base. -/
-theorem actualDotKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
+theorem dotKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
     {n : ℤ} {x : IndResKernel.Component (k := R) (append D Sc cutoff i) v t}
     (hx : x ∈ representedKernelDegreeOver D sy 𝒜 Sc hP cutoff i v t n) :
-    actualDotKernelComponent D Sc cutoff i v t x ∈
+    dotKernelComponent D Sc cutoff i v t x ∈
       representedKernelDegreeOver D sy 𝒜 Sc hP cutoff i v t (n + 2 * sy.d i) := by
   letI := Linear.restrictScalars K R (OldCategory D Sc cutoff)
   letI := Supercategory.restrictScalars K R (OldCategory D Sc cutoff)
@@ -157,10 +157,10 @@ theorem actualDotKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cuto
     Linear.isScalarTower_restrictScalars K R _
   refine ((IndResKernel.integerDegreeOver_le_iff (K := K) (R := R) (append D Sc cutoff i) v t n
     ((representedKernelDegreeOver D sy 𝒜 Sc hP cutoff i v t (n + 2 * sy.d i)).comap
-      ((actualDotKernelComponent D Sc cutoff i v t).restrictScalars K))).2 ?_) hx
+      ((dotKernelComponent D Sc cutoff i v t).restrictScalars K))).2 ?_) hx
   intro s q r hqr g hg b hb
   simp only [Submodule.mem_comap, LinearMap.coe_restrictScalars]
-  rw [IndResKernel.componentTensor, actualDotKernelComponent_tensor]
+  rw [IndResKernel.componentTensor, dotKernelComponent_tensor]
   have hnew := oldComp_mem_degreeOver D sy 𝒜 Sc hP cutoff
     (oldAppendDotComponent_degreeOver D sy 𝒜 Sc hP cutoff i s)
     (oldTwist_mem_degreeOver D sy 𝒜 Sc hP cutoff (D.parity i) g hg)
@@ -171,25 +171,25 @@ theorem actualDotKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cuto
   exact hd
 
 /-- The induction dot powers have their multiple degree, over a graded base. -/
-theorem actualDotKernelComponent_power_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
+theorem dotKernelComponent_power_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
     (m : ℕ) {n : ℤ} {x : IndResKernel.Component (k := R) (append D Sc cutoff i) v t}
     (hx : x ∈ representedKernelDegreeOver D sy 𝒜 Sc hP cutoff i v t n) :
-    (actualDotKernelComponent D Sc cutoff i v t ^ m) x ∈
+    (dotKernelComponent D Sc cutoff i v t ^ m) x ∈
       representedKernelDegreeOver D sy 𝒜 Sc hP cutoff i v t (n + 2 * sy.d i * m) := by
   induction m with
   | zero => simpa only [pow_zero, Module.End.one_apply, Nat.cast_zero, mul_zero, add_zero] using hx
   | succ m ih =>
     rw [pow_succ', Module.End.mul_apply]
-    have h := actualDotKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t ih
+    have h := dotKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t ih
     rw [show n + 2 * sy.d i * ((m + 1 : ℕ) : ℤ) = n + 2 * sy.d i * (m : ℤ) + 2 * sy.d i by
       push_cast; ring]
     exact h
 
 /-- The chosen counit has represented degree zero, over a graded base. -/
-theorem actualCounitKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
+theorem counitKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
     {n : ℤ} {x : IndResKernel.Component (k := R) (append D Sc cutoff i) v t}
     (hx : x ∈ representedKernelDegreeOver D sy 𝒜 Sc hP cutoff i v t n) :
-    actualCounitKernelComponent D Sc cutoff i v t x ∈ oldDegreeOver D sy 𝒜 Sc hP cutoff v t n := by
+    counitKernelComponent D Sc cutoff i v t x ∈ oldDegreeOver D sy 𝒜 Sc hP cutoff v t n := by
   letI := Linear.restrictScalars K R (OldCategory D Sc cutoff)
   letI := Supercategory.restrictScalars K R (OldCategory D Sc cutoff)
   letI := oldCategoryGradedSupercategoryOver D sy 𝒜 Sc hP cutoff
@@ -197,27 +197,27 @@ theorem actualCounitKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc c
     Linear.isScalarTower_restrictScalars K R _
   refine ((IndResKernel.integerDegreeOver_le_iff (K := K) (R := R) (append D Sc cutoff i) v t n
     ((oldDegreeOver D sy 𝒜 Sc hP cutoff v t n).comap
-      ((actualCounitKernelComponent D Sc cutoff i v t).restrictScalars K))).2 ?_) hx
+      ((counitKernelComponent D Sc cutoff i v t).restrictScalars K))).2 ?_) hx
   intro s q r hqr g hg b hb
   simp only [Submodule.mem_comap, LinearMap.coe_restrictScalars]
-  rw [IndResKernel.componentTensor, actualCounitKernelComponent_tensor]
+  rw [IndResKernel.componentTensor, counitKernelComponent_tensor]
   rw [show n = r + q by omega]
   exact oldComp_mem_degreeOver D sy 𝒜 Sc hP cutoff hb hg
 
 /-- Every dot/cap row has degree `2 dᵢ m`, over a graded base. -/
-theorem actualCapKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
+theorem capKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
     (m : ℕ) {n : ℤ} {x : IndResKernel.Component (k := R) (append D Sc cutoff i) v t}
     (hx : x ∈ representedKernelDegreeOver D sy 𝒜 Sc hP cutoff i v t n) :
-    actualCapKernelComponent D Sc cutoff i m v t x ∈
+    capKernelComponent D Sc cutoff i m v t x ∈
       oldDegreeOver D sy 𝒜 Sc hP cutoff v t (n + 2 * sy.d i * m) :=
-  actualCounitKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t
-    (actualDotKernelComponent_power_degreeOver D sy 𝒜 Sc hP cutoff i v t m hx)
+  counitKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t
+    (dotKernelComponent_power_degreeOver D sy 𝒜 Sc hP cutoff i v t m hx)
 
 /-- Every unit/dot column has degree `2 dᵢ m`, including its sign, over a graded base. -/
-theorem actualUnitKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
+theorem unitKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
     (m : ℕ) {n : ℤ} {b : v ⟶ t}
     (hb : b ∈ oldDegreeOver D sy 𝒜 Sc hP cutoff v t n) :
-    actualUnitKernelComponent D Sc cutoff i m v t b ∈
+    unitKernelComponent D Sc cutoff i m v t b ∈
       oldDegreeOver D sy 𝒜 Sc hP cutoff ((append D Sc cutoff i).obj v)
         ((append D Sc cutoff i).obj t) (n + 2 * sy.d i * m) := by
   letI := Linear.restrictScalars K R (OldCategory D Sc cutoff)

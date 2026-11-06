@@ -17,8 +17,7 @@ the coefficient cutoff (`QuiverHecke.exists_elvHomDegreeOver_lower_bound`).
 The bound on the quiver Hecke factor comes from the normal forms `x^l ψ_w`, which span each
 Hom module over `R` and have degrees bounded below (`QuiverHecke.exists_le_deg`); homogeneous
 scalars of `R` only raise degrees (`BasisGrading.eq_bot_of_span_lower_bound`). The coefficient
-factor has no negative degrees. For `K = R` with the trivial grading this is
-`QuiverHecke.exists_elvHomDegree_lower_bound`.
+factor has no negative degrees.
 -/
 
 -- `letI` keeps the restricted-scalar instances available to instance search in these proofs.
