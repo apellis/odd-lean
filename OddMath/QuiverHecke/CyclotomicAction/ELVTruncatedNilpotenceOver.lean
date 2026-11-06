@@ -50,9 +50,9 @@ variable {I X : Type u} [AddCommGroup X] (D : SKM.Datum I X) (sy : SKM.Symmetriz
 theorem truncatedEnd_pow_mem_degreeOver {v : List I} {d : ℤ} {f : TruncatedEnd D Sc cutoff N v}
     (hf : f ∈ truncatedDegreeOver D sy 𝒜 Sc hP cutoff N ⟨v⟩ ⟨v⟩ d) (n : ℕ) :
     f ^ n ∈ truncatedDegreeOver D sy 𝒜 Sc hP cutoff N ⟨v⟩ ⟨v⟩ (n • d) := by
-  letI := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
-  letI := Supercategory.restrictScalars K R (TruncatedCategory D Sc cutoff N)
-  letI := truncatedGradedSupercategoryOver D sy 𝒜 Sc hP cutoff N
+  let _ := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
+  let _ := Supercategory.restrictScalars K R (TruncatedCategory D Sc cutoff N)
+  let _ := truncatedGradedSupercategoryOver D sy 𝒜 Sc hP cutoff N
   exact endPow_mem_degree (K := K) hf n
 
 /-- **Positive-degree nilpotence over a graded base.** If `𝒜` lives in degrees `0, …, b` and

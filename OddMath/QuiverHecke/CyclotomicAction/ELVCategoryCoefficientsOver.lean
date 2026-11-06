@@ -37,18 +37,18 @@ variable {I X : Type u} [AddCommGroup X] (D : SKM.Datum I X) (sy : SKM.Symmetriz
 
 theorem id_mem_truncatedDegreeOver (v : TruncatedCategory D Sc cutoff N) :
     𝟙 v ∈ truncatedDegreeOver D sy 𝒜 Sc hP cutoff N v v 0 := by
-  letI := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
-  letI := Supercategory.restrictScalars K R (TruncatedCategory D Sc cutoff N)
-  letI := truncatedGradedSupercategoryOver D sy 𝒜 Sc hP cutoff N
+  let _ := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
+  let _ := Supercategory.restrictScalars K R (TruncatedCategory D Sc cutoff N)
+  let _ := truncatedGradedSupercategoryOver D sy 𝒜 Sc hP cutoff N
   exact GradedSupercategory.id_mem_degree (R := K) v
 
 theorem comp_mem_truncatedDegreeOver {u v w : TruncatedCategory D Sc cutoff N} {m n : ℤ}
     {f : u ⟶ v} {g : v ⟶ w} (hf : f ∈ truncatedDegreeOver D sy 𝒜 Sc hP cutoff N u v m)
     (hg : g ∈ truncatedDegreeOver D sy 𝒜 Sc hP cutoff N v w n) :
     f ≫ g ∈ truncatedDegreeOver D sy 𝒜 Sc hP cutoff N u w (m + n) := by
-  letI := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
-  letI := Supercategory.restrictScalars K R (TruncatedCategory D Sc cutoff N)
-  letI := truncatedGradedSupercategoryOver D sy 𝒜 Sc hP cutoff N
+  let _ := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
+  let _ := Supercategory.restrictScalars K R (TruncatedCategory D Sc cutoff N)
+  let _ := truncatedGradedSupercategoryOver D sy 𝒜 Sc hP cutoff N
   exact GradedSupercategory.comp_mem_degree (R := K) hf hg
 
 variable (β : Multiset I)
