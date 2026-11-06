@@ -38,8 +38,8 @@ variable {I X : Type u} [AddCommGroup X] (D : SKM.Datum I X) (sy : SKM.Symmetriz
 
 omit [Algebra K R] in
 /-- A sign multiple stays in an additive subgroup. -/
-private theorem sign_smul_mem {M : Type*} [AddCommGroup M] [Module R M] [Module K M]
-    (S : Submodule K M) (q : ZMod 2) {x : M} (hx : x ∈ S) : sign R q • x ∈ S := by
+private theorem sign_smul_mem {M : Type*} {_ : AddCommGroup M} {_ : Module R M}
+    {_ : Module K M} (S : Submodule K M) (q : ZMod 2) {x : M} (hx : x ∈ S) : sign R q • x ∈ S := by
   rcases parity_eq_zero_or_one q with rfl | rfl
   · simpa using hx
   · simpa using S.neg_mem hx
