@@ -119,12 +119,11 @@ theorem contentCoefficient_eq_zeroOver [Finite I] (b : ℤ)
     (hn : ((contentCategory_end_boundedOver D sy 𝒜 Sc hP cutoff N β b h𝒜).choose : ℤ) ≤ n)
     (c : ContentCoefficient D Sc cutoff N β)
     (h : c ∈ contentCoefficientDegreeOver D sy 𝒜 Sc hP cutoff N β n) : c = 0 := by
-  letI := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
   apply Superfunctor.hom_ext
   intro p v
   have hv := h p v
   rw [(contentCategory_end_boundedOver D sy 𝒜 Sc hP cutoff N β b h𝒜).choose_spec v n hn] at hv
-  exact (Submodule.mem_bot K).mp hv
+  exact hv
 
 /-- High-degree coefficients vanish on the exact-content module category, over a graded base. -/
 theorem contentModule_coefficient_eq_zeroOver [Finite I] (b : ℤ)
