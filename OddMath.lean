@@ -1525,6 +1525,7 @@ import OddMath.QuiverHecke.WeightedCoefficientSeparation
 import OddMath.SKM.PairingRotation
 import OddMath.SKM.PositiveClosureDetector
 import OddMath.SKM.TwistedClosureDetector
+import OddMath.SKM.SYMLowerTwist
 import OddMath.SKM.BWWBoxSums
 import OddMath.SKM.UpwardTopDots
 import OddMath.SKM.WeakMatchingChoice
