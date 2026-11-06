@@ -51,6 +51,7 @@ same way as unused modules, unless a retained declaration still refers to them.
 | research tip before cleanup | 3109 | 644,846 | 1383 | 116,479 |
 | after removing unused modules | 2929 | 621,573 | 103 | 4,620 |
 | after removing unused declarations (1983) and empty modules (25) | 2904 | 596,582 | 104 | 4,726 |
+| later research PRs, then removing 20 unreached modules | 2895 | 596,756 | 108 | 4,882 |
 | `master` | 1321 | | 90 | |
 
 The Phase 1 theorem alone uses declarations from 1584 modules; the remaining research
@@ -249,6 +250,45 @@ exercised intermediate lemmas only and are removed with them. Git history keeps 
 | `OddMath/SKM/SourceCrossAttachmentExamples.lean` | 25 |
 | `OddMath/SKM/SourceIdRelabelExamples.lean` | 46 |
 | `OddMath/SKM/UpwardNondegeneracyReductionExamples.lean` | 21 |
+
+</details>
+
+## Unreached modules
+
+After the steps above, 38 research modules were reached neither from `master`'s
+modules nor from any file under `scripts/`. Eighteen are kept: the inputs of the
+Phase 2 work (coefficient and truncated-Rees gradings, graded and lower-degree
+parameters), the published-result modules `HomBases`, `Decategorification` and
+`GrothendieckIsomorphism` with their imports, and the all-even comparison
+`VacuumRouteEvenComparison`; these should become reachable through non-vacuity
+examples. The other 20 (2,862 lines) belonged to abandoned routes (fused reservoir
+sectors, coupled Rouquier sectors, the conditional swapped theorem) or were
+example files of removed lemmas, and were removed.
+
+<details><summary>Removed unreached modules (lines)</summary>
+
+| module | lines |
+|---|---|
+| `OddMath/Diagrams/OddNilHecke/CyclotomicCutoffKernel.lean` | 20 |
+| `OddMath/QuiverHecke/CyclotomicAction/ELVAppendPolynomialRows.lean` | 398 |
+| `OddMath/QuiverHecke/CyclotomicAction/ELVSourcePolynomialRows.lean` | 535 |
+| `OddMath/QuiverHecke/CyclotomicAction/ELVTensorVacuumGenerators.lean` | 165 |
+| `OddMath/QuiverHecke/ReservoirCoverage.lean` | 106 |
+| `OddMath/QuiverHecke/ReservoirFusedVacuum.lean` | 159 |
+| `OddMath/QuiverHecke/ReservoirFusedBubbles.lean` | 222 |
+| `OddMath/QuiverHecke/ReservoirFusedDetection.lean` | 76 |
+| `OddMath/QuiverHecke/ReservoirFusedSectors.lean` | 181 |
+| `OddMath/QuiverHecke/ReservoirVacuumExamples.lean` | 83 |
+| `OddMath/QuiverHecke/SpectatorDetectionExamples.lean` | 55 |
+| `OddMath/QuiverHecke/SwappedAssembly/Action.lean` | 102 |
+| `OddMath/QuiverHecke/SwappedAssembly/Supernatural/MatrixEvaluation.lean` | 51 |
+| `OddMath/QuiverHecke/SwappedConditionalNondegeneracy.lean` | 153 |
+| `OddMath/SKM/RouquierCoupledMate.lean` | 156 |
+| `OddMath/SKM/RouquierCoupledSectors.lean` | 158 |
+| `OddMath/SKM/RouquierSchur.lean` | 76 |
+| `OddMath/SKM/SameColourCupRowsExamples.lean` | 43 |
+| `OddMath/SKM/SameColourSourceFrameExamples.lean` | 53 |
+| `OddMath/SKM/SameColourTargetFrameExamples.lean` | 70 |
 
 </details>
 

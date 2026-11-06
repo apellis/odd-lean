@@ -164,7 +164,7 @@ is an actual relation of degree N-1. At N=2 this is
 (X-Y+delta)tau=0, explaining why the smallest reservoir loses some
 operator/coefficient combinations despite its nonzero bubble.
 
-`CyclotomicCutoffKernel.lean` proves the cutoff relation for every N in an
+A removed module (`CyclotomicCutoffKernel`) proved the cutoff relation for every N in an
 arbitrary ring from the dot-slide, crossing-square-zero, exterior
 anticommutation and cyclotomic relations. Its proof uses the recurrence
 G_0=0, G_(n+1)=x^n-yG_n and the identity

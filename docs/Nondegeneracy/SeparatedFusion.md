@@ -319,7 +319,7 @@ The following modules now separate the proved infrastructure from A2:
   `σ ≫ (x₂ ▷ F₂) - q • ((F₁ ◁ x₁) ≫ σ) = ε₁ ≫ η₂` from the upward slide,
   without assuming any inverse. Its sector projections still require the
   explicit content-shifted comparison maps of step 2.
-- `OddMath/SKM/RouquierSchur.lean`: block LDU factorization and
+- `SKM/RouquierSchur.lean` (since removed as unused): block LDU factorization and
   `isUnit_of_nilpotent_feedback` over an associative ring. This requires
   nilpotence of the whole feedback operator, never just of its entries.
 

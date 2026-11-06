@@ -71,6 +71,11 @@ of upward words at every weight.
 
 ## 3. Detection from fused sector actions (C)
 
+The Lean interface of this section (`ReservoirFusedVacuum`,
+`ReservoirFusedBubbles`, `ReservoirFusedDetection`, `ReservoirFusedSectors`) was
+never instantiated and was removed; Phase 1 was proved by another route. The
+description below is kept as a record of the route.
+
 **Lean.** Over a field `K`:
 
 ```
@@ -528,8 +533,8 @@ The originally proposed remaining `2×2` system was
 with `C` and `D` given by §5.2. **This is not an established reduction.**
 At nonzero heights the factor maps are augmented by identity summands;
 their principal inverse blocks are not inverses to the bare crossings.
-The associative Schur lemma remains **Lean**:
-`SKM.RouquierSchur.isUnit_of_nilpotent_feedback`. `fromBlocks A B C D` is a
+The associative Schur lemma
+`isUnit_of_nilpotent_feedback` (formerly `SKM/RouquierSchur.lean`, removed as unused) says: `fromBlocks A B C D` is a
 unit if `A`, `D` are units and `D^{-1}CA^{-1}B` is nilpotent. The filtration
 version is `isUnit_of_feedback_filtration` (`OddMath/SKM/RouquierFeedbackIdeal.lean`).
 Its unit hypotheses have not been supplied for the displayed blocks.
