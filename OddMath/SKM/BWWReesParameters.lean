@@ -163,12 +163,12 @@ def exponent (i j : I) (p q : ℕ) : ℕ :=
 theorem exponent_symm (i j : I) (p q : ℕ) : exponent sy i j p q = exponent sy j i q p := by
   unfold exponent
   by_cases h : (p : ℤ) < D.d i j ∧ (q : ℤ) < D.d j i
-  · rw [if_pos h, if_pos ⟨h.2, h.1⟩, coefficientDegree_symm sy i j p q]
-  · rw [if_neg h, if_neg fun h' => h ⟨h'.2, h'.1⟩]
+  · rw [ite_eq_left h, ite_eq_left ⟨h.2, h.1⟩, coefficientDegree_symm sy i j p q]
+  · rw [ite_eq_right h, ite_eq_right fun h' => h ⟨h'.2, h'.1⟩]
 
 theorem exponent_corner (i j : I) : exponent sy i j (D.dn i j) 0 = 0 := by
   unfold exponent
-  rw [if_neg]
+  refine ite_eq_right ?_
   rintro ⟨h, -⟩
   have := Int.self_le_toNat (D.d i j)
   simp only [Datum.dn] at h
@@ -177,7 +177,7 @@ theorem exponent_corner (i j : I) : exponent sy i j (D.dn i j) 0 = 0 := by
 theorem exponent_of_lt {i j : I} {p q : ℕ} (hp : (p : ℤ) < D.d i j) (hq : (q : ℤ) < D.d j i) :
     exponent sy i j p q = (coefficientDegree sy i j p q).toNat := by
   unfold exponent
-  rw [if_pos ⟨hp, hq⟩]
+  rw [ite_eq_left ⟨hp, hq⟩]
 
 /-- The Rees parameters over `k[h] = MvPolynomial Unit k`: the units and the corners are
 unchanged, and the coefficient of `u^p v^q` below the corners is multiplied by `h` to the power
