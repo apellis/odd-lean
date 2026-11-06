@@ -77,3 +77,13 @@ Checked declarations:
   signed slide of the probe dot past the reservoir dot.
 * Nothing here changes the truth of the statements: the lower terms enter only through a
   nilpotent perturbation of a unit.
+
+## Interface for the switch
+
+The replacements are stated for `Sc : BWWScalars D k` and the box sum
+`Σ_{p≤dᵢⱼ, q≤dⱼᵢ} cᵢⱼ(p, q) X^p Y^q` used by `quadSum` in `SKM.presBWW` and
+`QuiverHecke.presBWW`, so the rewired sites apply them through `toBWW` without change. The
+only hypothesis beyond the Brundan–Ellis versions is `Sc.PureIn J` for a nilpotent ideal
+`J`; under `NoPure` it holds for every `J`, in particular `J = ⊥` with `⊥ ^ 1 = ⊥`. A site
+whose goal is in the split form of `BWWScalars.sum_box_eq` (corners, pure monomials,
+interior) is reduced to the box sum by rewriting with `sum_box_eq` from right to left.
