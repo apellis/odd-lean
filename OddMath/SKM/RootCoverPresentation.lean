@@ -69,12 +69,9 @@ theorem projection_odd (g : (sig Dc).Gen) :
 
 @[simp] theorem projection_ob (ν : X × (I →₀ ℤ)) (t : List (Letter I)) :
     (projection D).obj (ob Dc ν t) = ob D ν.1 t := by
-  apply Obj.ext <;>
-    first
-    | exact fst_wt D ν t
-    | exact word D ν t
-    | exact (fst_wt D ν t).symm
-    | exact (word D ν t).symm
+  apply Obj.ext
+  · exact fst_wt D ν t
+  · exact word D ν t
 
 @[simp] theorem projection_lay (ν : X × (I →₀ ℤ)) (u : List (Letter I)) (g : Shape I)
     (v : List (Letter I)) :
