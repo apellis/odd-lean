@@ -95,11 +95,13 @@ theorem weightedContentUnitClosureCoefficient_degreeOver (β : Multiset I)
     weightedContentUnitClosureCoefficient D Sc cutoff N i β hh w r s ∈
       truncatedDegreeOver D sy 𝒜 Sc hP cutoff N w.obj w.obj
         (2 * sy.d i * (r + s + 1 : ℕ)) := by
-  rcases w with ⟨t, ht⟩
-  cases ht
+  refine weightedContentUnitClosureCoefficient_induction D Sc cutoff N i
+    (P := fun β w r s f => f ∈ truncatedDegreeOver D sy 𝒜 Sc hP cutoff N w.obj w.obj
+      (2 * sy.d i * (r + s + 1 : ℕ))) ?_ β hh w r s
+  intro l hh r s
   have h := positiveKernelClosure_degreeOver D sy 𝒜 Sc hP cutoff i
-    (⟨t.word⟩ : OldCategory D Sc cutoff) ⟨t.word⟩ hh r s
-    (oldId_mem_degreeOver D sy 𝒜 Sc hP cutoff ⟨t.word⟩)
+    (⟨l⟩ : OldCategory D Sc cutoff) ⟨l⟩ hh r s
+    (oldId_mem_degreeOver D sy 𝒜 Sc hP cutoff ⟨l⟩)
   rw [zero_add] at h
   exact truncateOld_mem_degreeOver D sy 𝒜 Sc hP cutoff N h
 
@@ -110,11 +112,13 @@ theorem weightedContentCapClosureCoefficient_degreeOver (β : Multiset I)
     weightedContentCapClosureCoefficient D Sc cutoff N i β hh w r s ∈
       truncatedDegreeOver D sy 𝒜 Sc hP cutoff N w.obj w.obj
         (2 * sy.d i * (r + s + 1 : ℕ)) := by
-  rcases w with ⟨t, ht⟩
-  cases ht
+  refine weightedContentCapClosureCoefficient_induction D Sc cutoff N i
+    (P := fun β w r s f => f ∈ truncatedDegreeOver D sy 𝒜 Sc hP cutoff N w.obj w.obj
+      (2 * sy.d i * (r + s + 1 : ℕ))) ?_ β hh w r s
+  intro l hh r s
   have h := negativeKernelClosure_degreeOver D sy 𝒜 Sc hP cutoff i
-    (⟨t.word⟩ : OldCategory D Sc cutoff) ⟨t.word⟩ hh r s
-    (oldId_mem_degreeOver D sy 𝒜 Sc hP cutoff ⟨t.word⟩)
+    (⟨l⟩ : OldCategory D Sc cutoff) ⟨l⟩ hh r s
+    (oldId_mem_degreeOver D sy 𝒜 Sc hP cutoff ⟨l⟩)
   rw [zero_add] at h
   exact truncateOld_mem_degreeOver D sy 𝒜 Sc hP cutoff N h
 

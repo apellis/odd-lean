@@ -250,4 +250,46 @@ theorem weightedContentCapClosureCoefficient_degree
         capWordCoefficient_degree D Sc cutoff N i sy hc l hh r s) β w
   exact h hh r s
 
+/-- Properties of the represented unit coefficient are checked on the truncated raw closure at
+each stored word. -/
+theorem weightedContentUnitClosureCoefficient_induction
+    {P : ∀ (β : Multiset I) (w : ContentCategory D Sc cutoff N β), ℕ → ℕ → (w.obj ⟶ w.obj) → Prop}
+    (h : ∀ (l : List I) (hh : 0 ≤ contentCrossingHeight D cutoff i (l : Multiset I)) (r s : ℕ),
+      P (l : Multiset I) ⟨(oldTruncateFunctor D Sc cutoff N).obj ⟨l⟩, rfl⟩ r s
+        (truncateOld D Sc cutoff N l l
+          (positiveKernelClosure D Sc cutoff i ⟨l⟩ ⟨l⟩ hh r s (𝟙 _))))
+    (β : Multiset I) (hh : 0 ≤ contentCrossingHeight D cutoff i β)
+    (w : ContentCategory D Sc cutoff N β) (r s : ℕ) :
+    P β w r s (weightedContentUnitClosureCoefficient D Sc cutoff N i β hh w r s) := by
+  have hw : ∀ (hh : 0 ≤ contentCrossingHeight D cutoff i β) (r s : ℕ),
+      P β w r s (weightedContentUnitClosureCoefficient D Sc cutoff N i β hh w r s) :=
+    contentRec D Sc cutoff N
+      (P := fun β w => ∀ (hh : 0 ≤ contentCrossingHeight D cutoff i β) (r s : ℕ),
+        P β w r s (weightedContentUnitClosureCoefficient D Sc cutoff N i β hh w r s))
+      (fun l hh r s => (unitCoefficient_atWord D Sc cutoff N i l hh r s).symm ▸
+        (h l hh r s : P (l : Multiset I) ⟨(oldTruncateFunctor D Sc cutoff N).obj ⟨l⟩, rfl⟩ r s
+          (unitWordCoefficient D Sc cutoff N i l hh r s))) β w
+  exact hw hh r s
+
+/-- Properties of the represented cap coefficient are checked on the truncated raw closure at
+each stored word. -/
+theorem weightedContentCapClosureCoefficient_induction
+    {P : ∀ (β : Multiset I) (w : ContentCategory D Sc cutoff N β), ℕ → ℕ → (w.obj ⟶ w.obj) → Prop}
+    (h : ∀ (l : List I) (hh : contentCrossingHeight D cutoff i (l : Multiset I) ≤ 0) (r s : ℕ),
+      P (l : Multiset I) ⟨(oldTruncateFunctor D Sc cutoff N).obj ⟨l⟩, rfl⟩ r s
+        (truncateOld D Sc cutoff N l l
+          (negativeKernelClosure D Sc cutoff i ⟨l⟩ ⟨l⟩ hh r s (𝟙 _))))
+    (β : Multiset I) (hh : contentCrossingHeight D cutoff i β ≤ 0)
+    (w : ContentCategory D Sc cutoff N β) (r s : ℕ) :
+    P β w r s (weightedContentCapClosureCoefficient D Sc cutoff N i β hh w r s) := by
+  have hw : ∀ (hh : contentCrossingHeight D cutoff i β ≤ 0) (r s : ℕ),
+      P β w r s (weightedContentCapClosureCoefficient D Sc cutoff N i β hh w r s) :=
+    contentRec D Sc cutoff N
+      (P := fun β w => ∀ (hh : contentCrossingHeight D cutoff i β ≤ 0) (r s : ℕ),
+        P β w r s (weightedContentCapClosureCoefficient D Sc cutoff N i β hh w r s))
+      (fun l hh r s => (capCoefficient_atWord D Sc cutoff N i l hh r s).symm ▸
+        (h l hh r s : P (l : Multiset I) ⟨(oldTruncateFunctor D Sc cutoff N).obj ⟨l⟩, rfl⟩ r s
+          (capWordCoefficient D Sc cutoff N i l hh r s))) β w
+  exact hw hh r s
+
 end OddMath.QuiverHecke.ELVOld
