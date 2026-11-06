@@ -215,9 +215,9 @@ theorem truncatedDegreeOver_eq_bot_of_support (v w : List I) (S : Set ℤ)
       | add y y' _ _ hy hy' => rw [map_add, hy, hy', add_zero]
       | mem hm y hy =>
         rw [truncatedDprojOver_of_mem D sy 𝒜 Sc hP cutoff N hy n]
-        exact ite_cond_eq_false _ _ (eq_false (fun h => hn (h ▸ hm)))
+        exact ite_eq_right fun h => hn (h ▸ hm)
   have he := truncatedDprojOver_of_mem D sy 𝒜 Sc hP cutoff N hz n
-  rw [if_pos rfl, hzero z (hS z)] at he
+  rw [ite_eq_left rfl, hzero z (hS z)] at he
   exact he.symm
 
 /-- **Bounded degree support over a graded base.** If `𝒜` lives in degrees `0, …, b` and the
