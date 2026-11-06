@@ -247,6 +247,10 @@ one-object supercategory of such a superalgebra is a graded supercategory over `
 supercategories over `K` whose degrees are compatible with the base grading, and
 `OddMath/QuiverHecke/CyclotomicAction/ELVHomGradingOver.lean` assembles these into
 `elvHomGradingOver`, the grading of the ELV coefficient category over a graded base.
+Lower degree bounds carry over: if the base is graded in nonnegative degrees and a free
+module is spanned by elements of degree at least `L`, its degree parts below `L` vanish
+(`BasisGrading.eq_bot_of_span_lower_bound`), and the box product inherits the bound from its
+factors (`BoxProdCoefficient.homDegree_eq_bot_of_lower_bound`).
 
 **Field-only steps, read over `K`.** The uses of the grading in the deformed reservoir
 argument are: finite dimension of each graded piece over the degree-zero field, finite
