@@ -577,6 +577,16 @@ theorem heightCompositionSuperCrossing_parity :
     heightCompositionSuperCrossing D Sc i j a ha n ∈ parity (R := k) P Q d :=
   SuperBimodule.mem_parity_iff.2 (heightCompositionCrossingLinear_parity D Sc i j a ha n)
 
+/-- Evaluation on a homogeneous element displays the sign explicitly. -/
+theorem heightCompositionSuperCrossing_apply {p : ZMod 2} (x : (P).toSVec)
+    (hx : x ∈ (P).toSVec.part p) :
+    ((heightCompositionSuperCrossing D Sc i j a ha n).1 x).val =
+      koszulSign p d • (x.val * c) := by
+  change ((P).toSVec.sgn d x).val * c = _
+  rw [SVec.sgn_apply_of_mem d hx]
+  change (sign k (p * d) • x.val) * c = _
+  rw [smul_mul_assoc, Supercategory.sign_mul, Int.cast_smul_eq_zsmul]
+
 end SuperCrossing
 
 /-! ### From `CrossingTransformation` -/

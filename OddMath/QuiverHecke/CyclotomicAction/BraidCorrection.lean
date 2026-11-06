@@ -51,4 +51,36 @@ variable [Fintype I]
 def affineTripleBraidCorrection (i j : I) (n : ℕ) : Hn D Sc (n + 3) :=
   tripleMatrix D Sc i j i i j i (tripleBraidCorrection D Sc i j)
 
+/-- Repeated-outside-colour braid in the affine superalgebra. -/
+theorem affineTriple_braid_correction (i j : I) (hij : i ≠ j) (n : ℕ) :
+    affineTripleLeft D Sc j i i n *
+        (affineTripleRight D Sc j i i n * affineTripleLeft D Sc i j i n) -
+      affineTripleRight D Sc i i j n *
+        (affineTripleLeft D Sc i i j n * affineTripleRight D Sc i j i n) =
+      affineTripleBraidCorrection D Sc i j n := by
+  simp only [affineTripleLeft, affineTripleRight, affineTripleBraidCorrection, tripleMatrix_mul]
+  unfold tripleMatrix
+  rw [← Finset.sum_sub_distrib]
+  apply Finset.sum_congr rfl
+  intro w _
+  change FiniteHomMatrix.cornerMap (obj := wordObj D Sc) (tripleWord i j i w) _ -
+    FiniteHomMatrix.cornerMap (obj := wordObj D Sc) (tripleWord i j i w) _ =
+      FiniteHomMatrix.cornerMap (obj := wordObj D Sc) (tripleWord i j i w) _
+  rw [← map_sub]
+  congr 1
+  simpa only [Category.assoc] using tripleCross_braid_correction D Sc i j hij w
+
+/-- The signed correction survives the specified two-sided cyclotomic quotient. -/
+theorem cyclotomicTriple_braid_correction (i j : I) (hij : i ≠ j)
+    (a : I → _root_.Polynomial k) (n : ℕ) :
+    cyclotomicMk D Sc a (n + 2) (affineTripleLeft D Sc j i i n) *
+        (cyclotomicMk D Sc a (n + 2) (affineTripleRight D Sc j i i n) *
+          cyclotomicMk D Sc a (n + 2) (affineTripleLeft D Sc i j i n)) -
+      cyclotomicMk D Sc a (n + 2) (affineTripleRight D Sc i i j n) *
+        (cyclotomicMk D Sc a (n + 2) (affineTripleLeft D Sc i i j n) *
+          cyclotomicMk D Sc a (n + 2) (affineTripleRight D Sc i j i n)) =
+      cyclotomicMk D Sc a (n + 2) (affineTripleBraidCorrection D Sc i j n) := by
+  simp only [← map_mul, ← map_sub]
+  exact congrArg (cyclotomicMk D Sc a (n + 2)) (affineTriple_braid_correction D Sc i j hij n)
+
 end OddMath.QuiverHecke

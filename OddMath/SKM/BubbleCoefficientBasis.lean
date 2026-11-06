@@ -67,12 +67,6 @@ times a basis vector. -/
   simpa only [oddExteriorBasis, ss, tt, Set.powersetCard.disjUnion, Set.powersetCard.ofCard,
     Finset.disjUnion_eq_union, Units.smul_def, Int.cast_smul_eq_zsmul] using he
 
- theorem oddExteriorBasis_mul_scalar {s t : Finset {i : I // D.parity i = 1}}
-    (h : Disjoint s t) : ∃ c : k,
-      oddExteriorBasis D k s * oddExteriorBasis D k t = c • oddExteriorBasis D k (s ∪ t) :=
-  let ⟨c, hc⟩ := oddExteriorBasis_mul_int D k h
-  ⟨c, hc⟩
-
  theorem coefficientBasis_mul_zero {a b : CoefficientIndex D} (h : ¬Disjoint a.2 b.2) :
     coefficientBasis D k a * coefficientBasis D k b = 0 := by
   apply (polynomialExteriorEquiv D k).injective
@@ -111,6 +105,29 @@ def CoefficientAtMost (d : ℕ) : Submodule k (SYM D k) :=
 /-- Coefficient monomials supported in weight at least `d`. -/
 def CoefficientAtLeast (d : ℕ) : Submodule k (SYM D k) :=
   Submodule.span k (coefficientBasis D k '' {a | d ≤ coefficientWeight D a})
+
+ theorem coefficientWeight_mul {a b : CoefficientIndex D} (h : Disjoint a.2 b.2) :
+    coefficientWeight D (a.1 + b.1, a.2 ∪ b.2) = coefficientWeight D a + coefficientWeight D b := by
+  have hp : (a.1 + b.1).sum (fun i n => n * elementaryWeight D i) =
+      a.1.sum (fun i n => n * elementaryWeight D i) + b.1.sum (fun i n => n * elementaryWeight D i) :=
+    Finsupp.sum_add_index (by intro i; simp) (by intros; simp [add_mul])
+  simp only [coefficientWeight, hp, Finset.card_union_of_disjoint h]
+  omega
+
+ theorem coefficientBasis_mul_mem_high {a b : CoefficientIndex D} {m n : ℕ}
+    (ha : m ≤ coefficientWeight D a) (hb : n ≤ coefficientWeight D b) :
+    coefficientBasis D k a * coefficientBasis D k b ∈ CoefficientAtLeast D k (m + n) := by
+  by_cases hd : Disjoint a.2 b.2
+  · obtain ⟨c, hc⟩ := coefficientBasis_mul_scalar D k hd
+    rw [hc]
+    apply Submodule.smul_mem
+    apply Submodule.subset_span
+    refine ⟨(a.1 + b.1, a.2 ∪ b.2), ?_, rfl⟩
+    change m + n ≤ coefficientWeight D (a.1 + b.1, a.2 ∪ b.2)
+    rw [coefficientWeight_mul D hd]
+    omega
+  · rw [coefficientBasis_mul_zero D k hd]
+    exact Submodule.zero_mem _
 
 /-- The full polynomial/exterior coefficient weight is multiplicative, with
 no exceptional collapse of mixed odd products hidden in the filtration. -/

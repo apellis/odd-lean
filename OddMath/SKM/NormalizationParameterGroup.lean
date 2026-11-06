@@ -132,4 +132,15 @@ def specialize {Ptwo : Prop} {Sc : ScalarData D R Ptwo} (cs : CScalars Sc) :
     (specialize cs (c D μ i)).toMul = cs.c μ i := by
   simp [specialize]
 
+/-- The universal units specialization is unique. -/
+theorem specialize_unique {Ptwo : Prop} {Sc : ScalarData D R Ptwo} (cs : CScalars Sc)
+    (f : Group D →+ Additive Rˣ)
+    (ht : ∀ i j, (f (t D i j)).toMul = Sc.t i j)
+    (hc : ∀ μ i, (f (c D μ i)).toMul = cs.c μ i) : f = specialize cs := by
+  apply hom_ext
+  · intro i j
+    exact congrArg Additive.ofMul ((ht i j).trans (specialize_t cs i j).symm)
+  · intro μ i
+    exact congrArg Additive.ofMul ((hc μ i).trans (specialize_c cs μ i).symm)
+
 end OddMath.SKM.NormalizationParameterGroup

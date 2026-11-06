@@ -27,15 +27,6 @@ def indexed (n : ℕ) (w : List (Letter I)) : List (ℕ × Letter I) :=
   intro z _
   congr 1; omega
 
- theorem indexed_cons (n : ℕ) (x : Letter I) (w : List (Letter I)) :
-    indexed n (x :: w) = (n, x) :: indexed (n + 2) w := by
-  simp only [indexed, List.mapIdx_cons, Nat.mul_zero, Nat.add_zero]
-  congr 1
-  simp only [List.mapIdx_eq_zipIdx_map]
-  apply List.map_congr_left
-  intro z _
-  congr 1; omega
-
 /-- The frozen portion before the selected pair. -/
 def before (Q : List (Letter I)) := indexed 0 (dualW Q)
 /-- The frozen portion after the selected pair. -/

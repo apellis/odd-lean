@@ -209,4 +209,19 @@ theorem hom_ext {f g : ParameterRing D →+* R}
       change f (coefficient D ⟨i, j, p, q⟩) = g (coefficient D ⟨i, j, p, q⟩) at h
       simpa only [coefficient_of_allowed D _ ha, slot] using h
 
+/-- Unique simultaneous specialization of the supplied Scalars and CScalars,
+including coefficients outside all used rectangles. -/
+theorem specialize_unique (h₂ : IsUnit (2 : R)) {Ptwo : Prop} {Sc : ScalarData D R Ptwo}
+    (cs : CScalars Sc) (hh : Sc.Homogeneous) (f : ParameterRing D →+* R)
+    (ht : ∀ i j, Units.map f.toMonoidHom ((scalars D).t i j) = Sc.t i j)
+    (hc : ∀ μ i, Units.map f.toMonoidHom ((normalizations D).c μ i) = cs.c μ i)
+    (hs : ∀ i j p q, f ((scalars D).s i j p q) = Sc.s i j p q) : f = specialize h₂ cs := by
+  apply hom_ext
+  · intro i j
+    exact (ht i j).trans (specialize_t h₂ cs i j).symm
+  · intro μ i
+    exact (hc μ i).trans (specialize_c h₂ cs μ i).symm
+  · intro i j p q
+    exact (hs i j p q).trans (specialize_coefficient h₂ cs hh ⟨i, j, p, q⟩).symm
+
 end OddMath.SKM.UniversalPolynomialParameters

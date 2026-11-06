@@ -30,6 +30,12 @@ universe u v
 variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
   [CommRing k] (Sc : SKM.Scalars D k) [Fintype I]
 
+theorem svec_hom_ext_homogeneous {V W : SVec k} {f g : V ⟶ W}
+    (h : ∀ (p : ZMod 2) (v : V), v ∈ V.part p → f v = g v) : f = g :=
+  SVec.hom_ext fun v => by
+    rw [← V.proj_apply_add v, SVec.hom_map_add, SVec.hom_map_add,
+      h 0 _ (V.proj_mem_part 0 v), h 1 _ (V.proj_mem_part 1 v)]
+
 section RightMul
 variable (i : I) (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
 

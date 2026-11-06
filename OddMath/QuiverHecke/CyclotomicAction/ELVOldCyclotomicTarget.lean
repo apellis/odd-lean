@@ -136,6 +136,12 @@ theorem relation_mem (j : I) (t : List I) :
   apply Submodule.subset_span
   exact ⟨j, t, 𝟙 _, 𝟙 _, by simp⟩
 
+theorem projection_relation (i j : I) (t w : List I)
+    (h : hom D Sc cutoff (i :: j :: t) w) :
+    projection D Sc cutoff i (j :: t) w
+      (insert D Sc cutoff i _ _ (relation D Sc cutoff j t) ≫ h) = 0 :=
+  projection_old_ideal D Sc cutoff i (relation_mem D Sc cutoff j t) h
+
 theorem ideal_comp {v t w : List I} {r : hom D Sc cutoff v t}
     (hr : r ∈ ideal D Sc cutoff v t) (b : hom D Sc cutoff t w) :
     r ≫ b ∈ ideal D Sc cutoff v w := by

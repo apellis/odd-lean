@@ -27,6 +27,12 @@ variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
 def tripleWord (i j c : I) {n : ℕ} (w : Word I n) : Word I (n + 3) :=
   ⟨w.1 ++ [i,j,c] ++ [], by simp [w.2]⟩
 
+theorem tripleWord_injective (i j c : I) (n : ℕ) :
+    Function.Injective (tripleWord i j c (n := n)) := by
+  intro a b h
+  apply Subtype.ext
+  exact List.append_cancel_right (List.append_cancel_right (congrArg Subtype.val h))
+
 /-- Crossing the first two added strands. -/
 def tripleCrossLeft (i j c : I) {n : ℕ} (w : Word I n) :
     wordObj D Sc (tripleWord i j c w) ⟶ wordObj D Sc (tripleWord j i c w) :=
@@ -59,6 +65,24 @@ def tripleMatrix (i j c i' j' c' : I) {n : ℕ}
     (f : ∀ w : Word I n, wordObj D Sc (tripleWord i j c w) ⟶
       wordObj D Sc (tripleWord i' j' c' w)) : Hn D Sc (n + 3) :=
   ∑ w, FiniteHomMatrix.single (tripleWord i' j' c' w) (tripleWord i j c w) (f w)
+
+/-- Multiplication of corner families is pointwise reversed composition. -/
+theorem tripleMatrix_mul (i j c i' j' c' i'' j'' c'' : I) {n : ℕ}
+    (f : ∀ w : Word I n, wordObj D Sc (tripleWord i j c w) ⟶
+      wordObj D Sc (tripleWord i' j' c' w))
+    (g : ∀ w : Word I n, wordObj D Sc (tripleWord i' j' c' w) ⟶
+      wordObj D Sc (tripleWord i'' j'' c'' w)) :
+    tripleMatrix D Sc i' j' c' i'' j'' c'' g * tripleMatrix D Sc i j c i' j' c' f =
+      tripleMatrix D Sc i j c i'' j'' c'' (fun w => f w ≫ g w) := by
+  simp only [tripleMatrix, Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro w _
+  rw [Finset.sum_mul, Finset.sum_eq_single w]
+  · exact FiniteHomMatrix.single_mul_single _ _ _ _ _
+  · intro b _ hb
+    exact FiniteHomMatrix.single_mul_single_of_ne _ _ _ _
+      (fun h => hb (tripleWord_injective i' j' c' n h)) _ _
+  · simp
 
 /-- First-pair affine crossing with the third added colour fixed. -/
 def affineTripleLeft (i j c : I) (n : ℕ) : Hn D Sc (n + 3) :=

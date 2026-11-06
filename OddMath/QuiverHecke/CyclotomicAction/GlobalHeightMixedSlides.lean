@@ -121,6 +121,14 @@ def heightTwoColourRightMul {u : C} (hu : TwoColourCornerMulData D Sc i j c a ha
   ⟨heightTwoColourRightMulLinear D Sc i j c a ha n hu,
     heightTwoColourRightMulLinear_isHom D Sc i j c a ha n hu⟩
 
+theorem heightTwoColourRightMul_apply {u : C} (hu : TwoColourCornerMulData D Sc i j c a ha n u)
+    {p : ZMod 2} (x : (T).toSVec) (hx : x ∈ (T).toSVec.part p) :
+    ((heightTwoColourRightMul D Sc i j c a ha n hu).1 x).val = koszulSign p d • (x.val * u) := by
+  change ((T).toSVec.sgn d x).val * u = _
+  rw [SVec.sgn_apply_of_mem d hx]
+  change (sign k (p * d) • x.val) * u = _
+  rw [smul_mul_assoc, Supercategory.sign_mul, Int.cast_smul_eq_zsmul]
+
 /-- The new last dot `y_i` satisfies the corner hypotheses. -/
 theorem twoColourCornerMulData_lastDot :
     TwoColourCornerMulData D Sc i j i a ha n (heightLastDot D Sc a i (n + 1)) where
