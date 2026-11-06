@@ -69,6 +69,7 @@ theorem truncatedContent_positive_pow_zero_of_boundOver (b : ℤ)
       ∀ f : TruncatedEnd D Sc cutoff N v,
         f ∈ truncatedDegreeOver D sy 𝒜 Sc hP cutoff N ⟨v⟩ ⟨v⟩ d → f ^ e = 0 := by
   classical
+  letI := Linear.restrictScalars K R (TruncatedCategory D Sc cutoff N)
   choose B hB using fun v : List I =>
     truncatedContent_bounded_of_boundOver D sy 𝒜 Sc hP cutoff N b h𝒜 M hM hbound v v
   let L := ν.permutations.toFinset.sup B
@@ -84,7 +85,7 @@ theorem truncatedContent_positive_pow_zero_of_boundOver (b : ℤ)
     push_cast
     nlinarith
   rw [hB v _ (Or.inr hdeg)] at hp
-  exact (Submodule.mem_bot _).mp hp
+  exact (Submodule.mem_bot K).mp hp
 
 /-- Positive-degree nilpotence over a base ring graded in degrees `0, …, b`, for finitely many
 colours. -/
@@ -106,8 +107,7 @@ theorem dotE_mem_presentedPart {v : List I} {r : ℕ} {i : I} (hi : v[r]? = some
     convert hm using 1
     obtain ⟨hr, rfl⟩ := List.getElem?_eq_some_iff.mp hi
     have hdrop : v.drop r = v[r] :: v.drop (r + 1) := List.drop_eq_getElem_cons hr
-    simp only [pl_cons, pl_nil, List.append_nil, PG.ld, hdrop,
-      List.map_singleton, List.sum_singleton, gdeg]
+    simp [pl, PG.ld, hdrop, gdeg]
   · exact Submodule.zero_mem _
 
 /-- A positioned dot of the truncated quotient has its symmetrizer degree, over a graded
