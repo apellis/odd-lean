@@ -27,8 +27,9 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
   (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR
-variable [Finite I] (sy : Symmetrizer D) (hc : Sc.Homogeneous)
-local notation "c" => elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc
+variable [Finite I] (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
+local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
+    hdot
 attribute [local irreducible] elvProbeReservoir ProbeReservoir.sigmaEntry
 
 /-- Intermediate distinct-colour permutation assembly with the two pure
@@ -50,7 +51,8 @@ theorem elvProbeSigmaPermutation_of_pureEntries
   cases a' <;> cases b'
   · exact hpure i j hij ν t s _ _ false (SPath.sides_two ..) (SPath.sides_two ..) Z
   · subst ep
-    exact elvProbe_distinct_sigmaEntry_isIso D Sc m cutoff bound ΛP ΛR hP hR sy hc c hij ν t _ Z
+    exact elvProbe_distinct_sigmaEntry_isIso D Sc m cutoff bound ΛP ΛR hP hR
+      hdot c hij ν t _ Z
   · exact (P).isIso_sigmaEntry_reservoir_probe c hij ν _ _
       (SPath.sides_two ..) (SPath.sides_two ..) Z
   · exact hpure i j hij ν t s _ _ true (SPath.sides_two ..) (SPath.sides_two ..) Z
@@ -60,7 +62,7 @@ constructed; only the canonical probe left-mate input remains explicit. -/
 theorem elvProbeSigmaPermutation_of_leftMateInvertible
     (hL : LeftMateInvertible (P).T (P).T.leftAdjoints)
     (i j : I) (ν : X) (hij : i ≠ j) : (P).SigmaPermutation c i j ν := by
-  apply elvProbeSigmaPermutation_of_pureEntries D Sc m cutoff bound ΛP ΛR hP hR sy hc
+  apply elvProbeSigmaPermutation_of_pureEntries D Sc m cutoff bound ΛP ΛR hP hR hdot
     (i := i) (j := j) (ν := ν) (hij := hij)
   intro a b hab μ t s p q side hp hq Z
   cases side with
@@ -72,7 +74,7 @@ sideways crossings, with every factor input constructed from their relations. -/
 theorem elvProbeSigmaPermutation (i j : I) (ν : X) (hij : i ≠ j) :
     (P).SigmaPermutation c i j ν := by
   refine elvProbeSigmaPermutation_of_leftMateInvertible D Sc m cutoff bound
-    ΛP ΛR hP hR sy hc ?_ i j ν hij
+    ΛP ΛR hP hR hdot ?_ i j ν hij
   with_unfolding_all
     change LeftMateInvertible (probeOldRouquierFamily D (parameterTwist D Sc) m ΛP hP)
       (probeOldRouquierFamily D (parameterTwist D Sc) m ΛP hP).leftAdjoints

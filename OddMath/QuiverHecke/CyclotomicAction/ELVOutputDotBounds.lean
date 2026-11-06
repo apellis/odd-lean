@@ -103,11 +103,11 @@ variable (i : I) (Λ : X) {x y : X} (h : x + D.α i = y)
 
 /-- The actual postdot has one exponent for every input at a fixed output. -/
 theorem elvPostEndEvaluation_dot_pow_zero [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (δ : WeightBlocks D Λ y) :
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (δ : WeightBlocks D Λ y) :
     ∃ n : ℕ, 0 < n ∧ ∀ M : A,
       elvPostEndEvaluation D Sc cutoff bound i Λ h F M δ
         (elvPostDot D Sc cutoff bound i Λ h F) ^ n = 0 := by
-  obtain ⟨n, hn, hp⟩ := elvWeightDotComponent_pow_zero D Sc cutoff bound i Λ h sy hc δ
+  obtain ⟨n, hn, hp⟩ := elvWeightDotComponent_pow_zero D Sc cutoff bound i Λ h hdot δ
   refine ⟨n, hn, fun M => ?_⟩
   rw [elvPostEndEvaluation_of_mem D Sc cutoff bound i Λ h F M δ _
     (elvPostDot_mem D Sc cutoff bound i Λ h F)]
@@ -115,12 +115,12 @@ theorem elvPostEndEvaluation_dot_pow_zero [Finite I]
 
 /-- The same module-uniform exponent survives the chosen content shift. -/
 theorem elvShiftedPostEndEvaluation_dot_pow_zero [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (κ : ZMod 2)
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (κ : ZMod 2)
     (δ : WeightBlocks D Λ y) :
     ∃ n : ℕ, 0 < n ∧ ∀ M : A,
       elvShiftedPostEndEvaluation D Sc cutoff bound i Λ h F κ M δ
         (elvShiftedPostDot D Sc cutoff bound i Λ h F κ) ^ n = 0 := by
-  obtain ⟨n, hn, hp⟩ := elvPostEndEvaluation_dot_pow_zero D Sc cutoff bound i Λ h F sy hc δ
+  obtain ⟨n, hn, hp⟩ := elvPostEndEvaluation_dot_pow_zero D Sc cutoff bound i Λ h F hdot δ
   refine ⟨n, hn, fun M => ?_⟩
   exact homParityShift_component_pow_zero D Sc cutoff bound Λ y A κ
     (elvPostInduction D Sc cutoff bound i Λ h F) (elvPostDot D Sc cutoff bound i Λ h F) M δ n (hp M)

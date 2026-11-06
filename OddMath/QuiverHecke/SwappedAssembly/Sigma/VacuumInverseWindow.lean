@@ -42,17 +42,18 @@ theorem vacuum_negative_window_length (i : I) :
 /-- The specified inverse of the positive mixed bend and its native
 reservoir unit columns, extracted from the actual negative matrix. -/
 def vacuumCupInverseData [Finite I]
-    (sy : Symmetrizer D) (hc : Sc.Homogeneous) (i : I)
+    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
+    (hwin : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR) (i : I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR (0,0))
     (β : WeightBlocks D ΛR ((P).muM (0,0)))
     (hh : D.h i ((P).wt (0,0)) ≤ 0) :
     CupInverseData (O := (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR (0,0) β).obj Z.obj)
-      ((P).centralPaddedSigma (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc)
+      ((P).centralPaddedSigma (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
         i (0,0) Z.obj (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR (0,0) β) true false)
       (fun n : Fin (-D.h i ((P).wt (0,0))).toNat => (P).centralPaddedUnit i (0,0) Z.obj
         (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR (0,0) β) false n) := by
   let E := reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR (0,0) β
-  let c := elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc
+  let c := elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot
   letI : IsIso (negMap
       (-((P).centralPaddedSigma c i (0,0) Z.obj E false false))
       (-((P).centralPaddedSigma c i (0,0) Z.obj E true true))
@@ -60,7 +61,7 @@ def vacuumCupInverseData [Finite I]
       (-((P).centralPaddedSigma c i (0,0) Z.obj E true false))
       ((P).centralPaddedUnit i (0,0) Z.obj E false)
       (fun n : Fin (-D.h i ((P).wt (0,0))).toNat => (P).centralPaddedUnit i (0,0) Z.obj E true n)) :=
-    (centralFactorMatrix_content_isIso D Sc m cutoff bound ΛP ΛR hP hR sy hc i (0,0) Z β).2 hh
+    (centralFactorMatrix_content_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i (0,0) Z β).2 hh
   refine negMapCupInverseData ((P).centralPaddedSigma c i (0,0) Z.obj E false false)
     ((P).centralPaddedSigma c i (0,0) Z.obj E true true)
     ((P).centralPaddedSigma c i (0,0) Z.obj E false true)
@@ -75,7 +76,8 @@ def vacuumCupInverseData [Finite I]
 /-- At zero fused height the same chosen principal is the inverse of
 positive `Dx`; this is the principal used in the normalized odd bubble. -/
 def vacuumPrincipalIso [Finite I]
-    (sy : Symmetrizer D) (hc : Sc.Homogeneous) (i : I)
+    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
+    (hwin : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR) (i : I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR (0,0))
     (β : WeightBlocks D ΛR ((P).muM (0,0)))
     (hh : D.h i ((P).wt (0,0)) = 0) :
@@ -85,12 +87,12 @@ def vacuumPrincipalIso [Finite I]
     sectorFamilyCorner (fun b => StepValid (dn i) b (0,0))
       (fun b => (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR (0,0) β).obj
         ((P).centralTargetFactor i (0,0) Z.obj b)) false where
-  hom := (P).centralPaddedSigma (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc)
+  hom := (P).centralPaddedSigma (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
     i (0,0) Z.obj (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR (0,0) β) true false
-  inv := (vacuumCupInverseData D Sc m cutoff bound ΛP ΛR hP hR sy hc i Z β hh.le).principal
-  hom_inv_id := (vacuumCupInverseData D Sc m cutoff bound ΛP ΛR hP hR sy hc i Z β hh.le).isInverse.1
+  inv := (vacuumCupInverseData D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i Z β hh.le).principal
+  hom_inv_id := (vacuumCupInverseData D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i Z β hh.le).isInverse.1
   inv_hom_id := by
-    have h := (vacuumCupInverseData D Sc m cutoff bound ΛP ΛR hP hR sy hc i Z β hh.le).isInverse.2.2.2.2
+    have h := (vacuumCupInverseData D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i Z β hh.le).isInverse.2.2.2.2
     have hn : (-D.h i ((P).wt (0,0))).toNat = 0 := by omega
     let : IsEmpty (Fin (-D.h i ((P).wt (0,0))).toNat) := by rw [hn]; infer_instance
     simpa only [Fintype.sum_empty, add_zero] using h

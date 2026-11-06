@@ -23,13 +23,13 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
   (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR
-variable [Finite I] (sy : Symmetrizer D) (hc : Sc.Homogeneous)
-local notation "c" =>
-  elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc
-local notation "L" =>
-  pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR sy hc
-attribute [local irreducible] elvProbeCrossCoeff
+variable [Finite I] (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
+  (hwin : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR)
+local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot
+local notation "L" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR hdot
+attribute [local irreducible] elvProbeCrossCoeffOf
 
+include hwin in
 /-- Both signs of the actual augmented matrix are invertible at every
 outer sector of a supported, weight-matched input. -/
 theorem augmentedMatrix_isIso (i : I) (ν : X)
@@ -40,14 +40,15 @@ theorem augmentedMatrix_isIso (i : I) (ν : X)
   subst ν
   by_cases hts : t = s
   · subst t
-    have h := centralAugmentedMatrix_isIso D Sc m cutoff bound ΛP ΛR hP hR sy hc i s Z
+    have h := centralAugmentedMatrix_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i s Z
     exact ⟨h.1, fun hh => h.2 hh.le⟩
-  · have hswap := elvProbeSwappingInvertible D Sc m cutoff bound ΛP ΛR hP hR sy hc
+  · have hswap := elvProbeSwappingInvertible D Sc m cutoff bound ΛP ΛR hP hR hdot
     exact ⟨fun _ => ProbeReservoir.isIso_augPosMat_of_ne c i ((P).wt s) hts Z.obj
       (fun p q => hswap i ((P).wt s) t s hts p q Z.obj),
       fun _ => ProbeReservoir.isIso_augNegMat_of_ne c i ((P).wt s) hts Z.obj
         (fun p q => hswap i ((P).wt s) t s hts p q Z.obj)⟩
 
+include hwin in
 /-- The five positive identities for the chosen data, on every supported input. -/
 theorem pointwiseLeftward_posInverseAt (i : I) (ν : X)
     (t s : Sector I) (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s)
@@ -55,9 +56,10 @@ theorem pointwiseLeftward_posInverseAt (i : I) (ν : X)
     (P).PosInverseAt c i ν t s Z.obj
       (fun q p => (L).lcrossSame i ν q p Z.obj)
       (fun n r p => (L).dcup i n ν r p Z.obj) := by
-  let := (augmentedMatrix_isIso D Sc m cutoff bound ΛP ΛR hP hR sy hc i ν t s Z hw).1 hh
+  let := (augmentedMatrix_isIso D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i ν t s Z hw).1 hh
   exact (P).leftwardOfPointwiseAugmentedInverse_posInverseAt c i ν t s Z.obj hw hh
 
+include hwin in
 /-- The five negative identities for the same chosen data and every supported input. -/
 theorem pointwiseLeftward_negInverseAt (i : I) (ν : X)
     (t s : Sector I) (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s)
@@ -65,17 +67,18 @@ theorem pointwiseLeftward_negInverseAt (i : I) (ν : X)
     (P).NegInverseAt c i ν t s Z.obj
       (fun q p => (L).lcrossSame i ν q p Z.obj)
       (fun n q r => (L).dcap i n ν q r Z.obj) := by
-  let := (augmentedMatrix_isIso D Sc m cutoff bound ΛP ΛR hP hR sy hc i ν t s Z hw).2 hh
+  let := (augmentedMatrix_isIso D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i ν t s Z hw).2 hh
   exact (P).leftwardOfPointwiseAugmentedInverse_negInverseAt c i ν t s Z.obj hw hh
 
+include hwin in
 /-- All ten local equal-colour inversion relations hold on the supported inputs. -/
 theorem pointwiseLeftward_isInverseAt (s : Sector I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s) :
     (L).IsInverseAt c s Z.obj := by
   exact (P).leftwardOfPointwiseAugmentedInverse_isInverseAt c s Z.obj
     (fun i ν hh t hw =>
-      (augmentedMatrix_isIso D Sc m cutoff bound ΛP ΛR hP hR sy hc i ν t s Z hw).1 hh)
+      (augmentedMatrix_isIso D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i ν t s Z hw).1 hh)
     (fun i ν hh t hw =>
-      (augmentedMatrix_isIso D Sc m cutoff bound ΛP ΛR hP hR sy hc i ν t s Z hw).2 hh)
+      (augmentedMatrix_isIso D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i ν t s Z hw).2 hh)
 
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

@@ -124,7 +124,7 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (i : I) (Λ : X) {x y : X} (h : x + D.α i = y)
 
 private theorem transpose_power_component_isNilpotent [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (n : ℕ) (hn : 0 < n)
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (n : ℕ) (hn : 0 < n)
     (M : ELVWeightProduct D Sc cutoff bound Λ y) (δ : WeightBlocks D Λ x) :
     IsNilpotent (show End (((elvF D Sc cutoff bound i Λ h).obj M) δ) from
       (SKM.SuperAdjunction.rightTranspose (elvActionAdjunction D Sc cutoff bound i Λ h)
@@ -133,7 +133,7 @@ private theorem transpose_power_component_isNilpotent [Finite I]
   let φ := (piEndEvaluation ((elvF D Sc cutoff bound i Λ h).obj M) δ).comp
     (supernaturalEndEvaluation (elvF D Sc cutoff bound i Λ h) M)
   have ht : IsNilpotent (φ (elvActionDotTranspose D Sc cutoff bound i Λ h)) := by
-    obtain ⟨e, _, he⟩ := elvActionDotTranspose_component_pow_zero D Sc cutoff bound i Λ h sy hc δ
+    obtain ⟨e, _, he⟩ := elvActionDotTranspose_component_pow_zero D Sc cutoff bound i Λ h hdot δ
     refine ⟨e, ?_⟩
     change (show End (((elvF D Sc cutoff bound i Λ h).obj M) δ) from
       (elvActionDotTranspose D Sc cutoff bound i Λ h).total M δ) ^ e = 0
@@ -153,7 +153,7 @@ attribute [local irreducible] elvF elvActionAdjunction elvActionDot
 /-- Every admissible source polynomial built from an even probe unit and a
 positive even reservoir dot power is a unit on the entire input Hom functor. -/
 theorem elvMixedSource_polynomialUnits [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound)
     {A B : PiSCat.{u,u,u + 1} k} (E : A ⟶ B) (κ : ZMod 2)
     (H : B ⟶ elvWeightSpace D Sc cutoff bound Λ y)
     (a : End E) (ha : a ∈ parity (R := k) E E 0) (hu : IsUnit a)
@@ -191,7 +191,7 @@ theorem elvMixedSource_polynomialUnits [Finite I]
     dsimp only [post]
     rw [source_post_app E (elvActionAdjunction D Sc cutoff bound i Λ h) κ H b 0 M]
     rw [← OddMath.HomogeneousSuperfunctorIso.total_eq_app t htb (K.obj (E.obj M))]
-    exact transpose_power_component_isNilpotent D Sc cutoff bound i Λ h sy hc n hn _ δ
+    exact transpose_power_component_isNilpotent D Sc cutoff bound i Λ h hdot n hn _ δ
   intro c e N hN
   exact product_source_polynomial_isUnit F pre post hpre hpost hpreu hcomm hnil c e hN
 

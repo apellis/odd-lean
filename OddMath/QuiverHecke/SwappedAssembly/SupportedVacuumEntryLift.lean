@@ -83,9 +83,9 @@ theorem eq_of_vacuumDecode (Z : (P).H ((0, 0) : Sector I)) (c : (E).obj Z ≅ V)
     f = g :=
   hfaith ((vacuumDecode_eq_mulLeft D Sc m cutoff ΛP ΛR L hP hR Z c f a hf).trans hg.symm)
 
-variable (sy : Symmetrizer D) (hc : Sc.Homogeneous)
+variable (hF : ProbeActionInputs D Sc m cutoff N ΛP ΛR hP hR)
 
-include sy hc in
+include hF in
 /-- **Vacuum entries from decoded values.** If the decoded reading of the vacuum sector
 of the tensor target family is faithful and the coefficient action of `a` decodes to
 left multiplication by `a`, a closed diagram whose vacuum entry decodes to left
@@ -98,12 +98,14 @@ theorem vacuumEntry_of_decode (μ : X) (M : List (SKM.LayerData I)) (hM : SKM.SC
       (tensorTargetFamilyCoefficientAction D Sc m cutoff L ΛP ΛR (0,0) a).hom =
       LinearMap.mulLeft k (coefficientPowerQuotientMap D cutoff L a))
     (hf : ∀ z, dec ((c.inv ≫ (E).map (ProbeReservoir.compDiag
-        (ProbeReservoir.swappedGens (P) (elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc)
-          (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc))
+        (ProbeReservoir.swappedGens (P) (elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR
+    hF.dot)
+          (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        hF.dot))
         (SKM.mkD D μ M hM) (SPath.nil (0,0)) (SPath.nil (0,0))
         (tensorTargetFamily D Sc m cutoff ΛP ΛR L (0,0)).obj) ≫ c.hom).total star z) =
       coefficientPowerQuotientMap D cutoff L a * dec z) :
-    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc μ M hM a :=
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF μ M hM a :=
   eq_of_vacuumDecode D Sc m cutoff ΛP ΛR L hP hR _ c hfaith a hf hcoef
 
 end Lift

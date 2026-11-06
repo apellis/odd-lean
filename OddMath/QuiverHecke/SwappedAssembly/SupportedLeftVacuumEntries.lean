@@ -56,10 +56,12 @@ local notation "star" =>
 local notation "dec" => tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
 local notation "Z" => (tensorTargetFamily D Sc m cutoff ΛP ΛR L (0,0)).obj
 
-variable (sy : Symmetrizer D) (hc : Sc.Homogeneous)
+variable (hF : ProbeActionInputs D Sc m cutoff N ΛP ΛR hP hR)
 local notation "gens" => ProbeReservoir.swappedGens (P)
-  (elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc)
-  (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc)
+  (elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR
+    hF.dot)
+  (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        hF.dot)
 
 /-- Conjugating the vacuum entry of a closed diagram along an equality of inputs. -/
 private theorem conj_compDiag_of_eq {Z₁ Z₂ : (P).H ((0, 0) : Sector I)} (h : Z₁ = Z₂)
@@ -72,7 +74,7 @@ private theorem conj_compDiag_of_eq {Z₁ Z₂ : (P).H ((0, 0) : Sector I)} (h :
   subst h
   simp
 
-include sy hc in
+include hF in
 theorem vacuumLeftOdd_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
     (hpos : 0 < D.h i ν₀) (s : ℕ) :
     ∃ c : (E).obj Z ≅ V, (∃ h, c.hom = eqToHom h) ∧ ∀ z,
@@ -88,17 +90,21 @@ theorem vacuumLeftOdd_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
   have hlt : cutoff i < probeCutoff D m i := by omega
   have hZ : Z = (tensorVacuum D Sc m cutoff L ΛP ΛR).obj := by rw [tensorTargetFamily_zero]
   obtain ⟨c, j, A, ⟨h0, hc0⟩, -, hcol, hmom⟩ :=
-    tensorVacuum_leftward_odd_moments D Sc m cutoff L ΛP ΛR hP hR sy hc i hi hN hlt
-      (fun q p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc).lcrossSame i ν₀ q p
+    tensorVacuum_leftward_odd_moments D Sc m cutoff L ΛP ΛR hP hR i
+      hF.dot hi hN hlt
+      (fun q p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        hF.dot).lcrossSame i ν₀ q p
         (tensorVacuum D Sc m cutoff L ΛP ΛR).obj)
-      (fun n r p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc).dcup i n ν₀ r p
+      (fun n r p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        hF.dot).dcup i n ν₀ r p
         (tensorVacuum D Sc m cutoff L ΛP ΛR).obj)
-      (centralPointwiseLeftward_posInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
+      (centralPointwiseLeftward_posInverseAt D Sc m cutoff N ΛP ΛR hP hR hF.dot hF.window i (0,0)
         (tensorVacuum D Sc m cutoff L ΛP ΛR) hpos.le)
-      (elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc)
+      (elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR
+    hF.dot)
   refine ⟨eqToIso (congrArg (E).obj hZ) ≪≫ c, ⟨(congrArg (E).obj hZ).trans h0, by
     rw [Iso.trans_hom, eqToIso.hom, hc0, eqToHom_trans]⟩, fun z => ?_⟩
-  rw [conj_compDiag_of_eq D Sc m cutoff ΛP ΛR L hP hR sy hc hZ c]
+  rw [conj_compDiag_of_eq D Sc m cutoff ΛP ΛR L hP hR hF hZ c]
   have hn : (D.h i ν₀ - 1).toNat = probeCutoff D m i - cutoff i - 1 := by omega
   have hN' : (((2 * s : ℕ) : ℤ) + D.h i ν₀ - 1).toNat =
       probeCutoff D m i - cutoff i - 1 + 2 * s := by omega
@@ -112,22 +118,22 @@ theorem vacuumLeftOdd_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
   rw [← hcol']
   exact (hmom s z).1
 
-include sy hc in
+include hF in
 /-- **Odd left bubble entry of the vacuum sector.** -/
 theorem vacuumEntry_left_odd (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
     (hpos : 0 < D.h i ν₀) (s : ℕ) :
-    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF ν₀
       (SKM.dcupL i (D.h i ν₀ - 1).toNat ++
         SKM.epsL i (((2 * s : ℕ) : ℤ) + D.h i ν₀ - 1).toNat)
       ((SKM.sChain_dcupL i _).append (SKM.sChain_epsL i _))
       (SKM.SYM.polynomialInclude D k (PowerSeries.coeff s
         (VacuumSeries.substitutedSeries k (SKM.SYM.probeSeries D k m) i))) := by
-  obtain ⟨c, hc', hf⟩ := vacuumLeftOdd_decode D Sc m cutoff ΛP ΛR L hP hR sy hc i hi hN hpos s
-  exact vacuumEntry_of_decode D Sc m cutoff ΛP ΛR L hP hR sy hc _ _ _ _ c
+  obtain ⟨c, hc', hf⟩ := vacuumLeftOdd_decode D Sc m cutoff ΛP ΛR L hP hR hF i hi hN hpos s
+  exact vacuumEntry_of_decode D Sc m cutoff ΛP ΛR L hP hR hF _ _ _ _ c
     (vacuumDecodeFaithful_tensorTarget D Sc m cutoff ΛP ΛR L hP hR c)
     (vacuumDecode_tensorTargetCoefficient D Sc m cutoff ΛP ΛR L hP hR c hc' _) hf
 
-include sy hc in
+include hF in
 theorem vacuumOddBubble_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
     (hpos : 0 < D.h i ν₀) :
     ∃ c : (E).obj Z ≅ V, (∃ h, c.hom = eqToHom h) ∧ ∀ z,
@@ -141,17 +147,21 @@ theorem vacuumOddBubble_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
   have hlt : cutoff i < probeCutoff D m i := by omega
   have hZ : Z = (tensorVacuum D Sc m cutoff L ΛP ΛR).obj := by rw [tensorTargetFamily_zero]
   obtain ⟨c, j, A, ⟨h0, hc0⟩, -, hcol, hmom⟩ :=
-    tensorVacuum_leftward_odd_moments D Sc m cutoff L ΛP ΛR hP hR sy hc i hi hN hlt
-      (fun q p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc).lcrossSame i ν₀ q p
+    tensorVacuum_leftward_odd_moments D Sc m cutoff L ΛP ΛR hP hR i
+      hF.dot hi hN hlt
+      (fun q p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        hF.dot).lcrossSame i ν₀ q p
         (tensorVacuum D Sc m cutoff L ΛP ΛR).obj)
-      (fun n r p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc).dcup i n ν₀ r p
+      (fun n r p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        hF.dot).dcup i n ν₀ r p
         (tensorVacuum D Sc m cutoff L ΛP ΛR).obj)
-      (centralPointwiseLeftward_posInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
+      (centralPointwiseLeftward_posInverseAt D Sc m cutoff N ΛP ΛR hP hR hF.dot hF.window i (0,0)
         (tensorVacuum D Sc m cutoff L ΛP ΛR) hpos.le)
-      (elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc)
+      (elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR
+    hF.dot)
   refine ⟨eqToIso (congrArg (E).obj hZ) ≪≫ c, ⟨(congrArg (E).obj hZ).trans h0, by
     rw [Iso.trans_hom, eqToIso.hom, hc0, eqToHom_trans]⟩, fun z => ?_⟩
-  rw [conj_compDiag_of_eq D Sc m cutoff ΛP ΛR L hP hR sy hc hZ c]
+  rw [conj_compDiag_of_eq D Sc m cutoff ΛP ΛR L hP hR hF hZ c]
   have hn : (D.h i ν₀ - 1).toNat = probeCutoff D m i - cutoff i - 1 := by omega
   have hN' : (D.h i ν₀).toNat = probeCutoff D m i - cutoff i + 2 * 0 := by omega
   rw [hn, hN']
@@ -165,20 +175,21 @@ theorem vacuumOddBubble_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
     VacuumSeries.coeff_zero_substitutedSeries k (SKM.SYM.constantCoeff_probeSeries D k m),
     map_one, one_mul, map_smul, SKM.SYM.probeSign, smul_mul_assoc]
 
-include sy hc in
+include hF in
 /-- **Odd bubble entry of the vacuum sector at positive height.** -/
 theorem vacuumEntry_oddBubble (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
     (hpos : 0 < D.h i ν₀) :
-    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF ν₀
       (SKM.dcupL i (D.h i ν₀ - 1).toNat ++ SKM.epsL i (D.h i ν₀).toNat)
       ((SKM.sChain_dcupL i _).append (SKM.sChain_epsL i _))
       (SKM.SYM.probeSign D k cutoff ⟨i, hi⟩ • SKM.SYM.delta D k ⟨i, hi⟩) := by
-  obtain ⟨c, hc', hf⟩ := vacuumOddBubble_decode D Sc m cutoff ΛP ΛR L hP hR sy hc i hi hN hpos
-  exact vacuumEntry_of_decode D Sc m cutoff ΛP ΛR L hP hR sy hc _ _ _ _ c
+  obtain ⟨c, hc', hf⟩ := vacuumOddBubble_decode D Sc m cutoff ΛP ΛR L hP hR hF i hi hN hpos
+  exact vacuumEntry_of_decode D Sc m cutoff ΛP ΛR L hP hR hF _ _ _ _ c
     (vacuumDecodeFaithful_tensorTarget D Sc m cutoff ΛP ΛR L hP hR c)
     (vacuumDecode_tensorTargetCoefficient D Sc m cutoff ΛP ΛR L hP hR c hc' _) hf
 
-include sy hc in
+
+include hF in
 /-- The decoded vacuum entry of the even left bubble of degree `s`. -/
 theorem vacuumLeftEven_decode (i : I) (hi : D.parity i = 0) (hN : 0 < cutoff i)
     (hpos : 0 < D.h i ν₀) (s : ℕ) :
@@ -195,17 +206,21 @@ theorem vacuumLeftEven_decode (i : I) (hi : D.parity i = 0) (hN : 0 < cutoff i)
   have hlt : cutoff i < probeCutoff D m i := by omega
   have hZ : Z = (tensorVacuum D Sc m cutoff L ΛP ΛR).obj := by rw [tensorTargetFamily_zero]
   obtain ⟨c, j, A, ⟨h0, hc0⟩, -, hcol, hmom⟩ :=
-    tensorVacuum_leftward_even_moments D Sc m cutoff L ΛP ΛR hP hR sy hc i hi hN hlt
-      (fun q p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc).lcrossSame i ν₀ q p
+    tensorVacuum_leftward_even_moments D Sc m cutoff L ΛP ΛR hP hR i
+      hF.dot hi hN hlt
+      (fun q p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        hF.dot).lcrossSame i ν₀ q p
         (tensorVacuum D Sc m cutoff L ΛP ΛR).obj)
-      (fun n r p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc).dcup i n ν₀ r p
+      (fun n r p => (pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
+        hF.dot).dcup i n ν₀ r p
         (tensorVacuum D Sc m cutoff L ΛP ΛR).obj)
-      (centralPointwiseLeftward_posInverseAt D Sc m cutoff N ΛP ΛR hP hR sy hc i (0,0)
+      (centralPointwiseLeftward_posInverseAt D Sc m cutoff N ΛP ΛR hP hR hF.dot hF.window i (0,0)
         (tensorVacuum D Sc m cutoff L ΛP ΛR) hpos.le)
-      (elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc)
+      (elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR
+    hF.dot)
   refine ⟨eqToIso (congrArg (E).obj hZ) ≪≫ c, ⟨(congrArg (E).obj hZ).trans h0, by
     rw [Iso.trans_hom, eqToIso.hom, hc0, eqToHom_trans]⟩, fun z => ?_⟩
-  rw [conj_compDiag_of_eq D Sc m cutoff ΛP ΛR L hP hR sy hc hZ c]
+  rw [conj_compDiag_of_eq D Sc m cutoff ΛP ΛR L hP hR hF hZ c]
   have hn : (D.h i ν₀ - 1).toNat = probeCutoff D m i - cutoff i - 1 := by omega
   have hN' : ((s : ℤ) + D.h i ν₀ - 1).toNat =
       probeCutoff D m i - cutoff i - 1 + s := by omega
@@ -219,17 +234,17 @@ theorem vacuumLeftEven_decode (i : I) (hi : D.parity i = 0) (hN : 0 < cutoff i)
   rw [← hcol']
   exact hmom s z
 
-include sy hc in
+include hF in
 /-- **Even left bubble entry of the vacuum sector.** -/
 theorem vacuumEntry_left_even (i : I) (hi : D.parity i = 0) (hN : 0 < cutoff i)
     (hpos : 0 < D.h i ν₀) (s : ℕ) :
-    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF ν₀
       (SKM.dcupL i (D.h i ν₀ - 1).toNat ++ SKM.epsL i ((s : ℤ) + D.h i ν₀ - 1).toNat)
       ((SKM.sChain_dcupL i _).append (SKM.sChain_epsL i _))
       (SKM.SYM.polynomialInclude D k (PowerSeries.coeff s
         (VacuumSeries.substitutedSeries k (SKM.SYM.probeSeries D k m) i))) := by
-  obtain ⟨c, hc', hf⟩ := vacuumLeftEven_decode D Sc m cutoff ΛP ΛR L hP hR sy hc i hi hN hpos s
-  exact vacuumEntry_of_decode D Sc m cutoff ΛP ΛR L hP hR sy hc _ _ _ _ c
+  obtain ⟨c, hc', hf⟩ := vacuumLeftEven_decode D Sc m cutoff ΛP ΛR L hP hR hF i hi hN hpos s
+  exact vacuumEntry_of_decode D Sc m cutoff ΛP ΛR L hP hR hF _ _ _ _ c
     (vacuumDecodeFaithful_tensorTarget D Sc m cutoff ΛP ΛR L hP hR c)
     (vacuumDecode_tensorTargetCoefficient D Sc m cutoff ΛP ΛR L hP hR c hc' _) hf
 

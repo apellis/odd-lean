@@ -103,8 +103,10 @@ end Generic
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) [Fintype I]
   (m : I → ℕ) (cutoff : I → ℕ) (L : I × ℕ → ℕ)
-  (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
 local notation "bound" => SKM.SYM.elvPowerWeightBound D cutoff L + 1
+
+variable (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound)
+
 local notation "W₀" => Functor.obj (restriction (contentInclusion D Sc cutoff bound (0 : Multiset I)))
   (weightedVacuum D Sc cutoff L)
 local notation "H" => VacuumTensor.probeFunctor D Sc m cutoff bound W₀
@@ -218,13 +220,12 @@ private theorem tensorVacuum_reservoir_series (hi : D.parity i = 1) (hN : 0 < cu
     (reservoir_even_coefficient D Sc m cutoff L i hi hN)
     (reservoir_odd_coefficient D Sc m cutoff L i hi hN)
 
-include sy hc in
+include hdot in
 private theorem odd_slide_neg (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) :
     evaluatedMixedBend D Sc m cutoff bound i hP H ≫ evaluatedPostDot D Sc m cutoff bound i H -
       (-1 : k) • (shiftedPreDot D Sc m R₀ i H ≫ evaluatedMixedBend D Sc m cutoff bound i hP H) =
       shiftedPreCap D Sc m R₀ i hP H ≫ (adjunction K).unit.app V := by
-  have hs := evaluatedMixedBend_odd_slide D Sc m cutoff bound sy hc i hi hP H
-  simpa only [hi, koszulSign_one_one, neg_one_zsmul, neg_one_smul] using hs
+  exact evaluatedMixedBend_odd_slide_neg D Sc m cutoff bound hdot i hi hP H
 
 private theorem odd_probe_polynomial (hi : D.parity i = 1) (h : ℕ) (hhN : h + cutoff i = 2 * m i) :
     SwappedVacuum.capPolynomial
@@ -254,7 +255,7 @@ private theorem odd_coefficient_sq (hi : D.parity i = 1) :
   rw [pow_two] at h2
   rw [← map_mul, smul_mul_smul_comm, ← map_mul, h2, map_zero, smul_zero, map_zero]
 
-include sy hc in
+include hdot in
 /-- **Odd-colour column moments on the tensor vacuum.** For a column `a`
 killed by the actual A6 bend with the column window of height `h`, where
 `h + cutoff i = 2 m i`, the decoded column moments are the coefficients of
@@ -292,7 +293,7 @@ theorem tensorVacuumColumn_odd_moments
     (evaluatedPostDot D Sc m cutoff bound i H) (evaluatedMixedBend D Sc m cutoff bound i hP H)
     ((adjunction K).unit.app V) (shiftedPreCap D Sc m R₀ i hP H)
     (tensorPowerVacuumCap D Sc m cutoff L i hN) a
-    (odd_slide_neg D Sc m cutoff L sy hc i hi hP) has
+    (odd_slide_neg D Sc m cutoff L hdot i hi hP) has
     (odd_probe_polynomial D Sc m cutoff L i hi h hhN) hcol hwin
     (tensorVacuum_reservoir_series D Sc m cutoff L i hi hN) s
   constructor
@@ -305,7 +306,7 @@ theorem tensorVacuumColumn_odd_moments
     rw [hmom.2, end_mul_apply', lmul_apply', coefficientLmul_apply] at e2
     exact e2.symm
 
-include sy hc in
+include hdot in
 /-- **Chosen inverse column.** If the cap window `[bend; x^n ≫ v]_(n < h)` of the actual A6
 bend has an entrywise inverse `(j, A)` (`IsCapInverse`), its last padded column `A (h - 1)`
 has the substituted-series moments of `tensorVacuumColumn_odd_moments`. -/
@@ -346,7 +347,7 @@ theorem tensorVacuumCapInverse_odd_moments
     · have hf : ¬((⟨h - 1, by omega⟩ : Fin h) = ⟨j, hj⟩) := fun e => hj' (by
         rw [Fin.ext_iff] at e; dsimp only at e; omega)
       simp only [hf, hj', ↓reduceIte]
-  exact tensorVacuumColumn_odd_moments D Sc m cutoff L sy hc i hi hP hN h hh hhN
+  exact tensorVacuumColumn_odd_moments D Sc m cutoff L hdot i hi hP hN h hh hhN
     (A ⟨h - 1, by omega⟩) (hA.2.1 _) hcol s z
 
 end OddMath.QuiverHecke.ELVOld

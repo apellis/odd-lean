@@ -78,21 +78,21 @@ private theorem elvPostProbe_odd_anticomm (α : End F) (M : A) (δ : WeightBlock
   exact congrArg (fun f => f δ) hh
 
 theorem elvPostProbe_difference_isUnit [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (hi : D.parity i = 0)
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (hi : D.parity i = 0)
     (α : End F) (hα : α ∈ parity (R := k) _ _ 0) (hu : IsUnit α) :
     IsUnit (elvPostDot D Sc cutoff bound i Λ h F -
       elvPostProbeDot D Sc cutoff bound i Λ h F α) :=
-  elvPostDot_difference_isUnit D Sc cutoff bound sy hc i Λ h F hi _
+  elvPostDot_difference_isUnit D Sc cutoff bound hdot i Λ h F hi _
     (elvPostProbeDot_mem D Sc cutoff bound i Λ h F α hα)
     (elvPostProbeDot_isUnit D Sc cutoff bound i Λ h F α hu)
     (elvPostProbe_even_comm D Sc cutoff bound i Λ h F α)
 
 theorem elvPostProbe_square_difference_isUnit [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (hi : D.parity i = 1)
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (hi : D.parity i = 1)
     (α : End F) (hα : α ∈ parity (R := k) _ _ 1) (hu : IsUnit α) :
     IsUnit (elvPostProbeDot D Sc cutoff bound i Λ h F α ^ 2 -
       elvPostDot D Sc cutoff bound i Λ h F ^ 2) :=
-  elvPostDot_square_difference_isUnit D Sc cutoff bound sy hc i Λ h F hi _
+  elvPostDot_square_difference_isUnit D Sc cutoff bound hdot i Λ h F hi _
     (elvPostProbeDot_mem D Sc cutoff bound i Λ h F α hα)
     (elvPostProbeDot_isUnit D Sc cutoff bound i Λ h F α hu)
     (elvPostProbe_odd_anticomm D Sc cutoff bound i Λ h F α)
@@ -118,7 +118,7 @@ abbrev elvShiftedPostDot (κ : ZMod 2) :
   elvShiftedPostEnd D Sc cutoff bound i Λ h F (elvPostDot D Sc cutoff bound i Λ h F) κ
 
 theorem elvShiftedPostProbe_difference_isUnit [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (κ : ZMod 2)
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (κ : ZMod 2)
     (hi : D.parity i = 0) (α : End F)
     (hα : α ∈ parity (R := k) _ _ 0) (hu : IsUnit α) :
     IsUnit (elvShiftedPostDot D Sc cutoff bound i Λ h F κ -
@@ -126,7 +126,7 @@ theorem elvShiftedPostProbe_difference_isUnit [Finite I]
         (elvPostProbeDot D Sc cutoff bound i Λ h F α) κ) := by
   let S := SKM.homParityShift (k := k)
     (C := A ⟶ elvWeightSpace D Sc cutoff bound Λ y) κ
-  have hh := (elvPostProbe_difference_isUnit D Sc cutoff bound i Λ h F sy hc hi α hα hu).map
+  have hh := (elvPostProbe_difference_isUnit D Sc cutoff bound i Λ h F hdot hi α hα hu).map
     (S.mapEnd (elvPostInduction D Sc cutoff bound i Λ h F))
   change IsUnit (show End (S.obj (elvPostInduction D Sc cutoff bound i Λ h F)) from
     S.map (elvPostDot D Sc cutoff bound i Λ h F -
@@ -135,7 +135,7 @@ theorem elvShiftedPostProbe_difference_isUnit [Finite I]
   exact hh
 
 theorem elvShiftedPostProbe_square_difference_isUnit [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (κ : ZMod 2)
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (κ : ZMod 2)
     (hi : D.parity i = 1) (α : End F)
     (hα : α ∈ parity (R := k) _ _ 1) (hu : IsUnit α) :
     IsUnit (elvShiftedPostEnd D Sc cutoff bound i Λ h F
@@ -143,7 +143,7 @@ theorem elvShiftedPostProbe_square_difference_isUnit [Finite I]
       elvShiftedPostDot D Sc cutoff bound i Λ h F κ ^ 2) := by
   let S := SKM.homParityShift (k := k)
     (C := A ⟶ elvWeightSpace D Sc cutoff bound Λ y) κ
-  have hh := (elvPostProbe_square_difference_isUnit D Sc cutoff bound i Λ h F sy hc hi α hα hu).map
+  have hh := (elvPostProbe_square_difference_isUnit D Sc cutoff bound i Λ h F hdot hi α hα hu).map
     (S.mapEnd (elvPostInduction D Sc cutoff bound i Λ h F))
   change IsUnit (show End (S.obj (elvPostInduction D Sc cutoff bound i Λ h F)) from
     S.map (elvPostProbeDot D Sc cutoff bound i Λ h F α ^ 2 -

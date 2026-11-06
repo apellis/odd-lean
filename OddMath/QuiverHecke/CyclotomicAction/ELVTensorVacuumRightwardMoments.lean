@@ -38,9 +38,10 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (L : I × ℕ → ℕ) (ΛP ΛR : X)
   (hcP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
   (hcR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
-  (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (i : I)
+  (i : I)
 local notation "bound" => PowerWordContent.powerBound D cutoff L
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR
+variable (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
 local notation "ν₀" => (P).wt ((0, 0) : Sector I)
 local notation "H" => VacuumTensor.probeFunctor D (parameterTwist D Sc) m cutoff bound
   ((BalancedInduction.restriction
@@ -58,7 +59,7 @@ omit [Fintype I] in
 private theorem odd_probeCutoff_right (hi : D.parity i = 1) : probeCutoff D m i = 2 * m i := by
   simp [probeCutoff, probeDotExponent, hi]
 
-include sy hc in
+include hdot in
 /-- The rightward vacuum bubble entries of `vacuumRightwardCupInverse_bubbleEntries`,
 restated on the tensor vacuum value: window length `N - 2M` and the tensor probe functor. -/
 theorem tensorVacuum_rightward_odd_bubbleEntries (hi : D.parity i = 1)
@@ -73,7 +74,7 @@ theorem tensorVacuum_rightward_odd_bubbleEntries (hi : D.parity i = 1)
         ((0, 0) : Sector I))
       (r : SPath (SKM.wd D ν₀ []) ((0, 0) : Sector I) ((0, 0) : Sector I)),
       ((P).pathFunctor _q).obj Z ⟶ ((P).pathFunctor r).obj Z)
-    (HN : (P).NegInverseAt (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ν₀
+    (HN : (P).NegInverseAt (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) i ν₀
       ((0, 0) : Sector I) ((0, 0) : Sector I) Z lc dc)
     (cc : (P).CrossCoeff) :
     ∃ (c : _ ≅ V) (j : _ ⟶ shiftedPreSourceObject D (parameterTwist D Sc) m
@@ -92,7 +93,7 @@ theorem tensorVacuum_rightward_odd_bubbleEntries (hi : D.parity i = 1)
     rw [SupportedSectors.vacuum_negative_window_length D Sc m cutoff bound ΛP ΛR hcP hcR i,
       odd_probeCutoff_right D m i hi]
   have hex := vacuumRightwardCupInverse_bubbleEntries D Sc m cutoff bound ΛP ΛR hcP hcR
-    (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) sy hc i Z hZ lc dc HN cc hP hi
+    (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) hdot i Z hZ lc dc HN cc hP hi
   rw [show vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR
       (tensorOutputAt D (parameterTwist D Sc) m cutoff L ΛR) = H from
     tensorOutputAt_empty D (parameterTwist D Sc) m cutoff L ΛR, hlen] at hex

@@ -64,21 +64,21 @@ abbrev probeELVMixedOuterDot (κ : ZMod 2) :=
 
 /-- The even difference denominator on the literal generator Hom object is a unit. -/
 theorem probeELVMixed_difference_isUnit [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (κ : ZMod 2) (hi : D.parity i = 0) :
+    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
+    (κ : ZMod 2) (hi : D.parity i = 0) :
     IsUnit (probeELVMixedOuterDot D Sc m cutoff bound ΛP ΛR i β h Z κ -
       probeELVMixedInnerDot D Sc m cutoff bound ΛP ΛR i β h Z κ) :=
-  elvShiftedPostProbe_difference_isUnit D Sc' cutoff bound i ΛR h F sy
-    (parameterTwist_homogeneous D Sc hc) κ hi α
+  elvShiftedPostProbe_difference_isUnit D Sc' cutoff bound i ΛR h F hdot κ hi α
     (hi ▸ probeELVMixedPreDot_mem (D := D) (Sc := Sc) (m := m) (cutoff := cutoff) (bound := bound) (ΛP := ΛP) (ΛR := ΛR) (i := i) (β := β) (Z := Z))
     (probeELVMixedPreDot_isUnit (D := D) (Sc := Sc) (m := m) (cutoff := cutoff) (bound := bound) (ΛP := ΛP) (ΛR := ΛR) (i := i) (β := β) (Z := Z))
 
 /-- The odd square-difference denominator is also constructed on this same Hom object. -/
 theorem probeELVMixed_square_difference_isUnit [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (κ : ZMod 2) (hi : D.parity i = 1) :
+    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
+    (κ : ZMod 2) (hi : D.parity i = 1) :
     IsUnit (probeELVMixedInnerDot D Sc m cutoff bound ΛP ΛR i β h Z κ ^ 2 -
       probeELVMixedOuterDot D Sc m cutoff bound ΛP ΛR i β h Z κ ^ 2) :=
-  elvShiftedPostProbe_square_difference_isUnit D Sc' cutoff bound i ΛR h F sy
-    (parameterTwist_homogeneous D Sc hc) κ hi α
+  elvShiftedPostProbe_square_difference_isUnit D Sc' cutoff bound i ΛR h F hdot κ hi α
     (hi ▸ probeELVMixedPreDot_mem (D := D) (Sc := Sc) (m := m) (cutoff := cutoff) (bound := bound) (ΛP := ΛP) (ΛR := ΛR) (i := i) (β := β) (Z := Z))
     (probeELVMixedPreDot_isUnit (D := D) (Sc := Sc) (m := m) (cutoff := cutoff) (bound := bound) (ΛP := ΛP) (ΛR := ΛR) (i := i) (β := β) (Z := Z))
 

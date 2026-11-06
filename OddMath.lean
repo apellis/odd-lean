@@ -107,7 +107,16 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOldMateEvaluation
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldMateFirstRow
 import OddMath.QuiverHecke.CyclotomicAction.ELVHomGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVHomGradingOver
+import OddMath.QuiverHecke.CyclotomicAction.ELVLowerDegreeOver
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldGradingOver
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldCategoryGradingOver
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientTruncationOver
+import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumSupportOver
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentSupportOver
+import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedNilpotenceOver
+import OddMath.QuiverHecke.CyclotomicAction.ELVCategoryCoefficientsOver
 import OddMath.SKM.BubbleELVPolynomialGrading
+import OddMath.SKM.BubbleELVPolynomialGradingOver
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldCyclotomicTarget
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldBalancedTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldRightContext
@@ -389,6 +398,8 @@ import OddMath.QuiverHecke.CyclotomicAction.PrefixQPInduction
 import OddMath.QuiverHecke.CyclotomicAction.PrefixQPKilling
 import OddMath.QuiverHecke.CyclotomicAction.PrefixQPEquation
 import OddMath.QuiverHecke.CyclotomicAction.ParameterTransport
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTransportGrading
+import OddMath.QuiverHecke.CyclotomicAction.ELVParameterTwistNilpotenceOver
 import OddMath.QuiverHecke.CyclotomicAction.BraidOperators
 import OddMath.QuiverHecke.CyclotomicAction.Intertwiner
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerWords
@@ -2434,11 +2445,14 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedSteps
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirLayerCells
 import OddMath.QuiverHecke.SwappedAssembly.SupportedPaths
 import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernelInteger
+import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernelIntegerOver
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCentreBlocks
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirClosures
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelEntryDegrees
+import OddMath.QuiverHecke.CyclotomicAction.ELVKernelEntryDegreesOver
 import OddMath.Algebra.IntegerMatrixGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelMatrixInteger
+import OddMath.QuiverHecke.CyclotomicAction.ELVKernelMatrixIntegerOver
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentPrincipalInverseCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInverseKernelCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelClosureDegree
@@ -2484,11 +2498,14 @@ import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowInverseData
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendSeriesAlgebra
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendWindowMonomials
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirClosureDegree
+import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirClosureDegreeOver
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirClosureIdeal
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorVacuum
 import OddMath.QuiverHecke.CyclotomicAction.ELVAbsentWindowInverseCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirBoundaryDegree
+import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirBoundaryDegreeOver
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirBoundaryIdeal
+import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirIdealOver
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorContexts
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputDotBounds
 import OddMath.SKM.RouquierHomPrePointwiseSlide
@@ -2505,6 +2522,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentHomZero
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedContentBends
 import OddMath.QuiverHecke.SwappedVacuum.NegativeCapInverse
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowCoefficientIdeal
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowCoefficientIdealOver
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCrossEntries
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ResidualComparisonNegative
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.SignedResidualWindows
@@ -2515,6 +2533,7 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorLayerSquares
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCornerEvaluation
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCrossClasses
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PaddedResidualInversion
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.PaddedResidualInversionOver
 import OddMath.QuiverHecke.SwappedAssembly.SupportedWhiskerReduction
 import OddMath.QuiverHecke.SwappedAssembly.SupportedRelationLifting
 import OddMath.QuiverHecke.SwappedAssembly.PointwiseLeftwardInverse
@@ -2610,6 +2629,7 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCoefficientUnitObserva
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorMatrixCoefficientObservation
 import OddMath.QuiverHecke.SwappedAssembly.SupportedInversionRelations
 import OddMath.QuiverHecke.SwappedAssembly.SupportedAction
+import OddMath.QuiverHecke.SwappedAssembly.SupportedActionInputsOver
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumWholeInput
 import OddMath.QuiverHecke.SwappedVacuumParameters
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorEntryLayers
@@ -2656,6 +2676,7 @@ import OddMath.QuiverHecke.VacuumRouteSwappedPositiveField
 import OddMath.QuiverHecke.VacuumRouteSwappedNonpositiveField
 import OddMath.QuiverHecke.VacuumRouteSwappedRightField
 import OddMath.QuiverHecke.VacuumRouteSwappedRightNegative
+import OddMath.QuiverHecke.TruncatedReesNondegeneracy
 import OddMath.QuiverHecke.IntegralNondegeneracy
 import OddMath.QuiverHecke.HomBases
 import OddMath.QuiverHecke.Decategorification

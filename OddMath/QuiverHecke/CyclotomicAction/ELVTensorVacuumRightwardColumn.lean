@@ -27,9 +27,10 @@ universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) [Fintype I]
   (m : I → ℕ) (cutoff : I → ℕ) (L : I × ℕ → ℕ)
-  (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
 
 local notation "bound" => SKM.SYM.elvPowerWeightBound D cutoff L + 1
+
+variable (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound)
 local notation "W₀" => Functor.obj (restriction (contentInclusion D Sc cutoff bound (0 : Multiset I)))
   (weightedVacuum D Sc cutoff L)
 local notation "H" => VacuumTensor.probeFunctor D Sc m cutoff bound W₀
@@ -49,7 +50,7 @@ abbrev rightwardUnitColumn {C : Type*} {_ : Category C} {Y Z : C} (u : Y ⟶ Z) 
     {w : ℕ} (B : Fin w → (Z ⟶ Y)) (e : ℕ) (n : Fin w) : Y ⟶ Y :=
   u ≫ (x ^ e) ≫ B n
 
-include sy hc in
+include hdot in
 /-- **Odd colour, negative height: even moments of the last unit column.** For an
 entrywise inverse `(j, B)` of the cup window of the A6 bend with `0 < 2 M < N`, the shift
 `N - 2M - 1 + 2r` of the last unit column decodes to multiplication by the `r`-th
@@ -70,10 +71,11 @@ theorem rightwardUnitColumn_odd_moments_even
       polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
         tensorVacuumDecodeLinear D Sc m cutoff L z :=
-  tensorVacuumNegativeCap_odd_moments_even D Sc m cutoff L sy hc i hi hP
+  tensorVacuumNegativeCap_odd_moments_even D Sc m cutoff L
+      hdot i hi hP
     (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
 
-include sy hc in
+include hdot in
 /-- **Odd colour, negative height: odd moments of the last unit column.** Under the
 hypotheses of `rightwardUnitColumn_odd_moments_even`, the shift `N - 2M - 1 + (2r + 1)`
 decodes to the `r`-th coefficient of `(1 + w)^M / C(-w)` times the normalized odd
@@ -97,10 +99,11 @@ theorem rightwardUnitColumn_odd_moments_odd
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
           tensorVacuumDecodeLinear D Sc m cutoff L z) := by
   rw [map_smul]
-  exact tensorVacuumNegativeCap_odd_moments_odd D Sc m cutoff L sy hc i hi hP
+  exact tensorVacuumNegativeCap_odd_moments_odd D Sc m cutoff L
+      hdot i hi hP
     (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
 
-include sy hc in
+include hdot in
 /-- **Odd colour, negative height: the last unit column.** Both moment identities of
 `rightwardUnitColumn_odd_moments_even` and `rightwardUnitColumn_odd_moments_odd`. -/
 theorem rightwardUnitColumn_odd_moments
@@ -128,8 +131,8 @@ theorem rightwardUnitColumn_odd_moments
         (polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
           tensorVacuumDecodeLinear D Sc m cutoff L z) :=
-  ⟨rightwardUnitColumn_odd_moments_even D Sc m cutoff L sy hc i hi hP hPN j B hB r z,
-    rightwardUnitColumn_odd_moments_odd D Sc m cutoff L sy hc i hi hP hPN j B hB r z⟩
+  ⟨rightwardUnitColumn_odd_moments_even D Sc m cutoff L hdot i hi hP hPN j B hB r z,
+    rightwardUnitColumn_odd_moments_odd D Sc m cutoff L hdot i hi hP hPN j B hB r z⟩
 
 /-- The decoded value of the last unit column `η xᵉ ≫ B (N - 2M - 1)` at shift `e`. -/
 def rightwardLastColumnDecode (hPN : 2 * m i < cutoff i)
@@ -150,7 +153,7 @@ theorem rightwardOddScalar_eq (hi : D.parity i = 1) :
       coefficientPowerQuotientMap D cutoff L
         ((-1 : k) ^ (cutoff i + 1) • SKM.SYM.delta D k ⟨i, hi⟩) := rfl
 
-include sy hc in
+include hdot in
 /-- `tensorVacuumNegativeCap_odd_moments_even` for `rightwardLastColumnDecode`, at a shift
 `e` given by an equation, so that the shift is compared as a variable. -/
 theorem rightwardLastColumnDecode_even
@@ -166,13 +169,14 @@ theorem rightwardLastColumnDecode_even
       polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
         tensorVacuumDecodeLinear D Sc m cutoff L z := by
-  have h := tensorVacuumNegativeCap_odd_moments_even D Sc m cutoff L sy hc i hi hP
+  have h := tensorVacuumNegativeCap_odd_moments_even D Sc m cutoff L
+      hdot i hi hP
     (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
   rw [← he] at h
   unfold rightwardLastColumnDecode
   exact h
 
-include sy hc in
+include hdot in
 /-- `tensorVacuumNegativeCap_odd_moments_odd` for `rightwardLastColumnDecode`, at a shift
 `e` given by an equation, so that the shift is compared as a variable. -/
 theorem rightwardLastColumnDecode_odd
@@ -189,7 +193,8 @@ theorem rightwardLastColumnDecode_odd
         (polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
           tensorVacuumDecodeLinear D Sc m cutoff L z) := by
-  have h := tensorVacuumNegativeCap_odd_moments_odd D Sc m cutoff L sy hc i hi hP
+  have h := tensorVacuumNegativeCap_odd_moments_odd D Sc m cutoff L
+      hdot i hi hP
     (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
   rw [← he] at h
   unfold rightwardLastColumnDecode

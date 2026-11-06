@@ -30,7 +30,7 @@ attribute [local irreducible] SKM.mixedPostSourcePreDot SKM.mixedPostSourcePostD
 
 /-- All three transposed source norms are units for the specified factor pair. -/
 theorem ELVProbeCrossTransposeNormUnits [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) : (P).CrossTransposeNormUnits := by
+    (hdot : TruncatedAppendDotNilpotent D Sc' cutoff bound) : (P).CrossTransposeNormUnits := by
   let : Fintype I := Fintype.ofFinite I
   constructor
   · intro i hi xP yP xW yW hp hw κ
@@ -41,7 +41,7 @@ theorem ELVProbeCrossTransposeNormUnits [Finite I]
     intro H
     have hh := elvMixedSource_difference_isUnit (A := T.obj xP) (B := T.obj yP)
       D Sc' cutoff bound i ΛR hw (T.E i hp) κ H
-      sy (parameterTwist_homogeneous D Sc hc) hi (T.dot i hp)
+      hdot hi (T.dot i hp)
       (hi ▸ T.dot_mem i hp) hu
     exact hh
   · intro i hi xP yP xW yW hp hw κ
@@ -52,7 +52,7 @@ theorem ELVProbeCrossTransposeNormUnits [Finite I]
     intro H
     have hh := elvMixedSource_square_difference_isUnit (A := T.obj xP) (B := T.obj yP)
       D Sc' cutoff bound ΛR xW i hw (T.E i hp) κ H
-      sy (parameterTwist_homogeneous D Sc hc) hi (T.dot i hp)
+      hdot hi (T.dot i hp)
       (hi ▸ T.dot_mem i hp) hu
     exact hh
   · intro i hi xP yP xW yW hp hw κ
@@ -63,18 +63,21 @@ theorem ELVProbeCrossTransposeNormUnits [Finite I]
     intro H
     have hh := elvMixedSource_square_sum_isUnit (A := T.obj xP) (B := T.obj yP)
       D Sc' cutoff bound ΛR xW i hw (T.E i hp) κ H
-      sy (parameterTwist_homogeneous D Sc hc) hi (T.dot i hp)
+      hdot hi (T.dot i hp)
       (hi ▸ T.dot_mem i hp) hu
     exact hh
 
 /-- Every off-central swapping entry of the chosen mixed coefficient is invertible. -/
 theorem elvProbeSwappingInvertible [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) :
-    (P).SwappingInvertible (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc) :=
+    (hdot : TruncatedAppendDotNilpotent D Sc' cutoff bound) :
+    (P).SwappingInvertible (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
+    hdot) :=
   (P).swappingInvertible_of_units
-    (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc)
-    (elvProbeCrossCoeff_isInverse D Sc m cutoff bound ΛP ΛR hP hR sy hc)
-    (elvProbeCrossDenominatorUnits D Sc m cutoff bound ΛP ΛR hP hR sy hc)
-    (ELVProbeCrossTransposeNormUnits D Sc m cutoff bound ΛP ΛR hP hR sy hc)
+    (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
+    hdot)
+    (elvProbeCrossCoeffOf_isInverse D Sc m cutoff bound ΛP ΛR hP hR
+    hdot)
+    (elvProbeCrossDenominatorUnitsOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
+    (ELVProbeCrossTransposeNormUnits D Sc m cutoff bound ΛP ΛR hP hR hdot)
 
 end OddMath.QuiverHecke

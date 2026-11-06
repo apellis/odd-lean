@@ -143,5 +143,25 @@ def shiftedFamily {ι : Type v} [Fintype ι] {V : ι → Type w}
     · intro y z hy hz
       simpa only [Pi.single_add] using Submodule.add_mem _ hy hz
 
+/-- The same decomposition, forgetting the scalars down to `ℤ`. The inverse step only uses the
+additive structure, so coordinates over a base ring `K` of an `R`-module may be compared with
+`R`-linear matrices through this. -/
+def toInt {K : Type*} [CommRing K] [Module K M] (A : Coordinates (k := K) M) :
+    Coordinates (k := ℤ) M where
+  degree n := (A.degree n).restrictScalars ℤ
+  projection n := (A.projection n).toAddMonoidHom.toIntLinearMap
+  projection_mem n x := A.projection_mem n x
+  projection_of_mem hx := A.projection_of_mem hx
+  spanning := by
+    apply top_unique
+    intro x _
+    have hx : x ∈ ⨆ n, A.degree n := by rw [A.spanning]; exact Submodule.mem_top
+    exact Submodule.iSup_induction A.degree (motive := fun y =>
+      y ∈ ⨆ n, (A.degree n).restrictScalars ℤ) hx
+      (fun n y hy => Submodule.mem_iSup_of_mem n hy) (zero_mem _) (fun _ _ => add_mem)
+
+theorem mem_toInt {K : Type*} [CommRing K] [Module K M] (A : Coordinates (k := K) M)
+    (n : ℤ) (x : M) : x ∈ A.toInt.degree n ↔ x ∈ A.degree n := Iff.rfl
+
 end Coordinates
 end OddMath.IntegerMatrix

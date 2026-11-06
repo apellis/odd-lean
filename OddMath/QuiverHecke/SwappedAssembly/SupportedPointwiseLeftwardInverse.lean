@@ -24,18 +24,21 @@ local instance pointwiseLeftwardHomPi (A B : PiSCat.{u,u,u+1} k) :
 
 /-- The chosen raw leftward data use the chosen ELV crossing coefficient,
 with inverse entries selected separately at each input. -/
-def pointwiseLeftwardData [Finite I] (sy : Symmetrizer D) (hc : Sc.Homogeneous) :
+def pointwiseLeftwardData [Finite I]
+    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound) :
     (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).LeftwardData :=
   (P).leftwardOfPointwiseAugmentedInverse
-    (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc)
+    (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
 
-variable [Finite I] (sy : Symmetrizer D) (hc : Sc.Homogeneous)
+variable [Finite I] (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
+  (hwin : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR)
 
 local notation "c" =>
-  elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc
+  elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot
 local notation "L" =>
-  pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR sy hc
+  pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR hdot
 
+include hwin in
 /-- Every supported central input satisfies the positive inverse equations
 for the selected leftward data at nonnegative height. -/
 theorem centralPointwiseLeftward_posInverseAt (i : I) (t : Sector I)
@@ -44,10 +47,11 @@ theorem centralPointwiseLeftward_posInverseAt (i : I) (t : Sector I)
     (P).PosInverseAt c i ((P).wt t) t t Z.obj
       (fun q p => (L).lcrossSame i ((P).wt t) q p Z.obj)
       (fun n r p => (L).dcup i n ((P).wt t) r p Z.obj) := by
-  let := (centralAugmentedMatrix_isIso D Sc m cutoff bound ΛP ΛR hP hR sy hc i t Z).1 hh
+  let := (centralAugmentedMatrix_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i t Z).1 hh
   exact (P).leftwardOfPointwiseAugmentedInverse_posInverseAt c
     i ((P).wt t) t t Z.obj rfl hh
 
+include hwin in
 /-- Every supported central input satisfies the negative inverse equations
 for the selected leftward data at negative height. -/
 theorem centralPointwiseLeftward_negInverseAt (i : I) (t : Sector I)
@@ -56,7 +60,7 @@ theorem centralPointwiseLeftward_negInverseAt (i : I) (t : Sector I)
     (P).NegInverseAt c i ((P).wt t) t t Z.obj
       (fun q p => (L).lcrossSame i ((P).wt t) q p Z.obj)
       (fun n q r => (L).dcap i n ((P).wt t) q r Z.obj) := by
-  let := (centralAugmentedMatrix_isIso D Sc m cutoff bound ΛP ΛR hP hR sy hc i t Z).2 hh.le
+  let := (centralAugmentedMatrix_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i t Z).2 hh.le
   exact (P).leftwardOfPointwiseAugmentedInverse_negInverseAt c
     i ((P).wt t) t t Z.obj rfl hh
 
