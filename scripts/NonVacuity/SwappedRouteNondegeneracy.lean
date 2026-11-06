@@ -12,7 +12,7 @@ private def sy : Symmetrizer D where
   pos := by intro i; cases i <;> norm_num
   symm := by intro i j; cases i <;> cases j <;> rfl
 private theorem hc : Sc.Homogeneous := by
-  intro _ _ _ _ _ _ _ _ h
+  intro _ _ _ _ _ _ _ h
   exact (h rfl).elim
 private def bubbles : CScalars Sc where
   c := fun _ _ => 1

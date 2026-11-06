@@ -52,7 +52,7 @@ def scalars : Scalars datum ℚ where
   two_isUnit := by intro _; norm_num
 
 theorem homogeneous : scalars.Homogeneous := by
-  intro _ _ _ _ _ _ _ _ h
+  intro _ _ _ _ _ _ _ h
   exact (h rfl).elim
 
 theorem quadratic (u v : ℚ) :
@@ -76,7 +76,7 @@ def transportedScalars : Scalars datum ℚ where
   two_isUnit := by intro _; norm_num
 
 theorem transported_homogeneous : transportedScalars.Homogeneous := by
-  intro _ _ _ _ _ _ _ _ h
+  intro _ _ _ _ _ _ _ h
   exact (h rfl).elim
 
 /-- In square coordinates, no crossing-product scalar repairs unchanged parameters. -/
