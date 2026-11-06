@@ -82,8 +82,6 @@ theorem ModuleCentre.reconstruct_mem_degreeOver_of_total_evaluation (β : Multis
     ModuleCentre.reconstruct D Sc cutoff N β η ∈
       contentCoefficientDegreeOver D sy 𝒜 Sc hP cutoff N β d := by
   intro p w
-  change (ModuleCentre.reconstruct D Sc cutoff N β η).app p w ∈
-    truncatedDegreeOver D sy 𝒜 Sc hP cutoff N w.obj w.obj d
   rw [ModuleCentre.reconstruct_app_eq_proj_total, ModuleCentre.reconstruct_total_evaluate]
   exact truncatedProj_mem_degreeOver D sy 𝒜 Sc hP cutoff N p (h w)
 
@@ -173,7 +171,7 @@ theorem positiveCoefficient_mem_degreeOver (hh : 0 ≤ D.h i x₁) (r s : ℕ) :
       (blockSucc D Λ i h₁ β₁) hh r s w
   · rw [positiveContent_total_absent D Sc cutoff N Λ hcutoff i h₁ h₂ γ hγ hh r s,
       supernatural_zero_total, SVec.zero_apply]
-    exact Submodule.zero_mem _
+    exact zero_mem _
 
 /-- The reconstructed coefficient of the chosen negative closure has the same strictly positive
 source degree, over a graded base. -/
@@ -200,7 +198,7 @@ theorem negativeCoefficient_mem_degreeOver (hh : D.h i x₁ ≤ 0) (r s : ℕ) :
       (blockSucc D Λ i h₁ β₁) hh r s w
   · rw [negativeContent_total_absent D Sc cutoff N Λ hcutoff i h₁ h₂ γ hγ hh r s,
       supernatural_zero_total, SVec.zero_apply]
-    exact Submodule.zero_mem _
+    exact zero_mem _
 
 end ReservoirClosures
 

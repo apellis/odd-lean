@@ -54,7 +54,7 @@ theorem crossLast_mem_presentedPart (s : List I) (i : I) :
   convert h using 1
   symm
   simp [pl, PG.ld, gdeg, SKM.Datum.d_self]
-  ring
+  ring_nf
 
 /-- The append functor preserves degrees of the old quotient, over a graded base. -/
 theorem oldAppend_mem_degreeOver (i : I) {v w : OldCategory D Sc cutoff} {n : ℤ} {f : v ⟶ w}
@@ -236,6 +236,7 @@ theorem unitKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
         refine mkQ_mem_oldDegreeOver D sy 𝒜 Sc hP cutoff ?_
         rw [appendMovingPower_whisker, ← appendSourcePower_whisker]
         exact appendSourcePower_mem_degreeOver D sy 𝒜 Sc hP cutoff i t m
+      rw [inductionUnitDotSign]
       exact sign_smul_mem _ _ (oldComp_mem_degreeOver D sy 𝒜 Sc hP cutoff
         (oldAppend_mem_degreeOver D sy 𝒜 Sc hP cutoff i hb) hm)
 

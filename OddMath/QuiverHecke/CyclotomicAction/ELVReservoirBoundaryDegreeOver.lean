@@ -72,7 +72,7 @@ theorem negativeKernelWindowInverse_degreeOver (i : I) (v t : OldCategory D Sc c
       (q - 2 * sy.d i * m.val + 2 * sy.d i * m.val)
     simpa only [sub_add_cancel] using hy
   · rw [Pi.single_eq_of_ne ha]
-    exact Submodule.zero_mem _
+    exact zero_mem _
 
 /-- All positive contractions have the difference degree, over a graded base. -/
 theorem positiveKernelBoundary_degreeOver (i : I) (v t : OldCategory D Sc cutoff)

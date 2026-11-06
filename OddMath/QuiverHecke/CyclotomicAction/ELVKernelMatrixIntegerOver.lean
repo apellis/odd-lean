@@ -119,12 +119,12 @@ theorem positiveKernelMap_degreeOver (i : I) (m : ℕ) (v t : OldCategory D Sc c
     (positiveEntryCoordinatesOver D sy 𝒜 Sc hP cutoff i m v t)
     (positiveKernelShift D sy i m) n z).1 hz
   rw [positiveKernelMap_apply]
-  apply Submodule.add_mem
+  apply add_mem
   · have h0 : z none ∈ representedKernelDegreeOver D sy 𝒜 Sc hP cutoff i v t
         (n + 2 * sy.d i) := hz' none
     have h := mateKernelComponent_degreeOver D sy 𝒜 Sc hP cutoff i v t h0
     rwa [add_sub_cancel_right] at h
-  · apply Submodule.sum_mem
+  · apply sum_mem
     intro r _
     have h0 : z (some r) ∈ oldDegreeOver D sy 𝒜 Sc hP cutoff v t
         (n + -(2 * sy.d i * r.val)) := hz' (some r)
@@ -206,7 +206,7 @@ theorem negativeKernelPrincipalInverse_degreeOver (i : I) (v t : OldCategory D S
     change (Pi.single none y : ∀ a, (negativeKernelFamily D Sc cutoff i
       (contentCapCount D cutoff i (t.word : Multiset I)) t a).obj (op v)) (some r) ∈ _
     rw [Pi.single_eq_of_ne (by simp)]
-    exact Submodule.zero_mem _
+    exact zero_mem _
 
 /-- The positive represented closure has degree `2 dᵢ (r + s + 1)`, over a graded base. -/
 theorem positiveKernelClosure_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
