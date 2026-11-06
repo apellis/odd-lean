@@ -128,7 +128,9 @@ theorem quadSum_toBWW (Sc : Scalars D k) {i j : I} (ν : X) (hij : i ≠ j) (hd 
         Sc.s i j p q • dg D ν (dotsL [up i] j [] q ++ dotsL [] i [up j] p)
           ((sChain_dotsL [up i] j [] q).append (sChain_dotsL [] i [up j] p)) := by
   rw [quadSum, sum_box_toBWW Sc hij hd]
-  congr 2 <;> (try congr 1) <;> exact dg_congr D ν _ _ (by simp [dotsL])
+  congr 2
+  all_goals try congr 1
+  all_goals exact dg_congr D ν _ _ (by simp [dotsL])
 
 theorem braidSum_toBWW (Sc : Scalars D k) {i j : I} (ν : X) (hij : i ≠ j) (hd : D.d i j ≠ 0) :
     braidSum D Sc.toBWW.c i j ν =
