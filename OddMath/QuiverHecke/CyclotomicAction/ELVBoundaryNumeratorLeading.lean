@@ -102,7 +102,7 @@ theorem qpOutputCoefficientStep_above (i : I) (v : List I) (b m n : ℕ)
       intro e he
       apply Finset.sum_eq_zero
       intro a _
-      rw [inputCoefficientComp_apply, ht e (by have := (Finset.mem_Ioo.mp he).2; omega),
+      rw [inputCoefficientComp_apply, ht e (by have := (Finset.mem_range.mp he); omega),
         map_zero, smul_zero]
     rw [hs, ht _ hn, ho _ n (by omega), smul_zero, smul_zero, add_zero, add_zero]
 
@@ -143,7 +143,7 @@ theorem qpOutputCoefficientStep_unit_top (i : I) (v : List I) (b m : ℕ)
       intro a _
       rw [inputCoefficientComp_apply,
         inputCoefficientShift_above D Sc cutoff i v e m _ f hf
-          (by have := (Finset.mem_Ioo.mp he).2; omega), map_zero, smul_zero]
+          (by have := (Finset.mem_range.mp he); omega), map_zero, smul_zero]
     rw [hs, ht, ho _ _ (by omega), smul_zero, add_zero, zero_add, smul_smul]
     rfl
 

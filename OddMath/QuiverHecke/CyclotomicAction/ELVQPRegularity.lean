@@ -164,7 +164,7 @@ theorem projection_qPoly_regular (i x : I) (hix : i â‰  x) (v w : List I) (b : â
     intro d hd'
     apply Finset.sum_eq_zero
     intro e _
-    rw [hlow d e (Finset.mem_Ioo.mp hd').2, smul_zero]
+    rw [hlow d e (Finset.mem_range.mp hd'), smul_zero]
   rw [hl, hold, smul_zero, add_zero, zero_add, projection_moving_dotPower,
     signedMovingPower_coordinate] at he
   have ht := (Sc.t i x).isUnit.smul_eq_zero.mp he

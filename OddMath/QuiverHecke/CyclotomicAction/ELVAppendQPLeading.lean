@@ -104,7 +104,7 @@ theorem appendQP_qPoly_top (i j : I) (hij : i ≠ j) (v w : List I)
         rw [nsmul_eq_mul]
         apply zmod_two_eq_zero_of_ne_one
         exact fun hp => hs (Sc.s_eq_zero i j e a hp)
-      rw [hlow a e (Finset.mem_Ioo.mp he).2 hep, smul_zero]
+      rw [hlow a e (Finset.mem_range.mp he) hep, smul_zero]
   rw [hl, hold, smul_zero, add_zero, zero_add]
   exact congrArg (fun y : Old D Sc cutoff v (q.representative.shift (D.dn i j)).oldTarget =>
     (Sc.t i j : k) • y) hm
@@ -153,7 +153,7 @@ theorem appendQP_qPoly_above (i j : I) (v w : List I)
         rw [nsmul_eq_mul]
         apply zmod_two_eq_zero_of_ne_one
         exact fun hp => hs (Sc.s_eq_zero i j e a hp)
-      rw [hlow a e (Nat.le_of_lt (Finset.mem_Ioo.mp he).2) hep, smul_zero]
+      rw [hlow a e (Nat.le_of_lt (Finset.mem_range.mp he)) hep, smul_zero]
 
 def appendQPDegree (i j : I) : ℕ :=
   if j = i then if D.parity i = 1 then 2 else 0 else D.dn i j
