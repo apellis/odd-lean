@@ -216,12 +216,10 @@ def truncatedGradedSupercategoryOver :
       letI := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
       letI := Supercategory.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
       letI := elvHomGradingOver D sy 𝒜 Sc hP cutoff
-      rw [BoxProdCoefficient.proj_eq_proj (R := R)
-          (fun _ _ _ _ => Iff.rfl),
+      rw [Supercategory.proj_restrictScalars K R (TruncatedCategory D Sc cutoff N),
         truncatedCategory_proj, truncatedProj_mk]
       refine mkQ_mem_truncatedDegreeOver D sy 𝒜 Sc hP cutoff N ?_
-      rw [← BoxProdCoefficient.proj_eq_proj (K := K)
-        (fun _ _ _ _ => Iff.rfl)]
+      rw [← Supercategory.proj_restrictScalars K R (ELVCoefficientCategory D Sc cutoff)]
       exact proj_mem_degree p ha
     id_mem_degree := fun v => by
       letI := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
