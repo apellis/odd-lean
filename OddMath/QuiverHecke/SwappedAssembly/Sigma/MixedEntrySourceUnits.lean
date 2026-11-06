@@ -117,7 +117,7 @@ theorem isIso_homDistinctMixedMateDot_param_sourceUnits (hn : Sc.NoPure) {a b c 
       · rw [hs, zero_smul]; exact Submodule.zero_mem _
       · have hq1 : 1 ≤ q := by
           by_contra h0
-          exact hs (hn i j p q hij (Finset.mem_range.mp hp) (Finset.mem_range.mp hq)
+          exact hs (hn i j p q hij (hnd ▸ Finset.mem_range.mp hp) (Finset.mem_range.mp hq)
             (Or.inr (by omega)))
         exact Submodule.smul_mem _ _ (hmono p q (fun h => hs (Sc.s_eq_zero i j p q h))
           (fun h => hs ((Sc.s_symm i j p q).trans (Sc.s_eq_zero j i q p h))) hq1)
