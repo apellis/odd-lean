@@ -242,7 +242,7 @@ theorem bubble_slide_middle_shift_convolution (i j : I) (μ : X) (hij : i ≠ j)
       bubbleSlideRawConv cs i j μ q (p + n) = isg k (D.parity i) (D.h i μ - 1) •
         (if D.dn i j - p ≤ n + 1 then bubbleSlideShiftConv cs i j μ q (n + 1 - (D.dn i j - p)) else 0) := by
     rw [bubbleSlideRawConv_shift_all cs i j μ hpos hlt]
-    have hp := mem_Ioo.mp hp
+    have hp := mem_range.mp hp
     have e : D.dn i j - 1 ≤ p + n ↔ D.dn i j - p ≤ n + 1 := by omega
     simp only [e]
     congr 1

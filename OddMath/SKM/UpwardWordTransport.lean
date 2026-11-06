@@ -94,12 +94,29 @@ theorem plcL_positiveDots_word {μ : X} {P Q : List (Letter I)} {j : I}
   | add f g _ _ hf hg => rw [map_add]; exact Submodule.add_mem _ hf hg
   | smul a f _ hf => rw [map_smul]; exact Submodule.smul_mem _ _ hf
 
-/-- Across an arbitrary upward word, the zero-dot coefficient is literally
-unchanged and every correction has a nonempty actual list of upward dots. -/
+variable (Sc) in
+/-- The composite lowering twist of `SYM` for a word of upward strands: the coefficient first
+slides past the leftmost strand. -/
+def wordTwist : List I → SYM D k →ₐ[k] SYM D k
+  | [] => AlgHom.id k _
+  | j :: q => (wordTwist q).comp (slideTwist Sc j)
+
+theorem wordTwist_nil (p : SYM D k) : wordTwist Sc [] p = p := rfl
+
+theorem wordTwist_cons (j : I) (q : List I) (p : SYM D k) :
+    wordTwist Sc (j :: q) p = wordTwist Sc q (slideTwist Sc j p) := rfl
+
+theorem wordTwist_bijective (q : List I) : Function.Bijective (wordTwist Sc q) := by
+  induction q with
+  | nil => exact Function.bijective_id
+  | cons j q ih => exact ih.comp (SYM.lowerTwist_bijective D k _)
+
+/-- Across an arbitrary upward word, the zero-dot coefficient changes by the composite lowering
+twist and every correction has a nonempty actual list of upward dots. -/
 theorem betaSYM_upward_word_difference (μ : X) :
     ∀ (q : List I) (P : List (Letter I)) (p : SYM D k),
       plcL D Sc μ P (ups q) [] [] (betaSYM cs (wt D μ (ups q)) p) -
-        bubAt D Sc μ (P ++ [] ++ ups q) (betaSYM cs μ p) ∈
+        bubAt D Sc μ (P ++ [] ++ ups q) (betaSYM cs μ (wordTwist Sc q p)) ∈
         wordDotSpan cs μ (P ++ [] ++ ups q) 1
   | [], P, p => by
     change plcL D Sc μ P [] [] [] (betaSYM cs μ p) -
@@ -113,7 +130,7 @@ theorem betaSYM_upward_word_difference (μ : X) :
       intro P' r
       have H := Submodule.add_mem _
         (wordDotSpan_mono cs (Nat.zero_le 1) (betaSYM_upward_word_difference μ q P' r))
-        (wordDotSpan_bubAt cs μ (P' ++ [] ++ ups q) r)
+        (wordDotSpan_bubAt cs μ (P' ++ [] ++ ups q) (wordTwist Sc q r))
       simpa only [sub_add_cancel] using H
     have hs := plcL_positiveDots_word cs (P := P) ih₀
       (betaSYM_slide_difference cs (wt D μ (ups q)) j p)
@@ -121,7 +138,7 @@ theorem betaSYM_upward_word_difference (μ : X) :
     simp only [lbub, rbub] at hs
     rw [plcL_plcL_left, plcL_plcL_right] at hs
     have hr := wordDotSpan_cast cs (W' := P ++ [up j] ++ ups q) (by simp)
-      (betaSYM_upward_word_difference μ q (P ++ [up j]) p)
+      (betaSYM_upward_word_difference μ q (P ++ [up j]) (slideTwist Sc j p))
     rw [map_sub] at hr
     simp only [wt_nil] at hs
     have H := Submodule.add_mem _ hs hr
@@ -130,7 +147,8 @@ theorem betaSYM_upward_word_difference (μ : X) :
     rw [map_sub, wordCast_symm_wordCast] at H'
     change plcL D Sc μ P (up j :: ups q) [] []
       (betaSYM cs (wt D (wt D μ (ups q)) [up j]) p) -
-        bubAt D Sc μ (P ++ [] ++ up j :: ups q) (betaSYM cs μ p) ∈
+        bubAt D Sc μ (P ++ [] ++ up j :: ups q)
+          (betaSYM cs μ (wordTwist Sc q (slideTwist Sc j p))) ∈
           wordDotSpan cs μ (P ++ [] ++ up j :: ups q) 1
     simpa only [← bubAt_congr] using H'
 
@@ -160,13 +178,13 @@ theorem wordDotSpan_one_le_range (μ : X) (W : List (Letter I)) :
   exact ⟨Finsupp.single ⟨L, hL, hd, hn⟩ p,
     positiveWordExpansion_single cs μ W ⟨L, hL, hd, hn⟩ p⟩
 
-/-- Native finite repeated-word slide: unchanged constant coefficient and
-strictly positive actual dot corrections. -/
+/-- Finite repeated-word slide: the constant coefficient changes by the composite lowering
+twist, and the corrections have strictly positive actual dot powers. -/
 theorem betaSYM_exists_positiveWordExpansion (μ : X) (q : List I)
     (P : List (Letter I)) (p : SYM D k) :
     ∃ z : PositiveWordDots (P ++ [] ++ ups q) →₀ SYM D k,
       plcL D Sc μ P (ups q) [] [] (betaSYM cs (wt D μ (ups q)) p) =
-        bubAt D Sc μ (P ++ [] ++ ups q) (betaSYM cs μ p) +
+        bubAt D Sc μ (P ++ [] ++ ups q) (betaSYM cs μ (wordTwist Sc q p)) +
           positiveWordExpansion cs μ (P ++ [] ++ ups q) z := by
   obtain ⟨z, hz⟩ := wordDotSpan_one_le_range cs μ (P ++ [] ++ ups q)
     (betaSYM_upward_word_difference cs μ q P p)
