@@ -60,7 +60,8 @@ theorem rightClosure_betaSYM_expansion (cs : CScalars Sc) (μ : X)
     ∃ z : PositiveWordDots (v ++ [] ++ ups r) →₀ SYM D k,
       rightClosure D Sc μ l r u v
         (f ≫ bubAt D Sc (wt D μ (ups r)) (dns l ++ v) (betaSYM cs (wt D μ (ups r)) p)) =
-      rightClosure D Sc μ l r u v f ≫ bubAt D Sc μ (v ++ ups r) (betaSYM cs μ (wordTwist Sc r p)) +
+      rightClosure D Sc μ l r u v f ≫
+          bubAt D Sc μ (v ++ ups r) (betaSYM cs μ (wordTwist Sc r p)) +
         rightClosure D Sc μ l r u v f ≫ wordCast μ (by simp) (by simp)
           (positiveWordExpansion cs μ (v ++ [] ++ ups r) z) := by
   obtain ⟨z, hz⟩ := betaSYM_exists_positiveWordExpansion cs μ r v p
@@ -78,7 +79,8 @@ theorem rightClosure_partialMate_betaSYM_expansion (cs : CScalars Sc) (μ : X)
       rightClosure D Sc μ l r u v
         (cl D Sc (wt D μ (ups r)) (u ++ dns r) (dns l ++ v) (partialRightMateL l r u v A) ≫
           bubAt D Sc (wt D μ (ups r)) (dns l ++ v) (betaSYM cs (wt D μ (ups r)) p)) =
-      cl D Sc μ (ups l ++ u) (v ++ ups r) A ≫ bubAt D Sc μ (v ++ ups r) (betaSYM cs μ (wordTwist Sc r p)) +
+      cl D Sc μ (ups l ++ u) (v ++ ups r) A ≫
+          bubAt D Sc μ (v ++ ups r) (betaSYM cs μ (wordTwist Sc r p)) +
         cl D Sc μ (ups l ++ u) (v ++ ups r) A ≫ wordCast μ (by simp) (by simp)
           (positiveWordExpansion cs μ (v ++ [] ++ ups r) z) := by
   obtain ⟨z, hz⟩ := rightClosure_betaSYM_expansion cs μ l r u v
