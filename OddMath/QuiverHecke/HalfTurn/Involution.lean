@@ -139,13 +139,6 @@ theorem htCoef_htCoefInv {s t : List I}
     htCoef_scalarsCast, htCoef_htCoef, scalarsCast_scalarsCast]
   rfl
 
-theorem htCoef_surjective (s t : List I) : Function.Surjective (htCoef D Sc s t) :=
-  fun y => ⟨htCoefInv D Sc s t y, htCoef_htCoefInv D Sc y⟩
-
-/-- **The half-turn is bijective** on coefficient-extended Hom spaces. -/
-theorem htCoef_bijective (s t : List I) : Function.Bijective (htCoef D Sc s t) :=
-  ⟨htCoef_injective D Sc s t, htCoef_surjective D Sc s t⟩
-
 /-- The half-turn as a linear isomorphism `Hom(s, t) ≅ Hom'(t^rev, s^rev)` of
 coefficient-extended Hom spaces, `Hom'` for the parameters `parameterTwist D Sc`. -/
 def htCoefEquiv (s t : List I) :

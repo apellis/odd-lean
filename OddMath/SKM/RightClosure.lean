@@ -117,15 +117,4 @@ theorem cl_rightClosure_partialMate (μ : X) (l r : List I) (u v : List (Letter 
       (by simpa using hA) (by simp [SChain])
   exact h1.trans (h2.trans (h3.trans h4))
 
-/-- A block of right caps followed by a block of right cups, with endpoint
-decorations on the corresponding upward words. -/
-def pairedRightBlocksL (l r : List I) (A B : List (LayerData I)) : List (LayerData I) :=
-  A.map (whL [] (dns r)) ++ capN r ++ cupN l ++ B.map (whL (dns l) [])
-
-/-- A right cap followed by a right cup, with upward endpoint decorations.
-The decorations need not be individual dots. -/
-def pairedRightL (i : I) (A B : List (LayerData I)) : List (LayerData I) :=
-  A.map (whL [] [dn i]) ++ [([], Shape.cap i, []), ([], Shape.cup i, [])] ++
-    B.map (whL [dn i] [])
-
 end OddMath.SKM

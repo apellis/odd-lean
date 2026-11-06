@@ -238,26 +238,6 @@ theorem column_probe_relation (x : End X) (v : X ⟶ V) (a : V ⟶ X) (P : ℕ) 
   rw [show x ^ (n + m) = (x ^ n) ≫ (x ^ m) by rw [add_comm, pow_add, End.mul_def],
     Category.assoc]
 
-/-- Positive-height inverse column moments against the reservoir. With the
-column window `hcol`, `a ≫ s = 0`, the slide, the reservoir window and the
-monic probe of degree `H + N`, the reservoir right moments and the
-`q`-twisted probe-weighted column moments are inverse power series. -/
-theorem inverse_column_reservoir_series (q : k) (hq : q * q = 1) (x : End X)
-    (y : End Y) (s : X ⟶ Y) (u : V ⟶ Y) (v : X ⟶ V) (ell : Y ⟶ V) (a : V ⟶ X)
-    (H N : ℕ) (hH : 0 < H) (hN : 0 < N) (c : ℕ → k) (hc : c (H + N) = 1)
-    (hslide : s ≫ y - q • (x ≫ s) = v ≫ u) (has : a ≫ s = 0)
-    (hcol : ∀ j < H, a ≫ (x ^ j) ≫ v = if j + 1 = H then 𝟙 V else 0)
-    (hwindow : ∀ i < N, u ≫ (y ^ i) ≫ ell = if i + 1 = N then 𝟙 V else 0)
-    (hprobe : capPolynomial c (H + N) x = 0) (L : ℕ) :
-    ∑ l ∈ range (L + 1),
-      (q ^ l • weightedColumn (R := End V) c (H + N) N (fun j => a ≫ (x ^ j) ≫ v) l) ≫
-        u ≫ (y ^ (N - 1 + (L - l))) ≫ ell = if L = 0 then 𝟙 V else 0 := by
-  have h := reservoir_mul_weightedColumn (R := End V) q hq H N hH hN c hc
-    (fun j => a ≫ (x ^ j) ≫ v) (fun i => u ≫ (y ^ i) ≫ ell) hcol hwindow
-    (column_reservoir_relation q hq x y s u v ell a (H + N) c hslide has hprobe)
-    (column_probe_relation x v a (H + N) c hprobe) L
-  simpa only [End.mul_def, End.one_def] using h
-
 end Category
 
 end OddMath.QuiverHecke.SwappedVacuum

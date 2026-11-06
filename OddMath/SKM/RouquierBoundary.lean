@@ -73,29 +73,6 @@ theorem hom_ext {T : a ⟶ a} (f g : E ≫ F ⟶ T)
       rw [he j (Finset.mem_range.mp hj)]
     _ = g := by rw [C.total, Category.id_comp]
 
-/-- Extraction at a negative-height vacuum. The only extra hypothesis is that
-its common `EF` summand vanishes; all inverse coefficients are inherited. -/
-def ofVacuumInverse {a₀ : B} {E₀ : a₀ ⟶ a} {F₀ : a ⟶ a₀}
-    {A₀ : SuperAdjunction (k := k) E₀ F₀} {x₀ : E₀ ⟶ E₀}
-    {t : E₀ ≫ E ⟶ E₀ ≫ E} {h : ℤ}
-    (L : SuperRouquierLoc A₀ A x₀ x t p h) (hh : h ≤ 0)
-    (hv : 𝟙 (F₀ ≫ E₀) = 0) : Coefficients A x p (-h).toNat where
-  dot_mem := L.dot₂_mem
-  coeff := (L.invNeg hh).g'
-  coeff_mem := (L.invNeg hh).g'_mem
-  total := by
-    have hz : rouquierMate A₀ A t = 0 := by
-      calc
-        rouquierMate A₀ A t = 𝟙 (F₀ ≫ E₀) ≫ rouquierMate A₀ A t :=
-          (Category.id_comp _).symm
-        _ = 0 := by rw [hv, Limits.zero_comp]
-    have ht := (L.invNeg hh).total
-    have hc (f : E ≫ F ⟶ F₀ ≫ E₀) : f ≫ rouquierMate A₀ A t = 0 := by
-      rw [hz, Limits.comp_zero]
-    rw [hc, zero_add] at ht
-    exact ht
-  entry := (L.invNeg hh).gg
-
 /-- For an even cutoff at an odd colour, the boundary cap is odd. -/
 example (C : Coefficients A x 1 2) : C.cap ∈ parity (R := k) _ _ 1 := by
   simpa using C.cap_mem

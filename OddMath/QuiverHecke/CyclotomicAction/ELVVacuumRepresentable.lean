@@ -51,14 +51,5 @@ def wordModule : (σ : List I) → ContentModules D Sc cutoff N (content σ)
   | [] => vacuumModule D Sc cutoff N
   | i :: σ => (contentE D Sc cutoff N (content σ) i).obj (wordModule σ)
 
-/-- Iterated induction from the empty-content vacuum is represented by the
-actual reversed operator word. No comparison with an untruncated corner is assumed. -/
-def wordIso : (σ : List I) →
-    wordModule D Sc cutoff N σ ≅
-      contentRepresentable D Sc cutoff N (content σ) (wordObject D Sc cutoff N σ)
-  | [] => Iso.refl _
-  | i :: σ => (contentE D Sc cutoff N (content σ) i).mapIso (wordIso σ) ≪≫
-      InductionRepresentable.iso D Sc cutoff N (content σ) [i] (wordObject D Sc cutoff N σ)
-
 end VacuumRepresentable
 end OddMath.QuiverHecke.ELVOld

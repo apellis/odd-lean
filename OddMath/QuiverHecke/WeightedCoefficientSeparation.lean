@@ -345,16 +345,6 @@ theorem deformedCyclotomic_mem_score (t : List I) (N : ℕ)
   rw [hval] at he
   exact he
 
-/-- Such a deformed polynomial is one of the genuine generators consumed by
-`weighted_quotient_injective_on_extendedAtMost`. -/
-theorem deformedCyclotomic_mem_relationSpan (t : List I) (N : ℕ)
-    (c : Fin (N + 1) → SKM.SYM D k) (ht : 0 < t.length)
-    (hc : ∀ j, c j ∈ SKM.SYM.CoefficientAtLeast D k (N - j.val)) :
-    deformedCyclotomic D Sc t N c ∈ WeightedRelationSpan D Sc t t N := by
-  apply Submodule.subset_span
-  exact ⟨t, rfl, deformedCyclotomic D Sc t N c, deformedCyclotomic_mem_score D Sc t N c ht hc,
-    𝟙 _, 𝟙 _, by simp⟩
-
 /-- Every actual coefficient-extended morphism has finite total PBW weight. -/
 theorem exists_mem_extendedAtMost (t t' : List I)
     (f : coefficientObj D Sc t ⟶ coefficientObj D Sc t') :

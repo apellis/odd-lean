@@ -40,9 +40,6 @@ def replaceOld (x : PrependIdx i v w) (y : NFIdx v x.oldTarget) : PrependIdx i v
     simpa only [prependCrossingWord, cw_append, tgt_append, he, y.tgt_cw]
       using x.moving_target⟩
 
-theorem replaceOld_target (x : PrependIdx i v w) (y : NFIdx v x.oldTarget) :
-    (x.replaceOld y).oldTarget = x.oldTarget := y.tgt_cw
-
 theorem replaceOld_injective (x : PrependIdx i v w) : Function.Injective x.replaceOld := by
   intro y z h
   apply Subtype.ext
@@ -171,17 +168,6 @@ theorem prependExtractOld_insert_tail (p : ZMod 2) {i : I} {v w : List I}
       congr 1
       exact twist_twist _ _
   rw [hc, LinearEquiv.symm_apply_apply]
-
-/-- Extract arbitrary old composition in chronological (first-position) order. -/
-theorem prependExtractOld_insert_comp_tail (p : ZMod 2) {i : I} {v s w : List I}
-    (x : PrependIdx i v w) (r : hom D Sc cutoff v s)
-    (b : hom D Sc cutoff s x.oldTarget) :
-    prependExtractOld D Sc cutoff p x
-      (insert D Sc cutoff i v s r ≫ insert D Sc cutoff i s x.oldTarget b ≫
-        ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k]
-          prependTail D Sc x : hom D Sc cutoff (i :: x.oldTarget) w)) =
-      twist k p (r ≫ b) := by
-  rw [← Category.assoc, ← insert_comp, prependExtractOld_insert_tail]
 
 /-- A genuine old-quotient coordinate, obtained from the affine extraction. -/
 def prependExtractOldQuotient (p : ZMod 2) {i : I} {v w : List I}

@@ -192,9 +192,4 @@ def powerModuleCoefficientAction
       ((coefficientPowerIdeal D cutoff (elementaryCoefficients (k := k) D cutoff) L).ringCon.mkₐ k a) =
         coefficientModuleAction D Sc cutoff M.obj a := rfl
 
-/-- Coefficients of the regular power vacuum are bundled as module endomorphisms. -/
-def vacuumCoefficientAction : CoefficientPowerQuotient (k := k) D cutoff L →ₐ[k]
-    End (coefficientPowerVacuum D Sc cutoff L) :=
-  powerModuleCoefficientAction D Sc cutoff L (coefficientPowerVacuumObject D Sc cutoff L)
-
 end OddMath.QuiverHecke.ELVOld

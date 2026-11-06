@@ -128,11 +128,6 @@ theorem leftZigF_eq (i : I) {x y : X} (e : x + D.α i = y) :
     (T.square i e rfl) (T.braid i (sub_add_cancel x (D.α i)) e rfl)
   simpa only [leftAdjParity, Int.cast_add, Int.cast_one, leftZigF, leftCup, leftCap] using ht
 
-/-- Both canonical triangles have the common involutive unit required by the
-shifted left-adjunction API; no left-triangle hypothesis is needed. -/
-theorem leftZigzags : T.LeftZigzags :=
-  T.leftZigzags_iff_leftZigF.mpr (fun i _ _ e => T.leftZigF_eq i e)
-
 /-- The fixed involutive normalization at the source height of an edge. -/
 def leftAdjScalar (_T : RouquierFamily (k := k) (B := B) D) (i : I) (x : X) : kˣ := by
   let s : ℤ := koszulSign (leftAdjParity D i x) (leftAdjParity D i x)

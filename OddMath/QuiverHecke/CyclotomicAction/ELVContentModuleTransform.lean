@@ -212,39 +212,4 @@ def contentInductionCross (β : Multiset I) (i j : I) :
         (contentCrossAffine D Sc i j) v ≫ twist k (D.parity i * D.parity j) h) m :=
   contentInductionTransform_tensor D Sc cutoff N rfl (content_pair_swap β i j) _ M w v h m
 
-/-- In equal colour the induced action is minus the raw action on every generator. -/
-theorem contentInductionCross_equal_tensor (β : Multiset I) (i : I)
-    (M : ContentModules D Sc cutoff N β)
-    (w : ContentCategory D Sc cutoff N (β + ([i, i] : Multiset I)))
-    (v : ContentCategory D Sc cutoff N β)
-    (h : (contentAppendTo D Sc cutoff N β [i, i] _ (content_pair_swap β i i)).obj v ⟶ w)
-    (m : M.obj v) :
-    ((contentInductionCross D Sc cutoff N β i i).app (D.parity i * D.parity i) M).app
-      (D.parity i * D.parity i) w
-      (BalancedInduction.tensor (contentAppendTo D Sc cutoff N β [i, i] _
-        (content_pair_swap β i i)) M.toFunctor v h m) =
-    -BalancedInduction.tensor (contentAppendTo D Sc cutoff N β [i, i] _ rfl) M.toFunctor v
-      (contentAppendToComponent D Sc cutoff N rfl (content_pair_swap β i i)
-        (crossTwo D Sc i i) v ≫ twist k (D.parity i * D.parity i) h) m := by
-  rw [contentInductionCross_tensor, contentCrossAffine_equal, contentAppendToComponent_neg,
-    Preadditive.neg_comp]
-  exact (congrArg (BalancedInduction.inclusion _ M.toFunctor w v)
-    (TensorProduct.neg_tmul _ _)).trans ((BalancedInduction.inclusion _ M.toFunctor w v).map_neg _)
-
-/-- In distinct colours the affine crossing has no extra normalization sign. -/
-theorem contentInductionCross_distinct_tensor (β : Multiset I) (i j : I) (hij : i ≠ j)
-    (M : ContentModules D Sc cutoff N β)
-    (w : ContentCategory D Sc cutoff N (β + ([i, j] : Multiset I)))
-    (v : ContentCategory D Sc cutoff N β)
-    (h : (contentAppendTo D Sc cutoff N β [j, i] _ (content_pair_swap β i j)).obj v ⟶ w)
-    (m : M.obj v) :
-    ((contentInductionCross D Sc cutoff N β i j).app (D.parity i * D.parity j) M).app
-      (D.parity i * D.parity j) w
-      (BalancedInduction.tensor (contentAppendTo D Sc cutoff N β [j, i] _
-        (content_pair_swap β i j)) M.toFunctor v h m) =
-    BalancedInduction.tensor (contentAppendTo D Sc cutoff N β [i, j] _ rfl) M.toFunctor v
-      (contentAppendToComponent D Sc cutoff N rfl (content_pair_swap β i j)
-        (crossTwo D Sc i j) v ≫ twist k (D.parity i * D.parity j) h) m := by
-  rw [contentInductionCross_tensor, contentCrossAffine_distinct D Sc i j hij]
-
 end OddMath.QuiverHecke.ELVOld

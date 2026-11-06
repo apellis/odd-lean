@@ -153,15 +153,6 @@ def prependBalancedTerm (p : ZMod 2) {i : I} {v w : List I} (x : PrependIdx i v 
         ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k] prependTail D Sc x)).comp
           (prependOldCoefficient D Sc cutoff p x)))
 
-theorem balancedEquiv_prependBalancedTerm (p : ZMod 2) {i : I} {v w : List I}
-    (x : PrependIdx i v w) (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) :
-    balancedEquiv D Sc cutoff p i v w (prependBalancedTerm D Sc cutoff p x a) =
-      projection D Sc cutoff i v w (a ⊗ₜ[k] prependElt D Sc x) := by
-  change balancedEquiv D Sc cutoff p i v w
-    (balancedTmul D Sc cutoff p i _ ((ideal D Sc cutoff v x.oldTarget).mkQ
-      (twist k p (coefficientTwist D cutoff (prependTailParity D x) a ⊗ₜ[k] x.old.nf)))) = _
-  rw [balancedEquiv_tmul, twist_twist, prepend_insert_twisted_coefficient]
-
 /-- Finite normalized PBW expansion into the proved balanced tensor, not a replacement tensor. -/
 def prependBalancedExpansion (p : ZMod 2) (i : I) (v w : List I) :
     (PrependIdx i v w →₀ SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) →ₗ[k]
@@ -172,25 +163,5 @@ def prependBalancedExpansion (p : ZMod 2) (i : I) (v w : List I) :
     (x : PrependIdx i v w) (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) :
     prependBalancedExpansion D Sc cutoff p i v w (Finsupp.single x a) =
       prependBalancedTerm D Sc cutoff p x a := Finsupp.lsum_single _ _ _ _
-
-/-- Comparison of affine PBW coordinates with the old-only quotient through `balancedEquiv`. -/
-theorem balancedEquiv_prependExpansion (p : ZMod 2) (i : I) (v w : List I)
-    (f : PrependIdx i v w →₀ SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) :
-    balancedEquiv D Sc cutoff p i v w (prependBalancedExpansion D Sc cutoff p i v w f) =
-      projection D Sc cutoff i v w ((prependAffineEquiv D Sc cutoff i v w).symm f) := by
-  induction f using Finsupp.induction_linear with
-  | zero => simp only [map_zero]
-  | add f g hf hg => simp only [map_add, hf, hg]
-  | single x a =>
-    rw [prependBalancedExpansion_single, balancedEquiv_prependBalancedTerm,
-      prependAffineEquiv_symm_single]
-
-/-- The exact kernel remains the old relation span; no moving polynomial is imposed. -/
-theorem prependBalancedExpansion_eq_zero_iff (p : ZMod 2) (i : I) (v w : List I)
-    (f : PrependIdx i v w →₀ SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) :
-    prependBalancedExpansion D Sc cutoff p i v w f = 0 ↔
-      (prependAffineEquiv D Sc cutoff i v w).symm f ∈ relations D Sc cutoff i v w := by
-  rw [← (balancedEquiv D Sc cutoff p i v w).map_eq_zero_iff,
-    balancedEquiv_prependExpansion, projection_eq_zero_iff]
 
 end OddMath.QuiverHecke.ELVOld

@@ -1,7 +1,7 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapUniqueness
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapPreDotSigns
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightSuperAdjunction
-import OddMath.SKM.RouquierAdjacentLeftAdjunction
+import OddMath.SKM.RouquierFTriangle
 
 /-! # Comparing the inverse-defined Rouquier cap with the regular probe row
 
@@ -68,15 +68,6 @@ variable {Z : PiSCat.{u,u,u+1} k}
       (associator E₀ (inductionCell D Sc m i) E₃).hom) ≫ E₀ ◁ t' ≫
       ((associator E₀ (inductionCell D Sc m i) E₃).inv ≫ t ▷ E₃ ≫
         (associator E₀ (inductionCell D Sc m i) E₃).hom))
-
-/-- The counit of the existing finite-local left-adjunction construction,
-on native functor endpoints before evaluating the probe. -/
-def localLeftCounitFamily :
-    (show Superfunctor k (Superfunctor k (OldContentCategory D Sc cut []) (SVec k))
-      (Superfunctor k (OldContentCategory D Sc cut []) (SVec k)) from
-        ⟨induction (K i) ⋙ restriction (K i)⟩) ⟶
-      Superfunctor.id k (Superfunctor k (OldContentCategory D Sc cut []) (SVec k)) :=
-  (L.negativeLeftAdjunction U (by omega) hsq hsq' hB).counit
 
 end Adjacent
 

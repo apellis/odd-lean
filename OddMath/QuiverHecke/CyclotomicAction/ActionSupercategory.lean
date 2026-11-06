@@ -51,14 +51,4 @@ def cyclotomicActionRestriction :
 local notation "F" => cyclotomicActionInduction D Sc a ha n i
 local notation "E" => cyclotomicActionRestriction D Sc a ha n i
 
-/-- The cyclotomic unit as an even supernatural transformation. -/
-def cyclotomicActionUnit : 𝟙 (cyclotomicActionObject D Sc a ha n) ⟶ F ≫ E :=
-  SuperNatTrans.ofNatTrans (cyclotomicSuperUnit D Sc i a ha n)
-    (superUnitComponent_mem D Sc i a ha n)
-
-/-- The cyclotomic counit as an even supernatural transformation. -/
-def cyclotomicActionCounit : E ≫ F ⟶ 𝟙 (cyclotomicActionObject D Sc a ha (n + 1)) :=
-  SuperNatTrans.ofNatTrans (cyclotomicSuperCounit D Sc i a ha n)
-    (superCounitComponent_mem D Sc i a ha n)
-
 end OddMath.QuiverHecke

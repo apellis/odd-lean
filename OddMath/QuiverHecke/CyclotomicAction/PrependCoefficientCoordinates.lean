@@ -28,39 +28,4 @@ local notation "C" => InductionAlong.Corner (prependAlgebra D Sc i (r+1) :
 local notation "T" => InductionAlong.Ind (StringDiagrams.SuperBimodule.toSVec (qCoefficient D Sc i β a ha r)) (prependAlgebra D Sc i (r+1) :
   Hn D Sc (r+1) →ₙ+* Hn D Sc (r+1+1))
 
-/-- Coordinates use the existing shifted coefficient at affine height `r+1`. -/
-abbrev qPrependTensorEquiv : ((PrependShuffle (r+1) × ℕ) →₀ (StringDiagrams.SuperBimodule.toSVec (qCoefficient D Sc i β a ha r))) ≃+ T :=
-  prependTensorEquiv D Sc i (r+1) (StringDiagrams.SuperBimodule.toSVec (qCoefficient D Sc i β a ha r))
-
-/-- The inverse retains the twisted left action on the coefficient. -/
-theorem qPrependTensorEquiv_symm_tmul (z : C) (y : (StringDiagrams.SuperBimodule.toSVec (qCoefficient D Sc i β a ha r)))
-    (q : PrependShuffle (r+1) × ℕ) :
-    (qPrependTensorEquiv D Sc i β a ha r).symm (InductionAlong.Ind.tmul z y) q =
-      (prependCoordinateEquiv D Sc i (r+1)).symm z q • y := rfl
-
-/-- On inserted coefficients the inverse explicitly applies the parity involution. -/
-theorem qPrependTensorEquiv_symm_insert (z : C) (b : CyclotomicAlgebra D Sc a r)
-    (q : PrependShuffle (r+1) × ℕ) :
-    (qPrependTensorEquiv D Sc i β a ha r).symm
-      (InductionAlong.Ind.tmul z (qCoefficientInsert D Sc i β a ha r b)) q =
-      qCoefficientInsert D Sc i β a ha r
-        (homMatrixTwist D Sc (r+1) (D.parity i * contentSumParity D β)
-          ((prependCoordinateEquiv D Sc i (r+1)).symm z q) • b) := by
-  rw [qPrependTensorEquiv_symm_tmul, qCoefficientInsert_smul, homMatrixTwist_twice]
-
-/-- The prescribed right cyclotomic action is coordinatewise. -/
-theorem qPrependTensorEquiv_symm_right (c : CyclotomicAlgebra D Sc a r) (t : T)
-    (q : PrependShuffle (r+1) × ℕ) :
-    (qPrependTensorEquiv D Sc i β a ha r).symm
-      (targetRightCoefficient D Sc i β a ha r c t) q =
-      (qCoefficient D Sc i β a ha r).ract c
-        ((qPrependTensorEquiv D Sc i β a ha r).symm t q) := by
-  induction t using InductionAlong.Ind.induction_on with
-  | zero => simp
-  | add t s ht hs => simp [ht, hs, StringDiagrams.SVec.hom_map_add]
-  | tmul z y =>
-    rw [targetRightCoefficient_tmul, qPrependTensorEquiv_symm_tmul,
-      qPrependTensorEquiv_symm_tmul]
-    exact (map_smul (targetCoefficientRight D Sc i β a ha r c) _ y).symm
-
 end OddMath.QuiverHecke

@@ -748,16 +748,6 @@ theorem evalW_eq_zero_of_compEval (gens : P.Generators) {a b : Obj (SKM.sig D)}
     (P.layerRep Gs Ys gens).toLocal.evalW (a.whisker u v) (b.whisker u v) u v X = 0 :=
   evalW_eq_zero_of_compEval_wt gens X (fun p q Z _ => hX p q Z) u v hw
 
-/-- **Reduction of a relation to its weight-matched entries**: a relation of the presentation
-holds in the swapped layer representation (under every whiskering) once the entries of the
-unwhiskered relation vanish at every rightmost sector of the weight of its rightmost region. -/
-theorem relHolds_of_compEval_wt (gens : P.Generators) (r : SKM.Rel D)
-    (h : ∀ {s t : Sector I} (p : SPath ((SKM.pres D Sc).dom r).word s t)
-      (q : SPath ((SKM.pres D Sc).cod r).word s t) (Z : P.H t),
-      P.wt t = ((SKM.pres D Sc).dom r).endR → compEval gens ((SKM.pres D Sc).rel r) p q Z = 0) :
-    RelHolds Sc (P.layerRep Gs Ys gens) r := fun u v hw =>
-  evalW_eq_zero_of_compEval_wt gens _ h u v hw
-
 /-- **Reduction of a relation to its entries**: a relation of the presentation holds in the
 swapped layer representation (under every whiskering) once all entries of the unwhiskered
 relation vanish. -/

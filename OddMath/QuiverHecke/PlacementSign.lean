@@ -66,16 +66,6 @@ def placementSign (t t' : List I) :
 theorem placementSign_apply (t t' : List I) (y : coefficientObj D Sc t ⟶ coefficientObj D Sc t') :
     placementSign D Sc t t' y = placementSignMap D Sc t t' y := rfl
 
-/-- On a tensor basis vector the placement sign is the Koszul sign of the coefficient
-parity (the size of its exterior part) against the parity of the normal form. -/
-theorem placementSign_sourceCoefficientHom (t t' : List I) (a : SKM.SYM.CoefficientIndex D)
-    (i : NFIdx t t') :
-    placementSign D Sc t t' (sourceCoefficientHom D Sc (SKM.SYM.coefficientBasis D k a) i.nf) =
-      (if ((a.2.card : ZMod 2) * i.par D) = 0 then (1 : k) else -1) •
-        sourceCoefficientHom D Sc (SKM.SYM.coefficientBasis D k a) i.nf := by
-  rw [← extensionBasis_apply, placementSign_apply, placementSignMap_basis]
-  rfl
-
 /-- The placement sign preserves the weight window `ExtendedAtMost d`. -/
 theorem placementSign_mem_extendedAtMost {t t' : List I} {d : ℕ}
     {y : coefficientObj D Sc t ⟶ coefficientObj D Sc t'} (hy : y ∈ ExtendedAtMost D Sc t t' d) :

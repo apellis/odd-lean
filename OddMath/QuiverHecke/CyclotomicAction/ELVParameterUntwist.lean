@@ -33,21 +33,6 @@ universe u v
 variable {I k : Type u} {X : Type v} [AddCommGroup X]
   (D : SKM.Datum I X) [CommRing k] (Sc : SKM.Scalars D k)
 
-/-- Sign exponent of the chronological j-dot and then i-dot powers. -/
-def elvOrderedDotExponent (i j : I) (p q : ℕ) (h : ZMod 2) : ZMod 2 :=
-  D.parity j * ((q : ZMod 2) * h + (q / 2 : ℕ)) +
-    D.parity i * ((p : ZMod 2) * (h + (q : ZMod 2) * D.parity j) + (p / 2 : ℕ))
-
-/-- The signed composition loses its input-parity dependence on admissible support.
-No dots or odd coefficients are commuted in this identity. -/
-theorem elvOrderedDotExponent_of_support (i j : I) (p q : ℕ) (h : ZMod 2)
-    (hp : (p : ZMod 2) * D.parity i = 0)
-    (hq : (q : ZMod 2) * D.parity j = 0) :
-    elvOrderedDotExponent D i j p q h =
-      D.parity i * (p / 2 : ℕ) + D.parity j * (q / 2 : ℕ) := by
-  unfold elvOrderedDotExponent
-  linear_combination (h + (q : ZMod 2) * D.parity j) * hp + h * hq
-
 /-- The two separate support restrictions for a nonzero interior coefficient. -/
 theorem elvParameter_support {i j : I} {p q : ℕ} (hs : Sc.s i j p q ≠ 0) :
     (p : ZMod 2) * D.parity i = 0 ∧ (q : ZMod 2) * D.parity j = 0 := by
@@ -59,35 +44,6 @@ theorem elvParameter_support {i j : I} {p q : ℕ} (hs : Sc.s i j p q ≠ 0) :
   · rcases hz ((q : ZMod 2) * D.parity j) with h | h
     · exact h
     · exact False.elim (hs (by rw [Sc.s_symm]; exact Sc.s_eq_zero j i q p h))
-
-/-- Cancellation of the crossing-square sign with the coefficient transport.
-The remaining exponent is the two signed dot powers, with arbitrary total
-input parity. -/
-theorem parameterSignExponent_untwist (i j : I) (p q : ℕ) (h : ZMod 2)
-    (hp : (p : ZMod 2) * D.parity i = 0)
-    (hq : (q : ZMod 2) * D.parity j = 0) :
-    SKM.zsign k (D.parity i * D.parity j) *
-        SKM.zsign k (parameterSignExponent D i j p q) =
-      SKM.zsign k (elvOrderedDotExponent D i j p q h) := by
-  rw [elvOrderedDotExponent_of_support D i j p q h hp hq]
-  unfold parameterSignExponent
-  rw [add_assoc, SKM.zsign_add, ← mul_assoc, zsign_mul_self, one_mul]
-
-/-- Interior coefficient cancellation in reversed algebra coordinates.
-Here A is the j-dot and B the i-dot; their order is not interchanged. -/
-theorem parameterTwist_s_reversed_eval {R : Type*} [Ring R] [Algebra k R]
-    (i j : I) (p q : ℕ) (h : ZMod 2) (z A B : R) :
-    SKM.zsign k (D.parity i * D.parity j) •
-        ((parameterTwist D Sc).s j i q p • (z * (A ^ q * B ^ p))) =
-      Sc.s i j p q • (SKM.zsign k (elvOrderedDotExponent D i j p q h) •
-        (z * (A ^ q * B ^ p))) := by
-  by_cases hs : Sc.s i j p q = 0
-  · simp [parameterTwist, Sc.s_symm j i q p, hs]
-  · obtain ⟨hp, hq⟩ := elvParameter_support D Sc hs
-    rw [CyclotomicAction.parameterTwist_s, Sc.s_symm j i q p,
-      parameterSignExponent_swap D j i q p]
-    simp only [smul_smul]
-    rw [← mul_assoc, parameterSignExponent_untwist D i j p q h hp hq, mul_comm]
 
 /-- Evaluation of the signed dot polynomial, in algebra-position order.
 This is an ordered noncommutative evaluation, not a substitution into a

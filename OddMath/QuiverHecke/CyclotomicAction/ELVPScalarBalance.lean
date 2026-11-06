@@ -192,19 +192,6 @@ theorem scalar_slide_homogeneous {v w : List I} {p : ZMod 2}
     rw [elv_comm D cutoff ha hb, smul_smul,
       koszulSign_add_right, mul_assoc, koszulSign_mul_self, mul_one]
     exact map_zsmul ((TensorProduct.mk k _ _).flip f) _ _
-/-- An arbitrary coefficient slides across any homogeneous coefficient-category morphism. -/
-theorem scalar_slide {v w : List I} {q : ZMod 2} {f : hom D Sc cutoff v w}
-    (hf : f ∈ parity (R := k) _ _ q)
-    (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) :
-    f ≫ scalar D Sc cutoff w a = twist k q (scalar D Sc cutoff v a) ≫ f := by
-  refine DirectSum.Decomposition.inductionOn (SKM.SYM.elvCoefficientParity D cutoff)
-    (by simp) ?_ ?_ a
-  · intro p a
-    rw [scalar_slide_homogeneous D Sc cutoff a.property,
-      twist_of_mem p hf, twist_of_mem q (scalar_mem D Sc cutoff v a.property),
-      Linear.comp_smul, Linear.smul_comp, mul_comm p q]
-  · intro a b ha hb
-    simp only [map_add, Preadditive.comp_add, Preadditive.add_comp, ha, hb]
 
 theorem insert_scalar (i : I) (v : List I)
     (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) :
@@ -218,18 +205,6 @@ theorem rightContext_scalar (σ v : List I)
   exact congrArg (fun f => a ⊗ₜ[k] f)
     (MonoidalSupercategory.id_whiskerRight (R := k) ((pres D Sc).obj (ob D v)) ((pres D Sc).obj (ob D σ)))
 
-theorem rightContext_twist_scalar (σ v : List I) (q : ZMod 2)
-    (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) :
-    rightContext D Sc cutoff σ v v (twist k q (scalar D Sc cutoff v a)) =
-      twist k q (scalar D Sc cutoff (v ++ σ) a) := by
-  refine DirectSum.Decomposition.inductionOn (SKM.SYM.elvCoefficientParity D cutoff)
-    (by simp) ?_ ?_ a
-  · intro p a
-    rw [twist_of_mem q (scalar_mem D Sc cutoff v a.property), map_smul,
-      rightContext_scalar, twist_of_mem q (scalar_mem D Sc cutoff (v ++ σ) a.property)]
-  · intro a b ha hb
-    simp only [map_add, ha, hb]
-
 theorem affineUnit_mem {v w : List I} {q : ZMod 2}
     {f : (pres D Sc).obj (ob D v) ⟶ (pres D Sc).obj (ob D w)}
     (hf : f ∈ parity (R := k) _ _ q) :
@@ -242,18 +217,4 @@ theorem affineUnit_mem {v w : List I} {q : ZMod 2}
   change affineUnit D Sc cutoff v w f ∈ parity (R := k) _ _ (0 + q) at h
   simpa only [zero_add] using h
 
-/-- Universal coefficient-only balance for P: arbitrary word, cutoff and coefficient. -/
-theorem oldGenerator_scalar_balance (i : I) (v : List I)
-    (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) :
-    (affineUnit D Sc cutoff (v ++ [i]) (i :: v) (lastToFirstHom D Sc i v) ≫
-      ELVOld.relation D Sc cutoff i v) ≫ insert D Sc cutoff i v v (scalar D Sc cutoff v a) =
-    rightContext D Sc cutoff [i] v v
-      (twist k (D.parity i * wordSumParity D v + (cutoff i : ZMod 2) * D.parity i)
-        (scalar D Sc cutoff v a)) ≫
-      (affineUnit D Sc cutoff (v ++ [i]) (i :: v) (lastToFirstHom D Sc i v) ≫
-        ELVOld.relation D Sc cutoff i v) := by
-  rw [insert_scalar, rightContext_twist_scalar]
-  exact scalar_slide D Sc cutoff
-    (comp_mem (affineUnit_mem D Sc cutoff (lastToFirstHom_mem D Sc v))
-      (relation_mem_parity D Sc cutoff i v)) a
 end OddMath.QuiverHecke.ELVPScalar

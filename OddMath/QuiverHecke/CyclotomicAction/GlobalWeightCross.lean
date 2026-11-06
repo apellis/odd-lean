@@ -118,15 +118,6 @@ def contentCross (β : WeightBlocks D Λ x₀) (ε : WeightBlocks D Λ x₃)
         (heightContentCast D Sc a ha (card_of_add₂ i j hc) rfl) :=
   Superfunctor.whiskerRight (heightBlockCross D Sc a ha i j β.1.card β.1 ε.1 hc) _
 
-theorem contentCross_app_eq_zero (β : WeightBlocks D Λ x₀) (ε : WeightBlocks D Λ x₃)
-    (hc : {i} + ({j} + β.1) = ε.1) {q : ZMod 2} (hq : q ≠ D.parity i * D.parity j)
-    (M : GlobalContentModules D Sc a ha β.1) :
-    (contentCross D Sc a ha i j Λ β ε hc).app q M = 0 := by
-  change (heightContentCast D Sc a ha (card_of_add₂ i j hc) rfl).map
-    ((heightBlockCross D Sc a ha i j β.1.card β.1 ε.1 hc).app q M) = 0
-  rw [congrFun (heightBlockCross_homogeneous D Sc a ha i j β.1.card β.1 ε.1 hc q hq) M]
-  exact Functor.map_zero _ _ _
-
 /-- The crossing component at a two-step successor block with a chosen source block. -/
 def globalWeightCrossVia (p : ZMod 2) (M : WeightProduct D Sc a ha Λ x₀) (β : WeightBlocks D Λ x₀)
     (ε : WeightBlocks D Λ x₃) (hε : blockSucc₂ D i j Λ h₁ h₂ β = ε) :
@@ -251,33 +242,11 @@ def globalWeightCross :
     funext ε
     exact globalWeightCrossComponent_naturality D Sc a ha i j Λ h₁ h₂ h₃ h₄ p ε f hf
 
-/-- Only the component of parity `|i||j|` is nonzero. -/
-theorem globalWeightCross_homogeneous :
-    (globalWeightCross D Sc a ha i j Λ h₁ h₂ h₃ h₄).IsHomogeneous (D.parity i * D.parity j) := by
-  intro q hq
-  funext M
-  funext ε
-  change globalWeightCrossComponent D Sc a ha i j Λ h₁ h₂ h₃ h₄ q M ε = 0
-  by_cases hε : ∃ β, blockSucc₂ D i j Λ h₁ h₂ β = ε
-  · obtain ⟨β, hβ⟩ := hε
-    rw [globalWeightCrossComponent_of D Sc a ha i j Λ h₁ h₂ h₃ h₄ q M β ε hβ]
-    unfold globalWeightCrossVia
-    rw [contentCross_app_eq_zero D Sc a ha i j Λ β ε _ hq]
-    simp
-  · exact (globalEFunctor_comp_isZero D Sc a ha i j Λ h₁ h₂ ε hε M).eq_of_src _ _
-
 /-- The crossing as a 2-morphism of the action target. -/
 def globalActionCross :
     globalActionE D Sc a ha j Λ h₁ ≫ globalActionE D Sc a ha i Λ h₂ ⟶
       globalActionE D Sc a ha i Λ h₃ ≫ globalActionE D Sc a ha j Λ h₄ :=
   globalWeightCross D Sc a ha i j Λ h₁ h₂ h₃ h₄
-
-/-- The crossing has parity `|i||j|`. -/
-theorem globalActionCross_mem :
-    globalActionCross D Sc a ha i j Λ h₁ h₂ h₃ h₄ ∈
-      parity (R := k) _ _ (D.parity i * D.parity j) :=
-  Superfunctor.mem_parity_iff_isHomogeneous.2
-    (globalWeightCross_homogeneous D Sc a ha i j Λ h₁ h₂ h₃ h₄)
 
 end Weight
 

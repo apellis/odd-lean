@@ -52,6 +52,8 @@ same way as unused modules, unless a retained declaration still refers to them.
 | after removing unused modules | 2929 | 621,573 | 103 | 4,620 |
 | after removing unused declarations (1983) and empty modules (25) | 2904 | 596,582 | 104 | 4,726 |
 | later research PRs, then removing 20 unreached modules | 2895 | 596,756 | 108 | 4,882 |
+| later research PRs | 2907 | 598,511 | 119 | 5,841 |
+| second pass: removing unused declarations (909) and empty modules (9) | 2898 | 584,933 | 119 | 5,841 |
 | `master` | 1321 | | 90 | |
 
 The Phase 1 theorem alone uses declarations from 1584 modules; the remaining research
@@ -291,6 +293,26 @@ example files of removed lemmas, and were removed.
 | `OddMath/SKM/SameColourTargetFrameExamples.lean` | 70 |
 
 </details>
+
+## Unused declarations, second pass
+
+The declaration graph of the reduced tree was recomputed and unused declarations were
+removed again, with two changes to the criterion of "Method". Topic notes are no longer
+roots: a name occurring only in a topic note is removed, and the note then describes an
+earlier step of the development. The notes that state current results (README, ERRATA,
+STATUS, HANDOFF, NondegeneracyProof, GeneralRoute, FieldScopeBoundary) remain roots. Every
+identifier occurring in the remaining Lean code (outside comments, after the removal) is
+a root, iterated to a fixed point, so that `simp` lemmas proved by `rfl`, local notations
+and `attribute` lines never refer to a removed declaration. Auxiliary declarations
+(`_proof_n`, equation lemmas) count with the declaration they belong to.
+
+This removed 909 declarations (716 theorems, 193 definitions; 657 of them in
+`QuiverHecke.CyclotomicAction`) from 217 modules. Nine modules were left without
+declarations and were removed: `QuiverHecke.CyclotomicAction.ELVAppendSignedMovingSupport`,
+`ELVCoefficientPowerPolynomialCap`, `GlobalBraidAlgebra`, `IntertwinerSquareDot` and
+`LeadingMoveCoefficients`, `QuiverHecke.ReservoirCoordinates`,
+`QuiverHecke.SpectatorSeparation`, `SKM.RouquierAdjacentLeftAdjunction` and
+`SKM.RouquierPiSCat`.
 
 ## Documentation
 

@@ -65,12 +65,6 @@ theorem probe_cap_convolution {R : Type*} [AddCommGroup R] [Module k R] (c : ℕ
 
 variable {C : Type u} [Category.{v} C] [Preadditive C] [Linear k C] {V X Y : C}
 
-/-- The linear scalar action on `V ⟶ V` is left multiplication by `algebraMap` in `End V`. -/
-theorem linear_smul_eq_algebraMap_mul (a : k) (f : V ⟶ V) :
-    a • f = algebraMap k (End V) a * (show End V from f) := by
-  have hr : algebraMap k (End V) a = a • 𝟙 V := Algebra.algebraMap_eq_smul_one a
-  erw [hr, End.mul_def, Linear.comp_smul, Category.comp_id]
-
 /-- **Negative-height cap moments**, equation (11): the moments of the
 prescribed extreme inverse cap are the reversed-probe convolution of the
 reservoir moments. -/
@@ -90,31 +84,6 @@ theorem negative_inverse_cap_moment (q : k) (x : End X) (y : End Y)
   exact probe_cap_convolution c P (N - 1) (N - P - 1 + l) l (by omega)
     (fun i => u ≫ (y ^ i) ≫ ell)
     (fun i hi => by rw [hwindow i (by omega), ite_eq_right (by omega)])
-
-/-- The negative-height moments as a power series: `K(z) = ĉ(z) T(z)`. -/
-theorem negative_inverse_cap_series (q : k) (x : End X) (y : End Y)
-    (s : X ⟶ Y) (u : V ⟶ Y) (v : X ⟶ V) (ell : Y ⟶ V)
-    (N P : ℕ) (hPN : P < N) (c : ℕ → k) (hmonic : c P = 1)
-    (hsupport : ∀ n ≤ P, c n * q ^ n = c n)
-    (hslide : s ≫ y - q • (x ≫ s) = v ≫ u)
-    (hwindow : ∀ a < N, u ≫ (y ^ a) ≫ ell = if a + 1 = N then 𝟙 V else 0)
-    (hprobe : capPolynomial c P x = 0)
-    (j : Y ⟶ X) (B : Fin (N - P) → (Y ⟶ V))
-    (H : ProbeWindow.IsCupInverse s (fun n => u ≫ (y ^ n.val)) j B) :
-    PowerSeries.mk (R := End V)
-        (fun l => u ≫ (y ^ (N - P - 1 + l)) ≫ B ⟨N - P - 1, by omega⟩) =
-      PowerSeries.mk (fun r => if r ≤ P then algebraMap k (End V) (c (P - r)) else 0) *
-        PowerSeries.mk (R := End V) (fun l => u ≫ (y ^ (N - 1 + l)) ≫ ell) := by
-  ext l
-  rw [PowerSeries.coeff_mk, PowerSeries.coeff_mul, Nat.sum_antidiagonal_eq_sum_range_succ_mk,
-    negative_inverse_cap_moment q x y s u v ell N P hPN c hmonic hsupport hslide hwindow
-      hprobe j B H l]
-  refine sum_congr rfl fun r hr => ?_
-  rw [mem_range] at hr
-  simp only [PowerSeries.coeff_mk]
-  split_ifs with h
-  · rw [linear_smul_eq_algebraMap_mul, show N - 1 + l - r = N - 1 + (l - r) by omega]
-  · exact (zero_mul _).symm
 
 /-- The normalized zero-height moments: the fake value `K_0 = 1` and
 `K_l = u ≫ y^(l-1) ≫ j ≫ v` for `l ≥ 1`. -/
@@ -143,26 +112,5 @@ theorem zero_height_moment (q : k) (x : End X) (y : End Y)
     exact probe_cap_convolution c N (N - 1) l (l + 1) (by omega)
       (fun i => u ≫ (y ^ i) ≫ ell)
       (fun i hi => by rw [hwindow i (by omega), ite_eq_right (by omega)])
-
-/-- The zero-height moments as a power series: `K(z) = ĉ(z) T(z)`. -/
-theorem zero_height_series (q : k) (x : End X) (y : End Y)
-    (s : X ≅ Y) (u : V ⟶ Y) (v : X ⟶ V) (ell : Y ⟶ V)
-    (N : ℕ) (hN : 0 < N) (c : ℕ → k) (hmonic : c N = 1)
-    (hsupport : ∀ n ≤ N, c n • q ^ n = c n)
-    (hslide : s.hom ≫ y - q • (x ≫ s.hom) = v ≫ u)
-    (hwindow : ∀ a < N, u ≫ (y ^ a) ≫ ell = if a + 1 = N then 𝟙 V else 0)
-    (hprobe : capPolynomial c N x = 0) :
-    PowerSeries.mk (zeroHeightMoment y s u v) =
-      PowerSeries.mk (fun r => if r ≤ N then algebraMap k (End V) (c (N - r)) else 0) *
-        PowerSeries.mk (R := End V) (fun l => u ≫ (y ^ (N - 1 + l)) ≫ ell) := by
-  ext l
-  rw [PowerSeries.coeff_mk, PowerSeries.coeff_mul, Nat.sum_antidiagonal_eq_sum_range_succ_mk,
-    zero_height_moment q x y s u v ell N hN c hmonic hsupport hslide hwindow hprobe l]
-  refine sum_congr rfl fun r hr => ?_
-  rw [mem_range] at hr
-  simp only [PowerSeries.coeff_mk]
-  split_ifs with h
-  · rw [linear_smul_eq_algebraMap_mul, show N - 1 + l - r = N - 1 + (l - r) by omega]
-  · exact (zero_mul _).symm
 
 end OddMath.QuiverHecke.SwappedVacuum

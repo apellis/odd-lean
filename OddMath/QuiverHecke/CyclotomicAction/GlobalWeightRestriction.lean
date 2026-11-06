@@ -154,23 +154,6 @@ instance heightSuperRestriction_super :
     Supercategory.IsSuperfunctor k (heightSuperRestriction D Sc i a ha n) where
   map_mem := fun hf => SuperBimodule.whiskerLeft_mem _ _ hf
 
-/-- The extended restriction bimodule is the existing one at positive height. -/
-theorem heightRestrictionCorner_succ :
-    heightRestrictionCorner D Sc i a ha (n + 1) = restrictionCorner D Sc i a ha n := by
-  rfl
-
-/-- At positive height this is the previously defined restriction superfunctor. -/
-theorem heightSuperRestriction_succ :
-    heightSuperRestriction D Sc i a ha (n + 1) = cyclotomicSuperRestriction D Sc i a ha n := by
-  let L (P : SuperBimodule (cyclotomicParity D Sc a ha n)
-      (cyclotomicParity D Sc a ha (n + 1))) :
-      CyclotomicSupermodules D Sc a ha (n + 1) ⥤ CyclotomicSupermodules D Sc a ha n :=
-    { obj M := SuperBimodule.tensor P M
-      map f := SuperBimodule.whiskerLeft P f
-      map_id M := SuperBimodule.whiskerLeft_id P M
-      map_comp f g := SuperBimodule.whiskerLeft_comp P f g }
-  exact congrArg L (heightRestrictionCorner_succ D Sc i a ha n)
-
 /-- Restriction removes the colour from the content; at height zero only the empty content
 remains. The height hypothesis records that `β` has exactly `n` strands. -/
 theorem heightContentSupported_restriction (β : Multiset I) (hβ : β.card = n)

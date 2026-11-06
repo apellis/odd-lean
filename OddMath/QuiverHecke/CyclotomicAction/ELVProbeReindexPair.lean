@@ -53,14 +53,6 @@ def oldAppendReindexModuleHom
 local notation "c₁" => oldAppendReindexModuleHom D Sc cutoff q₀ i a₁ b₁ q₁
 local notation "c₂" => oldAppendReindexModuleHom D Sc cutoff q₁ j a₂ b₂ q₂
 
-/-- Insert an inner tensor into the upper coend, with its raw domain specified. -/
-def oldAppendReindexOuterTensorLinear
-    (N : Superfunctor k (OldContentCategory D Sc cutoff ν₀) (SVec k))
-    (t : OldContentCategory D Sc cutoff μ₁) (w : OldContentCategory D Sc cutoff μ₂)
-    (g : (M).obj t ⟶ w) :
-    Obj K ((R₀).obj N).toFunctor t →ₗ[k] Obj M (induced K ((R₀).obj N)).toFunctor w :=
-  inclusion M (induced K ((R₀).obj N)).toFunctor w t ∘ₗ TensorProduct.mk k _ _ g
-
 attribute [local irreducible] oldAppendReindexLinear oldAppendReindexModuleHom oldAppendReindexIso
 
 /-- Compose the chosen upper and lower adjunction comparisons, without a new gauge. -/

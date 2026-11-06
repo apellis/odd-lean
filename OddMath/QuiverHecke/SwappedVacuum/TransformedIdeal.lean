@@ -172,24 +172,6 @@ theorem transformedIdeal_le_extendedAtLeast {cutoff : I → ℕ} {T : Set (SKM.S
   (transformedIdeal_le_weighted D Sc hN hT s t).trans
     (weightedRelationSpan_le_extendedAtLeast D Sc s t N)
 
-/-- **Detection (6)**: the quotient by the transformed ideal is injective on
-`ExtendedAtMost d` when `d + 2·C(|s|,2) < N₀`. -/
-theorem transformedIdeal_quotient_injective_on_extendedAtMost {cutoff : I → ℕ}
-    {T : Set (SKM.SYM D k)} {s t : List I} {d N : ℕ} (hN : ∀ i, N ≤ cutoff i)
-    (hT : ∀ a ∈ T, a ∈ SKM.SYM.CoefficientAtLeast D k N) (hd : d + 2 * s.length.choose 2 < N) :
-    Function.Injective (fun x : ExtendedAtMost D Sc s t d =>
-      (TransformedIdeal D Sc cutoff T s t).mkQ
-        (x : coefficientObj D Sc s ⟶ coefficientObj D Sc t)) := by
-  intro x y hxy
-  apply Subtype.ext
-  apply sub_eq_zero.mp
-  have hm : (x : coefficientObj D Sc s ⟶ coefficientObj D Sc t) - y ∈
-      TransformedIdeal D Sc cutoff T s t := (Submodule.Quotient.eq _).mp hxy
-  exact Submodule.disjoint_def.mp
-    (disjoint_extendedAtMost_extendedAtLeast D Sc (by omega)) _
-    (Submodule.sub_mem _ x.property y.property)
-    (transformedIdeal_le_extendedAtLeast D Sc hN hT s t hm)
-
 /-- **The vacuum window bound**: at the reservoir levels of the vacuum schedule, the
 transformed ideal lies in `ExtendedAtLeast (N₀ - 2·C(|t|,2))`, `N₀ = vacuumCutoff t d`. A
 corner evaluation whose kernel is contained in this ideal satisfies `ideal_le`. -/

@@ -64,22 +64,6 @@ theorem leadingMoveOldDots_twist (i : I) (ν : List I) (c : MoveChoices ν) (q :
   exact (Supercategory.twist_of_mem q hm).trans (by
     simp [wordEndpointDots, endpointDotMonomial])
 
-omit [Fintype I] in
-/-- Every evaluated coefficient is fixed by every old matrix parity twist. -/
-theorem leadingMoveOrderedCoefficients_twist (i : I) (ν : List I)
-    (q : ZMod 2) (u : PrependShuffle ν.length) (m : ℕ) :
-    homMatrixTwist D Sc ν.length q (leadingMoveOrderedCoefficients D Sc i ν (u, m)) =
-      leadingMoveOrderedCoefficients D Sc i ν (u, m) := by
-  simp only [leadingMoveOrderedCoefficients_explicit, Finsupp.coe_finsetSum,
-    Finset.sum_apply, Finsupp.smul_apply, map_sum, map_smul]
-  apply Finset.sum_congr rfl
-  intro c _
-  by_cases h : (longPrependShuffle ν.length,
-      sourceMovingDegree (leadingSourceDots D i 0 0 ν c)) = (u, m)
-  · simp only [Finsupp.single_apply, h, ↓reduceIte, homMatrixTwist_single,
-      leadingMoveOldDots_twist]
-  · simp [h]
-
 /-- Explicit old diagonal coefficient at an arbitrary old height. -/
 def leadingMoveWordCoefficient (i : I) {n : ℕ} (s : Word I n) (m : ℕ) : Hn D Sc n :=
   ∑ c : MoveChoices s.1,
@@ -89,91 +73,9 @@ def leadingMoveWordCoefficient (i : I) {n : ℕ} (s : Word I n) (m : ℕ) : Hn D
           (sourceOldDots (leadingSourceDots D i 0 0 s.1 c)))
     else 0
 
-private theorem leadingMoveWordCoefficient_eq (i : I) (ν : List I) (m : ℕ) :
-    leadingMoveWordCoefficient D Sc i ⟨ν, rfl⟩ m =
-      leadingMoveOrderedCoefficients D Sc i ν (longPrependShuffle ν.length, m) := by
-  simp only [leadingMoveWordCoefficient, leadingMoveOrderedCoefficients_explicit,
-    Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, Finsupp.single_apply,
-    Prod.mk.injEq, true_and]
-  apply Finset.sum_congr rfl
-  intro c _
-  split_ifs <;> simp
-
 /-- A finite sum over content words and local square choices; no inverse coordinates. -/
 def leadingMoveContentCoefficient (i : I) (n : ℕ) (β : Multiset I) (m : ℕ) : Hn D Sc n :=
   ∑ s ∈ Finset.univ.filter (fun s : Word I n => wordContent s = β),
     leadingMoveWordCoefficient D Sc i s m
-
-/-- Evaluation of the actual moving source, for every old height. -/
-theorem contentMove_long_prependCoefficients_explicit (i : I) (n : ℕ)
-    (β : Multiset I) (m : ℕ) :
-    prependCoefficients D Sc i n (contentMove D Sc i n β) (longPrependShuffle n, m) =
-      leadingMoveContentCoefficient D Sc i n β m := by
-  simp only [contentMove, leadingMoveContentCoefficient, map_sum,
-    Finsupp.coe_finsetSum, Finset.sum_apply]
-  apply Finset.sum_congr rfl
-  intro s _
-  rcases s with ⟨ν, hν⟩
-  subst n
-  rw [leadingMoveWordCoefficient_eq]
-  erw [prependCoefficients_single]
-  exact prependWordCoefficients_moveHom_ordered D Sc i ν m
-
-/-- The explicit finite content sum is invariant under the old matrix twist. -/
-theorem leadingMoveContentCoefficient_twist (i : I) (n : ℕ) (β : Multiset I)
-    (m : ℕ) (q : ZMod 2) :
-    homMatrixTwist D Sc n q (leadingMoveContentCoefficient D Sc i n β m) =
-      leadingMoveContentCoefficient D Sc i n β m := by
-  simp only [leadingMoveContentCoefficient, map_sum]
-  apply Finset.sum_congr rfl
-  intro s _
-  rcases s with ⟨ν, hν⟩
-  subst n
-  rw [leadingMoveWordCoefficient_eq, leadingMoveOrderedCoefficients_twist]
-
-/-- The degree normalization is also trivial on the explicit content sum. -/
-theorem leadingMoveContentCoefficient_degreeSign (i : I) (n : ℕ) (β : Multiset I)
-    (m : ℕ) (q : ZMod 2) :
-    (SKM.zsign ℤ (D.parity i * q)) ^ m • leadingMoveContentCoefficient D Sc i n β m =
-      leadingMoveContentCoefficient D Sc i n β m := by
-  simp only [leadingMoveContentCoefficient, Finset.smul_sum]
-  apply Finset.sum_congr rfl
-  intro s _
-  rcases s with ⟨ν, hν⟩
-  subst n
-  rw [leadingMoveWordCoefficient_eq, leadingMoveOrderedCoefficients_degreeSign]
-
-/-- Normalized longest extraction of the actual content moving tensor.
-The right coefficient is unchanged; this uses the existing append source at old height `n+1`.
-No full ELV boundary or corrected `w_k` identification is asserted. -/
-theorem appendContentMoveLift_extract_explicit (a : I → _root_.Polynomial k)
-    (n : ℕ) (β : Multiset I) (i : I)
-    (b : CyclotomicContentCorner D Sc a n β) (m : ℕ) :
-    appendContentRhoExtract D Sc a n β i (appendContentMoveLift D Sc a n β i b) m =
-      leadingMoveContentCoefficient D Sc i (n + 1) β m • b := by
-  rw [appendContentMoveLift_extract, contentMove_long_prependCoefficients_explicit,
-    leadingMoveContentCoefficient_twist]
-  let f : Hn D Sc (n + 1) →+ CyclotomicContentCorner D Sc a n β :=
-    { toFun := fun z => z • b
-      map_zero' := by
-        change (0 : Hn D Sc (n + 1)) • b = 0
-        exact zero_smul (Hn D Sc (n + 1)) b
-      map_add' := fun x y => add_smul x y b }
-  exact (f.map_zsmul _ _).symm.trans
-    (congrArg f (leadingMoveContentCoefficient_degreeSign D Sc i (n + 1) β m _))
-
-/-- Fully expanded finite normalized extraction, with no coordinate maps on the right. -/
-theorem appendContentMoveLift_extract_sum (a : I → _root_.Polynomial k)
-    (n : ℕ) (β : Multiset I) (i : I)
-    (b : CyclotomicContentCorner D Sc a n β) (m : ℕ) :
-    appendContentRhoExtract D Sc a n β i (appendContentMoveLift D Sc a n β i b) m =
-      (∑ s ∈ Finset.univ.filter (fun s : Word I (n + 1) => wordContent s = β),
-        ∑ c : MoveChoices s.1,
-          if sourceMovingDegree (leadingSourceDots D i 0 0 s.1 c) = m then
-            leadingMoveCoeff D (k := k) i s.1 c •
-              FiniteHomMatrix.single s s (wordEndpointDots D Sc s
-                (sourceOldDots (leadingSourceDots D i 0 0 s.1 c)))
-          else 0) • b :=
-  appendContentMoveLift_extract_explicit D Sc a n β i b m
 
 end OddMath.QuiverHecke

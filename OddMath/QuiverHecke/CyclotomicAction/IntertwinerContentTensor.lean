@@ -254,25 +254,4 @@ def contentSourceRepresentative
   exact (contentSourceForward_backward D Sc i β a n (InductionAlong.Ind.tmul x b)).trans
     (sourceContent_project_tmul D Sc i β a n x b)
 
-/-- The moving-strand map with source tensor over the unital content algebra.
-The shifted target remains a fixed-content image, not yet its tensor comparison. -/
-def contentTensorQ (ha : CyclotomicPolynomialParity D a) :
-    contentSourceTensor D Sc i β a n →ₗ[Hn D Sc (n + 1 + 1)]
-      qTargetContent D Sc i β a ha n :=
-  (contentCornerQ D Sc i β a ha n).comp (contentSourceEquiv D Sc i β a n).toLinearMap
-
-/-- The comparison preserves the prescribed moving-strand representative formula. -/
-theorem contentTensorQ_representative (ha : CyclotomicPolynomialParity D a)
-    (x : InductionAlong.Corner (appendAlgebra D Sc i (n + 1) :
-      Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1)))
-    (b : CyclotomicAlgebra D Sc a n) :
-    (contentTensorQ D Sc i β a n ha (contentSourceRepresentative D Sc i β a n x b)).1 =
-      InductionAlong.Ind.tmul
-        (qPrependCorner D Sc i (n + 1) β
-          (InductionAlong.cornerMul (contentMove_intertwines D Sc i (n + 1) β) x))
-        (qCoefficientInsert D Sc i β a ha n b) := by
-  change (contentCornerQ D Sc i β a ha n
-    (contentSourceEquiv D Sc i β a n (contentSourceRepresentative D Sc i β a n x b))).1 = _
-  rw [contentSourceEquiv_representative, contentCornerQ_tmul]
-
 end OddMath.QuiverHecke

@@ -53,15 +53,6 @@ universe u v w w'
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X}
 
-/-- Two scalar systems with the same units and coefficients are equal. -/
-theorem ScalarData.ext_t_s {k : Type w} [CommRing k] {P : Prop} {Sc Sc' : ScalarData D k P}
-    (ht : Sc.t = Sc'.t) (hs : Sc.s = Sc'.s) : Sc = Sc' := by
-  cases Sc
-  cases Sc'
-  cases ht
-  cases hs
-  rfl
-
 /-- The same units and coefficients, with another condition attached. -/
 def ScalarData.withProp {k : Type w} [CommRing k] {P Q : Prop} (Sc : ScalarData D k P)
     (h : (∃ i, D.parity i = 1) → Q) : ScalarData D k Q :=

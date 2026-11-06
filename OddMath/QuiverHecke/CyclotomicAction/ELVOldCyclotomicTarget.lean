@@ -136,12 +136,6 @@ theorem relation_mem (j : I) (t : List I) :
   apply Submodule.subset_span
   exact ⟨j, t, 𝟙 _, 𝟙 _, by simp⟩
 
-theorem projection_relation (i j : I) (t w : List I)
-    (h : hom D Sc cutoff (i :: j :: t) w) :
-    projection D Sc cutoff i (j :: t) w
-      (insert D Sc cutoff i _ _ (relation D Sc cutoff j t) ≫ h) = 0 :=
-  projection_old_ideal D Sc cutoff i (relation_mem D Sc cutoff j t) h
-
 theorem ideal_comp {v t w : List I} {r : hom D Sc cutoff v t}
     (hr : r ∈ ideal D Sc cutoff v t) (b : hom D Sc cutoff t w) :
     r ≫ b ∈ ideal D Sc cutoff v w := by
@@ -289,64 +283,6 @@ theorem pair_balance (p : ZMod 2) (i : I) {v s t w : List I}
       pair D Sc cutoff p i h ((ideal D Sc cutoff v t).mkQ (b ≫ twist k p r)) := by
   simp only [pair_mk, twist_comp, twist_twist, insert_comp, Category.assoc]
 
-private theorem affineInsert_dot (i j : I) (v : List I) :
-    affineInsert D Sc i (j :: v) (j :: v) (dotE D Sc (j :: v) 0) =
-      dotE D Sc (i :: j :: v) 1 := by
-  simp [affineInsert, dotE_eq, cl, Presentation.diag_whiskerLeft, pl, PG.ld]
-  apply Presentation.diag_eq_of_layers_eq
-  simp [mkD, layList, ob, lay, Layer.wl]
-
-private def affineInsertEnd (i : I) (v : List I) :
-    End ((pres D Sc).obj (ob D v)) →ₐ[k] End ((pres D Sc).obj (ob D (i :: v))) where
-  toFun := affineInsert D Sc i v v
-  map_zero' := map_zero _
-  map_add' := map_add _
-  map_one' := MonoidalSupercategory.whiskerLeft_id (R := k)
-    ((pres D Sc).obj (ob D [i])) ((pres D Sc).obj (ob D v))
-  map_mul' f g := MonoidalSupercategory.whiskerLeft_comp (R := k) _ g f
-  commutes' c := by
-    simp only [Algebra.algebraMap_eq_smul_one, map_smul]
-    exact congrArg (c • ·) (MonoidalSupercategory.whiskerLeft_id (R := k)
-      ((pres D Sc).obj (ob D [i])) ((pres D Sc).obj (ob D v)))
-
-private theorem affineInsert_dot_pow (i j : I) (v : List I) (n : ℕ) :
-    affineInsert D Sc i (j :: v) (j :: v) (dotE D Sc (j :: v) 0 ^ n) =
-      dotE D Sc (i :: j :: v) 1 ^ n := by
-  change affineInsertEnd D Sc i (j :: v) (dotE D Sc (j :: v) 0 ^ n) = _
-  rw [map_pow]
-  have h : affineInsertEnd D Sc i (j :: v) (dotE D Sc (j :: v) 0) =
-      dotE D Sc (i :: j :: v) 1 := affineInsert_dot D Sc i j v
-  rw [h]
-
-/-- Inclusion of the ELV polynomial is precisely F₂, not F₁. -/
-theorem insert_elvPolynomial (i : I) (j : {j : I // D.parity j = 1}) (v : List I) :
-    insert D Sc cutoff i _ _ ((elvQuotientFunctor D Sc cutoff).map
-      (elvCyclotomic D Sc j v (cutoff j.1))) =
-    (elvQuotientFunctor D Sc cutoff).map
-      (elvDotPolynomial D Sc j (i :: j.1 :: v) 1 (cutoff j.1)) := by
-  rw [← elvDotPolynomial_first]
-  change insert D Sc cutoff i _ _ (elvQuotientMap D Sc cutoff _ _
-    (elvDotPolynomial D Sc j (j.1 :: v) 0 (cutoff j.1))) =
-    elvQuotientMap D Sc cutoff _ _ (elvDotPolynomial D Sc j (i :: j.1 :: v) 1 (cutoff j.1))
-  unfold elvDotPolynomial coefficientDotPolynomial
-  simp only [map_sum]
-  apply Finset.sum_congr rfl
-  intro a _
-  rw [elvQuotientMap_source, elvQuotientMap_source, insert_tmul,
-    affineInsert_dot_pow]
-
-/-- The concrete full old ELV polynomial kills every ambient continuation. -/
-theorem projection_elvPolynomial (i : I) (j : {j : I // D.parity j = 1})
-    (v w : List I) (h : hom D Sc cutoff (i :: j.1 :: v) w) :
-    projection D Sc cutoff i (j.1 :: v) w
-      ((elvQuotientFunctor D Sc cutoff).map
-        (elvDotPolynomial D Sc j (i :: j.1 :: v) 1 (cutoff j.1)) ≫ h) = 0 := by
-  rw [← insert_elvPolynomial]
-  have hr : relation D Sc cutoff j.1 v = (elvQuotientFunctor D Sc cutoff).map
-      (elvCyclotomic D Sc j v (cutoff j.1)) := by simp only [relation, dite_eq_left j.property]
-  rw [← hr]
-  exact projection_relation D Sc cutoff i j.1 v w h
-
 /-- Every quotient class is the signed pairing with the old identity class. -/
 theorem pair_id (p : ZMod 2) (i : I) {v w : List I}
     (h : hom D Sc cutoff (i :: v) w) :
@@ -379,10 +315,5 @@ theorem oldTwist_twice (p : ZMod 2) (v w : List I) (b : Old D Sc cutoff v w) :
   obtain ⟨b, rfl⟩ := (ideal D Sc cutoff v w).mkQ_surjective b
   change (ideal D Sc cutoff v w).mkQ (twist k p (twist k p b)) = _
   rw [twist_twist]
-
-/-- No additional quotient is hidden in the projection. -/
-theorem projection_eq_zero_iff (i : I) (v w : List I) (h : hom D Sc cutoff (i :: v) w) :
-    projection D Sc cutoff i v w h = 0 ↔ h ∈ relations D Sc cutoff i v w :=
-  Submodule.Quotient.mk_eq_zero _
 
 end OddMath.QuiverHecke.ELVOld

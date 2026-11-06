@@ -75,11 +75,4 @@ def componentTensor (v t : D) (s : C) (g : J.obj s ⟶ t)
 variable [Preadditive C] [Linear k C] [Supercategory k C]
   [J.Additive] [J.Linear k] [IsSuperfunctor k J]
 
-/-- The existing balanced-induction grading on each coefficient module. -/
-def coefficientGrading (t : D) :
-    BalancedKernelTensor.CoefficientGrading (kernel (k := k) J t) where
-  odd v := (BalancedInduction.superspace J (J ⋙ homModule (k := k) v) t).odd
-  odd_comp_odd v :=
-    (BalancedInduction.superspace J (J ⋙ homModule (k := k) v) t).odd_comp_odd
-
 end OddMath.QuiverHecke.ELVOld.IndResKernel

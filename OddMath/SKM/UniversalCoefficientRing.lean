@@ -153,16 +153,4 @@ def specialize (h₂ : IsUnit (2 : R)) {Ptwo : Prop} {Sc : ScalarData D R Ptwo} 
     Units.map (specialize h₂ cs) (c D μ i) = cs.c μ i := by
   simp [specialize, c]
 
-/-- Uniqueness of specialization, including all disconnected endpoints and
-all weights simultaneously. -/
-theorem specialize_unique (h₂ : IsUnit (2 : R)) {Ptwo : Prop} {Sc : ScalarData D R Ptwo}
-    (cs : CScalars Sc) (f : UnitRing D →+* R)
-    (ht : ∀ i j, Units.map f (t D i j) = Sc.t i j)
-    (hc : ∀ μ i, Units.map f (c D μ i) = cs.c μ i) : f = specialize h₂ cs := by
-  apply hom_ext
-  · intro i j
-    exact (ht i j).trans (specialize_t h₂ cs i j).symm
-  · intro μ i
-    exact (hc μ i).trans (specialize_c h₂ cs μ i).symm
-
 end OddMath.SKM.UniversalCoefficientRing
