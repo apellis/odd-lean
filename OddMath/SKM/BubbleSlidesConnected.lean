@@ -114,7 +114,7 @@ theorem bubbleR_conv_normalize (i j : I) (μ : X) (hd : 0 < D.dn i j) (n : ℕ) 
   apply sum_congr rfl
   intro q _
   rw [hterm]
-  have hp := mem_Ioo.mp hp
+  have hp := mem_range.mp hp
   congr 4
   omega
 
@@ -161,7 +161,7 @@ theorem bubbleL_conv_normalize (i j : I) (μ : X) (hd : 0 < D.dn i j) (n : ℕ) 
   intro p hp
   apply sum_congr rfl
   intro q _
-  have hp := mem_Ioo.mp hp
+  have hp := mem_range.mp hp
   by_cases hs : Sc.s i j p q = 0
   · simp only [hs, mul_zero, zero_smul]
   · have he : D.parity i * ((D.dn i j - p : ℕ) : ZMod 2) = 0 := by

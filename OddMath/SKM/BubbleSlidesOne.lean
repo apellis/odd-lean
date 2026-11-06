@@ -4,13 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.SKM.BubbleSlideRaw
 import OddMath.SKM.BubbleSeriesStep
+import OddMath.SKM.PureMonomials
 /-!
 # Bubble slides for a Cartan entry minus one
 
 Brundan–Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2,
 Proposition 7.3(iii), (7.11)–(7.12), in the complete case `dᵢⱼ = 1`.
 Both orientations hold at every weight and every integer shifted degree,
-including fake bubbles. The opposite entry `dⱼᵢ` and all scalars remain general.
+including fake bubbles. The opposite entry `dⱼᵢ` remains general; the scalars have no pure
+monomials (`ScalarData.NoPure`), as in Brundan–Ellis (1.4). The general connected slides,
+with pure monomials, are `eq_7_11_connected` and `eq_7_12_connected`.
 
 Here `i` is necessarily even, but `j` need not be: the dot correction has
 parity zero by the Cartan parity condition. The lower coefficient sum is empty.
@@ -36,7 +39,8 @@ theorem parity_eq_zero_of_d_one {i j : I} (hij : i ≠ j) (hd : D.d i j = 1) : D
   have H := parity_mul_dn D i j
   simpa [dn_eq_one_of_d_one hij hd] using H
 
-theorem bubbleR_slide_one_raw (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) (n : ℕ) :
+theorem bubbleR_slide_one_raw (hn : ScalarData.NoPure Sc) (i j : I) (μ : X) (hij : i ≠ j)
+    (hd : D.d i j = 1) (n : ℕ) :
     bubbleR_right cs i j μ n =
       (Sc.t i j : k) • bubbleR_left cs i j μ (n + 1) +
       (Sc.t j i : k) • (bubbleR_left cs i j μ n ≫
@@ -53,8 +57,10 @@ theorem bubbleR_slide_one_raw (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j =
           (crossL [dn i] i j [] ++ crossL [dn i] j i []) := by
     rw [cl_comp het hcc, List.append_assoc]
   rw [e0, Category.assoc]
-  have hq := congrArg (plcL D Sc μ [dn i] [] [up i, up j] [up i, up j])
-    (cl_quadNe (Sc := Sc) i j (wt D μ []) hij (by omega))
+  have hq0 := cl_quadNe (Sc := Sc) i j (wt D μ []) hij (by omega)
+  rw [ScalarData.NoPure.sum_range_range hn hij _ (fun p q h => by simp only [h, zero_smul])]
+    at hq0
+  have hq := congrArg (plcL D Sc μ [dn i] [] [up i, up j] [up i, up j]) hq0
   simp only [dn_eq_one_of_d_one hij hd, show Ioo 0 1 = (∅ : Finset ℕ) by decide,
     sum_empty, add_zero, map_add, map_smul, plcL_cl] at hq
   erw [hq]
@@ -85,7 +91,8 @@ theorem bubbleR_slide_one_raw (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j =
     mul_comm (D.dn j i : ZMod 2), parity_mul_dn, mul_zero, zsign_zero, one_smul]
   rfl
 
-theorem bubbleL_slide_one_raw (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) (n : ℕ) :
+theorem bubbleL_slide_one_raw (hn : ScalarData.NoPure Sc) (i j : I) (μ : X) (hij : i ≠ j)
+    (hd : D.d i j = 1) (n : ℕ) :
     bubbleL_left cs i j μ n =
       (Sc.t i j : k) • bubbleL_right cs i j μ (n + 1) +
       (Sc.t j i : k) • (cl D Sc μ [up j] [up j] (dotsL [] j [] (D.dn j i)) ≫
@@ -97,9 +104,11 @@ theorem bubbleL_slide_one_raw (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j =
   have he : SChain [up j, up i, dn i] ((epsL i n).map (whL [up j] [])) [up j] := by
     simpa using (sChain_epsL i n).whisk [up j] []
   rw [← cl_comp hc he]
-  have hq := congrArg (plcL D Sc μ [] [dn i] [up j, up i] [up j, up i])
-    (cl_quadNe (Sc := Sc) j i (wt D μ [dn i]) hij.symm
-      (fun h => by have := (D.d_eq_zero_iff j i).mp h; omega))
+  have hq0 := cl_quadNe (Sc := Sc) j i (wt D μ [dn i]) hij.symm
+    (fun h => by have := (D.d_eq_zero_iff j i).mp h; omega)
+  rw [ScalarData.NoPure.sum_range_range hn hij.symm _ (fun p q h => by simp only [h, zero_smul])]
+    at hq0
+  have hq := congrArg (plcL D Sc μ [] [dn i] [up j, up i] [up j, up i]) hq0
   simp only [dn_eq_one_of_d_one hij hd, show Ioo 0 1 = (∅ : Finset ℕ) by decide,
     sum_empty, sum_const_zero, add_zero, map_add, map_smul, plcL_cl] at hq
   erw [hq]
