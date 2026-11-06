@@ -54,7 +54,7 @@ universe u v w w'
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X}
 
 /-- Two scalar systems with the same units and coefficients are equal. -/
-theorem Scalars.ext_t_s {k : Type w} [CommRing k] {Sc Sc' : Scalars D k}
+theorem ScalarData.ext_t_s {k : Type w} [CommRing k] {P : Prop} {Sc Sc' : ScalarData D k P}
     (ht : Sc.t = Sc'.t) (hs : Sc.s = Sc'.s) : Sc = Sc' := by
   cases Sc
   cases Sc'
@@ -62,31 +62,43 @@ theorem Scalars.ext_t_s {k : Type w} [CommRing k] {Sc Sc' : Scalars D k}
   cases hs
   rfl
 
-/-- The conjecture depends only on the scalar system and its normalization units. -/
-theorem nondegeneracyConjecture_congr {k : Type w} [CommRing k] {Sc Sc' : Scalars D k}
-    (e : Sc = Sc') (cs : CScalars Sc) (cs' : CScalars Sc')
+/-- The same units and coefficients, with another condition attached. -/
+def ScalarData.withProp {k : Type w} [CommRing k] {P Q : Prop} (Sc : ScalarData D k P)
+    (h : (∃ i, D.parity i = 1) → Q) : ScalarData D k Q :=
+  { Sc with two_isUnit := h }
+
+/-- The normalization units, for the same scalars with another condition attached. -/
+def CScalars.withProp {k : Type w} [CommRing k] {P Q : Prop} {Sc : ScalarData D k P}
+    (cs : CScalars Sc) (h : (∃ i, D.parity i = 1) → Q) : CScalars (Sc.withProp h) :=
+  ⟨cs.c, cs.shift⟩
+
+/-- The conjecture depends only on the units, the coefficients and the normalization units (for
+equal conditions on `2`). -/
+theorem nondegeneracyConjecture_congr {k : Type w} [CommRing k] {P Q : Prop}
+    {Sc : ScalarData D k P} {Sc' : ScalarData D k Q} (e : P = Q) (ht : Sc.t = Sc'.t)
+    (hs : Sc.s = Sc'.s) (cs : CScalars Sc) (cs' : CScalars Sc')
     (hc : ∀ μ i, cs.c μ i = cs'.c μ i) (h : NondegeneracyConjecture cs) :
     NondegeneracyConjecture cs' := by
   subst e
-  have : cs = cs' := by
-    cases cs
-    cases cs'
-    congr
-    funext μ i
-    exact hc μ i
-  subst this
+  obtain ⟨t, _, _, s, _, _, _⟩ := Sc
+  obtain ⟨t', _, _, s', _, _, _⟩ := Sc'
+  obtain rfl : t = t' := ht
+  obtain rfl : s = s' := hs
+  obtain ⟨c, _⟩ := cs
+  obtain ⟨c', _⟩ := cs'
+  obtain rfl : c = c' := funext fun μ => funext fun i => hc μ i
   exact h
 
 /-- Homogeneity (1.31) is preserved by every coefficient change. -/
 theorem ScalarChange.homogeneous_scalars {R : Type w} {S : Type w'} [CommRing R] [CommRing S]
-    (f : R →+* S) {Sc : Scalars D R} (hh : Sc.Homogeneous) :
+    (f : R →+* S) {P : Prop} {Sc : ScalarData D R P} (hh : Sc.Homogeneous) :
     (ScalarChange.scalars D f Sc).Homogeneous := by
   intro i j p q hp hp' hq hq' h
   exact hh i j p q hp hp' hq hq' (fun h0 => h (by simp [h0]))
 
 namespace MatchingBasisChoice
 
-variable {k : Type w} [CommRing k] {Sc : Scalars D k} (cs : CScalars Sc) (μ : X)
+variable {k : Type w} [CommRing k] {P : Prop} {Sc : ScalarData D k P} (cs : CScalars Sc) (μ : X)
   {a b : List (Letter I)}
 
 /-- The free coefficient module on decorated matchings, with the basis given by
@@ -142,8 +154,8 @@ end MatchingBasisChoice
 The basis over `R` is base changed through `S ⊗[R] Hom_R ≃ Hom_S`; its vectors
 are the decorated matchings with the same coefficient monomials over `S`. -/
 theorem nondegeneracyConjecture_scalarChange {R : Type w} {S : Type w'} [CommRing R]
-    [CommRing S] (f : R →+* S) {Sc : Scalars D R} {cs : CScalars Sc}
-    (h : NondegeneracyConjecture cs) :
+    [CommRing S] (f : R →+* S) {P : Prop} {Sc : ScalarData D R P} [ScalarChange.ZTransport f D Sc]
+    {cs : CScalars Sc} (h : NondegeneracyConjecture cs) :
     NondegeneracyConjecture (ScalarChange.cScalars D f cs) := by
   rw [nondegeneracyConjecture_iff_injective]
   intro a b hab μ F
@@ -177,10 +189,17 @@ theorem universal_nondegeneracy (hK : CharZeroFieldNondegeneracy D) :
   have hpt (p : PrimeSpectrum (RationalParameters D)) :
       Finsupp.mapRange.addMonoidHom (ScalarChange.symMap (D := D) (point D p)).toAddMonoidHom
         z = 0 := by
+    have h2 : IsUnit (2 : FieldAt D p) := isUnit_iff_ne_zero.2 two_ne_zero
     have hinj := (nondegeneracyConjecture_iff_injective _).1
-      (hK (FieldAt D p) (ScalarChange.scalars D (point D p) (UniversalPolynomialParameters.scalars D))
-        (ScalarChange.homogeneous_scalars _ (UniversalPolynomialParameters.homogeneous D))
-        (ScalarChange.cScalars D (point D p) (UniversalPolynomialParameters.normalizations D)))
+      (nondegeneracyConjecture_congr (eq_true h2) rfl rfl _
+        (ScalarChange.cScalars D (point D p) (UniversalPolynomialParameters.normalizations D))
+        (fun _ _ => rfl)
+        (hK (FieldAt D p)
+          ((ScalarChange.scalars D (point D p) (UniversalPolynomialParameters.scalars D)).withProp
+            fun _ => h2)
+          (ScalarChange.homogeneous_scalars _ (UniversalPolynomialParameters.homogeneous D))
+          ((ScalarChange.cScalars D (point D p)
+            (UniversalPolynomialParameters.normalizations D)).withProp fun _ => h2)))
       a b hab μ F
     apply hinj
     rw [← ScalarChange.homMap_expansion, hz, map_zero, map_zero]
@@ -198,12 +217,11 @@ theorem nondegeneracyConjecture_of_charZeroField (hK : CharZeroFieldNondegenerac
     (hh : Sc.Homogeneous) (cs : CScalars Sc) : NondegeneracyConjecture cs := by
   let f := UniversalPolynomialParameters.specialize h₂ cs
   have hU := nondegeneracyConjecture_scalarChange f (universal_nondegeneracy hK)
-  refine nondegeneracyConjecture_congr ?_ _ cs ?_ hU
-  · apply Scalars.ext_t_s
-    · funext i j
-      exact UniversalPolynomialParameters.specialize_t h₂ cs i j
-    · funext i j p q
-      exact UniversalPolynomialParameters.specialize_coefficient h₂ cs hh ⟨i, j, p, q⟩
+  refine nondegeneracyConjecture_congr (eq_true h₂).symm ?_ ?_ _ cs ?_ hU
+  · funext i j
+    exact UniversalPolynomialParameters.specialize_t h₂ cs i j
+  · funext i j p q
+    exact UniversalPolynomialParameters.specialize_coefficient h₂ cs hh ⟨i, j, p, q⟩
   · intro μ i
     exact UniversalPolynomialParameters.specialize_c h₂ cs μ i
 

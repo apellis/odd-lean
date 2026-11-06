@@ -30,7 +30,7 @@ open CategoryTheory StringDiagrams Presentation Supercategory Finset
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k}
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo}
 
 variable (D Sc) in
 /-- The image under `ω` of a 2-morphism between normal-form objects. -/
@@ -72,10 +72,6 @@ theorem zsign_smul_cancel {A : Type*} [AddCommGroup A] [Module k A] {S T : ZMod 
 theorem zsign_smul_of {A : Type*} [AddCommGroup A] [Module k A] {S T U : ZMod 2} {f g : A}
     (h : zsign k S • f = zsign k T • g) (hU : U + (S + T) = 0) : zsign k U • f = g := by
   rw [zsign_smul_cancel h, smul_smul, ← zsign_add, hU, zsign_zero, one_smul]
-
-theorem natCast_toNat_zmod2 {a : ℤ} (ha : 0 ≤ a) : ((a.toNat : ℕ) : ZMod 2) = (a : ZMod 2) := by
-  conv_rhs => rw [← Int.toNat_of_nonneg ha]
-  push_cast; rfl
 
 /-! ## The second relation of (6.6) -/
 

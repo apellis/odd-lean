@@ -29,7 +29,7 @@ open CategoryTheory StringDiagrams Presentation
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k}
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo}
 
 /-! ## Mates as a linear map -/
 
@@ -103,7 +103,7 @@ theorem zsign_mul_mul_self (p : ZMod 2) : zsign k p * zsign k (p * p) = 1 := by
   rw [zmod2_mul_self, zsign_mul_self]
 
 /-- The scalars `sⱼᵢ^{pq}` vanish unless `p|j|` is even. -/
-theorem Scalars.s_mul_zsign (i j : I) (p q : ℕ) (x : ZMod 2) :
+theorem ScalarData.s_mul_zsign (i j : I) (p q : ℕ) (x : ZMod 2) :
     Sc.s j i p q * zsign k ((p : ZMod 2) * D.parity j * x) = Sc.s j i p q := by
   by_cases hs : Sc.s j i p q = 0
   · rw [hs, zero_mul]

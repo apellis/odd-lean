@@ -38,6 +38,7 @@ theorem psiLin_relation (t : k) (ht : t ^ 2 = -1) (cs : CScalars Sc)
   | braidEq i j μ hij => subst ν; exact psiLin_braidEq t ht cs μ i j hij
   | zigE i μ => subst ν; exact psiLin_zigE t cs μ i
   | zigF i μ => subst ν; exact psiLin_zigF t cs μ i
+  | zInt b => rw [relation_zInt_of_scalars, map_zero]
   | _ => apply psiLin_inversion t ht cs; trivial
 
 /-- Defining relations vanish between arbitrary linear vertical contexts. -/

@@ -9,6 +9,8 @@ general known ordinary even nondegeneracy theorems, with the following order.
    and homogeneous admissible parameters over ordinary commutative rings with
    2 invertible. Retain the odd-row evenness condition, separate odd-variable
    exponent support, prescribed leading units and compatible `CScalars`.
+   The integral form extends Phase 1 to every commutative ring (see
+   "Integral form" below).
 2. **Phase 2 (after Phase 1):** pursue inhomogeneous parameters, still for
    symmetrizable data, until the parameter generality of the even benchmark
    below is covered. Do not assume that the present graded proof or its
@@ -65,8 +67,9 @@ Supplied `CScalars` remain part of the current formulation. To claim recovery
 for every benchmark datum, supply the compatible normalizations under its
 realization hypotheses or prove the relevant change-of-normalization
 comparison. Do not assume they exist for arbitrary collapsed weight data.
-No theorem over characteristic two, genuinely supercommutative base rings,
-or realizations beyond the even benchmark is required by this branch goal.
+No theorem over genuinely supercommutative base rings or realizations
+beyond the even benchmark is required by this branch goal. Rings where 2 is
+not a unit are covered by the integral form below.
 
 ## Source boundary and existing field reduction
 
@@ -109,3 +112,20 @@ complete supported action are now scoped-checked. The remaining field input
 requires their vacuum/layer/bubble observations, affine and bubble
 compatibility of the checked original-datum action pullback, and bounded
 recovery; see STATUS.
+
+## Integral form
+
+When 2 is not a unit, the presentation of Definition 1.5 is replaced by its
+integral form: `ScalarData D k P` carries the parameters with an arbitrary
+condition `P` on 2 (`Scalars` is `P = IsUnit 2`, `IntegralScalars` is
+`P = True`), and the relations `Rel.zInt` are imposed exactly at odd colours
+when 2 is not a unit. Over rings with 2 invertible they hold automatically
+(`relation_zInt_of_scalars`), so nothing changes there. The spanning proof
+(Theorem 8.1) runs for every `P`. `SKM.IntegralNondegeneracy` deduces the
+conjecture over the integral universal parameter ring from the one over the
+universal ring with 2 inverted (the coefficient map is injective), then
+specializes to every commutative ring;
+`QuiverHecke.integral_nondegeneracy_of_symmetrizer` is the resulting
+statement for symmetrizable data and homogeneous `IntegralScalars`.
+`scripts/NonVacuity/IntegralNondegeneracy.lean` applies it over `ZMod 2` with
+an odd colour.

@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.SKM.ScalarChange
 import StringDiagrams.Interpretation
+import StringDiagrams.Biadjunction.Zigzag
 
 /-!
 # Coefficient change on the SKM presentation
@@ -115,14 +116,83 @@ theorem coeff_interchange (x : InterchangeData T) (hx : x.Valid) :
     coeff f (InterchangeData.rel R hx) = InterchangeData.rel S hx := by
   simp [InterchangeData.rel]
 
-variable {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X) (Sc : Scalars D R)
+variable {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X) {Ptwo : Prop} (Sc : ScalarData D R Ptwo)
+
+include f in
+theorem isUnit_two_map (h : IsUnit (2 : R)) : IsUnit (2 : S) := by
+  convert h.map f using 1
+  exact (map_ofNat f 2).symm
+
+/-- The gate of the integral-form relations commutes with coefficient change unless `2` becomes
+invertible only in the target. -/
+theorem coeff_zGate {a b : Obj (sig D)} (i : I) (x : LinDiagram R a b)
+    (h : IsUnit (2 : R) ∨ ¬IsUnit (2 : S)) :
+    coeff f (zGate D i x) = zGate D i (coeff f x) := by
+  by_cases hp : D.parity i = 1
+  · by_cases hR : IsUnit (2 : R)
+    · rw [zGate_of_isUnit D i x hR, zGate_of_isUnit D i _ (isUnit_two_map f hR), coeff_zero]
+    · have hS : ¬IsUnit (2 : S) := h.resolve_left hR
+      rw [zGate_of_not_isUnit D i x hp hR, zGate_of_not_isUnit D i _ hp hS]
+  · rw [zGate_of_parity D i x hp, zGate_of_parity D i _ hp, coeff_zero]
 
 /-- Every defining relation, including both products for each augmented
-inverse matrix, specializes to the relation with the same label. -/
-theorem coeff_relation (r : Rel D) :
+inverse matrix, specializes to the relation with the same label. For the relations of the
+integral form this needs `2` to be invertible in the source or not in the target. -/
+theorem coeff_relation (r : Rel D) (h : IsUnit (2 : R) ∨ ¬IsUnit (2 : S)) :
     coeff f (relation D Sc r) = relation D (scalars D f Sc) r := by
   classical
-  cases r <;> simp [relation, dg, idg, scalars] <;> split_ifs <;> simp
+  cases r with
+  | zInt b =>
+    cases b <;> simp only [relation, coeff_zGate f D _ _ h] <;> simp [dg]
+  | _ => simp [relation, dg, idg, scalars] <;> split_ifs <;> simp
+
+/-- The relations of Definition 1.5 specialize to the relations with the same labels. -/
+theorem coeff_relation_of_ne (r : Rel D) (hr : ∀ b, r ≠ .zInt b) :
+    coeff f (relation D Sc r) = relation D (scalars D f Sc) r := by
+  classical
+  cases r with
+  | zInt b => exact absurd rfl (hr b)
+  | _ => simp [relation, dg, idg, scalars] <;> split_ifs <;> simp
+
+/-- The relations of the integral form hold after coefficient change. This is automatic when
+`2` is invertible in the source (`ZTransport.of_scalars`) or not invertible in the target
+(`ZTransport.of_not_isUnit`); when `2` becomes invertible only in the target it is a consequence
+of Brundan–Ellis (1.24), (5.9), (5.10). -/
+class ZTransport : Prop where
+  lin_coeff_relation : ∀ b : ZBase D,
+    (pres D (scalars D f Sc)).lin (coeff f (relation D Sc (.zInt b))) = 0
+
+theorem ZTransport.of_or (h : IsUnit (2 : R) ∨ ¬IsUnit (2 : S)) : ZTransport f D Sc :=
+  ⟨fun b => by
+    rw [coeff_relation f D Sc _ h]
+    exact (pres D (scalars D f Sc)).lin_rel_self (.zInt b)⟩
+
+theorem ZTransport.of_not_isUnit (h : ¬IsUnit (2 : S)) : ZTransport f D Sc :=
+  .of_or f D Sc (.inr h)
+
+instance ZTransport.of_scalars (Sc : Scalars D R) : ZTransport f D Sc where
+  lin_coeff_relation b := by
+    by_cases h : ∃ i, D.parity i = 1
+    · exact (ZTransport.of_or f D Sc (.inl (Sc.two_isUnit h))).1 b
+    · have hz : ∀ i : I, D.parity i ≠ 1 := fun i hi => h ⟨i, hi⟩
+      cases b <;> simp [relation, zGate_of_parity D _ _ (hz _)]
+
+theorem coeff_lin_relation_eq_zero [ZTransport f D Sc] (r : Rel D) :
+    (pres D (scalars D f Sc)).lin (coeff f (relation D Sc r)) = 0 := by
+  by_cases hz : ∃ b, r = .zInt b
+  · obtain ⟨b, rfl⟩ := hz
+    exact ZTransport.lin_coeff_relation b
+  · rw [coeff_relation_of_ne f D Sc r fun b h => hz ⟨b, h⟩]
+    exact (pres D (scalars D f Sc)).lin_rel_self r
+
+private theorem coeff_whisk_mem_of_lin (r : (pres D Sc).AllRel)
+    (hx : (pres D (scalars D f Sc)).lin (coeff f r.rel) = 0)
+    (l : Obj (sig D)) (v : List (sig D).Colour) (h : r.dom.WhiskerOK l v) :
+    coeff f (LinDiagram.whisker r.rel l v h) ∈
+      (pres D (scalars D f Sc)).ideal (r.dom.whisker l v) (r.cod.whisker l v) := by
+  rw [← sub_zero (coeff f (LinDiagram.whisker r.rel l v h)), ← lin_eq_iff,
+    Presentation.lin_zero, coeff_whisker, ← LinDiagram.whisk_of_ok _ h, ← whisk_lin, hx,
+    whisk_zero]
 
 private theorem coeff_whisk_mem_of_eq (r : (pres D (scalars D f Sc)).AllRel)
     (x : LinDiagram R r.dom r.cod) (hx : coeff f x = r.rel)
@@ -132,6 +202,8 @@ private theorem coeff_whisk_mem_of_eq (r : (pres D (scalars D f Sc)).AllRel)
   rw [coeff_whisker, hx]
   exact (pres D (scalars D f Sc)).whisker_rel_mem_ideal r l v h
 
+variable [ZTransport f D Sc]
+
 /-- Every horizontally contextualized user or interchange relation maps
 into the target ideal. -/
 theorem coeff_whiskRel_mem (r : (pres D Sc).AllRel)
@@ -140,7 +212,7 @@ theorem coeff_whiskRel_mem (r : (pres D Sc).AllRel)
       (pres D (scalars D f Sc)).ideal (r.dom.whisker l v) (r.cod.whisker l v) := by
   cases r with
   | user r =>
-    exact coeff_whisk_mem_of_eq f D Sc (.user r) _ (coeff_relation f D Sc r) l v h
+    exact coeff_whisk_mem_of_lin f D Sc (.user r) (coeff_lin_relation_eq_zero f D Sc r) l v h
   | interchange x hx =>
     exact coeff_whisk_mem_of_eq f D Sc (.interchange x hx) _
       (coeff_interchange f x hx) l v h

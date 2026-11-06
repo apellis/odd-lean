@@ -90,7 +90,7 @@ theorem sum_range_conv_delay {C : Type*} [Category C] [Preadditive C] {Z : C}
     rw [ite_eq_right (by omega), Limits.comp_zero]
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k} (cs : CScalars Sc)
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo} (cs : CScalars Sc)
 
 /-- The same opposite-side convolution in normalized coefficients. -/
 def bubbleSlideCoeffConv (i j : I) (μ : X) (q m : ℕ) :=

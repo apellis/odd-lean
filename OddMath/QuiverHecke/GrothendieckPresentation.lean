@@ -55,15 +55,20 @@ attribute [local instance] SKM.K0Relations.homModule in
 theorem toGr_smul_blockClass (r : LaurentPolynomial Zπ) (μ ν : X) (s) (hs : SKM.wt D ν s = μ)
     (n : ℤ) (a : ZMod 2) :
     toGr sy hc μ ν (r • blockClass Sc sy hc μ ν s hs n a) = r • cls Sc sy hc μ ν s hs n a := by
-  rw [cls_eq_raw]
-  have := toGr_smul_raw sy hc (f := SKM.K0Relations.word Sc sy hc μ ν s hs) (Category.id_comp (𝟙 _))
+  have h := toGr_smul_raw sy hc (f := SKM.K0Relations.word Sc sy hc μ ν s hs) (Category.id_comp (𝟙 _))
     (GradedSupercategory.id_mem_degree _) (Supercategory.id_mem _) r n a
-  rw [raw_id] at this
-  exact this
+  have hb : blockClass Sc sy hc μ ν s hs n a = K₀.mk (SKM.Summands.raw
+      (f := SKM.K0Relations.word Sc sy hc μ ν s hs) (Category.id_comp (𝟙 _))
+      (GradedSupercategory.id_mem_degree _) (Supercategory.id_mem _) n a) :=
+    congrArg K₀.mk (raw_id _ n a).symm
+  exact (congrArg (fun x => toGr sy hc μ ν (r • x)) hb).trans
+    (h.trans (congrArg (fun x => r • x) (cls_eq_raw sy hc μ ν s hs n a).symm))
 
+attribute [local instance] SKM.K0Relations.homModule in
 theorem toGr_blockClass (μ ν : X) (s) (hs : SKM.wt D ν s = μ) (n : ℤ) (a : ZMod 2) :
-    toGr sy hc μ ν (blockClass Sc sy hc μ ν s hs n a) = cls Sc sy hc μ ν s hs n a := by
-  simpa using toGr_smul_blockClass sy hc 1 μ ν s hs n a
+    toGr sy hc μ ν (blockClass Sc sy hc μ ν s hs n a) = cls Sc sy hc μ ν s hs n a :=
+  (congrArg (toGr sy hc μ ν) (one_smul (LaurentPolynomial Zπ) _).symm).trans
+    ((toGr_smul_blockClass sy hc 1 μ ν s hs n a).trans (one_smul (LaurentPolynomial Zπ) _))
 
 /-- `toGr` on the completed weight block of `K0Relations`. -/
 def toGrBlock (μ ν : X) : K₀ (block Sc sy hc μ ν) →+ Grothendieck Sc sy hc := toGr sy hc μ ν

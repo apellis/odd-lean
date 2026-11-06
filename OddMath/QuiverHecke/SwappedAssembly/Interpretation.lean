@@ -90,6 +90,7 @@ inductive RelGroup
   | zigzag
   | inversion
   | windowZero
+  | integral
   deriving DecidableEq
 
 /-- The group of a relation. -/
@@ -101,6 +102,7 @@ def relGroup : SKM.Rel D → RelGroup
   | .invNe₁ .. | .invNe₂ .. | .invP₁ .. | .invP₂ .. | .invP₃ .. | .invP₄ .. | .invP₅ ..
   | .invM₁ .. | .invM₂ .. | .invM₃ .. | .invM₄ .. | .invM₅ .. => .inversion
   | .dcupZero .. | .dcapZero .. => .windowZero
+  | .zInt _ => .integral
 
 variable (Sc) (Q : LayerRep.{u, u, u, u, w₃} (SKM.sig D) k)
 
@@ -134,6 +136,13 @@ def InterchangeLaw : Prop :=
     Q.toLocal.evalW (x.dom.whisker u v) (x.cod.whisker u v) u v
       (InterchangeData.rel k hx) = 0
 
+/-- The relations of the integral form hold automatically: with the scalars of Definition 1.5
+they are zero. -/
+theorem relHolds_zInt (b : SKM.ZBase D) : RelHolds Sc Q (.zInt b) := by
+  intro u v _
+  change Q.toLocal.evalW _ _ u v (SKM.relation D Sc (.zInt b)) = 0
+  rw [SKM.relation_zInt_of_scalars, map_zero]
+
 /-- The obligations of the assembly: every relation group and the interchange law. -/
 structure SwappedObligations : Prop where
   quad : QuadRelations Sc Q
@@ -157,6 +166,8 @@ theorem relHolds (r : SKM.Rel D) : RelHolds Sc Q r := by
   · exact h.zigzag r hg
   · exact h.inversion r hg
   · exact h.windowZero r hg
+  · cases r <;> simp [relGroup] at hg
+    exact relHolds_zInt Sc Q _
 
 /-- The obligations give soundness for the presentation. -/
 theorem respects : (SKM.pres D Sc).Respects Q.toLocal.functor :=
