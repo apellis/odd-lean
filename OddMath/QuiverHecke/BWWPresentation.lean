@@ -3,7 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.Presentation
-import OddMath.SKM.BWWScalars
+import OddMath.SKM.BWWBoxSum
 
 /-!
 # The quiver Hecke presentation with Brundan–Wang–Webster parameters
@@ -20,8 +20,6 @@ is `Σ_{p,q} cᵢⱼ(p, q) Σ_{s<p} ζ(|i|(|j| + s)) u₁^s v^q u₃^{p-1-s}`, w
 
 * `presBWW D Sc'`: the presentation, on the same relation labels as `pres`; its relations
   are parity-homogeneous (`isParityHomogeneous_presBWW`).
-* `sum_box_toBWW`: over Brundan–Ellis parameters the box sum is the two corners plus the
-  interior sum.
 * `presBWW_toBWW`: `presBWW D Sc.toBWW = pres D Sc`, relation by relation.
 -/
 
@@ -115,53 +113,7 @@ theorem isParityHomogeneous_presBWW : (presBWW D Sc').IsParityHomogeneous := by
         revert a x y; decide
   | _ => exact isParityHomogeneous D Sc'.toScalars _
 
-/-- Splitting `range (a + 1)` into `0`, the open interval and `a`. -/
-theorem sum_range_succ_eq {M : Type*} [AddCommMonoid M] {a : ℕ} (ha : 0 < a) (g : ℕ → M) :
-    ∑ p ∈ Finset.range (a + 1), g p = g a + (g 0 + ∑ p ∈ Finset.Ioo 0 a, g p) := by
-  rw [Finset.sum_range_succ, add_comm, Finset.range_eq_Ico, ← Finset.Ioo_insert_left ha,
-    Finset.sum_insert (by simp)]
-
 variable {D}
-
-/-- Over Brundan–Ellis parameters with `dᵢⱼ ≠ 0`, a sum over the box is the two corner terms
-plus the interior sum. -/
-theorem sum_box_toBWW {M : Type*} [AddCommGroup M] [Module k M] (Sc : SKM.Scalars D k)
-    {i j : I} (hij : i ≠ j) (hd : D.d i j ≠ 0) (f : ℕ → ℕ → M) :
-    ∑ p ∈ Finset.range (D.dn i j + 1), ∑ q ∈ Finset.range (D.dn j i + 1),
-        Sc.toBWW.c i j p q • f p q =
-      (Sc.t i j : k) • f (D.dn i j) 0 + (Sc.t j i : k) • f 0 (D.dn j i) +
-        ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), Sc.s i j p q • f p q := by
-  have ha : 0 < D.dn i j := by
-    have h1 := D.d_nonneg hij
-    unfold SKM.Datum.dn; omega
-  have hb : 0 < D.dn j i := by
-    have h1 := D.d_nonneg (Ne.symm hij)
-    have h2 := (D.d_eq_zero_iff i j).not.mp hd
-    unfold SKM.Datum.dn; omega
-  have hpure : ∀ {p q : ℕ}, p < D.dn i j → q < D.dn j i → (p = 0 ∨ q = 0) →
-      Sc.toBWW.c i j p q = 0 := fun hp hq h => Sc.toBWW_c_eq_zero_of_pure hij hp hq h
-  have hint : ∀ p ∈ Finset.Ioo 0 (D.dn i j),
-      Sc.toBWW.c i j p (D.dn j i) • f p (D.dn j i) + (Sc.toBWW.c i j p 0 • f p 0 +
-        ∑ q ∈ Finset.Ioo 0 (D.dn j i), Sc.toBWW.c i j p q • f p q) =
-        ∑ q ∈ Finset.Ioo 0 (D.dn j i), Sc.s i j p q • f p q := by
-    intro p hp
-    rw [Finset.mem_Ioo] at hp
-    rw [Sc.toBWW.c_right i j hp.1, hpure hp.2 hb (Or.inr rfl), zero_smul, zero_smul,
-      zero_add, zero_add]
-    refine Finset.sum_congr rfl fun q hq => ?_
-    rw [Finset.mem_Ioo] at hq
-    rw [SKM.ScalarData.toBWW_c_of_interior Sc hij hp.1 hp.2 hq.1 hq.2]
-  rw [sum_range_succ_eq ha]
-  simp only [sum_range_succ_eq hb]
-  rw [Finset.sum_congr rfl hint, Sc.toBWW.c_top i j _ hb, Sc.toBWW.c_corner i j hij,
-    Sc.toBWW.c_corner' hij, hpure ha hb (Or.inl rfl), zero_smul, zero_smul, zero_add,
-    zero_add,
-    Finset.sum_eq_zero (fun q hq => by
-      rw [Sc.toBWW.c_top i j _ (Finset.mem_Ioo.mp hq).1, zero_smul]),
-    Finset.sum_eq_zero (fun q hq => by
-      rw [hpure ha (Finset.mem_Ioo.mp hq).2 (Or.inl rfl), zero_smul])]
-  simp only [SKM.ScalarData.toBWW_t, add_zero]
-  abel
 
 variable (D) in
 theorem quadSum_toBWW (Sc : SKM.Scalars D k) {i j : I} (hij : i ≠ j) (hd : D.d i j ≠ 0) :
@@ -171,7 +123,7 @@ theorem quadSum_toBWW (Sc : SKM.Scalars D k) {i j : I} (hij : i ≠ j) (hd : D.d
       ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
         Sc.s i j p q • dg D (dotsL [i] j [] q ++ dotsL [] i [j] p)
           ((sChain_dotsL [i] j [] q).append (sChain_dotsL [] i [j] p)) := by
-  rw [quadSum, sum_box_toBWW Sc hij hd]
+  rw [quadSum, SKM.sum_box_toBWW Sc hij hd]
   congr 2
   congr 1
   exact dg_congr D _ _ (by simp [dotsL])
@@ -203,7 +155,7 @@ theorem braidSum_toBWW (Sc : SKM.Scalars D k) {i j : I} (hij : i ≠ j) (hd : D.
     refine Finset.sum_congr rfl fun s _ => ?_
     rw [mul_comm, mul_smul]
   simp only [braidSum, hc]
-  rw [sum_box_toBWW Sc hij hd]
+  rw [SKM.sum_box_toBWW Sc hij hd]
   simp only [Finset.range_zero, Finset.sum_empty, smul_zero, add_zero]
   congr 1
   rw [Finset.smul_sum]
