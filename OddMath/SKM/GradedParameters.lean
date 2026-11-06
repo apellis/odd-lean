@@ -70,26 +70,26 @@ in particular nonnegative. -/
 def Scalars.GradedHomogeneous {σ : Type*} [SetLike σ k] (sy : Symmetrizer D) (𝒜 : ℕ → σ)
     (Sc : Scalars D k) : Prop :=
   (∀ i j, ((Sc.t i j : kˣ) : k) ∈ 𝒜 0) ∧
-    ∀ i j (p q : ℕ), 0 < p → (p : ℤ) < D.d i j → 0 < q → (q : ℤ) < D.d j i →
+    ∀ i j (p q : ℕ), i ≠ j → (p : ℤ) < D.d i j → (q : ℤ) < D.d j i →
       Sc.s i j p q ≠ 0 → ∃ n : ℕ, (n : ℤ) = coefficientDegree sy i j p q ∧ Sc.s i j p q ∈ 𝒜 n
 
 /-- Lower-degree parameters: every nonzero `sᵢⱼ^{pq}` has nonnegative coefficient degree,
 i.e. `dᵢp + dⱼq ≤ dᵢdᵢⱼ`. No grading of `k` is involved. -/
 def ScalarData.LowerDegree {Ptwo : Prop} (sy : Symmetrizer D) (Sc : ScalarData D k Ptwo) :
     Prop :=
-  ∀ i j (p q : ℕ), 0 < p → (p : ℤ) < D.d i j → 0 < q → (q : ℤ) < D.d j i →
+  ∀ i j (p q : ℕ), i ≠ j → (p : ℤ) < D.d i j → (q : ℤ) < D.d j i →
     Sc.s i j p q ≠ 0 → 0 ≤ coefficientDegree sy i j p q
 
 /-- Under the homogeneity condition (1.31), nonzero coefficients have coefficient degree
 zero. -/
 theorem ScalarData.Homogeneous.coefficientDegree_eq_zero {Sc : Scalars D k} (hh : Sc.Homogeneous)
-    (sy : Symmetrizer D) {i j : I} {p q : ℕ} (hp : 0 < p) (hp' : (p : ℤ) < D.d i j)
-    (hq : 0 < q) (hq' : (q : ℤ) < D.d j i) (hs : Sc.s i j p q ≠ 0) :
+    (sy : Symmetrizer D) {i j : I} {p q : ℕ} (hij : i ≠ j) (hp' : (p : ℤ) < D.d i j)
+    (hq' : (q : ℤ) < D.d j i) (hs : Sc.s i j p q ≠ 0) :
     coefficientDegree sy i j p q = 0 := by
-  have h31 := hh i j p q hp hp' hq hq' hs
+  have h31 := hh i j p q hij hp' hq' hs
   have hsy := sy.symm i j
   have hji : D.d j i ≠ 0 := by
-    have : (0 : ℤ) < q := by exact_mod_cast hq
+    have : (0 : ℤ) ≤ q := by positivity
     omega
   have key : D.d j i * (sy.d i * D.d i j - sy.d i * p - sy.d j * q) = 0 := by
     linear_combination (-(sy.d i)) * h31 + (q : ℤ) * hsy
@@ -100,8 +100,8 @@ theorem ScalarData.Homogeneous.coefficientDegree_eq_zero {Sc : Scalars D k} (hh 
 /-- Homogeneous parameters are lower-degree parameters. -/
 theorem ScalarData.Homogeneous.lowerDegree {Sc : Scalars D k} (hh : Sc.Homogeneous)
     (sy : Symmetrizer D) : Sc.LowerDegree sy := by
-  intro i j p q hp hp' hq hq' hs
-  rw [hh.coefficientDegree_eq_zero sy hp hp' hq hq' hs]
+  intro i j p q hij hp' hq' hs
+  rw [hh.coefficientDegree_eq_zero sy hij hp' hq' hs]
 
 variable (D) in
 /-- **The graded-coefficient statement.** For every `ℕ`-graded commutative ring `k` in which

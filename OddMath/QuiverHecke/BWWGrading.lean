@@ -35,7 +35,7 @@ variable {k : Type w} [CommRing k]
 /-- Homogeneous Brundan–Wang–Webster parameters give homogeneous Brundan–Ellis parameters. -/
 theorem BWWScalars.Homogeneous.toScalars_homogeneous {P : BWWScalars D k}
     (hh : P.Homogeneous) : P.toScalars.Homogeneous :=
-  (ScalarData.toBWW_homogeneous_iff P.toScalars).mp (by rw [hh.toScalars_toBWW]; exact hh)
+  (ScalarData.toBWW_homogeneous_iff P.toScalars).mp (by rw [BWWScalars.toScalars_toBWW]; exact hh)
 
 variable (D) (sy : Symmetrizer D)
 
@@ -43,7 +43,7 @@ variable (D) (sy : Symmetrizer D)
 by `gdeg`. -/
 theorem isHomogeneous_gdeg_presBWW {P : BWWScalars D k} (hh : P.Homogeneous) :
     (presBWW D P).IsHomogeneous (gdeg D sy) := by
-  rw [presBWW_eq_pres_of_noPure hh.noPure]
+  rw [presBWW_eq_pres]
   exact isHomogeneous_gdeg D sy P.toScalars hh.toScalars_homogeneous
 
 end OddMath.SKM
@@ -67,12 +67,10 @@ theorem isHomogeneous_coefficientGraded_presBWW (P : SKM.BWWScalars D k)
     (hc : ∀ i j (p q : ℕ), i ≠ j → p ≤ D.dn i j → q ≤ D.dn j i → P.c i j p q ≠ 0 →
       P.c i j p q ∈ 𝒜 (SKM.coefficientDegree sy i j p q)) :
     CoefficientGrading.IsHomogeneous 𝒜 (gdeg D sy) (presBWW D P) := by
-  have hs : ∀ i j (p q : ℕ), 0 < p → (p : ℤ) < D.d i j → 0 < q → (q : ℤ) < D.d j i →
+  have hs : ∀ i j (p q : ℕ), i ≠ j → (p : ℤ) < D.d i j → (q : ℤ) < D.d j i →
       P.toScalars.s i j p q ≠ 0 →
         P.toScalars.s i j p q ∈ 𝒜 (SKM.coefficientDegree sy i j p q) := by
-    intro i j p q _ hp _ hq h0
-    by_cases hij : i = j
-    · subst hij; exact absurd (P.c_self i p q) h0
+    intro i j p q hij hp hq h0
     have h1 := dn_cast' (D := D) hij
     have h2 := dn_cast' (D := D) (Ne.symm hij)
     exact hc i j p q hij (by omega) (by omega) h0
@@ -108,7 +106,7 @@ theorem isHomogeneous_coefficientGraded_presBWW (P : SKM.BWWScalars D k)
 by `gdeg`. -/
 theorem isHomogeneous_gdeg_presBWW {P : SKM.BWWScalars D k} (hh : P.Homogeneous) :
     (presBWW D P).IsHomogeneous (gdeg D sy) := by
-  rw [← hh.noPure.toScalars_toBWW, presBWW_toBWW]
+  rw [← SKM.BWWScalars.toScalars_toBWW P, presBWW_toBWW]
   exact isHomogeneous_gdeg D sy P.toScalars hh.toScalars_homogeneous
 
 end OddMath.QuiverHecke

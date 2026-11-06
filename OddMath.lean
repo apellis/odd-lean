@@ -1230,6 +1230,7 @@ import OddMath.PbwPresentation
 import OddMath.PbwSpanning
 import OddMath.QuiverHecke.Examples
 import OddMath.SKM.Basic
+import OddMath.SKM.PureMonomials
 import OddMath.SKM.Beta
 import OddMath.SKM.Bubbles
 import OddMath.SKM.BubblesNegativeHeight
