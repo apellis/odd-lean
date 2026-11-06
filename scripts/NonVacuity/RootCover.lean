@@ -1,4 +1,5 @@
 import OddMath.SKM.RootCoverUnits
+import OddMath.SKM.RootCoverPresentation
 
 /-! # Non-vacuity: the units `c_{λ;i}` on affine `A₁` and on its root cover
 
@@ -11,7 +12,7 @@ noncomputable section
 
 namespace NonVacuity.RootCover
 
-open OddMath.SKM OddMath.SKM.RootCover
+open CategoryTheory OddMath.SKM OddMath.SKM.RootCover
 
 /-- Affine `A₁` on `ℤ²` with dependent simple roots. -/
 def affA1 : Datum (Fin 2) (Fin 2 → ℤ) where
@@ -59,5 +60,10 @@ theorem isEmpty_cScalars : IsEmpty (CScalars affA1Sc) := by
 /-- On the root cover they exist. -/
 example : Nonempty (CScalars (coverScalars affA1 affA1Sc)) :=
   nonempty_cScalars_rootCover affA1 affA1Sc
+
+/-- The projection functor from the presentation of the cover to that of affine `A₁`. -/
+example : (pres (rootCover affA1) (coverScalars affA1 affA1Sc)).Presented ⥤
+    (pres affA1 affA1Sc).Presented :=
+  projectionFunctor affA1 affA1Sc
 
 end NonVacuity.RootCover

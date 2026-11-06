@@ -77,13 +77,15 @@ basis does, through `etaP`, `epsP`, `xev` and the bubbles, and the proofs use th
   parameters. So the headline applied to the cover is never vacuous.
 
 *Remaining gap* (not routine; deferred pending a decision). The projection
-`X × (I →₀ ℤ) → X` is compatible with roots and coroots, so it induces a functor
-`pres (rootCover D) Sc → pres D Sc`. With dependent roots there is no map in the other
+`X × (I →₀ ℤ) → X` is compatible with roots and coroots, so it induces the presentation
+functor `RootCover.projectionFunctor : (pres (rootCover D) (coverScalars D Sc)).Presented ⥤
+(pres D Sc).Presented` (`OddMath/SKM/RootCoverPresentation.lean`), with linear Hom maps
+`RootCover.homMap ν s t` at a fixed right region `ν` that send each generator diagram to the
+same diagram (`homMap_diag`). With dependent roots there is no map in the other
 direction: a region map `f` would need `f(ν + α₀ + α₁) = f(ν) + α'₀ + α'₁`. Transferring the
 basis theorem from the cover to `D` needs two further theorems about the presentation:
 
-- (a) at a fixed right region `(μ, n)`, the projection functor is bijective on Homs between
-  words of equal root content;
+- (a) `homMap ν s t` is bijective whenever `s` and `t` have equal root content;
 - (b) in `pres D Sc`, Homs between words of equal weight but different root content vanish
   (affine `A₁`: `E₀E₁1_λ` and `1_λ`). This is a root-content grading of the whole
   presentation.
