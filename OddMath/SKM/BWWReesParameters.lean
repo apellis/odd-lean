@@ -139,24 +139,12 @@ end BWWScalars
 /-- On Brundan–Ellis parameters the lower-degree condition is `ScalarData.LowerDegree`. -/
 theorem ScalarData.toBWW_lowerDegree_iff {k : Type w} [CommRing k] (sy : Symmetrizer D)
     (Sc : Scalars D k) : Sc.toBWW.LowerDegree sy ↔ Sc.LowerDegree sy := by
-  rw [BWWScalars.lowerDegree_iff_interior]
-  constructor
-  · intro h i j p q hp hp' hq hq' hs
-    have hij : i ≠ j := by
-      rintro rfl
-      have := D.d_self i
-      omega
-    have hdn : (D.dn i j : ℤ) = D.d i j := D.dn_cast hij
-    have hdn' : (D.dn j i : ℤ) = D.d j i := D.dn_cast (Ne.symm hij)
-    have hc := ScalarData.toBWW_c_of_interior Sc hij hp (by omega) hq (by omega)
-    rw [← hc] at hs
-    exact h i j p q hij hp hp' hq hq' hs
-  · intro h i j p q hij hp hp' hq hq' hs
-    have hdn : (D.dn i j : ℤ) = D.d i j := D.dn_cast hij
-    have hdn' : (D.dn j i : ℤ) = D.d j i := D.dn_cast (Ne.symm hij)
-    have hc := ScalarData.toBWW_c_of_interior Sc hij hp (by omega) hq (by omega)
-    rw [hc] at hs
-    exact h i j p q hp hp' hq hq' hs
+  constructor <;> intro h i j p q hij hp hq hs <;>
+  · have hc := ScalarData.toBWW_c_of_lt Sc hij (p := p) (q := q)
+      (by have := D.dn_cast hij; omega) (by have := D.dn_cast (Ne.symm hij); omega)
+    first
+    | (rw [← hc] at hs; exact h i j p q hij hp hq hs)
+    | (rw [hc] at hs; exact h i j p q hij hp hq hs)
 
 namespace BWWReesParameters
 

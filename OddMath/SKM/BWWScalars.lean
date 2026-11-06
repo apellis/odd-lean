@@ -223,6 +223,13 @@ theorem toBWW_c_of_lt (Sc : Scalars D k) {i j : I} (hij : i ≠ j) {p q : ℕ}
   have h3 : p < D.dn i j ∧ q < D.dn j i := ⟨hp', hq'⟩
   simp [toBWW_c, bwwCoeff, hij, h1, h2, h3]
 
+/-- In the interior `0 < p < dᵢⱼ`, `0 < q < dⱼᵢ`, the coefficients of `Sc.toBWW` are the
+scalars `sᵢⱼ^{pq}`. -/
+theorem toBWW_c_of_interior (Sc : Scalars D k) {i j : I} (hij : i ≠ j) {p q : ℕ}
+    (_hp : 0 < p) (hp' : p < D.dn i j) (_hq : 0 < q) (hq' : q < D.dn j i) :
+    Sc.toBWW.c i j p q = Sc.s i j p q :=
+  toBWW_c_of_lt Sc hij hp' hq'
+
 /-- `Sc.toBWW` satisfies (1.31) exactly when `Sc` does. -/
 theorem toBWW_homogeneous_iff (Sc : Scalars D k) : Sc.toBWW.Homogeneous ↔ Sc.Homogeneous := by
   constructor

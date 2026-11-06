@@ -143,13 +143,13 @@ def cScalars {Sc : Scalars D k} (cs : CScalars Sc) : CScalars (scalars sy Sc) wh
 of `k[h]` by degree. -/
 theorem gradedHomogeneous {Sc : Scalars D k} (hl : Sc.LowerDegree sy) :
     (scalars sy Sc).GradedHomogeneous sy (homogeneousSubmodule Unit k) := by
-  refine ⟨fun i j => ?_, fun i j p q hp hp' hq hq' hs => ?_⟩
+  refine ⟨fun i j => ?_, fun i j p q hij hp' hq' hs => ?_⟩
   · exact (mem_homogeneousSubmodule _ _).mpr (isHomogeneous_C _ _)
   · have hs' : Sc.s i j p q ≠ 0 := by
       intro h0
       exact hs (by simp [scalars, h0])
     refine ⟨(coefficientDegree sy i j p q).toNat,
-      Int.toNat_of_nonneg (hl i j p q hp hp' hq hq' hs'), ?_⟩
+      Int.toNat_of_nonneg (hl i j p q hij hp' hq' hs'), ?_⟩
     exact (mem_homogeneousSubmodule _ _).mpr
       (isHomogeneous_C_mul_X_pow (Sc.s i j p q) () _)
 

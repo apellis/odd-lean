@@ -97,7 +97,7 @@ theorem d_ne {i j : Bool} (h : i ≠ j) : datum.d i j = 3 := by
   cases i <;> cases j <;> first | exact absurd rfl h | rfl
 
 theorem lowerDegree : scalars.LowerDegree symmetrizer := by
-  intro i j p q _ _ _ _ hs
+  intro i j p q _ _ _ hs
   have h : i ≠ j ∧ p = 1 ∧ q = 1 := by
     by_contra h
     exact hs (by simp [scalars, h])

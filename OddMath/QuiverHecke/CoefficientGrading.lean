@@ -190,7 +190,7 @@ theorem rees_t_mem (Sc : SKM.Scalars D K) (i j : I) :
   C_mem_reesGrading ((Sc.t i j : Kˣ) : K)
 
 theorem rees_s_mem {Sc : SKM.Scalars D K} (hl : Sc.LowerDegree sy) (i j : I) (p q : ℕ)
-    (hp : 0 < p) (hp' : (p : ℤ) < D.d i j) (hq : 0 < q) (hq' : (q : ℤ) < D.d j i)
+    (hij : i ≠ j) (hp' : (p : ℤ) < D.d i j) (hq' : (q : ℤ) < D.d j i)
     (hs : (SKM.ReesParameters.scalars sy Sc).s i j p q ≠ 0) :
     (SKM.ReesParameters.scalars sy Sc).s i j p q ∈
       reesGrading K (SKM.coefficientDegree sy i j p q) := by
@@ -199,7 +199,7 @@ theorem rees_s_mem {Sc : SKM.Scalars D K} (hl : Sc.LowerDegree sy) (i j : I) (p 
     apply hs
     change C (Sc.s i j p q) * MvPolynomial.X () ^ _ = 0
     rw [h0, map_zero, zero_mul]
-  exact C_mul_X_pow_mem_reesGrading _ _ (Int.toNat_of_nonneg (hl i j p q hp hp' hq hq' hs'))
+  exact C_mul_X_pow_mem_reesGrading _ _ (Int.toNat_of_nonneg (hl i j p q hij hp' hq' hs'))
 
 /-- **Rees parameters.** For lower-degree parameters over `K`, the quiver Hecke presentation
 with the Rees parameters `sᵢⱼ^{pq} h^{deg}` over `K[h]` is coefficient-graded homogeneous for
