@@ -107,8 +107,8 @@ theorem isIso_homDistinctMixedMateDot_param_sourceUnits (hn : Sc.NoPure) {a b c 
       omega
     obtain ⟨hpi, -⟩ := hpar hij hdij
     obtain ⟨hpj, hpos⟩ := hpar hij.symm hdji
-    obtain ⟨n, hn⟩ := dvd_of_mul_parity_ne_one hpi
-    rw [add_assoc, hn]
+    obtain ⟨n, hnd⟩ := dvd_of_mul_parity_ne_one hpi
+    rw [add_assoc, hnd]
     refine isIso_homDistinctMixedMateDot_of_pow_sourceUnits E A κ τ H hx' hy' hu (Sc.t i j) n
       (Submodule.add_mem _ (Submodule.smul_mem _ _ ?_)
       (Submodule.sum_mem _ fun p hp => Submodule.sum_mem _ fun q hq => ?_))
