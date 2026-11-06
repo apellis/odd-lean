@@ -65,6 +65,7 @@ def integerSummandOver (v t : D) (n : ℤ) (s : C) :
   (BalancedInduction.inclusion J (J ⋙ homModule (k := R) v) t s).restrictScalars K ∘ₗ
     homTensorProj 𝒜 hD v (J.obj s) t n
 
+omit [Preadditive C] [Linear K C] [Supercategory K C] [GradedSupercategory K C] [J.Additive] in
 /-- Projecting a homogeneous tensor summand selects precisely its sum degree. -/
 theorem integerSummandOver_homogeneous (v t : D) (n : ℤ) (s : C)
     (g : J.obj s ⟶ t) (b : v ⟶ J.obj s) {q r : ℤ}
@@ -217,7 +218,8 @@ theorem componentTensor_mem_integerDegreeOver (v t : D) (s : C)
     componentTensor (k := R) J v t s g b ∈ integerDegreeOver (K := K) (R := R) J v t (q + r) :=
   Submodule.mem_iSup_of_mem s (Submodule.mem_map_of_mem (GradedTensor.tmul_mem_part hg hb))
 
-omit [GradedAlgebra 𝒜] [J.Additive] in
+omit [GradedAlgebra 𝒜] [J.Additive] [Preadditive C] [Linear K C] [Supercategory K C]
+  [GradedSupercategory K C] in
 /-- Check a degree-submodule containment on its homogeneous pure tensors. -/
 theorem integerDegreeOver_le_iff (v t : D) (n : ℤ)
     (S : Submodule K (Component (k := R) J v t)) :
@@ -256,7 +258,8 @@ theorem integerProjectionOver_of_mem (v t : D) {m n : ℤ}
   · simpa only [LinearMap.mem_eqLocus, Q, ite_eq_left hmn, LinearMap.id_apply] using h
   · simpa only [LinearMap.mem_eqLocus, Q, ite_eq_right hmn, LinearMap.zero_apply] using h
 
-omit [GradedAlgebra 𝒜] [J.Additive] in
+omit [GradedAlgebra 𝒜] [J.Additive] [Preadditive C] [Linear K C] [Supercategory K C]
+  [GradedSupercategory K C] in
 /-- Every represented balanced tensor is a finite sum of integer-homogeneous classes. -/
 theorem iSup_integerDegreeOver_eq_top (v t : D) :
     (⨆ n : ℤ, integerDegreeOver (K := K) (R := R) J v t n) = ⊤ := by

@@ -60,7 +60,7 @@ theorem exists_presentedSubmodule_lower_bound (h𝒜 : ∀ m, m < 0 → 𝒜 m =
   obtain ⟨L, hL⟩ := exists_le_deg D sy v w
   refine ⟨L, fun n hn => ?_⟩
   refine BasisGrading.eq_bot_of_span_lower_bound (𝒜 := 𝒜)
-    (DirectSum.IsInternal.submodule_independent
+    (DirectSum.IsInternal.submodule_iSupIndep
       (CoefficientGrading.isInternal_presentedSubmodule hP (ob D v) (ob D w)))
     h𝒜 (fun hr hy => CoefficientGrading.smul_mem_presentedPart_add hr hy)
     (v := fun i : NFIdx v w => i.nf (D := D) (Sc := Sc)) (δ' := fun i => i.deg D sy)
@@ -87,7 +87,7 @@ theorem exists_elvHomDegreeOver_lower_bound (h𝒜 : ∀ m, m < 0 → 𝒜 m = �
     (SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff))
   let _ := Supercategory.restrictScalars K R
     (SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff))
-  haveI : ∀ A B : SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff),
+  have : ∀ A B : SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff),
       IsScalarTower K R (A ⟶ B) :=
     Linear.isScalarTower_restrictScalars K R _
   let _ := elvCoefficientCategoryGradingOver D sy 𝒜 cutoff

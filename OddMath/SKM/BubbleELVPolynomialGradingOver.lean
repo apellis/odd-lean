@@ -43,6 +43,7 @@ theorem elementary_mem_coefficientDegreePartOver (i : I) (r : ℕ) :
   rw [coefficientBasis_elementary] at h
   simpa [coefficientDegree] using h
 
+omit [GradedAlgebra 𝒜] in
 /-- A sign does not change the degree. -/
 theorem neg_one_pow_smul_mem_coefficientDegreePartOver {n : ℤ} {x : SYM D R}
     (hx : x ∈ coefficientDegreePartOver D sy 𝒜 n) (m : ℕ) :
