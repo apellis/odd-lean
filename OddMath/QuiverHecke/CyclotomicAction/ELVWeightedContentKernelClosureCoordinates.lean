@@ -266,9 +266,10 @@ theorem weightedContentUnitClosureCoefficient_induction
     contentRec D Sc cutoff N
       (P := fun β w => ∀ (hh : 0 ≤ contentCrossingHeight D cutoff i β) (r s : ℕ),
         P β w r s (weightedContentUnitClosureCoefficient D Sc cutoff N i β hh w r s))
-      (fun l hh r s => (unitCoefficient_atWord D Sc cutoff N i l hh r s).symm ▸
-        (h l hh r s : P (l : Multiset I) ⟨(oldTruncateFunctor D Sc cutoff N).obj ⟨l⟩, rfl⟩ r s
-          (unitWordCoefficient D Sc cutoff N i l hh r s))) β w
+      (fun l hh r s => by
+        rw [unitCoefficient_atWord D Sc cutoff N i l hh r s]
+        unfold unitWordCoefficient
+        exact h l hh r s) β w
   exact hw hh r s
 
 /-- Properties of the represented cap coefficient are checked on the truncated raw closure at
@@ -287,9 +288,10 @@ theorem weightedContentCapClosureCoefficient_induction
     contentRec D Sc cutoff N
       (P := fun β w => ∀ (hh : contentCrossingHeight D cutoff i β ≤ 0) (r s : ℕ),
         P β w r s (weightedContentCapClosureCoefficient D Sc cutoff N i β hh w r s))
-      (fun l hh r s => (capCoefficient_atWord D Sc cutoff N i l hh r s).symm ▸
-        (h l hh r s : P (l : Multiset I) ⟨(oldTruncateFunctor D Sc cutoff N).obj ⟨l⟩, rfl⟩ r s
-          (capWordCoefficient D Sc cutoff N i l hh r s))) β w
+      (fun l hh r s => by
+        rw [capCoefficient_atWord D Sc cutoff N i l hh r s]
+        unfold capWordCoefficient
+        exact h l hh r s) β w
   exact hw hh r s
 
 end OddMath.QuiverHecke.ELVOld
