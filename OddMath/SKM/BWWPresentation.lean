@@ -183,6 +183,7 @@ theorem relationBWW_toBWW (Sc : Scalars D k) (r : Rel D) :
       simp [relationBWW, relation, braidSum, h0, h0']
     simp only [relationBWW, relation, braidSum_toBWW Sc ν hij hd]
     abel
+  | zInt b => cases b <;> rfl
   | _ => rfl
 
 /-- **The comparison of presentations.** -/
