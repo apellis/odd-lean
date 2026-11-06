@@ -6,6 +6,11 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvenCentralBend
 
 SwappedHomInversion §3 (4)–(5): the finite ordered series of prescribed
 negative pre-caps and dotted post-units equals the evaluated A6 bend.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 set_option autoImplicit false
@@ -41,7 +46,7 @@ private theorem odd_coefficient (r : ℕ) :
 /-- At any given native reservoir nilpotence exponent, the actual
 finite pre-cap/post-unit word sum is exactly the evaluated odd A6 bend.
 The raw shifted pre-dot and raw reservoir unit/dot are retained. -/
-theorem vacuumBendWordSum_odd (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1)
+theorem vacuumBendWordSum_odd [Fact Sc.PureNilpotent] (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1)
     (n : ℕ)
     (hn : ProbeVacuumCap.diagonalPostDot D Sc m cutoff bound i (vacuumBendBlock D Sc m cutoff bound ΛR H) ^ n = 0) :
     vacuumBendWordSum D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H (2 * n) ≫
@@ -62,7 +67,7 @@ theorem vacuumBendWordSum_odd (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1)
 
 /-- Even colour: at any given native reservoir nilpotence exponent `n`, the actual
 finite pre-cap/post-unit word sum of length `n` is exactly the evaluated even A6 bend. -/
-theorem vacuumBendWordSum_even (hP : 0 < probeCutoff D m i) (hi : D.parity i = 0)
+theorem vacuumBendWordSum_even [Fact Sc.PureNilpotent] (hP : 0 < probeCutoff D m i) (hi : D.parity i = 0)
     (n : ℕ)
     (hn : ProbeVacuumCap.diagonalPostDot D Sc m cutoff bound i (vacuumBendBlock D Sc m cutoff bound ΛR H) ^ n = 0) :
     vacuumBendWordSum D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H n ≫

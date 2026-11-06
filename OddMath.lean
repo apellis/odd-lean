@@ -389,6 +389,7 @@ import OddMath.QuiverHecke.CyclotomicAction.PrefixQPInduction
 import OddMath.QuiverHecke.CyclotomicAction.PrefixQPKilling
 import OddMath.QuiverHecke.CyclotomicAction.PrefixQPEquation
 import OddMath.QuiverHecke.CyclotomicAction.ParameterTransport
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
 import OddMath.QuiverHecke.CyclotomicAction.BraidOperators
 import OddMath.QuiverHecke.CyclotomicAction.Intertwiner
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerWords
@@ -1838,6 +1839,8 @@ import OddMath.Algebra.NilpotentPerturbation
 import OddMath.Algebra.NilpotentPerturbationRing
 import OddMath.Algebra.BoxPolynomialUnits
 import OddMath.SKM.BWWPureCoefficients
+import OddMath.SKM.BWWPureNilpotent
+import OddMath.SKM.BWWReesPureNilpotent
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.BWWMixedEntry
 import OddMath.QuiverHecke.CyclotomicAction.ELVMatrixFunctorNaturality
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixFunctorInverse

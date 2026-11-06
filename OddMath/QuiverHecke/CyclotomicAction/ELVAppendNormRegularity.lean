@@ -141,7 +141,7 @@ theorem appendProjection_qLeft_regular (i j : I) (hji : j ≠ i) (v w : List I)
         apply hs
         rw [Sc.s_symm]
         exact Sc.s_eq_zero i j e a hp
-      rw [hlow a e (Finset.mem_Ioo.mp he').2 hep, smul_zero]
+      rw [hlow a e (Finset.mem_range.mp he') hep, smul_zero]
   rw [hl, hold, smul_zero, zero_add, zero_add] at he
   have hm := appendMovingPower_coordinate_shift D Sc cutoff 0 q (D.dn i j) hpar f
   rw [appendOldReconstruct_coordinateEquiv] at hm

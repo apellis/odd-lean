@@ -5,6 +5,11 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirPostUnitStandard
 
 SwappedHomInversion §3 (4)–(5): compare the prescribed negative pre-cap
 and dotted post-unit before summing the finite padded Dx expansion.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 set_option autoImplicit false
@@ -217,7 +222,7 @@ private theorem preSourceBlock_eq :
 
 /-- The source chart retains the output-block comparison before the
 normalized vacuum pre-cap source chart. -/
-def vacuumPreBlockSourceIso :=
+def vacuumPreBlockSourceIso [Fact Sc.PureNilpotent] :=
   eqToIso (preSourceBlock_eq D Sc m cutoff bound ΛP ΛR hcP i edgeP H) ≪≫
     vacuumPreSourceIso D Sc m ΛP hcP
       (fun _ => contentModuleTarget D Sc cutoff bound (0 : Multiset I)) (-ΛR) i edgeP
@@ -255,7 +260,7 @@ private theorem negativeCap_block (n : ℕ) :
 
 /-- Each prescribed negative pre-cap followed by a dotted post-unit is
 the corresponding raw vacuum bend monomial, with no compatibility premise. -/
-theorem vacuumBendMonomial_eq (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1)
+theorem vacuumBendMonomial_eq [Fact Sc.PureNilpotent] (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1)
     (n r : ℕ) :
     ((SKM.homPreNegativeCap (probeOldRouquierFamily D Sc m ΛP hcP) (elvWeightSpace D Sc cutoff bound ΛR) i (-ΛR) edgeP n (preCapInput D Sc m ΛP hcP (elvWeightSpace D Sc cutoff bound ΛR) (-ΛR) H) ≫
       SKM.homContentPostCup ((probeOldRouquierFamily D Sc m ΛP hcP)).obj (elvRouquierFamily D Sc cutoff bound ΛR hcR) i β ΛP edgeR r (preCapInput D Sc m ΛP hcP (elvWeightSpace D Sc cutoff bound ΛR) (-ΛR) H)).total (regularProbe D Sc m ΛP)) (emptyBlock D ΛR) ≫
@@ -285,7 +290,7 @@ theorem vacuumBendMonomial_eq (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1)
 
 /-- Even colour: each prescribed negative pre-cap followed by a dotted post-unit is
 the corresponding raw vacuum bend monomial, with no compatibility premise. -/
-theorem vacuumBendMonomial_even (hP : 0 < probeCutoff D m i) (hi : D.parity i = 0)
+theorem vacuumBendMonomial_even [Fact Sc.PureNilpotent] (hP : 0 < probeCutoff D m i) (hi : D.parity i = 0)
     (n r : ℕ) :
     ((SKM.homPreNegativeCap (probeOldRouquierFamily D Sc m ΛP hcP) (elvWeightSpace D Sc cutoff bound ΛR) i (-ΛR) edgeP n (preCapInput D Sc m ΛP hcP (elvWeightSpace D Sc cutoff bound ΛR) (-ΛR) H) ≫
       SKM.homContentPostCup ((probeOldRouquierFamily D Sc m ΛP hcP)).obj (elvRouquierFamily D Sc cutoff bound ΛR hcR) i β ΛP edgeR r (preCapInput D Sc m ΛP hcP (elvWeightSpace D Sc cutoff bound ΛR) (-ΛR) H)).total (regularProbe D Sc m ΛP)) (emptyBlock D ΛR) ≫

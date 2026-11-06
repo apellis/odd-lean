@@ -11,6 +11,11 @@ SwappedActionAssembly F2: the chosen signed dot is a unit of the entire
 weight-induction endomorphism ring. The actual scalar-quotient inverse
 works at every predecessor; absent predecessors have the zero module.
 The original weight fibre may be infinite, with no uniform exponent.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 open scoped Classical
@@ -60,7 +65,7 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (i : I) (Λ : X) {x y : X} (h : x + D.α i = y)
 
 /-- Each prescribed block dot has its constructed whole-functor inverse. -/
-theorem probeOldBlockDot_isUnit (β : WeightBlocks D Λ x) :
+theorem probeOldBlockDot_isUnit [Fact Sc.PureNilpotent] (β : WeightBlocks D Λ x) :
     IsUnit (End.of (probeOldBlockDot D Sc m i Λ h β)) :=
   probeAppendToInductionDot_isUnit D Sc m β.1.toList i
     (blockSucc D Λ i h β).1.toList _
@@ -80,7 +85,7 @@ theorem probeOldActionDot_total_blockSucc (M : ProbeOldWeightProduct D Sc m Λ x
     (M β) (probeOldInductionComponent_obj_blockSucc D Sc m i Λ h β M)).symm
 
 /-- Every output block uses the actual inverse, including absent predecessors. -/
-theorem probeOldActionDot_component_isUnit (M : ProbeOldWeightProduct D Sc m Λ x)
+theorem probeOldActionDot_component_isUnit [Fact Sc.PureNilpotent] (M : ProbeOldWeightProduct D Sc m Λ x)
     (δ : WeightBlocks D Λ y) :
     IsUnit (End.of ((probeOldActionDot D Sc m i Λ h).total M δ)) := by
   by_cases hδ : ∃ β, blockSucc D Λ i h β = δ
@@ -94,19 +99,19 @@ theorem probeOldActionDot_component_isUnit (M : ProbeOldWeightProduct D Sc m Λ 
     exact isUnit_one
 
 /-- The actual dot has a natural inverse over an arbitrary original-weight fibre. -/
-def probeOldActionDotIso : probeOldE D Sc m i Λ h ≅ probeOldE D Sc m i Λ h :=
+def probeOldActionDotIso [Fact Sc.PureNilpotent] : probeOldE D Sc m i Λ h ≅ probeOldE D Sc m i Λ h :=
   homogeneousTotalUnitIso (probeOldE D Sc m i Λ h) (probeOldActionDot D Sc m i Λ h)
     (probeOldActionDot_mem D Sc m i Λ h) (fun M =>
       productEnd_isUnit (fun δ : WeightBlocks D Λ y => ProbeCanonicalModules D Sc m δ.1)
         ((probeOldE D Sc m i Λ h).obj M) ((probeOldActionDot D Sc m i Λ h).total M)
         (probeOldActionDot_component_isUnit D Sc m i Λ h M))
 
-@[simp] theorem probeOldActionDotIso_hom :
+@[simp] theorem probeOldActionDotIso_hom [Fact Sc.PureNilpotent] :
     (probeOldActionDotIso D Sc m i Λ h).hom = probeOldActionDot D Sc m i Λ h :=
   homogeneousTotalUnitIso_hom _ _ _ _
 
 /-- Whole natural invertibility of the prescribed signed probe dot. -/
-theorem probeOldActionDot_isUnit : IsUnit (End.of (probeOldActionDot D Sc m i Λ h)) := by
+theorem probeOldActionDot_isUnit [Fact Sc.PureNilpotent] : IsUnit (End.of (probeOldActionDot D Sc m i Λ h)) := by
   apply (isUnit_iff_isIso _).mpr
   rw [← probeOldActionDotIso_hom]
   infer_instance

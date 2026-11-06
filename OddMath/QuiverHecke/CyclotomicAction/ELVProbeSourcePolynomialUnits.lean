@@ -1,6 +1,7 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReservoir
 import OddMath.QuiverHecke.CyclotomicAction.ELVMixedSourcePolynomialUnits
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.MixedEntrySourceUnits
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
 
 /-! # Distinct-colour source polynomial units for the ELV probe pair
 
@@ -36,6 +37,7 @@ theorem elvProbeMixedPostSourceUnits [Finite I]
     SKM.MixedPostSourceUnits ((P).T.E i hT) ((P).W.adj j hW) κ H
       (SKM.rouquierPower ((P).T.dot i hT) (if D.parity i = 1 then 2 else 1))
       (SKM.rouquierPower ((P).W.dot j hW) (if D.parity j = 1 then 2 else 1)) := by
+  haveI : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   let : Fintype I := Fintype.ofFinite I
   intro i j a b c d hT hW κ
   have hu := elvProbeReservoir_dot_isUnit D Sc m cutoff bound ΛP ΛR hP hR i hT

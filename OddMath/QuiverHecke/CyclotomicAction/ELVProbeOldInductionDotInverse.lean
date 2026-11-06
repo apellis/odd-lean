@@ -6,6 +6,11 @@ This supplies the probe-unit roadmap input for the prescribed old append inducti
 The inverse is constructed on the original balanced quotient using scalar-kernel
 closure and the inverse ordinary appended dot. The canonical probe module discharges
 the scalar-evaluation condition. No finite-dimensionality or coend comparison is used.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
@@ -91,7 +96,7 @@ local notation "T" => probeOrdinaryAppend D Sc m ν i
 local notation "U" => probeOldOrdinaryFunctor D Sc m (i :: ν)
 
 /-- Inverse of the source dot in the literal ordinary Hom quotient. -/
-def probeOrdinarySourceDotInverse (v : C) :
+def probeOrdinarySourceDotInverse [Fact Sc.PureNilpotent] (v : C) :
     (U).obj ((J).obj v) ⟶ (U).obj ((J).obj v) :=
   (probeOrdinaryAppendDotIso D Sc m ν i ((Q).obj v)).inv
 
@@ -101,27 +106,27 @@ theorem probeOldContentAppendDot_image (v : C) :
       probeOrdinaryAppendDot D Sc m ν i ((Q).obj v) :=
   probeOrdinaryAppendDot_old D Sc m ν i v
 
-theorem probeOrdinarySourceDotInverse_dot (v : C) :
+theorem probeOrdinarySourceDotInverse_dot [Fact Sc.PureNilpotent] (v : C) :
     probeOrdinarySourceDotInverse D Sc m ν i v ≫
       (U).map (X := (J).obj v) (Y := (J).obj v) (probeOldContentAppendDot D Sc m ν i v) =
         𝟙 ((U).obj ((J).obj v)) := by
   rw [probeOldContentAppendDot_image]
   exact (probeOrdinaryAppendDotIso D Sc m ν i ((Q).obj v)).inv_hom_id
 
-theorem probeOrdinarySourceDot_dotInverse (v : C) :
+theorem probeOrdinarySourceDot_dotInverse [Fact Sc.PureNilpotent] (v : C) :
     (U).map (X := (J).obj v) (Y := (J).obj v) (probeOldContentAppendDot D Sc m ν i v) ≫
       probeOrdinarySourceDotInverse D Sc m ν i v = 𝟙 ((U).obj ((J).obj v)) := by
   rw [probeOldContentAppendDot_image]
   exact (probeOrdinaryAppendDotIso D Sc m ν i ((Q).obj v)).hom_inv_id
 
-theorem probeOrdinarySourceDotInverse_mem (v : C) :
+theorem probeOrdinarySourceDotInverse_mem [Fact Sc.PureNilpotent] (v : C) :
     probeOrdinarySourceDotInverse D Sc m ν i v ∈
       parity (R := k) ((U).obj ((J).obj v)) ((U).obj ((J).obj v)) (D.parity i) :=
   Supercategory.inv_mem (probeOrdinaryAppendDotIso D Sc m ν i ((Q).obj v))
     ((probeOrdinaryAppendDot_supernatural D Sc m ν i).mem ((Q).obj v))
 
 /-- The inverse retains the full output twist on actual old input arrows. -/
-theorem probeOrdinarySourceDotInverse_naturality (v w : C) (f : v ⟶ w) :
+theorem probeOrdinarySourceDotInverse_naturality [Fact Sc.PureNilpotent] (v w : C) (f : v ⟶ w) :
     (U).map (X := (J).obj v) (Y := (J).obj w) ((J).map (X := v) (Y := w) f) ≫
       probeOrdinarySourceDotInverse D Sc m ν i w =
     probeOrdinarySourceDotInverse D Sc m ν i v ≫
@@ -142,21 +147,21 @@ theorem probeOrdinarySourceDotInverse_naturality (v w : C) (f : v ⟶ w) :
       congrArg (fun x => probeOrdinarySourceDotInverse D Sc m ν i v ≫ x) (map_twist T (D.parity i) qf)
     _ = _ := congrArg (fun x => probeOrdinarySourceDotInverse D Sc m ν i v ≫ twist k (D.parity i) x) hs.symm
 /-- The inverse-dot/twisted-Hom expression is linear in the actual old Hom. -/
-def probeOrdinaryInverseHom (v : C)
+def probeOrdinaryInverseHom [Fact Sc.PureNilpotent] (v : C)
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
     ((J).obj v ⟶ t) →ₗ[k] ((U).obj ((J).obj v) ⟶ (U).obj t) :=
   (Linear.leftComp k ((U).obj t) (probeOrdinarySourceDotInverse D Sc m ν i v)).comp
     ((twist k (D.parity i) (X := (U).obj ((J).obj v)) (Y := (U).obj t)).comp
       ((U).mapLinearMap (R := k) (X := (J).obj v) (Y := t)))
 
-@[simp] theorem probeOrdinaryInverseHom_apply (v : C)
+@[simp] theorem probeOrdinaryInverseHom_apply [Fact Sc.PureNilpotent] (v : C)
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) :
     probeOrdinaryInverseHom D Sc m ν i v t g =
       probeOrdinarySourceDotInverse D Sc m ν i v ≫
         twist k (D.parity i) ((U).map (X := (J).obj v) (Y := t) g) := rfl
 
 /-- This is the ordinary Hom identity needed for actual old coend balancing. -/
-theorem probeOrdinaryInverseHom_balance (v w : C)
+theorem probeOrdinaryInverseHom_balance [Fact Sc.PureNilpotent] (v w : C)
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν))
     (f : v ⟶ w) (g : (J).obj w ⟶ t) :
     probeOrdinaryInverseHom D Sc m ν i v t ((J).map (X := v) (Y := w) f ≫ g) =
@@ -180,7 +185,7 @@ theorem probeOrdinaryInverseHom_balance (v w : C)
     _ = _ := Category.assoc _ _ _
 
 /-- The first inverse product reduces to the scalar image of the old Hom. -/
-theorem probeOrdinaryInverseHom_dot (v : C)
+theorem probeOrdinaryInverseHom_dot [Fact Sc.PureNilpotent] (v : C)
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) :
     probeOrdinaryInverseHom D Sc m ν i v t
       (probeOldContentAppendDot D Sc m ν i v ≫ twist k (D.parity i) g) =
@@ -203,7 +208,7 @@ theorem probeOrdinaryInverseHom_dot (v : C)
     probeOrdinarySourceDotInverse_dot, Category.id_comp]
 
 /-- The other inverse product retains the same parity-square sign. -/
-theorem probeOrdinaryDot_twist_inverseHom (v : C)
+theorem probeOrdinaryDot_twist_inverseHom [Fact Sc.PureNilpotent] (v : C)
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) :
     (U).map (X := (J).obj v) (Y := (J).obj v) (probeOldContentAppendDot D Sc m ν i v) ≫
       twist k (D.parity i) (probeOrdinaryInverseHom D Sc m ν i v t g) =
@@ -228,33 +233,33 @@ local notation "hL" => probeOldInduced_evaluatesCoefficients D m Sc ν i N hN
 local notation "U" => probeOldOrdinaryFunctor D Sc m (i :: ν)
 
 /-- Ordinary Hom action on the unchanged actual induced old module values. -/
-def probeOldInverseHomAction (v : C)
+def probeOldInverseHomAction [Fact Sc.PureNilpotent] (v : C)
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
     ((J).obj v ⟶ t) →ₗ[k] ((L).obj ((J).obj v) ⟶ (L).obj t) :=
   (probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) t).comp
     (probeOrdinaryInverseHom D Sc m ν i v t)
 
 /-- The inverse summand is bilinear in the original old Hom and module vector. -/
-def probeOldInverseGenerator (v : C)
+def probeOldInverseGenerator [Fact Sc.PureNilpotent] (v : C)
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
     ((J).obj v ⟶ t) →ₗ[k] (N.obj v →ₗ[k] ELVOld.BalancedInduction.Obj J N.toFunctor t) :=
   (Linear.leftComp k ((L).obj t)
     (show N.obj v ⟶ (L).obj ((J).obj v) from ELVOld.BalancedInduction.unit J N.toFunctor v)).comp
       (probeOldInverseHomAction D Sc m ν i N hN v t)
 
-@[simp] theorem probeOldInverseGenerator_apply (v : C)
+@[simp] theorem probeOldInverseGenerator_apply [Fact Sc.PureNilpotent] (v : C)
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) (b : N.obj v) :
     probeOldInverseGenerator D Sc m ν i N hN v t g b =
       probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) t
         (probeOrdinaryInverseHom D Sc m ν i v t g)
         (ELVOld.BalancedInduction.unit J N.toFunctor v b) := rfl
 
-def probeOldInverseSummand (v : C)
+def probeOldInverseSummand [Fact Sc.PureNilpotent] (v : C)
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
     (((J).obj v ⟶ t) ⊗[k] N.obj v) →ₗ[k] ELVOld.BalancedInduction.Obj J N.toFunctor t :=
   TensorProduct.lift (probeOldInverseGenerator D Sc m ν i N hN v t)
 
-@[simp] theorem probeOldInverseSummand_tmul (v : C)
+@[simp] theorem probeOldInverseSummand_tmul [Fact Sc.PureNilpotent] (v : C)
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) (b : N.obj v) :
     probeOldInverseSummand D Sc m ν i N hN v t (g ⊗ₜ[k] b) =
       probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) t
@@ -262,7 +267,7 @@ def probeOldInverseSummand (v : C)
         (ELVOld.BalancedInduction.unit J N.toFunctor v b) :=
   TensorProduct.lift.tmul g b
 /-- Balancing is proved inside the original old coend. -/
-theorem probeOldInverseSummand_balance (v w : C)
+theorem probeOldInverseSummand_balance [Fact Sc.PureNilpotent] (v w : C)
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν))
     (f : v ⟶ w) (g : (J).obj w ⟶ t) (b : N.obj v) :
     probeOldInverseSummand D Sc m ν i N hN v t (((J).map f ≫ g) ⊗ₜ[k] b) =
@@ -293,7 +298,7 @@ theorem probeOldInverseSummand_balance (v w : C)
       (by simpa only [LinearMap.comp_apply] using hu)
 
 /-- Explicit signed inverse candidate on the actual old balanced quotient. -/
-def probeOldContentInductionDotInverse
+def probeOldContentInductionDotInverse [Fact Sc.PureNilpotent]
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
     ELVOld.BalancedInduction.Obj J N.toFunctor t →ₗ[k]
       ELVOld.BalancedInduction.Obj J N.toFunctor t :=
@@ -301,7 +306,7 @@ def probeOldContentInductionDotInverse
     (fun v => probeOldInverseSummand D Sc m ν i N hN v t)
     (fun v w f g b => probeOldInverseSummand_balance D Sc m ν i N hN v w t f g b)
 
-@[simp] theorem probeOldContentInductionDotInverse_tensor (v : C)
+@[simp] theorem probeOldContentInductionDotInverse_tensor [Fact Sc.PureNilpotent] (v : C)
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) (b : N.obj v) :
     probeOldContentInductionDotInverse D Sc m ν i N hN t
       (ELVOld.BalancedInduction.tensor J N.toFunctor v g b) =
@@ -313,7 +318,7 @@ def probeOldContentInductionDotInverse
     ELVOld.BalancedInduction.lift_tensor, probeOldInverseSummand_tmul]
 
 /-- No finite-dimensionality is used: one inverse product is checked on the old generators. -/
-theorem probeOldContentInductionDotInverse_comp_dot
+theorem probeOldContentInductionDotInverse_comp_dot [Fact Sc.PureNilpotent]
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
     (probeOldContentInductionDotInverse D Sc m ν i N hN t).comp
       (probeOldContentInductionDot D Sc m ν i N t) = LinearMap.id := by
@@ -342,7 +347,7 @@ private theorem probeOldContentInductionDot_unit_action (v : C) (b : N.obj v) :
         z (ELVOld.BalancedInduction.unit J N.toFunctor v b)) h).symm
 
 /-- The second inverse product uses the old dot's descended full supernaturality. -/
-theorem probeOldContentInductionDot_comp_inverse
+theorem probeOldContentInductionDot_comp_inverse [Fact Sc.PureNilpotent]
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
     (probeOldContentInductionDot D Sc m ν i N t).comp
       (probeOldContentInductionDotInverse D Sc m ν i N hN t) = LinearMap.id := by
@@ -399,7 +404,7 @@ theorem probeOldContentInductionDot_comp_inverse
 
 /-- Intermediate unit for a scalar-evaluated old module. The canonical probe-module
 specialization below proves the scalar-evaluation hypothesis. -/
-def probeOldContentInductionDotUnit
+def probeOldContentInductionDotUnit [Fact Sc.PureNilpotent]
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
     (End (ELVOld.BalancedInduction.superspace J N.toFunctor t))ˣ where
   val := End.of (probeOldContentInductionDot D Sc m ν i N t)
@@ -408,7 +413,7 @@ def probeOldContentInductionDotUnit
   inv_val := probeOldContentInductionDotInverse_comp_dot D Sc m ν i N hN t
 
 include hN in
-theorem probeOldContentInductionDot_isUnit
+theorem probeOldContentInductionDot_isUnit [Fact Sc.PureNilpotent]
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
     IsUnit (End.of (probeOldContentInductionDot D Sc m ν i N t) :
       End (ELVOld.BalancedInduction.superspace J N.toFunctor t)) :=

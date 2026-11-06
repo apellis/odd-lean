@@ -142,16 +142,16 @@ variable {k : Type*} [CommRing k] {B : Type*} [Ring B] [Algebra k B]
 
 /-- The double crossing `Q_{ij}(u, m)` on strands of colours `i, j`. -/
 def qLeft (u m : B) (d e : ℕ) (t₁ t₂ : k) (s : ℕ → ℕ → k) : B :=
-  ∑ p ∈ Finset.Ioo 0 d, ∑ q ∈ Finset.Ioo 0 e, s p q • (u ^ p * m ^ q) + (t₁ • u ^ d + t₂ • m ^ e)
+  ∑ p ∈ Finset.range d, ∑ q ∈ Finset.range e, s p q • (u ^ p * m ^ q) + (t₁ • u ^ d + t₂ • m ^ e)
 
 /-- The double crossing `Q_{ji}(m, w)` on strands of colours `j, i`, indexed as `Q_{ij}`. -/
 def qRight (m w : B) (d e : ℕ) (t₁ t₂ : k) (s : ℕ → ℕ → k) : B :=
-  ∑ p ∈ Finset.Ioo 0 d, ∑ q ∈ Finset.Ioo 0 e, s p q • (m ^ q * w ^ p) + (t₂ • m ^ e + t₁ • w ^ d)
+  ∑ p ∈ Finset.range d, ∑ q ∈ Finset.range e, s p q • (m ^ q * w ^ p) + (t₂ • m ^ e + t₁ • w ^ d)
 
 /-- The correction term of the braid relation on `i, j, i`, with signs `ζ`. -/
 def braidCorr (ζ : ℕ → k) (u m w : B) (d e : ℕ) (t₁ : k) (s : ℕ → ℕ → k) : B :=
   ∑ r ∈ Finset.range d, (ζ r * t₁) • (u ^ (d - 1 - r) * w ^ r) +
-    ∑ p ∈ Finset.Ioo 0 d, ∑ q ∈ Finset.Ioo 0 e, ∑ r ∈ Finset.range p,
+    ∑ p ∈ Finset.range d, ∑ q ∈ Finset.range e, ∑ r ∈ Finset.range p,
       (ζ r * s p q) • (u ^ (p - 1 - r) * m ^ q * w ^ r)
 
 /-- Termwise vanishing of `L(Q_{ji} - Q_{ij}) + R(braid correction)`. -/
@@ -163,7 +163,7 @@ theorem assembly (L R : B →+ B) (ζ : ℕ → k) (u m w : B) (d e : ℕ) (t₁
       R (∑ r ∈ Finset.range p, (ζ r * s p q) • (u ^ (p - 1 - r) * m ^ q * w ^ r)) = 0) :
     L (qRight m w d e t₁ t₂ s - qLeft u m d e t₁ t₂ s) + R (braidCorr ζ u m w d e t₁ s) = 0 := by
   have hQ : qRight m w d e t₁ t₂ s - qLeft u m d e t₁ t₂ s = t₁ • (w ^ d - u ^ d) +
-      ∑ p ∈ Finset.Ioo 0 d, ∑ q ∈ Finset.Ioo 0 e, s p q • (m ^ q * w ^ p - u ^ p * m ^ q) := by
+      ∑ p ∈ Finset.range d, ∑ q ∈ Finset.range e, s p q • (m ^ q * w ^ p - u ^ p * m ^ q) := by
     simp only [qRight, qLeft, smul_sub, Finset.sum_sub_distrib]
     abel
   rw [hQ, braidCorr, map_add, map_add]

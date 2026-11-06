@@ -8,6 +8,11 @@ Brundan–Ellis Definition 1.5 and (1.8)–(1.14): assemble the chosen scalar-
 evaluated induction, restriction, signed dots and crossings with the
 constructed local inverse families. The cutoff matches the highest
 weight. No local inverse or factor-family premise is supplied.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
@@ -51,7 +56,7 @@ def probeOldRouquierFamily :
   loc i _ _ _ h₁ h₂ := probeOldWeightLoc D Sc m i Λ h₁ h₂ (hcutoff i)
 
 /-- The chosen dot remains a unit on the assembled probe family. -/
-theorem probeOldRouquierFamily_dot_isUnit [Fintype I] (i : I) {x y : X} (h : x + D.α i = y) :
+theorem probeOldRouquierFamily_dot_isUnit [Fact Sc.PureNilpotent] [Fintype I] (i : I) {x y : X} (h : x + D.α i = y) :
     IsUnit (End.of ((probeOldRouquierFamily D Sc m Λ hcutoff).dot i h)) :=
   probeOldRouquierData_dot_isUnit D Sc m Λ i h
 

@@ -7,6 +7,11 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvenVacuumPolynomial
 
 SwappedActionAssembly F2 and SwappedHomInversion §3 (4): evaluate the
 chosen raw pre-dot inverse powers before the chosen normalized counit.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
@@ -32,7 +37,7 @@ private theorem total_pow {k C A : Type*} [CommRing k]
     (f ^ n).total N = ((totalEvaluation N).mapEnd F f) ^ n :=
   map_pow ((totalEvaluation N).mapEnd F) f n
 
-private theorem inverse_power_square {C : Type*} [Category C] [Preadditive C]
+private theorem inverse_power_square [Fact Sc.PureNilpotent] {C : Type*} [Category C] [Preadditive C]
     {A B : C} (a : A ≅ A) (e : A ≅ B) (xi : End A) (hxi : xi = a.inv)
     (y : End B) (hy : IsUnit y) (h : a.hom ≫ e.hom = e.hom ≫ y) (n : ℕ) :
     (xi ^ n) ≫ e.hom = e.hom ≫ Ring.inverse y ^ n := by
@@ -81,7 +86,7 @@ private theorem shiftedDot_isUnit (hi : D.parity i = 1) :
 
 /-- All inverse powers are those of the actual whole-weight raw dot.
 The target is the Ring inverse of the native shifted raw pre-dot. -/
-theorem vacuumPreInverseDot_source (hP : 0 < probeCutoff D m i)
+theorem vacuumPreInverseDot_source [Fact Sc.PureNilpotent] (hP : 0 < probeCutoff D m i)
     (hi : D.parity i = 1) (n : ℕ) :
     ((SKM.homPreDotInverse T W i muM h ((SKM.homContentPreF T W i muM h).obj Z)) ^ n).total N₀ ≫
       (vacuumPreSourceIso D Sc m Λ hc W muM i h H).hom =
@@ -99,7 +104,7 @@ theorem vacuumPreInverseDot_source (hP : 0 < probeCutoff D m i)
 
 /-- Every actual normalized negative pre-cap has the native inverse-dot
 and cap coordinates. No moment or cap compatibility hypothesis is used. -/
-theorem vacuumPreNegativeCap_eq (hP : 0 < probeCutoff D m i)
+theorem vacuumPreNegativeCap_eq [Fact Sc.PureNilpotent] (hP : 0 < probeCutoff D m i)
     (hi : D.parity i = 1) (n : ℕ) :
     (SKM.homPreNegativeCap T W i muM h n Z).total N₀ ≫
       H.map (eqToHom (emptyProbe_regular D Sc m Λ)) =
@@ -112,7 +117,7 @@ theorem vacuumPreNegativeCap_eq (hP : 0 < probeCutoff D m i)
     Category.assoc]
 
 /-- Even colour: all inverse powers are those of the actual whole-weight raw dot. -/
-theorem vacuumPreInverseDot_source_even (hP : 0 < probeCutoff D m i)
+theorem vacuumPreInverseDot_source_even [Fact Sc.PureNilpotent] (hP : 0 < probeCutoff D m i)
     (hi : D.parity i = 0) (n : ℕ) :
     ((SKM.homPreDotInverse T W i muM h ((SKM.homContentPreF T W i muM h).obj Z)) ^ n).total N₀ ≫
       (vacuumPreSourceIso D Sc m Λ hc W muM i h H).hom =
@@ -130,7 +135,7 @@ theorem vacuumPreInverseDot_source_even (hP : 0 < probeCutoff D m i)
 
 /-- Even colour: every actual normalized negative pre-cap has the native
 inverse-dot and cap coordinates. No moment or cap compatibility hypothesis is used. -/
-theorem vacuumPreNegativeCap_even (hP : 0 < probeCutoff D m i)
+theorem vacuumPreNegativeCap_even [Fact Sc.PureNilpotent] (hP : 0 < probeCutoff D m i)
     (hi : D.parity i = 0) (n : ℕ) :
     (SKM.homPreNegativeCap T W i muM h n Z).total N₀ ≫
       H.map (eqToHom (emptyProbe_regular D Sc m Λ)) =

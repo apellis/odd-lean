@@ -11,6 +11,11 @@ probe-dot inverse on the actual factor category. The full scalar-evaluated
 old module subcategory supplies the actual algebra-quotient inverse for
 every object. Pointwise homogeneous inverses assemble into an isomorphism
 of the prescribed induction superfunctor, including odd colour parity.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
@@ -72,7 +77,7 @@ variable [Fintype I]
 
 /-- Every evaluated old probe module has the prescribed dot isomorphism;
 the inverse comes from the actual scalar quotient, with no inverse premise. -/
-def probeEvaluatedDotModuleIso (N : ProbeEvaluatedModules D Sc m ν) :
+def probeEvaluatedDotModuleIso [Fact Sc.PureNilpotent] (N : ProbeEvaluatedModules D Sc m ν) :
     induced J N.obj ≅ induced J N.obj :=
   OddMath.HomogeneousSuperfunctorIso.ofBijectiveTotals
     (transformComponent hDot N.obj) (transformComponent_mem hDot N.obj) (by
@@ -83,29 +88,29 @@ def probeEvaluatedDotModuleIso (N : ProbeEvaluatedModules D Sc m ν) :
       exact (Module.End.isUnit_iff _).mp h)
 
 /-- The dot isomorphism retains the exact specified module forward. -/
-theorem probeEvaluatedDotModuleIso_hom (N : ProbeEvaluatedModules D Sc m ν) :
+theorem probeEvaluatedDotModuleIso_hom [Fact Sc.PureNilpotent] (N : ProbeEvaluatedModules D Sc m ν) :
     (probeEvaluatedDotModuleIso D Sc m ν i N).hom = transformComponent hDot N.obj :=
   OddMath.HomogeneousSuperfunctorIso.ofBijectiveTotals_hom _ _ _
 
 /-- The pointwise inverse is a morphism of the same full evaluated category. -/
-def probeEvaluatedDotIso (N : ProbeEvaluatedModules D Sc m ν) : (E).obj N ≅ (E).obj N :=
+def probeEvaluatedDotIso [Fact Sc.PureNilpotent] (N : ProbeEvaluatedModules D Sc m ν) : (E).obj N ≅ (E).obj N :=
   ObjectProperty.isoMk (ProbeEvaluatesCoefficients D m Sc (i :: ν)) (probeEvaluatedDotModuleIso D Sc m ν i N)
 
-private theorem evaluatedDotIso_hom_total (N : ProbeEvaluatedModules D Sc m ν) :
+private theorem evaluatedDotIso_hom_total [Fact Sc.PureNilpotent] (N : ProbeEvaluatedModules D Sc m ν) :
     (probeEvaluatedDotIso D Sc m ν i N).hom = (probeEvaluatedInductionDot D Sc m ν i).total N := by
   rw [probeEvaluatedInductionDot_total]
   apply InducedCategory.hom_ext
   exact probeEvaluatedDotModuleIso_hom D Sc m ν i N
 
 /-- The actual dot inverse is natural on the entire evaluated probe category. -/
-def probeEvaluatedInductionDotIso :
+def probeEvaluatedInductionDotIso [Fact Sc.PureNilpotent] :
     (⟨E⟩ : Superfunctor k (ProbeEvaluatedModules D Sc m ν)
       (ProbeEvaluatedModules D Sc m (i :: ν))) ≅ ⟨E⟩ :=
   OddMath.HomogeneousSuperfunctorIso.ofHom
     (probeEvaluatedInductionDot D Sc m ν i) (probeEvaluatedInductionDot_mem D Sc m ν i)
     (probeEvaluatedDotIso D Sc m ν i) (evaluatedDotIso_hom_total D Sc m ν i)
 
-@[simp] theorem probeEvaluatedInductionDotIso_hom :
+@[simp] theorem probeEvaluatedInductionDotIso_hom [Fact Sc.PureNilpotent] :
     (probeEvaluatedInductionDotIso D Sc m ν i).hom = probeEvaluatedInductionDot D Sc m ν i :=
   OddMath.HomogeneousSuperfunctorIso.ofHom_hom _ _ _ _
 
