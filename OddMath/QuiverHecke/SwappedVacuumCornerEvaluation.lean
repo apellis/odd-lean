@@ -231,29 +231,8 @@ theorem vacuum_evaluation {t' : List I} (a : SKM.SYM D k)
       (E.K t').mkQ (placementSign D Sc s t' (sourceCoefficientHom D Sc a f)) := by
   rw [E.ev_act f _ _ (E.ev_vacuum a), sourceCoefficientHom_id_comp]
 
-/-- The signed basis values: the hypothesis of `SwappedVacuumBlock.ofMoments`. -/
-theorem basis_values {t' : List I} (a : SKM.SYM.CoefficientIndex D) (i : NFIdx s t') :
-    E.ev t' (A.act s t' ((alpha D Sc μ).map i.nf)
-      (raw (SKM.SYM.coefficientBasis D k a) vacuum)) =
-      basisKoszulSign k a i • (E.K t').mkQ
-        (sourceCoefficientHom D Sc (SKM.SYM.coefficientBasis D k a) i.nf) := by
-  rw [E.vacuum_evaluation, placementSign_sourceCoefficientHom, map_smul]
-
 end VacuumCornerEvaluation
 
 variable (cs : SKM.CScalars Sc)
-
-/-- **A vacuum block from moments and a corner evaluation**: the right-bubble moments at
-the schedule, a natural corner evaluation, and the weight bound on its ideal at the
-target word. -/
-def SwappedVacuumBlock.ofCornerEvaluation {μ : X} {t t' : List I} {d : ℕ}
-    (A : UpwardModuleAction D Sc μ) (vacuum : A.V t)
-    (raw : SKM.SYM D k →ₐ[k] Module.End k (A.V t))
-    (hm : VacuumMoments cs A t raw (probeExponent D μ t d) (reservoirLevel D μ t d))
-    (E : VacuumCornerEvaluation D Sc A t raw vacuum)
-    (ideal_le : E.K t' ≤ ExtendedAtLeast D Sc t t'
-      ((vacuumCutoff t d : ℤ) - 2 * t.length.choose 2)) :
-    SwappedVacuumBlock D Sc cs μ t t' d :=
-  SwappedVacuumBlock.ofMoments cs A vacuum raw hm (E.K t') ideal_le (E.ev t') E.basis_values
 
 end OddMath.QuiverHecke

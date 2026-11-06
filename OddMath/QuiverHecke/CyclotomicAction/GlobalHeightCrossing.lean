@@ -654,13 +654,6 @@ def heightSuperInductionCrossing : SuperNatTrans k F G where
       exact heightInductionCrossingApp_naturality D Sc i j a ha n f hf
     · simp
 
-/-- All components except parity `|i||j|` vanish. -/
-theorem heightSuperInductionCrossing_homogeneous :
-    (heightSuperInductionCrossing D Sc i j a ha n).IsHomogeneous d := by
-  intro q h
-  funext M
-  simp [heightSuperInductionCrossing, h]
-
 /-- The component of parity `|i||j|` is precisely the transported corner crossing. -/
 @[simp] theorem heightSuperInductionCrossing_app
     (M : HeightModules D Sc a ha n) :

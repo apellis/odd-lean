@@ -209,12 +209,4 @@ theorem qp_projection_product (i : I) (μ : List I) :
       rw [MonoidalSupercategory.comp_whiskerRight (R := k)] at hr
       simpa only [qpFactor, ite_eq_right hx] using hr
 
-/-- The signed QP product identity with arbitrary spectators and full ELV coefficients. -/
-theorem qp_product (i : I) (μ σ z : List I)
-    (h : hom D Sc cutoff ((i :: μ) ++ σ) z) :
-    qpEval D Sc cutoff i μ σ z h
-      (moveHom D Sc i [] μ ≫ lastToFirstHom D Sc i μ) =
-    qpEval D Sc cutoff i μ σ z h (qpProduct D Sc i μ) :=
-  qpEval_of_projection_eq D Sc cutoff i μ σ z _ _ (qp_projection_product D Sc cutoff i μ) h
-
 end OddMath.QuiverHecke.ELVOld

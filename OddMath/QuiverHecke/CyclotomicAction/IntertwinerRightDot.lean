@@ -98,16 +98,6 @@ def sourceRightDot (i : I) (a : I → _root_.Polynomial k)
       rightDotCoefficient_smul])
     (by intros; rw [map_smul, InductionAlong.Ind.smul_tmul])
 
-/-- The involution has the prescribed sign on homogeneous coefficients. -/
-theorem rightDotCoefficient_of_mem (i : I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n : ℕ) (p : ZMod 2)
-    (b : CyclotomicAlgebra D Sc a n) (hb : b ∈ cyclotomicParity D Sc a ha n p) :
-    rightDotCoefficient D Sc i a ha n b = Supercategory.sign k (p * D.parity i) • b := by
-  have h := SVec.sgn_apply_of_mem (D.parity i)
-    ((SuperBimodule.mem_regularSVec_part_iff (cyclotomicParity D Sc a ha n)).mpr hb)
-  convert h using 1
-  rfl
-
 /-- On pure tensors, the source action includes the coefficient involution. -/
 @[simp] theorem sourceRightDot_tmul (i : I) (a : I → _root_.Polynomial k)
     (ha : CyclotomicPolynomialParity D a) (n : ℕ)

@@ -442,8 +442,6 @@ first- and last-boundary indexed ideals.
   `weighted_quotient_injective_on_extendedAtMost`.
 * `OddMath/QuiverHecke/ELVCyclotomicSeparation.lean`: `ELVGenerator`,
   `ELVRelationSpan`, `elv_quotient_injective_on_extendedAtMost`.
-* `OddMath/QuiverHecke/ReservoirCoordinates.lean`: `reservoirWindowCoordinates`,
-  `exists_bounded_reservoir_extraction`.
 * `OddMath/QuiverHecke/ReservoirSourceCoordinates.lean`:
   `reservoirSourceOrder_source`, `_involutive`, `_mem`.
 * `OddMath/QuiverHecke/ReservoirVacuumDetection.lean`:

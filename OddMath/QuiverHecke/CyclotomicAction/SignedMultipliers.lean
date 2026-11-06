@@ -41,25 +41,4 @@ abbrev TwoWordAlgebra := Matrix (Fin 2) (Fin 2) ℚ
 
 def parityMatrix : TwoWordAlgebra := !![1, 0; 0, -1]
 
-theorem parityMatrix_square : parityMatrix * parityMatrix = 1 := by
-  ext i j
-  fin_cases i <;> fin_cases j <;> norm_num [parityMatrix, Matrix.mul_apply, Fin.sum_univ_two]
-
-/-- Parity fixes the word idempotents and negates the directed crossings. -/
-def matrixParity : TwoWordAlgebra →+* TwoWordAlgebra where
-  toFun h := parityMatrix * h * parityMatrix
-  map_one' := by simpa using parityMatrix_square
-  map_mul' a b := by
-    change parityMatrix * (a * b) * parityMatrix =
-      (parityMatrix * a * parityMatrix) * (parityMatrix * b * parityMatrix)
-    calc
-      _ = parityMatrix * a * (parityMatrix * parityMatrix) * b * parityMatrix := by
-        rw [parityMatrix_square]; simp only [mul_one, mul_assoc]
-      _ = _ := by simp only [mul_assoc]
-  map_zero' := by simp
-  map_add' a b := by simp [mul_add, add_mul]
-
-/-- Sum of the two directed crossings in the disconnected odd/odd example. -/
-def oddUnit : TwoWordAlgebra := !![0, 1; 1, 0]
-
 end OddMath.QuiverHecke.CyclotomicAction

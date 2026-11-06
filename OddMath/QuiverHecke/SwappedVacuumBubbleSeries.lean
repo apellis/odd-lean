@@ -274,12 +274,6 @@ theorem bubbles_eq (h : VacuumMoments cs A t raw M N) (a : SKM.SYM D k) :
       rw [SKM.SYM.substitutionHom_delta]
   rw [e]; rfl
 
-/-- **(A16)** at the vacuum schedule: the field `SwappedVacuumBlock.bubbles_eq`. -/
-theorem vacuum_bubbles_eq {d : ℕ}
-    (h : VacuumMoments cs A t raw (probeExponent D μ t d) (reservoirLevel D μ t d))
-    (a : SKM.SYM D k) : A.bubbles cs t a = raw (vacuumSubstitution D k μ t d a) :=
-  h.bubbles_eq a
-
 end VacuumMoments
 
 end OddMath.QuiverHecke

@@ -18,17 +18,6 @@ local instance probeLocalPreAdjunctionPi {k : Type u} [CommRing k]
     (A B : PiSCat.{u,u,u+1} k) : PiSupercategory k (A ⟶ B) :=
   PiTwoSupercategory.homPiLeft A B
 
-private def retagAdjunction {k : Type u} [CommRing k] {A B : PiSCat.{u,u,u+1} k}
-    {F : B ⟶ A} {E : A ⟶ B} {σ τ : ZMod 2}
-    (L : SKM.ShiftedSuperAdjunction (k := k) F E σ) (h : σ = τ) :
-    SKM.ShiftedSuperAdjunction (k := k) F E τ := h ▸ L
-
-private theorem negative_cutoff_parity (p : ZMod 2) (P : ℕ) (hP : 0 < P) :
-    p * (((-(P : ℤ)) : ZMod 2) + 1) = (P - 1) • p := by
-  rw [Int.cast_natCast, nsmul_eq_mul, Nat.cast_sub (by omega : 1 ≤ P), Nat.cast_one]
-  generalize (P : ZMod 2) = q
-  fin_cases p <;> fin_cases q <;> decide
-
 private def sourceIso {k : Type u} [CommRing k] {A B R : PiSCat.{u,u,u+1} k}
     (E : A ⟶ B) (F : B ⟶ A) (H : A ⟶ R) (σ : ZMod 2) :=
   (SKM.homPre (k := k) E).mapIso ((SKM.homParityShiftDatum (k := k) σ).iso (F ≫ H)) ≪≫
@@ -90,25 +79,6 @@ variable {Z : PiSCat.{u,u,u+1} k}
       (associator E₀ (inductionCell D Sc m i) E₃).hom) ≫ E₀ ◁ t' ≫
       ((associator E₀ (inductionCell D Sc m i) E₃).inv ≫ t ▷ E₃ ≫
         (associator E₀ (inductionCell D Sc m i) E₃).hom))
-
-/-- The existing negative-height local left adjunction on the given native
-probe induction/restriction edge, expressed at its last-row parity. -/
-def localLeftAdjunction :
-    SKM.ShiftedSuperAdjunction (k := k) (restrictionCell D Sc m i) (inductionCell D Sc m i)
-      ((cut i - 1) • D.parity i) :=
-  retagAdjunction (L.negativeLeftAdjunction U (by omega) hsq hsq' hB)
-    (by simpa only [Int.cast_neg] using negative_cutoff_parity (D.parity i) (cut i) hP)
-
-/-- The unshifted precomposition adjunction from this specified local
-probe left adjunction, with canonical parity comparisons. -/
-def localPreAdjunction (R : PiSCat.{u,u,u+1} k) :=
-  SKM.unshiftedPreAdjunction
-    (localLeftAdjunction D Sc m i A₀ x₀ t L A₃ x₃ t' U hP hsq hsq' hB) R
-
-/-- The same normalized adjunction on the full Hom supercategories. -/
-def localPreSuperAdjunction (R : PiSCat.{u,u,u+1} k) :=
-  SKM.unshiftedPreSuperAdjunction
-    (localLeftAdjunction D Sc m i A₀ x₀ t L A₃ x₃ t' U hP hsq hsq' hB) R
 
 end Adjacent
 end Local

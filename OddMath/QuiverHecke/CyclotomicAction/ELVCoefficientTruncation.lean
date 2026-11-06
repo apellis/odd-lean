@@ -284,12 +284,6 @@ theorem mkQ_mem_truncatedDegree {v w : List I} {n : ℤ} {f : hom D Sc cutoff v 
     (truncatedIdeal D Sc cutoff N v w).mkQ f ∈ truncatedDegree D Sc cutoff sy hc N v w n :=
   Submodule.mem_map_of_mem hf
 
-private def truncatedSingleLinear (i : I) (n : ℕ) :
-    SKM.SYM D k →ₗ[k] TruncatedOld D Sc cutoff N [i] [i] :=
-  (truncatedIdeal D Sc cutoff N [i] [i]).mkQ.comp
-    (((TensorProduct.mk k _ _).flip (dotE D Sc [i] 0 ^ n : End _)).comp
-      (SKM.SYM.elvCoefficientQuotient D cutoff).toLinearMap)
-
 /-- The quotient map preserves the inherited integer degree. -/
 theorem truncateOld_mem_degree {v w : List I} {n : ℤ} {f : Old D Sc cutoff v w}
     (hf : f ∈ oldDegree D sy Sc hc cutoff v w n) :

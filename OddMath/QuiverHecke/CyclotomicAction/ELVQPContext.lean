@@ -48,33 +48,6 @@ def targetRightContext (σ : List I) (i : I) (v w : List I) :
       projection D Sc cutoff i (v ++ σ) (w ++ σ)
         (rightContext D Sc cutoff σ (i :: v) w f) := rfl
 
-/-- An equality in the smaller quotient remains true after adjoining spectators and
-an arbitrary full-coefficient continuation. -/
-theorem projection_rightContext_eq (σ : List I) (i : I) {v w z : List I}
-    (f g : hom D Sc cutoff (i :: v) w)
-    (hfg : projection D Sc cutoff i v w f = projection D Sc cutoff i v w g)
-    (h : hom D Sc cutoff (w ++ σ) z) :
-    projection D Sc cutoff i (v ++ σ) z
-        (rightContext D Sc cutoff σ (i :: v) w f ≫ h) =
-      projection D Sc cutoff i (v ++ σ) z
-        (rightContext D Sc cutoff σ (i :: v) w g ≫ h) :=
-  congrArg (fun x => act D Sc cutoff i h (targetRightContext D Sc cutoff σ i v w x)) hfg
-
-/-- The QP induction hypothesis descends from its smaller quotient to every right
-context and arbitrary continuation. No quotient-stability premise is assumed. -/
-theorem qpEval_of_projection_eq (i : I) (μ σ z : List I)
-    (f g : End ((pres D Sc).obj (ob D (i :: μ))))
-    (hfg : projection D Sc cutoff i μ (i :: μ)
-        (affineUnit D Sc cutoff _ _ f ≫ relation D Sc cutoff i μ) =
-      projection D Sc cutoff i μ (i :: μ)
-        (affineUnit D Sc cutoff _ _ g ≫ relation D Sc cutoff i μ))
-    (h : hom D Sc cutoff ((i :: μ) ++ σ) z) :
-    qpEval D Sc cutoff i μ σ z h f = qpEval D Sc cutoff i μ σ z h g := by
-  have he := projection_rightContext_eq D Sc cutoff σ i _ _ hfg h
-  rw [rightContext_comp, rightContext_comp, rightContext_relation,
-    Category.assoc, Category.assoc] at he
-  exact he
-
 /-- Distinct-colour recursion, with arbitrary spectators and full ELV continuation. -/
 theorem qp_distinct (i x : I) (hx : i ≠ x) (μ σ z : List I)
     (h : hom D Sc cutoff ((i :: (μ ++ [x])) ++ σ) z) :

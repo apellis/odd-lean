@@ -444,32 +444,6 @@ theorem leftWindowCapColumn_mem (hh : h < 0) (n : Fin (-h).toNat) :
     rw [add_assoc, add_comm r q, ← add_assoc, leftWindow_double, zero_add]
   rwa [he] at hm
 
-/-- All five raw positive-height inverse identities, with principal inverse `sig`. -/
-theorem leftWindowCup_inverse (hh : 0 < h) :
-    (L.sig ≫ (-L.sigL) + ∑ n : Fin h.toNat,
-      L.leftWindowCupRow n ≫ L.leftWindowCup n = 𝟙 _) ∧
-    ((-L.sigL) ≫ L.sig = 𝟙 _) ∧
-    (∀ n : Fin h.toNat, (-L.sigL) ≫ L.leftWindowCupRow n = 0) ∧
-    (∀ n : Fin h.toNat, L.leftWindowCup n ≫ L.sig = 0) ∧
-    (∀ m n : Fin h.toNat,
-      L.leftWindowCup m ≫ L.leftWindowCupRow n = if m = n then 𝟙 _ else 0) := by
-  refine ⟨L.leftWindowCup_total hh, ?_, L.sigL_leftWindowCupRow hh,
-    fun n => L.leftWindowCup_sig hh n.isLt, L.leftWindowCup_row hh⟩
-  rw [Preadditive.neg_comp, L.sigL_sig_of_nonneg hh.le, neg_neg]
-
-/-- All five raw negative-height inverse identities, with principal inverse `sig`. -/
-theorem leftWindowCap_inverse (hh : h < 0) :
-    ((-L.sigL) ≫ L.sig + ∑ n : Fin (-h).toNat,
-      L.leftWindowCap n ≫ L.leftWindowCapColumn n = 𝟙 _) ∧
-    (L.sig ≫ (-L.sigL) = 𝟙 _) ∧
-    (∀ n : Fin (-h).toNat, L.sig ≫ L.leftWindowCap n = 0) ∧
-    (∀ n : Fin (-h).toNat, L.leftWindowCapColumn n ≫ (-L.sigL) = 0) ∧
-    (∀ m n : Fin (-h).toNat,
-      L.leftWindowCapColumn m ≫ L.leftWindowCap n = if m = n then 𝟙 _ else 0) := by
-  refine ⟨L.leftWindowCap_total hh, ?_, fun n => L.sig_leftWindowCap hh n.isLt,
-    L.leftWindowCapColumn_sigL hh, L.leftWindowCap_column hh⟩
-  rw [Preadditive.comp_neg, L.sig_sigL_of_nonpos hh.le, neg_neg]
-
 omit [TwoSupercategory k B] in
 /-- At height zero both windows are empty and both bare products are identities. -/
 theorem leftWindow_zero_inverse (hh : h = 0) :

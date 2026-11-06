@@ -136,23 +136,6 @@ theorem evaluate_proj (t : contentRepresentable D Sc cutoff N β v ⟶
     rw [map_add, proj_of_mem_ne (evaluate_part D Sc cutoff N β t 0) (by decide),
       proj_of_mem (evaluate_part D Sc cutoff N β t 1)]
 
-/-- Transport the established Hom coordinates through supplied module isomorphisms. -/
-def homEquivOfIso {M P : ContentModules D Sc cutoff N β}
-    (a : M ≅ contentRepresentable D Sc cutoff N β v)
-    (b : P ≅ contentRepresentable D Sc cutoff N β w) : (M ⟶ P) ≃ₗ[k] (w ⟶ v) := by
-  let e : (M ⟶ P) ≃ₗ[k] (contentRepresentable D Sc cutoff N β v ⟶ contentRepresentable D Sc cutoff N β w) :=
-    LinearEquiv.ofLinearMap
-    ({
-      toFun := fun t => a.inv ≫ t ≫ b.hom
-      map_add' := by intros; simp only [Preadditive.comp_add, Preadditive.add_comp]
-      map_smul' := by intros; simp only [Linear.comp_smul, Linear.smul_comp, RingHom.id_apply] } :
-      (M ⟶ P) →ₗ[k] (contentRepresentable D Sc cutoff N β v ⟶ contentRepresentable D Sc cutoff N β w))
-    { toFun := fun t => a.hom ≫ t ≫ b.inv
-      map_add' := by intros; simp only [Preadditive.comp_add, Preadditive.add_comp]
-      map_smul' := by intros; simp only [Linear.comp_smul, Linear.smul_comp, RingHom.id_apply] }
-    (by ext t; simp) (by ext t; simp)
-  exact e.trans (homEquiv D Sc cutoff N β)
-
 end OddMath.QuiverHecke.ELVOld.ContentYoneda
 
 namespace OddMath.QuiverHecke.ELVOld.VacuumRepresentable

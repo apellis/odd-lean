@@ -167,9 +167,6 @@ theorem ZTransport.of_or (h : IsUnit (2 : R) ∨ ¬IsUnit (2 : S)) : ZTransport 
     rw [coeff_relation f D Sc _ h]
     exact (pres D (scalars D f Sc)).lin_rel_self (.zInt b)⟩
 
-theorem ZTransport.of_not_isUnit (h : ¬IsUnit (2 : S)) : ZTransport f D Sc :=
-  .of_or f D Sc (.inr h)
-
 instance ZTransport.of_scalars (Sc : Scalars D R) : ZTransport f D Sc where
   lin_coeff_relation b := by
     by_cases h : ∃ i, D.parity i = 1

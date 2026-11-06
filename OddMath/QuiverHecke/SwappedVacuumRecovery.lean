@@ -175,21 +175,6 @@ namespace SwappedVacuumEvaluation
 variable {D Sc cs} {μ : X} {t t' : List I} {d : ℕ}
   (E : SwappedVacuumEvaluation D Sc cs μ t t' d)
 
-/-- The vacuum quotient restricted to the degree-`d` window. -/
-def windowQuotient : ExtendedAtMost D Sc t t' d →ₗ[k]
-    ((coefficientObj D Sc t ⟶ coefficientObj D Sc t') ⧸ E.ideal) :=
-  E.ideal.mkQ.comp (ExtendedAtMost D Sc t t' d).subtype
-
-theorem ker_windowQuotient : LinearMap.ker E.windowQuotient = ⊥ := by
-  rw [LinearMap.ker_eq_bot']
-  intro x hx
-  apply Subtype.ext
-  have hmem : (x : coefficientObj D Sc t ⟶ coefficientObj D Sc t') ∈ E.ideal :=
-    (Submodule.Quotient.mk_eq_zero _).mp hx
-  exact Submodule.disjoint_def.mp
-    (disjoint_extendedAtMost_extendedAtLeast D Sc E.degree_lt_bound) _ x.property
-    (E.ideal_le hmem)
-
 end SwappedVacuumEvaluation
 
 /-- An upward module action supplies the source and target actions of a vacuum
@@ -351,18 +336,6 @@ theorem upwardCoefficientMap_injective_of_vacuum_evaluations (μ : X) (t t' : Li
   obtain ⟨E⟩ := h d
   refine ⟨fun _ => d + 2 * t.length.choose 2 + 1, d + 2 * t.length.choose 2 + 1,
     fun _ => le_rfl, by omega, ⟨E.toBoundedCyclicRecovery _⟩⟩
-
-/-- **Conditional theorem.** Over a commutative ring, vacuum evaluations of the
-swapped action at every equal-weight upward word pair, external weight and
-degree bound imply the full nondegeneracy conjecture. -/
-theorem nondegeneracy_of_vacuum_evaluations
-    (h : ∀ (t t' : List I), SKM.wt D 0 (SKM.ups t) = SKM.wt D 0 (SKM.ups t') →
-      ∀ (μ : X) (d : ℕ), Nonempty (SwappedVacuumEvaluation D Sc cs μ t t' d)) :
-    SKM.NondegeneracyConjecture cs := by
-  apply SKM.nondegeneracy_of_upward_independence cs
-  apply upward_independence_of_coefficientMap D Sc cs
-  intro t t' hw μ
-  exact upwardCoefficientMap_injective_of_vacuum_evaluations μ t t' (h t t' hw μ)
 
 end Recovery
 

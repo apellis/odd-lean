@@ -143,12 +143,4 @@ def sourceRowsReconstruct (p : ZMod 2) (i : I) (ν : List I) :
       sourceTailRow D Sc cutoff p i ν q.1 q.2 b :=
   DirectSum.toModule_lof _ _ _
 
-/-- Exponent translation on the finite-tail-index times natural-number direct sum. -/
-def sourceRowsShift (ν : List I) (d : ℕ) :
-    SourceRows D Sc cutoff ν →ₗ[(ContentRing D Sc cutoff ν)ᵐᵒᵖ]
-      SourceRows D Sc cutoff ν :=
-  DirectSum.toModule _ _ _ fun q =>
-    DirectSum.lof (ContentRing D Sc cutoff ν)ᵐᵒᵖ (SourceTailIndex ν × ℕ)
-      (fun r => OldContentRow D Sc cutoff ν r.1.1.val) (q.1, d + q.2)
-
 end OddMath.QuiverHecke.ELVOld

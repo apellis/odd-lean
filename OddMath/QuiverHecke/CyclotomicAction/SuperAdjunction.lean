@@ -27,44 +27,4 @@ local notation "Q" => restrictionCorner D Sc i a ha n
 local notation "F" => cyclotomicSuperInduction D Sc i a ha n
 local notation "E" => cyclotomicSuperRestriction D Sc i a ha n
 
-theorem superInduction_triangle (M : CyclotomicSupermodules D Sc a ha n) :
-    (F).map ((cyclotomicSuperUnit D Sc i a ha n).app M) ≫
-      (cyclotomicSuperCounit D Sc i a ha n).app ((F).obj M) = 𝟙 ((F).obj M) := by
-  apply SuperBimodule.hom_ext
-  apply tensor_hom_ext P M
-  intro x m
-  change superCounitLinear D Sc i a ha n (tensor P M)
-    ((whiskerLeft P (superUnitComponent D Sc i a ha n M)).1 (btmul P M x m)) = btmul P M x m
-  rw [whiskerLeft_btmul_even P _ (superUnitComponent_mem D Sc i a ha n M)]
-  change superCounitLinear D Sc i a ha n (tensor P M)
-    (btmul P (tensor Q (tensor P M)) x
-      (btmul Q (tensor P M) (restrictionCornerOf D Sc i a ha n 1)
-        (btmul P M (inductionCornerIdempotent D Sc i a ha n) m))) = btmul P M x m
-  rw [superCounitLinear_btmul_btmul, lact_btmul]
-  congr 1
-  apply Subtype.ext
-  change (x.1 * φ 1) * φ 1 = x.1
-  rw [x.2, x.2]
-
-theorem superRestriction_triangle (M : CyclotomicSupermodules D Sc a ha (n + 1)) :
-    (cyclotomicSuperUnit D Sc i a ha n).app ((E).obj M) ≫
-      (E).map ((cyclotomicSuperCounit D Sc i a ha n).app M) = 𝟙 ((E).obj M) := by
-  apply SuperBimodule.hom_ext
-  apply tensor_hom_ext Q M
-  intro y m
-  change (whiskerLeft Q (superCounitComponent D Sc i a ha n M)).1
-    (superUnitLinear D Sc i a ha n (tensor Q M) (btmul Q M y m)) = btmul Q M y m
-  rw [superUnitLinear_apply,
-    whiskerLeft_btmul_even Q _ (superCounitComponent_mem D Sc i a ha n M)]
-  change btmul Q M (restrictionCornerOf D Sc i a ha n 1)
-    (superCounitLinear D Sc i a ha n M
-      (btmul P (tensor Q M) (inductionCornerIdempotent D Sc i a ha n) (btmul Q M y m))) =
-    btmul Q M y m
-  rw [superCounitLinear_btmul_btmul]
-  change btmul Q M (restrictionCornerOf D Sc i a ha n 1) (M.lact (φ 1 * y.1) m) = btmul Q M y m
-  rw [y.2, ← btmul_ract_lact]
-  congr 1
-  apply Subtype.ext
-  exact y.2
-
 end OddMath.QuiverHecke

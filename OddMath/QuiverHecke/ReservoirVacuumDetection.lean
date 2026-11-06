@@ -2,7 +2,7 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.SpectatorSeparation
+import OddMath.QuiverHecke.SpectatorDetection
 import OddMath.SKM.ReservoirBubbleCoordinates
 
 /-! # Reservoir-vacuum detection at a prescribed weight
@@ -29,16 +29,6 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 /-- The connected reservoir quotient on the active words, without spectators. -/
 abbrev ReservoirQuotient (cutoff : I → ℕ) (t t' : List I) :=
   (coefficientObj D Sc t ⟶ coefficientObj D Sc t') ⧸ ELVRelationSpan D Sc cutoff t t'
-
-/-- C0 on any prescribed colourwise parity schedule. In particular `ε = 0`
-and `ε = 1` give even and odd cutoffs; mixed choices use the same proof. This
-is algebraic separation, not realization of the cutoffs by dominant weights. -/
-theorem reservoir_parity_cutoffs_detect (ε : I → ℕ) (t t' : List I)
-    (f : coefficientObj D Sc t ⟶ coefficientObj D Sc t')
-    (hf : ∀ m, (ELVRelationSpan D Sc (fun i => 2 * m + ε i) t t').mkQ f = 0) : f = 0 := by
-  apply cofinal_elv_quotients_with_spectators_detect D Sc
-    (fun m i => 2 * m + ε i) (fun N => ⟨N, fun i => by omega⟩) [] t t' f
-  exact hf
 
 /-- The linear data extracted from fusion at a highest-probe vacuum. All weights
 in `act` are literally `μ`; increasing a cutoff does not change this weight.
@@ -95,14 +85,6 @@ theorem normalized_bubbles (h : E.NormalizedBubbleFormula) (t : List I) :
   | inl p => exact h.elementary t p.1 p.2
   | inr i => exact h.exterior t i
 
-/-- In particular the source-placed categorical odd bubble is the reservoir's
-own exterior coefficient, not an odd parameter from the probe. -/
-theorem odd_bubble_vacuum (h : E.NormalizedBubbleFormula) (t : List I)
-    (i : {i : I // D.parity i = 1}) :
-    E.act t t (SKM.bubAt D Sc μ (upWord t) (SKM.oddBubble cs i.1 μ)) (E.vacuum t) =
-      E.reservoir t (SKM.SYM.delta D k i) (E.vacuum t) := by
-  rw [← SKM.betaSYM_delta cs μ i, ← E.bubbles_eq, E.normalized_bubbles h]
-
 /-- Evaluation on the reservoir vacuum followed by connected coordinates. -/
 def observe (t t' : List I) : UpwardHom D Sc μ t t' →ₗ[k]
     ReservoirQuotient D Sc cutoff t t' where
@@ -141,24 +123,6 @@ theorem observe_coefficient (h : E.NormalizedBubbleFormula) (t t' : List I)
   | zero => simp
   | add x y _ _ hx hy => simpa only [map_add] using congrArg₂ (· + ·) hx hy
   | smul r x _ hx => simpa only [map_smul] using congrArg (r • ·) hx
-
-/-- A nonzero vector in a sufficiently large observation window forces the
-chosen cyclic vector to be nonzero. Thus coverage cannot be discharged by a
-zero module or by a zero vacuum. -/
-theorem vacuum_ne_zero_of_window (h : E.NormalizedBubbleFormula) (t t' : List I)
-    (f : coefficientObj D Sc t ⟶ coefficientObj D Sc t') {d : ℕ}
-    (hf : f ∈ ExtendedAtMost D Sc t t' d) (hw : d ≤ E.window t t') (hne : f ≠ 0)
-    {N : ℕ} (hN : ∀ i, N ≤ cutoff i)
-    (hb : d + 2 * t.length.choose 2 < N) : E.vacuum t ≠ 0 := by
-  intro hv
-  have hmem : f ∈ ExtendedAtMost D Sc t t' (E.window t t') :=
-    (Submodule.span_mono (Set.image_mono (fun _ hi => hi.trans hw))) hf
-  have hz : (ELVRelationSpan D Sc cutoff t t').mkQ f = 0 := by
-    rw [← E.observe_coefficient h t t' f hmem]
-    simp [observe, hv]
-  have hinj := elv_quotient_injective_on_extendedAtMost D Sc (t := t) (t' := t')
-    (d := d) hN hb
-  exact hne (congrArg Subtype.val (hinj (a₁ := ⟨f, hf⟩) (a₂ := 0) (by simpa using hz)))
 
 end ReservoirVacuumEvaluation
 variable (D Sc cs)

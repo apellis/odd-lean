@@ -117,31 +117,4 @@ theorem oldContentRestrictionExtensionComponent_zero
       oldContentRestrictionExtensionComponent D Sc cutoff ν i 1 N w
   rw [hz, add_zero]
 
-/-- The chosen content comparison followed by the prescribed old counit,
-with both nested coend carriers fixed. -/
-def oldContentCounitComparisonLinear
-    (N : Superfunctor k (OldContentCategory D Sc cutoff (i :: ν)) (SVec k))
-    (w : OldCategory D Sc cutoff) :
-    BalancedInduction.Obj (oldContentInclusion D Sc cutoff (i :: ν))
-      (BalancedInduction.induced (oldContentAppend D Sc cutoff ν i)
-        ((BalancedInduction.restriction (oldContentAppend D Sc cutoff ν i)).obj N)).toFunctor w →ₗ[k]
-      BalancedInduction.Obj (oldContentInclusion D Sc cutoff (i :: ν)) N.toFunctor w :=
-    restrictionCounitLinear (append D Sc cutoff i)
-        (BalancedInduction.induced (oldContentInclusion D Sc cutoff (i :: ν)) N) w ∘ₗ
-      BalancedInduction.mapComponent (append D Sc cutoff i)
-        (oldContentRestrictionExtensionIso D Sc cutoff ν i N).hom 0 w ∘ₗ
-      oldContentAppendExtensionLinear D Sc cutoff ν i
-        ((BalancedInduction.restriction (oldContentAppend D Sc cutoff ν i)).obj N) w
-
-/-- The prescribed content counit extended by the actual inclusion. -/
-def oldContentInducedCounitLinear
-    (N : Superfunctor k (OldContentCategory D Sc cutoff (i :: ν)) (SVec k))
-    (w : OldCategory D Sc cutoff) :
-    BalancedInduction.Obj (oldContentInclusion D Sc cutoff (i :: ν))
-      (BalancedInduction.induced (oldContentAppend D Sc cutoff ν i)
-        ((BalancedInduction.restriction (oldContentAppend D Sc cutoff ν i)).obj N)).toFunctor w →ₗ[k]
-      BalancedInduction.Obj (oldContentInclusion D Sc cutoff (i :: ν)) N.toFunctor w :=
-    BalancedInduction.mapComponent (oldContentInclusion D Sc cutoff (i :: ν))
-      ((BalancedInduction.adjunctionCounit (oldContentAppend D Sc cutoff ν i)).app N) 0 w
-
 end OddMath.QuiverHecke.ELVOld

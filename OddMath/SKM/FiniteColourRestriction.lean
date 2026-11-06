@@ -394,18 +394,5 @@ theorem linear_restrictLabel (r : Rel D) (hr : ∀ i ∈ r.colours, i ∈ J) :
   exact (linear_relation D J Sc (restrictLabel D J r hr)).trans
     (congrRelation _ _ (relationLabel_restrictLabel D J r hr))
 
-/-- Every user-defined relation has a lift to a finite-colour presentation
-whose inclusion recovers its full linear expansion. -/
-theorem relation_finite_lift (r : Rel D) :
-    ∃ (J : Finset I) (s : Rel (D.restrictColours J)),
-      relationLabel D J s = r ∧
-      HEq (linear D J s.ν s.dom s.cod
-        (relation (D.restrictColours J) (Sc.restrictColours D J) s)) (relation D Sc r) := by
-  classical
-  let J := r.colours.toFinset
-  have hr : ∀ i ∈ r.colours, i ∈ J := fun i hi => List.mem_toFinset.mpr hi
-  exact ⟨J, restrictLabel D J r hr, relationLabel_restrictLabel D J r hr,
-    linear_restrictLabel D J Sc r hr⟩
-
 end FiniteColour
 end OddMath.SKM

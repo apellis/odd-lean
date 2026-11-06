@@ -28,81 +28,10 @@ universe u v w
 variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
   [CommRing k] (Sc : SKM.Scalars D k) [Fintype I]
 
-/-- Twisted balancing applies the old parity involution before the coefficient action. -/
-theorem prependTwistCoordinates_symm_tmul (i : I) (n : ℕ) (ε : ZMod 2)
-    (N : Type w) [AddCommGroup N] [Module (Hn D Sc (n + 1)) N]
-    (z : InductionAlong.Corner (prependTwist D Sc i n ε)) (b : N)
-    (q : PrependShuffle (n + 1) × ℕ) :
-    (prependTwistCoordinates D Sc i n ε N).symm (Ind.tmul z b) q =
-      homMatrixTwist D Sc (n + 1) ε
-        (prependCoefficients D Sc i (n + 1) z.1 q) • b := by
-  change (toTwistModule D Sc (n + 1) ε N).symm
-    (prependTensorBackward D Sc i (n + 1) (TwistModule D Sc (n + 1) ε N)
-      (prependTwistEquiv D Sc i n ε N (Ind.tmul z b)) q) = _
-  rw [prependTwistEquiv_tmul, prependTensorBackward_tmul,
-    prependCoordinateEquiv_symm_apply]
-  rfl
-
-/-- The prescribed moving chain lies in the right prepend corner. -/
-theorem contentMove_mul_prependOne (i : I) (n : ℕ) (β : Multiset I) :
-    contentMove D Sc i n β * prependAlgebra D Sc i n 1 =
-      contentMove D Sc i n β := by
-  rw [contentMove, Finset.sum_mul]
-  apply Finset.sum_congr rfl
-  intro s hs
-  change _ * prependLinear D Sc i n (FiniteHomMatrix.localUnit Finset.univ) = _
-  rw [FiniteHomMatrix.localUnit, map_sum, Finset.mul_sum, Finset.sum_eq_single s]
-  · change _ * prependLinear D Sc i n (FiniteHomMatrix.single s s (𝟙 _)) = _
-    rw [prependLinear_single]
-    have hid : prependHom D Sc i s s (𝟙 _) = 𝟙 _ := by
-      convert MonoidalSupercategory.whiskerLeft_id (R := k)
-        ((pres D Sc).obj (ob D [i])) (wordObj D Sc s) using 1 <;> rfl
-    rw [hid, FiniteHomMatrix.single_mul_single, Category.id_comp]
-  · intro t ht hts
-    change _ * prependLinear D Sc i n (FiniteHomMatrix.single t t (𝟙 _)) = 0
-    rw [prependLinear_single]
-    exact FiniteHomMatrix.single_mul_single_of_ne _ _ _ _
-      (fun h => hts (prependWord_injective i n h.symm)) _ _
-  · simp
-
-/-- The prescribed moving chain lies in the left append corner. -/
-theorem appendOne_mul_contentMove (i : I) (n : ℕ) (β : Multiset I) :
-    appendAlgebra D Sc i n 1 * contentMove D Sc i n β =
-      contentMove D Sc i n β := by
-  rw [contentMove, Finset.mul_sum]
-  exact Finset.sum_congr rfl fun s _ => appendOne_mul_single D Sc i s _ _
-
 variable (a : I → _root_.Polynomial k) (n : ℕ) (β : Multiset I) (i : I)
 local notation "B" => CyclotomicContentCorner D Sc a n β
 local notation "eps" => appendContentParity D a β i
 
-/-- The original moving chain in the twisted prepend corner. -/
-def appendContentMoveCorner : InductionAlong.Corner (prependTwist D Sc i n eps) :=
-  ⟨contentMove D Sc i (n + 1) β, by
-    change contentMove D Sc i (n + 1) β * prependTwist D Sc i n eps 1 = _
-    rw [prependTwist_one, contentMove_mul_prependOne]⟩
-
-/-- The moving-chain tensor in the prescribed source, with its right coefficient unchanged. -/
-def appendContentMoveLift (b : B) : appendContentSource D Sc a n β i :=
-  ⟨Ind.tmul (appendContentMoveCorner D Sc a n β i) b, by
-    change appendAlgebra D Sc i (n + 1) 1 • _ = _
-    rw [Ind.smul_tmul]
-    congr 1
-    apply Subtype.ext
-    exact appendOne_mul_contentMove D Sc i (n + 1) β⟩
-
-/-- Exact extraction of the moving-chain tensor, before evaluation of its affine coefficients. -/
-theorem appendContentMoveLift_extract (b : B) (m : ℕ) :
-    appendContentRhoExtract D Sc a n β i (appendContentMoveLift D Sc a n β i b) m =
-      (SKM.zsign ℤ (D.parity i * Multiset.sum (Multiset.map D.parity β))) ^ m •
-        (homMatrixTwist D Sc (n + 1) eps
-          (prependCoefficients D Sc i (n + 1) (contentMove D Sc i (n + 1) β)
-            (longPrependShuffle (n + 1), m)) • b) := by
-  change (SKM.zsign ℤ (D.parity i * Multiset.sum (Multiset.map D.parity β))) ^ m •
-    ((prependTwistCoordinates D Sc i n eps B).symm
-    (Ind.tmul (appendContentMoveCorner D Sc a n β i) b) _) = _
-  rw [prependTwistCoordinates_symm_tmul]
-  rfl
 end OddMath.QuiverHecke
 
 noncomputable section

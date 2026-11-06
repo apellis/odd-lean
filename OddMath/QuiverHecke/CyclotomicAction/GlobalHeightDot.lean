@@ -148,16 +148,6 @@ theorem heightInductionSuperDot_parity :
     heightInductionSuperDot D Sc i a ha n ∈ parity (R := k) P P d :=
   SuperBimodule.mem_parity_iff.2 (heightInductionDotLinear_parity D Sc i a ha n)
 
-/-- On a homogeneous corner element the sign is explicit. -/
-theorem heightInductionSuperDot_apply {p : ZMod 2} (x : (P).toSVec)
-    (hx : x ∈ (P).toSVec.part p) :
-    ((heightInductionSuperDot D Sc i a ha n).1 x).val =
-      koszulSign p d • (x.val * c) := by
-  change ((P).toSVec.sgn d x).val * c = _
-  rw [SVec.sgn_apply_of_mem d hx]
-  change (sign k (p * d) • x.val) * c = _
-  rw [smul_mul_assoc, Supercategory.sign_mul, Int.cast_smul_eq_zsmul]
-
 /-- The last dot as a supernatural endomorphism of balanced-tensor induction. -/
 def heightSuperInductionDot :
     SuperNatTrans k (heightSuperInduction D Sc i a ha n)
@@ -180,23 +170,12 @@ def heightSuperInductionDot :
         koszulSign_smul_smul]
     · simp
 
-/-- Only the component of the induction colour's parity is nonzero. -/
-theorem heightSuperInductionDot_homogeneous :
-    (heightSuperInductionDot D Sc i a ha n).IsHomogeneous d := by
-  intro q h
-  funext M
-  simp [heightSuperInductionDot, h]
-
 /-- The dot restricted to content blocks at every height. -/
 def heightContentDot (β : Multiset I) :
     SuperNatTrans k (heightContentInduction D Sc i a ha n β).toFunctor
       (heightContentInduction D Sc i a ha n β).toFunctor :=
   fullLiftTrans _ _ (heightContentSupported_induction D Sc i a ha n β)
     (heightContentSupported_induction D Sc i a ha n β) (heightSuperInductionDot D Sc i a ha n)
-
-theorem heightContentDot_homogeneous (β : Multiset I) :
-    (heightContentDot D Sc i a ha n β).IsHomogeneous d :=
-  fullLiftTrans_homogeneous _ _ _ _ _ (heightSuperInductionDot_homogeneous D Sc i a ha n)
 
 /-- A supernatural endomorphism followed by an identity transport. -/
 def heightContentCastTrans {C : Type*} [Category C] [Preadditive C] [Linear k C]
@@ -209,25 +188,10 @@ def heightContentCastTrans {C : Type*} [Category C] [Preadditive C] [Linear k C]
   subst hγ
   exact η
 
-theorem heightContentCastTrans_homogeneous {C : Type*} [Category C] [Preadditive C]
-    [Linear k C] [Supercategory k C] {m m' : ℕ} {γ γ' : Multiset I} (hm : m = m') (hγ : γ = γ')
-    {F : C ⥤ ObjectProperty.FullSubcategory (heightContentSupported D Sc a ha m γ)}
-    [F.Additive] [F.Linear k] [IsSuperfunctor k F] (η : SuperNatTrans k F F) {p : ZMod 2}
-    (hη : η.IsHomogeneous p) :
-    (heightContentCastTrans D Sc a ha hm hγ η).IsHomogeneous p := by
-  subst hm
-  subst hγ
-  exact hη
-
 /-- **The dot on global content induction**, `δ = {i} + β`. -/
 def globalContentDot {β δ : Multiset I} (h : {i} + β = δ) :
     SuperNatTrans k (globalContentInduction D Sc i a ha h).toFunctor
       (globalContentInduction D Sc i a ha h).toFunctor :=
   heightContentCastTrans D Sc a ha (card_of_add i h) h (heightContentDot D Sc i a ha β.card β)
-
-theorem globalContentDot_homogeneous {β δ : Multiset I} (h : {i} + β = δ) :
-    (globalContentDot D Sc i a ha h).IsHomogeneous d :=
-  heightContentCastTrans_homogeneous D Sc a ha _ _ _
-    (heightContentDot_homogeneous D Sc i a ha β.card β)
 
 end OddMath.QuiverHecke.CyclotomicAction

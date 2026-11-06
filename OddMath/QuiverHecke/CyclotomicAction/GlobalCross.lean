@@ -67,38 +67,4 @@ def globalBlockCross (h : {i} + ({j} + β) = δ) :
     ((globalBlockCross D Sc a ha i j n β δ h).app p M).hom =
       (cyclotomicSuperInductionCrossing D Sc i j a ha n).app p M.obj := rfl
 
-/-- The Rouquier crossing of the even file: `-ψ` for equal colours, `ψ` otherwise. -/
-def globalBlockSignedCross [DecidableEq I] (h : {i} + ({j} + β) = δ) :
-    globalBlockInduction₂ D Sc a ha i j n β δ h ⟶
-      globalBlockInduction₂ D Sc a ha j i n β δ (swapped_content i j β δ h) :=
-  if i = j then -globalBlockCross D Sc a ha i j n β δ h
-  else globalBlockCross D Sc a ha i j n β δ h
-
-/-- Two homogeneous transformations of the same parity whose components of that parity
-compose to zero have zero composite. -/
-theorem superTrans_comp_eq_zero {C₁ C₂ : Type*} [Category C₁] [Preadditive C₁] [Linear k C₁]
-    [Supercategory k C₁] [Category C₂] [Preadditive C₂] [Linear k C₂] [Supercategory k C₂]
-    {F G H : Superfunctor k C₁ C₂} {x : F ⟶ G} {y : G ⟶ H} {d : ZMod 2}
-    (hx : SuperNatTrans.IsHomogeneous x d) (hy : SuperNatTrans.IsHomogeneous y d)
-    (h : ∀ M, x.app d M ≫ y.app d M = 0) : x ≫ y = 0 := by
-  have hx' : ∀ q, q ≠ d → ∀ M, x.app q M = 0 := fun q hq M => congrFun (hx q hq) M
-  have hy' : ∀ q, q ≠ d → ∀ M, y.app q M = 0 := fun q hq M => congrFun (hy q hq) M
-  rcases (by decide : ∀ e : ZMod 2, e = 0 ∨ e = 1) d with rfl | rfl
-  · apply Superfunctor.hom_ext_parity
-    · intro M
-      rw [Superfunctor.comp_app_zero, hx' 1 (by decide) M, h M, Superfunctor.zero_app]
-      simp
-    · intro M
-      rw [Superfunctor.comp_app_one, hx' 1 (by decide) M, hy' 1 (by decide) M,
-        Superfunctor.zero_app]
-      simp
-  · apply Superfunctor.hom_ext_parity
-    · intro M
-      rw [Superfunctor.comp_app_zero, hx' 0 (by decide) M, h M, Superfunctor.zero_app]
-      simp
-    · intro M
-      rw [Superfunctor.comp_app_one, hx' 0 (by decide) M, hy' 0 (by decide) M,
-        Superfunctor.zero_app]
-      simp
-
 end OddMath.QuiverHecke.CyclotomicAction

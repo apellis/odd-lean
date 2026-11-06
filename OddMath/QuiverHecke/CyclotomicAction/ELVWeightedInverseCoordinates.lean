@@ -103,13 +103,4 @@ theorem weightedContentCapInverse_atWord (w : OldCategory D Sc cutoff)
   apply inverse_total
   rw [weightedContentCapMatrixIso_hom_total,weightedCapMatrixComponentIso_hom]
 
-/-- The literal cap inverse after removal of the named source chart. -/
-def weightedCapPrincipalInverseValue (w : OldCategory D Sc cutoff)
-    (hh : contentCrossingHeight D cutoff i (w.word : Multiset I) ≤ 0)
-    (z : capMatrixTargetSpace D Sc cutoff i RM
-      (contentCapCount D cutoff i (w.word : Multiset I)) w) :=
-  (weightedMateSourceLinearEquiv D Sc cutoff N i M w).symm
-    ((weightedCapMatrixComponentIso D Sc cutoff N i M w hh).inv
-      (weightedCapMatrixValueEquiv D Sc cutoff N i M _ w z))
-
 end OddMath.QuiverHecke.ELVOld

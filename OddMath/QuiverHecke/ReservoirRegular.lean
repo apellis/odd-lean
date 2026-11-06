@@ -2,7 +2,8 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.ReservoirCoordinates
+import OddMath.QuiverHecke.ReservoirVacuumDetection
+import Mathlib.LinearAlgebra.Basis.VectorSpace
 
 /-! # Regular coordinates on the connected reservoir
 
@@ -63,14 +64,5 @@ def reservoirRegularGenerator (t : List I) : ReservoirQuotient D Sc cutoff t t :
       (ELVRelationSpan D Sc cutoff t t').mkQ g := by
   unfold reservoirRegularGenerator
   rw [reservoirPostcomp_mk, Category.id_comp]
-
-/-- The regular cyclic action detects every bounded joint PBW window allowed
-by C0. This concerns the connected quotient, not a fused SKM action. -/
-theorem reservoirRegular_injective_on_window {t t' : List I} {d N : ℕ}
-    (hN : ∀ i, N ≤ cutoff i) (hb : d + 2 * t.length.choose 2 < N) :
-    Function.Injective (fun f : ExtendedAtMost D Sc t t' d =>
-      reservoirPostcomp D Sc cutoff f.val (reservoirRegularGenerator D Sc cutoff t)) := by
-  simpa only [reservoirPostcomp_generator] using
-    elv_quotient_injective_on_extendedAtMost D Sc hN hb
 
 end OddMath.QuiverHecke

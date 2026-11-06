@@ -31,9 +31,6 @@ theorem level_difference (h : I → ℤ) (m : ℕ) (i : I) :
   simp only [reservoirLevel, probeLevel, Nat.cast_add, Nat.cast_mul, Nat.cast_ofNat]
   omega
 
-theorem probe_even (h : I → ℤ) (m : ℕ) (i : I) : Even (probeLevel h m i) := by
-  exact ⟨m + (-h i).toNat, by simp [probeLevel]; omega⟩
-
 /-- In particular this applies to every odd colour, without restricting its pairing. -/
 theorem reservoir_parity (h : I → ℤ) (m : ℕ) (i : I) :
     (reservoirLevel h m i : ℤ) % 2 = h i % 2 := by
@@ -41,39 +38,7 @@ theorem reservoir_parity (h : I → ℤ) (m : ℕ) (i : I) :
   simp only [probeLevel, Nat.cast_add, Nat.cast_mul, Nat.cast_ofNat] at hd
   omega
 
-/-- Both sectors grow, with the reservoir retaining the required parity. -/
-theorem levels_cofinal (h : I → ℤ) (N : ℕ) :
-    ∃ m, ∀ i, N ≤ probeLevel h m i ∧ N ≤ reservoirLevel h m i := by
-  exact ⟨N, fun i => by simp only [probeLevel, reservoirLevel]; omega⟩
-
-/-- The same family contains every bounded active-strand observation window. -/
-theorem observation_bound (h : I → ℤ) (d n : ℕ) :
-    ∃ m N, (∀ i, N ≤ reservoirLevel h m i ∧ N ≤ probeLevel h m i) ∧
-      d + 2 * n.choose 2 < N := by
-  let N := d + 2 * n.choose 2 + 1
-  obtain ⟨m, hm⟩ := levels_cofinal h N
-  exact ⟨m, N, fun i => ⟨(hm i).2, (hm i).1⟩, by omega⟩
-
 variable {X : Type*} [AddCommGroup X] (D : SKM.Datum I X)
-
-/-- A pairing-complete weight lattice realizes the explicit levels by weights
-whose difference is literally the prescribed weight. Pairing completeness is
-an additional hypothesis, not a consequence of symmetrizability. -/
-theorem exists_weights_of_pairing_surjective
-    (hs : Function.Surjective (fun ν : X => fun i => D.h i ν)) (μ : X) (m : ℕ) :
-    ∃ μp μm : X, μm - μp = μ ∧
-      (∀ i, D.h i μp = probeLevel (fun j => D.h j μ) m i) ∧
-      (∀ i, D.h i μm = reservoirLevel (fun j => D.h j μ) m i) := by
-  obtain ⟨ν, hν⟩ := hs (fun i => (probeLevel (fun j => D.h j μ) m i : ℤ))
-  refine ⟨ν, μ + ν, by abel, ?_, ?_⟩
-  · exact fun i => congrFun hν i
-  · intro i
-    change D.cd.coroot i (μ + ν) = _
-    have hv : D.cd.coroot i ν = (probeLevel (fun j => D.h j μ) m i : ℤ) := congrFun hν i
-    rw [map_add, hv]
-    change D.h i μ + (probeLevel (fun j => D.h j μ) m i : ℤ) = _
-    have hd := level_difference (fun j => D.h j μ) m i
-    omega
 
 /-- Add independent coroot coordinates while preserving the roots, Cartan
 matrix, and parity. The original weights embed by `μ ↦ (μ, 0)`. -/
@@ -99,41 +64,5 @@ def pairingExtension : SKM.Datum I (X × (I → ℤ)) where
     (pairingExtension D).cd.cartanMatrix = D.cd.cartanMatrix := by
   ext i j
   simp [CartanDatum.cartanMatrix_apply, pairingExtension, SKM.Datum.h, SKM.Datum.α]
-
-/-- No richness assumption on the original weight lattice is needed after
-adjoining independent pairing coordinates. -/
-theorem pairingExtension_surjective :
-    Function.Surjective (fun ν : X × (I → ℤ) => fun i => (pairingExtension D).h i ν) := by
-  intro h
-  refine ⟨(0, h), ?_⟩
-  funext i
-  simp [SKM.Datum.h, pairingExtension]
-
-/-- Exact fixed external weight in the extended lattice, with cofinal levels
-of the required parities. Restricting a categorical action along the original
-weight embedding remains separate from this arithmetic assertion. -/
-theorem exists_extended_weights (μ : X) (m : ℕ) :
-    ∃ μp μm : X × (I → ℤ), μm - μp = (μ, 0) ∧
-      (∀ i, (pairingExtension D).h i μp = probeLevel (fun j => D.h j μ) m i) ∧
-      (∀ i, (pairingExtension D).h i μm = reservoirLevel (fun j => D.h j μ) m i) := by
-  simpa using exists_weights_of_pairing_surjective (pairingExtension D)
-    (pairingExtension_surjective D) (μ, 0) m
-
-/-- Adding any signed root word preserves the coroot parity at an odd colour. -/
-theorem odd_pairing_invariant (μ : X) (w : List (SKM.Letter I)) (i : I)
-    (hi : D.parity i = 1) : D.h i (SKM.wt D μ w) % 2 = D.h i μ % 2 := by
-  induction w with
-  | nil => rfl
-  | cons l w ih =>
-    obtain ⟨a, ha⟩ := D.even_of_odd i l.2 hi
-    simp only [SKM.wt, SKM.Datum.h, map_add, SKM.sh]
-    split
-    · change (D.h i (D.α l.2) + D.h i (SKM.wt D μ w)) % 2 = D.h i μ % 2
-      change D.h i (D.α l.2) = a + a at ha
-      omega
-    · rw [map_neg]
-      change (-D.h i (D.α l.2) + D.h i (SKM.wt D μ w)) % 2 = D.h i μ % 2
-      change D.h i (D.α l.2) = a + a at ha
-      omega
 
 end OddMath.QuiverHecke.ReservoirWeights

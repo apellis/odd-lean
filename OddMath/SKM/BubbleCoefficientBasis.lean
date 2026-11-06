@@ -67,12 +67,6 @@ times a basis vector. -/
   simpa only [oddExteriorBasis, ss, tt, Set.powersetCard.disjUnion, Set.powersetCard.ofCard,
     Finset.disjUnion_eq_union, Units.smul_def, Int.cast_smul_eq_zsmul] using he
 
- theorem oddExteriorBasis_mul_scalar {s t : Finset {i : I // D.parity i = 1}}
-    (h : Disjoint s t) : ∃ c : k,
-      oddExteriorBasis D k s * oddExteriorBasis D k t = c • oddExteriorBasis D k (s ∪ t) :=
-  let ⟨c, hc⟩ := oddExteriorBasis_mul_int D k h
-  ⟨c, hc⟩
-
  theorem coefficientBasis_mul_zero {a b : CoefficientIndex D} (h : ¬Disjoint a.2 b.2) :
     coefficientBasis D k a * coefficientBasis D k b = 0 := by
   apply (polynomialExteriorEquiv D k).injective
@@ -111,27 +105,6 @@ def CoefficientAtMost (d : ℕ) : Submodule k (SYM D k) :=
 /-- Coefficient monomials supported in weight at least `d`. -/
 def CoefficientAtLeast (d : ℕ) : Submodule k (SYM D k) :=
   Submodule.span k (coefficientBasis D k '' {a | d ≤ coefficientWeight D a})
-
-theorem disjoint_coefficientAtMost_coefficientAtLeast {d N : ℕ} (h : d < N) :
-    Disjoint (CoefficientAtMost D k d) (CoefficientAtLeast D k N) := by
-  apply (coefficientBasis D k).linearIndependent.disjoint_span_image
-  rw [Set.disjoint_left]
-  intro a ha hb
-  simp only [Set.mem_ofPred_eq] at ha hb
-  omega
-
-/-- Every abstract coefficient has a finite weight bound, with both polynomial
-and exterior factors included. -/
-theorem exists_coefficientAtMost (x : SYM D k) : ∃ d, x ∈ CoefficientAtMost D k d := by
-  let c := (coefficientBasis D k).repr x
-  let d := c.support.sup (coefficientWeight D)
-  refine ⟨d, ?_⟩
-  rw [← (coefficientBasis D k).linearCombination_repr x, Finsupp.linearCombination_apply, Finsupp.sum]
-  apply Submodule.sum_mem
-  intro a ha
-  apply Submodule.smul_mem
-  apply Submodule.subset_span
-  exact ⟨a, Finset.le_sup (f := coefficientWeight D) ha, rfl⟩
 
  theorem coefficientWeight_mul {a b : CoefficientIndex D} (h : Disjoint a.2 b.2) :
     coefficientWeight D (a.1 + b.1, a.2 ∪ b.2) = coefficientWeight D a + coefficientWeight D b := by
@@ -206,18 +179,5 @@ def coefficientIdeal (N : ℕ) : TwoSidedIdeal (SYM D k) :=
     (fun hx => Submodule.neg_mem _ hx)
     (fun {x _} hy => coefficientAtLeast_mul_left D k x hy)
     (fun {_ y} hx => coefficientAtLeast_mul_right D k y hx)
-
-/-- Weight truncations of the full coefficient algebra detect its bounded
-part; independent exterior products participate in the same basis argument. -/
-theorem coefficient_weight_quotient_injective {d N : ℕ} (hN : d < N) :
-    Function.Injective (fun x : CoefficientAtMost D k d =>
-      (coefficientIdeal D k N).ringCon.mk' (x : SYM D k)) := by
-  intro x y hxy
-  apply Subtype.ext
-  apply sub_eq_zero.mp
-  have hmem : (x : SYM D k) - y ∈ CoefficientAtLeast D k N := Quotient.exact hxy
-  exact Submodule.disjoint_def.mp
-    (disjoint_coefficientAtMost_coefficientAtLeast D k hN) _
-    (Submodule.sub_mem _ x.property y.property) hmem
 
 end OddMath.SKM.SYM

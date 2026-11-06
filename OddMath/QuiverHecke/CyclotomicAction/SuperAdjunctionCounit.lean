@@ -169,10 +169,6 @@ def superCounitComponent : tensor P (tensor Q M) ⟶ M :=
       intro t
       exact superCounitLinear_ract D Sc i a ha n M c t⟩
 
-theorem superCounitComponent_mem :
-    superCounitComponent D Sc i a ha n M ∈ Supercategory.parity (R := k) _ _ 0 :=
-  mem_parity_iff.mpr (superCounitLinear_mem D Sc i a ha n M)
-
 /-- Signed naturality of evaluation for a homogeneous module map. -/
 theorem superCounitComponent_naturality_of_mem
     {M N : CyclotomicSupermodules D Sc a ha (n + 1)} {s : ZMod 2} (f : M ⟶ N)

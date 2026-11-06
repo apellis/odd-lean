@@ -28,33 +28,4 @@ theorem elvProbeScalarHom_affineUnit {v w : List I}
       (SuperalgebraCat.ofElem 1) f) = f
   rw [elvAffineScalarSpecialization_tmul, SuperalgebraCat.toElem_ofElem, map_one, one_smul]
 
-theorem elvProbeHeightWordEntry_affineUnit {n : ℕ} (s t : Word I n)
-    (f : wordObj D Sc s ⟶ wordObj D Sc t) :
-    elvProbeHeightWordEntry D m Sc s t
-      ((ELVOld.ideal D Sc cut s.val t.val).mkQ (ELVOld.affineUnit D Sc cut s.val t.val f)) =
-      probeHeightMk D m Sc n (FiniteHomMatrix.single t s f) := by
-  rw [elvProbeHeightWordEntry_mk, elvProbeScalarHom_affineUnit]
-
-/-- The actual old append-dot component specializes to the literal probe last dot. -/
-theorem elvProbeOldAppendDot_image {n : ℕ} (s : Word I n) (i : I) :
-    elvProbeWordEntry D m Sc (appendWord i s) (appendWord i s)
-      (ELVOld.CyclotomicCrossingTensor.oldAppendDotComponent D Sc cut i ⟨s.val⟩) =
-      (cyclotomicWordEnd D Sc a (appendWord i s)
-        (dotE D Sc (s.val ++ [i]) n)).val := by
-  rw [ELVOld.CyclotomicCrossingTensor.oldAppendDotComponent_eq]
-  change elvProbeHeightWordEntry D m Sc (appendWord i s) (appendWord i s)
-    ((ELVOld.ideal D Sc cut _ _).mkQ
-      (ELVOld.affineUnit D Sc cut _ _ (dotE D Sc (s.val ++ [i]) s.val.length ^ 1))) = _
-  rw [pow_one, elvProbeHeightWordEntry_affineUnit, s.property]
-  rfl
-
-/-- The scalar image of the actual old component, in its actual unital word corner. -/
-def elvProbeOldAppendDotCorner {n : ℕ} (s : Word I n) (i : I) :
-    CyclotomicWordCorner D Sc a (appendWord i s) :=
-  ⟨elvProbeWordEntry D m Sc (appendWord i s) (appendWord i s)
-    (ELVOld.CyclotomicCrossingTensor.oldAppendDotComponent D Sc cut i ⟨s.val⟩), by
-      rw [elvProbeOldAppendDot_image]
-      exact (cyclotomicWordEnd D Sc a (appendWord i s)
-        (dotE D Sc (s.val ++ [i]) n)).property⟩
-
 end OddMath.QuiverHecke

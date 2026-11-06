@@ -597,47 +597,6 @@ def appendPolyShift (i : I) (n : ℕ) : (ℕ →₀ Hn D Sc (n + 1)) →+ (ℕ �
   (Finsupp.mapDomain.addMonoidHom Nat.succ).comp
     (Finsupp.mapRange.addMonoidHom (appendTwist D Sc i n))
 
-/-- `R_t(j f) = j(t f)`: right multiplication by the new dot on polynomial terms. -/
-theorem appendPolySum_mul_lastDot (i : I) (n : ℕ) (g : ℕ →₀ Hn D Sc (n + 1)) :
-    appendPolySum D Sc i n g * affineLastDot D Sc i (n + 1) =
-      appendPolySum D Sc i n (appendPolyShift D Sc i n g) := by
-  induction g using Finsupp.induction_linear with
-  | zero => simp
-  | add f g hf hg => rw [map_add, add_mul, hf, hg, map_add, map_add]
-  | single m b =>
-    simp only [appendPolyShift, AddMonoidHom.comp_apply, Finsupp.mapRange.addMonoidHom_apply,
-      Finsupp.mapRange_single, Finsupp.mapDomain.addMonoidHom_apply, Finsupp.mapDomain_single]
-    rw [appendPolySum_single, appendPolySum_single, mul_assoc, affineLastDot_twist_comm,
-      ← mul_assoc, ← pow_succ]
-    rfl
-
-/-- `R_t(F u) = F(X u) + j(E u)`: right multiplication by the new dot on left-crossing terms,
-with `X = s · appendLeftShift` and `E = -s · appendLeftDegree`. -/
-theorem appendLeftSum_mul_lastDot (i : I) (n : ℕ) (F : (Fin (n + 1) × ℕ) →₀ Hn D Sc (n + 1)) :
-    appendLeftSum D Sc i n F * affineLastDot D Sc i (n + 1) =
-      Supercategory.koszulSign (D.parity i) (D.parity i) •
-          appendLeftSum D Sc i n (appendLeftShift D Sc i n F) -
-        Supercategory.koszulSign (D.parity i) (D.parity i) •
-          appendPolySum D Sc i n (Finsupp.single 0 (appendLeftDegree D Sc i n F)) := by
-  induction F using Finsupp.induction_linear with
-  | zero => simp
-  | add f g hf hg =>
-    rw [map_add, add_mul, hf, hg, map_add, map_add, map_add, Finsupp.single_add, map_add]
-    simp only [smul_add]
-    abel
-  | single q b =>
-    obtain ⟨j, m⟩ := q
-    simp only [appendLeftShift, AddMonoidHom.comp_apply, Finsupp.mapRange.addMonoidHom_apply,
-      Finsupp.mapRange_single, Finsupp.mapDomain.addMonoidHom_apply, Finsupp.mapDomain_single]
-    rw [appendLeftSum_single, appendLeftSum_single, appendPolySum_single, pow_zero, one_mul,
-      mul_assoc, affineLastDot_twist_comm, ← mul_assoc, mul_assoc _ (affineLastCrossing D Sc i i n),
-      affineLastCrossing_mul_lastDot, mul_sub, sub_mul, mul_smul_comm, mul_smul_comm,
-      smul_mul_assoc, smul_mul_assoc, ← mul_assoc, ← map_mul, mul_assoc _ (affineLastDot D Sc i n ^ m),
-      ← pow_succ, ← map_mul, ← map_mul]
-    unfold appendLeftDegree
-    simp only [Finsupp.liftAddHom_apply_single, AddMonoidHom.comp_apply, AddMonoidHom.coe_mulLeft]
-    rfl
-
 /-! ## The two-sided corner as a direct sum -/
 
 /-- Left multiplication by `ψ'(1)` on left-crossing coordinates. -/

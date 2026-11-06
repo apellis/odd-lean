@@ -193,8 +193,8 @@ parity pq gives the crossing formula. Thus (3) accounts for these signs
 without an extra horizontal scalar. Tensoring the resulting right-linear
 kernel identity with any module preserves the equality.
 
-`GlobalBraidAlgebra.lean` supplies only equal-colour braid theorems; it
-cannot discharge this comparison. `BraidOperators.lean`,
+The equal-colour braid theorems of the removed `GlobalBraidAlgebra.lean`
+could not discharge this comparison. `BraidOperators.lean`,
 `cyclotomicSignedTriple_braid_correction`, supplies a corrected regular
 operator identity for ordinary cyclotomic polynomials, but still leaves
 (2), the position table, and (10) to compare with the specified SKM

@@ -120,12 +120,4 @@ def appendRowsReconstruct (i : I) (ν : List I) :
       appendTailRow D Sc cutoff i ν q.1 q.2 b :=
   DirectSum.toModule_lof _ _ _
 
-/-- Exponent translation preserves the common target and the full old row. -/
-def appendRowsShift (i : I) (ν : List I) (d : ℕ) :
-    AppendRows D Sc cutoff i ν →ₗ[(ContentRing D Sc cutoff ν)ᵐᵒᵖ]
-      AppendRows D Sc cutoff i ν :=
-  DirectSum.toModule _ _ _ fun q =>
-    DirectSum.lof (ContentRing D Sc cutoff ν)ᵐᵒᵖ (AppendTailIndex i ν × ℕ)
-      (fun r => OldContentRow D Sc cutoff ν r.1.1.val) (q.1, d + q.2)
-
 end OddMath.QuiverHecke.ELVOld

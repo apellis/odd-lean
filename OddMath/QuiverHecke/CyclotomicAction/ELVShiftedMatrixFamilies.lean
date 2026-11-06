@@ -53,11 +53,6 @@ private def targetEntry {X Y : C} (p : ZMod 2) (f : X ⟶ Y) :
     X ⟶ (SKM.homParityShift (k := k) p).obj Y :=
   f ≫ ((SKM.homParityShiftDatum (k := k) p).iso Y).inv
 
-private theorem targetEntry_mem {X Y : C} {p : ZMod 2} {f : X ⟶ Y}
-    (hf : f ∈ parity (R := k) X Y p) :
-    targetEntry (k := k) p f ∈ parity (R := k) _ _ 0 := by
-  simpa only [targetEntry, zmod2_add_self] using comp_mem hf
-    ((SKM.homParityShiftDatum (k := k) p).inv_mem Y)
 end Shift
 end OddMath.QuiverHecke.ELVOld.MatrixParity
 
@@ -129,13 +124,6 @@ def moduleCapRow (i : I)
     ((BalancedInduction.restriction (append D Sc cutoff i)).obj M)) ^ n) ≫
       (BalancedInduction.adjunction (append D Sc cutoff i)).counit.app M
 
-theorem moduleCapRow_mem (i : I)
-    (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) (n : ℕ) :
-    moduleCapRow D Sc cutoff i M n ∈ parity (R := k) _ _ (n • D.parity i) := by
-  simpa only [moduleCapRow, add_zero] using comp_mem
-    (inductionDotModule_power_mem D Sc cutoff i _ n)
-    (BalancedInduction.adjunctionCounit_mem (append D Sc cutoff i) M)
-
 /-- The actual mate component, with fixed ordinary module endpoints. -/
 def matrixMateComponent (i : I)
     (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :
@@ -194,12 +182,5 @@ def capMatrixEntry (i : I)
   match a with
   | none => MatrixParity.targetEntry (k := k) (D.parity i) (matrixMateComponent D Sc cutoff i M)
   | some r => MatrixParity.targetEntry (k := k) (r.val • D.parity i) (moduleCapRow D Sc cutoff i M r.val)
-
-theorem capMatrixEntry_mem (i : I)
-    (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k)) (m : ℕ) (a : Option (Fin m)) :
-    capMatrixEntry D Sc cutoff i M m a ∈ parity (R := k) _ _ 0 := by
-  cases a with
-  | none => exact MatrixParity.targetEntry_mem (matrixMateComponent_mem D Sc cutoff i M)
-  | some r => exact MatrixParity.targetEntry_mem (moduleCapRow_mem D Sc cutoff i M r.val)
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor

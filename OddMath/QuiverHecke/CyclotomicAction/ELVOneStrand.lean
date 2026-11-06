@@ -107,8 +107,4 @@ theorem single_recurrence (i : I)
   rw [map_sum] at hz
   exact hz
 
-/-- The bounded powers span over the full ELV coefficients. -/
-def singleSpan (i : I) : Submodule k (Old D Sc cutoff [i] [i]) :=
-  Submodule.span k {z | ∃ a, ∃ n < cutoff i, singleClass D Sc cutoff i a n = z}
-
 end OddMath.QuiverHecke.ELVOld
