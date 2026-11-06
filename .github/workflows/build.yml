@@ -18,6 +18,11 @@ jobs:
     # A cold build takes a few hours with the memory limits below; the build cache saved at the end
     # makes later runs incremental.
     timeout-minutes: 340
+    # Pull requests stop at the first Lean error instead of compiling the rest of the library:
+    # the awk filter exits on the first error line, which ends Lake through the closed pipe.
+    # Branch builds always run to completion.
+    env:
+      FAIL_FAST: '{ print } /^error: / { print "::error::First Lean error above; stopping this pull request build early."; exit 1 }'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -54,7 +59,8 @@ jobs:
           lint: false
           use-mathlib-cache: true
           use-github-cache: false
-      # Branch builds write caches; pull requests only restore them. Exclude generated Lean
+      # Branch builds write caches; pull requests save their own build cache too (scoped to the
+      # pull request), so a later push to the same pull request recompiles only what changed. Exclude generated Lean
       # setup JSON before saving: Lake writes it before compilation, and import metadata can
       # otherwise consume many GB when restoring a cache. Retain proof artifacts and traces.
       # Restores fall back to the newest entry for the same toolchain and manifest, then to the
@@ -128,7 +134,8 @@ jobs:
           done < <(git diff --diff-filter=AM --name-only -z "$SCOPED_BASE" HEAD -- OddMath scripts/NonVacuity)
           if [ "${#targets[@]}" -gt 0 ]; then
             mapfile -t targets < <(printf '%s\n' "${targets[@]}" | sort -u)
-            lake build --wfail "${targets[@]}" < /dev/null
+            set -o pipefail
+            lake build --wfail "${targets[@]}" < /dev/null 2>&1 | awk "$FAIL_FAST"
           fi
       # The largest modules need up to about 6 GB and the runner has 16 GB: two concurrent Lean
       # processes.
@@ -136,7 +143,13 @@ jobs:
         if: steps.scope.outputs.docs_only != 'true'
         env:
           LEAN_NUM_THREADS: 2
-        run: lake build --wfail < /dev/null
+        run: |
+          if [ "${{ github.event_name }}" = pull_request ]; then
+            set -o pipefail
+            lake build --wfail < /dev/null 2>&1 | awk "$FAIL_FAST"
+          else
+            lake build --wfail < /dev/null
+          fi
       - name: Axiom audit
         if: steps.scope.outputs.docs_only != 'true'
         run: lake env lean -DwarningAsError=true scripts/AxiomAudit.lean
@@ -165,7 +178,7 @@ jobs:
             .lake/packages/Categorification/.lake/build
           key: categorification-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Save build cache
-        if: always() && github.event_name != 'pull_request' && steps.scope.outputs.docs_only != 'true'
+        if: always() && steps.scope.outputs.docs_only != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
