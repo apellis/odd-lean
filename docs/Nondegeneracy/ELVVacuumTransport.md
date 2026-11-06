@@ -314,7 +314,6 @@ No normalized bubble, fusion, or nondegeneracy claim follows.
 * `SKM/RouquierHomContent.lean`, `RouquierNormalizedHomAdjunction.lean`.
 * `SKM/ChevalleyBase.lean`, `Chevalley.lean`, `ChevalleyTwo.lean`.
 * `QuiverHecke/ReservoirWeights.lean`: `exists_extended_weights`.
-* `QuiverHecke/ReservoirFusedVacuum.lean`: `FusedRegularVacuumFamily`.
 
 The surrounding written comparisons read were `ELVVacuumGeneratorComparison`,
 `RegularVacuumComparison`, `DeformedActionAssembly`, `DeformedGradedAction`,

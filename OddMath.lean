@@ -211,7 +211,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVBoundaryFirstOrder
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModule
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVSourceRows
-import OddMath.QuiverHecke.CyclotomicAction.ELVSourcePolynomialRows
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendMovingSupport
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendNormRegularity
 import OddMath.QuiverHecke.CyclotomicAction.AppendQPTransport
@@ -310,15 +309,12 @@ import OddMath.SKM.RouquierFTriangle
 import OddMath.SKM.RouquierNormalizedHomAdjunction
 import OddMath.SKM.RouquierHomSuperAdjunction
 import OddMath.SKM.RouquierCompositeAdjunction
-import OddMath.SKM.SameColourSourceFrameExamples
 import OddMath.SKM.DistinctSourceDescent
 import OddMath.SKM.SourceAdaptedChoices
 import OddMath.SKM.SourceAdaptedDistinctChoices
 import OddMath.SKM.StrictResidualChoice
 import OddMath.SKM.SameColourTargetDescent
 import OddMath.SKM.PairedTargetIndependence
-import OddMath.SKM.SameColourTargetFrameExamples
-import OddMath.SKM.SameColourCupRowsExamples
 import OddMath.QuiverHecke.Spanning
 import OddMath.QuiverHecke.Basis
 import OddMath.QuiverHecke.HnBasis
@@ -1506,7 +1502,6 @@ import OddMath.SKM.RightClosure
 import OddMath.SKM.CoupledBubbleEvaluation
 import OddMath.QuiverHecke.WeightedSeparation
 import OddMath.QuiverHecke.CyclotomicSeparation
-import OddMath.Diagrams.OddNilHecke.CyclotomicCutoffKernel
 import OddMath.SKM.RightMateMatchings
 import OddMath.SKM.BubblePolynomialExterior
 import OddMath.SKM.RightCapAttachment
@@ -1566,10 +1561,8 @@ import OddMath.SKM.UniversalParameterFields
 import OddMath.QuiverHecke.CanonicalPBWChoiceComparison
 import OddMath.QuiverHecke.UpwardMatchingIndependence
 import OddMath.QuiverHecke.SpectatorDetection
-import OddMath.QuiverHecke.SpectatorDetectionExamples
 import OddMath.QuiverHecke.SpectatorSeparation
 import OddMath.QuiverHecke.ReservoirVacuumDetection
-import OddMath.QuiverHecke.ReservoirVacuumExamples
 import OddMath.QuiverHecke.UpwardModuleAction
 import OddMath.QuiverHecke.SwappedAssembly.Interpretation
 import OddMath.QuiverHecke.SwappedAssembly.Sectors
@@ -1754,7 +1747,6 @@ import OddMath.SKM.FiniteColourClassDetection
 import OddMath.SKM.FiniteColourBubbles
 import OddMath.QuiverHecke.FiniteColourUpward
 import OddMath.QuiverHecke.FiniteColourNondegeneracy
-import OddMath.QuiverHecke.SwappedConditionalNondegeneracy
 import OddMath.QuiverHecke.SwappedVacuum.TransformedIdeal
 import OddMath.QuiverHecke.SwappedVacuum.CornerLayerSquare
 import OddMath.QuiverHecke.CyclotomicAction.ELVScalarPolynomial
@@ -2314,7 +2306,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeRouquierData
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTensorVacuum
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexLoops
-import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumGenerators
 import OddMath.QuiverHecke.SwappedAssembly.ReservoirDottedAdjunctionRows
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldMulticolourBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexLocal
@@ -2421,7 +2412,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentHomClosure
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentHomVacuum
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.AugmentedSectorEntries
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.AugmentedFactorMatrix
-import OddMath.QuiverHecke.SwappedAssembly.Supernatural.MatrixEvaluation
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMixedDots
 import OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldCategoryGrading

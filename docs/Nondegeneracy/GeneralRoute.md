@@ -114,8 +114,8 @@ comparisons; the local matrix blueprint is `TwoRep/RouqCoproduct.lean`, includin
 `schur_const_eq`, `isIso_lift_of_schur`, `isIso_rouqMap_of_nonneg` and the negative
 version. **Existing:** [SpectralCompensation.md](SpectralCompensation.md) gives
 proposed zero/nonzero transport and vacuum calculations; local resolvent and
-matrix lemmas exist, not the full fused action. `OddMath/SKM/RouquierSchur.lean`
-proves associative block lifting from nilpotent **whole-operator** feedback;
+matrix lemmas exist, not the full fused action. `SKM/RouquierSchur.lean` (since removed)
+proved associative block lifting from nilpotent **whole-operator** feedback;
 it does not identify the feedback of the actual fused mate. **New:** coherent
 shuffle maps, all-content Schur-complement identification and super inversion.
 The first fusion-specific missing identity is the super replacement for
@@ -233,8 +233,8 @@ retains the odd-bubble correction; every coefficient pivot is a unit.
 This reduction works over any commutative ring admitted by `Sc`; no field,
 finite-colour, symmetrizer, grading, homogeneity or action hypothesis is added.
 The concrete two-odd-colour reduction and the unconditional source-exchange
-consumer are in `UpwardNondegeneracyReductionExamples` and
-`SameColourSourceFrameExamples`. Their axiom reports contain only `propext`,
+consumer were in `UpwardNondegeneracyReductionExamples` and
+`SameColourSourceFrameExamples` (the latter since removed). Their axiom reports contain only `propext`,
 `Classical.choice`, and `Quot.sound`. B0 is complete; upward independence itself
 remains the C3 obligation.
 

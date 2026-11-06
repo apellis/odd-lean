@@ -3,6 +3,12 @@
 > The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
 > [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
 > proved among that theorem's dependencies or belong to routes it does not use.
+>
+> The modules `ReservoirCoverage`, `ReservoirFusedVacuum`, `ReservoirFusedBubbles`,
+> `ReservoirFusedDetection`, `ReservoirFusedSectors` and `RouquierCoupledSectors`
+> (with `RegularVacuumIdentification`, `FusedVacuumWords`, `FusedRegularVacuumFamily`
+> and the coupled-sector interface mentioned below) were removed: no retained result used
+> them. Git history keeps them.
 
 **Status: the reservoir/vacuum action construction remains proposed.** The
 signed affine presentation comparison, transformed-ideal identification and
@@ -440,9 +446,6 @@ first- and last-boundary indexed ideals.
   `exists_bounded_reservoir_extraction`.
 * `OddMath/QuiverHecke/ReservoirSourceCoordinates.lean`:
   `reservoirSourceOrder_source`, `_involutive`, `_mem`.
-* `OddMath/QuiverHecke/ReservoirFusedVacuum.lean`: the k-linear `coord` and
-  constructed `reservoir` fields of `RegularVacuumIdentification`, and the
-  independent h parameter of `FusedRegularVacuumFamily`.
 * `OddMath/QuiverHecke/ReservoirVacuumDetection.lean`:
   `ReservoirVacuumEvaluation`, `NormalizedBubbleFormula`.
 * Written factor comparisons: `DeformedActionAssembly.md` §§1,5–6,
