@@ -268,4 +268,56 @@ theorem lowerTwist_bijective (a : I → ℕ → k) : Function.Bijective (lowerTw
   exact H
 
 end SYM
+
+/-- Reindexing the pure terms of a bubble slide: a sum over the lowered degree `s`
+equals a sum over the exponent `p = d - w s`. -/
+theorem sum_Ioc_shift_eq_sum_range {k V : Type*} [Semiring k] [AddCommMonoid V] [Module k V]
+    (w d m : ℕ) (hw : 0 < w) (c : ℕ → k) (G : ℤ → V) (hG : ∀ n < 0, G n = 0)
+    (hpar : ∀ p < d, c p ≠ 0 → w ∣ d - p) :
+    ∑ s ∈ Ioc 0 m, (if w * s ≤ d then c (d - w * s) else 0) • G ((w * (m - s) : ℕ) : ℤ) =
+      ∑ p ∈ range d, c p • G ((w * m : ℕ) + p - d) := by
+  apply sum_bij_ne_zero (fun s _ _ => d - w * s)
+  · intro s hs h
+    simp only [mem_Ioc] at hs
+    by_cases hle : w * s ≤ d
+    · simp only [mem_range]
+      have : 0 < w * s := Nat.mul_pos hw hs.1
+      omega
+    · simp [hle] at h
+  · intro s₁ hs₁ h₁ s₂ hs₂ h₂ he
+    simp only [mem_Ioc] at hs₁ hs₂
+    have h1 : w * s₁ ≤ d := by by_contra hc; simp [hc] at h₁
+    have h2 : w * s₂ ≤ d := by by_contra hc; simp [hc] at h₂
+    have : w * s₁ = w * s₂ := by omega
+    exact Nat.eq_of_mul_eq_mul_left hw this
+  · intro p hp h
+    simp only [mem_range] at hp
+    have hc : c p ≠ 0 := by rintro hc; simp [hc] at h
+    obtain ⟨s, hs⟩ := hpar p hp hc
+    have hG' : ¬ ((w * m : ℕ) : ℤ) + p - d < 0 := by
+      intro hn; exact h (by rw [hG _ hn, smul_zero])
+    have hs0 : 0 < s := by
+      rcases Nat.eq_zero_or_pos s with h0 | h0
+      · subst h0; omega
+      · exact h0
+    have hsm : s ≤ m := by
+      by_contra hsm
+      have : w * m < w * s := Nat.mul_lt_mul_of_pos_left (by omega) hw
+      push_cast at hG'; omega
+    refine ⟨s, mem_Ioc.mpr ⟨hs0, hsm⟩, ?_, by omega⟩
+    have hle : w * s ≤ d := by omega
+    simp only [hle, ↓reduceIte, show d - w * s = p by omega]
+    intro h'
+    apply h
+    have hq : (((w * (m - s) : ℕ) : ℤ)) = ((w * m : ℕ) : ℤ) + p - d := by
+      rw [Nat.mul_sub]; push_cast [Nat.mul_le_mul_left w hsm]; omega
+    rw [← hq]; exact h'
+  · intro s hs h
+    simp only [mem_Ioc] at hs
+    have hle : w * s ≤ d := by by_contra hc; simp [hc] at h
+    simp only [hle, ↓reduceIte]
+    congr 2
+    have hsm : w * s ≤ w * m := Nat.mul_le_mul_left w hs.2
+    rw [Nat.mul_sub]; push_cast [hsm, hle]; ring
+
 end OddMath.SKM
