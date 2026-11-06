@@ -93,7 +93,8 @@ theorem truncatedVacuum_support_of_boundOver (b : ℤ)
             (hbound c).trans (mul_le_mul_of_nonneg_left hcw hM)⟩
         exact Submodule.mem_iSup_of_mem (SKM.SYM.coefficientDegree D sy c)
           (Submodule.mem_iSup_of_mem hn (vacuumClass_basis_degreeOver D sy 𝒜 Sc hP cutoff N c))
-  · rw [truncatedVacuum_eq_zero D Sc cutoff N hw z]
+  · obtain ⟨f, rfl⟩ := (truncatedIdeal D Sc cutoff N [] w).mkQ_surjective z
+    rw [vacuum_hom_eq_zero D Sc cutoff hw f, map_zero]
     exact Submodule.zero_mem _
 
 end OddMath.QuiverHecke.ELVOld
