@@ -1378,6 +1378,7 @@ import OddMath.SKM.BWWScalars
 import OddMath.SKM.BWWBoxSum
 import OddMath.SKM.BWWPresentation
 import OddMath.QuiverHecke.BWWPresentation
+import OddMath.QuiverHecke.BWWGrading
 import OddMath.SKM.Grassmannian
 import OddMath.SKM.GrassmannianCor
 import OddMath.SKM.GrassmannianOdd
