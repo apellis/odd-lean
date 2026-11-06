@@ -84,8 +84,8 @@ theorem truncatedVacuum_support_of_boundOver (b : ℤ)
       exact ⟨by omega, by omega⟩
     · rintro g ⟨c, rfl⟩
       by_cases hc : N ≤ SKM.SYM.coefficientWeight D c
-      · rw [vacuumClass_basis_zero D Sc cutoff N c hc]
-        exact Submodule.zero_mem _
+      · exact (congrArg (fun x => x ∈ _) (vacuumClass_basis_zero D Sc cutoff N c hc)).mpr
+          (Submodule.zero_mem _)
       · have hcw : (SKM.SYM.coefficientWeight D c : ℤ) ≤ N := by
           exact_mod_cast (by omega : SKM.SYM.coefficientWeight D c ≤ N)
         have hn : SKM.SYM.coefficientDegree D sy c ∈ Set.Icc (0 : ℤ) (M * N) :=
