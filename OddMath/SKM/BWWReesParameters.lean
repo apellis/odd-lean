@@ -32,7 +32,8 @@ category is used.
   invertible, that is stable under base change and detected by jointly separating base changes.
   The Nondegeneracy Conjecture has both properties (`nondegeneracyConjecture_scalarChange`,
   `nondegeneracyConjecture_of_separating`); `BWWParameterProperty.interiorNondegeneracy` is the
-  Brundan–Ellis conjecture for the interior part `BWWScalars.toScalars`.
+  Nondegeneracy Conjecture for the parameters `BWWScalars.toScalars`, which keep every
+  coefficient below the corners, the pure ones included (`BWWScalars.toScalars_toBWW`).
 * `BWWParameterProperty.lowerDegreeCase_of_truncatedReesCase`: for such a property, the case of
   the truncated Rees parameters over every commutative ring with `2` invertible implies the case
   of every lower-degree parameter system over every such ring, and with it
@@ -313,8 +314,9 @@ theorem gradedCase_of_truncatedReesCase (h : P.TruncatedReesCase sy) : P.GradedC
   P.gradedCase_of_lowerDegreeCase sy (P.lowerDegreeCase_of_truncatedReesCase sy h)
 
 variable (D) in
-/-- The Brundan–Ellis Nondegeneracy Conjecture for the interior part `BWWScalars.toScalars`
-of the parameters (the pure coefficients are not seen by the Brundan–Ellis relations). It is a
+/-- The Nondegeneracy Conjecture for Brundan–Wang–Webster parameters: the conjecture for
+`BWWScalars.toScalars`, which keeps every coefficient below the corners, the pure coefficients
+included, so that its presentation is that of the parameters (`presBWW_eq_pres`). It is a
 `BWWParameterProperty` by `nondegeneracyConjecture_scalarChange` and
 `nondegeneracyConjecture_of_separating`. -/
 def interiorNondegeneracy : BWWParameterProperty.{u, v, w} D where
