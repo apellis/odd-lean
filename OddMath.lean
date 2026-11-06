@@ -1831,6 +1831,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentCoefficientMaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentCoefficientCaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVMatrixEntryNaturality
 import OddMath.Algebra.FiniteSupermoduleFunctor
+import OddMath.Algebra.NilpotentPerturbation
 import OddMath.QuiverHecke.CyclotomicAction.ELVMatrixFunctorNaturality
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixFunctorInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelOffContentMatrices
