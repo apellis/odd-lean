@@ -185,10 +185,14 @@ the branch are those of [FieldScopeBoundary](FieldScopeBoundary.md):
    parameter system over a commutative ring with `2` invertible, through the
    Rees family over `k[h]` specialized at `h = 1`; consumer
    [GradedParameters](../../scripts/NonVacuity/GradedParameters.lean), on
-   inhomogeneous parameters `u³ + uv + v³`. Open decision: BE2's `Scalars`
-   has no coefficients for the monomials `u^r` (`0 < r < dᵢⱼ`) and `v^s`
-   alone, which Brundan–Wang–Webster allow, so the target covers their
-   class only on BE2's parameter shape. The target is reduced, by ring maps
+   inhomogeneous parameters `u³ + uv + v³`. BE2's `Scalars` now carry the whole box of coefficients below the corners, including the
+   pure monomials `u^r` and `v^s` that Brundan–Wang–Webster allow (decision: generalize in
+   place, [BWWArchitecture](BWWArchitecture.md)); BE2's printed parameters are the case
+   `ScalarData.NoPure`. The probe dot units take the route-only hypothesis
+   `ScalarData.PureNilpotent` (pure coefficients in a nilpotent ideal), supplied by
+   homogeneous parameters (`NoPure.pureNilpotent`) and by the truncated Rees parameters
+   (`BWWReesParameters.truncated_pureNilpotent`); it does not enter the target statement.
+   The target is reduced, by ring maps
    that ignore grading, to its universal instance
    (`LowerDegreeParameters.gradedCoefficientNondegeneracy_iff`), to
    lower-degree parameters over characteristic-zero fields

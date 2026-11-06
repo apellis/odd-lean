@@ -78,3 +78,24 @@ through `presBWW_toBWW` and these lemmas are reused unchanged.
    its route, supplied by `Homogeneous.noPure` at the homogeneous call sites. The
    Brundan–Wang–Webster replacements of these sites (pure coefficients in a nilpotent
    ideal) are in `BWWKind3.md` and `BWWReductions.md`.
+
+## Pure coefficients in a nilpotent ideal (route hypothesis)
+
+The probe dot unit (`probeMixedCorner_dot_isUnit`, `probeWord_dots_isUnit`) needs
+`Qᵢⱼ(u, 0)` to be a unit when `u` is. With pure terms below the corners this holds when the
+pure coefficients lie in a nilpotent ideal:
+
+* `ScalarData.PureNilpotent Sc` (`OddMath/SKM/BWWPureNilpotent.lean`): some nilpotent ideal
+  contains every pure coefficient below the corners;
+  `PureNilpotent.exists_isUnit_quad_remainders` gives `Qᵢⱼ(u, v) = U + R v = U + v R'` with
+  `U` a unit.
+* `ScalarData.NoPure.pureNilpotent`: homogeneous parameters satisfy it (ideal `⊥`).
+* `BWWReesParameters.truncated_pureNilpotent` (`OddMath/SKM/BWWReesPureNilpotent.lean`): the
+  truncated Rees parameters over `k[h]/(h^N)` satisfy it (ideal `(h)`).
+* `parameterTwist_pureNilpotent` and its instance: the parity transport preserves it.
+
+The probe chain takes `[Fact Sc.PureNilpotent]`. This is a route-only intermediate
+hypothesis: the homogeneous end theorems supply it from `hc.noPure.pureNilpotent` and keep
+their statements, and the Brundan–Wang–Webster headline obtains it on the truncated Rees
+parameters through `BWWParameterProperty.gradedCase_of_truncatedReesCase`, so it does not
+appear in the headline.
