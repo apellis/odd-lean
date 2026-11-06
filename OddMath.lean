@@ -1378,6 +1378,7 @@ import OddMath.SKM.PsiRoundtrips
 import OddMath.SKM.PsiInverseLaws
 import OddMath.SKM.PsiFunctorInverses
 import OddMath.SKM.Grading
+import OddMath.SKM.BWWScalars
 import OddMath.SKM.Grassmannian
 import OddMath.SKM.GrassmannianCor
 import OddMath.SKM.GrassmannianOdd
