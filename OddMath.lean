@@ -1477,6 +1477,7 @@ import OddMath.SKM.BWWGradedParameters
 import OddMath.SKM.GradedImage
 import OddMath.SKM.LowerDegreeParameters
 import OddMath.SKM.TruncatedReesParameters
+import OddMath.SKM.BWWReesParameters
 import OddMath.SKM.GroundRingNondegeneracy
 import OddMath.SKM.IntegralNondegeneracy
 import OddMath.QuiverHecke.GrothendieckIsomorphism
@@ -2666,3 +2667,5 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumRightEntriesEven
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumCoefficientDecode
 import OddMath.QuiverHecke.SwappedAssembly.SupportedLeftVacuumEntries
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumRightEntriesOdd
+import OddMath.SKM.BWWEvenDictionary
+import OddMath.SKM.BWWEvenGraded
