@@ -215,7 +215,7 @@ theorem truncatedDegreeOver_eq_bot_of_support (v w : List I) (S : Set ℤ)
       | add y y' _ _ hy hy' => rw [map_add, hy, hy', add_zero]
       | mem hm y hy =>
         rw [truncatedDprojOver_of_mem D sy 𝒜 Sc hP cutoff N hy n]
-        exact ite_eq_right fun h => hn (h ▸ hm)
+        exact ite_eq_right fun h : m = n => hn (by rw [← h]; exact hm)
   have he := truncatedDprojOver_of_mem D sy 𝒜 Sc hP cutoff N hz n
   rw [ite_eq_left rfl, hzero z (hS z)] at he
   exact he.symm
