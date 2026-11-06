@@ -27,6 +27,9 @@ Next mathematical targets, in order:
    steps of the swapped route use `Sc.Homogeneous`.
 3. **Normalizations.** Supply compatible `CScalars` under the benchmark's
    realization hypotheses, or prove a change-of-normalization comparison.
+   Deferred by decision: for dependent simple roots `CScalars` may not exist
+   (`RootCover.nonempty_cScalars_iff`; affine `A₁` with `t₀₁ = 2`), so the
+   theorem can be vacuous there. This gap is recorded in STATUS, not worked on.
 
 Start with [STATUS](STATUS.md) for established scope and claim boundaries.
 [SwappedNondegeneracy](SwappedNondegeneracy.md) is the written proof.

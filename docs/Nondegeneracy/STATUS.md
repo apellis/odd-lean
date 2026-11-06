@@ -225,7 +225,14 @@ the branch are those of [FieldScopeBoundary](FieldScopeBoundary.md):
    the end theorem in `QuiverHecke.exists_nondegeneracy_of_linearIndependent`),
    which includes Brundan–Ellis's setting. Benchmark realizations with
    dependent roots still need compatible normalizations or a
-   change-of-normalization comparison.
+   change-of-normalization comparison. **Open (gap recorded, deferred):** a
+   normalization exists exactly when `Π tᵢⱼ^{nⱼ} = 1` for every `i` and every
+   integer relation `Σ nⱼ αⱼ = 0` among the simple roots
+   (`RootCover.nonempty_cScalars_iff`). For dependent roots the theorem can
+   therefore be vacuous: for affine `A₁` with `α₀ + α₁ = 0` it forces
+   `tᵢ₀ tᵢ₁ = 1` (`CScalars.t_mul_t_eq_one`), so `t₀₁ = 2` admits no
+   normalization. Brundan–Wang–Webster, Remark 2.4, allow arbitrary
+   normalizations; covering that case is not attempted.
 
 The audit of the formal statement against Brundan–Ellis §8, and the precise
 scope of the even specialization, are in [StatementAudit](StatementAudit.md).
