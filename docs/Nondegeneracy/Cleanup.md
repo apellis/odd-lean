@@ -53,7 +53,7 @@ same way as unused modules, unless a retained declaration still refers to them.
 | after removing unused declarations (1983) and empty modules (25) | 2904 | 596,582 | 104 | 4,726 |
 | later research PRs, then removing 20 unreached modules | 2895 | 596,756 | 108 | 4,882 |
 | later research PRs | 2913 | 599,715 | 122 | 6,003 |
-| second pass: removing unused declarations (832) and empty modules (9) | 2904 | 587,596 | 122 | 6,003 |
+| second pass: removing unused declarations (829) and empty modules (9) | 2904 | 587,640 | 122 | 6,003 |
 | `master` | 1321 | | 90 | |
 
 The Phase 1 theorem alone uses declarations from 1584 modules; the remaining research
@@ -307,8 +307,8 @@ a root, iterated to a fixed point, so that `simp` lemmas proved by `rfl`, local 
 and `attribute` lines never refer to a removed declaration. Auxiliary declarations
 (`_proof_n`, equation lemmas) count with the declaration they belong to.
 
-This removed 832 declarations (657 theorems, 175 definitions; 587 of them in
-`QuiverHecke.CyclotomicAction`) from 203 modules. Nine modules were left without
+This removed 829 declarations (655 theorems, 174 definitions; 584 of them in
+`QuiverHecke.CyclotomicAction`) from 202 modules. Nine modules were left without
 declarations and were removed: `QuiverHecke.CyclotomicAction.ELVAppendSignedMovingSupport`,
 `ELVCoefficientPowerPolynomialCap`, `GlobalBraidAlgebra`, `IntertwinerSquareDot` and
 `LeadingMoveCoefficients`, `QuiverHecke.ReservoirCoordinates`,
