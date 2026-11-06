@@ -64,7 +64,11 @@ theorem sum_range_range_eq_edges_add {M : Type*} [AddCommMonoid M] {a b : ℕ} (
         ∑ p ∈ Finset.Ioo 0 a, ∑ q ∈ Finset.Ioo 0 b, g p q := by
   have h0a : (0 : ℕ) ∉ Finset.Ioo 0 a := by simp
   have h0b : (0 : ℕ) ∉ Finset.Ioo 0 b := by simp
-  rw [Finset.range_eq_Ico, ← Finset.Ioo_insert_left ha, ← Finset.Ioo_insert_left hb]
+  have hra : Finset.range a = insert 0 (Finset.Ioo 0 a) := by
+    rw [Finset.range_eq_Ico, Finset.Ioo_insert_left ha]
+  have hrb : Finset.range b = insert 0 (Finset.Ioo 0 b) := by
+    rw [Finset.range_eq_Ico, Finset.Ioo_insert_left hb]
+  rw [hra, hrb]
   simp only [Finset.sum_insert h0a, Finset.sum_insert h0b, Finset.sum_add_distrib]
   abel
 

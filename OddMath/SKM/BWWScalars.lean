@@ -150,7 +150,7 @@ theorem bwwCoeff_symm (Sc : Scalars D k) (i j : I) (p q : ℕ) :
   simp only [h1, h2, h1', h2', ite_false]
   by_cases h3 : p < D.dn i j ∧ q < D.dn j i
   · have h3' : q < D.dn j i ∧ p < D.dn i j := ⟨h3.2, h3.1⟩
-    simp only [h3, h3', and_self, ite_true, Sc.s_symm]
+    simp only [h3, and_self, ite_true, Sc.s_symm]
   · have h3' : ¬(q < D.dn j i ∧ p < D.dn i j) := fun h => h3 ⟨h.2, h.1⟩
     simp only [h3, h3', ite_false]
 
