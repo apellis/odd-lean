@@ -220,6 +220,7 @@ private theorem tensorVacuum_reservoir_series (hi : D.parity i = 1) (hN : 0 < cu
     (reservoir_even_coefficient D Sc m cutoff L i hi hN)
     (reservoir_odd_coefficient D Sc m cutoff L i hi hN)
 
+set_option diagnostics true in
 include hdot in
 private theorem odd_slide_neg (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) :
     evaluatedMixedBend D Sc m cutoff bound i hP H ≫ evaluatedPostDot D Sc m cutoff bound i H -

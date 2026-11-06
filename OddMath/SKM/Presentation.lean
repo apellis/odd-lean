@@ -130,6 +130,76 @@ theorem sChain_dcapL (i : I) (n : ℕ) : SChain [dn i, up i] (dcapL i n) [] := b
 def crossL (u : List (Letter I)) (i j : I) (v : List (Letter I)) : List (LayerData I) :=
   [(u, Shape.cross i j, v)]
 
+/-! ## Layer lists of the bubbles of the integral form -/
+
+/-- The layers of `η' : 1 → Eᵢ Fᵢ` (2.10) at the weight `ν`, without its scalar: the `♦`-cup with
+label `⟨hᵢ, ν⟩ - 1` if `⟨hᵢ, ν⟩ > 0`, the rightward cup with `-⟨hᵢ, ν⟩` dots followed by the
+leftward crossing otherwise. -/
+def lPreL (i : I) (ν : X) : List (LayerData I) :=
+  if 0 < D.h i ν then dcupL i (D.h i ν - 1).toNat else etaL i (-D.h i ν).toNat ++ lcrossL i i
+
+theorem sChain_lPreL (i : I) (ν : X) : SChain [] (lPreL D i ν) [up i, dn i] := by
+  unfold lPreL
+  split_ifs
+  · exact sChain_dcupL i _
+  · exact (sChain_etaL i _).append (sChain_lcrossL i i)
+
+/-- The layers of `ε' : Fᵢ Eᵢ → 1` (2.11) at the weight `ν`, without its scalar: the `♦`-cap with
+label `-⟨hᵢ, ν⟩ - 1` if `⟨hᵢ, ν⟩ < 0`, the leftward crossing followed by the rightward cap with
+`⟨hᵢ, ν⟩` dots otherwise. -/
+def rPostL (i : I) (ν : X) : List (LayerData I) :=
+  if D.h i ν < 0 then dcapL i (-D.h i ν - 1).toNat else lcrossL i i ++ epsL i (D.h i ν).toNat
+
+theorem sChain_rPostL (i : I) (ν : X) : SChain [dn i, up i] (rPostL D i ν) [] := by
+  unfold rPostL
+  split_ifs
+  · exact sChain_dcapL i _
+  · exact (sChain_lcrossL i i).append (sChain_epsL i _)
+
+/-- The layers of the odd bubble (2.18) at the weight `ν`, without its scalar. -/
+def oddL (i : I) (ν : X) : List (LayerData I) :=
+  if 0 ≤ D.h i ν then lPreL D i ν ++ epsL i (D.h i ν).toNat
+  else etaL i (-D.h i ν).toNat ++ rPostL D i ν
+
+theorem sChain_oddL (i : I) (ν : X) : SChain [] (oddL D i ν) [] := by
+  unfold oddL
+  split_ifs
+  · exact (sChain_lPreL D i ν).append (sChain_epsL i _)
+  · exact (sChain_etaL i _).append (sChain_rPostL D i ν)
+
+/-- The exponent of the sign of the odd bubble (2.18) relative to `oddL`: `|i|` if
+`⟨hᵢ, ν⟩ = 0`, and `0` otherwise. -/
+def oddPar (i : I) (ν : X) : ZMod 2 := if D.h i ν = 0 then D.parity i else 0
+
+/-- The additional relations of the integral form of `𝔘(𝔤)`, for an odd colour `i` and the
+weight `ν` of the region: (1.24) `δ² = 0`; (5.9) and (5.10) for `N = n + 1 > 0` with
+`n + ⟨hᵢ, ν⟩` odd. -/
+inductive ZBase (D : Datum I X)
+  /-- (1.24): the odd bubble squares to zero. -/
+  | sq (i : I) (ν : X)
+  /-- (5.9): the bubble with `n + 1` dots on its right side is the bubble with `n` dots followed
+  by the odd bubble. -/
+  | right (i : I) (ν : X) (n : ℕ) (hn : (2 : ℤ) ∣ n + D.h i ν + 1)
+  /-- (5.10): the bubble with `n + 1` dots on its left side is the odd bubble followed by the
+  bubble with `n` dots. -/
+  | left (i : I) (ν : X) (n : ℕ) (hn : (2 : ℤ) ∣ n + D.h i ν + 1)
+
+namespace ZBase
+
+variable {D}
+
+/-- The colour of a relation of the integral form. -/
+@[simp]
+def i : ZBase D → I
+  | sq i _ | right i _ _ _ | left i _ _ _ => i
+
+/-- The weight of the region of a relation of the integral form. -/
+@[simp]
+def ν : ZBase D → X
+  | sq _ ν | right _ ν _ _ | left _ ν _ _ => ν
+
+end ZBase
+
 /-! ## The relations -/
 
 /-- The sign `(-1)^p` for `p ∈ ℤ/2`. -/
@@ -162,6 +232,8 @@ inductive Rel (D : Datum I X)
   | invM₅ (i : I) (ν : X) (m n : ℕ) (hm : (m : ℤ) < -D.h i ν) (hn : (n : ℤ) < -D.h i ν)
   | dcupZero (i : I) (ν : X) (n : ℕ) (hn : D.h i ν ≤ n)
   | dcapZero (i : I) (ν : X) (n : ℕ) (hn : -D.h i ν ≤ n)
+  /-- The relations of the integral form (`ZBase`); they vanish when `2` is invertible. -/
+  | zInt (b : ZBase D)
 
 namespace Rel
 
@@ -175,6 +247,7 @@ def ν : Rel D → X
   | invNe₁ _ _ ν _ | invNe₂ _ _ ν _ | invP₁ _ ν _ | invP₂ _ ν _ | invP₃ _ ν _ _ | invP₄ _ ν _ _
   | invP₅ _ ν _ _ _ _ | invM₁ _ ν _ | invM₂ _ ν _ | invM₃ _ ν _ _ | invM₄ _ ν _ _
   | invM₅ _ ν _ _ _ _ | dcupZero _ ν _ _ | dcapZero _ ν _ _ => ν
+  | zInt b => b.ν
 
 /-- The bottom boundary word of a relation. -/
 @[simp]
@@ -192,6 +265,7 @@ def dom : Rel D → List (Letter I)
   | invP₂ i _ _ | invP₃ i _ _ _ | invM₁ i _ _ => [dn i, up i]
   | invP₄ _ _ _ _ | invP₅ _ _ _ _ _ _ | invM₃ _ _ _ _ | invM₅ _ _ _ _ _ _ | dcupZero _ _ _ _ => []
   | dcapZero i _ _ _ => [dn i, up i]
+  | zInt _ => []
 
 /-- The top boundary word of a relation. -/
 @[simp]
@@ -208,11 +282,12 @@ def cod : Rel D → List (Letter I)
   | invNe₂ i j _ _ => [dn i, up j]
   | invP₁ i _ _ | invM₂ i _ _ | invM₃ i _ _ _ | dcupZero i _ _ _ => [up i, dn i]
   | invP₂ i _ _ | invP₄ i _ _ _ | invM₁ i _ _ => [dn i, up i]
-  | invP₃ _ _ _ _ | invP₅ _ _ _ _ _ _ | invM₄ _ _ _ _ | invM₅ _ _ _ _ _ _ | dcapZero _ _ _ _ => []
+  | invP₃ _ _ _ _ | invP₅ _ _ _ _ _ _ | invM₄ _ _ _ _ | invM₅ _ _ _ _ _ _ | dcapZero _ _ _ _
+  | zInt _ => []
 
 end Rel
 
-variable {k : Type w} [CommRing k] (Sc : Scalars D k)
+variable {k : Type w} [CommRing k] {Ptwo : Prop} (Sc : ScalarData D k Ptwo)
 
 /-- Shorthand: the class of the normal-form diagram with layers `ls` as a linear combination. -/
 abbrev dg (μ : X) {t t' : List (Letter I)} (ls : List (LayerData I)) (h : SChain t ls t') :
@@ -222,7 +297,26 @@ abbrev dg (μ : X) {t t' : List (Letter I)} (ls : List (LayerData I)) (h : SChai
 /-- The identity of `ob D μ t` as a linear combination. -/
 abbrev idg (μ : X) (t : List (Letter I)) : LinDiagram k (ob D μ t) (ob D μ t) := of (𝟙 _)
 
-/-- The relations of Definition 1.5, each written as `lhs - rhs`. -/
+open Classical in
+/-- The relations of the integral form are imposed for odd `i` when `2` is not invertible in `k`;
+otherwise they follow from the other relations (Brundan–Ellis (1.24), Proposition 5.1), and they
+are replaced by `0`. -/
+def zGate {a b : Obj (sig D)} (i : I) (f : LinDiagram k a b) : LinDiagram k a b :=
+  if D.parity i = 1 ∧ ¬IsUnit (2 : k) then f else 0
+
+theorem zGate_of_isUnit {a b : Obj (sig D)} (i : I) (f : LinDiagram k a b) (h : IsUnit (2 : k)) :
+    zGate D i f = 0 := by
+  simp [zGate, h]
+
+theorem zGate_of_parity {a b : Obj (sig D)} (i : I) (f : LinDiagram k a b)
+    (h : D.parity i ≠ 1) : zGate D i f = 0 := by
+  simp [zGate, h]
+
+theorem zGate_of_not_isUnit {a b : Obj (sig D)} (i : I) (f : LinDiagram k a b)
+    (hi : D.parity i = 1) (h : ¬IsUnit (2 : k)) : zGate D i f = f := by
+  simp [zGate, hi, h]
+
+/-- The relations of Definition 1.5 and of the integral form (`ZBase`), each written as `lhs - rhs`. -/
 def relation : (r : Rel D) → LinDiagram k (ob D r.ν r.dom) (ob D r.ν r.cod)
   | .quadEq i ν => dg D ν (crossL [] i i [] ++ crossL [] i i [])
       (by simp [crossL, Shape.dom, Shape.cod])
@@ -312,6 +406,24 @@ def relation : (r : Rel D) → LinDiagram k (ob D r.ν r.dom) (ob D r.ν r.cod)
       ((sChain_etaL i m).append (sChain_dcapL i n)) - if m = n then idg D ν _ else 0
   | .dcupZero i ν n _ => dg D ν (dcupL i n) (sChain_dcupL i n)
   | .dcapZero i ν n _ => dg D ν (dcapL i n) (sChain_dcapL i n)
+  | .zInt (.sq i ν) => zGate D i <| dg D ν (oddL D i ν ++ oddL D i ν)
+      ((sChain_oddL D i ν).append (sChain_oddL D i ν))
+  | .zInt (.right i ν n _) => zGate D i <|
+      dg D ν (etaL i (n + 1) ++ rPostL D i ν) ((sChain_etaL i _).append (sChain_rPostL D i ν)) -
+        zsign k (oddPar D i ν) • dg D ν (etaL i n ++ rPostL D i ν ++ oddL D i ν)
+          (((sChain_etaL i _).append (sChain_rPostL D i ν)).append (sChain_oddL D i ν))
+  | .zInt (.left i ν n _) => zGate D i <|
+      dg D ν (lPreL D i ν ++ epsL i (n + 1)) ((sChain_lPreL D i ν).append (sChain_epsL i _)) -
+        zsign k (oddPar D i ν) • dg D ν (oddL D i ν ++ lPreL D i ν ++ epsL i n)
+          (((sChain_oddL D i ν).append (sChain_lPreL D i ν)).append (sChain_epsL i _))
+
+/-- With the scalars of Definition 1.5 (`2` invertible when some colour is odd) the integral
+relations are zero. -/
+theorem relation_zInt_of_scalars (Sc : Scalars D k) (b : ZBase D) :
+    relation D Sc (.zInt b) = 0 := by
+  by_cases hp : ∃ i, D.parity i = 1
+  · cases b <;> exact zGate_of_isUnit D _ _ (Sc.two_isUnit hp)
+  · cases b <;> exact zGate_of_parity D _ _ fun h => hp ⟨_, h⟩
 
 /-- The presentation of the Kac–Moody 2-supercategory `𝔘(𝔤)` (Definition 1.5). -/
 def pres : Presentation.{w, max u v} (sig D) k where
@@ -342,7 +454,7 @@ theorem parity_mul_dn (i j : I) : D.parity i * (D.dn i j : ZMod 2) = 0 := by
   · rw [zmod2_eq_zero_of_ne_one hi, zero_mul]
 
 variable {D} in
-theorem Scalars.parity_of_ne_zero {i j : I} {p q : ℕ} (hs : Sc.s i j p q ≠ 0) :
+theorem ScalarData.parity_of_ne_zero {i j : I} {p q : ℕ} (hs : Sc.s i j p q ≠ 0) :
     (p : ZMod 2) * D.parity i = 0 ∧ (q : ZMod 2) * D.parity j = 0 :=
   ⟨zmod2_eq_zero_of_ne_one fun h => hs (Sc.s_eq_zero i j p q h),
     zmod2_eq_zero_of_ne_one fun h => hs (by rw [Sc.s_symm]; exact Sc.s_eq_zero j i q p h)⟩
@@ -396,6 +508,48 @@ theorem parity_sum_append (ls ms : List (LayerData I)) :
 @[simp] theorem parity_dcapL (i : I) (n : ℕ) :
     ((dcapL i n).map fun x => x.2.1.parity D).sum = D.parity i * n := by
   simp [dcapL, Shape.parity]
+
+theorem natCast_toNat_zmod2 {x : ℤ} (hx : 0 ≤ x) : ((x.toNat : ℕ) : ZMod 2) = (x : ZMod 2) := by
+  rw [← Int.cast_natCast, Int.toNat_of_nonneg hx]
+
+theorem parity_lPreL (i : I) (ν : X) (hi : D.parity i = 1) :
+    ((lPreL D i ν).map fun x => x.2.1.parity D).sum = (D.h i ν : ZMod 2) + 1 := by
+  unfold lPreL
+  split_ifs with h
+  · rw [parity_dcupL, hi, one_mul, natCast_toNat_zmod2 (by omega)]
+    push_cast
+    generalize (D.h i ν : ZMod 2) = a; revert a; decide
+  · rw [parity_sum_append, parity_etaL, parity_lcrossL, hi, natCast_toNat_zmod2 (by omega)]
+    push_cast
+    generalize (D.h i ν : ZMod 2) = a; revert a; decide
+
+theorem parity_rPostL (i : I) (ν : X) (hi : D.parity i = 1) :
+    ((rPostL D i ν).map fun x => x.2.1.parity D).sum = (D.h i ν : ZMod 2) + 1 := by
+  unfold rPostL
+  split_ifs with h
+  · rw [parity_dcapL, hi, one_mul, natCast_toNat_zmod2 (by omega)]
+    push_cast
+    generalize (D.h i ν : ZMod 2) = a; revert a; decide
+  · rw [parity_sum_append, parity_epsL, parity_lcrossL, hi, natCast_toNat_zmod2 (by omega)]
+    generalize (D.h i ν : ZMod 2) = a; revert a; decide
+
+theorem parity_oddL (i : I) (ν : X) (hi : D.parity i = 1) :
+    ((oddL D i ν).map fun x => x.2.1.parity D).sum = 1 := by
+  unfold oddL
+  split_ifs with h
+  · rw [parity_sum_append, parity_lPreL D i ν hi, parity_epsL, hi, natCast_toNat_zmod2 h]
+    generalize (D.h i ν : ZMod 2) = a; revert a; decide
+  · rw [parity_sum_append, parity_rPostL D i ν hi, parity_etaL, hi, natCast_toNat_zmod2 (by omega)]
+    push_cast
+    generalize (D.h i ν : ZMod 2) = a; revert a; decide
+
+variable {D} in
+theorem zGate_mem {a b : Obj (sig D)} (i : I) {f : LinDiagram k a b} {S : Submodule k (LinDiagram k a b)}
+    (hf : D.parity i = 1 → f ∈ S) : zGate D i f ∈ S := by
+  unfold zGate
+  split_ifs with h
+  · exact hf h.1
+  · exact S.zero_mem
 
 /-- All relations of Definition 1.5 are homogeneous for the parity, by (1.2) and (1.4). -/
 theorem isParityHomogeneous : (pres D Sc).IsParityHomogeneous := by
@@ -544,6 +698,29 @@ theorem isParityHomogeneous : (pres D Sc).IsParityHomogeneous := by
       · exact Submodule.zero_mem _
   | dcupZero i ν n _ => exact ⟨_, dg_mem D rfl⟩
   | dcapZero i ν n _ => exact ⟨_, dg_mem D rfl⟩
+  | zInt b =>
+    cases b with
+    | sq i ν =>
+      refine ⟨0, zGate_mem i fun hi => dg_mem D ?_⟩
+      rw [parity_sum_append, parity_oddL D i ν hi]; decide
+    | right i ν n _ =>
+      refine ⟨(n : ZMod 2) + (D.h i ν : ZMod 2), zGate_mem i fun hi =>
+        Submodule.sub_mem _ (dg_mem D ?_) (Submodule.smul_mem _ _ (dg_mem D ?_))⟩
+      · rw [parity_sum_append, parity_etaL, parity_rPostL D i ν hi, hi]
+        push_cast
+        generalize (D.h i ν : ZMod 2) = a; generalize (n : ZMod 2) = b; revert a b; decide
+      · rw [parity_sum_append, parity_sum_append, parity_etaL, parity_rPostL D i ν hi,
+          parity_oddL D i ν hi, hi]
+        generalize (D.h i ν : ZMod 2) = a; generalize (n : ZMod 2) = b; revert a b; decide
+    | left i ν n _ =>
+      refine ⟨(n : ZMod 2) + (D.h i ν : ZMod 2), zGate_mem i fun hi =>
+        Submodule.sub_mem _ (dg_mem D ?_) (Submodule.smul_mem _ _ (dg_mem D ?_))⟩
+      · rw [parity_sum_append, parity_epsL, parity_lPreL D i ν hi, hi]
+        push_cast
+        generalize (D.h i ν : ZMod 2) = a; generalize (n : ZMod 2) = b; revert a b; decide
+      · rw [parity_sum_append, parity_sum_append, parity_epsL, parity_lPreL D i ν hi,
+          parity_oddL D i ν hi, hi]
+        generalize (D.h i ν : ZMod 2) = a; generalize (n : ZMod 2) = b; revert a b; decide
 
 /-- **The Kac–Moody 2-supercategory `𝔘(𝔤)`** (Brundan–Ellis, Definition 1.5): the presented
 bicategory of `pres D Sc`, a strict 2-supercategory (`twoSupercategory`). -/

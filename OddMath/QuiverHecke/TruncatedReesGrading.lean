@@ -123,12 +123,24 @@ variable {K}
 /-- The truncated Rees parameters. -/
 abbrev truncatedReesScalars (Sc : SKM.Scalars D K) (N : ℕ) :
     SKM.Scalars D (SKM.TruncatedRees.TruncRing K N) :=
-  SKM.ScalarChange.scalars D (SKM.TruncatedRees.trunc K N) (SKM.ReesParameters.scalars sy Sc)
+  (SKM.ScalarChange.scalars D (SKM.TruncatedRees.trunc K N)
+    (SKM.ReesParameters.scalars sy Sc)).withProp fun h => by
+      simpa [map_ofNat] using
+        (Sc.two_isUnit h).map ((SKM.TruncatedRees.trunc K N).comp MvPolynomial.C)
+
+theorem truncatedReesScalars_t (Sc : SKM.Scalars D K) (N : ℕ) (i j : I) :
+    (truncatedReesScalars D sy Sc N).t i j =
+      Units.map (SKM.TruncatedRees.trunc K N).toMonoidHom
+        ((SKM.ReesParameters.scalars sy Sc).t i j) := rfl
+
+theorem truncatedReesScalars_s (Sc : SKM.Scalars D K) (N : ℕ) (i j : I) (p q : ℕ) :
+    (truncatedReesScalars D sy Sc N).s i j p q =
+      SKM.TruncatedRees.trunc K N ((SKM.ReesParameters.scalars sy Sc).s i j p q) := rfl
 
 theorem truncatedRees_t_mem (Sc : SKM.Scalars D K) (N : ℕ) (i j : I) :
     (((truncatedReesScalars D sy Sc N).t i j : (SKM.TruncatedRees.TruncRing K N)ˣ) :
       SKM.TruncatedRees.TruncRing K N) ∈ truncGrading K N 0 := by
-  rw [SKM.ScalarChange.scalars_t, Units.coe_map]
+  rw [truncatedReesScalars_t, Units.coe_map]
   exact SKM.GradedImage.map_mem_image (f := truncAlg K N) (rees_t_mem D sy Sc i j)
 
 theorem truncatedRees_s_mem {Sc : SKM.Scalars D K} (hl : Sc.LowerDegree sy) (N : ℕ) (i j : I)
@@ -136,7 +148,7 @@ theorem truncatedRees_s_mem {Sc : SKM.Scalars D K} (hl : Sc.LowerDegree sy) (N :
     (hs : (truncatedReesScalars D sy Sc N).s i j p q ≠ 0) :
     (truncatedReesScalars D sy Sc N).s i j p q ∈
       truncGrading K N (SKM.coefficientDegree sy i j p q) := by
-  rw [SKM.ScalarChange.scalars_s] at hs ⊢
+  rw [truncatedReesScalars_s] at hs ⊢
   have hs' : (SKM.ReesParameters.scalars sy Sc).s i j p q ≠ 0 := by
     intro h0
     rw [h0, map_zero] at hs

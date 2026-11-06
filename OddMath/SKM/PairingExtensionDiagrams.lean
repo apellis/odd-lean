@@ -157,19 +157,26 @@ def relationLabel : Rel D → Rel (ReservoirWeights.pairingExtension D)
   | .invM₅ i ν m n hm hn => .invM₅ i (ν, 0) m n (by simpa using hm) (by simpa using hn)
   | .dcupZero i ν n hn => .dcupZero i (ν, 0) n (by simpa using hn)
   | .dcapZero i ν n hn => .dcapZero i (ν, 0) n (by simpa using hn)
+  | .zInt (.sq i ν) => .zInt (.sq i (ν, 0))
+  | .zInt (.right i ν n hn) => .zInt (.right i (ν, 0) n (by simpa using hn))
+  | .zInt (.left i ν n hn) => .zInt (.left i (ν, 0) n (by simpa using hn))
 
 @[simp] theorem relationLabel_dom (r : Rel D) : (relationLabel D r).dom = r.dom := by
-  cases r <;> rfl
+  cases r <;> (try cases ‹ZBase _›) <;> rfl
 @[simp] theorem relationLabel_cod (r : Rel D) : (relationLabel D r).cod = r.cod := by
-  cases r <;> rfl
+  cases r <;> (try cases ‹ZBase _›) <;> rfl
 @[simp] theorem relationLabel_region (r : Rel D) : (relationLabel D r).ν = (r.ν, 0) := by
-  cases r <;> rfl
+  cases r <;> (try cases ‹ZBase _›) <;> rfl
 
 /-- Every defining linear relation is the identical relation at the embedded region. -/
 theorem linear_relation (r : Rel D) :
     HEq (linear D r.ν r.dom r.cod (relation D Sc r)) (relation Dₑ Scₑ (relationLabel D r)) := by
-  cases r <;> apply heq_of_eq <;>
-    dsimp only [Rel.ν, Rel.dom, Rel.cod, relationLabel]
+  cases r
+  case zInt b =>
+    cases b <;> exact heq_of_eq (by
+      simp only [relationLabel, Rel.ν, Rel.dom, Rel.cod, relation_zInt_of_scalars, linear_zero])
+  all_goals apply heq_of_eq
+  all_goals dsimp only [Rel.ν, Rel.dom, Rel.cod, relationLabel]
   all_goals
     simp [relation, dg, idg, linear_sub, linear_add, linear_neg,
       linear_ite, linear_zero, linear_of, diagram_mkD, diagram_id,

@@ -24,9 +24,9 @@ With a symmetrizer `dᵢ` the dot on a strand of colour `i` has degree `2dᵢ`, 
   is therefore nonnegative. This is the parameter condition of Brundan–Wang–Webster §2.2,
   restricted to the monomials that occur in Brundan–Ellis (1.4), namely `0 < p < dᵢⱼ`,
   `0 < q < dⱼᵢ`.
-* `Scalars.LowerDegree`: over an arbitrary commutative ring, every nonzero `sᵢⱼ^{pq}` has
+* `ScalarData.LowerDegree`: over an arbitrary commutative ring, every nonzero `sᵢⱼ^{pq}` has
   nonnegative coefficient degree: `Qᵢⱼ` has no monomial above its leading terms.
-* `Scalars.Homogeneous.coefficientDegree_eq_zero`: the homogeneity condition (1.31) says
+* `ScalarData.Homogeneous.coefficientDegree_eq_zero`: the homogeneity condition (1.31) says
   exactly that nonzero coefficients have coefficient degree zero.
 * `GradedCoefficientNondegeneracy D sy`: the conjecture for graded-homogeneous parameters over
   every `ℕ`-graded commutative ring with `2` invertible. This is the statement targeted after
@@ -75,13 +75,14 @@ def Scalars.GradedHomogeneous {σ : Type*} [SetLike σ k] (sy : Symmetrizer D) (
 
 /-- Lower-degree parameters: every nonzero `sᵢⱼ^{pq}` has nonnegative coefficient degree,
 i.e. `dᵢp + dⱼq ≤ dᵢdᵢⱼ`. No grading of `k` is involved. -/
-def Scalars.LowerDegree (sy : Symmetrizer D) (Sc : Scalars D k) : Prop :=
+def ScalarData.LowerDegree {Ptwo : Prop} (sy : Symmetrizer D) (Sc : ScalarData D k Ptwo) :
+    Prop :=
   ∀ i j (p q : ℕ), 0 < p → (p : ℤ) < D.d i j → 0 < q → (q : ℤ) < D.d j i →
     Sc.s i j p q ≠ 0 → 0 ≤ coefficientDegree sy i j p q
 
 /-- Under the homogeneity condition (1.31), nonzero coefficients have coefficient degree
 zero. -/
-theorem Scalars.Homogeneous.coefficientDegree_eq_zero {Sc : Scalars D k} (hh : Sc.Homogeneous)
+theorem ScalarData.Homogeneous.coefficientDegree_eq_zero {Sc : Scalars D k} (hh : Sc.Homogeneous)
     (sy : Symmetrizer D) {i j : I} {p q : ℕ} (hp : 0 < p) (hp' : (p : ℤ) < D.d i j)
     (hq : 0 < q) (hq' : (q : ℤ) < D.d j i) (hs : Sc.s i j p q ≠ 0) :
     coefficientDegree sy i j p q = 0 := by
@@ -97,7 +98,7 @@ theorem Scalars.Homogeneous.coefficientDegree_eq_zero {Sc : Scalars D k} (hh : S
   rw [this, mul_zero]
 
 /-- Homogeneous parameters are lower-degree parameters. -/
-theorem Scalars.Homogeneous.lowerDegree {Sc : Scalars D k} (hh : Sc.Homogeneous)
+theorem ScalarData.Homogeneous.lowerDegree {Sc : Scalars D k} (hh : Sc.Homogeneous)
     (sy : Symmetrizer D) : Sc.LowerDegree sy := by
   intro i j p q hp hp' hq hq' hs
   rw [hh.coefficientDegree_eq_zero sy hp hp' hq hq' hs]
@@ -156,14 +157,17 @@ theorem gradedHomogeneous {Sc : Scalars D k} (hl : Sc.LowerDegree sy) :
 abbrev specialize : MvPolynomial Unit k →+* k := eval fun _ => (1 : k)
 
 /-- Specializing the Rees parameters at `h = 1` recovers the given parameters. -/
-theorem scalarChange_specialize :
-    ScalarChange.scalars D (specialize (k := k)) (scalars sy Sc) = Sc := by
-  apply Scalars.ext_t_s
-  · funext i j
-    ext
-    simp [ScalarChange.scalars, scalars]
-  · funext i j p q
-    simp [ScalarChange.scalars, scalars]
+theorem scalarChange_specialize_t :
+    (ScalarChange.scalars D (specialize (k := k)) (scalars sy Sc)).t = Sc.t := by
+  funext i j
+  ext
+  simp [ScalarChange.scalars, scalars]
+
+/-- Specializing the Rees coefficients at `h = 1` recovers the given coefficients. -/
+theorem scalarChange_specialize_s :
+    (ScalarChange.scalars D (specialize (k := k)) (scalars sy Sc)).s = Sc.s := by
+  funext i j p q
+  simp [ScalarChange.scalars, scalars]
 
 end ReesParameters
 
@@ -182,8 +186,9 @@ theorem nondegeneracyConjecture_of_lowerDegree {sy : Symmetrizer D}
     (MvPolynomial.homogeneousSubmodule Unit k) h₂' (ReesParameters.scalars sy Sc)
     (ReesParameters.gradedHomogeneous sy hl) (ReesParameters.cScalars sy cs)
   have hS := nondegeneracyConjecture_scalarChange ReesParameters.specialize hR
-  refine nondegeneracyConjecture_congr (ReesParameters.scalarChange_specialize sy Sc) _ cs
-    ?_ hS
+  refine nondegeneracyConjecture_congr (eq_true h₂).symm
+    (ReesParameters.scalarChange_specialize_t sy Sc)
+    (ReesParameters.scalarChange_specialize_s sy Sc) _ cs ?_ hS
   intro μ i
   ext
   simp [ScalarChange.cScalars, ReesParameters.cScalars]

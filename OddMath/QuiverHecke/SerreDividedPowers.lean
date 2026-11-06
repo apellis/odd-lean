@@ -419,7 +419,9 @@ theorem class_alternating_sum_shift (c : ZMod 2) :
     simp only [smul_zero, Finset.smul_sum] at h'
     rw [← h']
     refine Finset.sum_congr rfl fun a _ => ?_
-    rw [smul_comm (LaurentPolynomial.C Zπ.π : LaurentPolynomial Zπ), hπ]
+    exact ((smul_comm (LaurentPolynomial.C Zπ.π : LaurentPolynomial Zπ) ((-1 : ℤ) ^ (a : ℕ))
+      (K₀.mk (termUp sy hc i j M ν a (Nat.le_of_lt_succ a.2)))).trans
+        (congrArg (fun x => ((-1 : ℤ) ^ (a : ℕ)) • x) (hπ a))).symm
 
 omit hij hM in
 theorem choose_two_add (a r : ℕ) : (a + r).choose 2 = a.choose 2 + r.choose 2 + a * r := by

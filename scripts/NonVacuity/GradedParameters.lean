@@ -4,7 +4,7 @@ import OddMath
 
 The even datum on two vertices with off-diagonal Cartan entries `-3`, symmetrizer `(1, 1)`, and
 parameters `Qᵢⱼ(u, v) = u³ + uv + v³` over `ℚ` (only `s^{11}` is nonzero). The monomial `uv`
-has degree `4 < 6`, so the parameters are lower-degree (`Scalars.LowerDegree`) but violate the
+has degree `4 < 6`, so the parameters are lower-degree (`ScalarData.LowerDegree`) but violate the
 homogeneity condition (1.31). The Rees parameters are graded homogeneous, and
 `nondegeneracyConjecture_of_lowerDegree` applies with every hypothesis proved except the
 graded-coefficient statement, which is its explicit hypothesis; no instance of the conjecture

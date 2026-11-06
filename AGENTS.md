@@ -19,6 +19,14 @@ This scope governs all research notes, including historical routes; it does not
 change existing theorem statements or claims about the scope of published sources.
 The current status and next dependencies remain in STATUS and HANDOFF.
 
+Phase 1 extends to every commutative ring through the integral form of the
+presentation (the integral relations `Rel.zInt`, imposed exactly when 2 is not
+a unit): `QuiverHecke.integral_nondegeneracy_of_symmetrizer` states the
+conjecture for symmetrizable data, homogeneous `IntegralScalars` and every
+commutative ring, deduced from the case with 2 inverted
+(`SKM.IntegralNondegeneracy`). With 2 invertible the integral relations hold
+automatically, so the presentation and theorem agree with the original ones.
+
 This repository is developed largely by AI agents under human direction. Everything here is
 public: keep it mathematical and technical.
 

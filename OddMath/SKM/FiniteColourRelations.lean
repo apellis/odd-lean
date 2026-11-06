@@ -56,6 +56,7 @@ def Rel.colours : Rel D → List I
   | .quadZero i j _ _ _ | .quadNe i j _ _ _ | .slideL i j _ _ | .slideR i j _ _
   | .braidEq i j _ _ | .invNe₁ i j _ _ | .invNe₂ i j _ _ => [i, j]
   | .braid i j k _ _ => [i, j, k]
+  | .zInt b => [b.i]
 
 /-- Raw support of an imposed relation, including the two generating vertices
 and all intervening strands of superinterchange, before linear expansion. -/

@@ -451,19 +451,27 @@ theorem form_algebraWord_eq_zero (hN : SKM.NondegeneracyConjecture cs) (μ ν : 
       have h1 := (mixed_word_physical_weight Q ν b).symm.trans hb
       have h2 := (mixed_word_physical_weight Q ν t.1).symm.trans (blockWord_wt Q t)
       rw [add_left_cancel (h1.trans h2.symm)]
-    erw [GSKar.pairing_smul]
-    rw [map_mul, evalSeries_laurentToSeries, evalSeries_pairing_blockClass,
-      SKM.hom_dimension_eq_form_mul_sym Q cs hS hf hN ν b t.1 hab, mul_assoc]
-    · rfl
-    · exact hf
+    have hsm : P (a t • blockClass S Q.skmSymmetrizer hS μ ν t.1 (blockWord_wt Q t) 0 0) =
+        laurentToSeries (a t) *
+          P (blockClass S Q.skmSymmetrizer hS μ ν t.1 (blockWord_wt Q t) 0 0) :=
+      GSKar.pairing_smul (k := k) _ _ (a t) _
+    rw [hsm, map_mul]
+    have e1 := evalSeries_laurentToSeries σ hσ (a t)
+    have e2 := (evalSeries_pairing_blockClass Q hS cs hf μ ν t.1 b (blockWord_wt Q t) hb σ hσ).trans
+      (SKM.hom_dimension_eq_form_mul_sym Q cs hS hf hN ν b t.1 hab (σ : ℚ)
+        (sq_eq_one_of_mul_self (by exact_mod_cast congrArg (fun z : ℤ => (z : ℚ)) hσ)))
+    exact (congrArg₂ (· * ·) e1 e2).trans (mul_assoc _ _ _).symm
   apply Coefficients.eq_zero_of_signLaurent
   intro σ hσ'
   have hσ : σ * σ = 1 := by
     have : ((σ * σ : ℤ) : ℚ) = 1 := by push_cast; rw [← pow_two]; exact hσ'
     exact_mod_cast this
-  have h := hP σ hσ
-  rw [hZ, map_zero, map_zero] at h
-  exact (mul_eq_zero.1 h.symm).resolve_right (symDimension_ne_zero _ k σ)
+  have h0 : evalSeries σ hσ (P (a.sum fun t r =>
+      r • blockClass S Q.skmSymmetrizer hS μ ν t.1 (blockWord_wt Q t) 0 0)) = 0 :=
+    (congrArg (fun x => evalSeries σ hσ (P x)) hZ).trans
+      ((congrArg (evalSeries σ hσ) (map_zero P)).trans (map_zero _))
+  have h := (hP σ hσ).symm.trans h0
+  exact (mul_eq_zero.1 h).resolve_right (symDimension_ne_zero _ k σ)
 
 omit [Finite I] [Module.Free ℤ X] [Module.Finite ℤ X] in
 /-- An element of a weight block of `U̇` that pairs trivially with every mixed word of the block

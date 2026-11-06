@@ -299,12 +299,30 @@ theorem cls_power_even (hi : D.parity i = 0) (r : ℕ) (ν : X) :
   have e1 : cls Sc sy hc _ ν (upWord (List.replicate r i)) rfl 0 0 =
       toGr sy hc _ ν (K₀.mk (SKM.Summands.whole
         (CategoricalDividedPowers.upWordHom D Sc sy hc i r ν))) := rfl
-  rw [hi, mul_zero, e1, h, toGr_smul_raw]
-  congr 1
-  change MulOpposite.op (K₀Ring.mk _) = MulOpposite.op (K₀Ring.mk _)
-  congr 2
-  rw [mul_comm]
-  exact raw_congr rfl (heq_of_eq (congrArg _ (dpIdem_eq_even i hi r)).symm) _ _ _ _ _ _ _ _
+  have hy : dpProj sy hc i r _ ν rfl = CategoricalDividedPowers.projector D Sc sy hc i hi r ν :=
+    congrArg (alpha D Sc ν).map (dpIdem_eq_even i hi r)
+  have hf : SKM.K0Relations.word Sc sy hc _ ν (upWord (List.replicate r i)) rfl =
+      CategoricalDividedPowers.upWordHom D Sc sy hc i r ν := rfl
+  have hr : SKM.Summands.raw (CategoricalDividedPowers.projector_idem D Sc sy hc i hi r ν)
+      (CategoricalDividedPowers.projector_degree D Sc sy hc i hi r ν)
+      (CategoricalDividedPowers.projector_even D Sc sy hc i hi r ν) (sy.d i * (r.choose 2 : ℕ)) 0 =
+      dpSummand sy hc i r _ ν rfl (sy.d i * (r.choose 2 : ℕ)) 0 :=
+    raw_congr hf.symm (heq_of_eq hy.symm) _ _ _ _ _ _ _ _
+  have he : Edp sy hc i r _ ν rfl (sy.d i * (r.choose 2 : ℕ)) 0 =
+      MulOpposite.op (K₀Ring.mk (B := SKM.UDot D Sc sy hc)
+        (a := weight Sc sy hc (SKM.wt D ν (upWord (List.replicate r i))))
+        (b := weight Sc sy hc ν) (dpSummand sy hc i r _ ν rfl (sy.d i * (r.choose 2 : ℕ)) 0)) := rfl
+  have hs := toGr_smul_raw sy hc (CategoricalDividedPowers.projector_idem D Sc sy hc i hi r ν)
+    (CategoricalDividedPowers.projector_degree D Sc sy hc i hi r ν)
+    (CategoricalDividedPowers.projector_even D Sc sy hc i hi r ν)
+    (CoveringQuantum.qpFact (qUnit (sy.d i)) (piCoeff 0) r) ((r.choose 2 : ℤ) * sy.d i) 0
+  rw [hi, mul_zero]
+  refine e1.trans ((congrArg (toGr sy hc _ ν) h).trans (hs.trans ?_))
+  refine congrArg (fun x => CoveringQuantum.qpFact (qUnit (sy.d i)) (piCoeff 0) r • x) ?_
+  refine (congrArg (fun m => rcls sy hc _ _ _ m 0) (Int.mul_comm _ _)).trans ?_
+  exact (congrArg (fun x => MulOpposite.op (K₀Ring.mk (B := SKM.UDot D Sc sy hc)
+    (a := weight Sc sy hc (SKM.wt D ν (upWord (List.replicate r i))))
+    (b := weight Sc sy hc ν) x)) hr).trans he.symm
 
 theorem dpIdem_eq_odd (hi : D.parity i = 1) (r : ℕ) :
     dpIdem D Sc i r = DividedPowerModules.oddCornerProjector D Sc i hi r :=
@@ -406,8 +424,19 @@ theorem cls_power_down_even (hi : D.parity i = 0) (r : ℕ) (ν : X) :
         Fdp sy hc i r _ ν rfl (-(sy.d i * (r.choose 2 : ℕ))) 0 := by
   have h := CategoricalDividedPowers.class_corrected_down D Sc sy hc i hi r ν
   rw [smul_int, map_qfact] at h
-  rw [hi, cls_eq_down, h, toGr_smul_raw, mul_comm (sy.d i)]
-  congr 1
+  have hs := toGr_smul_raw sy hc
+    (CategoricalDividedPowers.betaEnd_idem D Sc sy hc i r ν
+      (evenCornerProjector_idempotent D Sc i hi r).eq
+      (evenNilHecke_demIdem_mem D Sc hi r (parityDeg_dot_eq hi) (parityDeg_cross_self_eq hi)))
+    (CategoricalDividedPowers.betaEnd_mem_degree D Sc sy hc i r ν
+      (evenNilHecke_demIdem_mem D Sc hi r (gdeg_dot_eq D sy) (gdeg_cross_self_eq D sy)))
+    (CategoricalDividedPowers.betaEnd_mem_parity D Sc sy hc i r ν
+      (evenNilHecke_demIdem_mem D Sc hi r (parityDeg_dot_eq hi) (parityDeg_cross_self_eq hi)))
+    (CoveringQuantum.qpFact (qUnit (sy.d i)) (piCoeff 0) r) (-((r.choose 2 : ℤ) * sy.d i)) 0
+  rw [hi]
+  refine (cls_eq_down sy hc i r ν).trans ((congrArg (toGr sy hc _ (-ν)) h).trans (hs.trans ?_))
+  refine congrArg (fun x => CoveringQuantum.qpFact (qUnit (sy.d i)) (piCoeff 0) r • x) ?_
+  refine (congrArg (fun m => rcls sy hc _ _ _ (-m) 0) (Int.mul_comm _ _)).trans ?_
   refine rcls_transport sy hc (SKM.wt_flipW D ν _) rfl _ _ ?_ _ _ _ _ _ _ _ _
   rw [SKM.chevHom_map, dpProj, dpIdem_eq_even i hi r]
   apply heq_of_eq

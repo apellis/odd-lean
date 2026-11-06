@@ -82,6 +82,7 @@ theorem integerSummandOver_homogeneous (v t : D) (n : ℤ) (s : C)
     rfl
   · rw [ite_eq_right hn, ite_eq_right hn, map_zero]
 
+omit [J.Additive] in
 include hJ in
 private theorem integerSummandOver_balance_homogeneous (v t : D) (n : ℤ)
     {s s' : C} (f : s ⟶ s') (g : J.obj s' ⟶ t) (b : v ⟶ J.obj s)

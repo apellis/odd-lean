@@ -47,9 +47,6 @@ theorem cl_mem_presentedPart {t t' : List I} (gs : List PG) (h : SChain t (pl t 
 theorem firstDotPower_mem_presentedPart (j : I) (v : List I) (n : ℕ) :
     firstDotPower D Sc (j :: v) n ∈ CoefficientGrading.presentedPart 𝒜 (gdeg D sy) (pres D Sc)
       (ob D (j :: v)) (ob D (j :: v)) (2 * sy.d j * n) := by
-  have h := cl_mem_presentedPart D sy 𝒜 Sc (t := j :: v) (t' := j :: v)
-    ((List.replicate n 0).map PG.dot)
-    (by simpa only [tgt_map_dot] using sChain_pl (j :: v) ((List.replicate n 0).map PG.dot))
   have hd : ((pl (j :: v) ((List.replicate n 0).map PG.dot)).map
       fun x => gdeg D sy x.2.1).sum = 2 * sy.d j * n := by
     simp only [List.map_replicate]
@@ -61,6 +58,9 @@ theorem firstDotPower_mem_presentedPart (j : I) (v : List I) (n : ℕ) :
       rw [ih]
       simp only [gdeg, Nat.cast_add, Nat.cast_one]
       ring
+  have h := cl_mem_presentedPart D sy 𝒜 Sc (t := j :: v) (t' := j :: v)
+    ((List.replicate n 0).map PG.dot)
+    (by simpa only [tgt_map_dot] using sChain_pl (j :: v) ((List.replicate n 0).map PG.dot))
   rw [hd] at h
   exact h
 
@@ -107,6 +107,9 @@ theorem elvQuotientMap_source_mem_degreeOver {v w : List I} {a : SKM.SYM D R}
     (SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff))
   let _ := Supercategory.restrictScalars K R
     (SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff))
+  have : ∀ A B : SuperalgebraCat (SKM.SYM.elvCoefficientParity (k := R) D cutoff),
+      IsScalarTower K R (A ⟶ B) :=
+    Linear.isScalarTower_restrictScalars K R _
   let _ := elvCoefficientCategoryGradingOver D sy 𝒜 cutoff
   let _ := Linear.restrictScalars K R (H D Sc)
   let _ := Supercategory.restrictScalars K R (H D Sc)

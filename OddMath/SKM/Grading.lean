@@ -10,7 +10,7 @@ import OddMath.SKM.Presentation
 J. Brundan, A. P. Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2, §1, paragraph
 "Gradings": assume the Cartan matrix is symmetrized by positive integers `dᵢ`
 (`dᵢ dᵢⱼ = dⱼ dⱼᵢ`; `Symmetrizer`) and the parameters satisfy the homogeneity condition (1.31)
-`sᵢⱼ^{pq} ≠ 0 → p dⱼᵢ + q dᵢⱼ = dᵢⱼ dⱼᵢ` (`Scalars.Homogeneous`). Then the generators have the
+`sᵢⱼ^{pq} ≠ 0 → p dⱼᵢ + q dᵢⱼ = dᵢⱼ dⱼᵢ` (`ScalarData.Homogeneous`). Then the generators have the
 degrees of the table after (1.31) (`gdeg`):
 
 | `x` | `τ` | `η` | `ε` |
@@ -49,7 +49,7 @@ variable {k : Type w} [CommRing k] {D}
 
 /-- The homogeneity condition (1.31): `sᵢⱼ^{pq} ≠ 0 → p dⱼᵢ + q dᵢⱼ = dᵢⱼ dⱼᵢ`, for
 `0 < p < dᵢⱼ`, `0 < q < dⱼᵢ` (the range in which the scalars are used). -/
-def Scalars.Homogeneous (Sc : Scalars D k) : Prop :=
+def ScalarData.Homogeneous {Ptwo : Prop} (Sc : ScalarData D k Ptwo) : Prop :=
   ∀ i j (p q : ℕ), 0 < p → (p : ℤ) < D.d i j → 0 < q → (q : ℤ) < D.d j i → Sc.s i j p q ≠ 0 →
     p * D.d j i + q * D.d i j = D.d i j * D.d j i
 
@@ -121,6 +121,27 @@ theorem gsum_append (μ : X) (ls ms : List (LayerData I)) :
     gsum D sy μ (dcapL i n) = -(sy.d i * (D.h i μ + 1 + 2 * n)) := by
   simp [gsum, dcapL, gdeg]
 
+theorem gsum_lPreL (μ : X) (i : I) : gsum D sy μ (lPreL D i μ) = sy.d i * (1 - D.h i μ) := by
+  unfold lPreL
+  split_ifs with h
+  · rw [gsum_dcupL, Int.toNat_of_nonneg (show 0 ≤ D.h i μ - 1 by omega)]; ring
+  · rw [gsum_append, gsum_etaL, gsum_lcrossL, Int.toNat_of_nonneg (show 0 ≤ -D.h i μ by omega)]
+    ring
+
+theorem gsum_rPostL (μ : X) (i : I) : gsum D sy μ (rPostL D i μ) = sy.d i * (1 + D.h i μ) := by
+  unfold rPostL
+  split_ifs with h
+  · rw [gsum_dcapL, Int.toNat_of_nonneg (show 0 ≤ -D.h i μ - 1 by omega)]; ring
+  · rw [gsum_append, gsum_lcrossL, gsum_epsL, Int.toNat_of_nonneg (show 0 ≤ D.h i μ by omega)]
+    ring
+
+theorem gsum_oddL (μ : X) (i : I) : gsum D sy μ (oddL D i μ) = 2 * sy.d i := by
+  unfold oddL
+  split_ifs with h
+  · rw [gsum_append, gsum_lPreL, gsum_epsL, Int.toNat_of_nonneg h]; ring
+  · rw [gsum_append, gsum_etaL, gsum_rPostL, Int.toNat_of_nonneg (show 0 ≤ -D.h i μ by omega)]
+    ring
+
 /-- A normal-form diagram of degree `d` lies in the degree-`d` part. -/
 theorem dg_mem_gdeg {μ : X} {t t' : List (Letter I)} {ls : List (LayerData I)}
     {h : SChain t ls t'} {d : ℤ} (hd : gsum D sy μ ls = d) :
@@ -139,7 +160,7 @@ variable (D sy)
 
 /-- **The grading of `𝔘(𝔤)`** (Brundan–Ellis, §1, "Gradings"): under the homogeneity condition
 (1.31), every relation of Definition 1.5 is homogeneous for the degrees `gdeg`. -/
-theorem isHomogeneous_gdeg (Sc : Scalars D k) (hc : Sc.Homogeneous) :
+theorem isHomogeneous_gdeg {Ptwo : Prop} (Sc : ScalarData D k Ptwo) (hc : Sc.Homogeneous) :
     (pres D Sc).IsHomogeneous (gdeg D sy) := by
   intro r
   cases r with
@@ -276,5 +297,17 @@ theorem isHomogeneous_gdeg (Sc : Scalars D k) (hc : Sc.Homogeneous) :
       · exact Submodule.zero_mem _
   | dcupZero i ν n _ => exact ⟨_, dg_mem_gdeg D sy rfl⟩
   | dcapZero i ν n _ => exact ⟨_, dg_mem_gdeg D sy rfl⟩
+  | zInt b =>
+    cases b with
+    | sq i ν =>
+      exact ⟨_, zGate_mem i fun _ => dg_mem_gdeg D sy rfl⟩
+    | right i ν n _ =>
+      refine ⟨_, zGate_mem i fun _ => Submodule.sub_mem _ (dg_mem_gdeg D sy rfl)
+        (Submodule.smul_mem _ _ (dg_mem_gdeg D sy ?_))⟩
+      simp only [Rel.ν, ZBase.ν, gsum_append, gsum_etaL, gsum_rPostL, gsum_oddL]; push_cast; ring
+    | left i ν n _ =>
+      refine ⟨_, zGate_mem i fun _ => Submodule.sub_mem _ (dg_mem_gdeg D sy rfl)
+        (Submodule.smul_mem _ _ (dg_mem_gdeg D sy ?_))⟩
+      simp only [Rel.ν, ZBase.ν, gsum_append, gsum_epsL, gsum_lPreL, gsum_oddL]; push_cast; ring
 
 end OddMath.SKM
