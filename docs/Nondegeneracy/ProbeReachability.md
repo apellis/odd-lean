@@ -1,5 +1,11 @@
 # Parity-compatible probe weights and the regular vacuum
 
+> The modules `ReservoirCoverage`, `ReservoirFusedVacuum`, `ReservoirFusedBubbles`,
+> `ReservoirFusedDetection`, `ReservoirFusedSectors` and `RouquierCoupledSectors`
+> (with `RegularVacuumIdentification`, `FusedVacuumWords`, `FusedRegularVacuumFamily`
+> and the coupled-sector interface mentioned below) were removed: no retained result used
+> them. Git history keeps them.
+
 ## Statement and status
 
 The weight-arithmetic part of A3 is already proved. For every weight `μ` of
@@ -183,7 +189,7 @@ map also corrects source-order Koszul signs, via
 `regularVacuumWindow_coordinates`; it is not an assertion that the sign
 involution preserves the ELV ideal.
 
-Finally, `RouquierCoupledSectors.FusedCoupledAction` is not an existence
+Finally, `RouquierCoupledSectors.FusedCoupledAction` (since removed) was not an existence
 theorem (its declaration is in namespace `OddMath.QuiverHecke`). Its
 `family` field already contains the regular identifications. Its `sectors`
 field still requires, for every coefficient generator, `CoupledSectorBubble`
@@ -200,7 +206,7 @@ from the regular-vacuum comparison.
 | Even probes and cofinal parity-compatible reservoir levels for every `μ` | Proved in `ReservoirWeights` |
 | Literal weight difference in the extension, including invisible coroot-kernel coordinates | Proved by `exists_extended_weights` |
 | Restriction of a supplied super Rouquier factor family to every original weight | Proved by `restrictRouquierFamily` |
-| Joint regular ELV detection with the same balanced cutoffs | Proved in `ReservoirCoverage` |
+| Joint regular ELV detection with the same balanced cutoffs | Proved in `ReservoirCoverage` (since removed) |
 | Full fused action and its interpretation on the original presentation | Open; not supplied by factor-family restriction |
 | Fused vacuum word modules and the three regular coordinate identities | Open construction of `RegularVacuumIdentification` |
 | Actual normalized probe/reservoir vacuum values and fused bubble block | Open action comparisons, not weight arithmetic |
