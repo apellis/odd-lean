@@ -54,19 +54,45 @@ constant. The dictionary uses this reading: `Qᵢⱼ = tᵢⱼ = tⱼᵢ`, a uni
 **(1) Normalizations; the even statement can be vacuous where BWW 5.6 applies.** BWW work
 with arbitrary group homomorphisms `cᵢ : X → kˣ`, `cᵢ(αᵢ) = 1`, and their 2-category depends
 only on `Q` up to isomorphism (Remark 2.4). The Phase 1 headline quantifies over
-`cs : CScalars Sc`, which imposes the shift law `c(μ + αⱼ) i = tᵢⱼ c μ i` (BHLW's choice
-`rᵢⱼ = 1`). If the simple roots are dependent this can force relations among the `tᵢⱼ`.
-Example: affine `A₁` with `X = Y = ℤ²`, coroots the standard basis, `α₀ = (2, -2)`,
-`α₁ = (-2, 2)`. This datum satisfies BWW's hypotheses (coroots independent). Applying the
-shift law along `α₀` and `α₁` and using `α₀ + α₁ = 0` gives `tᵢ₀ tᵢ₁ = 1` for each `i`; with
-`tᵢᵢ = 1` this forces `t₀₁ = t₁₀ = 1`. So for `t₀₁ = 2`, `t₁₀ = 1` over `ℚ` there is no
-`CScalars`, and `∀ cs : CScalars Sc, NondegeneracyConjecture cs` holds vacuously, while BWW
-5.6 (with `cᵢ = 1`, `rᵢⱼ = 1/tᵢⱼ`) asserts a basis theorem. Whether a rescaling of the
-generators reduces such `t` to the `CScalars`-compatible case over a given `k` is open here;
-over `ℚ` the evident rescaling would need a square root of 2. Recovering 5.6 on such data
-needs a change-of-normalization comparison (rescaling leftward cups and caps and downward
-crossings, Remark 2.4), with an existence statement for some normalization. With independent simple roots `CScalars` exist for every
-`t`, and the issue disappears. Needed for: datum generality of the specialization.
+`cs : CScalars Sc`, which imposes the shift law `c(μ + αⱼ) i = tᵢⱼ c μ i` of BE2 (1.17)
+(BHLW's choice `rᵢⱼ = 1`). The presentation `pres D Sc` does not involve `cs`; the matching
+basis does, through `etaP`, `epsP`, `xev` and the bubbles, and the proofs use the shift law.
+
+*Proved* (`OddMath/SKM/RootCover.lean`, `OddMath/SKM/RootCoverUnits.lean`):
+
+- `RootCover.nonempty_cScalars_iff`: `CScalars Sc` exists if and only if
+  `Π_j tᵢⱼ^{nⱼ} = 1` for every `i` and every integer relation `Σ_j nⱼ αⱼ = 0`
+  (`rootSum D n = 0`). So units exist for every `t` when the simple roots are independent
+  (`nonempty_cScalars_of_injective`), and `αⱼ + αₗ = 0` forces `tᵢⱼ tᵢₗ = 1`
+  (`CScalars.t_mul_t_eq_one`).
+- `scripts/NonVacuity/RootCover.lean`: affine `A₁` on `ℤ²` with coroots the coordinate
+  projections, `α₀ = (2, -2)`, `α₁ = (-2, 2)`, `t₀₁ = 2`, `t₁₀ = 1` over `ℚ`. These parameters
+  satisfy BWW's hypotheses, and `isEmpty_cScalars` proves that there is no `CScalars`. So
+  `∀ cs, NondegeneracyConjecture cs` holds vacuously there, while BWW 5.6 (with `cᵢ = 1`,
+  `rᵢⱼ = 1/tᵢⱼ`) asserts a basis theorem.
+- `RootCover.rootCover D`: the datum on `X × (I →₀ ℤ)` with roots `(αᵢ, eᵢ)` and coroots
+  `hᵢ ∘ fst`. It has the same Cartan matrix, `dᵢⱼ` and parity and independent roots
+  (`rootSum_rootCover`). Parameters transport unchanged (`coverScalars`,
+  `coverBWWScalars`), and `nonempty_cScalars_rootCover` gives units for every choice of
+  parameters. So the headline applied to the cover is never vacuous.
+
+*Remaining gap* (not routine; deferred pending a decision). The projection
+`X × (I →₀ ℤ) → X` is compatible with roots and coroots, so it induces the presentation
+functor `RootCover.projectionFunctor : (pres (rootCover D) (coverScalars D Sc)).Presented ⥤
+(pres D Sc).Presented` (`OddMath/SKM/RootCoverPresentation.lean`), with linear Hom maps
+`RootCover.homMap ν s t` at a fixed right region `ν` that send each generator diagram to the
+same diagram (`homMap_diag`). With dependent roots there is no map in the other
+direction: a region map `f` would need `f(ν + α₀ + α₁) = f(ν) + α'₀ + α'₁`. Transferring the
+basis theorem from the cover to `D` needs two further theorems about the presentation:
+
+- (a) `homMap ν s t` is bijective whenever `s` and `t` have equal root content;
+- (b) in `pres D Sc`, Homs between words of equal weight but different root content vanish
+  (affine `A₁`: `E₀E₁1_λ` and `1_λ`). This is a root-content grading of the whole
+  presentation.
+
+Until (a) and (b) are proved, the even specialization covers BWW 5.6 exactly on data whose
+parameters satisfy the relation condition of `nonempty_cScalars_iff`. This includes all data
+with independent simple roots, and every datum when all `tᵢⱼ = 1`.
 
 **(2) The prime 2.** BWW 5.6 has no condition on 2. `GradedCoefficientNondegeneracy` asks
 for `IsUnit 2` for all data, although on purely even data `BWWScalars.two_isUnit` is vacuous.
