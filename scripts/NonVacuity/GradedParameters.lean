@@ -60,7 +60,7 @@ def scalars : Scalars datum ℚ where
   two_isUnit := by intro _; norm_num
 
 theorem lowerDegree : scalars.LowerDegree symmetrizer := by
-  intro i j p q _ _ _ _ hs
+  intro i j p q _ _ _ hs
   have h : i ≠ j ∧ p = 1 ∧ q = 1 := by
     by_contra h
     exact hs (by simp [scalars, h])
@@ -69,7 +69,7 @@ theorem lowerDegree : scalars.LowerDegree symmetrizer := by
 
 theorem not_homogeneous : ¬ scalars.Homogeneous := by
   intro hh
-  have := hh false true 1 1 (by norm_num) (by rw [d_ne (by decide)]; norm_num) (by norm_num)
+  have := hh false true 1 1 (by decide) (by rw [d_ne (by decide)]; norm_num)
     (by rw [d_ne (by decide)]; norm_num) (by simp [scalars])
   rw [d_ne (by decide), d_ne (by decide)] at this
   norm_num at this

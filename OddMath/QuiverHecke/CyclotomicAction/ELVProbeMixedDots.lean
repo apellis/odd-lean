@@ -1,5 +1,6 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeRouquierData
 import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedCoefficientEvaluation
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
 
 /-! # The two dots on the OLD-probe and ELV-reservoir Hom summand
 
@@ -7,6 +8,11 @@ SwappedActionAssembly F2–F3: prewhisker the prescribed unit probe dot,
 then apply the actual shifted ELV postcomposition. This uses only the
 checked generator data, before packaging the full factor pair. Both
 mixed denominators are constructed without a whole-weight nilpotence bound.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
@@ -48,7 +54,7 @@ theorem probeELVMixedPreDot_mem : α ∈ parity (R := k) _ _ (D.parity i) :=
   TwoSupercategory.whiskerRight_mem Z (probeOldActionDot_mem D Sc' m i ΛP (mixedProbeStep D ΛP β i))
 
 /-- The known probe dot unit survives arbitrary Hom precomposition. -/
-theorem probeELVMixedPreDot_isUnit [Finite I] : IsUnit α := by
+theorem probeELVMixedPreDot_isUnit [Fact Sc.PureNilpotent] [Finite I] : IsUnit α := by
   let _ := Fintype.ofFinite I
   exact (probeOldActionDot_isUnit D Sc' m i ΛP (mixedProbeStep D ΛP β i)).map
     ((SKM.homPost (k := k) Z).mapEnd (probeOldE D Sc' m i ΛP (mixedProbeStep D ΛP β i)))

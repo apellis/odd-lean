@@ -154,7 +154,7 @@ private theorem distinctMixedBraid_correction_mate (M : RouquierMulticolour T Sc
           (zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
             (rouquierPower (T.dot i hab) s ▷ (Ebc ≫ Ecd) ≫
               Eab ◁ Ebc ◁ rouquierPower (T.dot i hcd) (D.dn i j - 1 - s)) +
-        ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), ∑ s ∈ Finset.range p,
+        ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), ∑ s ∈ Finset.range p,
           (zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p q) •
             (rouquierPower (T.dot i hab) s ▷ (Ebc ≫ Ecd) ≫
               Eab ◁ (rouquierPower (T.dot j hbc) q ▷ Ecd) ≫
@@ -177,7 +177,7 @@ theorem distinctMixedBraid_correction (M : RouquierMulticolour T Sc) (hne : i �
         T.distinctMixedBraidOuterMate i j hab hbc hcd
           (rouquierPower (T.dot i hab) s ▷ (Ebc ≫ Ecd) ≫
             Eab ◁ Ebc ◁ rouquierPower (T.dot i hcd) (D.dn i j - 1 - s))) +
-    ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), ∑ s ∈ Finset.range p,
+    ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), ∑ s ∈ Finset.range p,
       (zsign k (D.parity i * s) * Sc.s i j p q) •
         T.distinctMixedBraidOuterMate i j hab hbc hcd
           (rouquierPower (T.dot i hab) s ▷ (Ebc ≫ Ecd) ≫

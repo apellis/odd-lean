@@ -83,10 +83,10 @@ theorem isHomogeneous_gdeg (Sc : SKM.Scalars D k) (hc : Sc.Homogeneous) :
     · by_cases hs : Sc.s i j p q = 0
       · rw [hs, zero_smul]; exact Submodule.zero_mem _
       · refine Submodule.smul_mem _ _ (dg_mem_gdeg D sy ?_)
-        rw [Finset.mem_Ioo] at hp hq
-        have hp' : (p : ℤ) < D.d i j := by rw [← dn_cast' hij]; exact_mod_cast hp.2
-        have hq' : (q : ℤ) < D.d j i := by rw [← dn_cast' (Ne.symm hij)]; exact_mod_cast hq.2
-        have h31 := hc i j p q hp.1 hp' hq.1 hq' hs
+        rw [Finset.mem_range] at hp hq
+        have hp' : (p : ℤ) < D.d i j := by rw [← dn_cast' hij]; exact_mod_cast hp
+        have hq' : (q : ℤ) < D.d j i := by rw [← dn_cast' (Ne.symm hij)]; exact_mod_cast hq
+        have h31 := hc i j p q hij hp' hq' hs
         have hdji : D.d j i ≠ 0 := fun h0 => hd ((D.d_eq_zero_iff i j).mpr h0)
         rw [gsum_append, gsum_dotsL, gsum_dotsL]
         have key : D.d j i * (sy.d i * p + sy.d j * q - sy.d i * D.d i j) = 0 := by
@@ -134,11 +134,11 @@ theorem isHomogeneous_gdeg (Sc : SKM.Scalars D k) (hc : Sc.Homogeneous) :
     · by_cases hz : Sc.s i j p q = 0
       · rw [hz, mul_zero, zero_smul]; exact Submodule.zero_mem _
       · refine Submodule.smul_mem _ _ (dg_mem_gdeg D sy ?_)
-        rw [Finset.mem_Ioo] at hp hq
+        rw [Finset.mem_range] at hp hq
         rw [Finset.mem_range] at hs
-        have hp' : (p : ℤ) < D.d i j := by rw [← dn_cast' hij]; exact_mod_cast hp.2
-        have hq' : (q : ℤ) < D.d j i := by rw [← dn_cast' (Ne.symm hij)]; exact_mod_cast hq.2
-        have h31 := hc i j p q hp.1 hp' hq.1 hq' hz
+        have hp' : (p : ℤ) < D.d i j := by rw [← dn_cast' hij]; exact_mod_cast hp
+        have hq' : (q : ℤ) < D.d j i := by rw [← dn_cast' (Ne.symm hij)]; exact_mod_cast hq
+        have h31 := hc i j p q hij hp' hq' hz
         have hd : D.d i j ≠ 0 := by omega
         have hdji : D.d j i ≠ 0 := fun h0 => hd ((D.d_eq_zero_iff i j).mpr h0)
         have key : D.d j i * (sy.d i * p + sy.d j * q - sy.d i * D.d i j) = 0 := by

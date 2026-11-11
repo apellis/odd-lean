@@ -4,6 +4,7 @@ import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendWindowEquations
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCentralBend
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PaddedBendWordSeries
 import OddMath.SKM.RouquierHomWeightCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
 
 /-! # The padded Dx bend on the regular vacuum probe
 
@@ -11,6 +12,11 @@ SwappedHomInversion §3 (4)–(5) and SwappedVacuumCoordinates §4:
 evaluate the specified padded mixed entry at the vacuum sector. Its
 finite ordered expansion has the same raw dots, normalized pre-cap and
 reservoir unit as the evaluated vacuum bend.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 set_option quotPrecheck false
@@ -144,13 +150,13 @@ theorem vacuumSectorEvaluation_eq : (vacuumSectorEvaluation D Sc m cutoff bound 
 
 variable (i : I)
 
-private theorem factorDotIso {a b : X} (h : a + D.α i = b) : IsIso (((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).T.dot i h) :=
+private theorem factorDotIso [Fact Sc.PureNilpotent] {a b : X} (h : a + D.α i = b) : IsIso (((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).T.dot i h) :=
   (isUnit_iff_isIso _).mp
     (elvProbeReservoir_dot_isUnit D Sc m cutoff bound ΛP ΛR hcP hcR i h)
 
 /-- The source comparison includes the prescribed padded corner,
 the weight equality chart and the literal normalized vacuum pre-cap chart. -/
-def paddedVacuumSourceIso :=
+def paddedVacuumSourceIso [Fact Sc.PureNilpotent] :=
   ((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).centralSourceCornerIso i (((0, 0) : Sector I)) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) ⟨true, by trivial⟩ ≪≫
     ((normalVacuumEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR)).mapIso (SKM.homPreWeightPullbackIso ((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR).T) ((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR).W) (probeWeight_zero D Sc m cutoff bound ΛP ΛR hcP hcR) (reservoirWeight_zero D Sc m cutoff bound ΛP ΛR hcP hcR) i (((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).muP_preE i (((0, 0) : Sector I))) (preCapInput D (parameterTwist D Sc) m ΛP hcP (elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR) (-ΛR) H)) ≪≫
       vacuumPreBlockSourceIso D (parameterTwist D Sc) m cutoff bound ΛP ΛR hcP i ((show -ΛP + D.α i = -((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).muP (nextSector (true,i) true (((0, 0) : Sector I))) from (congrArg (fun x : X => -x + D.α i) ((probeWeight_zero D Sc m cutoff bound ΛP ΛR hcP hcR))).symm.trans (((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).muP_preE i (((0, 0) : Sector I))))) H
@@ -171,7 +177,7 @@ private theorem normalVacuumEvaluation_map
 
 variable (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
 
-private theorem paddedVacuumDx_odd_at
+private theorem paddedVacuumDx_odd_at [Fact Sc.PureNilpotent]
     (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1) (n : ℕ)
     (hn : ProbeVacuumCap.diagonalPostDot D (parameterTwist D Sc) m cutoff bound i (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) ^ n = 0)
     (hDx : ((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).CentralPaddedDxSeparatedAt i (((0, 0) : Sector I)) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) (factorDotIso D Sc m cutoff bound ΛP ΛR hcP hcR i) (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) (2 * n)) :
@@ -264,7 +270,7 @@ theorem paddedVacuumDx_odd (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1) :
   exact paddedVacuumDx_odd_at D Sc m cutoff bound ΛP ΛR hcP hcR H i hdot hP hi n hb'
     (((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).centralPaddedDx_separated i (((0, 0) : Sector I)) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) (factorDotIso D Sc m cutoff bound ΛP ΛR hcP hcR i) (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) (2 * n) hD)
 
-private theorem paddedVacuumDx_even_at
+private theorem paddedVacuumDx_even_at [Fact Sc.PureNilpotent]
     (hP : 0 < probeCutoff D m i) (hi : D.parity i = 0) (n : ℕ)
     (hn : ProbeVacuumCap.diagonalPostDot D (parameterTwist D Sc) m cutoff bound i (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) ^ n = 0)
     (hDx : ((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).CentralPaddedDxSeparatedAt i (((0, 0) : Sector I)) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) (factorDotIso D Sc m cutoff bound ΛP ΛR hcP hcR i) (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) n) :

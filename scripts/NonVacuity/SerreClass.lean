@@ -51,7 +51,7 @@ def symmetrizer : SKM.Symmetrizer datum where
     intro i j
     cases i <;> cases j <;> simp [SKM.Datum.d, SKM.Datum.h, SKM.Datum.α, datum]
 
-theorem homogeneous : scalars.Homogeneous := fun _ _ _ _ _ _ _ _ h => absurd rfl h
+theorem homogeneous : scalars.Homogeneous := fun _ _ _ _ _ _ _ h => absurd rfl h
 
 /-- `i` odd, `M = 3`: `∑_a (-1)^a [term a] = 0` for the terms `i^{(a)} j i^{(3-a)}`. -/
 example : ∑ a ∈ Finset.range 4, ((-1 : ℤ) ^ a) •

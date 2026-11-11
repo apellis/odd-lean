@@ -47,7 +47,7 @@ theorem cl_braidEq (i j : I) (ν : X) (hij : i ≠ j) :
           (zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
             cl D Sc ν [up i, up j, up i] [up i, up j, up i]
               (dotsL [up i, up j] i [] s ++ dotsL [] i [up j, up i] (D.dn i j - 1 - s)) +
-        ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), ∑ s ∈ Finset.range p,
+        ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), ∑ s ∈ Finset.range p,
           (zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p q) •
             cl D Sc ν [up i, up j, up i] [up i, up j, up i]
               (dotsL [up i, up j] i [] s ++ dotsL [up i] j [up i] q ++
@@ -335,7 +335,7 @@ theorem lemma33_eq9_eq_aux (i j : I) (ν : X) (hij : i ≠ j) :
       ∑ r ∈ Finset.range (D.dn i j),
           (zsign k (D.parity i * (((D.dn i j / 2 : ℕ) : ZMod 2) + r + 1)) * (Sc.t i j : k)) •
             cl D Sc ν (dns [i, j, i]) (dns [i, j, i]) (dots3 i j r 0 (D.dn i j - 1 - r)) +
-        ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), ∑ r ∈ Finset.range p,
+        ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), ∑ r ∈ Finset.range p,
           (zsign k (D.parity i * (((p / 2 : ℕ) : ZMod 2) + r + 1) +
               D.parity j * ((q / 2 : ℕ) : ZMod 2)) * Sc.s i j p q) •
             cl D Sc ν (dns [i, j, i]) (dns [i, j, i]) (dots3 i j r q (p - 1 - r)) := by
@@ -347,7 +347,7 @@ theorem lemma33_eq9_eq_aux (i j : I) (ν : X) (hij : i ≠ j) :
           (zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
             cl D Sc (wt D ν (dns [i, j, i])) (ups [i, j, i]) (ups [i, j, i])
               (dotsL [up i, up j] i [] s ++ dotsL [] i [up j, up i] (D.dn i j - 1 - s)) +
-        ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), ∑ s ∈ Finset.range p,
+        ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), ∑ s ∈ Finset.range p,
           (zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p q) •
             cl D Sc (wt D ν (dns [i, j, i])) (ups [i, j, i]) (ups [i, j, i])
               (dotsL [up i, up j] i [] s ++ dotsL [up i] j [up i] q ++
@@ -403,7 +403,7 @@ theorem lemma33_eq9_eq (i j : I) (ν : X) (hij : i ≠ j) :
       ∑ r ∈ Finset.range (D.dn i j),
           (zsign k (D.parity i * (((D.dn i j / 2 : ℕ) : ZMod 2) + r + 1)) * (Sc.t i j : k)) •
             cl D Sc ν [dn i, dn j, dn i] [dn i, dn j, dn i] (dots3 i j r 0 (D.dn i j - 1 - r)) +
-        ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), ∑ r ∈ Finset.range p,
+        ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), ∑ r ∈ Finset.range p,
           (zsign k (D.parity i * (((p / 2 : ℕ) : ZMod 2) + r + 1) +
               D.parity j * ((q / 2 : ℕ) : ZMod 2)) * Sc.s i j p q) •
             cl D Sc ν [dn i, dn j, dn i] [dn i, dn j, dn i] (dots3 i j r q (p - 1 - r)) :=

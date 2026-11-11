@@ -4,13 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.SKM.BubbleSlideRaw
 import OddMath.SKM.BubbleSeriesStep
+import OddMath.SKM.PureMonomials
 /-!
 # Bubble slides for a Cartan entry minus one
 
 Brundan–Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2,
 Proposition 7.3(iii), (7.11)–(7.12), in the complete case `dᵢⱼ = 1`.
 Both orientations hold at every weight and every integer shifted degree,
-including fake bubbles. The opposite entry `dⱼᵢ` and all scalars remain general.
+including fake bubbles. The opposite entry `dⱼᵢ` remains general; the scalars have no pure
+monomials (`ScalarData.NoPure`), as in Brundan–Ellis (1.4). The general connected slides,
+with pure monomials, are `eq_7_11_connected` and `eq_7_12_connected`.
 
 Here `i` is necessarily even, but `j` need not be: the dot correction has
 parity zero by the Cartan parity condition. The lower coefficient sum is empty.
@@ -36,7 +39,8 @@ theorem parity_eq_zero_of_d_one {i j : I} (hij : i ≠ j) (hd : D.d i j = 1) : D
   have H := parity_mul_dn D i j
   simpa [dn_eq_one_of_d_one hij hd] using H
 
-theorem bubbleR_slide_one_raw (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) (n : ℕ) :
+theorem bubbleR_slide_one_raw (hn : ScalarData.NoPure Sc) (i j : I) (μ : X) (hij : i ≠ j)
+    (hd : D.d i j = 1) (n : ℕ) :
     bubbleR_right cs i j μ n =
       (Sc.t i j : k) • bubbleR_left cs i j μ (n + 1) +
       (Sc.t j i : k) • (bubbleR_left cs i j μ n ≫
@@ -53,8 +57,10 @@ theorem bubbleR_slide_one_raw (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j =
           (crossL [dn i] i j [] ++ crossL [dn i] j i []) := by
     rw [cl_comp het hcc, List.append_assoc]
   rw [e0, Category.assoc]
-  have hq := congrArg (plcL D Sc μ [dn i] [] [up i, up j] [up i, up j])
-    (cl_quadNe (Sc := Sc) i j (wt D μ []) hij (by omega))
+  have hq0 := cl_quadNe (Sc := Sc) i j (wt D μ []) hij (by omega)
+  rw [ScalarData.NoPure.sum_range_range hn hij _ (fun p q h => by simp only [h, zero_smul])]
+    at hq0
+  have hq := congrArg (plcL D Sc μ [dn i] [] [up i, up j] [up i, up j]) hq0
   simp only [dn_eq_one_of_d_one hij hd, show Ioo 0 1 = (∅ : Finset ℕ) by decide,
     sum_empty, add_zero, map_add, map_smul, plcL_cl] at hq
   erw [hq]
@@ -85,7 +91,8 @@ theorem bubbleR_slide_one_raw (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j =
     mul_comm (D.dn j i : ZMod 2), parity_mul_dn, mul_zero, zsign_zero, one_smul]
   rfl
 
-theorem bubbleL_slide_one_raw (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) (n : ℕ) :
+theorem bubbleL_slide_one_raw (hn : ScalarData.NoPure Sc) (i j : I) (μ : X) (hij : i ≠ j)
+    (hd : D.d i j = 1) (n : ℕ) :
     bubbleL_left cs i j μ n =
       (Sc.t i j : k) • bubbleL_right cs i j μ (n + 1) +
       (Sc.t j i : k) • (cl D Sc μ [up j] [up j] (dotsL [] j [] (D.dn j i)) ≫
@@ -97,9 +104,11 @@ theorem bubbleL_slide_one_raw (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j =
   have he : SChain [up j, up i, dn i] ((epsL i n).map (whL [up j] [])) [up j] := by
     simpa using (sChain_epsL i n).whisk [up j] []
   rw [← cl_comp hc he]
-  have hq := congrArg (plcL D Sc μ [] [dn i] [up j, up i] [up j, up i])
-    (cl_quadNe (Sc := Sc) j i (wt D μ [dn i]) hij.symm
-      (fun h => by have := (D.d_eq_zero_iff j i).mp h; omega))
+  have hq0 := cl_quadNe (Sc := Sc) j i (wt D μ [dn i]) hij.symm
+    (fun h => by have := (D.d_eq_zero_iff j i).mp h; omega)
+  rw [ScalarData.NoPure.sum_range_range hn hij.symm _ (fun p q h => by simp only [h, zero_smul])]
+    at hq0
+  have hq := congrArg (plcL D Sc μ [] [dn i] [up j, up i] [up j, up i]) hq0
   simp only [dn_eq_one_of_d_one hij hd, show Ioo 0 1 = (∅ : Finset ℕ) by decide,
     sum_empty, sum_const_zero, add_zero, map_add, map_smul, plcL_cl] at hq
   erw [hq]
@@ -132,13 +141,14 @@ theorem bubbleL_slide_one_raw (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j =
 def bubbleEdgeDot (i j : I) (μ : X) :=
   ((↑(Sc.t i j)⁻¹ : k) * (Sc.t j i : k)) • cl D Sc μ [up j] [up j] (dotsL [] j [] (D.dn j i))
 
-theorem bubbleCoeffR_one_nonpos (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1)
+theorem bubbleCoeffR_one_nonpos (hn : ScalarData.NoPure Sc)
+    (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1)
     (hh : D.h i μ ≤ 0) (n : ℕ) :
     rbub j μ (bubbleCoeffR cs i (wt D μ []) (n + 1)) =
       lbub j μ (bubbleCoeffR cs i (wt D μ [up j]) (n + 1)) +
         lbub j μ (bubbleCoeffR cs i (wt D μ [up j]) n) ≫ bubbleEdgeDot (Sc := Sc) i j μ := by
   have hm : 0 ≤ (n : ℤ) - D.h i μ := by omega
-  have H := bubbleR_slide_one_raw cs i j μ hij hd ((n : ℤ) - D.h i μ).toNat
+  have H := bubbleR_slide_one_raw cs hn i j μ hij hd ((n : ℤ) - D.h i μ).toNat
   have H' := congrArg (fun f => (cs.c μ i : k) • f) H
   simp only [bubbleR_right, bubbleR_left, rbub, lbub, wt_nil, Int.toNat_of_nonneg hm] at H'
   simp only [bubbleCoeffR, rbub, lbub, map_smul, bubRs, wt_nil, h_wt_upj, hd,
@@ -157,13 +167,14 @@ theorem bubbleCoeffR_one_nonpos (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j
       _ = (Sc.t i j : k) * (↑(Sc.t i j)⁻¹ : k) * (cs.c μ i : k) * (Sc.t j i : k) := by ring
       _ = _ := by rw [Units.mul_inv, one_mul]
 
-theorem bubbleCoeffL_one_pos (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1)
+theorem bubbleCoeffL_one_pos (hn : ScalarData.NoPure Sc)
+    (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1)
     (hh : 1 ≤ D.h i μ) (n : ℕ) :
     lbub j μ (bubbleCoeffL cs i (wt D μ [up j]) (n + 1)) =
       rbub j μ (bubbleCoeffL cs i (wt D μ []) (n + 1)) +
         bubbleEdgeDot (Sc := Sc) i j μ ≫ rbub j μ (bubbleCoeffL cs i (wt D μ []) n) := by
   have hm : 0 ≤ (n : ℤ) + D.h i μ - 1 := by omega
-  have H := bubbleL_slide_one_raw cs i j μ hij hd ((n : ℤ) + D.h i μ - 1).toNat
+  have H := bubbleL_slide_one_raw cs hn i j μ hij hd ((n : ℤ) + D.h i μ - 1).toNat
   have H' := congrArg (fun f => (↑(cs.c (wt D μ [up j]) i)⁻¹ : k) • f) H
   simp only [bubbleL_right, bubbleL_left, rbub, lbub, wt_nil, Int.toNat_of_nonneg hm] at H'
   simp only [bubbleCoeffL, parity_eq_zero_of_d_one hij hd, isg, zero_mul, zsign_zero, one_mul,
@@ -179,7 +190,8 @@ theorem bubbleCoeffL_one_pos (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 
   · congr 1
     ring
 
-theorem bubbleCoeff_one (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) :
+theorem bubbleCoeff_one (hn : ScalarData.NoPure Sc)
+    (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) :
     (fun n => rbub j μ (bubbleCoeffR cs i (wt D μ []) n)) =
       bubbleStepR (fun n => lbub j μ (bubbleCoeffR cs i (wt D μ [up j]) n))
         (bubbleEdgeDot (Sc := Sc) i j μ) ∧
@@ -204,7 +216,7 @@ theorem bubbleCoeff_one (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) :
       funext n
       cases n with
       | zero => simp only [bubbleStepR, bubbleCoeffR_zero, rbub, lbub, plcL_id]; rfl
-      | succ n => exact bubbleCoeffR_one_nonpos cs i j μ hij hd hh n
+      | succ n => exact bubbleCoeffR_one_nonpos cs hn i j μ hij hd hh n
     exact ⟨hR, H.mp hR⟩
   · have hL : (fun n => lbub j μ (bubbleCoeffL cs i (wt D μ [up j]) n)) =
         bubbleStepL (bubbleEdgeDot (Sc := Sc) i j μ)
@@ -212,15 +224,16 @@ theorem bubbleCoeff_one (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) :
       funext n
       cases n with
       | zero => simp only [bubbleStepL, bubbleCoeffL_zero, rbub, lbub, plcL_id]; rfl
-      | succ n => exact bubbleCoeffL_one_pos cs i j μ hij hd (by omega) n
+      | succ n => exact bubbleCoeffL_one_pos cs hn i j μ hij hd (by omega) n
     exact ⟨H.mpr hL, hL⟩
 
-theorem bubbleR_one_succ (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) (n : ℕ) :
+theorem bubbleR_one_succ (hn : ScalarData.NoPure Sc)
+    (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) (n : ℕ) :
     rbub j μ (bubRs cs i (wt D μ []) (n + 1)) =
       (Sc.t i j : k) • lbub j μ (bubRs cs i (wt D μ [up j]) (n + 1)) +
         (Sc.t j i : k) • (lbub j μ (bubRs cs i (wt D μ [up j]) n) ≫
           cl D Sc μ [up j] [up j] (dotsL [] j [] (D.dn j i))) := by
-  have H := congrFun (bubbleCoeff_one cs i j μ hij hd).1 (n + 1)
+  have H := congrFun (bubbleCoeff_one cs hn i j μ hij hd).1 (n + 1)
   simp only [bubbleStepR, bubbleCoeffR, rbub, lbub, map_smul, bubbleEdgeDot, c_wt_upj,
     Units.val_mul, wt_nil, Nat.cast_add, Nat.cast_one, Linear.smul_comp, Linear.comp_smul,
     smul_smul] at H
@@ -235,12 +248,13 @@ theorem bubbleR_one_succ (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) (
         rw [Units.mul_inv, one_mul]
       _ = _ := by ring
 
-theorem bubbleL_one_succ (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) (n : ℕ) :
+theorem bubbleL_one_succ (hn : ScalarData.NoPure Sc)
+    (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) (n : ℕ) :
     lbub j μ (bubLs cs i (wt D μ [up j]) (n + 1)) =
       (Sc.t i j : k) • rbub j μ (bubLs cs i (wt D μ []) (n + 1)) +
         (Sc.t j i : k) • (cl D Sc μ [up j] [up j] (dotsL [] j [] (D.dn j i)) ≫
           rbub j μ (bubLs cs i (wt D μ []) n)) := by
-  have H := congrFun (bubbleCoeff_one cs i j μ hij hd).2 (n + 1)
+  have H := congrFun (bubbleCoeff_one cs hn i j μ hij hd).2 (n + 1)
   simp only [bubbleStepL, bubbleCoeffL, parity_eq_zero_of_d_one hij hd, isg, zero_mul,
     zsign_zero, one_mul, rbub, lbub, map_smul, bubbleEdgeDot, c_wt_upj, mul_inv,
     Units.val_mul, wt_nil, Nat.cast_add, Nat.cast_one, Linear.smul_comp, Linear.comp_smul,
@@ -255,7 +269,8 @@ theorem bubbleL_one_succ (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) (
 /-- Brundan–Ellis Proposition 7.3(iii), (7.11), for `dᵢⱼ = 1`.
 The integer `n` is the shifted degree; negative and fake bubbles are included.
 The opposite Cartan entry and all structure scalars are unrestricted. -/
-theorem eq_7_11_of_d_one (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) (n : ℤ) :
+theorem eq_7_11_of_d_one (hnp : ScalarData.NoPure Sc)
+    (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) (n : ℤ) :
     rbub j μ (bubRs cs i (wt D μ []) n) =
       (Sc.t i j : k) • lbub j μ (bubRs cs i (wt D μ [up j]) n) +
         (Sc.t j i : k) • (lbub j μ (bubRs cs i (wt D μ [up j]) (n - 1)) ≫
@@ -270,13 +285,14 @@ theorem eq_7_11_of_d_one (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) (
     erw [plcL_id]
     congr 1
     rw [← mul_assoc, Units.mul_inv, one_mul]
-  · have H := bubbleR_one_succ cs i j μ hij hd (n - 1).toNat
+  · have H := bubbleR_one_succ cs hnp i j μ hij hd (n - 1).toNat
     simpa only [Int.toNat_of_nonneg (show 0 ≤ n - 1 by omega),
       sub_add_cancel] using H
 
 /-- Brundan–Ellis Proposition 7.3(iii), (7.12), for `dᵢⱼ = 1`.
 This is the counterclockwise, left-to-right slide, at every weight and shifted degree. -/
-theorem eq_7_12_of_d_one (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) (n : ℤ) :
+theorem eq_7_12_of_d_one (hnp : ScalarData.NoPure Sc)
+    (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) (n : ℤ) :
     lbub j μ (bubLs cs i (wt D μ [up j]) n) =
       (Sc.t i j : k) • rbub j μ (bubLs cs i (wt D μ []) n) +
         (Sc.t j i : k) • (cl D Sc μ [up j] [up j] (dotsL [] j [] (D.dn j i)) ≫
@@ -290,7 +306,7 @@ theorem eq_7_12_of_d_one (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j = 1) (
       c_wt_upj, wt_nil, Units.val_mul, smul_smul]
     erw [plcL_id]
     rfl
-  · have H := bubbleL_one_succ cs i j μ hij hd (n - 1).toNat
+  · have H := bubbleL_one_succ cs hnp i j μ hij hd (n - 1).toNat
     simpa only [Int.toNat_of_nonneg (show 0 ≤ n - 1 by omega),
       sub_add_cancel] using H
 end OddMath.SKM

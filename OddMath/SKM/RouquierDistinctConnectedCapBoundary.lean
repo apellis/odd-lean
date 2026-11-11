@@ -74,7 +74,7 @@ theorem distinctMixedBraidLeft_cap_of_zero_connected
     Linear.smul_comp] at hb
   rw [T.distinctMixedBraidRight_cap_of_neg hab haf hbc hfc hcd hcneg, sub_zero] at hb
   rw [hb]
-  have hinterior : (∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+  have hinterior : (∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
       ∑ s ∈ Finset.range p,
       (zsign k (D.parity i * s) * Sc.s i j p q) •
         (T.distinctMixedBraidOuterMate i j hab hbc hcd
@@ -88,7 +88,7 @@ theorem distinctMixedBraidLeft_cap_of_zero_connected
     intro q hq
     apply Finset.sum_eq_zero
     intro s hs
-    have hp' := Finset.mem_Ioo.mp hp
+    have hp' := Finset.mem_range.mp hp
     have hs' := Finset.mem_range.mp hs
     rw [heval s q (p - 1 - s) (by omega), hlast, ite_eq_right (by omega), smul_zero]
   rw [hinterior, add_zero]

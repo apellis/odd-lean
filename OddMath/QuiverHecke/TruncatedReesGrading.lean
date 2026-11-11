@@ -144,7 +144,7 @@ theorem truncatedRees_t_mem (Sc : SKM.Scalars D K) (N : ℕ) (i j : I) :
   exact SKM.GradedImage.map_mem_image (f := truncAlg K N) (rees_t_mem D sy Sc i j)
 
 theorem truncatedRees_s_mem {Sc : SKM.Scalars D K} (hl : Sc.LowerDegree sy) (N : ℕ) (i j : I)
-    (p q : ℕ) (hp : 0 < p) (hp' : (p : ℤ) < D.d i j) (hq : 0 < q) (hq' : (q : ℤ) < D.d j i)
+    (p q : ℕ) (hij : i ≠ j) (hp' : (p : ℤ) < D.d i j) (hq' : (q : ℤ) < D.d j i)
     (hs : (truncatedReesScalars D sy Sc N).s i j p q ≠ 0) :
     (truncatedReesScalars D sy Sc N).s i j p q ∈
       truncGrading K N (SKM.coefficientDegree sy i j p q) := by
@@ -154,7 +154,7 @@ theorem truncatedRees_s_mem {Sc : SKM.Scalars D K} (hl : Sc.LowerDegree sy) (N :
     rw [h0, map_zero] at hs
     exact hs rfl
   exact SKM.GradedImage.map_mem_image (f := truncAlg K N)
-    (rees_s_mem D sy hl i j p q hp hp' hq hq' hs')
+    (rees_s_mem D sy hl i j p q hij hp' hq' hs')
 
 /-- **Truncated Rees parameters.** For lower-degree parameters over `K`, the quiver Hecke
 presentation with the Rees parameters truncated to `K[h]/(h^N)` is coefficient-graded

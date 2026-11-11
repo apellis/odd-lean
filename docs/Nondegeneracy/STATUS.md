@@ -187,10 +187,14 @@ the branch are those of [FieldScopeBoundary](FieldScopeBoundary.md):
    parameter system over a commutative ring with `2` invertible, through the
    Rees family over `k[h]` specialized at `h = 1`; consumer
    [GradedParameters](../../scripts/NonVacuity/GradedParameters.lean), on
-   inhomogeneous parameters `u³ + uv + v³`. Open decision: BE2's `Scalars`
-   has no coefficients for the monomials `u^r` (`0 < r < dᵢⱼ`) and `v^s`
-   alone, which Brundan–Wang–Webster allow, so the target covers their
-   class only on BE2's parameter shape. The target is reduced, by ring maps
+   inhomogeneous parameters `u³ + uv + v³`. BE2's `Scalars` now carry the whole box of coefficients below the corners, including the
+   pure monomials `u^r` and `v^s` that Brundan–Wang–Webster allow (decision: generalize in
+   place, [BWWArchitecture](BWWArchitecture.md)); BE2's printed parameters are the case
+   `ScalarData.NoPure`. The probe dot units take the route-only hypothesis
+   `ScalarData.PureNilpotent` (pure coefficients in a nilpotent ideal), supplied by
+   homogeneous parameters (`NoPure.pureNilpotent`) and by the truncated Rees parameters
+   (`BWWReesParameters.truncated_pureNilpotent`); it does not enter the target statement.
+   The target is reduced, by ring maps
    that ignore grading, to its universal instance
    (`LowerDegreeParameters.gradedCoefficientNondegeneracy_iff`), to
    lower-degree parameters over characteristic-zero fields
@@ -233,7 +237,14 @@ the branch are those of [FieldScopeBoundary](FieldScopeBoundary.md):
    the end theorem in `QuiverHecke.exists_nondegeneracy_of_linearIndependent`),
    which includes Brundan–Ellis's setting. Benchmark realizations with
    dependent roots still need compatible normalizations or a
-   change-of-normalization comparison.
+   change-of-normalization comparison. **Open (gap recorded, deferred):** a
+   normalization exists exactly when `Π tᵢⱼ^{nⱼ} = 1` for every `i` and every
+   integer relation `Σ nⱼ αⱼ = 0` among the simple roots
+   (`RootCover.nonempty_cScalars_iff`). For dependent roots the theorem can
+   therefore be vacuous: for affine `A₁` with `α₀ + α₁ = 0` it forces
+   `tᵢ₀ tᵢ₁ = 1` (`CScalars.t_mul_t_eq_one`), so `t₀₁ = 2` admits no
+   normalization. Brundan–Wang–Webster, Remark 2.4, allow arbitrary
+   normalizations; covering that case is not attempted.
 
 The audit of the formal statement against Brundan–Ellis §8, and the precise
 scope of the even specialization, are in [StatementAudit](StatementAudit.md).

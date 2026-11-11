@@ -44,14 +44,13 @@ variable {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X)
 def Allowed (a : RawSlot I) : Prop :=
   (a.p : ZMod 2) * D.parity a.i ≠ 1 ∧
   (a.q : ZMod 2) * D.parity a.j ≠ 1 ∧
-  (0 < a.p → (a.p : ℤ) < D.d a.i a.j →
-    0 < a.q → (a.q : ℤ) < D.d a.j a.i →
+  (a.i ≠ a.j → (a.p : ℤ) < D.d a.i a.j → (a.q : ℤ) < D.d a.j a.i →
     a.p * D.d a.j a.i + a.q * D.d a.i a.j = D.d a.i a.j * D.d a.j a.i)
 
 theorem allowed_swap (a : RawSlot I) (h : Allowed D a) : Allowed D a.swap := by
   refine ⟨h.2.1, h.1, ?_⟩
-  intro hq hq' hp hp'
-  simpa only [RawSlot.swap, add_comm, mul_comm] using h.2.2 hp hp' hq hq'
+  intro hij hq' hp'
+  simpa only [RawSlot.swap, add_comm, mul_comm] using h.2.2 (Ne.symm hij) hp' hq'
 
 /-- Allowed positions modulo the swap involution, with no extra identifications. -/
 def Slot := Quot (fun a b : {a : RawSlot I // Allowed D a} => b.val = a.val.swap)
@@ -116,9 +115,9 @@ def scalars : Scalars D (ParameterRing D) where
 
 /-- The exact existing homogeneity predicate, not a stronger global support bound. -/
 theorem homogeneous : (scalars D).Homogeneous := by
-  intro i j p q hp hp' hq hq' hn
+  intro i j p q hij hp' hq' hn
   by_cases h : Allowed D ⟨i, j, p, q⟩
-  · exact h.2.2 hp hp' hq hq'
+  · exact h.2.2 hij hp' hq'
   · exact (hn (coefficient_of_not_allowed D _ h)).elim
 
 /-- All normalization units at the original weights, with their shift laws. -/
@@ -138,7 +137,7 @@ theorem allowed_of_ne_zero {Ptwo : Prop} (Sc : ScalarData D R Ptwo) (hh : Sc.Hom
     apply h
     rw [Sc.s_symm]
     exact Sc.s_eq_zero _ _ _ _ hq
-  · exact fun hp hp' hq hq' => hh _ _ _ _ hp hp' hq hq' h
+  · exact fun hij hp' hq' => hh _ _ _ _ hij hp' hq' h
 
 /-- Evaluation on quotient slots is well defined by the supplied symmetry law. -/
 def slotValue {Ptwo : Prop} (Sc : ScalarData D R Ptwo) : Slot D → R :=

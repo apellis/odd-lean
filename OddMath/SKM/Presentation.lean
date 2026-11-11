@@ -2,7 +2,7 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.SKM.Basic
+import OddMath.SKM.PureMonomials
 
 /-!
 # The Kac–Moody 2-supercategory `𝔘(𝔤)` (Brundan–Ellis, Definition 1.5)
@@ -326,7 +326,7 @@ def relation : (r : Rel D) → LinDiagram k (ob D r.ν r.dom) (ob D r.ν r.cod)
       (by simp [crossL, Shape.dom, Shape.cod]) -
       (Sc.t i j : k) • dg D ν (dotsL [] i [up j] (D.dn i j)) (sChain_dotsL [] i [up j] _) -
       (Sc.t j i : k) • dg D ν (dotsL [up i] j [] (D.dn j i)) (sChain_dotsL [up i] j [] _) -
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         Sc.s i j p q • dg D ν (dotsL [up i] j [] q ++ dotsL [] i [up j] p)
           ((sChain_dotsL [up i] j [] q).append (sChain_dotsL [] i [up j] p))
   | .slideL i j ν _ => dg D ν (dotsL [] i [up j] 1 ++ crossL [] i j [])
@@ -364,7 +364,7 @@ def relation : (r : Rel D) → LinDiagram k (ob D r.ν r.dom) (ob D r.ν r.cod)
         (zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
           dg D ν (dotsL [up i, up j] i [] s ++ dotsL [] i [up j, up i] (D.dn i j - 1 - s))
             ((sChain_dotsL [up i, up j] i [] s).append (sChain_dotsL [] i [up j, up i] _)) -
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), ∑ s ∈ Finset.range p,
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), ∑ s ∈ Finset.range p,
         (zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p q) •
           dg D ν (dotsL [up i, up j] i [] s ++ dotsL [up i] j [up i] q ++
               dotsL [] i [up j, up i] (p - 1 - s))

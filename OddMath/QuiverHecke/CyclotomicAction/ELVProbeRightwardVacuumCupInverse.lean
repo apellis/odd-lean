@@ -7,6 +7,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumCapInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumLeftwardMoments
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseCupInverse
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseRightBubbleEntry
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
 
 /-! # The rightward vacuum cup inverse in the native chart
 
@@ -124,6 +125,7 @@ theorem vacuumRightwardCupInverse_odd (Z : (P).H ((0, 0) : Sector I))
             ((vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H).obj
               (probeOldVacuumRegular D (parameterTwist D Sc) m)) n) j
         (fun n => vacuumRightwardColumn D Sc m cutoff bound ΛP ΛR hcP hcR H i Z hZ dc n) := by
+  have : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   subst hZ
   have hu : ¬StepValid (SKM.up i) false ((0, 0) : Sector I) := by
     simp [StepValid]

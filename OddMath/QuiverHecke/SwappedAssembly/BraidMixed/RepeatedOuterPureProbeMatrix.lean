@@ -118,7 +118,7 @@ theorem repeatedOuterPureProbe_factor_polynomial
         (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
           (compPow (P.T.dot i hi ▷ (F ≫ G ≫ Z)) a ≫
             compPow (E ◁ F ◁ (P.T.dot i hk ▷ Z)) (D.dn i j - 1 - a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i),
         ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
           (compPow (P.T.dot i hi ▷ (F ≫ G ≫ Z)) a ≫
@@ -228,7 +228,7 @@ theorem repeatedOuterPureProbe_normalized_polynomial
       ∑ a ∈ Finset.range (D.dn i j),
         (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
           (compPow z a ≫ compPow x (D.dn i j - 1 - a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i),
         ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
           (compPow z a ≫ compPow y d ≫ compPow x (b - 1 - a)) := by
@@ -338,13 +338,13 @@ private theorem pureCorrection_polynomial_heq
     HEq ((∑ a ∈ Finset.range (D.dn i j),
         (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
         (compPow z a ≫ compPow x (D.dn i j - 1 - a))) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
         (compPow z a ≫ compPow y d ≫ compPow x (b - 1 - a)))
       ((∑ a ∈ Finset.range (D.dn i j),
         (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
         (compPow z' a ≫ compPow x' (D.dn i j - 1 - a))) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
         (compPow z' a ≫ compPow y' d ≫ compPow x' (b - 1 - a))) := by
   subst e
@@ -367,7 +367,7 @@ theorem repeatedOuterPureProbe_correction_heq
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Z) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] p Z)
               (D.dn i j - 1 - a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Z) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] p Z) d ≫
@@ -396,7 +396,7 @@ theorem repeatedOuterPureProbe_braidEq_diag {t : Sector I}
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Z) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] p Z)
               (D.dn i j - 1 - a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
           (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] p Z) a ≫
             compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] p Z) d ≫

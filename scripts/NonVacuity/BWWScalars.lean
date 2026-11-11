@@ -99,7 +99,7 @@ def scalars : Scalars datum ℚ where
   two_isUnit := by intro _; norm_num
 
 theorem homogeneous : scalars.Homogeneous := by
-  intro i j p q _ _ _ _ hs
+  intro i j p q _ _ _ hs
   have h : i ≠ j ∧ p + q = 3 := by
     by_contra h
     exact hs (by simp [scalars, h])

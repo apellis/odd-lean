@@ -359,7 +359,7 @@ theorem quadNe_single {i j : I} (hij : i ≠ j) (hd : D.d i j ≠ 0) {ν : Seq I
     (hi : ν a = some i) (hj : ν (a + 1) = some j) (m : M k) :
     (crossOp D Sc j i a * crossOp D Sc i j a - (Sc.t i j : k) • dotOp D i a ^ D.dn i j -
         (Sc.t j i : k) • dotOp D j (a + 1) ^ D.dn j i -
-        ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+        ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
           Sc.s i j p q • (dotOp D i a ^ p * dotOp D j (a + 1) ^ q) : Module.End k (V k I))
       (sgl ν m) = 0 := by
   have hpi : D.parity i = 0 ∨ Even (D.dn i j) := by

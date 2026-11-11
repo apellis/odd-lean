@@ -4,8 +4,8 @@ import NonVacuity.BWWScalars
 /-! # The Kac–Moody 2-supercategory with Brundan–Wang–Webster parameters
 
 On the datum of `NonVacuity.BWWScalars`: the presentation with `Qᵢⱼ = u³ + v³ + 1` is
-parity-homogeneous; over the Brundan–Ellis parameters `u³ + uv² + v³` it is `SKM.pres`, and the
-same holds through the predicate `NoPure`. The constant term `1` is a pure monomial.
+parity-homogeneous and is `SKM.pres` of the underlying parameters; over the Brundan–Ellis
+parameters `u³ + uv² + v³` it is `SKM.pres`. The constant term `1` is a pure monomial.
 -/
 
 noncomputable section
@@ -18,8 +18,8 @@ example : (SKM.presBWW datum constantTerm).IsParityHomogeneous :=
 example : SKM.presBWW datum scalars.toBWW = SKM.pres datum scalars :=
   SKM.presBWW_toBWW scalars
 
-example : SKM.presBWW datum scalars.toBWW = SKM.pres datum scalars.toBWW.toScalars :=
-  SKM.presBWW_eq_pres_of_noPure scalars.toBWW_noPure
+example : SKM.presBWW datum constantTerm = SKM.pres datum constantTerm.toScalars :=
+  SKM.presBWW_eq_pres constantTerm
 
 example : scalars.toBWW.NoPure :=
   ((ScalarData.toBWW_homogeneous_iff scalars).mpr homogeneous).noPure

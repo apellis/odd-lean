@@ -64,7 +64,7 @@ def contentInductionPairPolynomial (β : Multiset I) (i j : I)
   let B := contentInductionEndLinear D (parameterTwist D Sc) cutoff N
     (contentPairDot_one_parity D (parameterTwist D Sc) i j) M w
   if D.d i j = 0 then (Sc.t i j : k) • (1 : Module.End k _) else
-    ∑ r ∈ Finset.Ioo 0 (D.dn i j), ∑ s ∈ Finset.Ioo 0 (D.dn j i),
+    ∑ r ∈ Finset.range (D.dn i j), ∑ s ∈ Finset.range (D.dn j i),
       Sc.s i j r s • (B ^ s * A ^ r) +
     ((Sc.t i j : k) • A ^ D.dn i j + (Sc.t j i : k) • B ^ D.dn j i)
 

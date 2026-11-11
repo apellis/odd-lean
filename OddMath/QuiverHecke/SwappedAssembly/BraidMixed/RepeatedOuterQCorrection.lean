@@ -102,7 +102,7 @@ variable {C : Type*} [Category C] [Preadditive C] [Linear k C] {V : C}
 lemma qExpr_difference (x y z : End V) (i j : I) (hd : D.d i j ≠ 0) :
     ProbeReservoir.qExpr Sc x y i j - ProbeReservoir.qExpr Sc z y i j =
       (Sc.t i j : k) • (x^(D.dn i j)-z^(D.dn i j)) +
-        ∑ b ∈ Ioo 0 (D.dn i j), ∑ c ∈ Ioo 0 (D.dn j i),
+        ∑ b ∈ range (D.dn i j), ∑ c ∈ range (D.dn j i),
           Sc.s i j b c • ((x^b-z^b)*y^c) := by
   simp only [ProbeReservoir.qExpr, hd, ite_false, sub_mul, smul_sub,
     sum_sub_distrib]
@@ -121,7 +121,7 @@ theorem qExpr_correction (A x y z : End V) (i j : I)
       (∑ a ∈ range (D.dn i j),
         (zsign k (D.parity i*(D.parity j+a))*(Sc.t i j : k)) •
           (x^(D.dn i j-1-a)*z^a)) +
-      ∑ b ∈ Ioo 0 (D.dn i j), ∑ c ∈ Ioo 0 (D.dn j i), ∑ a ∈ range b,
+      ∑ b ∈ range (D.dn i j), ∑ c ∈ range (D.dn j i), ∑ a ∈ range b,
         (zsign k (D.parity i*(D.parity j+a))*Sc.s i j b c) •
           (x^(b-1-a)*y^c*z^a) := by
   classical

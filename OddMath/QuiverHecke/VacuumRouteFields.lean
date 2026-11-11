@@ -85,7 +85,7 @@ def _root_.OddMath.SKM.Symmetrizer.restrictColours (sy : SKM.Symmetrizer D) (J :
 /-- Homogeneity is preserved by restriction to a finite colour set. -/
 theorem _root_.OddMath.SKM.Scalars.restrictColours_homogeneous {Sc : SKM.Scalars D k}
     (hc : Sc.Homogeneous) (J : Finset I) : (Sc.restrictColours D J).Homogeneous :=
-  fun i j p q hp h₁ hq h₂ hs => hc i.val j.val p q hp h₁ hq h₂ hs
+  fun i j p q hij h₁ h₂ hs => hc i.val j.val p q (fun h => hij (Subtype.ext h)) h₁ h₂ hs
 
 end Restriction
 

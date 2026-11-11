@@ -103,7 +103,7 @@ theorem bubble_slide_middle_recurrence (i j : I) (μ : X) (hij : i ≠ j)
     (hpos : 0 < D.h i μ) (hlt : D.h i μ < D.d i j) :
     (∑ s ∈ range (D.dn i j), (zsign k (D.parity i * s) * (Sc.t i j : k)) •
       (bubbleL_right cs i j μ s ≫ bubbleR_left cs i j μ (D.dn i j - 1 - s : ℕ))) +
-    (∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i), ∑ s ∈ range p,
+    (∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i), ∑ s ∈ range p,
       (zsign k (D.parity i * s) * Sc.s i j p q) •
         (bubbleL_right cs i j μ s ≫ cl D Sc μ [up j] [up j] (dotsL [] j [] q) ≫
           bubbleR_left cs i j μ (p - 1 - s : ℕ))) = 0 := by

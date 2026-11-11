@@ -6,6 +6,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumLeftwardMoments
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumCapMoments
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumBend
 import OddMath.QuiverHecke.SwappedVacuum.InverseColumnEvenSeries
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
 
 /-! # Even moments of the leftward vacuum bubble entries
 
@@ -24,6 +25,11 @@ evaluated left bubble entries `dcup n ≫ ε xᴺ`
 (`vacuumLeftwardCapInverse_even`, `tensorVacuum_leftward_even_moments`).
 No inverse, moment or bubble value is assumed. See
 `docs/Nondegeneracy/InverseColumnMoments.md`.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 
 noncomputable section
@@ -201,7 +207,7 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (hcR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
 
 omit [Fintype I] in
-private instance leftwardEvenMomentsZero (β : Multiset I) :
+private instance leftwardEvenMomentsZero [Fact Sc.PureNilpotent] (β : Multiset I) :
     Limits.HasZeroObject (ContentModules D (parameterTwist D Sc) cutoff bound β) :=
   ⟨⟨elvZeroModule D (parameterTwist D Sc) cutoff bound β,
     elvZeroModule_isZero D (parameterTwist D Sc) cutoff bound β⟩⟩
@@ -220,7 +226,7 @@ include hdot in
 data satisfying the positive inverse equations at the vacuum sector give an
 entrywise inverse of the native cap window `[bend; x ^ n ≫ v]_(n < h)` of the
 evaluated A6 bend, whose columns are the explicit `vacuumLeftwardColumn`. -/
-theorem vacuumLeftwardCapInverse_even (Z : (P).H ((0, 0) : Sector I))
+theorem vacuumLeftwardCapInverse_even [Fact Sc.PureNilpotent] (Z : (P).H ((0, 0) : Sector I))
     (hZ : Z = vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
         ((0, 0) : Sector I))
@@ -315,6 +321,7 @@ theorem vacuumLeftwardCapInverse_bubbleEntries_even (Z : (P).H ((0, 0) : Sector 
             (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) =
         c.inv ≫ (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).map
           (dc n (.nil _) p₀ ≫ (P).epsEntry cc i N ν₀ p₀ (.nil _) Z) ≫ c.hom := by
+  have : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   subst hZ
   obtain ⟨j, hj⟩ := vacuumLeftwardCapInverse_even D Sc m cutoff bound ΛP ΛR hcP hcR H
     hdot i _ rfl lc dc HP hP hi

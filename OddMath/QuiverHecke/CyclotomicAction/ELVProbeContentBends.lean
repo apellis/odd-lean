@@ -1,6 +1,7 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputDotBounds
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeFiniteBends
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendWindowEquations
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
 
 /-! # Mixed bends at a whole output-content category
 
@@ -8,6 +9,11 @@ import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendWindowEquations
 while projecting to one reservoir output content. A fixed source-content
 dot bound gives finite series in the same functor Hom category as the
 content coefficient ideal. The exponent may depend on output content.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 set_option quotPrecheck false
@@ -146,7 +152,7 @@ theorem elvProbeCxContentOuterDot_isNilpotent [Finite I]
     ((P).reservoirToProbeCoefficientChart i t hb hv ((FR[i,t,hv]).obj Z)) y hy
 end ReservoirToProbe
 
-private theorem contentBendFactorDot_isIso [Finite I] (i : I) {x y : X} (h : x + D.α i = y) :
+private theorem contentBendFactorDot_isIso [Fact Sc.PureNilpotent] [Finite I] (i : I) {x y : X} (h : x + D.α i = y) :
     IsIso ((P).T.dot i h) := by
   let _ := Fintype.ofFinite I
   exact (isUnit_iff_isIso _).mp

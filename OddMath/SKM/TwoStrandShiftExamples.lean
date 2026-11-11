@@ -39,7 +39,7 @@ def scalars : Scalars datum ℤ where
     rintro ⟨i, hi⟩
     exact (zero_ne_one hi).elim
 
-theorem homogeneous : scalars.Homogeneous := fun _ _ _ _ _ _ _ _ h => absurd rfl h
+theorem homogeneous : scalars.Homogeneous := fun _ _ _ _ _ _ _ h => absurd rfl h
 
 /-- Unit symmetrizer. -/
 def symmetrizer : Symmetrizer datum where

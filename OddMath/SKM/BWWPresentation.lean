@@ -22,7 +22,7 @@ of `pres D Sc'.toScalars`.
 * `presBWW D Sc'`: the presentation, on the relation labels of `pres`; its relations are
   parity-homogeneous (`isParityHomogeneous_presBWW`).
 * `presBWW_toBWW`: `presBWW D Sc.toBWW = pres D Sc` for Brundan–Ellis parameters `Sc`.
-* `presBWW_eq_pres_of_noPure`: without pure monomials, `presBWW D Sc' = pres D Sc'.toScalars`.
+* `presBWW_eq_pres`: `presBWW D Sc' = pres D Sc'.toScalars`.
 -/
 
 noncomputable section
@@ -124,7 +124,7 @@ theorem quadSum_toBWW (Sc : Scalars D k) {i j : I} (ν : X) (hij : i ≠ j) (hd 
     quadSum D Sc.toBWW.c i j ν =
       (Sc.t i j : k) • dg D ν (dotsL [] i [up j] (D.dn i j)) (sChain_dotsL [] i [up j] _) +
       (Sc.t j i : k) • dg D ν (dotsL [up i] j [] (D.dn j i)) (sChain_dotsL [up i] j [] _) +
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         Sc.s i j p q • dg D ν (dotsL [up i] j [] q ++ dotsL [] i [up j] p)
           ((sChain_dotsL [up i] j [] q).append (sChain_dotsL [] i [up j] p)) := by
   rw [quadSum, sum_box_toBWW Sc hij hd]
@@ -138,7 +138,7 @@ theorem braidSum_toBWW (Sc : Scalars D k) {i j : I} (ν : X) (hij : i ≠ j) (hd
         (zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
           dg D ν (dotsL [up i, up j] i [] s ++ dotsL [] i [up j, up i] (D.dn i j - 1 - s))
             ((sChain_dotsL [up i, up j] i [] s).append (sChain_dotsL [] i [up j, up i] _)) +
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), ∑ s ∈ Finset.range p,
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), ∑ s ∈ Finset.range p,
         (zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p q) •
           dg D ν (dotsL [up i, up j] i [] s ++ dotsL [up i] j [up i] q ++
               dotsL [] i [up j, up i] (p - 1 - s))
@@ -193,11 +193,10 @@ theorem presBWW_toBWW (Sc : Scalars D k) : presBWW D Sc.toBWW = pres D Sc := by
   funext r
   exact relationBWW_toBWW Sc r
 
-/-- Without pure monomials, the presentation with Brundan–Wang–Webster parameters is the
-Brundan–Ellis presentation of the underlying parameters. -/
-theorem presBWW_eq_pres_of_noPure {P : BWWScalars D k} (hn : P.NoPure) :
-    presBWW D P = pres D P.toScalars :=
-  calc presBWW D P = presBWW D P.toScalars.toBWW := by rw [hn.toScalars_toBWW]
+/-- The presentation of a coefficient box is the presentation of the underlying
+parameters. -/
+theorem presBWW_eq_pres (P : BWWScalars D k) : presBWW D P = pres D P.toScalars :=
+  calc presBWW D P = presBWW D P.toScalars.toBWW := by rw [BWWScalars.toScalars_toBWW]
     _ = pres D P.toScalars := presBWW_toBWW _
 
 end OddMath.SKM

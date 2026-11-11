@@ -84,7 +84,7 @@ def cScalarsP : CScalars scalarsP where
   shift := fun _ _ _ ↦ by simp [scalarsP]
 
 theorem homogeneousP : scalarsP.Homogeneous :=
-  fun _ _ _ _ _ _ _ _ h ↦ absurd rfl h
+  fun _ _ _ _ _ _ _ h ↦ absurd rfl h
 
 theorem locallyFiniteP : datumP.skmSymmetrizer.DegreeLocallyFinite := fun N ↦
   (Set.finite_Iic N).subset fun i hi ↦ by

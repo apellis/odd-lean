@@ -17,6 +17,7 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedRightBubbleCoefficients
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseCupInverse
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseRightBubbleEntry
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.VacuumInverseWindow
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
 
 /-!
 # Right bubble entries of the vacuum sector at zero height
@@ -45,6 +46,11 @@ family.
   `zero_odd`, `zero_even` and `odd_zero` of `VacuumRightEntries`.
 
 No inverse, moment or bubble value is assumed.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 
 noncomputable section
@@ -191,7 +197,7 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (hcR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
 
 omit [Fintype I] in
-private instance zeroHeightContentZero (β : Multiset I) :
+private instance zeroHeightContentZero [Fact Sc.PureNilpotent] (β : Multiset I) :
     Limits.HasZeroObject (ContentModules D (parameterTwist D Sc) cutoff bound β) :=
   ⟨⟨elvZeroModule D (parameterTwist D Sc) cutoff bound β,
     elvZeroModule_isZero D (parameterTwist D Sc) cutoff bound β⟩⟩
@@ -217,7 +223,7 @@ vacuum sector input, and an evaluated bend `b` presented by the padded `σ` in t
 charts (`paddedVacuumDx_odd` or `paddedVacuumDx_even`), `b` is invertible, and the
 conjugated evaluated zero-height bubble entries `η xᴺ ≫ lc ≫ ε` are minus the native
 unit-dot column `N`, followed by `b⁻¹` and the native cap. -/
-theorem vacuumZeroHeight_bubbleEntries (Z : (P).H ((0, 0) : Sector I))
+theorem vacuumZeroHeight_bubbleEntries [Fact Sc.PureNilpotent] (Z : (P).H ((0, 0) : Sector I))
     (hZ : Z = vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
         ((0, 0) : Sector I))
@@ -339,7 +345,7 @@ private theorem zeroHeight_negInverseAt (i : I) (h0 : D.h i ν₀ = 0) :
 
 include hF in
 /-- The decoded vacuum entry of the odd zero-height right bubble of degree `2s + 2`. -/
-theorem vacuumZeroOdd_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
+theorem vacuumZeroOdd_decode [Fact Sc.PureNilpotent] (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
     (h0 : D.h i ν₀ = 0) (s : ℕ) :
     ∃ c : (E).obj Z ≅ V, (∃ h, c.hom = eqToHom h) ∧ ∀ z,
       dec ((c.inv ≫ (E).map (ProbeReservoir.compDiag gens
@@ -397,7 +403,7 @@ theorem vacuumEntry_zero_odd (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
 
 include hF in
 /-- The decoded vacuum entry of the odd bubble at zero height. -/
-theorem vacuumOddZero_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
+theorem vacuumOddZero_decode [Fact Sc.PureNilpotent] (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
     (h0 : D.h i ν₀ = 0) :
     ∃ c : (E).obj Z ≅ V, (∃ h, c.hom = eqToHom h) ∧ ∀ z,
       dec ((c.inv ≫ (E).map (ProbeReservoir.compDiag gens
@@ -454,7 +460,7 @@ theorem vacuumEntry_odd_zero (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
 
 include hF in
 /-- The decoded vacuum entry of the even zero-height right bubble of degree `s + 1`. -/
-theorem vacuumZeroEven_decode (i : I) (hi : D.parity i = 0) (hN : 0 < cutoff i)
+theorem vacuumZeroEven_decode [Fact Sc.PureNilpotent] (i : I) (hi : D.parity i = 0) (hN : 0 < cutoff i)
     (h0 : D.h i ν₀ = 0) (s : ℕ) :
     ∃ c : (E).obj Z ≅ V, (∃ h, c.hom = eqToHom h) ∧ ∀ z,
       dec ((c.inv ≫ (E).map (ProbeReservoir.compDiag gens

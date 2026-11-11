@@ -158,7 +158,7 @@ theorem comp_qExpr_sub (i j : I) {A : C} (ψ x₁ x₂ y : End A)
         (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
           (compPow (zsign k (D.parity i * D.parity j) • x₂) a ≫
             compPow (zsign k (D.parity i * D.parity j) • x₁) (D.dn i j - 1 - a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ c ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ c ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b c) •
           (compPow (zsign k (D.parity i * D.parity j) • x₂) a ≫
             compPow (zsign k (D.parity i * D.parity j) • y) c ≫
@@ -183,7 +183,7 @@ theorem comp_qExpr_sub (i j : I) {A : C} (ψ x₁ x₂ y : End A)
   unfold qExpr
   split_ifs with hd
   · have hdn : D.dn i j = 0 := by simp [SKM.Datum.dn, hd]
-    simp only [hdn, Finset.range_zero, Finset.sum_empty, Finset.Ioo_self, add_zero]
+    simp only [hdn, Finset.range_zero, Finset.sum_empty, add_zero]
     rw [End.one_def, Linear.comp_smul, Linear.smul_comp, Category.comp_id, Category.id_comp,
       sub_self]
   have hA : (Sc.t i j : k) • (ψ ≫ (x₁ ^ D.dn i j : End A) - (x₂ ^ D.dn i j : End A) ≫ ψ) =
@@ -200,9 +200,9 @@ theorem comp_qExpr_sub (i j : I) {A : C} (ψ x₁ x₂ y : End A)
     ring
   have hB : ψ ≫ (y ^ D.dn j i : End A) - (y ^ D.dn j i : End A) ≫ ψ = 0 := by
     rw [comp_pow_signed' ψ y y _ h₂, hεj _ (dn_mul_parity'' j i), one_smul, sub_self]
-  have hC : ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ c ∈ Finset.Ioo 0 (D.dn j i),
+  have hC : ∑ b ∈ Finset.range (D.dn i j), ∑ c ∈ Finset.range (D.dn j i),
       Sc.s i j b c • (ψ ≫ ((x₁ ^ b * y ^ c : End A)) - (x₂ ^ b * y ^ c : End A) ≫ ψ) =
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ c ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      ∑ b ∈ Finset.range (D.dn i j), ∑ c ∈ Finset.range (D.dn j i), ∑ a ∈ Finset.range b,
         (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b c) •
           (compPow (zsign k (D.parity i * D.parity j) • x₂) a ≫
             compPow (zsign k (D.parity i * D.parity j) • y) c ≫
@@ -228,11 +228,11 @@ theorem comp_qExpr_sub (i j : I) {A : C} (ψ x₁ x₂ y : End A)
       ← coeff_eq (D.parity i) (D.parity j) b a ha hbp]
     congr 1
     ring
-  have hS : ψ ≫ (∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+  have hS : ψ ≫ (∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         Sc.s i j p q • (x₁ ^ p * y ^ q : End A)) -
-      (∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+      (∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         Sc.s i j p q • (x₂ ^ p * y ^ q : End A)) ≫ ψ =
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ c ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ b ∈ Finset.range (D.dn i j), ∑ c ∈ Finset.range (D.dn j i),
         Sc.s i j b c • (ψ ≫ ((x₁ ^ b * y ^ c : End A)) - (x₂ ^ b * y ^ c : End A) ≫ ψ) := by
     erw [Preadditive.comp_sum, Preadditive.sum_comp, ← Finset.sum_sub_distrib]
     refine Finset.sum_congr rfl fun p _ => ?_

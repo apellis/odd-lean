@@ -24,7 +24,7 @@ def grading (n : ℕ) : Submodule ℚ ℚ := if n = 0 then ⊤ else ⊥
 
 example : scalars.toBWW.GradedHomogeneous symmetrizer grading := by
   refine (Scalars.gradedHomogeneous_toBWW_iff _ _ _).mpr ⟨fun _ _ => by simp [grading], ?_⟩
-  intro i j p q _ _ _ _ hs
+  intro i j p q _ _ _ hs
   have h : i ≠ j ∧ p + q = 3 := by
     by_contra h
     exact hs (by simp [scalars, h])

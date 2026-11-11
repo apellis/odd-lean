@@ -1,6 +1,7 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDenominatorUnits
 import OddMath.QuiverHecke.CyclotomicAction.ELVMixedSourceOddNorms
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SwappingReservoir
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
 
 /-! # Transposed source norms and swapping for the ELV probe pair
 

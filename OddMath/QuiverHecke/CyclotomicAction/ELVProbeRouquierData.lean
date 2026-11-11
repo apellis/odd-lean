@@ -14,6 +14,11 @@ weight spaces, induction and signed dots with the negative equal crossing
 and positive distinct crossing. Restriction and its prescribed adjunction,
 the equal square and braid, and the natural dot unit are retained. Local
 inversion records and multicolour coherence remain separate obligations.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 open scoped Classical
@@ -96,7 +101,7 @@ def probeOldRouquierDataAdjunction (i : I) {x y : X} (h : x + D.α i = y) :
       (probeOldF D Sc m i Λ h) :=
   probeOldActionAdjunction D Sc m i Λ h
 
-theorem probeOldRouquierData_dot_isUnit [Fintype I] (i : I) {x y : X} (h : x + D.α i = y) :
+theorem probeOldRouquierData_dot_isUnit [Fact Sc.PureNilpotent] [Fintype I] (i : I) {x y : X} (h : x + D.α i = y) :
     IsUnit (End.of ((probeOldRouquierData D Sc m Λ).dot i h)) :=
   probeOldActionDot_isUnit D Sc m i Λ h
 

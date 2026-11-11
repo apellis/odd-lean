@@ -5,6 +5,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeRightwardVacuumCupInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumCapMoments
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumWholeInput
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
 
 /-! # Even moments of the rightward vacuum bubble entries
 
@@ -85,6 +86,7 @@ theorem vacuumRightwardCupInverse_even (Z : (P).H ((0, 0) : Sector I))
             ((vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H).obj
               (probeOldVacuumRegular D (parameterTwist D Sc) m)) n) j
         (fun n => vacuumRightwardColumn D Sc m cutoff bound ΛP ΛR hcP hcR H i Z hZ dc n) := by
+  have : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   subst hZ
   have hu : ¬StepValid (SKM.up i) false ((0, 0) : Sector I) := by
     simp [StepValid]

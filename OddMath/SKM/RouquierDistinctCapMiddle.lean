@@ -122,7 +122,7 @@ theorem distinctMixedBraidLeft_cap_middle
   simp only [Preadditive.add_comp, Preadditive.comp_add, Preadditive.sum_comp,
     Preadditive.comp_sum, Linear.smul_comp, Linear.comp_smul, neg_add_rev,
     ← Finset.sum_neg_distrib, ← smul_neg]
-  have hi : (∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+  have hi : (∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
       ∑ s ∈ Finset.range p,
         (zsign k (D.parity i * s) * Sc.s i j p q) •
           -((T.loc i hab hbe).sigL ▷ Ebc ≫ T.distinctMixedBraidOuterMate i j hab hbc hcd
@@ -137,7 +137,8 @@ theorem distinctMixedBraidLeft_cap_middle
     apply Finset.sum_eq_zero
     intro s hs
     rw [T.distinctMixedBraidOuterMate_middle_interior hne hab hbc hbe hfc hcd h0 h1
-      p q s (Finset.mem_Ioo.mp hp) (Finset.mem_range.mp hs), neg_zero, smul_zero]
+      p q s ⟨by have := Finset.mem_range.mp hs; omega, Finset.mem_range.mp hp⟩
+      (Finset.mem_range.mp hs), neg_zero, smul_zero]
   rw [hi, zero_add]
   rw [Finset.sum_eq_single (D.h i b).toNat]
   · rw [T.distinctMixedBraidOuterMate_middle_leading hne hab hbc hbe hfc hcd h0 h1 _ hn,
