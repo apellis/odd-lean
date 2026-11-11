@@ -26,7 +26,7 @@ For `K = R` with the trivial grading these are the statements of
 
 noncomputable section
 
-open CategoryTheory StringDiagrams Supercategory BicategoryStruct
+open CategoryTheory StringDiagrams Supercategory BicategoryStruct OddMath.Diagrams
 
 namespace OddMath.QuiverHecke.ELVOld
 
