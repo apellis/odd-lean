@@ -61,7 +61,7 @@ local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hF.
 local notation "leftward" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR hF.dot
 local notation "gens" => ProbeReservoir.swappedGens (P) c leftward
 local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff bound ΛP ΛR hP hR hF.dot
-        hF.window Gs Ys
+        hF.window hF.pure Gs Ys
 local notation "E" => matrixEquiv D Sc m cutoff bound ΛP ΛR hP hR Gs Ys
 attribute [local irreducible] elvProbeCrossCoeffOf
 
@@ -86,7 +86,7 @@ theorem pointwiseUpwardModuleAction_act_bubAt_cl (μ : X) (t : List I)
     simpa only [List.append_nil] using hM.whisk (upWord t) []
   rw [SKM.bubAt_cl, SKM.cl_of hw]
   change E _ (((functorOfObligations D Sc m cutoff bound ΛP ΛR hP hR Gs Ys gens
-    (pointwiseObligations D Sc m cutoff bound ΛP ΛR hP hR hF.dot hF.window Gs Ys)).map
+    (pointwiseObligations D Sc m cutoff bound ΛP ΛR hP hR hF.dot hF.window hF.pure Gs Ys)).map
       ((SKM.pres D Sc).diag (SKM.mkD D μ _ hw))).hom x) s τ p = _
   unfold functorOfObligations
   rw [Presentation.lift_diag]

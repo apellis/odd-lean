@@ -106,7 +106,7 @@ def actionAt (w : X × (ι.J → ℤ)) :
     UpwardModuleAction.{u, u + 1} ι.datum ι.scalars w :=
   SwappedAssembly.SupportedSectors.pointwiseUpwardModuleAction ι.datum ι.scalars ι.exponent
     ι.level ι.bound ι.probeHW ι.reservoirHW ι.probe_pairing ι.reservoir_pairing
-    (ι.actionInputs).dot (ι.actionInputs).window
+    (ι.actionInputs).dot (ι.actionInputs).window (ι.actionInputs).pure
     (SwappedAssembly.SupportedSectors.tensorSourceFamily ι.datum ι.scalars ι.exponent ι.level
       ι.probeHW ι.reservoirHW ι.power ι.t)
     (SwappedAssembly.SupportedSectors.tensorTargetFamily ι.datum ι.scalars ι.exponent ι.level

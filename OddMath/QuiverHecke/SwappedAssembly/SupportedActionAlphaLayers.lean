@@ -29,7 +29,7 @@ local notation "leftward" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR h
 local notation "gens" => ProbeReservoir.swappedGens (P) c leftward
 local notation "Q" => interpretation D Sc m cutoff bound ΛP ΛR hP hR Gs Ys gens
 local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff bound ΛP ΛR hP hR hF.dot
-        hF.window Gs Ys
+        hF.window hF.pure Gs Ys
 attribute [local irreducible] elvProbeCrossCoeffOf
 
 /-- A generating layer of `H`, pushed through `α` at weight `μ`, acts by the

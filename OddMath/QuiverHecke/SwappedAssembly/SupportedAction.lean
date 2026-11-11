@@ -39,6 +39,7 @@ coefficient ideal carrying the reservoir windows. -/
 structure ProbeActionInputs [Finite I] : Prop where
   dot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound
   window : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR
+  pure : Sc.PureNilpotent
 
 /-- Over a field-type base with homogeneous scalars, both inputs of the supported action
 hold. -/
@@ -46,7 +47,7 @@ theorem probeActionInputs [Finite I] (sy : Symmetrizer D) (hc : Sc.Homogeneous) 
     ProbeActionInputs D Sc m cutoff bound ΛP ΛR hP hR :=
   ⟨truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
       (parameterTwist_homogeneous D Sc hc) bound,
-    reservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR sy hc⟩
+    reservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR sy hc, hc.noPure.pureNilpotent⟩
 
 variable [Finite I] (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
   (hwin : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR)
@@ -121,20 +122,21 @@ theorem pointwiseObligations_of_sigmaPermutation
 
 include hwin in
 /-- The chosen supported Hom construction satisfies the exact native obligations. -/
-theorem pointwiseObligations
+theorem pointwiseObligations (hpure : Sc.PureNilpotent)
     (Gs Ys : ∀ s, H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s) :
     SwappedObligations Sc ((P).layerRep (fun s => (Gs s).obj) (fun s => (Ys s).obj)
       ((P).swappedGens c L)) :=
+  have : Fact Sc.PureNilpotent := ⟨hpure⟩
   pointwiseObligations_of_sigmaPermutation D Sc m cutoff bound ΛP ΛR hP hR hdot hwin Gs Ys
     (fun i j ν hij => elvProbeSigmaPermutation D Sc m cutoff bound ΛP ΛR hP hR hdot i j ν hij)
 
 include hwin in
 /-- The resulting supported upward module action used by the vacuum observations. -/
-def pointwiseUpwardModuleAction
+def pointwiseUpwardModuleAction (hpure : Sc.PureNilpotent)
     (Gs Ys : ∀ s, H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s) (μ : X) :
     UpwardModuleAction D Sc μ :=
   upwardModuleActionOfObligations D Sc m cutoff bound ΛP ΛR hP hR Gs Ys
     ((P).swappedGens c L)
-    (pointwiseObligations D Sc m cutoff bound ΛP ΛR hP hR hdot hwin Gs Ys) μ
+    (pointwiseObligations D Sc m cutoff bound ΛP ΛR hP hR hdot hwin hpure Gs Ys) μ
 
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

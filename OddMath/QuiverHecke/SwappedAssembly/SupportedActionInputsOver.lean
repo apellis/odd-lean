@@ -9,9 +9,11 @@ import OddMath.QuiverHecke.SwappedAssembly.Sigma.PaddedResidualInversionOver
 
 J. Brundan, A. P. Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2, §8, over a
 coefficient ring graded in degrees `0, …, b`, with the `tᵢⱼ` in degree `0` and each nonzero
-`sᵢⱼ^{pq}` in its coefficient degree. The two inputs of the supported action,
+`sᵢⱼ^{pq}` in its coefficient degree. The inputs of the supported action,
 `ProbeActionInputs` (nilpotence of the appended dot and the reservoir window ideal), hold as
-over a field with homogeneous parameters (`probeActionInputs`).
+over a field with homogeneous parameters (`probeActionInputs`). Nilpotence of the pure
+coefficients (`ScalarData.PureNilpotent`) is an explicit argument here; over a graded base it
+is `pureNilpotent_of_graded`.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
@@ -32,8 +34,9 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Finite I]
 
 include sy 𝒜 ht hs b h𝒜 in
 /-- The inputs of the supported action over a base graded in degrees `0, …, b`. -/
-theorem probeActionInputsOver : ProbeActionInputs D Sc m cutoff bound ΛP ΛR hP hR :=
+theorem probeActionInputsOver (hpure : Sc.PureNilpotent) :
+    ProbeActionInputs D Sc m cutoff bound ΛP ΛR hP hR :=
   ⟨parameterTwist_truncatedAppendDotNilpotentOver D sy 𝒜 Sc ht hs b h𝒜 cutoff bound,
-    reservoirWindowIdealOver D Sc m cutoff bound ΛP ΛR hP hR sy 𝒜 ht hs b h𝒜⟩
+    reservoirWindowIdealOver D Sc m cutoff bound ΛP ΛR hP hR sy 𝒜 ht hs b h𝒜, hpure⟩
 
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

@@ -190,7 +190,8 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (ΛP ΛR : X) (L : I × ℕ → ℕ)
   (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
   (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
-  (hF : ProbeActionInputs D Sc m cutoff (PowerWordContent.powerBound D cutoff L) ΛP ΛR hP hR) (sw : List I)
+  (hF : ProbeActionInputs D Sc m cutoff (PowerWordContent.powerBound D cutoff L) ΛP ΛR hP hR)
+  (sw : List I)
 local notation "N" => PowerWordContent.powerBound D cutoff L
 local notation "P" => elvProbeReservoir D Sc m cutoff N ΛP ΛR hP hR
 local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR hF.dot
@@ -198,7 +199,7 @@ local notation "leftward" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
 local notation "gens" => ProbeReservoir.swappedGens (P) c leftward
 local notation "Ys" => tensorTargetFamily D Sc m cutoff ΛP ΛR L
 local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff N ΛP ΛR hP hR hF.dot hF.window
-  (tensorSourceFamily D Sc m cutoff ΛP ΛR L sw) Ys
+  hF.pure (tensorSourceFamily D Sc m cutoff ΛP ΛR L sw) Ys
 attribute [local irreducible] elvProbeCrossCoeffOf
 
 /-- The entry of the closed diagram `M` at the vacuum sector of the tensor target family is the

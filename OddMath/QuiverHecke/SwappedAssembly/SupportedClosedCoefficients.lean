@@ -80,7 +80,7 @@ local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hF.
 local notation "leftward" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR hF.dot
 local notation "gens" => ProbeReservoir.swappedGens (P) c leftward
 local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff bound ΛP ΛR hP hR hF.dot
-        hF.window Gs Ys
+        hF.window hF.pure Gs Ys
 attribute [local irreducible] elvProbeCrossCoeffOf
 
 /-- **A closed diagram with supported sector entries.** If the entry of the closed diagram
@@ -116,7 +116,7 @@ local notation "leftward" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
 local notation "gens" => ProbeReservoir.swappedGens (P) c leftward
 local notation "Ys" => tensorTargetFamily D Sc m cutoff ΛP ΛR L
 local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff N ΛP ΛR hP hR hF.dot hF.window
-  (tensorSourceFamily D Sc m cutoff ΛP ΛR L sw) Ys
+  hF.pure (tensorSourceFamily D Sc m cutoff ΛP ΛR L sw) Ys
 attribute [local irreducible] elvProbeCrossCoeffOf
 
 /-- **A closed diagram acting as a source coefficient.** In the complete supported action on

@@ -34,7 +34,7 @@ attribute [local irreducible] elvProbeReservoir ProbeReservoir.sigmaEntry
 
 /-- Intermediate distinct-colour permutation assembly with the two pure
 factor-mate inputs explicit. The mixed entries require no extra hypothesis. -/
-theorem elvProbeSigmaPermutation_of_pureEntries
+theorem elvProbeSigmaPermutation_of_pureEntries [Fact Sc.PureNilpotent]
     (hpure : ∀ (i j : I), i ≠ j → ∀ (ν : X) (t s : Sector I)
       (p : SPath (wd D ν [up j, dn i]) t s) (q : SPath (wd D ν [dn i, up j]) t s)
       (side : Bool), p.sides = [side, side] → q.sides = [side, side] →
@@ -59,7 +59,7 @@ theorem elvProbeSigmaPermutation_of_pureEntries
 
 /-- Intermediate factor assembly. The reservoir and both mixed entries are
 constructed; only the canonical probe left-mate input remains explicit. -/
-theorem elvProbeSigmaPermutation_of_leftMateInvertible
+theorem elvProbeSigmaPermutation_of_leftMateInvertible [Fact Sc.PureNilpotent]
     (hL : LeftMateInvertible (P).T (P).T.leftAdjoints)
     (i j : I) (ν : X) (hij : i ≠ j) : (P).SigmaPermutation c i j ν := by
   apply elvProbeSigmaPermutation_of_pureEntries D Sc m cutoff bound ΛP ΛR hP hR hdot
@@ -71,7 +71,7 @@ theorem elvProbeSigmaPermutation_of_leftMateInvertible
 
 /-- The prescribed ELV probe and reservoir have invertible distinct-colour
 sideways crossings, with every factor input constructed from their relations. -/
-theorem elvProbeSigmaPermutation (i j : I) (ν : X) (hij : i ≠ j) :
+theorem elvProbeSigmaPermutation [Fact Sc.PureNilpotent] (i j : I) (ν : X) (hij : i ≠ j) :
     (P).SigmaPermutation c i j ν := by
   refine elvProbeSigmaPermutation_of_leftMateInvertible D Sc m cutoff bound
     ΛP ΛR hP hR hdot ?_ i j ν hij
