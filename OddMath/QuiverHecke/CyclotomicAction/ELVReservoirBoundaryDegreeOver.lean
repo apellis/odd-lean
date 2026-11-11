@@ -28,7 +28,7 @@ open OddMath.IntegerMatrix
 
 namespace OddMath.QuiverHecke.ELVOld
 
-open BalancedInduction CyclotomicCrossingTensor
+open CyclotomicAction BalancedInduction CyclotomicCrossingTensor
 
 universe u
 
@@ -111,11 +111,13 @@ theorem weightedContentUnitBoundaryCoefficient_degreeOver (β : Multiset I)
     weightedContentUnitBoundaryCoefficient D Sc cutoff N i β hh w r s ∈
       truncatedDegreeOver D sy 𝒜 Sc hP cutoff N w.obj w.obj
         (2 * sy.d i * ((s : ℤ) - r.val)) := by
-  rcases w with ⟨t, ht⟩
-  cases ht
+  refine weightedContentUnitBoundaryCoefficient_induction D Sc cutoff N i
+    (P := fun β w r s f => f ∈ truncatedDegreeOver D sy 𝒜 Sc hP cutoff N w.obj w.obj
+      (2 * sy.d i * ((s : ℤ) - r.val))) ?_ β hh w r s
+  intro l hh r s
   have h := positiveKernelBoundary_degreeOver D sy 𝒜 Sc hP cutoff i
-    (⟨t.word⟩ : OldCategory D Sc cutoff) ⟨t.word⟩ hh r s
-    (oldId_mem_degreeOver D sy 𝒜 Sc hP cutoff ⟨t.word⟩)
+    (⟨l⟩ : OldCategory D Sc cutoff) ⟨l⟩ hh r s
+    (oldId_mem_degreeOver D sy 𝒜 Sc hP cutoff ⟨l⟩)
   rw [zero_add] at h
   exact truncateOld_mem_degreeOver D sy 𝒜 Sc hP cutoff N h
 
@@ -126,11 +128,13 @@ theorem weightedContentCapBoundaryCoefficient_degreeOver (β : Multiset I)
     weightedContentCapBoundaryCoefficient D Sc cutoff N i β hh w r s ∈
       truncatedDegreeOver D sy 𝒜 Sc hP cutoff N w.obj w.obj
         (2 * sy.d i * ((r : ℤ) - s.val)) := by
-  rcases w with ⟨t, ht⟩
-  cases ht
+  refine weightedContentCapBoundaryCoefficient_induction D Sc cutoff N i
+    (P := fun β w r s f => f ∈ truncatedDegreeOver D sy 𝒜 Sc hP cutoff N w.obj w.obj
+      (2 * sy.d i * ((r : ℤ) - s.val))) ?_ β hh w r s
+  intro l hh r s
   have h := negativeKernelBoundary_degreeOver D sy 𝒜 Sc hP cutoff i
-    (⟨t.word⟩ : OldCategory D Sc cutoff) ⟨t.word⟩ hh r s
-    (oldId_mem_degreeOver D sy 𝒜 Sc hP cutoff ⟨t.word⟩)
+    (⟨l⟩ : OldCategory D Sc cutoff) ⟨l⟩ hh r s
+    (oldId_mem_degreeOver D sy 𝒜 Sc hP cutoff ⟨l⟩)
   rw [zero_add] at h
   exact truncateOld_mem_degreeOver D sy 𝒜 Sc hP cutoff N h
 
@@ -147,7 +151,9 @@ theorem positiveRepresentedValue_degreeOver (hh : 0 ≤ D.h i x₁)
       truncatedDegreeOver D sy 𝒜 Sc hP cutoff N w.obj w.obj
         (2 * sy.d i * ((r : ℤ) - j)) := by
   unfold positiveRepresentedValue
-  exact weightedContentCapBoundaryCoefficient_degreeOver D sy 𝒜 Sc hP cutoff N i γ.1 _ w r _
+  exact weightedContentCapBoundaryCoefficient_degreeOver D sy 𝒜 Sc hP cutoff N i γ.1
+    _ w r
+      ⟨j, by simpa only [contentCapCount_weightBlock D cutoff i Λ x₁ (hcutoff i) γ] using hj⟩
 
 /-- The represented negative boundary has the same difference degree, over a graded base. -/
 theorem negativeRepresentedValue_degreeOver (hh : D.h i x₁ ≤ 0)
@@ -156,7 +162,9 @@ theorem negativeRepresentedValue_degreeOver (hh : D.h i x₁ ≤ 0)
       truncatedDegreeOver D sy 𝒜 Sc hP cutoff N w.obj w.obj
         (2 * sy.d i * ((r : ℤ) - j)) := by
   unfold negativeRepresentedValue
-  exact weightedContentUnitBoundaryCoefficient_degreeOver D sy 𝒜 Sc hP cutoff N i γ.1 _ w _ r
+  exact weightedContentUnitBoundaryCoefficient_degreeOver D sy 𝒜 Sc hP cutoff N i γ.1
+    _ w
+      ⟨j, by simpa only [contentUnitCount_weightBlock D cutoff i Λ x₁ (hcutoff i) γ] using hj⟩ r
 
 attribute [local irreducible] positive negative positiveContent negativeContent
   positiveRepresentedValue negativeRepresentedValue
