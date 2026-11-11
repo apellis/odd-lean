@@ -69,7 +69,7 @@ abbrev probeELVMixedOuterDot (κ : ZMod 2) :=
   elvShiftedPostDot D Sc' cutoff bound i ΛR h F κ
 
 /-- The even difference denominator on the literal generator Hom object is a unit. -/
-theorem probeELVMixed_difference_isUnit [Finite I]
+theorem probeELVMixed_difference_isUnit [Fact Sc.PureNilpotent] [Finite I]
     (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
     (κ : ZMod 2) (hi : D.parity i = 0) :
     IsUnit (probeELVMixedOuterDot D Sc m cutoff bound ΛP ΛR i β h Z κ -
@@ -79,7 +79,7 @@ theorem probeELVMixed_difference_isUnit [Finite I]
     (probeELVMixedPreDot_isUnit (D := D) (Sc := Sc) (m := m) (cutoff := cutoff) (bound := bound) (ΛP := ΛP) (ΛR := ΛR) (i := i) (β := β) (Z := Z))
 
 /-- The odd square-difference denominator is also constructed on this same Hom object. -/
-theorem probeELVMixed_square_difference_isUnit [Finite I]
+theorem probeELVMixed_square_difference_isUnit [Fact Sc.PureNilpotent] [Finite I]
     (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
     (κ : ZMod 2) (hi : D.parity i = 1) :
     IsUnit (probeELVMixedInnerDot D Sc m cutoff bound ΛP ΛR i β h Z κ ^ 2 -
