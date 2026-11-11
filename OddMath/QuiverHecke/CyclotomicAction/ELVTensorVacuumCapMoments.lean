@@ -233,7 +233,8 @@ local notation "V" => Superfunctor.obj H N₀
 local notation "star" => (⟨⟨[]⟩, rfl⟩ : ContentCategory D Sc cutoff bound 0)
 local notation "AQ" => CoefficientPowerQuotient (k := k) D cutoff L
 
-variable (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound)
+variable (hdot :
+  TruncatedAppendDotNilpotent D Sc cutoff (SKM.SYM.elvPowerWeightBound D cutoff L + 1))
 
 variable (i : I)
 
