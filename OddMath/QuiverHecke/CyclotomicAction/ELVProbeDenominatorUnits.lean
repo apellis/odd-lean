@@ -64,7 +64,7 @@ end Mixed
 
 /-- Both mixed denominators are units on the specified complete factor pair, given
 nilpotence of the appended dot for the twisted parameters. -/
-theorem elvProbeCrossDenominatorUnitsOf [Finite I]
+theorem elvProbeCrossDenominatorUnitsOf [Fact Sc.PureNilpotent] [Finite I]
     (hdot : TruncatedAppendDotNilpotent D Sc' cutoff bound) : (P).CrossDenominatorUnits where
   even i hi t hv Z := by
     change IsUnit (probeELVMixedOuterDot (D := D) (Sc := Sc) (m := m) (cutoff := cutoff) (bound := bound)
@@ -82,19 +82,33 @@ theorem elvProbeCrossDenominatorUnitsOf [Finite I]
       (ΛP := ΛP) (ΛR := ΛR) (i := i) (β := t.1) (h := (P).muM_postE i hv) (Z := Z) hdot (SKM.homContentShift D i t.1) hi
 
 /-- The coefficient chosen from the constructed mixed denominator units, given nilpotence of
-the appended dot for the twisted parameters. -/
+the appended dot for the twisted parameters. The units need the pure coefficients in a
+nilpotent ideal; without that, the coefficient is set to zero and no property is claimed. -/
 def elvProbeCrossCoeffOf [Finite I] (hdot : TruncatedAppendDotNilpotent D Sc' cutoff bound) :
     (P).CrossCoeff Sc :=
-  (P).crossCoeffOfDenominatorUnits (elvProbeCrossDenominatorUnitsOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
+  if h : Sc.PureNilpotent then
+    have : Fact Sc.PureNilpotent := ⟨h⟩
+    (P).crossCoeffOfDenominatorUnits
+      (elvProbeCrossDenominatorUnitsOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
+  else ⟨fun _ _ _ _ => 0⟩
+
+theorem elvProbeCrossCoeffOf_eq [Fact Sc.PureNilpotent] [Finite I]
+    (hdot : TruncatedAppendDotNilpotent D Sc' cutoff bound) :
+    elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot =
+      (P).crossCoeffOfDenominatorUnits
+        (elvProbeCrossDenominatorUnitsOf D Sc m cutoff bound ΛP ΛR hP hR hdot) := by
+  unfold elvProbeCrossCoeffOf
+  simp only [Fact.out, ↓reduceDIte]
 
 /-- This coefficient has both prescribed even and odd inverse identities. -/
-theorem elvProbeCrossCoeffOf_isInverse [Finite I]
+theorem elvProbeCrossCoeffOf_isInverse [Fact Sc.PureNilpotent] [Finite I]
     (hdot : TruncatedAppendDotNilpotent D Sc' cutoff bound) :
-    (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot).IsInverse :=
-  (P).crossCoeffOfDenominatorUnits_isInverse _
+    (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot).IsInverse := by
+  rw [elvProbeCrossCoeffOf_eq]
+  exact (P).crossCoeffOfDenominatorUnits_isInverse _
 
 /-- This coefficient is supernatural at its prescribed parity. -/
-theorem elvProbeCrossCoeffOf_isSupernatural [Finite I]
+theorem elvProbeCrossCoeffOf_isSupernatural [Fact Sc.PureNilpotent] [Finite I]
     (hdot : TruncatedAppendDotNilpotent D Sc' cutoff bound) :
     (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot).IsSupernatural :=
   ProbeReservoir.CrossCoeff.isSupernatural_of_isInverse (P)

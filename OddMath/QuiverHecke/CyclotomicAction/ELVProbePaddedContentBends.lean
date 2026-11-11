@@ -31,7 +31,7 @@ attribute [local irreducible] elvProbeReservoir elvProbeCrossCoeffOf
 
 /-- The Dx series can meet any prescribed length without requiring an
 occupied reservoir source or probe target. -/
-theorem elvProbeDx_content_separated_windows_above [Finite I]
+theorem elvProbeDx_content_separated_windows_above [Fact Sc.PureNilpotent] [Finite I]
     (i : I) (t : Sector I)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
     (δ : WeightBlocks D ΛR ((P).muM t))
@@ -77,7 +77,7 @@ def ELVProbePaddedCxContentSeparatedAt [Finite I] (i : I) (t : Sector I)
 
 /-- One output-content length supplies the two exact padded bend equations
 above any minimum, retaining the full probe input functor and every corner. -/
-theorem elvProbe_content_padded_central_separated_windows_above [Finite I]
+theorem elvProbe_content_padded_central_separated_windows_above [Fact Sc.PureNilpotent] [Finite I]
     (i : I) (t : Sector I)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
     (δ : WeightBlocks D ΛR ((P).muM t))

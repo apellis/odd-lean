@@ -180,7 +180,7 @@ def ELVProbeCxContentSeparatedAt [Finite I] (i : I) (t : Sector I)
 attribute [local irreducible] elvProbeReservoir elvProbeCrossCoeffOf
 
 /-- A common output-content length above any minimum works on every input. -/
-theorem elvProbe_content_central_separated_windows_above [Finite I]
+theorem elvProbe_content_central_separated_windows_above [Fact Sc.PureNilpotent] [Finite I]
     (i : I) (t : Sector I) (hb : StepValid (false, i) true t)
     (hv : StepValid (true, i) false t)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)

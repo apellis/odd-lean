@@ -62,7 +62,7 @@ private theorem pointwiseQuad
   ProbeReservoir.quadRelations («P» := P) (Gs := fun s => (Gs s).obj)
     (Ys := fun s => (Ys s).obj) ((P).swappedGens_crossQuad c L)
 
-private theorem pointwiseSlide
+private theorem pointwiseSlide [Fact Sc.PureNilpotent]
     (Gs Ys : ∀ s, H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s) :
     SlideRelations Sc ((P).layerRep (fun s => (Gs s).obj) (fun s => (Ys s).obj)
       ((P).swappedGens c L)) :=
@@ -73,7 +73,7 @@ private theorem pointwiseSlide
       (elvProbeCrossDenominatorUnitsOf D Sc m cutoff bound ΛP ΛR hP hR
       hdot) L)
 
-private theorem pointwiseBraid
+private theorem pointwiseBraid [Fact Sc.PureNilpotent]
     (Gs Ys : ∀ s, H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s) :
     BraidRelations Sc ((P).layerRep (fun s => (Gs s).obj) (fun s => (Ys s).obj)
       ((P).swappedGens c L)) :=
@@ -101,7 +101,7 @@ private theorem pointwiseWindowZero
 include hwin in
 /-- Intermediate assembly with only the distinct-colour permutation input
 still explicit; no raw-global equal-colour inversion premise is required. -/
-theorem pointwiseObligations_of_sigmaPermutation
+theorem pointwiseObligations_of_sigmaPermutation [Fact Sc.PureNilpotent]
     (Gs Ys : ∀ s, H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s)
     (hσ : ∀ i j ν, i ≠ j → (P).SigmaPermutation c i j ν) :
     SwappedObligations Sc ((P).layerRep (fun s => (Gs s).obj) (fun s => (Ys s).obj)

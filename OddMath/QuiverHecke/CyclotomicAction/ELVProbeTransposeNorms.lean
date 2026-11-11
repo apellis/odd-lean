@@ -69,7 +69,7 @@ theorem ELVProbeCrossTransposeNormUnits [Finite I]
     exact hh
 
 /-- Every off-central swapping entry of the chosen mixed coefficient is invertible. -/
-theorem elvProbeSwappingInvertible [Finite I]
+theorem elvProbeSwappingInvertible [Fact Sc.PureNilpotent] [Finite I]
     (hdot : TruncatedAppendDotNilpotent D Sc' cutoff bound) :
     (P).SwappingInvertible (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
     hdot) :=

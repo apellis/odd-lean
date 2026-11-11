@@ -244,7 +244,7 @@ private theorem paddedVacuumDx_odd_at [Fact Sc.PureNilpotent]
 evaluated odd vacuum bend through its displayed source and target charts.
 Both finite-series bounds are constructed from nilpotence of the appended
 dot for the twisted parameters; no endpoint, moment or bend compatibility is assumed. -/
-theorem paddedVacuumDx_odd (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1) :
+theorem paddedVacuumDx_odd [Fact Sc.PureNilpotent] (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1) :
     ((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).centralPaddedSigma (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) i (((0, 0) : Sector I)) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) true false ≫
         (paddedVacuumTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).hom =
       (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).hom ≫
@@ -337,7 +337,7 @@ private theorem paddedVacuumDx_even_at [Fact Sc.PureNilpotent]
 evaluated even vacuum bend through its displayed source and target charts.
 Both finite-series bounds are constructed from nilpotence of the appended
 dot for the twisted parameters; no endpoint, moment or bend compatibility is assumed. -/
-theorem paddedVacuumDx_even (hP : 0 < probeCutoff D m i) (hi : D.parity i = 0) :
+theorem paddedVacuumDx_even [Fact Sc.PureNilpotent] (hP : 0 < probeCutoff D m i) (hi : D.parity i = 0) :
     ((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).centralPaddedSigma (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) i (((0, 0) : Sector I)) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) true false ≫
         (paddedVacuumTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).hom =
       (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).hom ≫

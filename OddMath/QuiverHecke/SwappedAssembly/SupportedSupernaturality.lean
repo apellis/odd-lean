@@ -126,7 +126,7 @@ theorem pointwiseLeftward_dcap_supernatural [Fact Sc.PureNilpotent] (i : I) (n :
 
 include hwin in
 /-- All chosen swapped generators are supernatural after the retained full inclusions. -/
-theorem pointwiseLeftward_generatorsSupernaturalOn
+theorem pointwiseLeftward_generatorsSupernaturalOn [Fact Sc.PureNilpotent]
     (hσ : ∀ i j : I, i ≠ j → ∀ ν : X, (P).SigmaPermutation c i j ν) :
     GeneratorsSupernaturalOn Q ((P).swappedGens c L) := by
   rintro ⟨g,ν⟩ t s p p'
@@ -181,7 +181,7 @@ theorem pointwiseLeftward_generatorsSupernaturalOn
 include hwin in
 /-- The original native layer representation satisfies interchange on the
 chosen supported inputs, with only the unequal-colour permutation input explicit. -/
-theorem pointwiseLeftward_interchangeLaw
+theorem pointwiseLeftward_interchangeLaw [Fact Sc.PureNilpotent]
     (Gs Ys : ∀ s, H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s)
     (hσ : ∀ i j : I, i ≠ j → ∀ ν : X, (P).SigmaPermutation c i j ν) :
     InterchangeLaw ((P).layerRep (fun s => (Gs s).obj) (fun s => (Ys s).obj)
