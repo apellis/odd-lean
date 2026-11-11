@@ -32,7 +32,7 @@ open CategoryTheory StringDiagrams Supercategory GradedSupercategory OddMath.Dia
 
 namespace OddMath.QuiverHecke.ELVOld
 
-open BalancedInduction CyclotomicCrossingTensor
+open CyclotomicAction BalancedInduction CyclotomicCrossingTensor
 
 universe u
 
