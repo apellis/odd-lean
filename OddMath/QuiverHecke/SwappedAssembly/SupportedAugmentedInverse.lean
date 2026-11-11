@@ -32,7 +32,7 @@ attribute [local irreducible] elvProbeCrossCoeffOf
 include hwin in
 /-- Both signs of the actual augmented matrix are invertible at every
 outer sector of a supported, weight-matched input. -/
-theorem augmentedMatrix_isIso (i : I) (ν : X)
+theorem augmentedMatrix_isIso [Fact Sc.PureNilpotent] (i : I) (ν : X)
     (t s : Sector I) (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s)
     (hw : (P).wt s = ν) :
     (0 ≤ D.h i ν → IsIso ((P).augPosMat c i ν t s Z.obj)) ∧
@@ -50,7 +50,7 @@ theorem augmentedMatrix_isIso (i : I) (ν : X)
 
 include hwin in
 /-- The five positive identities for the chosen data, on every supported input. -/
-theorem pointwiseLeftward_posInverseAt (i : I) (ν : X)
+theorem pointwiseLeftward_posInverseAt [Fact Sc.PureNilpotent] (i : I) (ν : X)
     (t s : Sector I) (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s)
     (hw : (P).wt s = ν) (hh : 0 ≤ D.h i ν) :
     (P).PosInverseAt c i ν t s Z.obj
@@ -61,7 +61,7 @@ theorem pointwiseLeftward_posInverseAt (i : I) (ν : X)
 
 include hwin in
 /-- The five negative identities for the same chosen data and every supported input. -/
-theorem pointwiseLeftward_negInverseAt (i : I) (ν : X)
+theorem pointwiseLeftward_negInverseAt [Fact Sc.PureNilpotent] (i : I) (ν : X)
     (t s : Sector I) (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s)
     (hw : (P).wt s = ν) (hh : D.h i ν < 0) :
     (P).NegInverseAt c i ν t s Z.obj
@@ -72,7 +72,7 @@ theorem pointwiseLeftward_negInverseAt (i : I) (ν : X)
 
 include hwin in
 /-- All ten local equal-colour inversion relations hold on the supported inputs. -/
-theorem pointwiseLeftward_isInverseAt (s : Sector I)
+theorem pointwiseLeftward_isInverseAt [Fact Sc.PureNilpotent] (s : Sector I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s) :
     (L).IsInverseAt c s Z.obj := by
   exact (P).leftwardOfPointwiseAugmentedInverse_isInverseAt c s Z.obj

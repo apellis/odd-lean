@@ -62,7 +62,7 @@ private theorem odd_probeCutoff_right (hi : D.parity i = 1) : probeCutoff D m i 
 include hdot in
 /-- The rightward vacuum bubble entries of `vacuumRightwardCupInverse_bubbleEntries`,
 restated on the tensor vacuum value: window length `N - 2M` and the tensor probe functor. -/
-theorem tensorVacuum_rightward_odd_bubbleEntries (hi : D.parity i = 1)
+theorem tensorVacuum_rightward_odd_bubbleEntries [Fact Sc.PureNilpotent] (hi : D.parity i = 1)
     (hP : 0 < probeCutoff D m i)
     (Z : (P).H ((0, 0) : Sector I))
     (hZ : Z = tensorSectorInput D Sc m cutoff L ΛR ΛP hcP hcR)

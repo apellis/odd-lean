@@ -41,7 +41,7 @@ local notation "L" =>
 include hwin in
 /-- Every supported central input satisfies the positive inverse equations
 for the selected leftward data at nonnegative height. -/
-theorem centralPointwiseLeftward_posInverseAt (i : I) (t : Sector I)
+theorem centralPointwiseLeftward_posInverseAt [Fact Sc.PureNilpotent] (i : I) (t : Sector I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
     (hh : 0 ≤ D.h i ((P).wt t)) :
     (P).PosInverseAt c i ((P).wt t) t t Z.obj
@@ -54,7 +54,7 @@ theorem centralPointwiseLeftward_posInverseAt (i : I) (t : Sector I)
 include hwin in
 /-- Every supported central input satisfies the negative inverse equations
 for the selected leftward data at negative height. -/
-theorem centralPointwiseLeftward_negInverseAt (i : I) (t : Sector I)
+theorem centralPointwiseLeftward_negInverseAt [Fact Sc.PureNilpotent] (i : I) (t : Sector I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
     (hh : D.h i ((P).wt t) < 0) :
     (P).NegInverseAt c i ((P).wt t) t t Z.obj

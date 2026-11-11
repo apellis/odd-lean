@@ -102,7 +102,7 @@ data satisfying the negative inverse equations at the vacuum sector give an
 entrywise inverse of the native cup window `[bend, unit ≫ xⁿ]_(n < -h)` of the
 evaluated A6 bend, `h = h_i(ν₀)`, whose columns are the explicit
 `vacuumRightwardColumn`. -/
-theorem vacuumRightwardCupInverse_odd (Z : (P).H ((0, 0) : Sector I))
+theorem vacuumRightwardCupInverse_odd [Fact Sc.PureNilpotent] (Z : (P).H ((0, 0) : Sector I))
     (hZ : Z = vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
         ((0, 0) : Sector I))
@@ -125,7 +125,6 @@ theorem vacuumRightwardCupInverse_odd (Z : (P).H ((0, 0) : Sector I))
             ((vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H).obj
               (probeOldVacuumRegular D (parameterTwist D Sc) m)) n) j
         (fun n => vacuumRightwardColumn D Sc m cutoff bound ΛP ΛR hcP hcR H i Z hZ dc n) := by
-  have : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   subst hZ
   have hu : ¬StepValid (SKM.up i) false ((0, 0) : Sector I) := by
     simp [StepValid]
@@ -218,7 +217,7 @@ satisfying the negative inverse equations at an input equal to the vacuum sector
 input, the native cup window of the evaluated A6 bend has an entrywise inverse
 whose products with the native unit rows `unit ≫ xᴺ` are the evaluated right bubble
 entries `η xᴺ ≫ dcap n`, conjugated by one isomorphism `c`, which is an `eqToHom`. -/
-theorem vacuumRightwardCupInverse_bubbleEntries (Z : (P).H ((0, 0) : Sector I))
+theorem vacuumRightwardCupInverse_bubbleEntries [Fact Sc.PureNilpotent] (Z : (P).H ((0, 0) : Sector I))
     (hZ : Z = vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
         ((0, 0) : Sector I))

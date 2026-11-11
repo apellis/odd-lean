@@ -339,6 +339,7 @@ private theorem zeroHeight_negInverseAt (i : I) (h0 : D.h i ν₀ = 0) :
     hF.dot) i ν₀
       ((0, 0) : Sector I) ((0, 0) : Sector I) Zt
       (fun q p => (LD).lcrossSame i ν₀ q p Zt) (fun _ _ _ => 0) :=
+  have : Fact Sc.PureNilpotent := ⟨hF.pure⟩
   ProbeReservoir.negInverseAt_of_posInverseAt_of_eq_zero (P) _ i ν₀ _ _ Zt _ h0
     (centralPointwiseLeftward_posInverseAt D Sc m cutoff N ΛP ΛR hP hR hF.dot hF.window i (0,0)
       (tensorVacuum D Sc m cutoff L ΛP ΛR) h0.ge)

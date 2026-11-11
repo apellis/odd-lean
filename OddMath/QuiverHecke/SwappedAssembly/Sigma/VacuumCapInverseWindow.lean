@@ -37,7 +37,7 @@ theorem vacuum_positive_window_length (i : I) :
 
 /-- The specified inverse of the positive mixed bend and its native
 probe cap rows, extracted from the actual positive factor matrix. -/
-def vacuumCapInverseData [Finite I]
+def vacuumCapInverseData [Finite I] [Fact Sc.PureNilpotent]
     (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
     (hwin : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR) (i : I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR (0,0))
@@ -73,7 +73,7 @@ def vacuumCapInverseData [Finite I]
 
 /-- The finite inverse columns are precisely the columns of the inverse of
 the actual positive factor matrix, with no scalar or sign inserted. -/
-theorem vacuumCapInverseData_window [Finite I]
+theorem vacuumCapInverseData_window [Finite I] [Fact Sc.PureNilpotent]
     (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
     (hwin : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR) (i : I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR (0,0))
@@ -87,7 +87,7 @@ theorem vacuumCapInverseData_window [Finite I]
 
 /-- The chosen principal entry is the `(probe source, reservoir target)` entry
 of the inverse of the actual positive factor matrix. -/
-theorem vacuumCapInverseData_principal [Finite I]
+theorem vacuumCapInverseData_principal [Finite I] [Fact Sc.PureNilpotent]
     (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
     (hwin : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR) (i : I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR (0,0))

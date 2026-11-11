@@ -41,7 +41,7 @@ theorem vacuum_negative_window_length (i : I) :
 
 /-- The specified inverse of the positive mixed bend and its native
 reservoir unit columns, extracted from the actual negative matrix. -/
-def vacuumCupInverseData [Finite I]
+def vacuumCupInverseData [Finite I] [Fact Sc.PureNilpotent]
     (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
     (hwin : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR) (i : I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR (0,0))
@@ -75,7 +75,7 @@ def vacuumCupInverseData [Finite I]
 
 /-- At zero fused height the same chosen principal is the inverse of
 positive `Dx`; this is the principal used in the normalized odd bubble. -/
-def vacuumPrincipalIso [Finite I]
+def vacuumPrincipalIso [Finite I] [Fact Sc.PureNilpotent]
     (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
     (hwin : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR) (i : I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR (0,0))

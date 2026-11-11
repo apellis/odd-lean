@@ -77,7 +77,7 @@ theorem pureNilpotent_of_graded {D : SKM.Datum I X} (sy : SKM.Symmetrizer D) {k 
     rw [Ideal.span_mul_span']
     apply Ideal.span_mono
     rintro z ⟨x, ⟨m, hm, hx⟩, y, ⟨m', hm', hy⟩, rfl⟩
-    exact ⟨m + m', by push_cast at hm hm' ⊢; omega, SetLike.mul_mem_graded hx hy⟩
+    exact ⟨m + m', by omega, SetLike.mul_mem_graded hx hy⟩
   have hpow : ∀ n, Ideal.span (S 1) ^ (n + 1) ≤ Ideal.span (S (n + 1)) := by
     intro n
     induction n with
@@ -89,7 +89,7 @@ theorem pureNilpotent_of_graded {D : SKM.Datum I X} (sy : SKM.Symmetrizer D) {k 
   · rw [Ideal.span_le]
     rintro x ⟨m, hm, hx⟩
     have hb := Int.self_le_toNat b
-    rw [h𝒜 m (fun h => by push_cast at hm; exact absurd h.2 (by omega))] at hx
+    rw [h𝒜 m (fun h => absurd h.2 (by omega))] at hx
     have hx0 : x = 0 := (Submodule.mem_bot K).mp hx
     simp [hx0]
   · intro i j p hij hp
@@ -103,7 +103,7 @@ theorem pureNilpotent_of_graded {D : SKM.Datum I X} (sy : SKM.Symmetrizer D) {k 
     · rw [h0]
       exact Ideal.zero_mem _
     · have hpos := SKM.coefficientDegree_pos_of_pure sy hpd hqd (Or.inr rfl)
-      exact Ideal.subset_span ⟨_, by push_cast; omega, hs i j p 0 hpd hqd h0⟩
+      exact Ideal.subset_span ⟨SKM.coefficientDegree sy i j p 0, by omega, hs i j p 0 hpd hqd h0⟩
 
 section Graded
 variable {D : SKM.Datum I X} (sy : SKM.Symmetrizer D) {k : Type u} [CommRing k]

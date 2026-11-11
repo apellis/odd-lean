@@ -86,6 +86,7 @@ theorem vacuumLeftOdd_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
       coefficientPowerQuotientMap D cutoff L (SKM.SYM.polynomialInclude D k
         (PowerSeries.coeff s
           (VacuumSeries.substitutedSeries k (SKM.SYM.probeSeries D k m) i))) * dec z := by
+  have : Fact Sc.PureNilpotent := ⟨hF.pure⟩
   have hh := vacuum_height_eq D Sc m cutoff N ΛP ΛR hP hR i
   have hlt : cutoff i < probeCutoff D m i := by omega
   have hZ : Z = (tensorVacuum D Sc m cutoff L ΛP ΛR).obj := by rw [tensorTargetFamily_zero]
@@ -143,6 +144,7 @@ theorem vacuumOddBubble_decode (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
         (SPath.nil (0,0)) (SPath.nil (0,0)) Z) ≫ c.hom).total star z) =
       coefficientPowerQuotientMap D cutoff L
         (SKM.SYM.probeSign D k cutoff ⟨i, hi⟩ • SKM.SYM.delta D k ⟨i, hi⟩) * dec z := by
+  have : Fact Sc.PureNilpotent := ⟨hF.pure⟩
   have hh := vacuum_height_eq D Sc m cutoff N ΛP ΛR hP hR i
   have hlt : cutoff i < probeCutoff D m i := by omega
   have hZ : Z = (tensorVacuum D Sc m cutoff L ΛP ΛR).obj := by rw [tensorTargetFamily_zero]
@@ -202,6 +204,7 @@ theorem vacuumLeftEven_decode (i : I) (hi : D.parity i = 0) (hN : 0 < cutoff i)
       coefficientPowerQuotientMap D cutoff L (SKM.SYM.polynomialInclude D k
         (PowerSeries.coeff s
           (VacuumSeries.substitutedSeries k (SKM.SYM.probeSeries D k m) i))) * dec z := by
+  have : Fact Sc.PureNilpotent := ⟨hF.pure⟩
   have hh := vacuum_height_eq D Sc m cutoff N ΛP ΛR hP hR i
   have hlt : cutoff i < probeCutoff D m i := by omega
   have hZ : Z = (tensorVacuum D Sc m cutoff L ΛP ΛR).obj := by rw [tensorTargetFamily_zero]

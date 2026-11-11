@@ -59,9 +59,11 @@ theorem isIso_homDistinctMixedMateDot_param_sourceUnits_of_pureNilpotent
   · obtain ⟨J, N, hJ, hpure⟩ := hP
     have h := isIso_homDistinctMixedMateDot_bwwParam_sourceUnits E A κ τ H Sc.toBWW hJ hpure hij
       hx hy hu
-    rwa [sum_box_toBWW Sc hij hd (fun p q =>
+    rw [sum_box_toBWW Sc hij hd (fun p q =>
       mixedPostTargetPreDot (k := k) E κ H (E' := E') (F' := F') x ^ p *
         mixedPostTargetPostDot (k := k) E κ H (F' := F') y ^ q)] at h
+    simp only [pow_zero, mul_one, one_mul] at h
+    exact h
 
 variable (P : ProbeReservoir k B D Sc)
 

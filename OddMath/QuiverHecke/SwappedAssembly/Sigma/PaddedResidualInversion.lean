@@ -93,7 +93,7 @@ theorem reservoirWindowIdeal (sy : Symmetrizer D) (hc : Sc.Homogeneous) :
 coefficient chosen from appended-dot nilpotence is invertible, in both
 signs and at every pair of local heights, once the reservoir windows lie
 in a coefficient ideal. -/
-theorem centralFactorMatrix_content_isIsoOf
+theorem centralFactorMatrix_content_isIsoOf [Fact Sc.PureNilpotent]
     (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
     (hwin : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR) (i : I) (t : Sector I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
@@ -104,7 +104,6 @@ theorem centralFactorMatrix_content_isIsoOf
     (D.h i ((P).wt t) ≤ 0 → IsIso ((P).augNegFactorMatrix
       (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot) i ((P).wt t) t Z.obj
         (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β))) := by
-  have : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   let E := reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β
   let c := elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot
   obtain ⟨J, hJ0, hclCap, hclCup, hbdCap, hbdCup⟩ := hwin.out i t Z β c
@@ -216,6 +215,7 @@ theorem centralFactorMatrix_content_isIso
     (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
       (parameterTwist_homogeneous D Sc hc) bound)) i ((P).wt t) t Z.obj
         (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β))) :=
+  have : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   centralFactorMatrix_content_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR
     (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
       (parameterTwist_homogeneous D Sc hc) bound)
@@ -224,7 +224,7 @@ theorem centralFactorMatrix_content_isIso
 /-- Component inverses assemble on the literal augmented matrices. Each
 content may use its own coefficient-ideal bound and its own finite bend
 length; the entire input superfunctor is retained. -/
-theorem centralAugmentedMatrix_isIsoOf
+theorem centralAugmentedMatrix_isIsoOf [Fact Sc.PureNilpotent]
     (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
     (hwin : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR) (i : I) (t : Sector I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t) :
@@ -268,6 +268,7 @@ theorem centralAugmentedMatrix_isIso
       (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
     (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
       (parameterTwist_homogeneous D Sc hc) bound)) i ((P).wt t) t t Z.obj)) :=
+  have : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   centralAugmentedMatrix_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR
     (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
       (parameterTwist_homogeneous D Sc hc) bound)

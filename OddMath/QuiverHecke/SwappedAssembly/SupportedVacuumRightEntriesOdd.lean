@@ -104,6 +104,7 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
           tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) :
     VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF ν₀
       (etaL i e ++ dcapL i n) ((sChain_etaL i _).append (sChain_dcapL i _)) a := by
+  have : Fact Sc.PureNilpotent := ⟨hF.pure⟩
   have hhe := vacuum_height_eq D Sc m cutoff N ΛP ΛR hP hR i
   rw [odd_probeCutoff_eq D m i hi] at hhe hP0
   have hnZ : (n : ℤ) < -D.h i ν₀ := by rw [hhe, hn]; omega

@@ -83,7 +83,7 @@ satisfying the positive inverse equations at an input equal to the vacuum sector
 input, the native cap window of the evaluated A6 bend has an entrywise inverse
 whose column products with the native cap rows `x ^ N ≫ v` are the evaluated left
 bubble entries `dcup n ≫ ε xᴺ`, conjugated by one isomorphism `c`. -/
-theorem vacuumLeftwardCapInverse_bubbleEntries (Z : (P).H ((0, 0) : Sector I))
+theorem vacuumLeftwardCapInverse_bubbleEntries [Fact Sc.PureNilpotent] (Z : (P).H ((0, 0) : Sector I))
     (hZ : Z = vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
         ((0, 0) : Sector I))
@@ -114,7 +114,6 @@ theorem vacuumLeftwardCapInverse_bubbleEntries (Z : (P).H ((0, 0) : Sector I))
             (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) =
         c.inv ≫ (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).map
           (dc n (.nil _) p₀ ≫ (P).epsEntry cc i N ν₀ p₀ (.nil _) Z) ≫ c.hom := by
-  have : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   subst hZ
   obtain ⟨j, hj⟩ := vacuumLeftwardCapInverse_odd D Sc m cutoff bound ΛP ΛR hcP hcR H
     hdot i _ rfl lc dc HP hP hi
@@ -163,7 +162,7 @@ one isomorphism `c`, and the last column has the substituted-series moments: the
 shift `h - 1 + 2s` decodes to multiplication by the `s`-th coefficient of the
 substituted probe series and the shift `h + 2s` to that coefficient times the
 reservoir odd coefficient. -/
-theorem tensorVacuum_leftward_odd_moments (hi : D.parity i = 1)
+theorem tensorVacuum_leftward_odd_moments [Fact Sc.PureNilpotent] (hi : D.parity i = 1)
     (hN : 0 < cutoff i) (hlt : cutoff i < probeCutoff D m i)
     (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
         ((0, 0) : Sector I))

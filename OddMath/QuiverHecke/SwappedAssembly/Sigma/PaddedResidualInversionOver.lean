@@ -63,7 +63,7 @@ theorem reservoirWindowIdealOver :
 
 /-- Over a graded base, every output-content component of the padded
 central matrix is invertible, in both signs. -/
-theorem centralFactorMatrix_content_isIsoOver (i : I) (t : Sector I)
+theorem centralFactorMatrix_content_isIsoOver [Fact Sc.PureNilpotent] (i : I) (t : Sector I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
     (β : WeightBlocks D ΛR ((P).muM t)) :
     (0 ≤ D.h i ((P).wt t) → IsIso ((P).augPosFactorMatrix
@@ -76,7 +76,7 @@ theorem centralFactorMatrix_content_isIsoOver (i : I) (t : Sector I)
     (reservoirWindowIdealOver D Sc m cutoff bound ΛP ΛR hP hR sy 𝒜 ht hs b h𝒜) i t Z β
 
 /-- Over a graded base, the literal augmented central matrices are invertible. -/
-theorem centralAugmentedMatrix_isIsoOver (i : I) (t : Sector I)
+theorem centralAugmentedMatrix_isIsoOver [Fact Sc.PureNilpotent] (i : I) (t : Sector I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t) :
     (0 ≤ D.h i ((P).wt t) → IsIso ((P).augPosMat
       (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdotG) i ((P).wt t) t t Z.obj)) ∧

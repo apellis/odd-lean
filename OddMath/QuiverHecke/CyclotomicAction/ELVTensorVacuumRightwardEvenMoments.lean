@@ -63,7 +63,7 @@ include hdot in
 data satisfying the negative inverse equations at the vacuum sector give an
 entrywise inverse of the native cup window `[bend, unit ≫ xⁿ]_(n < -h)` of the
 evaluated even A6 bend, `h = h_i(ν₀)`, whose columns are `vacuumRightwardColumn`. -/
-theorem vacuumRightwardCupInverse_even (Z : (P).H ((0, 0) : Sector I))
+theorem vacuumRightwardCupInverse_even [Fact Sc.PureNilpotent] (Z : (P).H ((0, 0) : Sector I))
     (hZ : Z = vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
         ((0, 0) : Sector I))
@@ -86,7 +86,6 @@ theorem vacuumRightwardCupInverse_even (Z : (P).H ((0, 0) : Sector I))
             ((vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H).obj
               (probeOldVacuumRegular D (parameterTwist D Sc) m)) n) j
         (fun n => vacuumRightwardColumn D Sc m cutoff bound ΛP ΛR hcP hcR H i Z hZ dc n) := by
-  have : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   subst hZ
   have hu : ¬StepValid (SKM.up i) false ((0, 0) : Sector I) := by
     simp [StepValid]
@@ -131,7 +130,7 @@ leftward data satisfying the negative inverse equations at an input equal to the
 vacuum sector input, the native cup window of the evaluated even A6 bend has an
 entrywise inverse whose products with the native unit rows `unit ≫ xᴺ` are the
 evaluated right bubble entries `η xᴺ ≫ dcap n`, conjugated by one isomorphism `c`. -/
-theorem vacuumRightwardCupInverse_bubbleEntries_even (Z : (P).H ((0, 0) : Sector I))
+theorem vacuumRightwardCupInverse_bubbleEntries_even [Fact Sc.PureNilpotent] (Z : (P).H ((0, 0) : Sector I))
     (hZ : Z = vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
         ((0, 0) : Sector I))
@@ -211,7 +210,7 @@ private theorem even_probeCutoff_right (hi : D.parity i = 0) : probeCutoff D m i
 include hdot in
 /-- The even rightward vacuum bubble entries of `vacuumRightwardCupInverse_bubbleEntries_even`,
 restated on the tensor vacuum value: window length `N - M` and the tensor probe functor. -/
-theorem tensorVacuum_rightward_even_bubbleEntries (hi : D.parity i = 0)
+theorem tensorVacuum_rightward_even_bubbleEntries [Fact Sc.PureNilpotent] (hi : D.parity i = 0)
     (hP : 0 < probeCutoff D m i)
     (Z : (P).H ((0, 0) : Sector I))
     (hZ : Z = tensorSectorInput D Sc m cutoff L ΛR ΛP hcP hcR)
@@ -283,7 +282,7 @@ vacuum bend such that every product `unit ≫ xᴺ ≫ B n` is the evaluated rig
 entry `η xᴺ ≫ dcap n` conjugated by one isomorphism `c` (an `eqToHom`), and the last
 column has the decoded moments: the shift `N - M - 1 + l` gives the `l`-th coefficient of
 `momentSeries (probeSeriesInv)` at `i`. -/
-theorem tensorVacuum_rightward_even_moments (hi : D.parity i = 0)
+theorem tensorVacuum_rightward_even_moments [Fact Sc.PureNilpotent] (hi : D.parity i = 0)
     (hP : 0 < probeCutoff D m i) (hPN : m i < cutoff i)
     (Z : (P).H ((0, 0) : Sector I))
     (hZ : Z = tensorSectorInput D Sc m cutoff L ΛR ΛP hcP hcR)

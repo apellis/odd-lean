@@ -87,6 +87,7 @@ private theorem vacuumNegEven_negInverseAt (i : I) (hh : D.h i ν₀ < 0) :
     (P).NegInverseAt cc i ν₀ ((0, 0) : Sector I) ((0, 0) : Sector I) Zt
       (fun q p => (lw).lcrossSame i ν₀ q p Zt)
       (fun n q r => (lw).dcap i n ν₀ q r Zt) :=
+  have : Fact Sc.PureNilpotent := ⟨hF.pure⟩
   centralPointwiseLeftward_negInverseAt D Sc m cutoff N ΛP ΛR hP hR hF.dot hF.window i (0,0)
     (tensorVacuum D Sc m cutoff L ΛP ΛR) hh
 
@@ -142,6 +143,7 @@ private theorem vacuumNegEven_bubble (i : I) (hi : D.parity i = 0)
             Zt ≫
           (lw).dcap i n ν₀ (SPath.centralDnUp i (SKM.wt D ν₀ [SKM.up i]) ν₀ ((0, 0) : Sector I) ⟨false, trivial⟩)
             (.nil _) Zt) ≫ c.hom) :=
+  have : Fact Sc.PureNilpotent := ⟨hF.pure⟩
   tensorVacuum_rightward_even_bubbleEntries D Sc m
     cutoff L ΛP ΛR hP hR i
       hF.dot hi hP0 Zt

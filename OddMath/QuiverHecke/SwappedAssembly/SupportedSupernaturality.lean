@@ -49,7 +49,7 @@ local notation "L" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR hd
 
 include hwin in
 /-- The chosen equal-colour crossing is supernatural on every retained input. -/
-theorem pointwiseLeftward_lcrossSame_supernatural (i : I) (ν : X) {t s : Sector I}
+theorem pointwiseLeftward_lcrossSame_supernatural [Fact Sc.PureNilpotent] (i : I) (ν : X) {t s : Sector I}
     (q : SPath (wd D ν [dn i,up i]) t s) (p : SPath (wd D ν [up i,dn i]) t s) :
     IsSupernatural k (D.parity i * D.parity i)
       (F := retainedInclusion D Sc m cutoff bound ΛP ΛR hP hR s ⋙ (P).pathFunctor q)
@@ -76,7 +76,7 @@ theorem pointwiseLeftward_lcrossSame_supernatural (i : I) (ν : X) {t s : Sector
 
 include hwin in
 /-- The chosen diamond cups have the required homogeneous naturality on retained inputs. -/
-theorem pointwiseLeftward_dcup_supernatural (i : I) (n : ℕ) (ν : X)
+theorem pointwiseLeftward_dcup_supernatural [Fact Sc.PureNilpotent] (i : I) (n : ℕ) (ν : X)
     (hn : (n : ℤ) < D.h i ν) {t s : Sector I}
     (r : SPath (wd D ν []) t s) (p : SPath (wd D ν [up i,dn i]) t s) :
     IsSupernatural k (D.parity i * (n : ZMod 2))
@@ -101,7 +101,7 @@ theorem pointwiseLeftward_dcup_supernatural (i : I) (n : ℕ) (ν : X)
 
 include hwin in
 /-- The chosen diamond caps have the required homogeneous naturality on retained inputs. -/
-theorem pointwiseLeftward_dcap_supernatural (i : I) (n : ℕ) (ν : X)
+theorem pointwiseLeftward_dcap_supernatural [Fact Sc.PureNilpotent] (i : I) (n : ℕ) (ν : X)
     (hn : (n : ℤ) < -D.h i ν) {t s : Sector I}
     (q : SPath (wd D ν [dn i,up i]) t s) (r : SPath (wd D ν []) t s) :
     IsSupernatural k (D.parity i * (n : ZMod 2))
