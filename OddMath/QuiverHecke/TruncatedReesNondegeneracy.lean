@@ -68,13 +68,13 @@ positive degree has vanishing `(b + 1)`-st power. -/
 theorem pureNilpotent_of_graded {D : SKM.Datum I X} (sy : SKM.Symmetrizer D) {k : Type u}
     [CommRing k] {Sc : SKM.Scalars D k} {K : Type u} [CommRing K] [Algebra K k]
     (𝒜 : ℤ → Submodule K k) [GradedAlgebra 𝒜]
-    (hs : ∀ i j (p q : ℕ), (p : ℤ) < D.d i j → (q : ℤ) < D.d j i →
+    (hs : ∀ i j (p q : ℕ), i ≠ j → (p : ℤ) < D.d i j → (q : ℤ) < D.d j i →
       Sc.s i j p q ≠ 0 → Sc.s i j p q ∈ 𝒜 (SKM.coefficientDegree sy i j p q))
     (b : ℤ) (h𝒜 : ∀ m, m ∉ Set.Icc (0 : ℤ) b → 𝒜 m = ⊥) : Sc.PureNilpotent := by
   let S : ℕ → Set k := fun n => {x | ∃ m : ℤ, (n : ℤ) ≤ m ∧ x ∈ 𝒜 m}
   have hmul : ∀ n, Ideal.span (S n) * Ideal.span (S 1) ≤ Ideal.span (S (n + 1)) := by
     intro n
-    rw [Ideal.span_mul_span']
+    rw [Ideal.span_mul_span]
     apply Ideal.span_mono
     rintro z ⟨x, ⟨m, hm, hx⟩, y, ⟨m', hm', hy⟩, rfl⟩
     exact ⟨m + m', by omega, SetLike.mul_mem_graded hx hy⟩
@@ -103,14 +103,15 @@ theorem pureNilpotent_of_graded {D : SKM.Datum I X} (sy : SKM.Symmetrizer D) {k 
     · rw [h0]
       exact Ideal.zero_mem _
     · have hpos := SKM.coefficientDegree_pos_of_pure sy hpd hqd (Or.inr rfl)
-      exact Ideal.subset_span ⟨SKM.coefficientDegree sy i j p 0, by omega, hs i j p 0 hpd hqd h0⟩
+      exact Ideal.subset_span
+        ⟨SKM.coefficientDegree sy i j p 0, by omega, hs i j p 0 hij hpd hqd h0⟩
 
 section Graded
 variable {D : SKM.Datum I X} (sy : SKM.Symmetrizer D) {k : Type u} [CommRing k]
   {Sc : SKM.Scalars D k} {K : Type u} [CommRing K] [Algebra K k]
   (𝒜 : ℤ → Submodule K k) [GradedAlgebra 𝒜]
   (ht : ∀ i j, ((Sc.t i j : kˣ) : k) ∈ 𝒜 0)
-  (hs : ∀ i j (p q : ℕ), (p : ℤ) < D.d i j → (q : ℤ) < D.d j i →
+  (hs : ∀ i j (p q : ℕ), i ≠ j → (p : ℤ) < D.d i j → (q : ℤ) < D.d j i →
     Sc.s i j p q ≠ 0 → Sc.s i j p q ∈ 𝒜 (SKM.coefficientDegree sy i j p q))
   (b : ℤ) (h𝒜 : ∀ m, m ∉ Set.Icc (0 : ℤ) b → 𝒜 m = ⊥)
 
@@ -121,16 +122,25 @@ theorem sectorActionInputs_of_graded (J : Finset I) : SectorActionInputs D Sc J 
     SwappedAssembly.SupportedSectors.probeActionInputsOver _ _ m cutoff bound ΛP ΛR hP hR
       (ReservoirWeights.pairingExtensionSymmetrizer (D.restrictColours J) (sy.restrictColours J))
       𝒜 (fun i j => ht i.val j.val)
-      (fun i j p q _ hp' hq' h0 => hs i.val j.val p q hp' hq' h0) b h𝒜
+      (fun i j p q hij hp' hq' h0 => by
+        rw [ReservoirWeights.pairingExtension_d] at hp' hq'
+        have h := hs i.val j.val p q (fun h => hij (Subtype.ext h)) hp' hq' h0
+        unfold SKM.coefficientDegree
+        rw [ReservoirWeights.pairingExtension_d]
+        exact h) b h𝒜
       (pureNilpotent_of_graded
         (ReservoirWeights.pairingExtensionSymmetrizer (D.restrictColours J) (sy.restrictColours J))
-        𝒜
-        (fun i j p q hp' hq' h0 => hs i.val j.val p q hp' hq' h0) b h𝒜)
+        𝒜 (fun i j p q hij hp' hq' h0 => by
+          rw [ReservoirWeights.pairingExtension_d] at hp' hq'
+          have h := hs i.val j.val p q (fun h => hij (Subtype.ext h)) hp' hq' h0
+          unfold SKM.coefficientDegree
+          rw [ReservoirWeights.pairingExtension_d]
+          exact h) b h𝒜)
 
 include sy 𝒜 ht hs b h𝒜 in
 /-- **The conjecture over a graded base** (Brundan–Ellis, arXiv:1701.04133v2, §8): for a
 symmetrizable datum and a commutative coefficient ring graded in degrees `0, …, b` by
-`K`-submodules, with the `tᵢⱼ` in degree `0` and each nonzero `sᵢⱼ^{pq}` with `p < dᵢⱼ`,
+`K`-submodules, with the `tᵢⱼ` in degree `0` and each nonzero `sᵢⱼ^{pq}` with `i ≠ j`, `p < dᵢⱼ`,
 `q < dⱼᵢ` in its coefficient degree, the Nondegeneracy Conjecture holds for every
 normalization. -/
 theorem nondegeneracy_of_graded_base (cs : SKM.CScalars Sc) : SKM.NondegeneracyConjecture cs :=
@@ -143,7 +153,7 @@ end Graded
 because the coefficient degree is positive there (`SKM.coefficientDegree_pos_of_pure`). -/
 theorem truncatedRees_s_mem_box {D : SKM.Datum I X} (sy : SKM.Symmetrizer D) {K : Type*}
     [CommRing K] {Sc : SKM.Scalars D K} (hl : Sc.LowerDegree sy) (N : ℕ) (i j : I)
-    (p q : ℕ) (hp' : (p : ℤ) < D.d i j) (hq' : (q : ℤ) < D.d j i)
+    (p q : ℕ) (hij : i ≠ j) (hp' : (p : ℤ) < D.d i j) (hq' : (q : ℤ) < D.d j i)
     (hs : (truncatedReesScalars D sy Sc N).s i j p q ≠ 0) :
     (truncatedReesScalars D sy Sc N).s i j p q ∈
       truncGrading K N (SKM.coefficientDegree sy i j p q) := by
@@ -155,7 +165,7 @@ theorem truncatedRees_s_mem_box {D : SKM.Datum I X} (sy : SKM.Symmetrizer D) {K 
     rw [truncatedReesScalars_s]
     exact SKM.GradedImage.map_mem_image (f := truncAlg K N) hm
   · push Not at hpq
-    exact truncatedRees_s_mem D sy hl N i j p q (by omega) hp' (by omega) hq' hs
+    exact truncatedRees_s_mem D sy hl N i j p q hij hp' hq' hs
 
 /-- **The truncated case** (Brundan–Ellis, arXiv:1701.04133v2, §8, for the lower-degree
 parameters of (1.6)): over every field of characteristic zero, for every lower-degree
@@ -165,11 +175,19 @@ theorem truncatedReesNondegeneracy (D : SKM.Datum I X) (sy : SKM.Symmetrizer D) 
     SKM.TruncatedRees.TruncatedReesNondegeneracy D sy := by
   intro K _ _ Sc hl cs N
   letI := truncGradedAlgebra K N
-  refine nondegeneracy_of_graded_base sy (truncGrading K N) (truncatedRees_t_mem D sy Sc N)
-    (truncatedRees_s_mem_box sy hl N) N (fun m hm => ?_) _
-  by_cases h : m < 0
-  · exact truncGrading_eq_bot_of_neg K N h
-  · exact truncGrading_eq_bot_of_le K N (not_lt.mp fun h' => hm ⟨not_lt.mp h, h'.le⟩)
+  have h2 : IsUnit (2 : SKM.TruncatedRees.TruncRing K N) := by
+    simpa [map_ofNat] using (isUnit_iff_ne_zero.2 (two_ne_zero : (2 : K) ≠ 0)).map
+      ((SKM.TruncatedRees.trunc K N).comp MvPolynomial.C)
+  have h𝒜 : ∀ m, m ∉ Set.Icc (0 : ℤ) N → truncGrading K N m = ⊥ := fun m hm => by
+    by_cases h : m < 0
+    · exact truncGrading_eq_bot_of_neg K N h
+    · exact truncGrading_eq_bot_of_le K N (not_lt.mp fun h' => hm ⟨not_lt.mp h, h'.le⟩)
+  let hcs : SKM.CScalars (truncatedReesScalars D sy Sc N) :=
+    (SKM.ScalarChange.cScalars D (SKM.TruncatedRees.trunc K N)
+      (SKM.ReesParameters.cScalars sy cs)).withProp fun _ => h2
+  exact SKM.nondegeneracyConjecture_congr (eq_true h2) rfl rfl hcs _ (fun _ _ => rfl)
+    (nondegeneracy_of_graded_base sy (truncGrading K N) (truncatedRees_t_mem D sy Sc N)
+      (truncatedRees_s_mem_box sy hl N) N h𝒜 hcs)
 
 /-- **The graded-coefficient statement** (Brundan–Ellis, arXiv:1701.04133v2, §8, for
 graded-homogeneous parameters over `ℕ`-graded rings with `2` invertible), from the truncated
