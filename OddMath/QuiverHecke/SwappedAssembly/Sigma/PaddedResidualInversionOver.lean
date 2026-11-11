@@ -1,3 +1,7 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+-/
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PaddedResidualInversion
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowCoefficientIdealOver
 import OddMath.QuiverHecke.CyclotomicAction.ELVParameterTwistNilpotenceOver
@@ -33,6 +37,7 @@ local notation "hdotG" => parameterTwist_truncatedAppendDotNilpotentOver D sy �
 local instance paddedResidualOverHomPi (A B : PiSCat.{u,u,u+1} k) :
     PiSupercategory k (A ⟶ B) := PiTwoSupercategory.homPiLeft A B
 
+include sy 𝒜 ht hs b h𝒜 in
 /-- Over a graded base, the graded content coefficient ideal carries every
 reservoir window. -/
 theorem reservoirWindowIdealOver :

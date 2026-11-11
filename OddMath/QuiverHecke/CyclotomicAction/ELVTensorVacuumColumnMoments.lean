@@ -105,7 +105,8 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (m : I → ℕ) (cutoff : I → ℕ) (L : I × ℕ → ℕ)
 local notation "bound" => SKM.SYM.elvPowerWeightBound D cutoff L + 1
 
-variable (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound)
+variable (hdot :
+  TruncatedAppendDotNilpotent D Sc cutoff (SKM.SYM.elvPowerWeightBound D cutoff L + 1))
 
 local notation "W₀" => Functor.obj (restriction (contentInclusion D Sc cutoff bound (0 : Multiset I)))
   (weightedVacuum D Sc cutoff L)
@@ -225,7 +226,8 @@ private theorem odd_slide_neg (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i)
     evaluatedMixedBend D Sc m cutoff bound i hP H ≫ evaluatedPostDot D Sc m cutoff bound i H -
       (-1 : k) • (shiftedPreDot D Sc m R₀ i H ≫ evaluatedMixedBend D Sc m cutoff bound i hP H) =
       shiftedPreCap D Sc m R₀ i hP H ≫ (adjunction K).unit.app V := by
-  exact evaluatedMixedBend_odd_slide_neg D Sc m cutoff bound hdot i hi hP H
+  have hs := evaluatedMixedBend_odd_slideOf D Sc m cutoff bound hdot i hi hP H
+  simpa only [hi, koszulSign_one_one, neg_one_zsmul, neg_one_smul] using hs
 
 private theorem odd_probe_polynomial (hi : D.parity i = 1) (h : ℕ) (hhN : h + cutoff i = 2 * m i) :
     SwappedVacuum.capPolynomial

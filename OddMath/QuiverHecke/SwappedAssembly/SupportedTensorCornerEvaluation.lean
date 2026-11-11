@@ -164,7 +164,8 @@ theorem tensorCornerEv_of_ne (t : List I)
   · exact absurd ‹_› h
   · rfl
 
-variable (hF : ProbeActionInputs D Sc m cutoff N ΛP ΛR hP hR)
+variable (hF :
+  ProbeActionInputs D Sc m cutoff (PowerWordContent.powerBound D cutoff L) ΛP ΛR hP hR)
 local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR hF.dot
 local notation "leftward" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR hF.dot
 local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff N ΛP ΛR hP hR hF.dot hF.window
