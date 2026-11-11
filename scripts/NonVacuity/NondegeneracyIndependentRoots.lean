@@ -127,8 +127,7 @@ private theorem evenScalars_homogeneous : evenScalars.Homogeneous := by
     by_contra h
     exact hs (by simp [evenScalars, h])
   obtain ⟨rfl, rfl⟩ := hpq
-  rw [evenDatum_d, if_neg hij, evenDatum_d, if_neg (Ne.symm hij)]
-  norm_num
+  norm_num [evenDatum_d, hij, Ne.symm hij]
 
 /-- The scalar `s₀₁^{11}` is nonzero, so these are not Khovanov–Lauda scalars. -/
 example : evenScalars.s false true 1 1 ≠ 0 := by simp [evenScalars]
