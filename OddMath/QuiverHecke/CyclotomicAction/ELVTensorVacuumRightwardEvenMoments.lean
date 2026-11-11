@@ -86,7 +86,7 @@ theorem vacuumRightwardCupInverse_even (Z : (P).H ((0, 0) : Sector I))
             ((vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H).obj
               (probeOldVacuumRegular D (parameterTwist D Sc) m)) n) j
         (fun n => vacuumRightwardColumn D Sc m cutoff bound ΛP ΛR hcP hcR H i Z hZ dc n) := by
-  haveI : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
+  have : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   subst hZ
   have hu : ¬StepValid (SKM.up i) false ((0, 0) : Sector I) := by
     simp [StepValid]

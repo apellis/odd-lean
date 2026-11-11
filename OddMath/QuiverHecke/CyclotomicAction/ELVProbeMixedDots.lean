@@ -73,7 +73,7 @@ theorem probeELVMixed_difference_isUnit [Finite I]
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (κ : ZMod 2) (hi : D.parity i = 0) :
     IsUnit (probeELVMixedOuterDot D Sc m cutoff bound ΛP ΛR i β h Z κ -
       probeELVMixedInnerDot D Sc m cutoff bound ΛP ΛR i β h Z κ) :=
-  haveI : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
+  have : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   elvShiftedPostProbe_difference_isUnit D Sc' cutoff bound i ΛR h F sy
     (parameterTwist_homogeneous D Sc hc) κ hi α
     (hi ▸ probeELVMixedPreDot_mem (D := D) (Sc := Sc) (m := m) (cutoff := cutoff) (bound := bound) (ΛP := ΛP) (ΛR := ΛR) (i := i) (β := β) (Z := Z))
@@ -84,7 +84,7 @@ theorem probeELVMixed_square_difference_isUnit [Finite I]
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (κ : ZMod 2) (hi : D.parity i = 1) :
     IsUnit (probeELVMixedInnerDot D Sc m cutoff bound ΛP ΛR i β h Z κ ^ 2 -
       probeELVMixedOuterDot D Sc m cutoff bound ΛP ΛR i β h Z κ ^ 2) :=
-  haveI : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
+  have : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   elvShiftedPostProbe_square_difference_isUnit D Sc' cutoff bound i ΛR h F sy
     (parameterTwist_homogeneous D Sc hc) κ hi α
     (hi ▸ probeELVMixedPreDot_mem (D := D) (Sc := Sc) (m := m) (cutoff := cutoff) (bound := bound) (ΛP := ΛP) (ΛR := ΛR) (i := i) (β := β) (Z := Z))

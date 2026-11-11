@@ -114,7 +114,7 @@ theorem vacuumLeftwardCapInverse_bubbleEntries (Z : (P).H ((0, 0) : Sector I))
             (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) =
         c.inv ≫ (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).map
           (dc n (.nil _) p₀ ≫ (P).epsEntry cc i N ν₀ p₀ (.nil _) Z) ≫ c.hom := by
-  haveI : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
+  have : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   subst hZ
   obtain ⟨j, hj⟩ := vacuumLeftwardCapInverse_odd D Sc m cutoff bound ΛP ΛR hcP hcR H
     sy hc i _ rfl lc dc HP hP hi

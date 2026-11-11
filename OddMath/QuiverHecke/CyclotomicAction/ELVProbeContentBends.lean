@@ -191,7 +191,7 @@ theorem elvProbe_content_central_separated_windows_above [Finite I]
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (minimum : ℕ) :
     ∃ N, minimum ≤ N ∧ ELVProbeDxContentSeparatedAt D Sc m cutoff bound ΛP ΛR hP hR i t Z δ sy hc N ∧
       ELVProbeCxContentSeparatedAt D Sc m cutoff bound ΛP ΛR hP hR i t hb hv Z δ sy hc N := by
-  haveI : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
+  have : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   let _ := contentBendFactorDot_isIso D Sc m cutoff bound ΛP ΛR hP hR i ((P).muP_preE i t)
   let _ := contentBendFactorDot_isIso D Sc m cutoff bound ΛP ΛR hP hR i ((P).muP_preF i hb)
   obtain ⟨nD, hD⟩ := elvProbeDxContentOuterDot_isNilpotent D Sc m cutoff bound ΛP ΛR hP hR i t Z δ sy hc

@@ -32,7 +32,7 @@ attribute [local irreducible] SKM.mixedPostSourcePreDot SKM.mixedPostSourcePostD
 /-- All three transposed source norms are units for the specified factor pair. -/
 theorem ELVProbeCrossTransposeNormUnits [Finite I]
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) : (P).CrossTransposeNormUnits := by
-  haveI : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
+  have : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   let : Fintype I := Fintype.ofFinite I
   constructor
   · intro i hi xP yP xW yW hp hw κ
