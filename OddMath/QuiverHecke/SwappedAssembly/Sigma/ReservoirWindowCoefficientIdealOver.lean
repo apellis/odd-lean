@@ -33,7 +33,6 @@ local notation "Sc'" => parameterTwist D Sc
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR
 local instance reservoirIdealOverHomPi (A B : PiSCat.{u,u,u + 1} k) :
     PiSupercategory k (A ⟶ B) := PiTwoSupercategory.homPiLeft A B
-local notation "hG" => isHomogeneous_parameterTwist D sy 𝒜 Sc ht hs
 
 variable [Finite I] (sy : Symmetrizer D) {K : Type u} [CommRing K] [Algebra K k]
   (𝒜 : ℤ → Submodule K k) [GradedAlgebra 𝒜]
@@ -43,6 +42,7 @@ variable [Finite I] (sy : Symmetrizer D) {K : Type u} [CommRing K] [Algebra K k]
   (b : ℤ) (h𝒜 : ∀ m, m ∉ Set.Icc (0 : ℤ) b → 𝒜 m = ⊥)
   (i : I) (t : Sector I) (Z : H D Sc' m cutoff bound ΛP ΛR t)
   (β : WeightBlocks D ΛR ((P).muM t)) (c : (P).CrossCoeff)
+local notation "hG" => isHomogeneous_parameterTwist D sy 𝒜 Sc ht hs
 /-- The source coefficient filtration's zeroth level contains every fixed-output morphism. -/
 theorem reservoirOutput_mem_zeroOver (t : Sector I)
     (β : WeightBlocks D ΛR ((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).muM t))
