@@ -28,12 +28,12 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (i : I) {muP nuR : X} (edgeP : -ΛP + D.α i = -muP)
   (edgeR : -ΛR + D.α i = nuR) (β : I →₀ ℕ)
 variable (H : ProbeVacuumCap.modulePiCategory D Sc m ⟶ elvWeightSpace D Sc cutoff bound ΛR (-ΛR))
-local instance bendSeriesProbeDotIso : IsIso (((probeOldRouquierFamily D Sc m ΛP hcP)).dot i edgeP) :=
+local instance bendSeriesProbeDotIso [Fact Sc.PureNilpotent] : IsIso (((probeOldRouquierFamily D Sc m ΛP hcP)).dot i edgeP) :=
   (isUnit_iff_isIso _).mp (probeOldRouquierFamily_dot_isUnit D Sc m ΛP hcP i edgeP)
 
 /-- The given chronological series keeps each negative pre-cap and
 post-unit as the prescribed Hom maps before regular-probe evaluation. -/
-def vacuumBendWordSum (N : ℕ) :=
+def vacuumBendWordSum [Fact Sc.PureNilpotent] (N : ℕ) :=
   -∑ r ∈ Finset.range N, (koszulSign (D.parity i) (D.parity i)) ^ (r + 1) •
     (((SKM.homPreNegativeCap (probeOldRouquierFamily D Sc m ΛP hcP) (elvWeightSpace D Sc cutoff bound ΛR) i (-ΛR) edgeP (r + 1) (preCapInput D Sc m ΛP hcP (elvWeightSpace D Sc cutoff bound ΛR) (-ΛR) H) ≫
       SKM.homContentPostCup ((probeOldRouquierFamily D Sc m ΛP hcP)).obj (elvRouquierFamily D Sc cutoff bound ΛR hcR) i β ΛP edgeR r (preCapInput D Sc m ΛP hcP (elvWeightSpace D Sc cutoff bound ΛR) (-ΛR) H)).total (regularProbe D Sc m ΛP)) (emptyBlock D ΛR))

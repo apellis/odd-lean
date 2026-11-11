@@ -37,7 +37,7 @@ private theorem total_pow {k C A : Type*} [CommRing k]
     (f ^ n).total N = ((totalEvaluation N).mapEnd F f) ^ n :=
   map_pow ((totalEvaluation N).mapEnd F) f n
 
-private theorem inverse_power_square [Fact Sc.PureNilpotent] {C : Type*} [Category C] [Preadditive C]
+private theorem inverse_power_square {C : Type*} [Category C] [Preadditive C]
     {A B : C} (a : A ≅ A) (e : A ≅ B) (xi : End A) (hxi : xi = a.inv)
     (y : End B) (hy : IsUnit y) (h : a.hom ≫ e.hom = e.hom ≫ y) (n : ℕ) :
     (xi ^ n) ≫ e.hom = e.hom ≫ Ring.inverse y ^ n := by
@@ -66,10 +66,10 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 local notation "T" => probeOldRouquierFamily D Sc m Λ hc
 local notation "N₀" => regularProbe D Sc m Λ
 local notation "Z" => preCapInput D Sc m Λ hc W muM H
-local instance rawProbeDotIso : IsIso ((T).dot i h) :=
+local instance rawProbeDotIso [Fact Sc.PureNilpotent] : IsIso ((T).dot i h) :=
   (isUnit_iff_isIso _).mp (probeOldRouquierFamily_dot_isUnit D Sc m Λ hc i h)
 
-private def rawPreDotAut :
+private def rawPreDotAut [Fact Sc.PureNilpotent] :
     Aut ((SKM.homContentPreE T W i muM h).obj ((SKM.homContentPreF T W i muM h).obj Z)) where
   hom := SKM.homReservoirDot T W i muM h ((SKM.homContentPreF T W i muM h).obj Z)
   inv := SKM.homPreDotInverse T W i muM h ((SKM.homContentPreF T W i muM h).obj Z)

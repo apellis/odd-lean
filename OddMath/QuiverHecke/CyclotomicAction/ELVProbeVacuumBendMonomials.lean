@@ -228,10 +228,10 @@ def vacuumPreBlockSourceIso [Fact Sc.PureNilpotent] :=
       (fun _ => contentModuleTarget D Sc cutoff bound (0 : Multiset I)) (-ΛR) i edgeP
       (vacuumBendBlock D Sc m cutoff bound ΛR H)
 
-local instance bendMonomialProbeDotIso : IsIso (((probeOldRouquierFamily D Sc m ΛP hcP)).dot i edgeP) :=
+local instance bendMonomialProbeDotIso [Fact Sc.PureNilpotent] : IsIso (((probeOldRouquierFamily D Sc m ΛP hcP)).dot i edgeP) :=
   (isUnit_iff_isIso _).mp (probeOldRouquierFamily_dot_isUnit D Sc m ΛP hcP i edgeP)
 
-private theorem negativeCap_block (n : ℕ) :
+private theorem negativeCap_block [Fact Sc.PureNilpotent] (n : ℕ) :
     ((SKM.homPreNegativeCap (probeOldRouquierFamily D Sc m ΛP hcP)
       (elvWeightSpace D Sc cutoff bound ΛR) i (-ΛR) edgeP n
       (preCapInput D Sc m ΛP hcP (elvWeightSpace D Sc cutoff bound ΛR) (-ΛR) H)).total
