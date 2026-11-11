@@ -83,7 +83,8 @@ theorem eq_of_vacuumDecode (Z : (P).H ((0, 0) : Sector I)) (c : (E).obj Z ≅ V)
     f = g :=
   hfaith ((vacuumDecode_eq_mulLeft D Sc m cutoff ΛP ΛR L hP hR Z c f a hf).trans hg.symm)
 
-variable (hF : ProbeActionInputs D Sc m cutoff N ΛP ΛR hP hR)
+variable (hF :
+  ProbeActionInputs D Sc m cutoff (PowerWordContent.powerBound D cutoff L) ΛP ΛR hP hR)
 
 include hF in
 /-- **Vacuum entries from decoded values.** If the decoded reading of the vacuum sector

@@ -100,7 +100,8 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (m : I → ℕ) (cutoff : I → ℕ) (L : I × ℕ → ℕ)
 local notation "bound" => SKM.SYM.elvPowerWeightBound D cutoff L + 1
 
-variable (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound)
+variable (hdot :
+  TruncatedAppendDotNilpotent D Sc cutoff (SKM.SYM.elvPowerWeightBound D cutoff L + 1))
 local notation "W₀" => Functor.obj (restriction (contentInclusion D Sc cutoff bound (0 : Multiset I)))
   (weightedVacuum D Sc cutoff L)
 local notation "H" => VacuumTensor.probeFunctor D Sc m cutoff bound W₀
@@ -341,7 +342,8 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (i : I)
 local notation "bound" => PowerWordContent.powerBound D cutoff L
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR
-variable (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
+variable (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff
+  (PowerWordContent.powerBound D cutoff L))
 local notation "ν₀" => (P).wt ((0, 0) : Sector I)
 local notation "Zt" => (SupportedSectors.tensorVacuum D Sc m cutoff L ΛP ΛR).obj
 local notation "H" => VacuumTensor.probeFunctor D (parameterTwist D Sc) m cutoff bound

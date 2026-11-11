@@ -56,7 +56,8 @@ local notation "star" =>
 local notation "dec" => tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
 local notation "Z" => (tensorTargetFamily D Sc m cutoff ΛP ΛR L (0,0)).obj
 
-variable (hF : ProbeActionInputs D Sc m cutoff N ΛP ΛR hP hR)
+variable (hF :
+  ProbeActionInputs D Sc m cutoff (PowerWordContent.powerBound D cutoff L) ΛP ΛR hP hR)
 local notation "gens" => ProbeReservoir.swappedGens (P)
   (elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR
     hF.dot)

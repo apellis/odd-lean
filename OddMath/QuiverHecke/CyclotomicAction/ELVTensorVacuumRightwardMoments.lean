@@ -41,7 +41,8 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (i : I)
 local notation "bound" => PowerWordContent.powerBound D cutoff L
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR
-variable (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
+variable (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff
+  (PowerWordContent.powerBound D cutoff L))
 local notation "ν₀" => (P).wt ((0, 0) : Sector I)
 local notation "H" => VacuumTensor.probeFunctor D (parameterTwist D Sc) m cutoff bound
   ((BalancedInduction.restriction

@@ -30,7 +30,8 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 
 local notation "bound" => SKM.SYM.elvPowerWeightBound D cutoff L + 1
 
-variable (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound)
+variable (hdot :
+  TruncatedAppendDotNilpotent D Sc cutoff (SKM.SYM.elvPowerWeightBound D cutoff L + 1))
 local notation "W₀" => Functor.obj (restriction (contentInclusion D Sc cutoff bound (0 : Multiset I)))
   (weightedVacuum D Sc cutoff L)
 local notation "H" => VacuumTensor.probeFunctor D Sc m cutoff bound W₀
