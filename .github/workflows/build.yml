@@ -15,6 +15,11 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # `actions: write` lets the job delete superseded build caches of its own branch or pull
+    # request (see the last step).
+    permissions:
+      contents: read
+      actions: write
     # A cold build takes a few hours; Lean uses all four runner cores; the build cache saved at the end
     # makes later runs incremental.
     timeout-minutes: 340
@@ -198,3 +203,30 @@ jobs:
             .lake/packages/StringDiagrams/.lake/build
             .lake/packages/LieLean/.lake/build
           key: lake-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+      # Every run saves a build cache of about 1 GB under a fresh key, and GitHub evicts the least
+      # recently used entries once a repository holds 10 GB. Without pruning, a burst of pull
+      # request pushes evicts the research branch cache and the next build of the branch starts
+      # cold. Keep only the newest entry of each cache for this ref.
+      - name: Delete superseded caches of this ref
+        if: always() && steps.scope.outputs.docs_only != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Newest first; keep the first entry of each cache family and delete the rest, including
+          # entries of the pre-v2 key scheme.
+          gh cache list --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF" --sort created_at \
+              --order desc --limit 100 --json id,key --jq '.[] | "\(.id) \(.key)"' |
+            while read -r id key; do
+              case "$key" in
+                lake-artifacts-v2-*) family=lake ;;
+                categorification-artifacts-v2-*) family=categorification ;;
+                *) family=other ;;
+              esac
+              if [ "$family" != other ] && ! grep -qsx "$family" "$RUNNER_TEMP/kept"; then
+                echo "$family" >> "$RUNNER_TEMP/kept"
+                echo "Keeping $key"
+              else
+                echo "Deleting $key"
+                gh cache delete --repo "$GITHUB_REPOSITORY" "$id" || true
+              fi
+            done
