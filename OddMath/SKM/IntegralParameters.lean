@@ -101,9 +101,9 @@ def scalars : IntegralScalars D (ParameterRing D) where
   two_isUnit _ := trivial
 
 theorem homogeneous : (scalars D).Homogeneous := by
-  intro i j p q hp hp' hq hq' hn
+  intro i j p q hij hp' hq' hn
   by_cases h : Allowed D ⟨i, j, p, q⟩
-  · exact h.2.2 hp hp' hq hq'
+  · exact h.2.2 hij hp' hq'
   · exact (hn (coefficient_of_not_allowed D _ h)).elim
 
 /-- The universal integral normalization units. -/

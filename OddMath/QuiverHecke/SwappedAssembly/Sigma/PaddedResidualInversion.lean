@@ -1,6 +1,7 @@
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.SignedResidualWindows
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowCoefficientIdeal
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedContentBends
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
 
 /-! # The chosen central augmented matrix on each output content
 
@@ -38,6 +39,7 @@ theorem centralFactorMatrix_content_isIso
     (D.h i ((P).wt t) ≤ 0 → IsIso ((P).augNegFactorMatrix
       (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc) i ((P).wt t) t Z.obj
         (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β))) := by
+  have : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   let E := reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β
   let c := elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc
   let J := contentModuleCoefficientIdeal D (parameterTwist D Sc) cutoff bound β.1 sy

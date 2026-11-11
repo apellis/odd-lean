@@ -2,6 +2,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeRouquierMulticolour
 import OddMath.QuiverHecke.CyclotomicAction.ELVRouquierMulticolour
 import OddMath.QuiverHecke.SwappedAssembly.Sectors
 import OddMath.SKM.RouquierFTriangle
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
 
 /-! # The OLD probe and truncated ELV reservoir
 
@@ -10,6 +11,11 @@ untruncated scalar-evaluated OLD probe with invertible dots and the
 specified truncated ELV reservoir. Both retain their original-weight
 actions and presentation parameters. The probe's normalized shifted
 left adjunctions are constructed from its complete Rouquier family.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
@@ -42,7 +48,7 @@ theorem elvProbeReservoir_W :
       elvRouquierFamily D Sc' cutoff bound ΛR hR := rfl
 
 /-- The whole chosen probe dot is a unit, as required by the mixed denominators. -/
-theorem elvProbeReservoir_dot_isUnit [Fintype I] (i : I) {x y : X} (h : x + D.α i = y) :
+theorem elvProbeReservoir_dot_isUnit [Fact Sc.PureNilpotent] [Fintype I] (i : I) {x y : X} (h : x + D.α i = y) :
     IsUnit (show End ((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).T.E i h) from
       (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).T.dot i h) :=
   probeOldRouquierFamily_dot_isUnit D Sc' m ΛP hP i h

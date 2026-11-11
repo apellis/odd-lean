@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumCapInverse
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseBubbleEntry
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
 
 /-! # The leftward vacuum cap inverse in the native chart
 
@@ -18,6 +19,11 @@ by the source and cap-target charts (`vacuumLeftwardCapInverse_odd`).
 Consequently every product of a column with a native cap row `x ^ N ≫ v` is the
 conjugated evaluation of the left bubble entry `dcup n ≫ ε xᴺ`
 (`vacuumLeftwardColumn_cap_eq`). No inverse, moment or bubble value is assumed.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 
 noncomputable section
@@ -56,7 +62,7 @@ local notation "p₀" => SPath.centralUpDn i (SKM.wt D ν₀ [SKM.dn i]) ν₀ (
 /-- The explicit native column `n` of the leftward vacuum cap inverse: the dotted
 leftward cup, evaluated by the vacuum sector evaluation and conjugated by the
 padded source, corner and cap-target charts. -/
-def vacuumLeftwardColumn (Z : (P).H ((0, 0) : Sector I))
+def vacuumLeftwardColumn [Fact Sc.PureNilpotent] (Z : (P).H ((0, 0) : Sector I))
     (hZ : Z = vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (dc : ℕ → ∀ (_r : SPath (SKM.wd D ν₀ []) ((0, 0) : Sector I) ((0, 0) : Sector I))
       (p : SPath (SKM.wd D ν₀ [SKM.up i, SKM.dn i]) ((0, 0) : Sector I) ((0, 0) : Sector I)),
@@ -76,7 +82,7 @@ include sy hc in
 data satisfying the positive inverse equations at the vacuum sector give an
 entrywise inverse of the native cap window `[bend; x ^ n ≫ v]_(n < h)` of the
 evaluated A6 bend, whose columns are the explicit `vacuumLeftwardColumn`. -/
-theorem vacuumLeftwardCapInverse_odd (Z : (P).H ((0, 0) : Sector I))
+theorem vacuumLeftwardCapInverse_odd [Fact Sc.PureNilpotent] (Z : (P).H ((0, 0) : Sector I))
     (hZ : Z = vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
         ((0, 0) : Sector I))
@@ -136,7 +142,7 @@ theorem vacuumLeftwardCapInverse_odd (Z : (P).H ((0, 0) : Sector I))
 /-- **Column moments are bubble entries.** The native column `n` of the leftward
 vacuum cap inverse followed by the native cap row `x ^ N ≫ v` is the evaluated left
 bubble entry `dcup n ≫ ε xᴺ`, conjugated by the cap-target chart. -/
-theorem vacuumLeftwardColumn_cap_eq
+theorem vacuumLeftwardColumn_cap_eq [Fact Sc.PureNilpotent]
     (dc : ℕ → ∀ (_r : SPath (SKM.wd D ν₀ []) ((0, 0) : Sector I) ((0, 0) : Sector I))
       (p : SPath (SKM.wd D ν₀ [SKM.up i, SKM.dn i]) ((0, 0) : Sector I) ((0, 0) : Sector I)),
       ((P).pathFunctor _r).obj (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) ⟶

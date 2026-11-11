@@ -155,7 +155,7 @@ theorem projection_qPoly_regular (i x : I) (hix : i ≠ x) (v w : List I) (b : �
   have he := congrArg (prependOldCoordinate D Sc cutoff 0 (q.representative.shift (D.dn i x))) hh
   simp only [map_add, map_zero, map_sum, Preadditive.sum_comp, map_smul,
     Linear.smul_comp] at he
-  have hl : (∑ d ∈ Finset.Ioo 0 (D.dn i x), ∑ e ∈ Finset.Ioo 0 (D.dn x i),
+  have hl : (∑ d ∈ Finset.range (D.dn i x), ∑ e ∈ Finset.range (D.dn x i),
       Sc.s i x d e • prependOldCoordinate D Sc cutoff 0 (q.representative.shift (D.dn i x))
         (projection D Sc cutoff i v w
           (affineUnit D Sc cutoff _ _
@@ -164,7 +164,7 @@ theorem projection_qPoly_regular (i x : I) (hix : i ≠ x) (v w : List I) (b : �
     intro d hd'
     apply Finset.sum_eq_zero
     intro e _
-    rw [hlow d e (Finset.mem_Ioo.mp hd').2, smul_zero]
+    rw [hlow d e (Finset.mem_range.mp hd'), smul_zero]
   rw [hl, hold, smul_zero, add_zero, zero_add, projection_moving_dotPower,
     signedMovingPower_coordinate] at he
   have ht := (Sc.t i x).isUnit.smul_eq_zero.mp he

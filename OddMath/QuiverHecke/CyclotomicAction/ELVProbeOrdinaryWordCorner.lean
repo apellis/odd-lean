@@ -6,6 +6,11 @@ import OddMath.QuiverHecke.CyclotomicAction.ProbeAllUnits
 The forward inclusion uses the existing matrix quotient. Reverse matrix-entry
 membership proves injectivity; the existing affine corner range theorem
 proves surjectivity. No alternate quotient model or flatness premise is used.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 open CategoryTheory StringDiagrams
@@ -95,7 +100,7 @@ def ordinaryWordCornerEquiv {n : ℕ} (s : Word I (n+1)) (hs : s.val.Perm ν) :
       cyclotomicWordEnd D Sc a s f := rfl
 
 /-- The established all-position probe units are literal ordinary-category dot units. -/
-theorem probeOrdinaryWordDot_isUnit (m : I → ℕ) {n : ℕ}
+theorem probeOrdinaryWordDot_isUnit [Fact Sc.PureNilpotent] (m : I → ℕ) {n : ℕ}
     (s : Word I (n+1)) (hs : s.val.Perm ν) (r : ℕ) (hr : r < n+1) :
     IsUnit (End.of ((cycHom D Sc (probePolynomial (probeDotExponent D) m) s.val s.val).mkQ
       (dotE D Sc s.val r)) :

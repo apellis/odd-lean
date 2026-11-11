@@ -1,6 +1,7 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDenominatorUnits
 import OddMath.QuiverHecke.CyclotomicAction.ELVMixedSourceOddNorms
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SwappingReservoir
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
 
 /-! # Transposed source norms and swapping for the ELV probe pair
 
@@ -31,6 +32,7 @@ attribute [local irreducible] SKM.mixedPostSourcePreDot SKM.mixedPostSourcePostD
 /-- All three transposed source norms are units for the specified factor pair. -/
 theorem ELVProbeCrossTransposeNormUnits [Finite I]
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) : (P).CrossTransposeNormUnits := by
+  have : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
   let : Fintype I := Fintype.ofFinite I
   constructor
   · intro i hi xP yP xW yW hp hw κ

@@ -92,7 +92,7 @@ def relation : (r : Rel D) → LinDiagram k (ob D r.dom) (ob D r.cod)
       (by simp [crossL, Shape.dom, Shape.cod]) -
       (Sc.t i j : k) • dg D (dotsL [] i [j] (D.dn i j)) (sChain_dotsL [] i [j] _) -
       (Sc.t j i : k) • dg D (dotsL [i] j [] (D.dn j i)) (sChain_dotsL [i] j [] _) -
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         Sc.s i j p q • dg D (dotsL [i] j [] q ++ dotsL [] i [j] p)
           ((sChain_dotsL [i] j [] q).append (sChain_dotsL [] i [j] p))
   | .slideL i j _ => dg D (dotsL [] i [j] 1 ++ crossL [] i j [])
@@ -130,7 +130,7 @@ def relation : (r : Rel D) → LinDiagram k (ob D r.dom) (ob D r.cod)
         (zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
           dg D (dotsL [i, j] i [] s ++ dotsL [] i [j, i] (D.dn i j - 1 - s))
             ((sChain_dotsL [i, j] i [] s).append (sChain_dotsL [] i [j, i] _)) -
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), ∑ s ∈ Finset.range p,
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), ∑ s ∈ Finset.range p,
         (zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p q) •
           dg D (dotsL [i, j] i [] s ++ dotsL [i] j [i] q ++
               dotsL [] i [j, i] (p - 1 - s))

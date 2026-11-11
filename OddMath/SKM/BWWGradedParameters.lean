@@ -61,26 +61,13 @@ parameters, and conversely. -/
 theorem Scalars.gradedHomogeneous_toBWW_iff {σ : Type*} [SetLike σ k] (sy : Symmetrizer D)
     (𝒜 : ℕ → σ) (Sc : Scalars D k) :
     Sc.toBWW.GradedHomogeneous sy 𝒜 ↔ Sc.GradedHomogeneous sy 𝒜 := by
-  refine and_congr Iff.rfl ⟨fun h i j p q hp hp' hq hq' hs => ?_,
-    fun h i j p q hij hp hq hs => ?_⟩
-  · have hij : i ≠ j := by
-      rintro rfl
-      have := D.d_self i
-      omega
-    have hdn : (D.dn i j : ℤ) = D.d i j := D.dn_cast hij
-    have hdn' : (D.dn j i : ℤ) = D.d j i := D.dn_cast (Ne.symm hij)
-    have hc := ScalarData.toBWW_c_of_interior Sc hij hp (by omega) hq (by omega)
-    rw [← hc] at hs ⊢
-    exact h i j p q hij hp' hq' hs
-  · have hdn : (D.dn i j : ℤ) = D.d i j := D.dn_cast hij
-    have hdn' : (D.dn j i : ℤ) = D.d j i := D.dn_cast (Ne.symm hij)
-    by_cases hpq : p = 0 ∨ q = 0
-    · exact absurd (ScalarData.toBWW_c_eq_zero_of_pure Sc hij (by omega) (by omega) hpq) hs
-    push Not at hpq
-    have hc := ScalarData.toBWW_c_of_interior Sc hij (p := p) (q := q) (by omega) (by omega)
-      (by omega) (by omega)
-    rw [hc] at hs ⊢
-    exact h i j p q (by omega) hp (by omega) hq hs
+  refine and_congr Iff.rfl ⟨fun h i j p q hij hp hq hs => ?_,
+    fun h i j p q hij hp hq hs => ?_⟩ <;>
+  · have hc := ScalarData.toBWW_c_of_lt Sc hij (p := p) (q := q)
+      (by have := D.dn_cast hij; omega) (by have := D.dn_cast (Ne.symm hij); omega)
+    first
+    | (rw [← hc] at hs ⊢; exact h i j p q hij hp hq hs)
+    | (rw [hc] at hs ⊢; exact h i j p q hij hp hq hs)
 
 /-- Graded-homogeneous Brundan–Ellis parameters are graded-homogeneous Brundan–Wang–Webster
 parameters. -/

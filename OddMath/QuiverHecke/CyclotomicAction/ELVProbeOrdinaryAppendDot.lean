@@ -7,6 +7,11 @@ import OddMath.QuiverHecke.CyclotomicAction.PrefixQPDistinct
 The exact scalar image of the canonical old append dot is supernatural
 and a word-corner unit on every appended word, including vacuum append.
 This supplies the source transformation for the scalar coend comparison.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
@@ -60,7 +65,7 @@ theorem probeOrdinaryAppendDot_supernatural (i : I) :
 
 variable [Fintype I]
 /-- The literal appended dot is an actual endomorphism unit, including at height zero. -/
-theorem probeOrdinaryAppendDot_isUnit (i : I) (v : O) :
+theorem probeOrdinaryAppendDot_isUnit [Fact Sc.PureNilpotent] (i : I) (v : O) :
     IsUnit (End.of (probeOrdinaryAppendDot D Sc m ν i v)) := by
   let s : Word I (v.word.length + 1) := ⟨v.word ++ [i], by simp⟩
   have hs : s.val.Perm (i :: ν) := ((probeOrdinaryAppend D Sc m ν i).obj v).wordPerm

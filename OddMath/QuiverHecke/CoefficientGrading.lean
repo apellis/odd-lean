@@ -73,7 +73,7 @@ coefficient degree, every defining relation of the quiver Hecke presentation lie
 degree for the coefficient grading. -/
 theorem isHomogeneous_coefficientGraded (Sc : SKM.Scalars D k)
     (ht : ∀ i j, ((Sc.t i j : kˣ) : k) ∈ 𝒜 0)
-    (hs : ∀ i j (p q : ℕ), 0 < p → (p : ℤ) < D.d i j → 0 < q → (q : ℤ) < D.d j i →
+    (hs : ∀ i j (p q : ℕ), i ≠ j → (p : ℤ) < D.d i j → (q : ℤ) < D.d j i →
       Sc.s i j p q ≠ 0 → Sc.s i j p q ∈ 𝒜 (SKM.coefficientDegree sy i j p q)) :
     CoefficientGrading.IsHomogeneous 𝒜 (gdeg D sy) (pres D Sc) := by
   intro r
@@ -93,10 +93,10 @@ theorem isHomogeneous_coefficientGraded (Sc : SKM.Scalars D k)
     · rw [gsum_dotsL, dn_cast' (Ne.symm hij)]; have := sy.symm i j; linarith
     · by_cases h0 : Sc.s i j p q = 0
       · rw [h0, zero_smul]; exact zero_mem _
-      · rw [Finset.mem_Ioo] at hp hq
-        have hp' : (p : ℤ) < D.d i j := by rw [← dn_cast' hij]; exact_mod_cast hp.2
-        have hq' : (q : ℤ) < D.d j i := by rw [← dn_cast' (Ne.symm hij)]; exact_mod_cast hq.2
-        refine smul_dg_mem_part D sy 𝒜 (hs i j p q hp.1 hp' hq.1 hq' h0) ?_
+      · rw [Finset.mem_range] at hp hq
+        have hp' : (p : ℤ) < D.d i j := by rw [← dn_cast' hij]; exact_mod_cast hp
+        have hq' : (q : ℤ) < D.d j i := by rw [← dn_cast' (Ne.symm hij)]; exact_mod_cast hq
+        refine smul_dg_mem_part D sy 𝒜 (hs i j p q hij hp' hq' h0) ?_
         rw [gsum_append, gsum_dotsL, gsum_dotsL, SKM.coefficientDegree]; ring
   | slideL i j _ =>
     refine ⟨2 * sy.d i + sy.d i * D.d i j, sub_mem (dg_mem_part D sy 𝒜 ?_)
@@ -136,12 +136,12 @@ theorem isHomogeneous_coefficientGraded (Sc : SKM.Scalars D k)
       push_cast; ring
     · by_cases hz : Sc.s i j p q = 0
       · rw [hz, mul_zero, zero_smul]; exact zero_mem _
-      · rw [Finset.mem_Ioo] at hp hq
+      · rw [Finset.mem_range] at hp hq
         rw [Finset.mem_range] at hs'
-        have hp' : (p : ℤ) < D.d i j := by rw [← dn_cast' hij]; exact_mod_cast hp.2
-        have hq' : (q : ℤ) < D.d j i := by rw [← dn_cast' (Ne.symm hij)]; exact_mod_cast hq.2
+        have hp' : (p : ℤ) < D.d i j := by rw [← dn_cast' hij]; exact_mod_cast hp
+        have hq' : (q : ℤ) < D.d j i := by rw [← dn_cast' (Ne.symm hij)]; exact_mod_cast hq
         refine smul_dg_mem_part D sy 𝒜
-          (SetLike.GradedMul.mul_mem (zsign_mem _) (hs i j p q hp.1 hp' hq.1 hq' hz)) ?_
+          (SetLike.GradedMul.mul_mem (zsign_mem _) (hs i j p q hij hp' hq' hz)) ?_
         rw [gsum_append, gsum_append, gsum_dotsL, gsum_dotsL, gsum_dotsL, Nat.cast_sub (by omega),
           Nat.cast_sub (by omega), SKM.coefficientDegree]
         push_cast; ring
@@ -152,7 +152,7 @@ Hecke supercategory is the internal direct sum of its homogeneous parts for the 
 grading. -/
 theorem iSupIndep_coefficientGraded [GradedAlgebra 𝒜] (Sc : SKM.Scalars D k)
     (ht : ∀ i j, ((Sc.t i j : kˣ) : k) ∈ 𝒜 0)
-    (hs : ∀ i j (p q : ℕ), 0 < p → (p : ℤ) < D.d i j → 0 < q → (q : ℤ) < D.d j i →
+    (hs : ∀ i j (p q : ℕ), i ≠ j → (p : ℤ) < D.d i j → (q : ℤ) < D.d j i →
       Sc.s i j p q ≠ 0 → Sc.s i j p q ∈ 𝒜 (SKM.coefficientDegree sy i j p q))
     (a b : Obj (sig D)) :
     iSupIndep (CoefficientGrading.presentedPart 𝒜 (gdeg D sy) (pres D Sc) a b) ∧
@@ -190,7 +190,7 @@ theorem rees_t_mem (Sc : SKM.Scalars D K) (i j : I) :
   C_mem_reesGrading ((Sc.t i j : Kˣ) : K)
 
 theorem rees_s_mem {Sc : SKM.Scalars D K} (hl : Sc.LowerDegree sy) (i j : I) (p q : ℕ)
-    (hp : 0 < p) (hp' : (p : ℤ) < D.d i j) (hq : 0 < q) (hq' : (q : ℤ) < D.d j i)
+    (hij : i ≠ j) (hp' : (p : ℤ) < D.d i j) (hq' : (q : ℤ) < D.d j i)
     (hs : (SKM.ReesParameters.scalars sy Sc).s i j p q ≠ 0) :
     (SKM.ReesParameters.scalars sy Sc).s i j p q ∈
       reesGrading K (SKM.coefficientDegree sy i j p q) := by
@@ -199,7 +199,7 @@ theorem rees_s_mem {Sc : SKM.Scalars D K} (hl : Sc.LowerDegree sy) (i j : I) (p 
     apply hs
     change C (Sc.s i j p q) * MvPolynomial.X () ^ _ = 0
     rw [h0, map_zero, zero_mul]
-  exact C_mul_X_pow_mem_reesGrading _ _ (Int.toNat_of_nonneg (hl i j p q hp hp' hq hq' hs'))
+  exact C_mul_X_pow_mem_reesGrading _ _ (Int.toNat_of_nonneg (hl i j p q hij hp' hq' hs'))
 
 /-- **Rees parameters.** For lower-degree parameters over `K`, the quiver Hecke presentation
 with the Rees parameters `sᵢⱼ^{pq} h^{deg}` over `K[h]` is coefficient-graded homogeneous for

@@ -124,7 +124,8 @@ end Datum
 
 /-- The scalars of Brundan–Ellis §1, with the condition on `2` given as a proposition `P`: units
 `tᵢⱼ ∈ k^×` with `tᵢᵢ = 1` and `tᵢⱼ = tⱼᵢ` when `dᵢⱼ = 0` (1.3), and scalars `sᵢⱼ^{pq} ∈ k` (used
-for `0 < p < dᵢⱼ`, `0 < q < dⱼᵢ`) with `sᵢⱼ^{pq} = sⱼᵢ^{qp}` and `sᵢⱼ^{pq} = 0` if `p|i|` is odd
+for `0 ≤ p < dᵢⱼ`, `0 ≤ q < dⱼᵢ`; Brundan–Ellis use only `0 < p`, `0 < q`, and the monomials
+with `p = 0` or `q = 0` are the Brundan–Wang–Webster generalization, see `ScalarData.NoPure`) with `sᵢⱼ^{pq} = sⱼᵢ^{qp}` and `sᵢⱼ^{pq} = 0` if `p|i|` is odd
 (1.4), and `P` if some `i` is odd. The two instances are `Scalars` (`P` is the invertibility of `2`)
 and `IntegralScalars` (`P` is `True`). -/
 structure ScalarData {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X)

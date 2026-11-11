@@ -81,7 +81,7 @@ The full correction is `(-1)^|j|` times this expression; that overall sign
 is deliberately not included here. The pure `v` term has zero divided difference. -/
 def braidPolynomial (S : Scalars D R) (i j : I) : OrderedPolynomial R :=
   (S.t i j : R) • braidTerm (D.dn i j) 0 +
-    ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+    ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
       S.s i j p q • braidTerm p q
 
 /-- BE2 Proposition 11.2, polynomial input to Hill–Wang Theorem 5.9:
@@ -103,7 +103,7 @@ theorem serreWindow_braidPolynomial (S : Scalars D R) (i j : I) {k : ℕ}
     serreWindow_braidTerm_self hk hkd 0]
   have hz : Finsupp.filter (fun a : ℕ × ℕ × ℕ =>
       D.dn i j - k ≤ a.1 ∧ k - 1 ≤ a.2.1)
-      (∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+      (∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         S.s i j p q • (braidTerm p q : OrderedPolynomial R)) = 0 := by
     rw [Finsupp.filter_sum]
     apply Finset.sum_eq_zero
@@ -113,7 +113,7 @@ theorem serreWindow_braidPolynomial (S : Scalars D R) (i j : I) {k : ℕ}
     intro q _
     rw [Finsupp.filter_smul]
     change S.s i j p q • serreWindow (D.dn i j) k (braidTerm p q) = 0
-    rw [serreWindow_braidTerm_lt hk hkd (Finset.mem_Ioo.mp hp).2 q, smul_zero]
+    rw [serreWindow_braidTerm_lt hk hkd (Finset.mem_range.mp hp) q, smul_zero]
   rw [hz, add_zero, Finsupp.smul_single]
   rfl
 
@@ -133,7 +133,7 @@ ordered product. The target may be noncommutative. -/
 def quadraticValue {A : Type*} [Ring A] [Module R A]
     (S : Scalars D R) (i j : I) (u v : A) : A :=
   (S.t i j : R) • u ^ D.dn i j + (S.t j i : R) • v ^ D.dn j i +
-    ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+    ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
       S.s i j p q • (u ^ p * v ^ q)
 
 /-- The admissibility property for which Hill–Wang invokes (C6) follows

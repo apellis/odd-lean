@@ -28,7 +28,7 @@ private def Sc : IntegralScalars D (ZMod 2) where
   two_isUnit := fun _ => trivial
 
 private theorem hc : Sc.Homogeneous := by
-  intro _ _ _ _ _ _ _ _ h
+  intro _ _ _ _ _ _ _ h
   exact (h rfl).elim
 
 private def bubbles : CScalars Sc where

@@ -3,6 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumBend
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
 
 /-! # The padded reservoir cap rows on the regular vacuum probe
 
@@ -16,6 +17,11 @@ regular-input charts of the target, the `n`-th cap row is the native
 `x ^ n ≫ v`, where `x` is the shifted pre dot and `v` the shifted pre cap
 (`paddedVacuumCap_eq`). No parity, moment or cap compatibility is
 assumed.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 set_option quotPrecheck false
@@ -238,7 +244,7 @@ def paddedVacuumCapTargetIso :=
 /-- The prescribed padded reservoir cap row `n` at the vacuum sector is the
 native `x ^ n ≫ v` of the output block, through the same source chart as the
 padded Dx entry. No parity, moment or cap compatibility is assumed. -/
-theorem paddedVacuumCap_eq (i : I) (hP : 0 < probeCutoff D m i) (n : ℕ) :
+theorem paddedVacuumCap_eq [Fact Sc.PureNilpotent] (i : I) (hP : 0 < probeCutoff D m i) (n : ℕ) :
     (P).centralPaddedCap i (((0, 0) : Sector I))
         (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
         (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) true n ≫

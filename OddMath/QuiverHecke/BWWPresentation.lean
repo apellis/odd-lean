@@ -120,7 +120,7 @@ theorem quadSum_toBWW (Sc : SKM.Scalars D k) {i j : I} (hij : i ≠ j) (hd : D.d
     quadSum D Sc.toBWW.c i j =
       (Sc.t i j : k) • dg D (dotsL [] i [j] (D.dn i j)) (sChain_dotsL [] i [j] _) +
       (Sc.t j i : k) • dg D (dotsL [i] j [] (D.dn j i)) (sChain_dotsL [i] j [] _) +
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         Sc.s i j p q • dg D (dotsL [i] j [] q ++ dotsL [] i [j] p)
           ((sChain_dotsL [i] j [] q).append (sChain_dotsL [] i [j] p)) := by
   rw [quadSum, SKM.sum_box_toBWW Sc hij hd]
@@ -135,7 +135,7 @@ theorem braidSum_toBWW (Sc : SKM.Scalars D k) {i j : I} (hij : i ≠ j) (hd : D.
         (zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
           dg D (dotsL [i, j] i [] s ++ dotsL [] i [j, i] (D.dn i j - 1 - s))
             ((sChain_dotsL [i, j] i [] s).append (sChain_dotsL [] i [j, i] _)) +
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), ∑ s ∈ Finset.range p,
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), ∑ s ∈ Finset.range p,
         (zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p q) •
           dg D (dotsL [i, j] i [] s ++ dotsL [i] j [i] q ++
               dotsL [] i [j, i] (p - 1 - s))

@@ -179,7 +179,7 @@ theorem repeatedOuter_qExpr_correction (c : P.CrossCoeff Sc) (hc : c.IsInverse) 
       (∑ a ∈ Finset.range (D.dn i j),
         (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
           (x ^ (D.dn i j - 1 - a) * z ^ a)) +
-      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ b ∈ Finset.range (D.dn i j), ∑ d ∈ Finset.range (D.dn j i),
         ∑ a ∈ Finset.range b,
           (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
             (x ^ (b - 1 - a) * y ^ d * z ^ a) := by

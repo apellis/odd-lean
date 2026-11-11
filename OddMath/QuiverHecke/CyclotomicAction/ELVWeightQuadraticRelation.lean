@@ -66,7 +66,7 @@ theorem elvActionCross_quadNe (hij : i ≠ j) (hd : D.d i j ≠ 0) :
       (Sc.t j i : k) • (SKM.rouquierPower
         (elvActionDot D (parameterTwist D Sc) cutoff bound j Λ h₁) (D.dn j i) ▷
         elvE D (parameterTwist D Sc) cutoff bound i Λ h₂) +
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         Sc.s i j p q • (SKM.rouquierPower
           (elvActionDot D (parameterTwist D Sc) cutoff bound j Λ h₁) q ▷
           elvE D (parameterTwist D Sc) cutoff bound i Λ h₂ ≫

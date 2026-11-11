@@ -35,8 +35,8 @@ mixed probe relations, the ψ-crossings, Lemmas 3.2–3.3 and the Chevalley rela
   roughly 100 modules that unfold `Qᵢⱼ` change. The Brundan–Ellis statements for arbitrary
   parameters are recovered as one-line specializations under the predicate `NoPure`.
 
-Option A changes the meaning of statements that are currently stated for arbitrary
-Brundan–Ellis parameters. It is therefore a maintainer decision and is not yet adopted.
+Option A changes the meaning of statements that were stated for arbitrary Brundan–Ellis
+parameters. The maintainer chose option A.
 
 ## What holds under either option
 
@@ -59,19 +59,43 @@ Lemmas that need the pure monomials (bubble slides, invertibility sites, Rees re
 are stated against `presBWW` in new files. Under option A, `pres` becomes `presBWW`
 through `presBWW_toBWW` and these lemmas are reused unchanged.
 
-## Under option A: the switch
+## The switch (option A, adopted)
 
-1. `ScalarData` keeps its fields. `s` becomes the full box coefficient below the corners,
-   and the parity condition is unchanged.
-2. `relation`: the `quadNe` and `braidEq` sums use the box sums `quadSum`/`braidSum` of
-   `SKM.BWWPresentation`, with `c` assembled from `t` and `s`.
-3. `ScalarData.Homogeneous` and the graded variants quantify over `0 ≤ p < dᵢⱼ`,
-   `0 ≤ q < dⱼᵢ`.
-4. The roughly 100 modules that unfold `Qᵢⱼ` are rewired: an interior sum becomes a box sum
-   via `sum_box_eq`. The pure contributions are discharged by the lemmas proved against
-   `presBWW`.
-5. Brundan–Ellis statements for arbitrary parameters become corollaries under `NoPure`,
-   where the presentation is literally the old one (`presBWW_eq_pres_of_noPure`).
+1. `ScalarData` keeps its fields. `s i j p q` is the coefficient of `u^p v^q` on the whole
+   box `i ≠ j`, `0 ≤ p < dᵢⱼ`, `0 ≤ q < dⱼᵢ`; the parity condition is unchanged.
+2. The `quadNe` and `braidEq` relations of `SKM.pres` and of the quiver Hecke presentation
+   sum over `Finset.range (D.dn i j) ×ˢ Finset.range (D.dn j i)`, so `pres D Sc` is the
+   presentation with Brundan–Wang–Webster parameters and
+   `presBWW_eq_pres : presBWW D P = pres D P.toScalars`.
+3. `ScalarData.Homogeneous`, `GradedHomogeneous`, `LowerDegree` and the coefficient
+   gradings quantify over `i ≠ j`, `p < dᵢⱼ`, `q < dⱼᵢ` with `sᵢⱼ^{pq} ≠ 0`.
+4. Brundan–Ellis's printed parameters are the case `ScalarData.NoPure`
+   (`OddMath/SKM/PureMonomials.lean`): pure monomials vanish below the corners.
+   `ScalarData.Homogeneous.noPure` derives it from (1.31), and
+   `ScalarData.NoPure.sum_range_range` recovers the printed interior sums.
+5. Every consumer of the box sums sums over `range × range`. Where a proof used `p > 0` or
+   `q > 0` for a pure monomial, the lemma carries `NoPure` as an explicit hypothesis of
+   its route, supplied by `Homogeneous.noPure` at the homogeneous call sites. The
+   Brundan–Wang–Webster replacements of these sites (pure coefficients in a nilpotent
+   ideal) are in `BWWKind3.md` and `BWWReductions.md`.
 
-The switch is a single change, checked by complete builds that run every module before it
-is merged.
+## Pure coefficients in a nilpotent ideal (route hypothesis)
+
+The probe dot unit (`probeMixedCorner_dot_isUnit`, `probeWord_dots_isUnit`) needs
+`Qᵢⱼ(u, 0)` to be a unit when `u` is. With pure terms below the corners this holds when the
+pure coefficients lie in a nilpotent ideal:
+
+* `ScalarData.PureNilpotent Sc` (`OddMath/SKM/BWWPureNilpotent.lean`): some nilpotent ideal
+  contains every pure coefficient below the corners;
+  `PureNilpotent.exists_isUnit_quad_remainders` gives `Qᵢⱼ(u, v) = U + R v = U + v R'` with
+  `U` a unit.
+* `ScalarData.NoPure.pureNilpotent`: homogeneous parameters satisfy it (ideal `⊥`).
+* `BWWReesParameters.truncated_pureNilpotent` (`OddMath/SKM/BWWReesPureNilpotent.lean`): the
+  truncated Rees parameters over `k[h]/(h^N)` satisfy it (ideal `(h)`).
+* `parameterTwist_pureNilpotent` and its instance: the parity transport preserves it.
+
+The probe chain takes `[Fact Sc.PureNilpotent]`. This is a route-only intermediate
+hypothesis: the homogeneous end theorems supply it from `hc.noPure.pureNilpotent` and keep
+their statements, and the Brundan–Wang–Webster headline obtains it on the truncated Rees
+parameters through `BWWParameterProperty.gradedCase_of_truncatedReesCase`, so it does not
+appear in the headline.

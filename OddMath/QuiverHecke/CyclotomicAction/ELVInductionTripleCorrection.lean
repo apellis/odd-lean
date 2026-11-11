@@ -106,9 +106,9 @@ theorem tripleSourcePolynomial_supernatural (hij : i ≠ j) :
   apply correction_add_supernatural F
   · exact tripleSourceSum_supernatural F D i j ha hb hc (D.dn i j) 0 (Sc.t i j : k)
       (fun _ => ⟨CyclotomicAction.dn_cast_mul_parity D hij, by simp⟩)
-  · apply correction_sum_supernatural F (Finset.Ioo 0 (D.dn i j))
+  · apply correction_sum_supernatural F (Finset.range (D.dn i j))
     intro r _
-    apply correction_sum_supernatural F (Finset.Ioo 0 (D.dn j i))
+    apply correction_sum_supernatural F (Finset.range (D.dn j i))
     intro s _
     exact tripleSourceSum_supernatural F D i j ha hb hc r s (Sc.s i j r s)
       (fun hz => elvParameter_support D Sc hz)

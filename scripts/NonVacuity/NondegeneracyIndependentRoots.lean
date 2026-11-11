@@ -42,7 +42,7 @@ private def sy : Symmetrizer D where
   symm := by intro i j; cases i <;> cases j <;> rfl
 
 private theorem hc : scalars.Homogeneous := by
-  intro _ _ _ _ _ _ _ _ h
+  intro _ _ _ _ _ _ _ h
   exact (h rfl).elim
 
 /-- Normalizations exist for these scalars. -/
@@ -122,10 +122,12 @@ private def evenSy : Symmetrizer evenDatum where
   symm := by intro i j; cases i <;> cases j <;> rfl
 
 private theorem evenScalars_homogeneous : evenScalars.Homogeneous := by
-  intro i j p q hp hpd hq hqd _
-  rw [evenDatum_d] at hpd hqd
-  rw [evenDatum_d, evenDatum_d]
-  cases i <;> cases j <;> simp at hpd hqd ⊢ <;> omega
+  intro i j p q hij _ _ hs
+  have hpq : p = 1 ∧ q = 1 := by
+    by_contra h
+    exact hs (by simp [evenScalars, h])
+  obtain ⟨rfl, rfl⟩ := hpq
+  norm_num [evenDatum_d, hij, Ne.symm hij]
 
 /-- The scalar `s₀₁^{11}` is nonzero, so these are not Khovanov–Lauda scalars. -/
 example : evenScalars.s false true 1 1 ≠ 0 := by simp [evenScalars]
