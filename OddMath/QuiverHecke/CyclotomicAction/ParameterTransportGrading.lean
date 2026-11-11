@@ -57,22 +57,22 @@ theorem parameterTwist_t_mem (ht : ∀ i j, ((Sc.t i j : kˣ) : k) ∈ 𝒜 0) (
 variable {𝒜 Sc} in
 /-- Transported nonzero two-dot coefficients keep their coefficient degree. -/
 theorem parameterTwist_s_mem
-    (hs : ∀ i j (p q : ℕ), 0 < p → (p : ℤ) < D.d i j → 0 < q → (q : ℤ) < D.d j i →
+    (hs : ∀ i j (p q : ℕ), i ≠ j → (p : ℤ) < D.d i j → (q : ℤ) < D.d j i →
       Sc.s i j p q ≠ 0 → Sc.s i j p q ∈ 𝒜 (SKM.coefficientDegree sy i j p q))
-    (i j : I) (p q : ℕ) (hp : 0 < p) (hp' : (p : ℤ) < D.d i j) (hq : 0 < q)
+    (i j : I) (p q : ℕ) (hij : i ≠ j) (hp' : (p : ℤ) < D.d i j)
     (hq' : (q : ℤ) < D.d j i) (h0 : (parameterTwist D Sc).s i j p q ≠ 0) :
     (parameterTwist D Sc).s i j p q ∈ 𝒜 (SKM.coefficientDegree sy i j p q) := by
   change SKM.zsign k (parameterSignExponent D i j p q) * Sc.s i j p q ∈ _
   have hs0 : Sc.s i j p q ≠ 0 := by
     intro hz
     exact h0 (by change SKM.zsign k _ * Sc.s i j p q = 0; rw [hz, mul_zero])
-  simpa using SetLike.mul_mem_graded (zsign_mem _) (hs i j p q hp hp' hq hq' hs0)
+  simpa using SetLike.mul_mem_graded (zsign_mem _) (hs i j p q hij hp' hq' hs0)
 
 /-- **Graded parameters under the parity transport.** If the `tᵢⱼ` have degree `0` and every
 nonzero `sᵢⱼ^{pq}` has its coefficient degree, the quiver Hecke presentation with the
 transported parameters `parameterTwist D Sc` is coefficient-graded homogeneous. -/
 theorem isHomogeneous_parameterTwist (ht : ∀ i j, ((Sc.t i j : kˣ) : k) ∈ 𝒜 0)
-    (hs : ∀ i j (p q : ℕ), 0 < p → (p : ℤ) < D.d i j → 0 < q → (q : ℤ) < D.d j i →
+    (hs : ∀ i j (p q : ℕ), i ≠ j → (p : ℤ) < D.d i j → (q : ℤ) < D.d j i →
       Sc.s i j p q ≠ 0 → Sc.s i j p q ∈ 𝒜 (SKM.coefficientDegree sy i j p q)) :
     CoefficientGrading.IsHomogeneous 𝒜 (gdeg D sy) (pres D (parameterTwist D Sc)) :=
   isHomogeneous_coefficientGraded D sy 𝒜 _ (parameterTwist_t_mem D ht)

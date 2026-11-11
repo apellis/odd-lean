@@ -121,7 +121,7 @@ theorem sectorActionInputs_of_graded (J : Finset I) : SectorActionInputs D Sc J 
     SwappedAssembly.SupportedSectors.probeActionInputsOver _ _ m cutoff bound ΛP ΛR hP hR
       (ReservoirWeights.pairingExtensionSymmetrizer (D.restrictColours J) (sy.restrictColours J))
       𝒜 (fun i j => ht i.val j.val)
-      (fun i j p q _ hp' _ hq' h0 => hs i.val j.val p q hp' hq' h0) b h𝒜
+      (fun i j p q _ hp' hq' h0 => hs i.val j.val p q hp' hq' h0) b h𝒜
       (pureNilpotent_of_graded
         (ReservoirWeights.pairingExtensionSymmetrizer (D.restrictColours J) (sy.restrictColours J))
         𝒜

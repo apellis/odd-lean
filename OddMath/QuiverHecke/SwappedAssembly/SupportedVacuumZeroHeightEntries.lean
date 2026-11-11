@@ -397,6 +397,7 @@ theorem vacuumEntry_zero_odd (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
       ((SKM.sChain_etaL i _).append ((SKM.sChain_lcrossL i i).append (SKM.sChain_epsL i _)))
       (-SKM.SYM.polynomialInclude D k (PowerSeries.coeff (s + 1)
         (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i))) := by
+  have : Fact Sc.PureNilpotent := ⟨hF.pure⟩
   obtain ⟨c, hc', hf⟩ := vacuumZeroOdd_decode D Sc m cutoff ΛP ΛR L hP hR hF i hi hN h0 s
   exact vacuumEntry_of_decode D Sc m cutoff ΛP ΛR L hP hR hF _ _ _ _ c
     (vacuumDecodeFaithful_tensorTarget D Sc m cutoff ΛP ΛR L hP hR c)
@@ -454,6 +455,7 @@ theorem vacuumEntry_odd_zero (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i)
       (SKM.etaL i 0 ++ (SKM.lcrossL i i ++ SKM.epsL i 0))
       ((SKM.sChain_etaL i _).append ((SKM.sChain_lcrossL i i).append (SKM.sChain_epsL i _)))
       (-(SKM.SYM.probeSign D k cutoff ⟨i, hi⟩ • SKM.SYM.delta D k ⟨i, hi⟩)) := by
+  have : Fact Sc.PureNilpotent := ⟨hF.pure⟩
   obtain ⟨c, hc', hf⟩ := vacuumOddZero_decode D Sc m cutoff ΛP ΛR L hP hR hF i hi hN h0
   exact vacuumEntry_of_decode D Sc m cutoff ΛP ΛR L hP hR hF _ _ _ _ c
     (vacuumDecodeFaithful_tensorTarget D Sc m cutoff ΛP ΛR L hP hR c)
@@ -512,6 +514,7 @@ theorem vacuumEntry_zero_even (i : I) (hi : D.parity i = 0) (hN : 0 < cutoff i)
       ((SKM.sChain_etaL i _).append ((SKM.sChain_lcrossL i i).append (SKM.sChain_epsL i _)))
       (-SKM.SYM.polynomialInclude D k (PowerSeries.coeff (s + 1)
         (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i))) := by
+  have : Fact Sc.PureNilpotent := ⟨hF.pure⟩
   obtain ⟨c, hc', hf⟩ := vacuumZeroEven_decode D Sc m cutoff ΛP ΛR L hP hR hF i hi hN h0 s
   exact vacuumEntry_of_decode D Sc m cutoff ΛP ΛR L hP hR hF _ _ _ _ c
     (vacuumDecodeFaithful_tensorTarget D Sc m cutoff ΛP ΛR L hP hR c)

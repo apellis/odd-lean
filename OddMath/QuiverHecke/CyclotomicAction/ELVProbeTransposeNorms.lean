@@ -30,7 +30,7 @@ local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR
 attribute [local irreducible] SKM.mixedPostSourcePreDot SKM.mixedPostSourcePostDot
 
 /-- All three transposed source norms are units for the specified factor pair. -/
-theorem ELVProbeCrossTransposeNormUnits [Finite I]
+theorem ELVProbeCrossTransposeNormUnits [Fact Sc.PureNilpotent] [Finite I]
     (hdot : TruncatedAppendDotNilpotent D Sc' cutoff bound) : (P).CrossTransposeNormUnits := by
   let : Fintype I := Fintype.ofFinite I
   constructor

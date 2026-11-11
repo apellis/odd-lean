@@ -30,7 +30,7 @@ variable {I X : Type u} [AddCommGroup X] (D : SKM.Datum I X) (sy : SKM.Symmetriz
 graded in degrees `0, …, b`. -/
 theorem parameterTwist_truncatedAppendDotNilpotentOver [Finite I]
     (ht : ∀ i j, ((Sc.t i j : Rˣ) : R) ∈ 𝒜 0)
-    (hs : ∀ i j (p q : ℕ), 0 < p → (p : ℤ) < D.d i j → 0 < q → (q : ℤ) < D.d j i →
+    (hs : ∀ i j (p q : ℕ), i ≠ j → (p : ℤ) < D.d i j → (q : ℤ) < D.d j i →
       Sc.s i j p q ≠ 0 → Sc.s i j p q ∈ 𝒜 (SKM.coefficientDegree sy i j p q))
     (b : ℤ) (h𝒜 : ∀ m, m ∉ Set.Icc (0 : ℤ) b → 𝒜 m = ⊥) (cutoff : I → ℕ) (N : ℕ) :
     TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff N :=

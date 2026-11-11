@@ -56,7 +56,7 @@ theorem elvProbeDx_content_separated_windows_above [Fact Sc.PureNilpotent] [Fini
       (elvProbeCrossCoeffOf_isInverse D Sc m cutoff bound ΛP ΛR hP hR hdot) hi _ hn'
 
 /-- The chosen Dx equation in the actual padded output-content corners. -/
-def ELVProbePaddedDxContentSeparatedAt [Finite I] (i : I) (t : Sector I)
+def ELVProbePaddedDxContentSeparatedAt [Fact Sc.PureNilpotent] [Finite I] (i : I) (t : Sector I)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
     (δ : WeightBlocks D ΛR ((P).muM t))
     (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound) (N : ℕ) : Prop :=
@@ -66,7 +66,7 @@ def ELVProbePaddedDxContentSeparatedAt [Finite I] (i : I) (t : Sector I)
     (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot) N
 
 /-- The chosen Cx equation retains the padded zero-source and zero-target cases. -/
-def ELVProbePaddedCxContentSeparatedAt [Finite I] (i : I) (t : Sector I)
+def ELVProbePaddedCxContentSeparatedAt [Fact Sc.PureNilpotent] [Finite I] (i : I) (t : Sector I)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
     (δ : WeightBlocks D ΛR ((P).muM t))
     (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound) (N : ℕ) : Prop :=

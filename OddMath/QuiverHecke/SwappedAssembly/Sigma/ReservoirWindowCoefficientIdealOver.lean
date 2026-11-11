@@ -37,7 +37,7 @@ local instance reservoirIdealOverHomPi (A B : PiSCat.{u,u,u + 1} k) :
 variable [Finite I] (sy : Symmetrizer D) {K : Type u} [CommRing K] [Algebra K k]
   (𝒜 : ℤ → Submodule K k) [GradedAlgebra 𝒜]
   (ht : ∀ i j, ((Sc.t i j : kˣ) : k) ∈ 𝒜 0)
-  (hs : ∀ i j (p q : ℕ), 0 < p → (p : ℤ) < D.d i j → 0 < q → (q : ℤ) < D.d j i →
+  (hs : ∀ i j (p q : ℕ), i ≠ j → (p : ℤ) < D.d i j → (q : ℤ) < D.d j i →
     Sc.s i j p q ≠ 0 → Sc.s i j p q ∈ 𝒜 (SKM.coefficientDegree sy i j p q))
   (b : ℤ) (h𝒜 : ∀ m, m ∉ Set.Icc (0 : ℤ) b → 𝒜 m = ⊥)
   (i : I) (t : Sector I) (Z : H D Sc' m cutoff bound ΛP ΛR t)

@@ -159,7 +159,7 @@ private theorem contentBendFactorDot_isIso [Fact Sc.PureNilpotent] [Finite I] (i
     (elvProbeReservoir_dot_isUnit D Sc m cutoff bound ΛP ΛR hP hR i h)
 
 /-- The whole-output Dx equation has the literal negative probe windows. -/
-def ELVProbeDxContentSeparatedAt [Finite I] (i : I) (t : Sector I)
+def ELVProbeDxContentSeparatedAt [Fact Sc.PureNilpotent] [Finite I] (i : I) (t : Sector I)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
     (δ : WeightBlocks D ΛR ((P).muM t))
     (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound) (N : ℕ) : Prop :=
@@ -168,7 +168,7 @@ def ELVProbeDxContentSeparatedAt [Finite I] (i : I) (t : Sector I)
     (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot) N
 
 /-- The whole-output Cx equation retains the normalized shifted cap. -/
-def ELVProbeCxContentSeparatedAt [Finite I] (i : I) (t : Sector I)
+def ELVProbeCxContentSeparatedAt [Fact Sc.PureNilpotent] [Finite I] (i : I) (t : Sector I)
     (hb : StepValid (false, i) true t) (hv : StepValid (true, i) false t)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
     (δ : WeightBlocks D ΛR ((P).muM t))
