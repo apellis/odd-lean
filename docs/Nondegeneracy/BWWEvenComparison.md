@@ -135,3 +135,55 @@ Proof plan: transport `P` through `bwwPolynomialsEquiv`, the grading through
 `gradedHomogeneous_toBWWScalars_iff`, apply the headline, and identify the conclusion with
 5.6 through `EvenBridge.symEquivMvPolynomial` and the relation comparison of (4).
 Mismatches (1)–(3) are the hypotheses this statement keeps beyond BWW's.
+
+**Checked statement** (`OddMath/QuiverHecke/BWWEvenSpecialization.lean`):
+`QuiverHecke.bwwPolynomials_evenNondegeneracy` proves this specialization for every purely even
+datum with a symmetrizer, without `[Finite I]`: transport through `bwwPolynomialsEquiv` and
+`gradedHomogeneous_toBWWScalars_iff`, then `bwwGradedNondegeneracy`. The form
+`bwwPolynomials_evenNondegeneracy_of_compatible` uses the symmetrizer `dᵢ = (i·i)/2` of a
+compatible symmetric Cartan datum. `presBWW_bwwPolynomials` identifies the presentation of the
+conclusion, and `quadSum_bwwPolynomials` checks that its quadratic relation is BWW (2.11): the
+double crossing on `Eᵢ Eⱼ 1_ν` is `Qᵢⱼ(x, y)` with `x` on the `i`-strand and `y` on the
+`j`-strand. Consumer: `scripts/NonVacuity/BWWEvenSpecialization.lean`.
+
+**Graded form** (`OddMath/QuiverHecke/BWWEvenGradedBasis.lean`, with the general part in
+`OddMath/SKM/CoefficientGradedBasis.lean`). The total degree of a diagram with coefficient `r`
+is the diagram degree `gdeg` plus the degree of `r`; `natIntGrading 𝒜` regards the `ℕ`-grading
+of `k` as a `ℤ`-grading, zero in negative degrees.
+- `QuiverHecke.bwwPolynomials_isHomogeneous`: under the hypotheses of
+  `bwwPolynomials_evenNondegeneracy`, every defining relation of `pres D (bwwPolynomialsEquiv
+  hD P).toScalars` lies in one total degree. This is the even case of
+  `SKM.isHomogeneous_coefficientGraded`, which holds for any parameters with `tᵢⱼ` of degree
+  `0` and each nonzero interior coefficient `sᵢⱼ(p, q)` in its coefficient degree
+  `2(dᵢdᵢⱼ - dᵢp - dⱼq)`, over any `ℤ`-graded algebra; with a decomposition of the coefficient
+  ring (`GradedAlgebra`) the Hom groups are then the direct sums of their degree parts
+  (`SKM.iSupIndep_coefficientGraded`).
+- `QuiverHecke.bwwPolynomials_evenGradedNondegeneracy`: if moreover every `c_{λ;i}` has degree
+  `0`, then for all words `a`, `b` of equal weight, every `μ` and every choice `F` of decorated
+  reduced matchings, the elements `F_t b_c` (`MatchingBasisChoice.homogeneousBasis`: the
+  decorated matching `F_t` composed with the bubble image of the monomial `b_c` of the
+  coefficient basis) form a `k`-basis of the Hom space, and `F_t b_c` lies in total degree
+  `deg b_c + deg F_t`, where `deg b_c = SYM.coefficientDegree` (each polynomial generator
+  contributes `2dᵢ` times its elementary weight, each odd bubble `2dᵢ`) and `deg F_t` is the
+  table degree of its layers. The general statement is `SKM.MatchingBasisChoice.homogeneousBasis_mem`:
+  it needs only `CScalars.DegreeZero` (each `c_{λ;i}` and its inverse in degree `0`), not the
+  homogeneity of the relations. In an `ℕ`-graded ring the inverse of a degree-`0` unit has
+  degree `0` (`QuiverHecke.inv_mem_zero_of_mem_zero`), so in the even case the condition is on
+  `c_{λ;i}` alone.
+- `QuiverHecke.bwwPolynomials_evenDirectSum`: under the hypotheses of
+  `bwwPolynomials_isHomogeneous`, every Hom space of the presented 2-category is the internal
+  direct sum of its total-degree parts (the parts are independent and span). This applies
+  `SKM.iSupIndep_coefficientGraded` through the instance `QuiverHecke.natIntGrading_gradedAlgebra`:
+  the decomposition of `natIntGrading 𝒜` is that of `𝒜`, placed in nonnegative degrees, with zero
+  negative components. No condition on the normalization is needed.
+The degree-`0` condition on the normalization is a hypothesis of the graded form beyond those of
+`bwwPolynomials_evenNondegeneracy`; it holds for normalizations taken from the degree-`0` part
+of `k`, such as the constant normalization of the consumer.
+
+Not established by these declarations:
+- a comparison of `presBWW` with an independently formalized even 2-category for general
+  parameters `Q`. categorification-lean proves nondegeneracy only for Khovanov–Lauda scalars;
+  `presUnfiltered` there has no nondegeneracy theorem. The relations beyond (2.11) are
+  identified by inspection, as in mismatch (4);
+- normalizations `c_{λ;i}` of nonzero degree in the graded form;
+- normalizations outside `CScalars`, mismatch (1).
