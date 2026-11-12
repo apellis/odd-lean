@@ -135,3 +135,21 @@ Proof plan: transport `P` through `bwwPolynomialsEquiv`, the grading through
 `gradedHomogeneous_toBWWScalars_iff`, apply the headline, and identify the conclusion with
 5.6 through `EvenBridge.symEquivMvPolynomial` and the relation comparison of (4).
 Mismatches (1)–(3) are the hypotheses this statement keeps beyond BWW's.
+
+**Checked statement** (`OddMath/QuiverHecke/BWWEvenSpecialization.lean`):
+`QuiverHecke.bwwPolynomials_evenNondegeneracy` proves this specialization for every purely even
+datum with a symmetrizer, without `[Finite I]`: transport through `bwwPolynomialsEquiv` and
+`gradedHomogeneous_toBWWScalars_iff`, then `bwwGradedNondegeneracy`. The form
+`bwwPolynomials_evenNondegeneracy_of_compatible` uses the symmetrizer `dᵢ = (i·i)/2` of a
+compatible symmetric Cartan datum. `presBWW_bwwPolynomials` identifies the presentation of the
+conclusion, and `quadSum_bwwPolynomials` checks that its quadratic relation is BWW (2.11): the
+double crossing on `Eᵢ Eⱼ 1_ν` is `Qᵢⱼ(x, y)` with `x` on the `i`-strand and `y` on the
+`j`-strand. Consumer: `scripts/NonVacuity/BWWEvenSpecialization.lean`.
+
+Not established by these declarations:
+- a comparison of `presBWW` with an independently formalized even 2-category for general
+  parameters `Q`. categorification-lean proves nondegeneracy only for Khovanov–Lauda scalars;
+  `presUnfiltered` there has no nondegeneracy theorem. The relations beyond (2.11) are
+  identified by inspection, as in mismatch (4);
+- the graded form of the conclusion (a homogeneous basis for the total coefficient grading);
+- normalizations outside `CScalars`, mismatch (1).
