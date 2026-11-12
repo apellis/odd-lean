@@ -66,10 +66,11 @@ builds those hypotheses from the bubble fields (`VacuumRouteHypotheses.of_fields
 so they hold for every symmetrizable datum. On purely even
 data with Khovanov–Lauda scalars and finitely many colours, the conclusion
 matches the checked even theorem (#1059); this compares conclusions only.
-Phase 2 is proved on BE2's parameter shape (`QuiverHecke.gradedCoefficientNondegeneracy`,
-see the remaining critical chain); the parameters of Brundan–Wang–Webster and the
-full all-even comparison of [FieldScopeBoundary](FieldScopeBoundary.md)
-remain open, so the branch is not complete.
+Phase 2 is proved for the parameters of Brundan–Wang–Webster, arXiv:2505.22929v2,
+§2.2 (`QuiverHecke.bwwLowerDegreeNondegeneracy`, `QuiverHecke.bwwGradedNondegeneracy`,
+see the remaining critical chain), given normalizing units `CScalars`. The full
+all-even comparison of [FieldScopeBoundary](FieldScopeBoundary.md) remains open,
+so the branch is not complete.
 
 **Consequences: Hom bases, `β_λ` and graded dimensions.**
 [HomBases](../../OddMath/QuiverHecke/HomBases.lean) (note: [HomBases](HomBases.md))
@@ -109,9 +110,8 @@ The branch is complete once the odd theorem and its checked all-even
 specialization match the most general cited even nondegeneracy theorems,
 except for requiring 2 invertible in the base ring. The graded-coefficient
 parameter benchmark and exact completion criteria are in
-[FieldScopeBoundary](FieldScopeBoundary.md). Phase 2 is established for BE2's
-parameter shape; the enlarged shape of Brundan–Wang–Webster is open
-([BWWParameters](BWWParameters.md)).
+[FieldScopeBoundary](FieldScopeBoundary.md). Phase 2 is established for the
+parameter shape of Brundan–Wang–Webster ([BWWParameters](BWWParameters.md)).
 
 The proposed construction uses a purely even field with 2 invertible,
 compatible symmetrizable Cartan superdata with positive integral symmetrizers,
@@ -224,13 +224,28 @@ the branch are those of [FieldScopeBoundary](FieldScopeBoundary.md):
    (`SectorActionInputs`), which hold over a base graded in degrees `0, …, b`
    (`SwappedAssembly.SupportedSectors.probeActionInputsOver`), and the route
    itself is over any commutative ring (`nondegeneracy_of_sectorActionInputs`,
-   `nondegeneracy_of_graded_base`). Open: the pure monomials of
-   Brundan–Wang–Webster ([BWWParameters](BWWParameters.md)). Plan, comparison and design: [Phase2Plan](Phase2Plan.md).
+   `nondegeneracy_of_graded_base`). **Brundan–Wang–Webster parameters** (#1151,
+   [BWWNondegeneracy](../../OddMath/QuiverHecke/BWWNondegeneracy.lean)):
+   `QuiverHecke.bwwLowerDegreeNondegeneracy` proves the conjecture for every
+   `Sc : SKM.BWWScalars D k` with `Sc.LowerDegree sy` over a commutative ring with
+   `2` invertible, and `QuiverHecke.bwwGradedNondegeneracy` for every
+   `Sc.GradedHomogeneous sy 𝒜` over an `ℕ`-graded ring (BWW §2.2, (2.6)–(2.7));
+   both for every `cs : CScalars Sc.toScalars`, with colours, weights and ring in one
+   universe and without `PureNilpotent`. Proof: the truncated Rees parameters lie in
+   the graded base of `nondegeneracy_of_graded_base`
+   (`bwwTruncatedRees_t_mem`, `bwwTruncatedRees_c_mem`, `bwwTruncatedReesCase`),
+   then `lowerDegreeCase_of_truncatedReesCase`. Consumer
+   [BWWNondegeneracy](../../scripts/NonVacuity/BWWNondegeneracy.lean) (`u³ + v³ + 1`
+   over `ℚ`, `u³ + v³ + h⁶` over `ℚ[h]`). Plan, comparison and design: [Phase2Plan](Phase2Plan.md).
 2. **All-even comparison.** A checked comparison at parity identically zero
    recovering the benchmark's ordinary basis theorem: presentations,
    normalizations, decorated matching families and bubble coefficients, and
    the grading. #1059 compares conclusions only, for Khovanov–Lauda scalars
-   and finitely many colours.
+   and finitely many colours. The parity-zero specialization of the BWW headline
+   (`bwwPolynomials_evenNondegeneracy`, with BWW (2.11) checked) is on draft #1152;
+   identification of the remaining relations with an independent even 2-category for
+   general `Q`, and the graded basis statement, are not established
+   ([BWWEvenComparison](BWWEvenComparison.md)).
 3. **Normalizations.** `CScalars` is supplied to the end theorem. A choice
    exists whenever the simple roots are linearly independent over `ℤ` in the
    weight group (`SKM.CScalars.nonempty_of_linearIndependent`, combined with
