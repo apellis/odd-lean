@@ -84,69 +84,8 @@ private theorem scalars_ext {S T : SKM.Scalars D k}
   cases hs
   rfl
 
-/-- Algebra parameter transport agrees before and after pairing extension. -/
-theorem pairingExtensionScalars_parameterTwist {k' : Type uI} [CommRing k']
-    (Sc : SKM.Scalars D k') :
-    pairingExtensionScalars D (parameterTwist D Sc) =
-      parameterTwist (pairingExtension D) (pairingExtensionScalars D Sc) := by
-  apply scalars_ext (pairingExtension D)
-  · funext i j
-    simp only [pairingExtensionScalars_t, parameterTwist, parameterSignExponent,
-      pairingExtension_parity, pairingExtension_dn]
-  · funext i j p q
-    rfl
-
 variable {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
-
-/-- Multicolour coherence restricts along the existing exact factor restriction. -/
-theorem restrictRouquierMulticolour (Sc : SKM.Scalars D k)
-    (T : SKM.RouquierFamily (k := k) (B := B) (pairingExtension D))
-    (M : SKM.RouquierMulticolour T (pairingExtensionScalars D Sc)) :
-    SKM.RouquierMulticolour (restrictRouquierFamily D T) Sc where
-  quadZero := by
-    intro i j hij hd a b c d h₁ h₂ h₃ h₄
-    simpa only [restrictRouquierFamily, pairingExtensionScalars_t] using
-      M.quadZero i j hij (by simpa only [pairingExtension_d] using hd)
-        (extension_edge D j h₁) (extension_edge D i h₂)
-        (extension_edge D i h₃) (extension_edge D j h₄)
-  quadNe := by
-    intro i j hij hd a b c d h₁ h₂ h₃ h₄
-    simpa only [restrictRouquierFamily, pairingExtensionScalars_t,
-      pairingExtensionScalars_s, pairingExtension_dn] using
-      M.quadNe i j hij (by simpa only [pairingExtension_d] using hd)
-        (extension_edge D j h₁) (extension_edge D i h₂)
-        (extension_edge D i h₃) (extension_edge D j h₄)
-  slideLeft := by
-    intro i j hij a b c d h₁ h₂ h₃ h₄
-    simpa only [restrictRouquierFamily, pairingExtension_parity] using
-      M.slideLeft i j hij (extension_edge D j h₁) (extension_edge D i h₂)
-        (extension_edge D i h₃) (extension_edge D j h₄)
-  slideRight := by
-    intro i j hij a b c d h₁ h₂ h₃ h₄
-    simpa only [restrictRouquierFamily, pairingExtension_parity] using
-      M.slideRight i j hij (extension_edge D j h₁) (extension_edge D i h₂)
-        (extension_edge D i h₃) (extension_edge D j h₄)
-  braid := by
-    intro i j l hne a bl bj bi clj cli cji d hal haj hai hlj hli hjl hji hil hij hd₁ hd₂ hd₃
-    simpa only [restrictRouquierFamily] using
-      M.braid i j l hne (extension_edge D l hal) (extension_edge D j haj)
-        (extension_edge D i hai) (extension_edge D j hlj) (extension_edge D i hli)
-        (extension_edge D l hjl) (extension_edge D i hji) (extension_edge D l hil)
-        (extension_edge D j hij) (extension_edge D i hd₁)
-        (extension_edge D j hd₂) (extension_edge D l hd₃)
-  braidEq := by
-    intro i j hij a b c d e f hab haf hbc hbe hfc hcd hed
-    simpa only [restrictRouquierFamily, pairingExtensionScalars_t,
-      pairingExtensionScalars_s, pairingExtension_dn, pairingExtension_parity] using
-      M.braidEq i j hij (extension_edge D i hab) (extension_edge D j haf)
-        (extension_edge D j hbc) (extension_edge D i hbe) (extension_edge D i hfc)
-        (extension_edge D i hcd) (extension_edge D j hed)
-  invNe := by
-    intro i j hij x ν c d h₁ h₂ h₃ h₄
-    simpa only [restrictRouquierFamily] using
-      M.invNe i j hij (extension_edge D j h₁) (extension_edge D i h₂)
-        (extension_edge D i h₃) (extension_edge D j h₄)
 
 end OddMath.QuiverHecke.ReservoirWeights

@@ -118,37 +118,6 @@ end Product
 variable [Fintype I] (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
   (ha : CyclotomicPolynomialParity D a) (n : ℕ)
 
-/-- Even linear cancellation at the morphism level: for `p(i) = 0` a factor
-`1_i ⊗ c − x₁` can be removed. -/
-theorem KillE.of_linear_even (hp : D.parity i = 0) {w : Word I (n + 1)}
-    (c : End (wordObj D Sc w)) {Y : End (wordObj D Sc (prependWord i w))}
-    (h : KillE D Sc i β a ha n w
-      (((show End ((pres D Sc).obj (ob D (i :: w.1))) from
-        (pres D Sc).obj (ob D [i]) ◁ c) - dotE D Sc (i :: w.1) 0) ≫ Y)) :
-    KillE D Sc i β a ha n w Y := by
-  unfold KillE at h ⊢
-  rw [← End.mul_def, map_mul, map_sub, cornerMap_whiskerLeft, cornerMap_dotZero] at h
-  refine PrependKills.of_linear_even hp (FiniteHomMatrix.cornerMap w c) (h.of_eq ?_)
-  set e := cornerUnit D Sc i w
-  set f := affineFirstDot D Sc i (n + 1)
-  have hz := cornerMap_mul_cornerUnit (D := D) (Sc := Sc) (i := i) Y
-  have hef : e * f = f * e := cornerUnit_comm_firstDot
-  rw [mul_sub, mul_sub]
-  congr 1
-  rw [← hef, ← mul_assoc, hz]
-
-/-- Transport of killing along an equality of words. -/
-theorem KillE.congr_word {w w' : Word I (n + 1)} (e : w.1 = w'.1)
-    {Y : End ((pres D Sc).obj (ob D (i :: w.1)))} (hY : KillE D Sc i β a ha n w Y) :
-    KillE D Sc i β a ha n w'
-      (eqToHom (congrArg (fun t => (pres D Sc).obj (ob D (i :: t))) e.symm) ≫ Y ≫
-        eqToHom (congrArg (fun t => (pres D Sc).obj (ob D (i :: t))) e)) := by
-  obtain ⟨l, hl⟩ := w
-  obtain ⟨l', hl'⟩ := w'
-  dsimp only at e
-  subst e
-  simpa using hY
-
 section Context
 
 /-- `Y` kills on `i :: (s ++ σ)` after right whiskering by every right context `σ`. -/
@@ -191,63 +160,6 @@ theorem KillAll.zero : KillAll D Sc i β a ha n s (0 : (pres D Sc).obj (ob D (i 
 
 theorem KillAll.of_eq {Y Z : (pres D Sc).obj (ob D (i :: s)) ⟶ (pres D Sc).obj (ob D (i :: s))}
     (hY : KillAll D Sc i β a ha n s Y) (h : Y = Z) : KillAll D Sc i β a ha n s Z := h ▸ hY
-
-variable (D Sc i β a ha n s) in
-/-- The precompositions preserving `KillAll`. -/
-def goodAll : Subalgebra k (End ((pres D Sc).obj (ob D (i :: s)))) where
-  carrier := {g | ∀ (σ : List I) (h : (s ++ σ).length = n + 1),
-    GoodE D Sc i β a ha n ⟨s ++ σ, h⟩ (g ▷ (pres D Sc).obj (ob D σ))}
-  mul_mem' {g g'} hg hg' σ h := by
-    change GoodE D Sc i β a ha n ⟨s ++ σ, h⟩ (whiskerWordAlgHom D Sc (i :: s) σ (g * g'))
-    rw [map_mul]
-    exact (goodSubalgebra D Sc i β a ha n ⟨s ++ σ, h⟩).mul_mem (hg σ h) (hg' σ h)
-  add_mem' {g g'} hg hg' σ h := by
-    change GoodE D Sc i β a ha n ⟨s ++ σ, h⟩ (whiskerWordAlgHom D Sc (i :: s) σ (g + g'))
-    rw [map_add]
-    exact (goodSubalgebra D Sc i β a ha n ⟨s ++ σ, h⟩).add_mem (hg σ h) (hg' σ h)
-  algebraMap_mem' c σ h := by
-    change GoodE D Sc i β a ha n ⟨s ++ σ, h⟩ (whiskerWordAlgHom D Sc (i :: s) σ (algebraMap k _ c))
-    rw [AlgHom.commutes]
-    exact (goodSubalgebra D Sc i β a ha n ⟨s ++ σ, h⟩).algebraMap_mem c
-
-/-- Adjoining a last spectator. -/
-theorem KillAll.whiskerRight_cons {Y : (pres D Sc).obj (ob D (i :: s)) ⟶ (pres D Sc).obj (ob D (i :: s))} (x : I)
-    (hY : KillAll D Sc i β a ha n s Y) :
-    KillAll D Sc i β a ha n (s ++ [x])
-      (Y ▷ (pres D Sc).obj (ob D [x]) : End ((pres D Sc).obj (ob D (i :: (s ++ [x]))))) :=
-  fun σ h => by
-    have h' : (s ++ (x :: σ)).length = n + 1 := by simpa using h
-    have e : (⟨s ++ (x :: σ), h'⟩ : Word I (n + 1)).1 = (⟨s ++ [x] ++ σ, h⟩ : Word I (n + 1)).1 :=
-      by simp
-    have := KillE.congr_word D Sc i β a ha n e (hY (x :: σ) h')
-    rw [whiskerRight_whiskerRight_word]
-    exact this
-
-theorem KillAll.of_sq_sub (c : End ((pres D Sc).obj (ob D s)))
-    {Y : (pres D Sc).obj (ob D (i :: s)) ⟶ (pres D Sc).obj (ob D (i :: s))}
-    (h : KillAll D Sc i β a ha n s
-      ((dotE D Sc (i :: s) 0 ^ 2 - (show End ((pres D Sc).obj (ob D (i :: s))) from
-        (pres D Sc).obj (ob D [i]) ◁ c)) ≫ Y)) :
-    KillAll D Sc i β a ha n s Y := fun σ hσ => by
-  refine KillE.of_sq_sub (w := ⟨s ++ σ, hσ⟩) (c ▷ (pres D Sc).obj (ob D σ)) ?_
-  have := h σ hσ
-  rw [MonoidalSupercategory.comp_whiskerRight (R := k), ← whiskerWordAlgHom_apply D Sc
-    (i :: s) σ (_ - _), map_sub, map_pow, whiskerWordAlgHom_apply, whiskerWordAlgHom_apply,
-    dotE_whiskerRight D Sc (i :: s) σ 0 (by simp), whiskerLeft_whiskerRight_cons] at this
-  exact this
-
-theorem KillAll.of_linear_even (hp : D.parity i = 0) (c : End ((pres D Sc).obj (ob D s)))
-    {Y : (pres D Sc).obj (ob D (i :: s)) ⟶ (pres D Sc).obj (ob D (i :: s))}
-    (h : KillAll D Sc i β a ha n s
-      (((show End ((pres D Sc).obj (ob D (i :: s))) from
-        (pres D Sc).obj (ob D [i]) ◁ c) - dotE D Sc (i :: s) 0) ≫ Y)) :
-    KillAll D Sc i β a ha n s Y := fun σ hσ => by
-  refine KillE.of_linear_even D Sc i β a ha n hp (w := ⟨s ++ σ, hσ⟩) (c ▷ (pres D Sc).obj (ob D σ)) ?_
-  have := h σ hσ
-  rw [MonoidalSupercategory.comp_whiskerRight (R := k), ← whiskerWordAlgHom_apply D Sc
-    (i :: s) σ (_ - _), map_sub, whiskerWordAlgHom_apply, whiskerWordAlgHom_apply,
-    dotE_whiskerRight D Sc (i :: s) σ 0 (by simp), whiskerLeft_whiskerRight_cons] at this
-  exact this
 
 end Context
 

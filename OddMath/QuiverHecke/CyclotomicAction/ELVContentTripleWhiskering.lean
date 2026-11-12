@@ -66,12 +66,6 @@ open scoped TensorProduct
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
 
-/-- The pair-content target witness used by the triple comparison. -/
-theorem contentPair_target_eq (β : Multiset I) (i j : I) (δ : Multiset I)
-    (hδ : (β + ([i] : Multiset I)) + ([j] : Multiset I) = δ) :
-    β + ([i,j] : Multiset I) = δ :=
-  (contentPair_sum β i j).trans hδ
-
 private theorem arrowRecast_map_heq {ι : Type*} {A B : ι → Type*}
     (F : ∀ i, A i → B i) {i j : ι} (h : i = j)
     {a : A i} {b : A j} (hab : HEq a b) : HEq (F i a) (F j b) := by
@@ -196,34 +190,9 @@ theorem contentInductionCompTo_inner_arrow (β : Multiset I) (σ σ' : List I)
       (MonoidalSupercategory.whiskerRight_mem (R := k) ((pres D Sc).obj (ob D τ)) ha))
     (fun v => appendComponent_rightContext_arrow_heq D Sc cutoff N v.obj.word σ σ' τ a) M z
 
-/-- Changing only the intermediate content is an equality transport of the iterated functor. -/
-theorem contentETripleTo_middle_eq (β : Multiset I) (i j l : I) (δ γ : Multiset I)
-    (hδ : (β + ([i] : Multiset I)) + ([j] : Multiset I) = δ)
-    (h : β + ([i,j,l] : Multiset I) = γ)
-    (hγ : δ + ([l] : Multiset I) = γ) :
-    contentETripleTo D Sc cutoff N β i j l γ h =
-      contentEPairTo D Sc cutoff N β i j δ (contentPair_target_eq β i j δ hδ) ⋙
-        contentInductionTo D Sc cutoff N δ [l] γ hγ := by
-  subst δ
-  rfl
-
-/-- Intermediate-content recast, with no crossing in its definition. -/
-def contentETripleMiddleIso (β : Multiset I) (i j l : I) (δ γ : Multiset I)
-    (hδ : (β + ([i] : Multiset I)) + ([j] : Multiset I) = δ)
-    (h : β + ([i,j,l] : Multiset I) = γ)
-    (hγ : δ + ([l] : Multiset I) = γ) :
-    contentETripleTo D Sc cutoff N β i j l γ h ≅
-      contentEPairTo D Sc cutoff N β i j δ (contentPair_target_eq β i j δ hδ) ⋙
-        contentInductionTo D Sc cutoff N δ [l] γ hγ :=
-  eqToIso (contentETripleTo_middle_eq D Sc cutoff N β i j l δ γ hδ h hγ)
-
 private def compIsoApp {C B E : Type*} [Category* C] [Category* B] [Category* E]
     (J : C ⥤ B) (K : B ⥤ E) (L : C ⥤ E) (e : J ⋙ K ≅ L) (M : C) :
     K.obj (J.obj M) ≅ L.obj M := e.app M
-
-private def isoCompApp {C B E : Type*} [Category* C] [Category* B] [Category* E]
-    (V : C ⥤ E) (J : C ⥤ B) (K : B ⥤ E) (e : V ≅ J ⋙ K) (M : C) :
-    V.obj M ≅ K.obj (J.obj M) := e.app M
 
 private theorem compIsoApp_hom_mem
     {C B E : Type*} [Category* C] [Category* B] [Category* E]

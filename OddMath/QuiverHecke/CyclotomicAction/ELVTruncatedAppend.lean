@@ -152,13 +152,4 @@ theorem rightContext_mem_degree (σ : List I) {v w : List I} {n : ℤ}
     (Y := obj D Sc cutoff (w ++ σ)) ha
     (GradedMonoidalSupercategory.whiskerRight_mem_degree ((pres D Sc).obj (ob D σ)) hg)
 
-/-- Right append has degree zero, independently of total super parity. -/
-theorem truncatedAppend_mem_degree (σ : List I)
-    {v w : TruncatedCategory D Sc cutoff N} {n : ℤ} {f : v ⟶ w}
-    (hf : f ∈ truncatedDegree D Sc cutoff sy hc N v.word w.word n) :
-    (truncatedAppend D Sc cutoff N σ).map f ∈
-      truncatedDegree D Sc cutoff sy hc N (v.word ++ σ) (w.word ++ σ) n := by
-  obtain ⟨a, ha, rfl⟩ := hf
-  exact Submodule.mem_map_of_mem (rightContext_mem_degree D Sc cutoff sy hc σ ha)
-
 end OddMath.QuiverHecke.ELVOld

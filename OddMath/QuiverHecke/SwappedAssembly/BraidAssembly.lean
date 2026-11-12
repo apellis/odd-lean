@@ -69,10 +69,5 @@ theorem braidRelationsOfDenominatorUnits (c : P.CrossCoeff Sc) (L : P.LeftwardDa
     BraidRelations Sc (P.layerRep Gs Ys (P.swappedGens c L)) :=
   P.braidRelations (P.crossBraidOfDenominatorUnits c L hc h)
 
-/-- The original nilpotence-based braid criterion is retained as a corollary. -/
-theorem crossBraidOfInputs (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) : CrossBraid (P.swappedGens c L) :=
-  P.crossBraidOfDenominatorUnits c L hc (h : P.CrossDenominatorUnits)
-
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

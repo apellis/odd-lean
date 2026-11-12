@@ -259,59 +259,6 @@ instance truncatedELVCoefficientDegreeGrading (cutoff : I → ℕ) (N : ℕ) :
       apply Quotient.sound
       exact truncatedELVCoefficientIdeal_degree D sy cutoff N (Quotient.exact hx) n)
 
-/-- Upper support vanishing follows from the proved degree/weight estimate. -/
-theorem truncatedELVCoefficientDegree_eq_bot (cutoff : I → ℕ) (N : ℕ)
-    (M : ℤ) (hM : 0 ≤ M)
-    (hbound : ∀ a, coefficientDegree D sy a ≤ M * coefficientWeight D a)
-    (n : ℤ) (hn : M * N < n) :
-    truncatedELVCoefficientDegree (k := k) D sy cutoff N n = ⊥ := by
-  apply le_antisymm _ bot_le
-  rintro _ ⟨x, hx, rfl⟩
-  change truncatedELVCoefficientQuotient D cutoff N x = 0
-  induction hx using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨a, ha, rfl⟩ := hx
-    apply Quotient.sound
-    apply TwoSidedIdeal.mem_sup_right
-    rw [mem_coefficientIdeal_iff]
-    apply Submodule.subset_span
-    refine ⟨a, ?_, rfl⟩
-    change N ≤ coefficientWeight D a
-    by_contra h
-    have hw : (coefficientWeight D a : ℤ) ≤ N := by exact_mod_cast (by omega : coefficientWeight D a ≤ N)
-    have hh := mul_le_mul_of_nonneg_left hw hM
-    have hb := hbound a
-    change coefficientDegree D sy a = n at ha
-    omega
-  | zero => exact map_zero _
-  | add x y _ _ hx hy => simp only [map_add, hx, hy, add_zero]
-  | smul c x _ hx => simp only [map_smul, hx, smul_zero]
-
-/-- Finite colour support provides an upper support bound on this coefficient quotient. -/
-theorem truncatedELVCoefficientDegree_bounded [Finite I] (cutoff : I → ℕ) (N : ℕ) :
-    ∃ b : ℤ, ∀ n, b < n → truncatedELVCoefficientDegree (k := k) D sy cutoff N n = ⊥ := by
-  obtain ⟨M, hM, hb⟩ := exists_coefficientDegree_bound D sy
-  exact ⟨M * N, fun n hn => truncatedELVCoefficientDegree_eq_bot D sy cutoff N M hM hb n hn⟩
-
-/-- Low-weight coefficients survive both the ELV relations and the further truncation. -/
-theorem truncatedELVCoefficient_quotient_injective {cutoff : I → ℕ} {d N : ℕ}
-    (hd : ∀ i, d ≤ cutoff i) (hN : d < N) :
-    Function.Injective (fun x : CoefficientAtMost D k d =>
-      truncatedELVCoefficientQuotient D cutoff N (x : SYM D k)) := by
-  intro x y hxy
-  apply Subtype.ext
-  apply sub_eq_zero.mp
-  have hi : truncatedELVCoefficientIdeal D cutoff N ≤ coefficientIdeal D k (d + 1) := by
-    apply sup_le (elvCoefficientIdeal_le_weight D k hd)
-    intro a ha
-    rw [mem_coefficientIdeal_iff] at ha ⊢
-    exact coefficientAtLeast_antitone D k (by omega) ha
-  have hh : (x : SYM D k) - y ∈ coefficientIdeal D k (d + 1) :=
-    hi ((TwoSidedIdeal.rel_iff _ _ _).mp (Quotient.exact hxy))
-  exact Submodule.disjoint_def.mp
-    (disjoint_coefficientAtMost_coefficientAtLeast D k (Nat.lt_succ_self d)) _
-    (Submodule.sub_mem _ x.property y.property) ((mem_coefficientIdeal_iff D k _ _).mp hh)
-
 private theorem image_degree_parity {B : Type u} [Ring B] [Algebra k B]
     (q : SYM D k →ₐ[k] B) (H : ZMod 2 → Submodule k B) [GradedAlgebra H]
     (hbasis : ∀ a, q (coefficientBasis D k a) ∈ H (a.2.card : ZMod 2))
@@ -384,23 +331,5 @@ instance truncatedELVCoefficientParityGrading (cutoff : I → ℕ) (N : ℕ) :
       intro x hx p
       apply Quotient.sound
       exact truncatedELVCoefficientIdeal_parity D cutoff N (Quotient.exact hx) p)
-
-theorem truncatedELVCoefficientBasis_mem_parity (cutoff : I → ℕ) (N : ℕ)
-    (a : CoefficientIndex D) :
-    truncatedELVCoefficientQuotient (k := k) D cutoff N (coefficientBasis D k a) ∈
-      truncatedELVCoefficientParity D cutoff N (a.2.card : ZMod 2) := by
-  refine ⟨_, coefficientBasis_mem_parity D k a, ?_⟩
-  change truncatedELVCoefficientQuotient D cutoff N
-    ((polynomialExteriorEquiv D k).symm (polynomialExteriorEquiv D k (coefficientBasis D k a))) = _
-  rw [AlgEquiv.symm_apply_apply]
-
-/-- A bounded coefficient/vacuum algebra, still with its exterior coefficients.
-This is not a positive-content cyclotomic algebra or a full 2-action. -/
-def truncatedELVCoefficientGSuperAlg (cutoff : I → ℕ) (N : ℕ) : StringDiagrams.GSuperAlg k where
-  carrier := TruncatedELVCoefficientAlgebra D cutoff N
-  grading := truncatedELVCoefficientParity D cutoff N
-  degree := truncatedELVCoefficientDegree D sy cutoff N
-  decompose_mem := image_degree_parity D sy (truncatedELVCoefficientQuotient D cutoff N)
-    (truncatedELVCoefficientParity D cutoff N) (truncatedELVCoefficientBasis_mem_parity D cutoff N)
 
 end OddMath.SKM.SYM

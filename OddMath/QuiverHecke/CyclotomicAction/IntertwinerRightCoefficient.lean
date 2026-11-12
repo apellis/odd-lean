@@ -95,18 +95,6 @@ theorem rightCoefficient_Q (i : I) (β : Multiset I) (a : I → _root_.Polynomia
   | tmul x b => simp only [LinearMap.comp_apply, parityCyclotomicContentQ_tmul,
       sourceRightCoefficient_tmul, targetRightCoefficient_tmul, qCoefficientInsert_mul]
 
-/-- The descended right action satisfies the one law. -/
-theorem sourceRightCoefficient_one (i : I) (a : I → _root_.Polynomial k)
-    (n : ℕ) :
-    sourceRightCoefficient D Sc i a n 1 = LinearMap.id := by
-  apply LinearMap.ext
-  intro z
-  induction z using InductionAlong.Ind.induction_on with
-  | zero => simp
-  | add z w hz hw => simpa only [map_add] using congrArg₂ (· + ·) hz hw
-  | tmul x d => simp only [LinearMap.id_apply,
-      sourceRightCoefficient_tmul, mul_one]
-
 /-- The descended right action satisfies the mul law. -/
 theorem sourceRightCoefficient_mul (i : I) (a : I → _root_.Polynomial k)
     (n : ℕ) (b c : CyclotomicAlgebra D Sc a n) :
@@ -119,18 +107,6 @@ theorem sourceRightCoefficient_mul (i : I) (a : I → _root_.Polynomial k)
   | add z w hz hw => simpa only [map_add] using congrArg₂ (· + ·) hz hw
   | tmul x d => simp only [LinearMap.comp_apply,
       sourceRightCoefficient_tmul, mul_assoc]
-
-/-- The descended right action satisfies the one law. -/
-theorem targetRightCoefficient_one (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n : ℕ) :
-    targetRightCoefficient D Sc i β a ha n 1 = LinearMap.id := by
-  apply LinearMap.ext
-  intro z
-  induction z using InductionAlong.Ind.induction_on with
-  | zero => simp
-  | add z w hz hw => simpa only [map_add] using congrArg₂ (· + ·) hz hw
-  | tmul x d => simp only [LinearMap.id_apply,
-      targetRightCoefficient_tmul, SuperBimodule.ract_one, SVec.id_apply]
 
 /-- The descended right action satisfies the mul law. -/
 theorem targetRightCoefficient_mul (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
@@ -176,96 +152,6 @@ def targetRightCoefficientLinear (i : I) (β : Multiset I) (a : I → _root_.Pol
           Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1)) ⊗[ℤ] (qCoefficient D Sc i β a ha n).toSVec) ⧸
           BalancedTensor.rel ℤ (Hn D Sc (n + 1 + 1)) (Hn D Sc (n + 1)) _ _))
     (targetRightCoefficient D Sc i β a ha n c).restrictScalars k
-
-/-- The coefficient involution produces the supertensor sign on the source. -/
-theorem rightDotCoefficient_mul (i : I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n : ℕ) (q : ZMod 2)
-    (c : CyclotomicAlgebra D Sc a n) (hc : c ∈ cyclotomicParity D Sc a ha n q)
-    (b : CyclotomicAlgebra D Sc a n) :
-    rightDotCoefficient D Sc i a ha n (b * c) =
-      sign k (D.parity i * q) • (rightDotCoefficient D Sc i a ha n b * c) := by
-  have h := LinearMap.congr_fun (SVec.sgn_comp_of_mem
-    ((SuperBimodule.regular (cyclotomicParity D Sc a ha n)).ract_mem q c hc) (D.parity i)) b
-  simp only [LinearMap.comp_apply, LinearMap.smul_apply, mul_comm q (D.parity i)] at h
-  convert h using 1 <;> rfl
-
-/-- The same involution identity retains the shifted target right action. -/
-theorem targetDotCoefficient_ract (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n : ℕ) (q : ZMod 2)
-    (c : CyclotomicAlgebra D Sc a n) (hc : c ∈ cyclotomicParity D Sc a ha n q)
-    (b : (qCoefficient D Sc i β a ha n).toSVec) :
-    (qCoefficient D Sc i β a ha n).toSVec.sgn (D.parity i)
-        ((qCoefficient D Sc i β a ha n).ract c b) =
-      sign k (D.parity i * q) • (qCoefficient D Sc i β a ha n).ract c
-        ((qCoefficient D Sc i β a ha n).toSVec.sgn (D.parity i) b) := by
-  have h := LinearMap.congr_fun (SVec.sgn_comp_of_mem
-    ((qCoefficient D Sc i β a ha n).ract_mem q c hc) (D.parity i)) b
-  simp only [LinearMap.comp_apply, LinearMap.smul_apply, mul_comm q (D.parity i)] at h
-  convert h using 1 <;> rfl
-
-/-- Right dot and right coefficient satisfy the supertensor relation on the source quotient.
-Here composition applies the coefficient first and the dot second. -/
-theorem sourceRightDot_coefficient (i : I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n : ℕ) (q : ZMod 2)
-    (c : CyclotomicAlgebra D Sc a n) (hc : c ∈ cyclotomicParity D Sc a ha n q) :
-    (sourceRightDotLinear D Sc i a ha n).comp (sourceRightCoefficientLinear D Sc i a ha n c) =
-      sign k (D.parity i * q) •
-        (sourceRightCoefficientLinear D Sc i a ha n c).comp (sourceRightDotLinear D Sc i a ha n) := by
-  apply LinearMap.ext
-  intro z
-  have hcoeff := rightDotCoefficient_mul D Sc i a ha n q c hc
-  rcases parity_eq_zero_or_one (D.parity i * q) with he | he
-  · simp only [he, sign_zero, one_smul] at hcoeff ⊢
-    induction z using InductionAlong.Ind.induction_on with
-    | zero => simp
-    | add z w hz hw => simpa only [map_add] using congrArg₂ (· + ·) hz hw
-    | tmul x b =>
-      change sourceRightDot D Sc i a ha n (sourceRightCoefficient D Sc i a n c
-        (InductionAlong.Ind.tmul x b)) = sourceRightCoefficient D Sc i a n c
-        (sourceRightDot D Sc i a ha n (InductionAlong.Ind.tmul x b))
-      simp only [sourceRightCoefficient_tmul, sourceRightDot_tmul, hcoeff]
-  · simp only [he, sign_one, neg_one_smul] at hcoeff ⊢
-    induction z using InductionAlong.Ind.induction_on with
-    | zero => simp
-    | add z w hz hw => simpa only [map_add] using congrArg₂ (· + ·) hz hw
-    | tmul x b =>
-      change sourceRightDot D Sc i a ha n (sourceRightCoefficient D Sc i a n c
-        (InductionAlong.Ind.tmul x b)) = -(sourceRightCoefficient D Sc i a n c
-        (sourceRightDot D Sc i a ha n (InductionAlong.Ind.tmul x b)))
-      simp only [sourceRightCoefficient_tmul, sourceRightDot_tmul, hcoeff]
-      exact BalancedTensor.tmul_neg _ _
-
-/-- Right dot and right coefficient satisfy the supertensor relation on the target quotient.
-Here composition applies the coefficient first and the dot second. -/
-theorem targetRightDot_coefficient (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n : ℕ) (q : ZMod 2)
-    (c : CyclotomicAlgebra D Sc a n) (hc : c ∈ cyclotomicParity D Sc a ha n q) :
-    (targetRightDotLinear D Sc i β a ha n).comp (targetRightCoefficientLinear D Sc i β a ha n c) =
-      sign k (D.parity i * q) •
-        (targetRightCoefficientLinear D Sc i β a ha n c).comp (targetRightDotLinear D Sc i β a ha n) := by
-  apply LinearMap.ext
-  intro z
-  have hcoeff := targetDotCoefficient_ract D Sc i β a ha n q c hc
-  rcases parity_eq_zero_or_one (D.parity i * q) with he | he
-  · simp only [he, sign_zero, one_smul] at hcoeff ⊢
-    induction z using InductionAlong.Ind.induction_on with
-    | zero => simp
-    | add z w hz hw => simpa only [map_add] using congrArg₂ (· + ·) hz hw
-    | tmul x b =>
-      change targetRightDot D Sc i β a ha n (targetRightCoefficient D Sc i β a ha n c
-        (InductionAlong.Ind.tmul x b)) = targetRightCoefficient D Sc i β a ha n c
-        (targetRightDot D Sc i β a ha n (InductionAlong.Ind.tmul x b))
-      simp only [targetRightCoefficient_tmul, targetRightDot_tmul, hcoeff]
-  · simp only [he, sign_one, neg_one_smul] at hcoeff ⊢
-    induction z using InductionAlong.Ind.induction_on with
-    | zero => simp
-    | add z w hz hw => simpa only [map_add] using congrArg₂ (· + ·) hz hw
-    | tmul x b =>
-      change targetRightDot D Sc i β a ha n (targetRightCoefficient D Sc i β a ha n c
-        (InductionAlong.Ind.tmul x b)) = -(targetRightCoefficient D Sc i β a ha n c
-        (targetRightDot D Sc i β a ha n (InductionAlong.Ind.tmul x b)))
-      simp only [targetRightCoefficient_tmul, targetRightDot_tmul, hcoeff]
-      exact BalancedTensor.tmul_neg _ _
 
 /-- Additive coefficient law for the descended source action. -/
 theorem sourceRightCoefficient_zero (i : I) (a : I → _root_.Polynomial k)

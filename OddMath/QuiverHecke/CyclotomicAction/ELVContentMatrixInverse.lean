@@ -25,11 +25,6 @@ def unitMatrixSourceModule (i : I) (m : ℕ) :
     Superfunctor k (OldCategory D Sc cutoff) (SVec k) :=
   FiniteSupermodule.product (unitMatrixFamily D Sc cutoff i M m)
 
-/-- The prescribed finite cap family as an old supermodule. -/
-def capMatrixTargetModule (i : I) (m : ℕ) :
-    Superfunctor k (OldCategory D Sc cutoff) (SVec k) :=
-  FiniteSupermodule.product (capMatrixFamily D Sc cutoff i M m)
-
 /-- The literal assembled unit matrix is natural along all old arrows. -/
 def unitMatrixNatTrans (i : I) (m : ℕ) :
     (unitMatrixSourceModule D Sc cutoff M i m).toFunctor ⟶
@@ -37,14 +32,6 @@ def unitMatrixNatTrans (i : I) (m : ℕ) :
         ((BalancedInduction.induction (append D Sc cutoff i)).obj M)).toFunctor :=
   FiniteSupermodule.columns (unitMatrixEntry D Sc cutoff i M m)
     (unitMatrixEntry_mem D Sc cutoff i M m)
-
-/-- The literal assembled cap matrix is natural along all old arrows. -/
-def capMatrixNatTrans (i : I) (m : ℕ) :
-    ((BalancedInduction.induction (append D Sc cutoff i)).obj
-      ((BalancedInduction.restriction (append D Sc cutoff i)).obj M)).toFunctor ⟶
-        (capMatrixTargetModule D Sc cutoff M i m).toFunctor :=
-  FiniteSupermodule.rows (capMatrixEntry D Sc cutoff i M m)
-    (capMatrixEntry_mem D Sc cutoff i M m)
 
 private def unitIsoAtCount (i : I) (t : OldCategory D Sc cutoff)
     (hh : 0 ≤ contentCrossingHeight D cutoff i (t.word : Multiset I))
@@ -121,19 +108,6 @@ def contentUnitMatrixNatIso (i : I) (ν : List I)
     simp only [contentUnitMatrixComponentIso_hom]
     exact (unitMatrixNatTrans D Sc cutoff M i _).naturality f)
 
-/-- Cap-row inversion natural in every arrow of the output content block. -/
-def contentCapMatrixNatIso (i : I) (ν : List I)
-    (hh : contentCrossingHeight D cutoff i (ν : Multiset I) ≤ 0) :
-    (oldContentInclusion D Sc cutoff ν ⋙
-      ((BalancedInduction.induction (append D Sc cutoff i)).obj
-        ((BalancedInduction.restriction (append D Sc cutoff i)).obj M)).toFunctor) ≅
-    (oldContentInclusion D Sc cutoff ν ⋙
-      (capMatrixTargetModule D Sc cutoff M i (contentCapCount D cutoff i (ν : Multiset I))).toFunctor) :=
-  NatIso.ofComponents (contentCapMatrixComponentIso D Sc cutoff M i ν hh) (by
-    intro t t' f
-    simp only [contentCapMatrixComponentIso_hom]
-    exact (capMatrixNatTrans D Sc cutoff M i _).naturality f)
-
 /-- Even supermodule inversion on fixed output content, for every old input module. -/
 def contentUnitMatrixIso (i : I) (ν : List I)
     (hh : 0 ≤ contentCrossingHeight D cutoff i (ν : Multiset I)) :
@@ -151,23 +125,6 @@ def contentUnitMatrixIso (i : I) (ν : List I)
       rw [contentUnitMatrixComponentIso_hom]
       exact unitMatrixComponent_even D Sc cutoff i M _ t.obj))
 
-/-- Even supermodule cap inversion on fixed output content, for every old input module. -/
-def contentCapMatrixIso (i : I) (ν : List I)
-    (hh : contentCrossingHeight D cutoff i (ν : Multiset I) ≤ 0) :
-    (BalancedInduction.restriction (oldContentInclusion D Sc cutoff ν)).obj
-      ((BalancedInduction.induction (append D Sc cutoff i)).obj
-        ((BalancedInduction.restriction (append D Sc cutoff i)).obj M)) ≅
-    (BalancedInduction.restriction (oldContentInclusion D Sc cutoff ν)).obj
-      (capMatrixTargetModule D Sc cutoff M i (contentCapCount D cutoff i (ν : Multiset I))) :=
-  moduleIsoOfEvenNatIso _ _ (contentCapMatrixNatIso D Sc cutoff M i ν hh)
-    (fun t => by
-      change (contentCapMatrixComponentIso D Sc cutoff M i ν hh t).hom ∈ _
-      rw [contentCapMatrixComponentIso_hom]
-      exact capMatrixComponent_even D Sc cutoff i M _ t.obj)
-    (fun t => Supercategory.inv_mem (contentCapMatrixComponentIso D Sc cutoff M i ν hh t) (by
-      rw [contentCapMatrixComponentIso_hom]
-      exact capMatrixComponent_even D Sc cutoff i M _ t.obj))
-
 /-- The content supermodule isomorphism has exactly the prescribed unit components. -/
 theorem contentUnitMatrixIso_hom_total (i : I) (ν : List I)
     (hh : 0 ≤ contentCrossingHeight D cutoff i (ν : Multiset I))
@@ -176,15 +133,6 @@ theorem contentUnitMatrixIso_hom_total (i : I) (ν : List I)
       unitMatrixComponent D Sc cutoff i M (contentUnitCount D cutoff i (ν : Multiset I)) t.obj := by
   change (contentUnitMatrixComponentIso D Sc cutoff M i ν hh t).hom + 0 = _
   rw [add_zero, contentUnitMatrixComponentIso_hom]
-
-/-- The content supermodule isomorphism has exactly the prescribed cap components. -/
-theorem contentCapMatrixIso_hom_total (i : I) (ν : List I)
-    (hh : contentCrossingHeight D cutoff i (ν : Multiset I) ≤ 0)
-    (t : OldContentCategory D Sc cutoff ν) :
-    (contentCapMatrixIso D Sc cutoff M i ν hh).hom.total t =
-      capMatrixComponent D Sc cutoff i M (contentCapCount D cutoff i (ν : Multiset I)) t.obj := by
-  change (contentCapMatrixComponentIso D Sc cutoff M i ν hh t).hom + 0 = _
-  rw [add_zero, contentCapMatrixComponentIso_hom]
 
 /-- Both directions preserve parity as module morphisms, not only pointwise. -/
 theorem contentUnitMatrixIso_even (i : I) (ν : List I)

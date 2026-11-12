@@ -184,23 +184,6 @@ instance : h.functor.Additive := Presentation.lift_additive h.respects
 
 instance : h.functor.Linear k := Presentation.lift_linear h.respects
 
-/-- **The upward module action at rightmost weight `μ`** obtained from the obligations. -/
-def upwardModuleAction (μ : X) : UpwardModuleAction D Sc μ where
-  V t := Q.M (SKM.ob D μ (upWord t))
-  act t t' :=
-    { toFun f := (h.functor.map f).hom
-      map_add' f g := by rw [Functor.map_add, ModuleCat.hom_add]
-      map_smul' r f := by rw [Functor.map_smul, ModuleCat.hom_smul]; rfl }
-  act_id t := by
-    ext x
-    simp
-  act_comp t t' t'' f g := by
-    ext x
-    simp
-
-theorem upwardModuleAction_act (μ : X) (t t' : List I) (f : UpwardHom D Sc μ t t') :
-    (h.upwardModuleAction μ).act t t' f = (h.functor.map f).hom := rfl
-
 end SwappedObligations
 
 end SKM

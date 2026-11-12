@@ -182,95 +182,12 @@ namespace ProbeReservoir
 
 variable {P : ProbeReservoir k B D Sc}
 
-/-- **The swapping blocks of (1.13).** Between distinct sectors the augmented map (1.13) is
-the single sideways-crossing entry (there is no dotted window), and minus its inverse is the
-leftward crossing of the inverse. -/
-theorem posInverse_of_ne (c : P.CrossCoeff) (i : I) (ν : X) {t s : Sector I} (hts : t ≠ s)
-    (h : ∀ (p : SPath (wd D ν [up i, dn i]) t s) (q : SPath (wd D ν [dn i, up i]) t s)
-      (Z : P.H s), IsIso (P.sigmaEntry c i i ν p q Z)) :
-    ∃ lc dc, P.PosInverse c i ν t s lc dc := by
-  have : Subsingleton (SPath (wd D ν [up i, dn i]) t s) := SPath.subsingleton_upDn_self hts _ _
-  have : Subsingleton (SPath (wd D ν [dn i, up i]) t s) := SPath.subsingleton_dnUp_self hts _ _
-  have : IsEmpty (SPath (wd D ν []) t s) := SPath.isEmpty_nil_of_ne hts
-  have hne : Nonempty (SPath (wd D ν [up i, dn i]) t s) ↔
-      Nonempty (SPath (wd D ν [dn i, up i]) t s) := SPath.nonempty_dnUp_self_iff hts _ _ _ _
-  refine ⟨fun q p Z => -inv (P.sigmaEntry c i i ν p q Z), fun _ r => isEmptyElim r, ?_⟩
-  let _ := Fintype.ofFinite (SPath (wd D ν [up i, dn i]) t s)
-  let _ := Fintype.ofFinite (SPath (wd D ν [dn i, up i]) t s)
-  let _ := Fintype.ofFinite (SPath (wd D ν []) t s)
-  refine ⟨fun p p' Z => ?_, fun q q' Z => ?_, fun _ _ _ r => isEmptyElim r,
-    fun _ _ r => isEmptyElim r, fun _ _ _ _ r => isEmptyElim r⟩
-  · obtain rfl := Subsingleton.elim p p'
-    obtain ⟨q⟩ := hne.1 ⟨p⟩
-    rw [Fintype.sum_subsingleton _ q, Finset.sum_eq_zero fun _ _ => Fintype.sum_empty _,
-      add_zero]
-    unfold famDelta
-    simp
-  · obtain rfl := Subsingleton.elim q q'
-    obtain ⟨p⟩ := hne.2 ⟨q⟩
-    rw [Fintype.sum_subsingleton _ p]
-    unfold famDelta
-    simp
-
-/-- **The swapping blocks of (1.14).** Between distinct sectors the augmented map (1.14) is
-minus the single sideways-crossing entry, and the inverse of that entry is the leftward
-crossing of the inverse. -/
-theorem negInverse_of_ne (c : P.CrossCoeff) (i : I) (ν : X) {t s : Sector I} (hts : t ≠ s)
-    (h : ∀ (p : SPath (wd D ν [up i, dn i]) t s) (q : SPath (wd D ν [dn i, up i]) t s)
-      (Z : P.H s), IsIso (P.sigmaEntry c i i ν p q Z)) :
-    ∃ lc dc, P.NegInverse c i ν t s lc dc := by
-  have : Subsingleton (SPath (wd D ν [up i, dn i]) t s) := SPath.subsingleton_upDn_self hts _ _
-  have : Subsingleton (SPath (wd D ν [dn i, up i]) t s) := SPath.subsingleton_dnUp_self hts _ _
-  have : IsEmpty (SPath (wd D ν []) t s) := SPath.isEmpty_nil_of_ne hts
-  have hne : Nonempty (SPath (wd D ν [up i, dn i]) t s) ↔
-      Nonempty (SPath (wd D ν [dn i, up i]) t s) := SPath.nonempty_dnUp_self_iff hts _ _ _ _
-  refine ⟨fun q p Z => -inv (P.sigmaEntry c i i ν p q Z), fun _ _ r => isEmptyElim r, ?_⟩
-  let _ := Fintype.ofFinite (SPath (wd D ν [up i, dn i]) t s)
-  let _ := Fintype.ofFinite (SPath (wd D ν [dn i, up i]) t s)
-  let _ := Fintype.ofFinite (SPath (wd D ν []) t s)
-  refine ⟨fun q q' Z => ?_, fun p p' Z => ?_, fun _ _ r => isEmptyElim r,
-    fun _ _ _ r => isEmptyElim r, fun _ _ _ _ r => isEmptyElim r⟩
-  · obtain rfl := Subsingleton.elim q q'
-    obtain ⟨p⟩ := hne.2 ⟨q⟩
-    rw [Fintype.sum_subsingleton _ p, Finset.sum_eq_zero fun _ _ => Fintype.sum_empty _,
-      add_zero]
-    unfold famDelta
-    simp
-  · obtain rfl := Subsingleton.elim p p'
-    obtain ⟨q⟩ := hne.1 ⟨p⟩
-    rw [Fintype.sum_subsingleton _ q]
-    unfold famDelta
-    simp
-
-/-- **The central blocks are invertible**: at every colour `i` and sector `t` of weight `ν`,
-the augmented map between the sectors `t` and `t` (which carries all the dotted windows) has an
-inverse. The weight restriction is essential: the summands at `t` do not depend on `ν`, while
-the number of dotted windows `|⟨hᵢ, ν⟩|` does. -/
-def CentralInvertible (P : ProbeReservoir k B D Sc) (c : P.CrossCoeff) : Prop :=
-  ∀ (i : I) (ν : X) (t : Sector I), P.wt t = ν →
-    (0 ≤ D.h i ν → ∃ lc dc, P.PosInverse c i ν t t lc dc) ∧
-    (D.h i ν < 0 → ∃ lc dc, P.NegInverse c i ν t t lc dc)
-
 /-- **The swapping entries are invertible**: every equal-colour sideways-crossing entry
 between distinct sectors is an isomorphism. -/
 def SwappingInvertible (P : ProbeReservoir k B D Sc) (c : P.CrossCoeff) : Prop :=
   ∀ (i : I) (ν : X) (t s : Sector I), t ≠ s →
     ∀ (p : SPath (wd D ν [up i, dn i]) t s) (q : SPath (wd D ν [dn i, up i]) t s)
       (Z : P.H s), IsIso (P.sigmaEntry c i i ν p q Z)
-
-/-- **Reduction of `AugmentedInvertible` to the sector blocks.** If the augmented maps of the
-central blocks (`s = t`, where all the dotted windows lie) have inverses and the
-sideways-crossing entries between distinct sectors (the swapping blocks) are invertible, then
-the augmented maps are invertible. -/
-theorem augmentedInvertible_of_central_of_swapping (c : P.CrossCoeff)
-    (hcentral : P.CentralInvertible c) (hswap : P.SwappingInvertible c) :
-    P.AugmentedInvertible c := by
-  intro i ν t s hw
-  by_cases hts : t = s
-  · subst hts
-    exact hcentral i ν t hw
-  · exact ⟨fun _ => posInverse_of_ne c i ν hts (hswap i ν t s hts),
-      fun _ => negInverse_of_ne c i ν hts (hswap i ν t s hts)⟩
 
 end ProbeReservoir
 

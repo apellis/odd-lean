@@ -36,39 +36,7 @@ theorem inductionLastCrossing_eq_cl (i j : I) {n : ℕ} (w : Word I n) :
   apply Presentation.diag_eq_of_layers_eq
   simp [appendWord, pl, PG.ld, layList, lay, ob, List.append_assoc, Layer.wl]
 
-/-- Two equal-colour last crossings compose to zero on each word. -/
-theorem inductionLastCrossing_square (i : I) {n : ℕ} (w : Word I n) :
-    inductionLastCrossing D Sc i i w ≫ inductionLastCrossing D Sc i i w = 0 := by
-  rw [inductionLastCrossing_eq_cl, cl_comp]
-  have aux {t : List I} (ht : t = w.1 ++ [i, i] ++ [])
-      (h : SChain t (pl t [.cross w.1.length, .cross w.1.length]) t) :
-      cl D Sc t t [.cross w.1.length, .cross w.1.length] h = 0 := by
-    subst t
-    exact cross_cross_eq D Sc w.1 [] i h
-  exact aux (by simp [appendWord, List.append_assoc]) _
-
 variable [Fintype I]
-
-/-- Square-zero in the actual affine finite-matrix algebra. -/
-theorem affineLastCrossing_square (i : I) (n : ℕ) :
-    affineLastCrossing D Sc i i n * affineLastCrossing D Sc i i n = 0 := by
-  unfold affineLastCrossing
-  rw [Finset.mul_sum]
-  apply Finset.sum_eq_zero
-  intro w _
-  rw [Finset.sum_mul, Finset.sum_eq_single w]
-  · rw [FiniteHomMatrix.single_mul_single, inductionLastCrossing_square]
-    exact FiniteHomMatrix.single_zero _ _
-  · intro b _ hb
-    apply FiniteHomMatrix.single_mul_single_of_ne
-    intro h
-    exact hb (appendWord_injective i n (appendWord_injective i (n + 1) h))
-  · simp
-
-/-- Square-zero descends through the actual two-sided cyclotomic ideal. -/
-theorem cyclotomicLastCrossing_square (i : I) (a : I → _root_.Polynomial k) (n : ℕ) :
-    cyclotomicLastCrossing D Sc i i a n * cyclotomicLastCrossing D Sc i i a n = 0 := by
-  rw [cyclotomicLastCrossing, ← map_mul, affineLastCrossing_square, map_zero]
 
 variable (i : I) (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
 local notation "P" => compositionCorner D Sc i i a ha n

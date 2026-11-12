@@ -13,35 +13,6 @@ turn injective multiplication into bijective multiplication.
 namespace OddMath.QuiverHecke.SignedNilHecke
 variable {B : Type*} [Ring B]
 
-/-- The distinct-colour dot-slide and quadratic relation detect the next-dot
-kernel once the positive next-dot terms are factored on the right. This is
-the algebraic kernel step in `InvertibleDotProbe.md` §3, without commuting
-any coefficient or localizing the quadratic polynomial. -/
-theorem distinct_dot_kernel {u v w a b t r z : B} (d : ℕ)
-    (hu : Function.Injective (fun x : B => u * x))
-    (hw : Function.Injective (fun x : B => w * x))
-    (ht : Function.Injective (fun x : B => t * x))
-    (slide : w * a = a * v) (quadratic : b * a = t * u ^ d + r * v)
-    (hz : v * z = 0) : z = 0 := by
-  have ha : a * z = 0 := by
-    apply hw
-    change w * (a * z) = w * 0
-    rw [mul_zero, ← mul_assoc, slide, mul_assoc, hz, mul_zero]
-  have htu : t * (u ^ d * z) = 0 := by
-    have h := congrArg (fun c : B => c * z) quadratic
-    simpa only [mul_assoc, ha, mul_zero, add_mul, hz, add_zero] using h.symm
-  have hud : u ^ d * z = 0 := ht (by simpa only [mul_zero] using htu)
-  have hpow : ∀ n : ℕ, Function.Injective (fun x : B => u ^ n * x) := by
-    intro n
-    induction n with
-    | zero => intro x y h; simpa only [pow_zero, one_mul] using h
-    | succ n ih =>
-      intro x y h
-      apply ih
-      apply hu
-      simpa only [pow_succ', mul_assoc] using h
-  exact hpow d (by simpa only [mul_zero] using hud)
-
 theorem EvenTwo.right_mul_eq_zero {u v T z : B} (h : EvenTwo u v T)
     (hu : Function.Injective (fun x : B => u * x)) (hz : v * z = 0) : z = 0 := by
   have hp : phiEven u v T * z = 0 := by

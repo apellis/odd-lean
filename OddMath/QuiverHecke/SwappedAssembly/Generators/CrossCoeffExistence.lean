@@ -185,37 +185,6 @@ theorem crossCoeffOfDenominatorUnits_isInverse (h : P.CrossDenominatorUnits) :
     · rw [← End.mul_def, ← hd, ← mul_assoc, Units.mul_inv, one_mul]
     · rw [← End.mul_def, ← hd, mul_assoc, hcomm.eq, ← mul_assoc, Units.inv_mul, one_mul]
 
-/-- Compatibility producer from the original unit/nilpotence criterion. -/
-abbrev crossCoeffOfInputs (h : P.CrossCoeffInputs) : P.CrossCoeff Sc :=
-  P.crossCoeffOfDenominatorUnits (h : P.CrossDenominatorUnits)
-
-/-- The original conditional coefficient producer remains a corollary. -/
-theorem crossCoeffOfInputs_isInverse (h : P.CrossCoeffInputs) :
-    (P.crossCoeffOfInputs h).IsInverse :=
-  P.crossCoeffOfDenominatorUnits_isInverse (h : P.CrossDenominatorUnits)
-
-/-- The pointwise inputs follow from invertibility of every probe dot and nilpotence of every
-reservoir dot as 2-morphisms (F2, F3). -/
-theorem CrossCoeffInputs.of_factor
-    (hT : ∀ (i : I) {x y : X} (h : x + D.α i = y), IsUnit (show End (P.T.E i h) from P.T.dot i h))
-    (hW : ∀ (i : I) {x y : X} (h : x + D.α i = y),
-      IsNilpotent (show End (P.W.E i h) from P.W.dot i h)) :
-    P.CrossCoeffInputs := by
-  constructor
-  · intro i t hv Z
-    exact ((hT i (P.muP_preE i (nextSector (true, i) false t))).map
-      ((homPost (k := k) Z).mapEnd _)).map ((P.step (true, i) false t hv).mapEnd _)
-  · intro i t hv Z
-    obtain ⟨n, hn⟩ := hW i (P.muM_postE i hv)
-    refine ⟨n, ?_⟩
-    have := homContentPostDot_power (k := k) P.T.obj P.W i t.1 (P.muP t) (P.muM_postE i hv) n
-      ((P.step (true, i) true _ trivial).obj Z)
-    simp only [rpPostDot]
-    rw [this, rouquierPower_eq_pow, hn]
-    have hz : ∀ {a b c : B} (f : a ⟶ b) (g : b ⟶ c), f ◁ (0 : g ⟶ g) = 0 := fun f g =>
-      (homPre (k := k) f).map_zero g g
-    rw [hz, Functor.map_zero]
-
 end ProbeReservoir
 
 end OddMath.QuiverHecke.SwappedAssembly

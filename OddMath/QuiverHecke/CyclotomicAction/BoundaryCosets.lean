@@ -193,15 +193,6 @@ def toMackeyBoundary : MackeyBoundary σ L₁ L₀ L₀' where
 
 @[simp] theorem toMackeyBoundary_B₁ : M.toMackeyBoundary.B₁ = M.B₁ := rfl
 
-/-- **(7) for every corrected iterate**, with the lift of `S(ρ̄) w₀` given modulo the short
-span: if `z₀ ≡ ℓ(S) mod L₁'` and `P z₀ = j(c F)`, then `Σ_j φ_(k+j) b_j = c F t^k`. -/
-theorem norm_of_short {S F : ℕ →₀ B} {D : ℕ} (hS : DegLT S (D + 1)) (hSσ : ∀ j, σ (S j) = S j)
-    {c : B} (hc : σ c = c) {z₀ : L₁} (hz₁ : z₀ - M.ℓ S ∈ M.short)
-    (hz₀ : M.P z₀ = M.j (lsmul c F)) (k : ℕ) :
-    ∑ j ∈ Finset.range (D + 1), rsmul (S j) (M.toMackeyBoundary.φ (k + j)) =
-      lsmul c (tPow σ k F) :=
-  M.toMackeyBoundary.norm hS hSσ hc (M.B₁_eq hz₁) hz₀ k
-
 end MackeyCosets
 
 end OddMath.QuiverHecke.CyclotomicAction.BoundaryPolynomial

@@ -20,20 +20,6 @@ variable {k : Type r} [CommRing k] {C C' : Type*} [Category C] [Category C']
   {F G H K : C ⥤ C'} [F.Additive] [G.Additive] [H.Additive] [K.Additive]
   [F.Linear k] [G.Linear k] [H.Linear k] [K.Linear k]
 
-omit [F.Linear k] in
-/-- Moving the target to its literal parity shift makes a homogeneous map even. -/
-theorem IsSupernatural.shiftTarget [IsSuperfunctor k G] [PiSupercategory k C'] {p : ZMod 2}
-    {x : ∀ Z, F.obj Z ⟶ G.obj Z} (hx : IsSupernatural k p x) :
-    IsSupernatural k 0 (F := F) (G := G ⋙ homParityShift (k := k) p)
-      (fun Z => x Z ≫ ((homParityShiftDatum (k := k) p).iso (G.obj Z)).inv) := by
-  have hi : IsSupernatural k p (F := 𝟭 C') (G := homParityShift (k := k) p)
-      (fun Z => ((homParityShiftDatum (k := k) p).iso Z).inv) :=
-    ⟨(homParityShiftDatum (k := k) p).inv_mem,
-      fun hf => (homParityShiftDatum (k := k) p).inv_naturality hf⟩
-  have ht := hx.comp (hi.whiskerLeft G)
-  rw [zmod2_add_self] at ht
-  exact ht
-
 /-- Moving the source to its literal parity shift makes a homogeneous map even. -/
 theorem IsSupernatural.shiftSource [IsSuperfunctor k F] [PiSupercategory k C'] {p : ZMod 2}
     {x : ∀ Z, F.obj Z ⟶ G.obj Z} (hx : IsSupernatural k p x) :

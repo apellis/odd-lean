@@ -166,26 +166,6 @@ def parityCyclotomicContentQ (i : I) (β : Multiset I) (a : I → _root_.Polynom
     (ha : CyclotomicPolynomialParity D a) (n : ℕ) :=
   (qCoefficientTransfer D Sc i β a ha n).comp (cyclotomicContentQ D Sc i n β a)
 
-/-- The coefficient insertion has exactly the prescribed parity shift. -/
-theorem qCoefficientInsert_mem (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
-    (ha : CyclotomicPolynomialParity D a) (n : ℕ) (p : ZMod 2)
-    (b : CyclotomicAlgebra D Sc a n) (hb : b ∈ cyclotomicParity D Sc a ha n p) :
-    qCoefficientInsert D Sc i β a ha n b ∈
-      (qCoefficient D Sc i β a ha n).toSVec.part
-        ((D.parity i * contentSumParity D β) + p) := by
-  rw [qCoefficientInsert_apply]
-  let V := SuperBimodule.regular (cyclotomicParity D Sc a ha n)
-  let e := Envelope.ζPow k (D.parity i * contentSumParity D β) V
-  have he : e.inv.1 ∈ Supercategory.parity (R := k) V.toSVec
-      (qCoefficient D Sc i β a ha n).toSVec (D.parity i * contentSumParity D β) :=
-    SuperBimodule.mem_parity_iff.mp (Envelope.ζPow_inv_mem (R := k)
-      (D.parity i * contentSumParity D β) V)
-  have hb' : b ∈ V.toSVec.part p :=
-    (SuperBimodule.mem_regularSVec_part_iff _).mpr hb
-  have h := SVec.apply_mem_part he hb'
-  simp only [add_comm] at h ⊢
-  convert h using 1
-
 /-- The refined map retains the actual moving-strand representative. -/
 @[simp] theorem parityCyclotomicContentQ_tmul (i : I) (β : Multiset I)
     (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)

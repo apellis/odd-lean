@@ -38,21 +38,5 @@ theorem slideLeft_power (n : ℕ) :
       Linear.smul_comp, Category.assoc, ← TwoSupercategory.comp_whiskerRight (R := k),
       ← rouquierPower_succ, smul_smul, ← pow_succ']
 
-include M hne in
-/-- Iterated right dot slide, retaining the exact inherited crossing. -/
-theorem slideRight_power (n : ℕ) :
-    T.cross i j h₁ h₂ h₃ h₄ ≫ T.E i h₃ ◁ rouquierPower (T.dot j h₄) n =
-      zsign k (D.parity i * D.parity j) ^ n •
-        (rouquierPower (T.dot j h₁) n ▷ T.E i h₂ ≫ T.cross i j h₁ h₂ h₃ h₄) := by
-  induction n with
-  | zero => simp only [rouquierPower_zero, TwoSupercategory.whiskerLeft_id (R := k),
-      TwoSupercategory.id_whiskerRight (R := k), Category.id_comp, Category.comp_id,
-      pow_zero, one_smul]
-  | succ n ih =>
-    rw [rouquierPower_succ, TwoSupercategory.whiskerLeft_comp (R := k), ← Category.assoc,
-      ih, Linear.smul_comp, Category.assoc, M.slideRight i j hne h₁ h₂ h₃ h₄,
-      Linear.comp_smul, ← Category.assoc, ← TwoSupercategory.comp_whiskerRight (R := k),
-      ← rouquierPower_succ, smul_smul, ← pow_succ]
-
 end RouquierMulticolour
 end OddMath.SKM

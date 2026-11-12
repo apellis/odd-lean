@@ -37,49 +37,6 @@ omit [Fintype I] in
       D.parity i * (β.map D.parity).sum := by
   simp [appendSourceSign, appendContentParity]
 
-omit [Fintype I] in
-theorem appendQ_eq_contentParity (t : Word I (n + 1)) (ht : wordContent t = β) :
-    appendQ D a i t.1 = appendContentParity D a β i := by
-  subst β
-  rfl
-
-/-- The old cyclotomic ideal annihilates its content corner. -/
-theorem contentCorner_cyclotomic_smul (r : Hn D Sc (n + 1))
-    (hr : r ∈ cyclotomicIdeal D Sc a n) (m : CyclotomicContentCorner D Sc a n β) :
-    r • m = 0 := by
-  apply contentCornerVal_injective D Sc a n β
-  change cyclotomicMk D Sc a n r * contentCornerVal D Sc a n β m = 0
-  have h : cyclotomicMk D Sc a n r = 0 := Ideal.Quotient.eq_zero_iff_mem.mpr hr
-  rw [h, zero_mul]
-
-/-- A word of the wrong content acts by zero on the corner. -/
-theorem contentCorner_word_smul_of_ne (t : Word I (n + 1))
-    (ht : wordContent t ≠ β) (m : CyclotomicContentCorner D Sc a n β) :
-    FiniteHomMatrix.single t t (𝟙 (wordObj D Sc t)) • m = 0 := by
-  have he : FiniteHomMatrix.single t t (𝟙 (wordObj D Sc t)) *
-      contentIdempotent D Sc (n + 1) β = 0 := by
-    unfold contentIdempotent FiniteHomMatrix.localUnit
-    rw [Finset.mul_sum]
-    apply Finset.sum_eq_zero
-    intro s hs
-    apply FiniteHomMatrix.single_mul_single_of_ne
-    intro h
-    subst s
-    exact ht (Finset.mem_filter.mp hs).2
-  apply contentCornerVal_injective D Sc a n β
-  change cyclotomicMk D Sc a n _ * contentCornerVal D Sc a n β m = 0
-  rw [← contentCornerVal_e_mul D Sc a n β m, ← mul_assoc]
-  change (cyclotomicMk D Sc a n _ * cyclotomicMk D Sc a n _) * _ = 0
-  rw [← map_mul, he, map_zero, zero_mul]
-
-/-- The constant-parity condition needed for `appendMackeyMap`. -/
-theorem contentCorner_appendQ_smul (t : Word I (n + 1))
-    (ht : appendQ D a i t.1 ≠ appendContentParity D a β i)
-    (m : CyclotomicContentCorner D Sc a n β) :
-    FiniteHomMatrix.single t t (𝟙 (wordObj D Sc t)) • m = 0 :=
-  contentCorner_word_smul_of_ne D Sc a n β t
-    (fun h => ht (appendQ_eq_contentParity D a n β i t h)) m
-
 local notation "B" => CyclotomicContentCorner D Sc a n β
 local notation "eps" => appendContentParity D a β i
 local notation "ψ" =>
@@ -94,29 +51,5 @@ def appendContentSource : AddSubgroup L where
   neg_mem' hz := (smul_neg _ _).trans (congrArg Neg.neg hz)
 
 variable (ha : CyclotomicPolynomialParity D a)
-
-/-- The prescribed multiplier `z ⊗ b ↦ z W ⊗ b`, on the two content corners. -/
-def appendContentP : appendContentSource D Sc a n β i →+
-    appendTensorFixed D Sc i n B :=
-  AddMonoidHom.codRestrict
-    ((appendMackeyMap D Sc (i := i) (n := n) (ε := eps) (N := B) ha (contentCorner_cyclotomic_smul D Sc a n β)
-      (contentCorner_appendQ_smul D Sc a n β i)).toAddMonoidHom.comp
-        (appendContentSource D Sc a n β i).subtype) _ fun z => by
-    change (ψ 1 : Hn D Sc (n + 1 + 1)) • _ = _
-    let P := appendMackeyMap D Sc (i := i) (n := n) (ε := eps) (N := B) ha (contentCorner_cyclotomic_smul D Sc a n β)
-      (contentCorner_appendQ_smul D Sc a n β i)
-    exact (P.map_smul (ψ 1) z.1).symm.trans (congrArg P z.2)
-
-/-- The first-dot operator with the constant content sign. -/
-def appendContentRho : appendContentSource D Sc a n β i →+
-    appendContentSource D Sc a n β i :=
-  zsign ℤ (appendSourceSign D a i eps) • AddMonoidHom.codRestrict
-    ((appendSourceDot D Sc i n eps (contentCornerParity D Sc a n β i ha).toAddMonoidHom
-      (contentCornerParity_smul D Sc a n β i ha)).toAddMonoidHom.comp
-        (appendContentSource D Sc a n β i).subtype) (appendContentSource D Sc a n β i) fun z => by
-    change (ψ 1 : Hn D Sc (n + 1 + 1)) • _ = _
-    let R := appendSourceDot D Sc i n eps (contentCornerParity D Sc a n β i ha).toAddMonoidHom
-      (contentCornerParity_smul D Sc a n β i ha)
-    exact (R.map_smul (ψ 1) z.1).symm.trans (congrArg R z.2)
 
 end OddMath.QuiverHecke

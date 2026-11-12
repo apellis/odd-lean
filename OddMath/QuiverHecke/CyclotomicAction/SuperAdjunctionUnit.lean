@@ -83,10 +83,6 @@ def superUnitComponent (M : CyclotomicSupermodules D Sc a ha n) : M ⟶ tensor Q
       intro m
       rfl⟩
 
-theorem superUnitComponent_mem (M : CyclotomicSupermodules D Sc a ha n) :
-    superUnitComponent D Sc i a ha n M ∈ Supercategory.parity (R := k) _ _ 0 :=
-  mem_parity_iff.mpr (superUnitLinear_mem D Sc i a ha n M)
-
 /-- Naturality includes homogeneous odd module maps. -/
 theorem superUnitComponent_naturality_of_mem
     {M N : CyclotomicSupermodules D Sc a ha n} {p : ZMod 2} (f : M ⟶ N)

@@ -55,30 +55,9 @@ theorem coefficient_fromArrow (ν : List I)
   simpa only [Category.id_comp] using PowerWordYoneda.generator_naturality D Sc cutoff L ν
     (coefficientEndomorphism D Sc cutoff ν a) (𝟙 _)
 
-private def vacuumMap (a : CoefficientPowerQuotient (k := k) D cutoff L) :
-    End (powerWordModule D Sc cutoff L []) := vacuumCoefficientAction D Sc cutoff L a
-
 section Weight
 variable [Fintype I] (Λ : X)
 local notation "N" => PowerWordContent.powerBound D cutoff L
-/-- The genuine regular A/T vacuum coefficient map, descended and restricted
-to every block of the same weight family. -/
-def vacuumFamilyCoefficient (a : CoefficientPowerQuotient (k := k) D cutoff L) :
-    End (PowerWordWeight.wordFamily D Sc cutoff L Λ (PowerWordWeight.wordWeight D Λ []) []) :=
-  fun β => (BalancedInduction.restriction (contentInclusion D Sc cutoff N β.1)).map
-    (weightedModuleHom D Sc cutoff N (powerWordModule D Sc cutoff L []) (powerWordModule D Sc cutoff L [])
-      (PowerWordContent.word_killsWeighted D Sc cutoff L []) (PowerWordContent.word_killsWeighted D Sc cutoff L [])
-      (vacuumMap D Sc cutoff L a))
-
-/-- Literal whiskering of the given regular A/T coefficient action by the
-chosen E-word functors. No coordinate-defined substitute action is used. -/
-def coefficientValue (a : CoefficientPowerQuotient (k := k) D cutoff L) (ν : List I) :
-    End (PowerWordEvaluation.value D Sc cutoff L Λ ν) :=
-  ν.reverseRecOn
-    (conjugate (eqToIso (PowerWordEvaluation.value_nil D Sc cutoff L Λ))
-      (vacuumFamilyCoefficient D Sc cutoff L Λ a))
-    (fun ρ i f => conjugate (eqToIso (PowerWordEvaluation.value_append D Sc cutoff L Λ ρ i))
-      ((elvEFunctor D Sc cutoff N i Λ (PowerWordWeight.wordWeight_append D Λ ρ i)).map f))
 
 end Weight
 end OddMath.QuiverHecke.ELVOld.PowerWordCoefficients

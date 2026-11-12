@@ -109,26 +109,6 @@ theorem independentSBoundaryRemainder_above (p : ZMod 2)
   simp only [Finsupp.mapRange.linearMap_apply, Finsupp.mapRange_apply, LinearMap.flip_apply]
   rw [outputPolynomialBoundary_iterate_high, inputCoefficientShift_apply_add]
 
-/-- On odd moving colour this is literal untwisted chronological convolution
-on every full old coefficient, not merely on scalar identities. -/
-theorem independentSRightProduct_single (j : {j : I // D.parity j = 1})
-    (v : List I) (m : ℕ) (b : Old D Sc cutoff v v) :
-    independentSRightProduct D Sc cutoff j.1 v (Finsupp.single m b) =
-      ∑ n ∈ (independentOutputS D Sc cutoff j.1 v).support,
-        Finsupp.single (n + m) (oldComp D Sc cutoff v v v b
-          (independentOutputS D Sc cutoff j.1 v n)) := by
-  simp only [independentSRightProduct, LinearMap.sum_apply, LinearMap.comp_apply,
-    inputCoefficientShift, Finsupp.lsum_single, Finsupp.lsingle_apply,
-    Finsupp.mapRange.linearMap_apply, Finsupp.mapRange_single, LinearMap.flip_apply]
-  apply Finset.sum_congr rfl
-  intro n hn
-  obtain ⟨q, hq⟩ := independentOutputS_support_even D Sc cutoff j.1 j.2 v hn
-  have he : n • D.parity j.1 = 0 := by
-    rw [hq, add_smul, j.2]
-    simp only [nsmul_eq_mul, mul_one]
-    rw [← two_mul, show (2 : ZMod 2) = 0 from rfl, zero_mul]
-  rw [he, oldTwist_zero_apply]
-
 theorem independentSRightProduct_high (j : {j : I // D.parity j = 1})
     (v : List I) (f : ℕ →₀ Old D Sc cutoff v v) (m : ℕ)
     (hm : outputSDegree D j.1 v ≤ m) :
@@ -193,49 +173,6 @@ theorem independentSRightProduct_detect_bound (j : {j : I // D.parity j = 1})
   have ht := independentSRightProduct_top D Sc cutoff j v f M hbound
   rw [hf _ (by omega) (by omega)] at ht
   exact (Finsupp.mem_support_iff.mp hM) ht.symm
-
-/-- A right S product cannot be supported strictly below the S bound unless
-its input is zero. This includes D=0 and zero corners. -/
-theorem independentSRightProduct_eq_zero_of_low (j : {j : I // D.parity j = 1})
-    (v : List I) (f : ℕ →₀ Old D Sc cutoff v v)
-    (hf : ∀ m, outputSDegree D j.1 v ≤ m → independentSRightProduct D Sc cutoff j.1 v f m = 0) :
-    f = 0 := by
-  by_contra h
-  have hs : f.support.Nonempty := Finsupp.support_nonempty_iff.mpr h
-  obtain ⟨M, hM, hmax⟩ := f.support.exists_max_image id hs
-  have hb : ∀ n, M < n → f n = 0 := by
-    intro n hn
-    by_contra hz
-    have hh := hmax n (Finsupp.mem_support_iff.mpr hz)
-    change n ≤ M at hh
-    omega
-  have ht := independentSRightProduct_top D Sc cutoff j v f M hb
-  rw [hf _ (by omega)] at ht
-  exact (Finsupp.mem_support_iff.mp hM) ht.symm
-
-/-- Uniqueness of ordered S quotients and low remainders. -/
-theorem independentS_division_unique (j : {j : I // D.parity j = 1})
-    (v : List I) (f g r s : ℕ →₀ Old D Sc cutoff v v)
-    (hr : r.support ⊆ Finset.range (outputSDegree D j.1 v))
-    (hs : s.support ⊆ Finset.range (outputSDegree D j.1 v))
-    (h : independentSRightProduct D Sc cutoff j.1 v f + r =
-      independentSRightProduct D Sc cutoff j.1 v g + s) : f = g ∧ r = s := by
-  have hfg : f = g := by
-    apply sub_eq_zero.mp
-    apply independentSRightProduct_eq_zero_of_low D Sc cutoff j v (f - g)
-    intro m hm
-    have hz (a : ℕ →₀ Old D Sc cutoff v v)
-        (ha : a.support ⊆ Finset.range (outputSDegree D j.1 v)) : a m = 0 := by
-      apply Finsupp.notMem_support_iff.mp
-      intro hh
-      have hh' := Finset.mem_range.mp (ha hh)
-      omega
-    have he := congrArg (fun a : ℕ →₀ Old D Sc cutoff v v => a m) h
-    simp only [Finsupp.add_apply, hz r hr, hz s hs, add_zero] at he
-    rw [map_sub, Finsupp.sub_apply, he, sub_self]
-  refine ⟨hfg, ?_⟩
-  rw [hfg] at h
-  exact add_left_cancel h
 
 /-- The prescribed boundary value on the corrected source basis. -/
 def outputBoundaryPhi (p : ZMod 2) (j : {j : I // D.parity j = 1})
@@ -317,19 +254,5 @@ theorem outputBoundaryPhi_signed_top (p : ZMod 2)
     inputCoefficientShift_unit_top D Sc cutoff j.1 v d _ _ _
       (orderedReverseNumerator_top D Sc cutoff j.1 v)] at ht
   exact ht.symm
-
-/-- The necessary negative-height branch: the actual boundary quotient is
-zero, not a purported monic polynomial of truncated degree zero. -/
-theorem outputBoundaryPhi_eq_zero_of_negative (p : ZMod 2)
-    (j : {j : I // D.parity j = 1}) (v : List I) (d : ℕ)
-    (hd : d + endpointQPDegree D cutoff j.1 v < outputSDegree D j.1 v) :
-    outputBoundaryPhi D Sc cutoff p j v d = 0 := by
-  have h : SKM.zsign k (D.parity j.1) ^ v.count j.1 • outputBoundaryPhi D Sc cutoff p j v d = 0 := by
-    ext m
-    exact outputBoundaryPhi_signed_above D Sc cutoff p j v d m (by omega)
-  have h' := congrArg (fun f : ℕ →₀ Old D Sc cutoff v v =>
-    SKM.zsign k (D.parity j.1) ^ v.count j.1 • f) h
-  rw [smul_smul, ← mul_pow, SKM.zsign_mul_self', one_pow, one_smul, smul_zero] at h'
-  exact h'
 
 end OddMath.QuiverHecke.ELVOld

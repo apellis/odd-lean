@@ -41,14 +41,6 @@ instance (h : ν.Perm μ) : IsSuperfunctor k (oldContentReindex D Sc cutoff h) w
 @[simp] theorem oldContentReindex_refl :
     oldContentReindex D Sc cutoff (List.Perm.refl ν) = 𝟭 _ := rfl
 
-/-- The representative change is an actual even equivalence. -/
-def oldContentReindexEquivalence (h : ν.Perm μ) :
-    OldContentCategory D Sc cutoff ν ≌ OldContentCategory D Sc cutoff μ where
-  functor := oldContentReindex D Sc cutoff h
-  inverse := oldContentReindex D Sc cutoff h.symm
-  unitIso := eqToIso (by rfl)
-  counitIso := eqToIso (by rfl)
-
 end OddMath.QuiverHecke.ELVOld
 
 namespace OddMath.QuiverHecke
@@ -97,13 +89,5 @@ instance (h : ν.Perm μ) : IsSuperfunctor k (probeEvaluatedReindex D Sc m h) wh
 
 @[simp] theorem probeEvaluatedReindex_refl :
     probeEvaluatedReindex D Sc m (List.Perm.refl ν) = 𝟭 _ := rfl
-
-/-- The two scalar-evaluated full subcategories are equivalent through literal pullback. -/
-def probeEvaluatedReindexEquivalence (h : ν.Perm μ) :
-    ProbeEvaluatedModules D Sc m ν ≌ ProbeEvaluatedModules D Sc m μ where
-  functor := probeEvaluatedReindex D Sc m h
-  inverse := probeEvaluatedReindex D Sc m h.symm
-  unitIso := eqToIso (by rfl)
-  counitIso := eqToIso (by rfl)
 
 end OddMath.QuiverHecke

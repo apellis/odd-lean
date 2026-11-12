@@ -129,35 +129,4 @@ theorem observe_coefficient (f : coefficientObj D Sc t ⟶ coefficientObj D Sc t
 end SpectatorEvaluation
 variable (D Sc cs)
 
-/-- Fixed-weight upward independence from joint algebraic detection. The same
-`μ` occurs in every evaluation, while spectators and cutoffs may vary freely.
-Joint detection is an explicit missing algebraic input, not a consequence of
-the separate independence of bubbles and affine diagrams. -/
-theorem upwardCoefficientMap_injective_of_spectators (μ : X) (t t' : List I)
-    {A : Type*} (P : A → SpectatorImage D Sc μ t t')
-    (E : ∀ a, SpectatorEvaluation D Sc cs μ t t' (P a))
-    (hdetect : ∀ f, (∀ a, (P a).quotientImage f = 0) → f = 0) :
-    Function.Injective (upwardCoefficientMap D Sc cs μ t t') := by
-  suffices hz : ∀ f, upwardCoefficientMap D Sc cs μ t t' f = 0 → f = 0 by
-    intro f g h
-    apply sub_eq_zero.mp
-    apply hz
-    rw [map_sub, h, sub_self]
-  intro f hf
-  apply hdetect f
-  intro a
-  rw [← (E a).observe_coefficient, hf, map_zero]
-
-/-- Spectator evaluations at every external weight supply the upward
-independence hypothesis consumed by the oriented reduction. -/
-theorem upward_independence_of_spectators {A : Type*}
-    (P : ∀ (μ : X) (t t' : List I), A → SpectatorImage D Sc μ t t')
-    (E : ∀ μ t t' a, SpectatorEvaluation D Sc cs μ t t' (P μ t t' a))
-    (hdetect : ∀ μ t t' f, (∀ a, (P μ t t' a).quotientImage f = 0) → f = 0) :
-    SKM.WeakMate.UpwardIndependence cs := by
-  apply upward_independence_of_coefficientMap D Sc cs
-  intro t t' _ μ
-  exact upwardCoefficientMap_injective_of_spectators D Sc cs μ t t'
-    (P μ t t') (E μ t t') (hdetect μ t t')
-
 end OddMath.QuiverHecke

@@ -36,48 +36,6 @@ def reservoirSourceOrder (t t' : List I) :
       sign k ((j.1.2.card : ZMod 2) * j.2.par D) • extensionBasis D Sc t t' j := by
   simp [reservoirSourceOrder]
 
-/-- Source-order normalization is an involution before quotienting. -/
-theorem reservoirSourceOrder_involutive (t t' : List I) :
-    Function.Involutive (reservoirSourceOrder D Sc t t') := by
-  have h : (reservoirSourceOrder D Sc t t').comp (reservoirSourceOrder D Sc t t') =
-      LinearMap.id := by
-    apply (extensionBasis D Sc t t').ext
-    intro j
-    simp
-  intro f
-  exact LinearMap.congr_fun h f
-
-/-- The normalization preserves the joint coefficient/dot filtration. -/
-theorem reservoirSourceOrder_mem {t t' : List I} {d : ℕ}
-    {f : coefficientObj D Sc t ⟶ coefficientObj D Sc t'}
-    (hf : f ∈ ExtendedAtMost D Sc t t' d) :
-    reservoirSourceOrder D Sc t t' f ∈ ExtendedAtMost D Sc t t' d := by
-  induction hf using Submodule.span_induction with
-  | mem f hf =>
-    obtain ⟨j, hj, rfl⟩ := hf
-    rw [reservoirSourceOrder_basis]
-    exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, hj, rfl⟩)
-  | zero => simp
-  | add f g _ _ hf hg => simpa using Submodule.add_mem _ hf hg
-  | smul r f _ hf => simpa using Submodule.smul_mem _ r hf
-
-/-- In the zero window there is no exterior coefficient to cross. -/
-theorem reservoirSourceOrder_zero_window {t t' : List I}
-    {f : coefficientObj D Sc t ⟶ coefficientObj D Sc t'}
-    (hf : f ∈ ExtendedAtMost D Sc t t' 0) :
-    reservoirSourceOrder D Sc t t' f = f := by
-  induction hf using Submodule.span_induction with
-  | mem f hf =>
-    obtain ⟨j, hj, rfl⟩ := hf
-    have hc : j.1.2.card = 0 := by
-      change SKM.SYM.coefficientWeight D j.1 + j.2.1.1.length ≤ 0 at hj
-      unfold SKM.SYM.coefficientWeight at hj
-      omega
-    simp only [reservoirSourceOrder_basis, hc, Nat.cast_zero, zero_mul, sign_zero, one_smul]
-  | zero => simp
-  | add f g _ _ hf hg => simp only [map_add, hf, hg]
-  | smul r f _ hf => simp only [map_smul, hf]
-
 private def sourceProductBilinear (t t' : List I) :
     SKM.SYM D k →ₗ[k]
       (((pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D t')) →ₗ[k]
@@ -137,33 +95,6 @@ theorem reservoirSourceOrder_source {t t' : List I} (a : SKM.SYM D k)
 
 section Field
 variable {K : Type u} [Field K] (S : SKM.Scalars D K)
-
-/-- The regular source action has normalized affine coordinates on every C0
-window. The single recovery map works for all coefficients and all affine
-morphisms in the window, including odd coefficients followed by odd crossings. -/
-theorem exists_reservoir_source_coordinates (cutoff : I → ℕ) (t t' : List I)
-    (d : ℕ) {N : ℕ} (hN : ∀ i, N ≤ cutoff i)
-    (hb : d + 2 * t.length.choose 2 < N) :
-    ∃ recover : ReservoirQuotient D S cutoff t t' →ₗ[K]
-        ReservoirQuotient D S cutoff t t',
-      ∀ (a : SKM.SYM D K)
-        (f : (pres D S).obj (ob D t) ⟶ (pres D S).obj (ob D t')),
-        sourceCoefficientHom D S a f ∈ ExtendedAtMost D S t t' d →
-        recover (reservoirPostcomp D S cutoff (sourceCoefficientHom D S 1 f)
-          (reservoirPostcomp D S cutoff (sourceCoefficientHom D S a (𝟙 _))
-            (reservoirRegularGenerator D S cutoff t))) =
-          (ELVRelationSpan D S cutoff t t').mkQ (sourceCoefficientHom D S a f) := by
-  obtain ⟨recover, hrecover⟩ := exists_bounded_reservoir_extraction D S cutoff t t' d
-    ((ELVRelationSpan D S cutoff t t').mkQ.comp (reservoirSourceOrder D S t t')) hN hb
-  refine ⟨recover, ?_⟩
-  intro a f hf
-  rw [reservoirPostcomp_generator, reservoirPostcomp_mk,
-    ← reservoirSourceOrder_source]
-  rw [hrecover _ (reservoirSourceOrder_mem D S hf)]
-  change (ELVRelationSpan D S cutoff t t').mkQ
-    (reservoirSourceOrder D S t t' (reservoirSourceOrder D S t t'
-      (sourceCoefficientHom D S a f))) = _
-  rw [reservoirSourceOrder_involutive]
 
 end Field
 end OddMath.QuiverHecke

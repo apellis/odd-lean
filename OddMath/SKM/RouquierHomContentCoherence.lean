@@ -72,13 +72,6 @@ theorem homParityShiftCommute_supernatural
     (PiSupercategory.β k F X).hom ≫ η ((PiSupercategory.pi (R := k)).obj X)
   exact PiSupercategory.β_naturality_supernatural F G hη X
 
-/-- Π exchanging with itself is negative, not the unsigned identity. -/
-theorem homParityShiftCommute_pi (X : C) :
-    (homParityShiftCommute (k := k) (PiSupercategory.pi (R := k) (C := C)) 1).hom.app X =
-      -𝟙 ((PiSupercategory.pi (R := k)).obj ((PiSupercategory.pi (R := k)).obj X)) := by
-  simp only [homParityShiftCommute, one_ne_zero, dite_false]
-  change (PiSupercategory.β k (PiSupercategory.pi (R := k)) X).hom = _
-  exact PiSupercategory.β_pi (R := k) X
 end Parity
 
 section Sectors
@@ -111,12 +104,6 @@ instance (T : X → B) (W : RouquierFamily (k := k) (B := B) D)
     IsSuperfunctor k (homContentPostFOut T W i betaP muP h) := by
   unfold homContentPostFOut
   infer_instance
-
-/-- Move the previously constructed right adjoint's Π coherently to its output. -/
-def homContentPostFOutIso (T : X → B) (W : RouquierFamily (k := k) (B := B) D)
-    (i : I) (betaP : I →₀ ℕ) (muP : X) {muM nuM : X} (h : muM + D.α i = nuM) :
-    homContentPostF T W i betaP muP h ≅ homContentPostFOut T W i betaP muP h :=
-  (homParityShiftCommute (homPost (k := k) (W.F i h)) (homContentShift D i betaP)).symm
 
 end Sectors
 end OddMath.SKM

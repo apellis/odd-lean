@@ -169,15 +169,4 @@ theorem pathHomAt_eq_wordHom {l : List (SKM.Col I X)} {c : I →₀ ℕ}
   eq_of_heq ((atWeight_heq D Sc m cutoff L ΛP ΛR _ _).trans
     (pathHom_heq D Sc m cutoff L ΛP ΛR p hl))
 
-/-- The path-Hom value uses precisely the existing chosen word chart on
-every actual regular-probe vector and full original-weight component. -/
-def valueChart {l : List (SKM.Col I X)} {c : I →₀ ℕ}
-    (p : SPath l (0,c) (0,0)) (hl : ∀ a ∈ l, a.l.1 = true) :
-    (pathHomAt D Sc m cutoff L ΛP ΛR p hl).obj R₀ ≅
-      PowerWordWeight.wordFamily D Sc cutoff L ΛR
-        (PowerWordWeight.wordWeight D ΛR ((l.map (fun a => a.l.2)).reverse))
-        ((l.map (fun a => a.l.2)).reverse) :=
-  eqToIso (congrArg (fun F => F.obj R₀) (pathHomAt_eq_wordHom D Sc m cutoff L ΛP ΛR p hl)) ≪≫
-    TensorVacuumWords.chart D Sc m cutoff L ΛP ΛR ((l.map (fun a => a.l.2)).reverse)
-
 end OddMath.QuiverHecke.ELVOld.TensorReservoirWords

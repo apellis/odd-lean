@@ -187,47 +187,5 @@ def leftZigE (i : I) {x y : X} (h : x + D.α i = y) : T.E i h ⟶ T.E i h :=
     (associator (T.E i h) (T.F i h) (T.E i h)).inv ≫ T.leftCap i h ▷ T.E i h ≫
     (leftUnitor (T.E i h)).hom
 
-/-- **Open obligation** (super analogue of Brundan, Theorem 4.3): the leftward cup and
-cap satisfy both zigzag identities up to a common unit `c`, with the sign `(-1)^σ`
-on the `E`-zigzag. -/
-def LeftZigzags : Prop :=
-  ∀ (i : I) (x y : X) (h : x + D.α i = y), ∃ c : kˣ,
-    T.leftZigF i h = (c : k) • 𝟙 _ ∧
-      T.leftZigE i h = ((koszulSign (leftAdjParity D i x) (leftAdjParity D i x) : k) * c) • 𝟙 _
-
-/-- The unit scalar of the zigzag obligation. -/
-def zigUnit (H : T.LeftZigzags) (i : I) (x y : X) (h : x + D.α i = y) : kˣ :=
-  (H i x y h).choose
-
-omit [TwoSupercategory k B] in
-theorem zigUnit_F (H : T.LeftZigzags) (i : I) (x y : X) (h : x + D.α i = y) :
-    T.leftZigF i h = (T.zigUnit H i x y h : k) • 𝟙 _ :=
-  (H i x y h).choose_spec.1
-
-omit [TwoSupercategory k B] in
-theorem zigUnit_E (H : T.LeftZigzags) (i : I) (x y : X) (h : x + D.α i = y) :
-    T.leftZigE i h = ((koszulSign (leftAdjParity D i x) (leftAdjParity D i x) : k) *
-      T.zigUnit H i x y h) • 𝟙 _ :=
-  (H i x y h).choose_spec.2
-
-/-- Normalizing the cap by `c⁻¹` turns the zigzag obligation into shifted left adjunctions. -/
-def leftAdjointsOfZigzags (H : T.LeftZigzags) : RouquierLeftAdjoints (k := k) T where
-  adjL i {x y} h :=
-    { unit := T.leftCup i h
-      counit := (((T.zigUnit H i x y h)⁻¹ : kˣ) : k) • T.leftCap i h
-      unit_mem := T.leftCup_mem i h
-      counit_mem := Submodule.smul_mem _ _ (T.leftCap_mem i h)
-      left_triangle := by
-        have hF := T.zigUnit_F H i x y h
-        unfold leftZigF at hF
-        rw [TwoSupercategory.whiskerLeft_smul, Linear.smul_comp, Linear.comp_smul,
-          Linear.comp_smul, Linear.comp_smul, hF, smul_smul, Units.inv_mul, one_smul]
-      right_triangle := by
-        have hE := T.zigUnit_E H i x y h
-        unfold leftZigE at hE
-        rw [TwoSupercategory.smul_whiskerRight, Linear.smul_comp, Linear.comp_smul,
-          Linear.comp_smul, Linear.comp_smul, hE, smul_smul, mul_left_comm, Units.inv_mul,
-          mul_one, Int.cast_smul_eq_zsmul] }
-
 end RouquierFamily
 end OddMath.SKM

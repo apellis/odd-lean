@@ -714,34 +714,6 @@ theorem capCross_eq_of_neg (hw : h' = h + 2) (hh : h < 0)
           hb, apply_ite (fun z => (leftUnitor E₂).hom ≫ z),
           Preadditive.comp_neg, Category.comp_id, Limits.comp_zero] at hc
         split_ifs at hc ⊢ <;> simpa only [cupD, neg_zero] using hc
-/-- The left-cap pitchfork at the exceptional negative boundary.
-Its coefficient is `(-1)^p`, as forced by the signed cap swap. -/
-theorem capL_pitchfork_at_neg_one (hw : h' = h + 2) (hh : h = -1)
-    (hsq : t ≫ t = 0) (hsq' : t₂₃ ≫ t₂₃ = 0)
-    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
-      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
-      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
-      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
-    (associator E₂ E₃ F₃).inv ≫ t₂₃ ▷ F₃ ≫ (associator E₂ E₃ F₃).hom ≫
-      E₂ ◁ U.capL ≫ (rightUnitor E₂).hom = koszulSign p p •
-      (E₂ ◁ U.sigL ≫ (associator E₂ F₂ E₂).inv ≫ L.capL ▷ E₂ ≫
-        (leftUnitor E₂).hom) := by
-  have hz : U.sigL ≫ A₂.counit = 0 := by
-    simpa only [capD, rouquierPower_zero, TwoSupercategory.whiskerLeft_id (R := k),
-      Category.id_comp] using U.sigL_capD (n := 0) (by omega) (by omega)
-  have hc := congrArg (fun z => E₂ ◁ U.sigL ≫ (associator E₂ F₂ E₂).inv ≫ z)
-    (L.capCross_eq_of_neg U hw (by omega) hsq hsq' hB)
-  rw [ite_eq_left hh] at hc
-  simp only [capCross, Iso.inv_hom_id_assoc,
-    Preadditive.comp_zsmul, Preadditive.comp_add, Preadditive.comp_neg] at hc
-  rw [← Category.assoc (E₂ ◁ U.sigL) (E₂ ◁ U.sig),
-    ← TwoSupercategory.whiskerLeft_comp (R := k),
-    U.sigL_sig_of_nonneg (by omega), TwoSupercategory.whiskerLeft_neg (R := k),
-    TwoSupercategory.whiskerLeft_id (R := k), Preadditive.neg_comp, Category.id_comp,
-    ← Category.assoc (E₂ ◁ U.sigL) (E₂ ◁ A₂.counit),
-    ← TwoSupercategory.whiskerLeft_comp (R := k), hz,
-    TwoSupercategory.whiskerLeft_zero (R := k), Limits.zero_comp, add_zero, smul_neg] at hc
-  exact neg_injective hc
 
 /-- Below height minus one the negative left-cap pitchfork has coefficient one.
 Unlike the boundary value, no crossing is interchanged with a cap in this argument. -/
@@ -821,19 +793,6 @@ end Adjacent
 
 end SuperRouquierLoc
 
-/-- A scalar identity on a left adjoint transfers to its right adjoint.
-This uses the existing right-adjunction triangle, not a left zigzag. -/
-theorem SuperAdjunction.smul_id_right_of_left {a b : B} {E : a ⟶ b} {F : b ⟶ a}
-    (A : SuperAdjunction (k := k) E F) {s t : k}
-    (h : s • 𝟙 E = t • 𝟙 E) : s • 𝟙 F = t • 𝟙 F := by
-  have hu := congrArg (fun z => A.unit ≫ z ▷ F) h
-  simp only [TwoSupercategory.smul_whiskerRight, TwoSupercategory.id_whiskerRight (R := k),
-    Linear.comp_smul, Category.comp_id] at hu
-  have hf := congrArg (fun z => (rightUnitor F).inv ≫ F ◁ z ≫
-    (associator F E F).inv ≫ A.counit ▷ F ≫ (leftUnitor F).hom) hu
-  simpa only [TwoSupercategory.whiskerLeft_smul, Linear.smul_comp, Linear.comp_smul,
-    A.right_triangle] using hf
-
 namespace RouquierFamily
 variable {I X : Type*} [AddCommGroup X] {D : Datum I X}
   (T : RouquierFamily (k := k) (B := B) D)
@@ -864,45 +823,6 @@ theorem leftZigE_eq (i : I) {x y : X} (e : x + D.α i = y) :
   split_ifs with hh
   · simpa only [one_smul] using T.leftZigE_of_neg i e hh
   · exact T.leftZigE_of_nonneg i e (by omega)
-
-/-- Once the canonical E zigzag is known, the two-triangle obligation is
-equivalent to this exact F equation. The F equation remains an obligation;
-no cyclicity or left adjunction is assumed in the reduction. -/
-theorem leftZigzags_iff_leftZigF : T.LeftZigzags ↔
-    ∀ (i : I) (x y : X) (e : x + D.α i = y),
-      T.leftZigF i e = (koszulSign (leftAdjParity D i x) (leftAdjParity D i x) *
-        (if D.h i x < 0 then 1 else koszulSign (D.parity i) (D.parity i))) • 𝟙 (T.F i e) := by
-  constructor
-  · intro H i x y e
-    obtain ⟨c, hF, hE⟩ := H i x y e
-    have he : ((koszulSign (leftAdjParity D i x) (leftAdjParity D i x) : k) * c) •
-        𝟙 (T.E i e) =
-        ((if D.h i x < 0 then 1 else koszulSign (D.parity i) (D.parity i) : ℤ) : k) •
-          𝟙 (T.E i e) := by
-      rw [← hE, Int.cast_smul_eq_zsmul, T.leftZigE_eq]
-    have hf := (T.adj i e).smul_id_right_of_left he
-    have hf' := congrArg (fun z => (koszulSign (leftAdjParity D i x) (leftAdjParity D i x) : k) • z) hf
-    simp only [smul_smul, ← mul_assoc, ← Int.cast_mul, koszulSign_mul_self,
-      Int.cast_one, one_mul, Int.cast_smul_eq_zsmul] at hf'
-    exact hF.trans hf'
-  · intro H i x y e
-    let s : ℤ := koszulSign (leftAdjParity D i x) (leftAdjParity D i x)
-    let a : ℤ := if D.h i x < 0 then 1 else koszulSign (D.parity i) (D.parity i)
-    have hs : s * s = 1 := koszulSign_mul_self _ _
-    have ha : a * a = 1 := by
-      dsimp [a]
-      split_ifs <;> simp only [mul_one, koszulSign_mul_self]
-    have hq : (s * a : ℤ) * (s * a) = 1 := by
-      calc _ = (s * s) * (a * a) := by ring
-           _ = 1 := by rw [hs, ha, mul_one]
-    let c : kˣ := ⟨((s * a : ℤ) : k), ((s * a : ℤ) : k),
-      by rw [← Int.cast_mul, hq, Int.cast_one],
-      by rw [← Int.cast_mul, hq, Int.cast_one]⟩
-    refine ⟨c, ?_, ?_⟩
-    · simpa only [c, Int.cast_smul_eq_zsmul] using H i x y e
-    · change T.leftZigE i e = ((s : k) * ((s * a : ℤ) : k)) • 𝟙 (T.E i e)
-      rw [← Int.cast_mul, ← mul_assoc, hs, one_mul, Int.cast_smul_eq_zsmul]
-      exact T.leftZigE_eq i e
 
 end RouquierFamily
 end OddMath.SKM

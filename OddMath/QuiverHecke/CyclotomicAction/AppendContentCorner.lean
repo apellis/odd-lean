@@ -110,16 +110,6 @@ instance : IsScalarTower (Hn D Sc (n + 1)) (CyclotomicContentCorner D Sc a n β)
 
 variable (i : I) (ha : CyclotomicPolynomialParity D a)
 
-/-- The parity involution of the appended colour is the coefficient involution `φ_i`. -/
-theorem coefficientParityHom_parity_eq_rightDotCoefficient (c : CyclotomicAlgebra D Sc a n) :
-    coefficientParityHom D Sc a ha n (D.parity i) c = rightDotCoefficient D Sc i a ha n c := by
-  induction c using SuperBimodule.alg_induction_on (cyclotomicParity D Sc a ha n) with
-  | zero => simp
-  | add b c hb hc => rw [map_add, map_add, hb, hc]
-  | hom q c hc =>
-    rw [rightDotCoefficient_of_mem D Sc i a ha n q c hc]
-    exact (SVec.sgn_apply_of_mem (D.parity i) hc).trans (by rw [mul_comm])
-
 /-- The parity involution fixes the (even) content idempotent. -/
 theorem coefficientParityHom_contentIdempotent (p : ZMod 2) :
     coefficientParityHom D Sc a ha n p (cyclotomicContentIdempotent D Sc a n β) =
@@ -140,25 +130,5 @@ def contentCornerParity :
   map_one' := contentCornerVal_injective D Sc a n β
     (coefficientParityHom_contentIdempotent D Sc a n β ha (D.parity i))
   map_mul' x y := contentCornerVal_injective D Sc a n β (map_mul _ _ _)
-
-/-- `σ_β (r • y) = tw(r) • σ_β y`. -/
-theorem contentCornerParity_smul (r : Hn D Sc (n + 1)) (y : CyclotomicContentCorner D Sc a n β) :
-    contentCornerParity D Sc a n β i ha (r • y) =
-      homMatrixTwist D Sc (n + 1) (D.parity i) r • contentCornerParity D Sc a n β i ha y := by
-  apply contentCornerVal_injective D Sc a n β
-  change coefficientParityHom D Sc a ha n (D.parity i) (r • contentCornerVal D Sc a n β y) =
-    homMatrixTwist D Sc (n + 1) (D.parity i) r •
-      coefficientParityHom D Sc a ha n (D.parity i) (contentCornerVal D Sc a n β y)
-  rw [coefficientParityHom_parity_eq_rightDotCoefficient,
-    coefficientParityHom_parity_eq_rightDotCoefficient, rightDotCoefficient_smul]
-
-/-- **The target side of the append-side Mackey boundary on the content-`β` corner** of the
-cyclotomic quotient: `appendMackeyTarget` at `B_β = e(β) A e(β)` with the twist `σ_β`. -/
-def appendContentMackeyTarget :
-    CyclotomicAction.BoundaryPolynomial.MackeyTarget (contentCornerParity D Sc a n β i ha)
-      (appendTensorFixed D Sc i n (CyclotomicContentCorner D Sc a n β))
-      (appendTensorLeftCoordinates D Sc i n (CyclotomicContentCorner D Sc a n β)) :=
-  appendMackeyTarget D Sc i n (CyclotomicContentCorner D Sc a n β)
-    (contentCornerParity D Sc a n β i ha) (contentCornerParity_smul D Sc a n β i ha)
 
 end OddMath.QuiverHecke

@@ -115,64 +115,7 @@ private theorem total_ext
         (by simpa using t.app_mem 0 M)
   rw [← hp x, ← hp y, h M]
 
-/-- Linear realization of regular coefficients as module supernatural transformations. -/
-def realizeLinear : (𝟙 A.toSuperAlg ⟶ 𝟙 A.toSuperAlg) →ₗ[k]
-    (Superfunctor.id k (Modules A) ⟶ Superfunctor.id k (Modules A)) where
-  toFun := realize A
-  map_add' c d := by
-    apply SuperNatTrans.ext; funext p M
-    change ProbeWindow.postCoeff M (proj k p (c + d)) = _
-    rw [map_add, ProbeWindow.postCoeff_add (k := k)]
-    rfl
-  map_smul' r c := by
-    apply SuperNatTrans.ext; funext p M
-    change ProbeWindow.postCoeff M (proj k p (r • c)) = _
-    rw [map_smul]
-    change (SuperBimodule.leftUnitor M).inv ≫
-      SuperBimodule.whiskerRight (r • proj k p c) M ≫ (SuperBimodule.leftUnitor M).hom =
-      r • ((SuperBimodule.leftUnitor M).inv ≫
-        SuperBimodule.whiskerRight (proj k p c) M ≫ (SuperBimodule.leftUnitor M).hom)
-    rw [SuperBimodule.smul_whiskerRight, Linear.smul_comp, Linear.comp_smul]
-
-/-- Composition is transported with the original unitors, without an extra sign. -/
-theorem realize_comp (c d : 𝟙 A.toSuperAlg ⟶ 𝟙 A.toSuperAlg) :
-    realize A (c ≫ d) = realize A c ≫ realize A d := by
-  apply total_ext A; intro M
-  rw [Superfunctor.comp_total, realize_total, realize_total, realize_total]
-  exact ProbeWindow.postCoeff_comp (k := k) _ _ _
-
-/-- Homogeneous coefficients realize homogeneous supernatural transformations. -/
-theorem realize_mem {p : ZMod 2} {c : 𝟙 A.toSuperAlg ⟶ 𝟙 A.toSuperAlg}
-    (hc : c ∈ parity (R := k) _ _ p) :
-    realize A c ∈ parity (R := k) _ _ p := by
-  rw [Superfunctor.mem_parity_iff]
-  funext M
-  change ProbeWindow.postCoeff M (proj k (p + 1) c) = 0
-  rw [proj_of_mem_ne hc (Ne.symm (zmod2_add_one_ne p))]
-  exact ProbeWindow.postCoeff_zero (k := k) M
-
-/-- Realization commutes with parity projection, including the odd component. -/
-theorem realize_proj (p : ZMod 2) (c : 𝟙 A.toSuperAlg ⟶ 𝟙 A.toSuperAlg) :
-    realize A (proj k p c) = proj k p (realize A c) := by
-  symm
-  apply proj_eq_of_add (h := realize A (proj k (p + 1) c))
-  · change realizeLinear A c = realizeLinear A (proj k p c) +
-      realizeLinear A (proj k (p + 1) c)
-    rw [← map_add, proj_add_proj_add_one]
-  · exact realize_mem A (proj_mem _ _)
-  · exact realize_mem A (proj_mem _ _)
-
 instance modulePi : PiSupercategory k (Modules A) :=
   inferInstanceAs (PiSupercategory k (SuperBimodule A.grading (trivialGrading k)))
-
-/-- The module target in the same `Π-SCat` used by the swapped Hom sectors. -/
-abbrev moduleTarget : PiSCat k := PiSCat.of k (Modules A)
-
-/-- Realization preserves the identity, with unitors retained in its definition. -/
-theorem realize_id : realize A (𝟙 (𝟙 A.toSuperAlg)) = 𝟙 (Superfunctor.id k (Modules A)) := by
-  apply total_ext A; intro M
-  rw [realize_total, ProbeWindow.postCoeff_id (k := k)]
-  change 𝟙 M = 𝟙 M + 0
-  exact (add_zero _).symm
 
 end OddMath.QuiverHecke.SwappedAssembly.RegularReservoir

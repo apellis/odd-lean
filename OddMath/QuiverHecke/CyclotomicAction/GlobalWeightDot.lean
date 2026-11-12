@@ -112,31 +112,9 @@ def globalWeightDot :
       exact globalWeightDotComponent_naturality D Sc a ha i Λ h p β f hf
     · exact (inductionComponent_isZero D Sc a ha i Λ h δ hδ _).eq_of_src _ _
 
-/-- Only the component of the colour parity is nonzero. -/
-theorem globalWeightDot_homogeneous :
-    (globalWeightDot D Sc a ha i Λ h).IsHomogeneous (D.parity i) := by
-  intro q hq
-  funext M
-  funext δ
-  by_cases hδ : ∃ β, blockSucc D Λ i h β = δ
-  · obtain ⟨β, rfl⟩ := hδ
-    change globalWeightDotComponent D Sc a ha i Λ h q M (blockSucc D Λ i h β) = 0
-    rw [globalWeightDotComponent_blockSucc,
-      congrFun (globalContentDot_homogeneous D Sc i a ha (blockSucc_val D Λ i h β).symm q hq)
-        (M β)]
-    simp
-  · exact (inductionComponent_isZero D Sc a ha i Λ h δ hδ M).eq_of_src _ _
-
 /-- The dot as a 2-endomorphism of weight-space induction in the action target. -/
 def globalActionDot : globalActionE D Sc a ha i Λ h ⟶ globalActionE D Sc a ha i Λ h :=
   globalWeightDot D Sc a ha i Λ h
-
-/-- The dot has the parity of its colour, including for odd colours. -/
-theorem globalActionDot_mem :
-    globalActionDot D Sc a ha i Λ h ∈
-      parity (R := k) (globalActionE D Sc a ha i Λ h) (globalActionE D Sc a ha i Λ h)
-        (D.parity i) :=
-  Superfunctor.mem_parity_iff_isHomogeneous.2 (globalWeightDot_homogeneous D Sc a ha i Λ h)
 
 end Weight
 

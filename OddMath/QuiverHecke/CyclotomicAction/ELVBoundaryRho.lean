@@ -177,15 +177,4 @@ theorem boundaryRho_iterate_even (j : {j : I // D.parity j = 1}) (v w : List I)
       Function.iterate_succ_apply', Function.iterate_one, boundaryRho_square,
       ih, signedMovingPowerTarget_add]
 
-/-- All odd corrected iterates have precisely one delta correction. -/
-theorem boundaryRho_iterate_odd_projection (j : {j : I // D.parity j = 1})
-    (v w : List I) (q : ℕ) (h : hom D Sc cutoff (j.1 :: v) w) :
-    (boundaryRho D Sc cutoff j v w)^[2 * q + 1]
-        (projection D Sc cutoff j.1 v w h) =
-      SKM.zsign k (D.parity j.1 * wordSumParity D v) •
-        projection D Sc cutoff j.1 v w
-          (boundaryFirstDot D Sc cutoff j v ≫ movingPower D Sc cutoff j.1 v (2 * q) ≫ h) := by
-  rw [Function.iterate_succ_apply', boundaryRho_iterate_even,
-    signedMovingPowerTarget_projection, boundaryRho_projection]
-
 end OddMath.QuiverHecke.ELVOld

@@ -161,15 +161,6 @@ theorem inc_sum (i : ι) {N : a ⟶ b} (f : ∀ j, O j ⟶ N) :
   · intro h; exact absurd (Finset.mem_univ i) h
 
 omit [TwoSupercategory k B] in
-theorem sum_proj (i : ι) {N : a ⟶ b} (f : ∀ j, N ⟶ O j) :
-    (∑ j, f j ≫ D.inc j) ≫ D.proj i = f i := by
-  rw [Preadditive.sum_comp, Finset.sum_eq_single i]
-  · rw [Category.assoc, D.inc_proj, Category.comp_id]
-  · intro j _ hj
-    rw [Category.assoc, D.inc_proj_ne j i hj, Limits.comp_zero]
-  · intro h; exact absurd (Finset.mem_univ i) h
-
-omit [TwoSupercategory k B] in
 theorem ext {N : a ⟶ b} {f g : M ⟶ N} (h : ∀ i, D.inc i ≫ f = D.inc i ≫ g) : f = g := by
   rw [← Category.id_comp f, ← Category.id_comp g, ← D.total, Preadditive.sum_comp,
     Preadditive.sum_comp]
@@ -181,12 +172,6 @@ def diag (d : ∀ i, O i ⟶ O i) : M ⟶ M := ∑ i, D.proj i ≫ d i ≫ D.inc
 omit [TwoSupercategory k B] in
 theorem inc_diag (d : ∀ i, O i ⟶ O i) (i : ι) : D.inc i ≫ D.diag d = d i ≫ D.inc i :=
   D.inc_sum i fun j => d j ≫ D.inc j
-
-omit [TwoSupercategory k B] in
-theorem diag_proj (d : ∀ i, O i ⟶ O i) (i : ι) : D.diag d ≫ D.proj i = D.proj i ≫ d i := by
-  have := D.sum_proj i fun j => D.proj j ≫ d j
-  unfold diag
-  simpa only [Category.assoc] using this
 
 omit [TwoSupercategory k B] in
 theorem eq_diag {f : M ⟶ M} (d : ∀ i, O i ⟶ O i) (h : ∀ i, D.inc i ≫ f = d i ≫ D.inc i) :
@@ -329,16 +314,6 @@ def coupledUnit : 𝟙 a ⟶ E ≫ F := ∑ i, (A i).unit ≫ (DE.comp DF).inc (
 
 /-- The diagonal counit: the sum of the sector counits. -/
 def coupledCounit : F ≫ E ⟶ 𝟙 b := ∑ i, (DF.comp DE).proj (i, i) ≫ (A i).counit
-
-theorem coupledUnit_proj (i : ι) :
-    coupledUnit DE DF A ≫ (DE.comp DF).proj (i, i) = (A i).unit := by
-  unfold coupledUnit
-  rw [Preadditive.sum_comp, Finset.sum_eq_single i]
-  · rw [Category.assoc, (DE.comp DF).inc_proj, Category.comp_id]
-  · intro j _ hj
-    rw [Category.assoc, (DE.comp DF).inc_proj_ne (j, j) (i, i)
-      (fun h => hj (congrArg Prod.fst h)), Limits.comp_zero]
-  · intro h; exact absurd (Finset.mem_univ i) h
 
 theorem inc_coupledCounit (i : ι) :
     (DF.comp DE).inc (i, i) ≫ coupledCounit DE DF A = (A i).counit := by
@@ -595,49 +570,6 @@ theorem slide : C.coupledCross ≫ C.E₁ ◁ C.x₂ -
       | exact sub_eq_zero.mpr C.swapRP_slide
       | exact sub_eq_zero.mpr C.swapPR_slide
       | exact (show (0 : _ ⟶ _) ≫ _ - koszulSign C.p C.p • (_ ≫ (0 : _ ⟶ _)) = 0 by simp)
-
-/-- The source sectors of the coupled adjunction. -/
-def sourceSector (s : CoupledSector) : SourceSector C.A₁ C.x₁ where
-  E := C.O₁ s
-  F := C.P₁ s
-  adj := C.adj₁ s
-  dot := C.dot₁ s
-  dot_mem := ⟨C.p, C.dot₁_mem s⟩
-  iE := C.DE₁.inc s
-  iF := C.DF₁.inc s
-  iF_mem := C.DF₁.inc_mem s
-  dot_comm := C.DE₁.inc_diag C.dot₁ s
-  counit_comm := inc_coupledCounit C.DE₁ C.DF₁ C.adj₁ s
-
-/-- The target sectors of the coupled adjunction. -/
-def targetSector (s : CoupledSector) : TargetSector C.A₂ C.x₂ where
-  E := C.O₂ s
-  F := C.P₂ s
-  adj := C.adj₂ s
-  dot := C.dot₂ s
-  dot_mem := ⟨C.p, C.dot₂_mem s⟩
-  pE := C.DE₂.proj s
-  pF := C.DF₂.proj s
-  pF_mem := C.DF₂.proj_mem s
-  dot_comm := C.DE₂.diag_proj C.dot₂ s
-  unit_comm := coupledUnit_proj C.DE₂ C.DF₂ C.adj₂ s
-
-/-- **The mate projection formula of the coupled crossing.** The coordinates are
-the actual dotted sector cups and caps, with powers of the probe inverses for
-negative indices. -/
-theorem mateProjectionFormula :
-    SuperRouquierLoc.MateProjectionFormula C.A₁ C.A₂ C.coupledCross C.p
-      (sectorIn (C.DE₁.inc reservoir) (C.DF₁.inc reservoir))
-      (sectorIn (C.DE₁.inc probe) (C.DF₁.inc probe))
-      (sectorOut (C.DE₂.proj reservoir) (C.DF₂.proj reservoir))
-      (sectorOut (C.DE₂.proj probe) (C.DF₂.proj probe))
-      (C.targetSector reservoir).cup (C.sourceSector reservoir).cap
-      (probeCup (C.targetSector probe) C.inv₂) (probeCap (C.sourceSector probe) C.inv₁)
-      C.N C.N :=
-  SuperRouquierLoc.MateProjectionFormula.of_sectors C.coupledCross C.p C.slide
-    (C.sourceSector reservoir) (C.sourceSector probe)
-    (C.targetSector reservoir) (C.targetSector probe)
-    C.inv₁ C.inv₁_dot₁ C.inv₂ C.dot₂_inv₂ C.N C.N C.nil₂ C.nil₁
 
 end CoupledFactors
 

@@ -111,9 +111,9 @@ remains a categorical obligation.
 ## Bounded coordinates on the connected regular quotient
 
 Over a field, `QuiverHecke.reservoirWindowCoordinates` in
-`ReservoirCoordinates.lean` constructs a total linear extraction from the
+`ReservoirCoordinates.lean` (removed as unused) constructed a total linear extraction from the
 connected reservoir quotient to its bounded joint coefficient/PBW window.
-`reservoirWindowCoordinates_apply` proves recovery whenever
+`reservoirWindowCoordinates_apply` proved recovery whenever
 `d + 2 * t.length.choose 2 < N` and all cutoffs are at least `N`.
 The construction splits the already-proved bounded injection as a linear
 map; it does not require a cyclotomic ideal to be stable under normalization.

@@ -120,11 +120,4 @@ theorem mem_finiteColourIdeal {a b : Obj (sig D)} {f : LinDiagram k a b}
     obtain ⟨J, hJ⟩ := hx
     exact ⟨J, Submodule.smul_mem _ r hJ⟩
 
-/-- Equality in the actual presented Hom admits a finite contextual colour
-witness for its defining difference. -/
-theorem eq_finiteColourIdeal {a b : Obj (sig D)} (f g : LinDiagram k a b)
-    (h : (pres D Sc).lin f = (pres D Sc).lin g) :
-    ∃ J : Finset I, f - g ∈ finiteColourIdeal D Sc a b J :=
-  mem_finiteColourIdeal D Sc ((pres D Sc).lin_eq_iff f g |>.mp h)
-
 end OddMath.SKM

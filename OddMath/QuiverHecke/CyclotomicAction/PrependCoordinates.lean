@@ -64,11 +64,4 @@ def prependPBWCorner (i : I) {n : ℕ} (u : PrependShuffle n) (m : ℕ)
     InductionAlong.Corner (prependAlgebra D Sc i n : Hn D Sc n →ₙ+* Hn D Sc (n + 1)) :=
   ⟨prependPBWTerm D Sc i u m b, prependPBWTerm_corner D Sc i u m b⟩
 
-/-- Compatibility with the corner's existing right action. -/
-theorem prependPBWCorner_right (i : I) {n : ℕ} (u : PrependShuffle n) (m : ℕ)
-    (b r : Hn D Sc n) :
-    prependPBWCorner D Sc i u m (b * r) = MulOpposite.op r • prependPBWCorner D Sc i u m b := by
-  apply Subtype.ext
-  exact prependPBWTerm_right D Sc i u m b r
-
 end OddMath.QuiverHecke
