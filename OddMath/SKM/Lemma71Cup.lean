@@ -199,7 +199,7 @@ theorem pcu_a_gt (i j : I) (μ : X) (hij : i ≠ j) (hh : D.d i j < D.h i μ) :
     fun r q s hs => pcu_term8_zero cs i j μ r q s (by omega)
   rw [sum_eq_zero (fun s hs => by rw [hz _ _ _ (mem_range.1 hs), smul_zero]),
     sum_eq_zero (fun p hp => sum_eq_zero (fun q _ => sum_eq_zero (fun s hs => by
-      rw [hz _ _ _ (by have := (mem_Ioo.1 hp).2; have := mem_range.1 hs; omega), smul_zero]))),
+      rw [hz _ _ _ (by have := (mem_range.1 hp); have := mem_range.1 hs; omega), smul_zero]))),
     zero_add, zero_sub, neg_eq_zero] at E'
   rw [pcuL_a, E', pcuR_a cs i j μ hij, eq_2_13_a cs i _ (by rw [h_wt_upj]; omega), map_zero]
 
@@ -384,7 +384,7 @@ theorem pcu_b (i j : I) (μ : X) (hij : i ≠ j) (n : ℕ)
     simp only [dotsL] at main hz
     erw [main, hz 0 (D.dn j i) (by omega), smul_zero, zero_add,
       sum_eq_zero (fun p _ => sum_eq_zero (fun q hq => by
-        erw [hz q p (mem_Ioo.1 hq).2, smul_zero])), add_zero]
+        erw [hz q p (mem_range.1 hq), smul_zero])), add_zero]
     rfl
 
 theorem eta_sigma_h0 (i : I) (μ : X) (hh : D.h i μ = 0) :
@@ -473,7 +473,7 @@ theorem pcu_a_eq (i j : I) (μ : X) (hij : i ≠ j) (hh : D.h i μ = D.d i j) :
     (lemma33_eq8_eq (Sc := Sc) i j μ hij)
   simp only [Preadditive.comp_sub, Preadditive.comp_add, Preadditive.comp_sum, Linear.comp_smul] at E
   rw [sum_eq_zero (fun p hp => sum_eq_zero (fun q _ => sum_eq_zero (fun s hs => by
-    have hp := (mem_Ioo.1 hp).2
+    have hp := (mem_range.1 hp)
     have hs := mem_range.1 hs
     rw [pcu_term8_zero cs i j μ _ _ _ (by omega), smul_zero]))), add_zero] at E
   by_cases hd0 : D.d i j = 0

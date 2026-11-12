@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumCapInverse
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseBubbleEntry
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
 
 /-! # The leftward vacuum cap inverse in the native chart
 
@@ -18,6 +19,11 @@ by the source and cap-target charts (`vacuumLeftwardCapInverse_odd`).
 Consequently every product of a column with a native cap row `x ^ N ≫ v` is the
 conjugated evaluation of the left bubble entry `dcup n ≫ ε xᴺ`
 (`vacuumLeftwardColumn_cap_eq`). No inverse, moment or bubble value is assumed.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 
 noncomputable section
@@ -49,14 +55,14 @@ local notation "ν₀" => (P).wt ((0, 0) : Sector I)
 
 variable (H : ProbeVacuumCap.modulePiCategory D (parameterTwist D Sc) m ⟶
   elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR (-ΛR))
-variable (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (i : I)
+variable (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound) (i : I)
 local notation "p₀" => SPath.centralUpDn i (SKM.wt D ν₀ [SKM.dn i]) ν₀ ((0, 0) : Sector I)
   ⟨true, trivial⟩
 
 /-- The explicit native column `n` of the leftward vacuum cap inverse: the dotted
 leftward cup, evaluated by the vacuum sector evaluation and conjugated by the
 padded source, corner and cap-target charts. -/
-def vacuumLeftwardColumn (Z : (P).H ((0, 0) : Sector I))
+def vacuumLeftwardColumn [Fact Sc.PureNilpotent] (Z : (P).H ((0, 0) : Sector I))
     (hZ : Z = vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (dc : ℕ → ∀ (_r : SPath (SKM.wd D ν₀ []) ((0, 0) : Sector I) ((0, 0) : Sector I))
       (p : SPath (SKM.wd D ν₀ [SKM.up i, SKM.dn i]) ((0, 0) : Sector I) ((0, 0) : Sector I)),
@@ -71,12 +77,12 @@ def vacuumLeftwardColumn (Z : (P).H ((0, 0) : Sector I))
         (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) ⟨true, trivial⟩).inv ≫
     (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).hom
 
-include sy hc in
+include hdot in
 /-- **The leftward vacuum cap inverse in the native chart (odd colour).** Leftward
 data satisfying the positive inverse equations at the vacuum sector give an
 entrywise inverse of the native cap window `[bend; x ^ n ≫ v]_(n < h)` of the
 evaluated A6 bend, whose columns are the explicit `vacuumLeftwardColumn`. -/
-theorem vacuumLeftwardCapInverse_odd (Z : (P).H ((0, 0) : Sector I))
+theorem vacuumLeftwardCapInverse_odd [Fact Sc.PureNilpotent] (Z : (P).H ((0, 0) : Sector I))
     (hZ : Z = vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (lc : ∀ (_q : SPath (SKM.wd D ν₀ [SKM.dn i, SKM.up i]) ((0, 0) : Sector I)
         ((0, 0) : Sector I))
@@ -85,7 +91,7 @@ theorem vacuumLeftwardCapInverse_odd (Z : (P).H ((0, 0) : Sector I))
     (dc : ℕ → ∀ (_r : SPath (SKM.wd D ν₀ []) ((0, 0) : Sector I) ((0, 0) : Sector I))
       (p : SPath (SKM.wd D ν₀ [SKM.up i, SKM.dn i]) ((0, 0) : Sector I) ((0, 0) : Sector I)),
       ((P).pathFunctor _r).obj Z ⟶ ((P).pathFunctor p).obj Z)
-    (HP : (P).PosInverseAt (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ν₀
+    (HP : (P).PosInverseAt (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) i ν₀
       ((0, 0) : Sector I) ((0, 0) : Sector I) Z lc dc)
     (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1) :
     ∃ j, ProbeWindow.IsCapInverse
@@ -104,20 +110,21 @@ theorem vacuumLeftwardCapInverse_odd (Z : (P).H ((0, 0) : Sector I))
   have hd : ¬StepValid (SKM.dn i) true ((0, 0) : Sector I) := by
     simp [StepValid]
   have h₁ := (P).isCapInverse_centralPadded_of_posInverseAt
-    (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ν₀ ((0, 0) : Sector I)
+    (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) i ν₀ ((0, 0) : Sector I)
     (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
     (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) lc dc HP hu hd
   have h₃ := (h₁.coordinates (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).symm
     (paddedVacuumTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).symm).target
       (paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H)
   have hs : (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).inv ≫
-      (P).centralPaddedSigma (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i
+      (P).centralPaddedSigma (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) i
         ((0, 0) : Sector I) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
         (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) true false ≫
       (paddedVacuumTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).hom =
       ProbeVacuumCap.evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP
         (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) :=
-    (Iso.inv_comp_eq _).2 (paddedVacuumDx_odd D Sc m cutoff bound ΛP ΛR hcP hcR H i sy hc hP hi)
+    (Iso.inv_comp_eq _).2 (paddedVacuumDx_odd D Sc m cutoff bound ΛP ΛR hcP hcR H i
+      hdot hP hi)
   have hw : ∀ n : ℕ, (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).inv ≫
       (P).centralPaddedCap i ((0, 0) : Sector I)
         (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
@@ -136,7 +143,7 @@ theorem vacuumLeftwardCapInverse_odd (Z : (P).H ((0, 0) : Sector I))
 /-- **Column moments are bubble entries.** The native column `n` of the leftward
 vacuum cap inverse followed by the native cap row `x ^ N ≫ v` is the evaluated left
 bubble entry `dcup n ≫ ε xᴺ`, conjugated by the cap-target chart. -/
-theorem vacuumLeftwardColumn_cap_eq
+theorem vacuumLeftwardColumn_cap_eq [Fact Sc.PureNilpotent]
     (dc : ℕ → ∀ (_r : SPath (SKM.wd D ν₀ []) ((0, 0) : Sector I) ((0, 0) : Sector I))
       (p : SPath (SKM.wd D ν₀ [SKM.up i, SKM.dn i]) ((0, 0) : Sector I) ((0, 0) : Sector I)),
       ((P).pathFunctor _r).obj (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) ⟶

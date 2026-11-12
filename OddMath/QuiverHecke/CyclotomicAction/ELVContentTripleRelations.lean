@@ -217,7 +217,7 @@ def contentETriplePolynomial (β : Multiset I) (i j : I)
     (w : ContentCategory D (parameterTwist D Sc) cutoff N (β + ([i,j,i] : Multiset I))) :
     Module.End k (ContentETripleSpace D (parameterTwist D Sc) cutoff N β i j i _ rfl M w) :=
   contentETripleDotSum D (parameterTwist D Sc) cutoff N β i j (D.dn i j) 0 (Sc.t i j : k) M w +
-    ∑ r ∈ Finset.Ioo 0 (D.dn i j), ∑ s ∈ Finset.Ioo 0 (D.dn j i),
+    ∑ r ∈ Finset.range (D.dn i j), ∑ s ∈ Finset.range (D.dn j i),
       contentETripleDotSum D (parameterTwist D Sc) cutoff N β i j r s (Sc.s i j r s) M w
 
 end OddMath.QuiverHecke.ELVOld

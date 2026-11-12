@@ -80,7 +80,7 @@ theorem elvProbeDxOuterDot_isNilpotent [Finite I]
     (i : I) (t : Sector I)
     (Z : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).H t)
     (M : (P).T.obj (-(P).muP t)) (δ : WeightBlocks D ΛR ((P).muM t))
-    (_sy : SKM.Symmetrizer D) (_hc : Sc.Homogeneous) :
+    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound) :
     IsNilpotent (dφ[i,t,Z,M,δ] ((P).rpPostDot i ds[i,t] dh[i,t] dU[i,t,Z])) := by
   let J := (dFR[i,t]) ⋙ out[t,M,δ]
   let y := (P).rpPostDot i ds[i,t] dh[i,t] dU[i,t,Z]
@@ -89,7 +89,7 @@ theorem elvProbeDxOuterDot_isNilpotent [Finite I]
     exact shiftedPostRestriction_component_isNilpotent D Sc' cutoff bound i ΛR
       ((P).muM_postF i t) ((P).T.obj (-(P).muP t)) ((P).rpObj i i ds[i,t] dh[i,t] dU[i,t,Z]) y
       (SKM.homContentShift D i t.1) M δ
-      (elvProbeMixedPostDot_isNilpotent D Sc m cutoff bound ΛP ΛR hP hR i ds[i,t] dh[i,t] dU[i,t,Z] _sy _hc M
+      (elvProbeMixedPostDot_isNilpotent D Sc m cutoff bound ΛP ΛR hP hR i ds[i,t] dh[i,t] dU[i,t,Z] hdot M
         (blockSucc D ΛR i ((P).muM_postF i t) δ))
   exact evaluated_conjugation_isNilpotent J
     ((P).probeToReservoirCoefficientIso i t ((dFP[i,t]).obj Z)) y hy

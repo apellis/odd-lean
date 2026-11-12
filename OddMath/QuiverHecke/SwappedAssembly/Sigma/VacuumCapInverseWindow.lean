@@ -37,18 +37,19 @@ theorem vacuum_positive_window_length (i : I) :
 
 /-- The specified inverse of the positive mixed bend and its native
 probe cap rows, extracted from the actual positive factor matrix. -/
-def vacuumCapInverseData [Finite I]
-    (sy : Symmetrizer D) (hc : Sc.Homogeneous) (i : I)
+def vacuumCapInverseData [Finite I] [Fact Sc.PureNilpotent]
+    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
+    (hwin : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR) (i : I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR (0,0))
     (β : WeightBlocks D ΛR ((P).muM (0,0)))
     (hh : 0 ≤ D.h i ((P).wt (0,0))) :
     CapInverseData (O := (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR (0,0) β).obj Z.obj)
-      ((P).centralPaddedSigma (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc)
+      ((P).centralPaddedSigma (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
         i (0,0) Z.obj (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR (0,0) β) true false)
       (fun n : Fin (D.h i ((P).wt (0,0))).toNat => (P).centralPaddedCap i (0,0) Z.obj
         (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR (0,0) β) true n) := by
   let E := reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR (0,0) β
-  let c := elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc
+  let c := elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot
   letI : IsIso (posMap
       ((P).centralPaddedSigma c i (0,0) Z.obj E false false)
       ((P).centralPaddedSigma c i (0,0) Z.obj E true true)
@@ -56,7 +57,7 @@ def vacuumCapInverseData [Finite I]
       ((P).centralPaddedSigma c i (0,0) Z.obj E true false)
       ((P).centralPaddedCap i (0,0) Z.obj E false)
       (fun n : Fin (D.h i ((P).wt (0,0))).toNat => (P).centralPaddedCap i (0,0) Z.obj E true n)) :=
-    (centralFactorMatrix_content_isIso D Sc m cutoff bound ΛP ΛR hP hR sy hc i (0,0) Z β).1 hh
+    (centralFactorMatrix_content_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i (0,0) Z β).1 hh
   refine ⟨_, _, posMap_isCapInverse_of_zero_corners
     ((P).centralPaddedSigma c i (0,0) Z.obj E false false)
     ((P).centralPaddedSigma c i (0,0) Z.obj E true true)
@@ -72,27 +73,29 @@ def vacuumCapInverseData [Finite I]
 
 /-- The finite inverse columns are precisely the columns of the inverse of
 the actual positive factor matrix, with no scalar or sign inserted. -/
-theorem vacuumCapInverseData_window [Finite I]
-    (sy : Symmetrizer D) (hc : Sc.Homogeneous) (i : I)
+theorem vacuumCapInverseData_window [Finite I] [Fact Sc.PureNilpotent]
+    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
+    (hwin : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR) (i : I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR (0,0))
     (β : WeightBlocks D ΛR ((P).muM (0,0)))
     (hh : 0 ≤ D.h i ((P).wt (0,0))) (n : Fin (D.h i ((P).wt (0,0))).toNat) :
-    let _ := (centralFactorMatrix_content_isIso D Sc m cutoff bound ΛP ΛR hP hR sy hc i (0,0) Z β).1 hh
-    (vacuumCapInverseData D Sc m cutoff bound ΛP ΛR hP hR sy hc i Z β hh).window n =
-      inv ((P).augPosFactorMatrix (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc)
+    let _ := (centralFactorMatrix_content_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i (0,0) Z β).1 hh
+    (vacuumCapInverseData D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i Z β hh).window n =
+      inv ((P).augPosFactorMatrix (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
         i ((P).wt (0,0)) (0,0) Z.obj (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR (0,0) β))
           (some (some n)) (some none) := rfl
 
 /-- The chosen principal entry is the `(probe source, reservoir target)` entry
 of the inverse of the actual positive factor matrix. -/
-theorem vacuumCapInverseData_principal [Finite I]
-    (sy : Symmetrizer D) (hc : Sc.Homogeneous) (i : I)
+theorem vacuumCapInverseData_principal [Finite I] [Fact Sc.PureNilpotent]
+    (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
+    (hwin : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR) (i : I)
     (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR (0,0))
     (β : WeightBlocks D ΛR ((P).muM (0,0)))
     (hh : 0 ≤ D.h i ((P).wt (0,0))) :
-    let _ := (centralFactorMatrix_content_isIso D Sc m cutoff bound ΛP ΛR hP hR sy hc i (0,0) Z β).1 hh
-    (vacuumCapInverseData D Sc m cutoff bound ΛP ΛR hP hR sy hc i Z β hh).principal =
-      inv ((P).augPosFactorMatrix (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc)
+    let _ := (centralFactorMatrix_content_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i (0,0) Z β).1 hh
+    (vacuumCapInverseData D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i Z β hh).principal =
+      inv ((P).augPosFactorMatrix (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot)
         i ((P).wt (0,0)) (0,0) Z.obj (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR (0,0) β))
           none (some none) := rfl
 

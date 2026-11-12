@@ -61,7 +61,7 @@ Checked declarations:
   `Q = U + R v = U + v R'` with `U` a unit.
 * `OddMath/SKM/BWWPureCoefficients.lean`: `BWWScalars.PureIn Sc J` (pure coefficients in
   `J`), proved for graded-homogeneous parameters (`PureIn.of_gradedHomogeneous`) and for
-  Brundan–Ellis parameters (`PureIn.of_toBWW`, any `J`); `isUnit_lowerPoly` and
+  parameters without pure terms (`PureIn.of_toBWW` under `ScalarData.NoPure`, any `J`); `isUnit_lowerPoly` and
   `exists_isUnit_quad_remainders` specialize the two results above to `Qᵢⱼ`.
 * `OddMath/QuiverHecke/SwappedAssembly/Sigma/BWWMixedEntry.lean`:
   `ProbeReservoir.isIso_homDistinctMixedMateDot_bwwParam_sourceUnits` replaces item 1 for the

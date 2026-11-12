@@ -33,7 +33,7 @@ def scalars : SKM.Scalars datum ℚ where
   s_eq_zero := fun _ _ _ _ _ => rfl
   two_isUnit := fun _ => isUnit_iff_ne_zero.mpr (by norm_num)
 
-theorem homogeneous : scalars.Homogeneous := fun _ _ _ _ _ _ _ _ h => absurd rfl h
+theorem homogeneous : scalars.Homogeneous := fun _ _ _ _ _ _ _ h => absurd rfl h
 
 def symmetrizer : SKM.Symmetrizer datum where
   d := fun _ => 1

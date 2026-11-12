@@ -97,7 +97,7 @@ theorem d_ne {i j : Bool} (h : i ≠ j) : datum.d i j = 3 := by
   cases i <;> cases j <;> first | exact absurd rfl h | rfl
 
 theorem lowerDegree : scalars.LowerDegree symmetrizer := by
-  intro i j p q _ _ _ _ hs
+  intro i j p q _ _ _ hs
   have h : i ≠ j ∧ p = 1 ∧ q = 1 := by
     by_contra h
     exact hs (by simp [scalars, h])
@@ -166,7 +166,17 @@ example :
   QuiverHecke.elvHomGradingOver datum symmetrizer (QuiverHecke.truncGrading ℚ 3) _
     (QuiverHecke.isHomogeneous_truncatedRees datum symmetrizer lowerDegree 3) _
 
+/-- Over the truncated Rees parameters the ELV coefficient Homs between empty words have
+degrees bounded below, uniformly in the cutoff. -/
+example :=
+  letI := QuiverHecke.truncGradedAlgebra ℚ 3
+  QuiverHecke.exists_elvHomDegreeOver_lower_bound datum symmetrizer
+    (QuiverHecke.truncGrading ℚ 3) _
+    (QuiverHecke.isHomogeneous_truncatedRees datum symmetrizer lowerDegree 3)
+    (fun _ hm => QuiverHecke.truncGrading_eq_bot_of_neg ℚ 3 hm) [] []
+
 #print axioms OddMath.QuiverHecke.elvHomGradingOver
+#print axioms OddMath.QuiverHecke.exists_elvHomDegreeOver_lower_bound
 #print axioms OddMath.QuiverHecke.isHomogeneous_rees
 #print axioms OddMath.Diagrams.CoefficientGrading.iSupIndep_presentedPart
 #print axioms OddMath.QuiverHecke.reesGradedSupercategory

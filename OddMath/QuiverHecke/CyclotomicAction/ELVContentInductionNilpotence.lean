@@ -76,16 +76,16 @@ end BalancedInduction
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
-  (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (N : ℕ)
+  (N : ℕ) (hdot : TruncatedAppendDotNilpotent D Sc cutoff N)
 
-include sy hc in
+include hdot in
 /-- The independently defined content dot is nilpotent as an endomorphism in
 the module supercategory, uniformly in the arbitrary input module. -/
 theorem contentInductionDot_module_pow_zero [Finite I] (ν : List I) (i : I) :
     ∃ e : ℕ, 0 < e ∧ ∀ M : ContentModules D Sc cutoff N (ν : Multiset I),
       (show End ((contentE D Sc cutoff N (ν : Multiset I) i).obj M) from
         (contentInductionDot D Sc cutoff N (ν : Multiset I) i).app (D.parity i) M) ^ e = 0 := by
-  obtain ⟨e, he, hp⟩ := truncatedAppendDot_pow_zero D Sc cutoff sy hc N ν i
+  obtain ⟨e, he, hp⟩ := hdot.out ν i
   refine ⟨e, he, fun M => ?_⟩
   rw [contentInductionDot_component]
   apply BalancedInduction.transformComponent_pow_zero

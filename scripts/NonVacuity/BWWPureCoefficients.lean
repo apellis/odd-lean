@@ -12,7 +12,8 @@ noncomputable section
 namespace NonVacuity.BWWPureCoefficients
 open OddMath OddMath.SKM NonVacuity.BWWScalars
 
-theorem pureIn : scalars.toBWW.PureIn (⊥ : Ideal ℚ) := BWWScalars.PureIn.of_toBWW scalars ⊥
+theorem pureIn : scalars.toBWW.PureIn (⊥ : Ideal ℚ) := 
+  BWWScalars.PureIn.of_toBWW scalars homogeneous.noPure ⊥
 
 example {R : Type} [Ring R] [Algebra ℚ R] {x : R} (hx : IsUnit x) :
     IsUnit ((scalars.toBWW.t true false : ℚ) • x ^ datum.dn true false +

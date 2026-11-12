@@ -351,7 +351,7 @@ theorem lemma33_eq8_eq_aux (i j : I) (ν : X) (hij : i ≠ j) :
           (zsign k (D.parity i * s) * (Sc.t i j : k)) •
             cl D Sc ν ([up j, up i] ++ [dn i]) ([dn i] ++ [up i, up j])
               (term8 i j (D.dn i j - 1 - s) 0 s) +
-        ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), ∑ s ∈ Finset.range p,
+        ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), ∑ s ∈ Finset.range p,
           (zsign k (D.parity i * s) * Sc.s i j p q) •
             cl D Sc ν ([up j, up i] ++ [dn i]) ([dn i] ++ [up i, up j]) (term8 i j (p - 1 - s) q s) := by
   have hb : cl D Sc (wt D ν [dn i]) ([up i] ++ [up j, up i]) ([up i, up j] ++ [up i])
@@ -362,7 +362,7 @@ theorem lemma33_eq8_eq_aux (i j : I) (ν : X) (hij : i ≠ j) :
           (zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
             cl D Sc (wt D ν [dn i]) ([up i] ++ [up j, up i]) ([up i, up j] ++ [up i])
               (dotsL [up i, up j] i [] s ++ dotsL [] i [up j, up i] (D.dn i j - 1 - s)) +
-        ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), ∑ s ∈ Finset.range p,
+        ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), ∑ s ∈ Finset.range p,
           (zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p q) •
             cl D Sc (wt D ν [dn i]) ([up i] ++ [up j, up i]) ([up i, up j] ++ [up i])
               (dotsL [up i, up j] i [] s ++ dotsL [up i] j [up i] q ++
@@ -398,7 +398,7 @@ theorem lemma33_eq8_eq (i j : I) (ν : X) (hij : i ≠ j) :
       ∑ s ∈ Finset.range (D.dn i j),
           (zsign k (D.parity i * s) * (Sc.t i j : k)) •
             cl D Sc ν [up j, up i, dn i] [dn i, up i, up j] (term8 i j (D.dn i j - 1 - s) 0 s) +
-        ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), ∑ s ∈ Finset.range p,
+        ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), ∑ s ∈ Finset.range p,
           (zsign k (D.parity i * s) * Sc.s i j p q) •
             cl D Sc ν [up j, up i, dn i] [dn i, up i, up j] (term8 i j (p - 1 - s) q s) :=
   lemma33_eq8_eq_aux Sc i j ν hij

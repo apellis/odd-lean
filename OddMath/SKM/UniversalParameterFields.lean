@@ -91,8 +91,8 @@ def scalars (p : PrimeSpectrum (RationalParameters D)) : Scalars D (FieldAt D p)
 /-- Exact inherited homogeneity of every characteristic-zero point. -/
 theorem homogeneous (p : PrimeSpectrum (RationalParameters D)) :
     (scalars D p).Homogeneous := by
-  intro i j m n hm hm' hn hn' h
-  apply UniversalPolynomialParameters.homogeneous D i j m n hm hm' hn hn'
+  intro i j m n hij hm' hn' h
+  apply UniversalPolynomialParameters.homogeneous D i j m n hij hm' hn'
   intro hz
   exact h (by simp [scalars, hz])
 

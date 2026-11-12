@@ -7,6 +7,11 @@ Induction over positions uses both source and swapped word corners. Equal
 colours use direct nilHecke units; distinct colours use the actual signed
 slides and both Q remainders. The proof works over the original ground ring,
 without finite-dimensionality, residue fields, or Nakayama descent.
+
+The hypothesis `[Fact Sc.PureNilpotent]` on declarations here is a route-only intermediate
+hypothesis for parameters with pure terms: homogeneous parameters supply it
+(`ScalarData.NoPure.pureNilpotent`) and truncated Rees parameters satisfy it
+(`BWWReesParameters.truncated_pureNilpotent`).
 -/
 noncomputable section
 open CategoryTheory StringDiagrams
@@ -39,7 +44,7 @@ private theorem probeWord_split_two {n : ℕ} (s : Word I (n+1))
 
 /-- Every literal dot in every word corner of the prescribed cofinal probe
 is a unit, directly over the given commutative ground ring. -/
-theorem probeWord_dots_isUnit (m : I → ℕ) (n : ℕ) :
+theorem probeWord_dots_isUnit [Fact Sc.PureNilpotent] (m : I → ℕ) (n : ℕ) :
     ∀ r < n+1, ∀ s : Word I (n+1),
       IsUnit (cyclotomicWordEnd D Sc (probePolynomial (probeDotExponent D) m) s
         (dotE D Sc s.val r)) := by

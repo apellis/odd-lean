@@ -188,9 +188,9 @@ theorem eq_7_3 (i j : I) (μ : X) (hij : i ≠ j) (h0 : 0 < D.h i μ) (h1 : D.h 
     Preadditive.comp_sum, Linear.smul_comp, Linear.comp_smul]
   rw [rhs8_zero cs i j μ hν, Limits.comp_zero, add_zero]
   -- the triple sum vanishes
-  rw [Finset.sum_eq_zero (s := Finset.Ioo 0 (D.dn i j)) (fun p hp => Finset.sum_eq_zero
+  rw [Finset.sum_eq_zero (s := Finset.range (D.dn i j)) (fun p hp => Finset.sum_eq_zero
     (fun q _ => Finset.sum_eq_zero (fun s hs => by
-      rw [Finset.mem_Ioo] at hp
+      rw [Finset.mem_range] at hp
       rw [Finset.mem_range] at hs
       by_cases hsh : (s : ℤ) < D.h i μ
       · rw [term8_zero_s cs i j μ _ _ _ hsh, smul_zero]
@@ -419,9 +419,9 @@ theorem pf_a (i j : I) (μ : X) (hij : i ≠ j) (hh : D.h i μ ≤ 0) :
   simp only [Preadditive.add_comp, Preadditive.sum_comp, Linear.smul_comp]
   have hν := h_wt_upj (D := D) i j μ
   -- the triple sum vanishes
-  rw [Finset.sum_eq_zero (s := Finset.Ioo 0 (D.dn i j)) (fun p hp => Finset.sum_eq_zero
+  rw [Finset.sum_eq_zero (s := Finset.range (D.dn i j)) (fun p hp => Finset.sum_eq_zero
     (fun q _ => Finset.sum_eq_zero (fun s hs => by
-      rw [Finset.mem_Ioo] at hp
+      rw [Finset.mem_range] at hp
       rw [Finset.mem_range] at hs
       rw [term8_zero_r' cs i j μ _ _ _ (by omega), smul_zero]))), zero_add]
   rcases hh.lt_or_eq with hlt | h0
@@ -719,7 +719,7 @@ theorem pfL_b (i j : I) (μ : X) (hij : i ≠ j) (_hh : D.h i μ ≤ 0) (n : ℕ
     simp only [dotsL] at dot_main dot_zero dot_pair_zero
     erw [dot_main, dot_zero, smul_zero, add_zero,
       sum_eq_zero (fun p hp => sum_eq_zero (fun q _ => by
-        erw [dot_pair_zero p q (mem_Ioo.1 hp).2, smul_zero])), add_zero]
+        erw [dot_pair_zero p q (mem_range.1 hp), smul_zero])), add_zero]
     rfl
 
 theorem pf_b (i j : I) (μ : X) (hij : i ≠ j) (hh : D.h i μ ≤ 0) (n : ℕ)

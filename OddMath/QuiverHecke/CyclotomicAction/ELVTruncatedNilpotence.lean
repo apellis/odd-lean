@@ -78,4 +78,21 @@ theorem truncatedAppendDot_pow_zero [Finite I] (ν : List I) (i : I) :
   have := sy.pos i
   omega
 
+/-- Nilpotence of the appended last-strand dot, with one exponent for each source content and
+appended colour. This is the only input on the parameters that the content-induction and
+reservoir dot nilpotence results use. -/
+structure TruncatedAppendDotNilpotent : Prop where
+  /-- For each source content `ν` and appended colour `i`, one positive exponent kills the
+  appended dot on every word of content `ν`. -/
+  out : ∀ (ν : List I) (i : I), ∃ e : ℕ, 0 < e ∧ ∀ v : TruncatedCategory D Sc cutoff N,
+    v.word.Perm ν →
+      let f : TruncatedEnd D Sc cutoff N (v.word ++ [i]) :=
+        (truncatedAppendDot D Sc cutoff N i).app (D.parity i) v
+      f ^ e = 0
+
+include sy hc in
+/-- Homogeneous parameters give nilpotence of the appended dot. -/
+theorem truncatedAppendDotNilpotent [Finite I] : TruncatedAppendDotNilpotent D Sc cutoff N :=
+  ⟨truncatedAppendDot_pow_zero D Sc cutoff sy hc N⟩
+
 end OddMath.QuiverHecke.ELVOld

@@ -43,8 +43,8 @@ theorem elvBlockDot_homogeneous (β : WeightBlocks D Λ x) :
 
 /-- Fixed-content nilpotence of the exact normalized dot. Its exponent may
 depend on the source content, and is uniform in the arbitrary input module. -/
-theorem elvContentDotTo_isNilpotent [Finite I] (sy : SKM.Symmetrizer D)
-    (hc : Sc.Homogeneous) (β γ : Multiset I)
+theorem elvContentDotTo_isNilpotent [Finite I]
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (β γ : Multiset I)
     (hγ : β + ([i] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff bound β) :
     IsNilpotent (show End ((contentInductionTo D Sc cutoff bound β [i] γ hγ).obj M) from
@@ -53,17 +53,17 @@ theorem elvContentDotTo_isNilpotent [Finite I] (sy : SKM.Symmetrizer D)
   subst γ
   change IsNilpotent (show End ((contentE D Sc cutoff bound β i).obj M) from
     (contentInductionDot D Sc cutoff bound β i).app (D.parity i) M)
-  have hp := contentInductionDot_module_pow_zero D Sc cutoff sy hc bound β.toList i
+  have hp := contentInductionDot_module_pow_zero D Sc cutoff bound hdot β.toList i
   rw [Multiset.coe_toList] at hp
   obtain ⟨e, _, hp⟩ := hp
   exact ⟨e, hp M⟩
 
-theorem elvBlockDot_isNilpotent [Finite I] (sy : SKM.Symmetrizer D)
-    (hc : Sc.Homogeneous) (β : WeightBlocks D Λ x)
+theorem elvBlockDot_isNilpotent [Finite I]
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (β : WeightBlocks D Λ x)
     (M : ContentModules D Sc cutoff bound β.1) :
     IsNilpotent (show End ((elvBlockInd D Sc cutoff bound i Λ h β).obj M) from
       (elvBlockDot D Sc cutoff bound i Λ h β).app (D.parity i) M) :=
-  elvContentDotTo_isNilpotent D Sc cutoff bound i sy hc β.1
+  elvContentDotTo_isNilpotent D Sc cutoff bound i hdot β.1
     (blockSucc D Λ i h β).1 (by rw [blockSucc_val, add_comm]; rfl) M
 
 /-- The dot component at a block with a chosen predecessor. -/
@@ -156,8 +156,8 @@ private theorem end_isNilpotent_eqToHom_conj
 
 /-- The actual dot is nilpotent at each original target-weight content block.
 There is deliberately no common exponent over the weight fibre. -/
-theorem elvWeightDotComponent_isNilpotent [Finite I] (sy : SKM.Symmetrizer D)
-    (hc : Sc.Homogeneous) (M : ELVWeightProduct D Sc cutoff bound Λ x)
+theorem elvWeightDotComponent_isNilpotent [Finite I]
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (M : ELVWeightProduct D Sc cutoff bound Λ x)
     (δ : WeightBlocks D Λ y) :
     IsNilpotent (show End ((elvInductionComponent D Sc cutoff bound i Λ h δ).obj M) from
       elvWeightDotComponent D Sc cutoff bound i Λ h (D.parity i) M δ) := by
@@ -167,7 +167,7 @@ theorem elvWeightDotComponent_isNilpotent [Finite I] (sy : SKM.Symmetrizer D)
     rw [elvWeightDotComponent_blockSucc]
     exact end_isNilpotent_eqToHom_conj
       (elvInductionComponent_obj_blockSucc D Sc cutoff bound i Λ h β M) _
-      (elvBlockDot_isNilpotent D Sc cutoff bound i Λ h sy hc β (M β))
+      (elvBlockDot_isNilpotent D Sc cutoff bound i Λ h hdot β (M β))
   · rw [(elvInductionComponent_isZero D Sc cutoff bound i Λ h δ hδ M).eq_of_src
       (elvWeightDotComponent D Sc cutoff bound i Λ h (D.parity i) M δ) 0]
     exact ⟨1, by simp⟩

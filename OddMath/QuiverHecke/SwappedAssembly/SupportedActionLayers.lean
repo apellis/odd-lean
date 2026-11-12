@@ -20,15 +20,16 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (bound : ℕ) (ΛP ΛR : X)
   (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
   (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
-  [Finite I] (sy : Symmetrizer D) (hc : Sc.Homogeneous)
+  [Finite I] (hF : ProbeActionInputs D Sc m cutoff bound ΛP ΛR hP hR)
   (Gs Ys : ∀ s, H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s)
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR
-local notation "c" => elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc
-local notation "leftward" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR sy hc
+local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hF.dot
+local notation "leftward" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR hF.dot
 local notation "gens" => ProbeReservoir.swappedGens (P) c leftward
 local notation "Q" => interpretation D Sc m cutoff bound ΛP ΛR hP hR Gs Ys gens
-local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff bound ΛP ΛR hP hR sy hc Gs Ys
-attribute [local irreducible] elvProbeCrossCoeff
+local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff bound ΛP ΛR hP hR hF.dot
+        hF.window hF.pure Gs Ys
+attribute [local irreducible] elvProbeCrossCoeffOf
 
 /-- The complete action of a presented layer is the actual supported
 local operator, with no remaining presentation-obligation premise. -/
@@ -40,7 +41,7 @@ theorem pointwiseUpwardModuleAction_act_layer (μ : X) (t t' : List I)
       (Q).res (SKM.ob D μ (upWord t')) ∘ₗ (Q).op A ∘ₗ
         (Q).ext (SKM.ob D μ (upWord t)) := by
   change ((functorOfObligations D Sc m cutoff bound ΛP ΛR hP hR Gs Ys gens
-    (pointwiseObligations D Sc m cutoff bound ΛP ΛR hP hR sy hc Gs Ys)).map
+    (pointwiseObligations D Sc m cutoff bound ΛP ΛR hP hR hF.dot hF.window hF.pure Gs Ys)).map
       ((SKM.pres D Sc).diag (Diagram.layer A hA hdom hcod))).hom = _
   unfold functorOfObligations
   rw [Presentation.lift_diag]

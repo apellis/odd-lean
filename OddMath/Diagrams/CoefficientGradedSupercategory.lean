@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.Diagrams.CoefficientGrading
 import OddMath.Diagrams.RestrictScalars
+import StringDiagrams.Monoidal
 
 /-!
 # Graded supercategories from coefficient-graded presentations
@@ -152,6 +153,48 @@ theorem comp_mem_presentedPart [SetLike.GradedMonoid 𝒜] {c : Obj S} {x : P.ob
   obtain ⟨g, hg, rfl⟩ := mem_presentedPart_iff.mp hy
   rw [← P.lin_comp]
   exact lin_mem_presentedPart (comp_mem_part hf hg)
+
+omit [GradedAlgebra 𝒜] in
+/-- Whiskering by objects preserves coefficient degrees. -/
+theorem whisk_mem_presentedPart {x : P.obj a ⟶ P.obj b} {d : ℤ}
+    (hx : x ∈ presentedPart 𝒜 deg P a b d) (u : Obj S) (v : List S.Colour) :
+    P.whisk x u v ∈ presentedPart 𝒜 deg P _ _ d := by
+  obtain ⟨f, hf, rfl⟩ := mem_presentedPart_iff.mp hx
+  rw [Presentation.whisk_lin]
+  by_cases h : a.WhiskerOK u v
+  · rw [LinDiagram.whisk_of_ok _ h]
+    exact lin_mem_presentedPart (whisker_mem_part hf u v h)
+  · rw [LinDiagram.whisk_of_not_ok _ h, P.lin_zero]
+    exact zero_mem _
+
+omit [GradedAlgebra 𝒜] in
+theorem eqToHom_mem_presentedPart [SetLike.GradedMonoid 𝒜] (h : P.obj a = P.obj b) :
+    eqToHom h ∈ presentedPart 𝒜 deg P a b 0 := by
+  rw [P.eqToHom_obj h, ← P.lin_of]
+  exact lin_mem_presentedPart (of_mem_part' _ (Diagram.degree_eqToHom deg _))
+
+omit [GradedAlgebra 𝒜] in
+/-- Left whiskering preserves coefficient degrees. -/
+theorem wL_mem_presentedPart [SetLike.GradedMonoid 𝒜] (c : Obj S) {x : P.obj a ⟶ P.obj b}
+    {d : ℤ} (hx : x ∈ presentedPart 𝒜 deg P a b d) :
+    P.wL c x ∈ presentedPart 𝒜 deg P (c.tensor a) (c.tensor b) d := by
+  have := comp_mem_presentedPart (eqToHom_mem_presentedPart (𝒜 := 𝒜) (deg := deg)
+    (congrArg P.obj (Obj.tensor_eq_whisker_nil c a))) (comp_mem_presentedPart
+      (whisk_mem_presentedPart hx c []) (eqToHom_mem_presentedPart (𝒜 := 𝒜) (deg := deg)
+        (congrArg P.obj (Obj.tensor_eq_whisker_nil c b).symm)))
+  rwa [zero_add, add_zero] at this
+
+omit [GradedAlgebra 𝒜] in
+/-- Right whiskering preserves coefficient degrees. -/
+theorem wR_mem_presentedPart [SetLike.GradedMonoid 𝒜] [Subsingleton S.Region]
+    [Inhabited S.Region] {x : P.obj a ⟶ P.obj b} {d : ℤ}
+    (hx : x ∈ presentedPart 𝒜 deg P a b d) (c : Obj S) :
+    P.wR x c ∈ presentedPart 𝒜 deg P (a.tensor c) (b.tensor c) d := by
+  have := comp_mem_presentedPart (eqToHom_mem_presentedPart (𝒜 := 𝒜) (deg := deg)
+    (congrArg P.obj (Obj.tensor_eq_whisker_unit a c))) (comp_mem_presentedPart
+      (whisk_mem_presentedPart hx Obj.unit c.word) (eqToHom_mem_presentedPart (𝒜 := 𝒜)
+        (deg := deg) (congrArg P.obj (Obj.tensor_eq_whisker_unit b c).symm)))
+  rwa [zero_add, add_zero] at this
 
 /-- **Graded supercategory over the degree-zero ring.** A parity homogeneous presentation over
 a `ℤ`-graded `K`-algebra `R` whose relations are coefficient-graded homogeneous presents a

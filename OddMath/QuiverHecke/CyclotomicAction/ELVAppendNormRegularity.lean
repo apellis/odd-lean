@@ -123,7 +123,7 @@ theorem appendProjection_qLeft_regular (i j : I) (hji : j ≠ i) (v w : List I)
   have he := congrArg (appendOldCoordinate D Sc cutoff 0 (q.representative.shift (D.dn i j))) hh
   simp only [map_add, map_zero, map_sum, Preadditive.sum_comp, map_smul,
     Linear.smul_comp] at he
-  have hl : (∑ a ∈ Finset.Ioo 0 (D.dn j i), ∑ e ∈ Finset.Ioo 0 (D.dn i j),
+  have hl : (∑ a ∈ Finset.range (D.dn j i), ∑ e ∈ Finset.range (D.dn i j),
       Sc.s j i a e • appendOldCoordinate D Sc cutoff 0 (q.representative.shift (D.dn i j))
         (appendProjection D Sc cutoff i v w
           (affineUnit D Sc cutoff _ _
@@ -141,7 +141,7 @@ theorem appendProjection_qLeft_regular (i j : I) (hji : j ≠ i) (v w : List I)
         apply hs
         rw [Sc.s_symm]
         exact Sc.s_eq_zero i j e a hp
-      rw [hlow a e (Finset.mem_Ioo.mp he').2 hep, smul_zero]
+      rw [hlow a e (Finset.mem_range.mp he') hep, smul_zero]
   rw [hl, hold, smul_zero, zero_add, zero_add] at he
   have hm := appendMovingPower_coordinate_shift D Sc cutoff 0 q (D.dn i j) hpar f
   rw [appendOldReconstruct_coordinateEquiv] at hm

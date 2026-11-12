@@ -54,15 +54,16 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (bound : ℕ) (ΛP ΛR : X)
   (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
   (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
-  [Finite I] (sy : Symmetrizer D) (hc : Sc.Homogeneous)
+  [Finite I] (hF : ProbeActionInputs D Sc m cutoff bound ΛP ΛR hP hR)
   (Gs Ys : ∀ s, H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s)
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR
-local notation "c" => elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hP hR sy hc
-local notation "leftward" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR sy hc
+local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hF.dot
+local notation "leftward" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR hF.dot
 local notation "gens" => ProbeReservoir.swappedGens (P) c leftward
-local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff bound ΛP ΛR hP hR sy hc Gs Ys
+local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff bound ΛP ΛR hP hR hF.dot
+        hF.window hF.pure Gs Ys
 local notation "E" => matrixEquiv D Sc m cutoff bound ΛP ΛR hP hR Gs Ys
-attribute [local irreducible] elvProbeCrossCoeff
+attribute [local irreducible] elvProbeCrossCoeffOf
 
 /-- **A closed diagram beside the strands, entry by entry.** In the complete supported
 upward module action, the closed diagram `cl M` of the rightmost region `μ`, placed to the
@@ -85,7 +86,7 @@ theorem pointwiseUpwardModuleAction_act_bubAt_cl (μ : X) (t : List I)
     simpa only [List.append_nil] using hM.whisk (upWord t) []
   rw [SKM.bubAt_cl, SKM.cl_of hw]
   change E _ (((functorOfObligations D Sc m cutoff bound ΛP ΛR hP hR Gs Ys gens
-    (pointwiseObligations D Sc m cutoff bound ΛP ΛR hP hR sy hc Gs Ys)).map
+    (pointwiseObligations D Sc m cutoff bound ΛP ΛR hP hR hF.dot hF.window hF.pure Gs Ys)).map
       ((SKM.pres D Sc).diag (SKM.mkD D μ _ hw))).hom x) s τ p = _
   unfold functorOfObligations
   rw [Presentation.lift_diag]

@@ -37,7 +37,7 @@ def rouquierMixedBraidEquation : Prop :=
         (SKM.zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
           (SKM.rouquierPower (R.dot i hab) s ▷ (R.E j hbc ≫ R.E i hcd) ≫
             R.E i hab ◁ R.E j hbc ◁ SKM.rouquierPower (R.dot i hcd) (D.dn i j - 1 - s)) +
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), ∑ s ∈ Finset.range p,
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), ∑ s ∈ Finset.range p,
         (SKM.zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p q) •
           (SKM.rouquierPower (R.dot i hab) s ▷ (R.E j hbc ≫ R.E i hcd) ≫
             R.E i hab ◁ (SKM.rouquierPower (R.dot j hbc) q ▷ R.E i hcd) ≫

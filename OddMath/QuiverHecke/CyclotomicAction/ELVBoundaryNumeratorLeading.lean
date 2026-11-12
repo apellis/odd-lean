@@ -93,8 +93,8 @@ theorem qpOutputCoefficientStep_above (i : I) (v : List I) (b m n : ℕ)
     simp only [Finsupp.smul_apply, hf n hn, smul_zero]
   · simp only [appendQPDegree, hj, ↓reduceIte] at hn
     simp only [Finsupp.add_apply, Finsupp.smul_apply, Finsupp.coe_finsetSum, Finset.sum_apply]
-    have hs : (∑ e ∈ Finset.Ioo 0 (D.dn i (v.getD b i)),
-        ∑ a ∈ Finset.Ioo 0 (D.dn (v.getD b i) i),
+    have hs : (∑ e ∈ Finset.range (D.dn i (v.getD b i)),
+        ∑ a ∈ Finset.range (D.dn (v.getD b i) i),
           Sc.s i (v.getD b i) e a •
             inputCoefficientComp D Sc cutoff v (sourceDotPower D Sc cutoff v b a)
               (inputCoefficientShift D Sc cutoff i v e f) n) = 0 := by
@@ -102,7 +102,7 @@ theorem qpOutputCoefficientStep_above (i : I) (v : List I) (b m n : ℕ)
       intro e he
       apply Finset.sum_eq_zero
       intro a _
-      rw [inputCoefficientComp_apply, ht e (by have := (Finset.mem_Ioo.mp he).2; omega),
+      rw [inputCoefficientComp_apply, ht e (by have := (Finset.mem_range.mp he); omega),
         map_zero, smul_zero]
     rw [hs, ht _ hn, ho _ n (by omega), smul_zero, smul_zero, add_zero, add_zero]
 
@@ -132,8 +132,8 @@ theorem qpOutputCoefficientStep_unit_top (i : I) (v : List I) (b m : ℕ)
       have H := D.dn_cast (Ne.symm hj)
       omega
     simp only [Finsupp.add_apply, Finsupp.smul_apply, Finsupp.coe_finsetSum, Finset.sum_apply]
-    have hs : (∑ e ∈ Finset.Ioo 0 (D.dn i (v.getD b i)),
-        ∑ a ∈ Finset.Ioo 0 (D.dn (v.getD b i) i),
+    have hs : (∑ e ∈ Finset.range (D.dn i (v.getD b i)),
+        ∑ a ∈ Finset.range (D.dn (v.getD b i) i),
           Sc.s i (v.getD b i) e a •
             inputCoefficientComp D Sc cutoff v (sourceDotPower D Sc cutoff v b a)
               (inputCoefficientShift D Sc cutoff i v e f) (D.dn i (v.getD b i) + m)) = 0 := by
@@ -143,7 +143,7 @@ theorem qpOutputCoefficientStep_unit_top (i : I) (v : List I) (b m : ℕ)
       intro a _
       rw [inputCoefficientComp_apply,
         inputCoefficientShift_above D Sc cutoff i v e m _ f hf
-          (by have := (Finset.mem_Ioo.mp he).2; omega), map_zero, smul_zero]
+          (by have := (Finset.mem_range.mp he); omega), map_zero, smul_zero]
     rw [hs, ht, ho _ _ (by omega), smul_zero, add_zero, zero_add, smul_smul]
     rfl
 

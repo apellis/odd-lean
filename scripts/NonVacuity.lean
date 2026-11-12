@@ -107,7 +107,7 @@ def osp12Sc : Scalars osp12 ℂ where
   two_isUnit := fun _ ↦ two_ne_zero.isUnit
 
 theorem osp12Sc_homogeneous : osp12Sc.Homogeneous :=
-  fun _ _ _ _ _ _ _ _ h ↦ absurd rfl h
+  fun _ _ _ _ _ _ _ h ↦ absurd rfl h
 
 /-- The symmetrizer `d = 1` of `osp12`. -/
 def osp12Sy : Symmetrizer osp12 where

@@ -103,14 +103,14 @@ theorem elvShiftedPostEndEvaluation_one (M : A) (δ : WeightBlocks D Λ y) (f : 
 
 /-- The chosen content shift preserves the already proved local reservoir-dot bound. -/
 theorem elvShiftedPostEndEvaluation_dot_isNilpotent [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound)
     (κ : ZMod 2) (M : A) (δ : WeightBlocks D Λ y) :
     IsNilpotent (elvShiftedPostEndEvaluation D Sc cutoff bound i Λ h F κ M δ (Ys κ)) := by
   rcases parity_eq_zero_or_one κ with rfl | rfl
   · rw [elvShiftedPostDot, elvShiftedPostEndEvaluation_zero]
-    exact elvPostEndEvaluation_dot_isNilpotent D Sc cutoff bound i Λ h F sy hc M δ
+    exact elvPostEndEvaluation_dot_isNilpotent D Sc cutoff bound i Λ h F hdot M δ
   · rw [elvShiftedPostDot, elvShiftedPostEndEvaluation_one]
-    exact (elvPostEndEvaluation_dot_isNilpotent D Sc cutoff bound i Λ h F sy hc M δ).map
+    exact (elvPostEndEvaluation_dot_isNilpotent D Sc cutoff bound i Λ h F hdot M δ).map
       (productPiEndComponent (k := k) (fun β : WeightBlocks D Λ y => ContentModules D Sc cutoff bound β.1)
         ((G).obj M) δ)
 

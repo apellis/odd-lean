@@ -48,8 +48,8 @@ variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X}
 theorem Scalars.GradedHomogeneous.lowerDegree {k : Type w} [CommRing k] {σ : Type*}
     [SetLike σ k] {sy : Symmetrizer D} {𝒜 : ℕ → σ} {Sc : Scalars D k}
     (h : Sc.GradedHomogeneous sy 𝒜) : Sc.LowerDegree sy := by
-  intro i j p q hp hp' hq hq' hs
-  obtain ⟨n, hn, -⟩ := h.2 i j p q hp hp' hq hq' hs
+  intro i j p q hij hp' hq' hs
+  obtain ⟨n, hn, -⟩ := h.2 i j p q hij hp' hq' hs
   rw [← hn]
   exact Int.natCast_nonneg n
 
@@ -58,8 +58,8 @@ theorem ScalarData.LowerDegree.scalarChange {R : Type w} {S : Type*} [CommRing R
     [CommRing S] (f : R →+* S) {sy : Symmetrizer D} {Ptwo : Prop} {Sc : ScalarData D R Ptwo}
     (h : Sc.LowerDegree sy) :
     (ScalarChange.scalars D f Sc).LowerDegree sy := by
-  intro i j p q hp hp' hq hq' hs
-  apply h i j p q hp hp' hq hq'
+  intro i j p q hij hp' hq' hs
+  apply h i j p q hij hp' hq'
   intro h0
   apply hs
   simp [h0]
@@ -75,13 +75,13 @@ rectangle. -/
 def Allowed (a : RawSlot I) : Prop :=
   (a.p : ZMod 2) * D.parity a.i ≠ 1 ∧
   (a.q : ZMod 2) * D.parity a.j ≠ 1 ∧
-  (0 < a.p → (a.p : ℤ) < D.d a.i a.j → 0 < a.q → (a.q : ℤ) < D.d a.j a.i →
+  (a.i ≠ a.j → (a.p : ℤ) < D.d a.i a.j → (a.q : ℤ) < D.d a.j a.i →
     0 ≤ coefficientDegree sy a.i a.j a.p a.q)
 
 theorem allowed_swap (a : RawSlot I) (h : Allowed D sy a) : Allowed D sy a.swap := by
   refine ⟨h.2.1, h.1, ?_⟩
-  intro hq hq' hp hp'
-  have h' := h.2.2 hp hp' hq hq'
+  intro hij hq' hp'
+  have h' := h.2.2 (Ne.symm hij) hp' hq'
   rw [coefficientDegree_symm] at h'
   exact h'
 
@@ -147,9 +147,9 @@ def scalars : Scalars D (ParameterRing D sy) where
   two_isUnit _ := two_isUnit D sy
 
 theorem lowerDegree : (scalars D sy).LowerDegree sy := by
-  intro i j p q hp hp' hq hq' hn
+  intro i j p q hij hp' hq' hn
   by_cases h : Allowed D sy ⟨i, j, p, q⟩
-  · exact h.2.2 hp hp' hq hq'
+  · exact h.2.2 hij hp' hq'
   · exact (hn (coefficient_of_not_allowed D sy _ h)).elim
 
 /-- All normalization units, with their shift laws. -/
@@ -173,13 +173,13 @@ abbrev grading : ℕ → Submodule (UniversalCoefficientRing.UnitRing D) (Parame
   MvPolynomial.weightedHomogeneousSubmodule _ (weight D sy)
 
 theorem gradedHomogeneous : (scalars D sy).GradedHomogeneous sy (grading D sy) := by
-  refine ⟨fun i j => ?_, fun i j p q hp hp' hq hq' hs => ?_⟩
+  refine ⟨fun i j => ?_, fun i j p q hij hp' hq' hs => ?_⟩
   · exact (MvPolynomial.mem_weightedHomogeneousSubmodule _ _ _ _).mpr
       (MvPolynomial.isWeightedHomogeneous_C _ _)
   · have h : Allowed D sy ⟨i, j, p, q⟩ := by
       by_contra h
       exact hs (coefficient_of_not_allowed D sy _ h)
-    refine ⟨(coefficientDegree sy i j p q).toNat, Int.toNat_of_nonneg (h.2.2 hp hp' hq hq'), ?_⟩
+    refine ⟨(coefficientDegree sy i j p q).toNat, Int.toNat_of_nonneg (h.2.2 hij hp' hq'), ?_⟩
     change coefficient D sy ⟨i, j, p, q⟩ ∈ _
     rw [coefficient_of_allowed D sy _ h]
     exact (MvPolynomial.mem_weightedHomogeneousSubmodule _ _ _ _).mpr
@@ -197,7 +197,7 @@ theorem allowed_of_ne_zero {Sc : Scalars D R} (hl : Sc.LowerDegree sy)
     apply h
     rw [Sc.s_symm]
     exact Sc.s_eq_zero _ _ _ _ hq
-  · exact fun hp hp' hq hq' => hl _ _ _ _ hp hp' hq hq' h
+  · exact fun hij hp' hq' => hl _ _ _ _ hij hp' hq' h
 
 /-- Evaluation on slots, well defined by the symmetry law. -/
 def slotValue (Sc : Scalars D R) : Slot D sy → R :=

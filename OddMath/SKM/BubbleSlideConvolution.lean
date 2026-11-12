@@ -60,14 +60,14 @@ theorem bubble_slide_middle_raw_convolution (i j : I) (μ : X) (hij : i ≠ j)
     (hpos : 0 < D.h i μ) (hlt : D.h i μ < D.d i j) (n : ℕ) :
     (Sc.t i j : k) • bubbleSlideRawConv cs i j μ 0 (D.dn i j + n) +
     (Sc.t j i : k) • bubbleSlideRawConv cs i j μ (D.dn j i) n +
-    (∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+    (∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
       Sc.s i j p q • bubbleSlideRawConv cs i j μ q (p + n)) = 0 := by
   have H := bubble_slide_middle_dotted_all cs i j μ hij hpos hlt n
   have hp := parity_mul_dn D i j
   rw [bubbleSlideRawConv_split cs i j μ (D.dn i j) 0 n hp]
-  have hS : (∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+  have hS : (∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
       Sc.s i j p q • bubbleSlideRawConv cs i j μ q (p + n)) =
-      (∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+      (∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
         Sc.s i j p q • ((∑ s ∈ range p, zsign k (D.parity i * s) •
           (bubbleL_right cs i j μ s ≫ cl D Sc μ [up j] [up j] (dotsL [] j [] q) ≫
             bubbleR_left cs i j μ (p - 1 - s + n : ℕ))) +
@@ -89,15 +89,15 @@ theorem bubble_slide_middle_raw_convolution (i j : I) (μ : X) (hij : i ≠ j)
     (∑ r ∈ range n, ((Sc.t i j : k) * zsign k (D.parity i * r)) •
       (bubbleL_right cs i j μ (r + D.dn i j) ≫ bubbleR_left cs i j μ (n - 1 - r : ℕ))) +
     (Sc.t j i : k) • bubbleSlideRawConv cs i j μ (D.dn j i) n +
-    ∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i), ∑ r ∈ range n,
+    ∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i), ∑ r ∈ range n,
       (Sc.s i j p q * zsign k (D.parity i * r)) •
         (bubbleL_right cs i j μ (r + p) ≫ cl D Sc μ [up j] [up j] (dotsL [] j [] q) ≫
           bubbleR_left cs i j μ (n - 1 - r : ℕ)) := by
     simp only [bubbleL_slide_polynomial_raw cs i j μ hij (by omega),
       Preadditive.add_comp, Preadditive.sum_comp, Linear.smul_comp,
       smul_add, smul_sum, smul_smul, sum_add_distrib, bubbleSlideRawConv]
-    rw [sum_comm (s := range n) (t := Ioo 0 (D.dn i j))]
-    simp_rw [sum_comm (s := range n) (t := Ioo 0 (D.dn j i))]
+    rw [sum_comm (s := range n) (t := range (D.dn i j))]
+    simp_rw [sum_comm (s := range n) (t := range (D.dn j i))]
     apply congrArg₂ (· + ·)
     · apply congrArg₂ (· + ·)
       · apply sum_congr rfl
@@ -222,7 +222,7 @@ theorem bubble_slide_middle_shift_convolution (i j : I) (μ : X) (hij : i ≠ j)
     (Sc.t i j : k) • bubbleSlideShiftConv cs i j μ 0 (n + 1) +
     (Sc.t j i : k) • (if D.dn i j ≤ n + 1 then
       bubbleSlideShiftConv cs i j μ (D.dn j i) (n + 1 - D.dn i j) else 0) +
-    (∑ p ∈ Ioo 0 (D.dn i j), ∑ q ∈ Ioo 0 (D.dn j i),
+    (∑ p ∈ range (D.dn i j), ∑ q ∈ range (D.dn j i),
       Sc.s i j p q • (if D.dn i j - p ≤ n + 1 then
         bubbleSlideShiftConv cs i j μ q (n + 1 - (D.dn i j - p)) else 0)) = 0 := by
   have H := bubble_slide_middle_raw_convolution cs i j μ hij hpos hlt n
@@ -238,11 +238,11 @@ theorem bubble_slide_middle_shift_convolution (i j : I) (μ : X) (hij : i ≠ j)
     · congr 1; omega
     · rfl
   rw [hz] at H
-  have hs (p q : ℕ) (hp : p ∈ Ioo 0 (D.dn i j)) :
+  have hs (p q : ℕ) (hp : p ∈ range (D.dn i j)) :
       bubbleSlideRawConv cs i j μ q (p + n) = isg k (D.parity i) (D.h i μ - 1) •
         (if D.dn i j - p ≤ n + 1 then bubbleSlideShiftConv cs i j μ q (n + 1 - (D.dn i j - p)) else 0) := by
     rw [bubbleSlideRawConv_shift_all cs i j μ hpos hlt]
-    have hp := mem_Ioo.mp hp
+    have hp := mem_range.mp hp
     have e : D.dn i j - 1 ≤ p + n ↔ D.dn i j - p ≤ n + 1 := by omega
     simp only [e]
     congr 1

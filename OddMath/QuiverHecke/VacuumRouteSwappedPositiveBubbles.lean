@@ -19,8 +19,8 @@ closed diagrams give the positive-height bubble field of the swapped route bases
   actions of the substituted-series coefficients and of `(-1)^(N_i+1) δ_i`;
 * `VacuumBubblesPositiveHeight.of_closed`: the positive-height bubble hypothesis from the
   values of the closed action on these diagrams, for any upward action;
-* `SwappedLeftEntriesField sy` and `positiveBubbleField_of_entries`:
-  `PositiveBubbleField (swappedRouteBases sy)`;
+* `SwappedLeftEntriesField` and `positiveBubbleField_of_entries`:
+  `PositiveBubbleField (swappedRouteBases D)`;
 * `nondegeneracy_of_swapped_entries`: the conjecture from the left and right vacuum entries.
 
 The vacuum entries are an intermediate hypothesis: they are the inverse-column moments of the
@@ -95,7 +95,7 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (ΛP ΛR : X) (L : I × ℕ → ℕ)
   (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
   (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
-  (sy : Symmetrizer D) (hc : Sc.Homogeneous)
+  (hF : ProbeActionInputs D Sc m cutoff (PowerWordContent.powerBound D cutoff L) ΛP ΛR hP hR)
 
 /-- **Vacuum entries of the bubbles at positive height.** The entries at the vacuum sector of
 the closed diagrams of `SKM.inv_smul_bubLs_of_pos` and `SKM.oddBubble_eq_cl_of_pos`, as
@@ -103,19 +103,19 @@ coefficient actions of the substituted-series coefficients of `probeSeries M` an
 `(-1)^(N_i+1) δ_i`. -/
 structure VacuumLeftEntries (μ : X) (M N : I → ℕ) : Prop where
   left_even : ∀ i, D.parity i = 0 → 0 < D.h i μ → ∀ s : ℕ,
-    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc μ
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF μ
       (SKM.dcupL i (D.h i μ - 1).toNat ++ SKM.epsL i ((s : ℤ) + D.h i μ - 1).toNat)
       ((SKM.sChain_dcupL i _).append (SKM.sChain_epsL i _))
       (SKM.SYM.polynomialInclude D k (PowerSeries.coeff s
         (VacuumSeries.substitutedSeries k (SKM.SYM.probeSeries D k M) i)))
   left_odd : ∀ i, D.parity i = 1 → 0 < D.h i μ → ∀ s : ℕ,
-    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc μ
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF μ
       (SKM.dcupL i (D.h i μ - 1).toNat ++ SKM.epsL i (((2 * s : ℕ) : ℤ) + D.h i μ - 1).toNat)
       ((SKM.sChain_dcupL i _).append (SKM.sChain_epsL i _))
       (SKM.SYM.polynomialInclude D k (PowerSeries.coeff s
         (VacuumSeries.substitutedSeries k (SKM.SYM.probeSeries D k M) i)))
   odd : ∀ i : {i : I // D.parity i = 1}, 0 < D.h i.1 μ →
-    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc μ
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF μ
       (SKM.dcupL i.1 (D.h i.1 μ - 1).toNat ++ SKM.epsL i.1 (D.h i.1 μ).toNat)
       ((SKM.sChain_dcupL i.1 _).append (SKM.sChain_epsL i.1 _))
       (SKM.SYM.probeSign D k N i • SKM.SYM.delta D k i)
@@ -127,35 +127,35 @@ variable {I X : Type u} [AddCommGroup X] {D : SKM.Datum I X}
 
 /-- **The vacuum entries of the bubbles at positive height**, at every route index of the
 swapped route bases. Intermediate hypothesis. -/
-def SwappedLeftEntriesField (sy : SKM.Symmetrizer D) : Prop :=
+def SwappedLeftEntriesField (D : SKM.Datum I X) : Prop :=
   ∀ ι : VacuumRouteIndex D,
     SwappedAssembly.SupportedSectors.VacuumLeftEntries (D := ι.datum) (Sc := ι.scalars)
       (m := ι.exponent) (cutoff := ι.level) (ΛP := ι.probeHW) (ΛR := ι.reservoirHW)
       (L := ι.power) (hP := ι.probe_pairing) (hR := ι.reservoir_pairing)
-      (sy := ι.symmetrizer sy) (hc := ι.scalars_homogeneous) ι.weight
+      (hF := ι.actionInputs) ι.weight
       (probeExponent ι.datum ι.weight ι.t ι.d) (reservoirLevel ι.datum ι.weight ι.t ι.d)
 
 /-- **The positive-height bubble field of the swapped route bases**, from the vacuum entries
 of the bubbles at positive height. -/
-theorem positiveBubbleField_of_entries (sy : SKM.Symmetrizer D)
-    (hE : SwappedLeftEntriesField sy) : PositiveBubbleField (swappedRouteBases sy) :=
+theorem positiveBubbleField_of_entries (hE : SwappedLeftEntriesField D) :
+    PositiveBubbleField (swappedRouteBases D) :=
   fun ι =>
-    VacuumBubblesPositiveHeight.of_closed ι.cscalars (swappedRouteBases sy ι).A ι.t
-      (swappedRouteBases sy ι).raw _ _
-      (fun i hi h s => swappedRouteBases_closedAct_cl sy ι _ _ _ ((hE ι).left_even i hi h s))
-      (fun i hi h s => swappedRouteBases_closedAct_cl sy ι _ _ _ ((hE ι).left_odd i hi h s))
-      (fun i h => swappedRouteBases_closedAct_cl sy ι _ _ _ ((hE ι).odd i h))
+    VacuumBubblesPositiveHeight.of_closed ι.cscalars (swappedRouteBases D ι).A ι.t
+      (swappedRouteBases D ι).raw _ _
+      (fun i hi h s => swappedRouteBases_closedAct_cl ι _ _ _ ((hE ι).left_even i hi h s))
+      (fun i hi h s => swappedRouteBases_closedAct_cl ι _ _ _ ((hE ι).left_odd i hi h s))
+      (fun i h => swappedRouteBases_closedAct_cl ι _ _ _ ((hE ι).odd i h))
 
 /-- **The conjecture from the vacuum entries** of the bubbles at positive height and of the
 right bubbles at nonpositive height, for the swapped route bases. A reduction step: both
 inputs are proved (`swappedLeftEntriesField`, `swappedRightEntriesField`), and the resulting
 theorem is `nondegeneracy_of_symmetrizer`. -/
 theorem nondegeneracy_of_swapped_entries (sy : SKM.Symmetrizer D)
-    (hL : SwappedLeftEntriesField sy) (hR : SwappedRightEntriesField sy)
+    (hL : SwappedLeftEntriesField D) (hR : SwappedRightEntriesField D)
     {R : Type w} [CommRing R] (h₂ : IsUnit (2 : R))
     {Sc : SKM.Scalars D R} (hh : Sc.Homogeneous) (cs : SKM.CScalars Sc) :
     SKM.NondegeneracyConjecture cs :=
-  nondegeneracy_of_swapped_positive_field_and_entries sy (positiveBubbleField_of_entries sy hL)
+  nondegeneracy_of_swapped_positive_field_and_entries sy (positiveBubbleField_of_entries hL)
     hR h₂ hh cs
 
 end OddMath.QuiverHecke

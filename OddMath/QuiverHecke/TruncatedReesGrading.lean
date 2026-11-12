@@ -24,7 +24,9 @@ supercategory. These are the Artinian graded rings of route step 1 of
 
 * `QuiverHecke.truncAlg`: the truncation `K[h] → K[h]/(h^N)` as a `K`-algebra map.
 * `QuiverHecke.ker_truncAlg`: its kernel is `(h^N)`.
-* `QuiverHecke.truncGrading`, `QuiverHecke.truncGradedAlgebra`: the grading of `K[h]/(h^N)`.
+* `QuiverHecke.truncGrading`, `QuiverHecke.truncGradedAlgebra`: the grading of `K[h]/(h^N)`,
+  concentrated in degrees `0, …, N - 1` (`truncGrading_eq_bot_of_neg`,
+  `truncGrading_eq_bot_of_le`).
 * `QuiverHecke.isHomogeneous_truncatedRees`: the quiver Hecke presentation with the truncated
   Rees parameters is coefficient-graded homogeneous.
 * `QuiverHecke.truncatedReesGradedSupercategory`: the graded supercategory structure over `K`.
@@ -83,6 +85,39 @@ def truncGrading (N : ℕ) : ℤ → Submodule K (SKM.TruncatedRees.TruncRing K 
 def truncGradedAlgebra (N : ℕ) : GradedAlgebra (truncGrading K N) :=
   SKM.GradedImage.gradedAlgebra _ _ (truncAlg_surjective K N) (isHomogeneous_ker_truncAlg K N)
 
+/-- `K[h]` has no negative degrees. -/
+theorem reesGrading_eq_bot_of_neg {m : ℤ} (hm : m < 0) : reesGrading K m = ⊥ := by
+  refine eq_bot_iff.2 fun p hp => (Submodule.mem_bot K).2 ?_
+  rw [MvPolynomial.mem_weightedHomogeneousSubmodule] at hp
+  ext d
+  by_contra h
+  have hw := hp h
+  rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)] at hw
+  simp at hw
+  omega
+
+/-- `K[h]/(h^N)` has no negative degrees. -/
+theorem truncGrading_eq_bot_of_neg (N : ℕ) {m : ℤ} (hm : m < 0) : truncGrading K N m = ⊥ := by
+  change (reesGrading K m).map (truncAlg K N).toLinearMap = ⊥
+  rw [reesGrading_eq_bot_of_neg K hm, Submodule.map_bot]
+
+/-- `K[h]/(h^N)` has no degrees `≥ N`. -/
+theorem truncGrading_eq_bot_of_le (N : ℕ) {m : ℤ} (hm : (N : ℤ) ≤ m) :
+    truncGrading K N m = ⊥ := by
+  change (reesGrading K m).map (truncAlg K N).toLinearMap = ⊥
+  refine eq_bot_iff.2 fun y hy => (Submodule.mem_bot K).2 ?_
+  obtain ⟨p, hp, rfl⟩ := Submodule.mem_map.1 hy
+  rw [MvPolynomial.mem_weightedHomogeneousSubmodule] at hp
+  change Ideal.Quotient.mk _ (MvPolynomial.uniqueAlgEquiv K Unit p) = 0
+  rw [Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton, Polynomial.X_pow_dvd_iff]
+  intro d hd
+  rw [MvPolynomial.coeff_uniqueAlgEquiv K]
+  by_contra h
+  have hw := hp h
+  rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)] at hw
+  simp at hw
+  omega
+
 variable {K}
 
 /-- The truncated Rees parameters. -/
@@ -109,7 +144,7 @@ theorem truncatedRees_t_mem (Sc : SKM.Scalars D K) (N : ℕ) (i j : I) :
   exact SKM.GradedImage.map_mem_image (f := truncAlg K N) (rees_t_mem D sy Sc i j)
 
 theorem truncatedRees_s_mem {Sc : SKM.Scalars D K} (hl : Sc.LowerDegree sy) (N : ℕ) (i j : I)
-    (p q : ℕ) (hp : 0 < p) (hp' : (p : ℤ) < D.d i j) (hq : 0 < q) (hq' : (q : ℤ) < D.d j i)
+    (p q : ℕ) (hij : i ≠ j) (hp' : (p : ℤ) < D.d i j) (hq' : (q : ℤ) < D.d j i)
     (hs : (truncatedReesScalars D sy Sc N).s i j p q ≠ 0) :
     (truncatedReesScalars D sy Sc N).s i j p q ∈
       truncGrading K N (SKM.coefficientDegree sy i j p q) := by
@@ -119,7 +154,7 @@ theorem truncatedRees_s_mem {Sc : SKM.Scalars D K} (hl : Sc.LowerDegree sy) (N :
     rw [h0, map_zero] at hs
     exact hs rfl
   exact SKM.GradedImage.map_mem_image (f := truncAlg K N)
-    (rees_s_mem D sy hl i j p q hp hp' hq hq' hs')
+    (rees_s_mem D sy hl i j p q hij hp' hq' hs')
 
 /-- **Truncated Rees parameters.** For lower-degree parameters over `K`, the quiver Hecke
 presentation with the Rees parameters truncated to `K[h]/(h^N)` is coefficient-graded

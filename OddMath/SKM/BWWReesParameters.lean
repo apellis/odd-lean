@@ -32,7 +32,8 @@ category is used.
   invertible, that is stable under base change and detected by jointly separating base changes.
   The Nondegeneracy Conjecture has both properties (`nondegeneracyConjecture_scalarChange`,
   `nondegeneracyConjecture_of_separating`); `BWWParameterProperty.interiorNondegeneracy` is the
-  Brundan–Ellis conjecture for the interior part `BWWScalars.toScalars`.
+  Nondegeneracy Conjecture for the parameters `BWWScalars.toScalars`, which keep every
+  coefficient below the corners, the pure ones included (`BWWScalars.toScalars_toBWW`).
 * `BWWParameterProperty.lowerDegreeCase_of_truncatedReesCase`: for such a property, the case of
   the truncated Rees parameters over every commutative ring with `2` invertible implies the case
   of every lower-degree parameter system over every such ring, and with it
@@ -139,24 +140,12 @@ end BWWScalars
 /-- On Brundan–Ellis parameters the lower-degree condition is `ScalarData.LowerDegree`. -/
 theorem ScalarData.toBWW_lowerDegree_iff {k : Type w} [CommRing k] (sy : Symmetrizer D)
     (Sc : Scalars D k) : Sc.toBWW.LowerDegree sy ↔ Sc.LowerDegree sy := by
-  rw [BWWScalars.lowerDegree_iff_interior]
-  constructor
-  · intro h i j p q hp hp' hq hq' hs
-    have hij : i ≠ j := by
-      rintro rfl
-      have := D.d_self i
-      omega
-    have hdn : (D.dn i j : ℤ) = D.d i j := D.dn_cast hij
-    have hdn' : (D.dn j i : ℤ) = D.d j i := D.dn_cast (Ne.symm hij)
-    have hc := ScalarData.toBWW_c_of_interior Sc hij hp (by omega) hq (by omega)
-    rw [← hc] at hs
-    exact h i j p q hij hp hp' hq hq' hs
-  · intro h i j p q hij hp hp' hq hq' hs
-    have hdn : (D.dn i j : ℤ) = D.d i j := D.dn_cast hij
-    have hdn' : (D.dn j i : ℤ) = D.d j i := D.dn_cast (Ne.symm hij)
-    have hc := ScalarData.toBWW_c_of_interior Sc hij hp (by omega) hq (by omega)
-    rw [hc] at hs
-    exact h i j p q hp hp' hq hq' hs
+  constructor <;> intro h i j p q hij hp hq hs <;>
+  · have hc := ScalarData.toBWW_c_of_lt Sc hij (p := p) (q := q)
+      (by have := D.dn_cast hij; omega) (by have := D.dn_cast (Ne.symm hij); omega)
+    first
+    | (rw [← hc] at hs; exact h i j p q hij hp hq hs)
+    | (rw [hc] at hs; exact h i j p q hij hp hq hs)
 
 namespace BWWReesParameters
 
@@ -325,8 +314,9 @@ theorem gradedCase_of_truncatedReesCase (h : P.TruncatedReesCase sy) : P.GradedC
   P.gradedCase_of_lowerDegreeCase sy (P.lowerDegreeCase_of_truncatedReesCase sy h)
 
 variable (D) in
-/-- The Brundan–Ellis Nondegeneracy Conjecture for the interior part `BWWScalars.toScalars`
-of the parameters (the pure coefficients are not seen by the Brundan–Ellis relations). It is a
+/-- The Nondegeneracy Conjecture for Brundan–Wang–Webster parameters: the conjecture for
+`BWWScalars.toScalars`, which keeps every coefficient below the corners, the pure coefficients
+included, so that its presentation is that of the parameters (`presBWW_eq_pres`). It is a
 `BWWParameterProperty` by `nondegeneracyConjecture_scalarChange` and
 `nondegeneracyConjecture_of_separating`. -/
 def interiorNondegeneracy : BWWParameterProperty.{u, v, w} D where

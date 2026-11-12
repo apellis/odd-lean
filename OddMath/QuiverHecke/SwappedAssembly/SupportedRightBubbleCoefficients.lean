@@ -190,16 +190,17 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (ΛP ΛR : X) (L : I × ℕ → ℕ)
   (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
   (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
-  (sy : Symmetrizer D) (hc : Sc.Homogeneous) (sw : List I)
+  (hF : ProbeActionInputs D Sc m cutoff (PowerWordContent.powerBound D cutoff L) ΛP ΛR hP hR)
+  (sw : List I)
 local notation "N" => PowerWordContent.powerBound D cutoff L
 local notation "P" => elvProbeReservoir D Sc m cutoff N ΛP ΛR hP hR
-local notation "c" => elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc
-local notation "leftward" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc
+local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR hF.dot
+local notation "leftward" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR hF.dot
 local notation "gens" => ProbeReservoir.swappedGens (P) c leftward
 local notation "Ys" => tensorTargetFamily D Sc m cutoff ΛP ΛR L
-local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff N ΛP ΛR hP hR sy hc
-  (tensorSourceFamily D Sc m cutoff ΛP ΛR L sw) Ys
-attribute [local irreducible] elvProbeCrossCoeff
+local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff N ΛP ΛR hP hR hF.dot hF.window
+  hF.pure (tensorSourceFamily D Sc m cutoff ΛP ΛR L sw) Ys
+attribute [local irreducible] elvProbeCrossCoeffOf
 
 /-- The entry of the closed diagram `M` at the vacuum sector of the tensor target family is the
 coefficient action of `a` there. -/
@@ -211,10 +212,10 @@ def VacuumEntry (μ : X) (M : List (SKM.LayerData I)) (hM : SKM.SChain [] M []) 
 /-- A closed diagram whose vacuum entry is the coefficient action of `a` acts as `a`. -/
 theorem closedAct_cl_eq_coefficient (μ : X) (t : List I) (M : List (SKM.LayerData I))
     (hM : SKM.SChain [] M []) (a : SYM D k)
-    (h : VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc μ M hM a) :
+    (h : VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF μ M hM a) :
     (action μ).closedAct t (SKM.cl D Sc μ [] [] M) =
       tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L sw (SKM.ob D μ (upWord t)) a :=
-  pointwiseUpwardModuleAction_act_bubAt_cl_eq_coefficient D Sc m cutoff ΛP ΛR L hP hR sy hc sw
+  pointwiseUpwardModuleAction_act_bubAt_cl_eq_coefficient D Sc m cutoff ΛP ΛR L hP hR hF sw
     μ t M hM a h
 
 /-- **Vacuum entries of the right bubbles at nonpositive height.** The entries at the vacuum
@@ -223,37 +224,37 @@ and of the odd bubble, as coefficient actions of the moments of `probeSeriesInv 
 `(-1)^(N_i+1) δ_i`. -/
 structure VacuumRightEntries (μ : X) (M N' : I → ℕ) : Prop where
   neg_even : ∀ i, D.parity i = 0 → D.h i μ < 0 → ∀ s : ℕ,
-    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc μ
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF μ
       (SKM.etaL i ((s : ℤ) - D.h i μ - 1).toNat ++ SKM.dcapL i (-D.h i μ - 1).toNat)
       ((SKM.sChain_etaL i _).append (SKM.sChain_dcapL i _))
       (SKM.SYM.polynomialInclude D k (PowerSeries.coeff s
         (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k M) i)))
   zero_even : ∀ i, D.parity i = 0 → D.h i μ = 0 → ∀ s : ℕ,
-    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc μ
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF μ
       (SKM.etaL i s ++ (SKM.lcrossL i i ++ SKM.epsL i 0))
       ((SKM.sChain_etaL i _).append ((SKM.sChain_lcrossL i i).append (SKM.sChain_epsL i _)))
       (-SKM.SYM.polynomialInclude D k (PowerSeries.coeff (s + 1)
         (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k M) i)))
   neg_odd : ∀ i, D.parity i = 1 → D.h i μ < 0 → ∀ s : ℕ,
-    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc μ
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF μ
       (SKM.etaL i (((2 * s : ℕ) : ℤ) - D.h i μ - 1).toNat ++ SKM.dcapL i (-D.h i μ - 1).toNat)
       ((SKM.sChain_etaL i _).append (SKM.sChain_dcapL i _))
       (SKM.SYM.polynomialInclude D k (PowerSeries.coeff s
         (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k M) i)))
   zero_odd : ∀ i, D.parity i = 1 → D.h i μ = 0 → ∀ s : ℕ,
-    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc μ
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF μ
       (SKM.etaL i (2 * s + 1) ++ (SKM.lcrossL i i ++ SKM.epsL i 0))
       ((SKM.sChain_etaL i _).append ((SKM.sChain_lcrossL i i).append (SKM.sChain_epsL i _)))
       (-SKM.SYM.polynomialInclude D k (PowerSeries.coeff (s + 1)
         (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k M) i)))
   odd_neg : ∀ i : {i : I // D.parity i = 1}, D.h i.1 μ < 0 →
-    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc μ
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF μ
       (SKM.etaL i.1 (((1 : ℕ) : ℤ) - D.h i.1 μ - 1).toNat ++
         SKM.dcapL i.1 (-D.h i.1 μ - 1).toNat)
       ((SKM.sChain_etaL i.1 _).append (SKM.sChain_dcapL i.1 _))
       (SKM.SYM.probeSign D k N' i • SKM.SYM.delta D k i)
   odd_zero : ∀ i : {i : I // D.parity i = 1}, D.h i.1 μ = 0 →
-    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc μ
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF μ
       (SKM.etaL i.1 0 ++ (SKM.lcrossL i.1 i.1 ++ SKM.epsL i.1 0))
       ((SKM.sChain_etaL i.1 _).append
         ((SKM.sChain_lcrossL i.1 i.1).append (SKM.sChain_epsL i.1 _)))

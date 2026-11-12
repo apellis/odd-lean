@@ -20,7 +20,7 @@ open OddMath.QuiverHecke.CyclotomicAction OddMath.QuiverHecke.SwappedAssembly
 universe u v w
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
-  (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
+  (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound)
   (i : I) (Λ : X) {x y : X} (h : x + D.α i = y)
   {C : Type v} [Category.{w} C] [Preadditive C] [Linear k C] [Supercategory k C]
   (F : Superfunctor k C (ELVWeightProduct D Sc cutoff bound Λ y))
@@ -43,13 +43,13 @@ theorem elvPostTransposeDot_mem :
     elvPostTransposeDot D Sc cutoff bound i Λ h F ∈ parity (R := k) _ _ (D.parity i) :=
   Superfunctor.whiskerLeft_mem F (elvActionDotTranspose_mem D Sc cutoff bound i Λ h)
 
-include sy hc in
+include hdot in
 theorem elvPostTransposeDot_component_isNilpotent [Finite I] (M : C) (δ : WeightBlocks D Λ x) :
     IsNilpotent (elvRestrictionEndComponent D Sc cutoff bound i Λ h F (elvPostTransposeDot D Sc cutoff bound i Λ h F) (D.parity i) M δ) := by
-  obtain ⟨e, _, he⟩ := elvActionDotTranspose_component_pow_zero D Sc cutoff bound i Λ h sy hc δ
+  obtain ⟨e, _, he⟩ := elvActionDotTranspose_component_pow_zero D Sc cutoff bound i Λ h hdot δ
   exact ⟨e, he (F.obj M)⟩
 
-include sy hc in
+include hdot in
 theorem elvPostTransposeDot_difference_isUnit [Finite I] (hi : D.parity i = 0)
     (X : End (elvPostRestriction D Sc cutoff bound i Λ h F))
     (hx : X ∈ parity (R := k) _ _ 0)
@@ -68,7 +68,7 @@ theorem elvPostTransposeDot_difference_isUnit [Finite I] (hi : D.parity i = 0)
     · exact fun δ => superfunctorProductEnd_component_isUnit _ _ X hu 0 hx M δ
     · intro δ
       simpa only [hi] using
-        elvPostTransposeDot_component_isNilpotent D Sc cutoff bound sy hc i Λ h F M δ
+        elvPostTransposeDot_component_isNilpotent D Sc cutoff bound hdot i Λ h F M δ
     · exact hcomm M
 
 section Probe
@@ -105,11 +105,11 @@ private theorem elvRestrictionProbe_even_comm (t : End (elvF D Sc cutoff bound i
   exact congrArg (fun f => f δ) hh
 
 theorem elvRestrictionProbe_difference_isUnit [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (hi : D.parity i = 0)
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (hi : D.parity i = 0)
     (α : End G) (hα : α ∈ parity (R := k) _ _ 0) (hu : IsUnit α) :
     IsUnit (elvPostTransposeDot D Sc cutoff bound i Λ h G -
       elvRestrictionProbeDot D Sc cutoff bound i Λ h G α) := by
-  apply elvPostTransposeDot_difference_isUnit D Sc cutoff bound sy hc i Λ h G hi
+  apply elvPostTransposeDot_difference_isUnit D Sc cutoff bound hdot i Λ h G hi
     (elvRestrictionProbeDot D Sc cutoff bound i Λ h G α)
   · exact elvRestrictionProbeDot_mem D Sc cutoff bound i Λ h G α hα
   · exact elvRestrictionProbeDot_isUnit D Sc cutoff bound i Λ h G α hu
