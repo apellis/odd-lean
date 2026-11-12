@@ -48,13 +48,6 @@ jobs:
           else
             echo "docs_only=false" >> "$GITHUB_OUTPUT"
           fi
-      # Leave room for both the Mathlib cache and the first cold build of our dependencies.
-      # These preinstalled SDKs are unused by this Lean-only job.
-      - name: Free runner space for Lean artifacts
-        if: steps.scope.outputs.docs_only != 'true'
-        run: |
-          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc
-          df -h .
       # Four Lean threads on the largest modules can exceed the runner's 16 GB of memory, and the
       # runner is then killed with a shutdown signal. Extra swap lets such peaks page instead.
       - name: Add swap space
@@ -66,6 +59,7 @@ jobs:
           sudo mkswap /mnt/lean-swap
           sudo swapon /mnt/lean-swap
           free -h
+          df -h .
       - name: Set up Lean and fetch the Mathlib cache
         if: steps.scope.outputs.docs_only != 'true'
         uses: leanprover/lean-action@v1
