@@ -39,6 +39,9 @@ parameters. Colours, weights and the coefficient ring are taken in one universe,
 swapped route.
 -/
 
+-- `letI` keeps the graded-algebra instance available to instance search in these proofs.
+set_option linter.style.haveILetI false
+
 noncomputable section
 
 namespace OddMath.QuiverHecke

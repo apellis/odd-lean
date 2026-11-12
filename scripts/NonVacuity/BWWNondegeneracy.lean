@@ -16,10 +16,16 @@ namespace NonVacuity.BWWNondegeneracy
 open OddMath OddMath.SKM OddMath.QuiverHecke
 open NonVacuity.BWWScalars NonVacuity.BWWGradedParameters NonVacuity.BWWReesParameters
 
+attribute [local instance] MvPolynomial.gradedAlgebra
+
 /-- Constant normalization units for `u³ + v³ + 1` (all `tᵢⱼ = 1`). -/
 def cScalars : CScalars constantTerm.toScalars where
   c := fun _ _ => 1
   shift := fun _ _ _ => by simp [constantTerm, BWWScalars.toScalars]
+
+theorem isUnit_two_rees : IsUnit (2 : MvPolynomial Unit ℚ) := by
+  have h := (IsUnit.mk0 (2 : ℚ) two_ne_zero).map (MvPolynomial.C : ℚ →+* MvPolynomial Unit ℚ)
+  simpa [map_ofNat] using h
 
 /-- The truncated Rees case for this datum. -/
 example : (BWWParameterProperty.interiorNondegeneracy.{0, 0, 0} datum).TruncatedReesCase
@@ -36,8 +42,7 @@ example : NondegeneracyConjecture
     (BWWReesParameters.cScalars symmetrizer cScalars) :=
   bwwGradedNondegeneracy datum symmetrizer (MvPolynomial Unit ℚ)
     (MvPolynomial.homogeneousSubmodule Unit ℚ)
-    (by simpa [map_ofNat] using (IsUnit.mk0 (2 : ℚ) two_ne_zero).map
-      (MvPolynomial.C : ℚ →+* MvPolynomial Unit ℚ))
+    isUnit_two_rees
     (BWWReesParameters.scalars symmetrizer constantTerm)
     (BWWReesParameters.gradedHomogeneous symmetrizer constantTerm_lowerDegree)
     (BWWReesParameters.cScalars symmetrizer cScalars)
