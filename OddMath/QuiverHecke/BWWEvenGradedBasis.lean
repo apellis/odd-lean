@@ -28,8 +28,12 @@ have a homogeneous basis. This file supplies the graded form of
 
 The degree-`0` condition on the normalization is a hypothesis beyond those of
 `QuiverHecke.bwwPolynomials_evenNondegeneracy`; it holds for normalizations taken from the
-degree-`0` part of `k`. The direct-sum decomposition of the Hom spaces for `natIntGrading 𝒜` is
-not stated here: no `GradedAlgebra` instance is constructed for `natIntGrading 𝒜`.
+degree-`0` part of `k`.
+
+* `natIntGrading_gradedAlgebra`: `natIntGrading 𝒜` is a `GradedAlgebra` when `𝒜` is a
+  `GradedRing`; the decomposition is that of `𝒜`, with zero negative components.
+* `bwwPolynomials_evenDirectSum`: every morphism space is the internal direct sum of its
+  total-degree parts (independent and spanning), with no condition on the normalization.
 -/
 
 noncomputable section
@@ -69,6 +73,53 @@ instance natIntGrading_gradedMonoid [SetLike.GradedMonoid 𝒜] :
         exact SetLike.GradedMul.mul_mem (hx.1 hi) (hy.1 hj)
       · rw [hy.2 (by omega), mul_zero]; exact zero_mem _
     · rw [hx.2 (by omega), zero_mul]; exact zero_mem _
+
+/-- The map from the `ℕ`-graded components to the `ℤ`-graded ones. -/
+def natIntGradingMap : (DirectSum ℕ fun n => 𝒜 n) →+ DirectSum ℤ fun n => natIntGrading 𝒜 n :=
+  DirectSum.toAddMonoid fun n =>
+    (DirectSum.of (fun n => natIntGrading 𝒜 n) (n : ℤ)).comp
+      { toFun := fun x => ⟨x, (mem_natIntGrading_natCast 𝒜).2 x.2⟩
+        map_zero' := rfl
+        map_add' := fun _ _ => rfl }
+
+theorem coe_natIntGradingMap (y : DirectSum ℕ fun n => 𝒜 n) :
+    DirectSum.coeAddMonoidHom (natIntGrading 𝒜) (natIntGradingMap 𝒜 y) =
+      DirectSum.coeAddMonoidHom 𝒜 y := by
+  induction y using DirectSum.induction_on with
+  | zero => simp
+  | of n x => simp [natIntGradingMap]
+  | add y z hy hz => rw [map_add, map_add, map_add, hy, hz]
+
+/-- The decomposition of `k` for `natIntGrading 𝒜`, induced by that for `𝒜`: the negative
+degrees are zero. -/
+instance natIntGrading_decomposition [GradedRing 𝒜] :
+    DirectSum.Decomposition (natIntGrading 𝒜) where
+  decompose' x := natIntGradingMap 𝒜 (DirectSum.decompose 𝒜 x)
+  left_inv x := by
+    rw [coe_natIntGradingMap]
+    exact DirectSum.Decomposition.left_inv x
+  right_inv y := by
+    induction y using DirectSum.induction_on with
+    | zero => simp
+    | of n x =>
+      obtain ⟨x, hx⟩ := x
+      by_cases hn : 0 ≤ n
+      · obtain ⟨m, rfl⟩ := Int.eq_ofNat_of_zero_le hn
+        have hm : x ∈ 𝒜 m := (mem_natIntGrading_natCast 𝒜).1 hx
+        simp only [DirectSum.coeAddMonoidHom_of]
+        rw [DirectSum.decompose_of_mem 𝒜 hm]
+        simp [natIntGradingMap]
+      · have h0 : x = 0 := hx.2 (by omega)
+        subst h0
+        rw [show (⟨0, hx⟩ : natIntGrading 𝒜 n) = 0 from rfl, map_zero, map_zero]
+        simp
+    | add y z hy hz =>
+      show natIntGradingMap 𝒜 (DirectSum.decompose 𝒜 _) = _
+      rw [map_add, DirectSum.decompose_add, map_add]
+      exact congrArg₂ (· + ·) hy hz
+
+/-- An `ℕ`-graded ring is `ℤ`-graded by `natIntGrading`, with zero negative components. -/
+instance natIntGrading_gradedAlgebra [GradedRing 𝒜] : GradedAlgebra (natIntGrading 𝒜) where
 
 /-- In an `ℕ`-graded ring, the inverse of a unit of degree `0` has degree `0`. -/
 theorem inv_mem_zero_of_mem_zero [GradedRing 𝒜] (u : kˣ) (hu : (u : k) ∈ 𝒜 0) :
@@ -137,5 +188,28 @@ theorem bwwPolynomials_evenGradedNondegeneracy (D : Datum I X) (sy : Symmetrizer
   intro a b hab μ F
   have hF := bwwPolynomials_evenNondegeneracy D sy hD k 𝒜 h₂ P hP cs a b hab μ F
   exact ⟨hF, fun x => F.homogeneousBasis_mem sy hc' μ hF x⟩
+
+/-- **The graded direct-sum decomposition at parity zero** (Brundan–Wang–Webster,
+arXiv:2505.22929v2, §2.2 and Theorem 5.6): for a purely even datum with a symmetrizer, over every
+`ℕ`-graded commutative ring, for every graded family of Brundan–Wang–Webster polynomials, every
+morphism space of the presented 2-category is the internal direct sum of its total-degree parts:
+the parts are independent and span. -/
+theorem bwwPolynomials_evenDirectSum (D : Datum I X) (sy : Symmetrizer D)
+    (hD : EvenBridge.IsEven D) (k : Type u) [CommRing k] {σ : Type u} [SetLike σ k]
+    [AddSubgroupClass σ k] (𝒜 : ℕ → σ) [GradedRing 𝒜]
+    (P : BWWPolynomials D k) (hP : P.GradedHomogeneous sy 𝒜)
+    (a b : StringDiagrams.Obj (SKM.sig D)) :
+    iSupIndep (Diagrams.CoefficientGrading.presentedPart (natIntGrading 𝒜) (SKM.gdeg D sy)
+        (SKM.pres D (bwwPolynomialsEquiv hD P).toScalars) a b) ∧
+      ⨆ d, Diagrams.CoefficientGrading.presentedPart (natIntGrading 𝒜) (SKM.gdeg D sy)
+        (SKM.pres D (bwwPolynomialsEquiv hD P).toScalars) a b d = ⊤ := by
+  obtain ⟨ht, hc⟩ := (P.gradedHomogeneous_toBWWScalars_iff sy 𝒜 hD).2 hP
+  refine SKM.iSupIndep_coefficientGraded D sy (natIntGrading 𝒜)
+    (bwwPolynomialsEquiv hD P).toScalars
+    (fun i j => (mem_natIntGrading_natCast 𝒜 (n := 0)).2 (ht i j)) ?_ a b
+  intro i j p q hij hp hq h0
+  obtain ⟨n, hn, hmem⟩ := hc i j p q hij hp hq h0
+  rw [← hn]
+  exact (mem_natIntGrading_natCast 𝒜).2 hmem
 
 end OddMath.QuiverHecke

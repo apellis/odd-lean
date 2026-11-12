@@ -88,7 +88,22 @@ example : ∀ (a b : List (Letter Bool)), SKM.wt datum 0 a = SKM.wt datum 0 b �
     (MvPolynomial.homogeneousSubmodule Unit ℚ) BWWNondegeneracy.isUnit_two_rees polys
     polys_gradedHomogeneous cs cs_mem_zero
 
+/-- The graded direct-sum decomposition of every morphism space, for the
+`MvPolynomial Unit ℚ`-valued polynomials, through the `GradedAlgebra` instance of
+`natIntGrading`. -/
+example (a b : StringDiagrams.Obj (SKM.sig datum)) :
+    iSupIndep (Diagrams.CoefficientGrading.presentedPart
+        (natIntGrading (MvPolynomial.homogeneousSubmodule Unit ℚ)) (SKM.gdeg datum symmetrizer)
+        (SKM.pres datum (bwwPolynomialsEquiv isEven polys).toScalars) a b) ∧
+      ⨆ d, Diagrams.CoefficientGrading.presentedPart
+        (natIntGrading (MvPolynomial.homogeneousSubmodule Unit ℚ)) (SKM.gdeg datum symmetrizer)
+        (SKM.pres datum (bwwPolynomialsEquiv isEven polys).toScalars) a b d = ⊤ :=
+  bwwPolynomials_evenDirectSum datum symmetrizer isEven (MvPolynomial Unit ℚ)
+    (MvPolynomial.homogeneousSubmodule Unit ℚ) polys polys_gradedHomogeneous a b
+
 #print axioms bwwPolynomials_evenNondegeneracy
+#print axioms bwwPolynomials_evenDirectSum
+#print axioms natIntGrading_gradedAlgebra
 #print axioms bwwPolynomials_isHomogeneous
 #print axioms bwwPolynomials_evenGradedNondegeneracy
 #print axioms natIntGrading_gradedMonoid

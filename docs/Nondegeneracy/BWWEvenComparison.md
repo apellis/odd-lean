@@ -170,6 +170,12 @@ of `k` as a `ℤ`-grading, zero in negative degrees.
   homogeneity of the relations. In an `ℕ`-graded ring the inverse of a degree-`0` unit has
   degree `0` (`QuiverHecke.inv_mem_zero_of_mem_zero`), so in the even case the condition is on
   `c_{λ;i}` alone.
+- `QuiverHecke.bwwPolynomials_evenDirectSum`: under the hypotheses of
+  `bwwPolynomials_isHomogeneous`, every Hom space of the presented 2-category is the internal
+  direct sum of its total-degree parts (the parts are independent and span). This applies
+  `SKM.iSupIndep_coefficientGraded` through the instance `QuiverHecke.natIntGrading_gradedAlgebra`:
+  the decomposition of `natIntGrading 𝒜` is that of `𝒜`, placed in nonnegative degrees, with zero
+  negative components. No condition on the normalization is needed.
 The degree-`0` condition on the normalization is a hypothesis of the graded form beyond those of
 `bwwPolynomials_evenNondegeneracy`; it holds for normalizations taken from the degree-`0` part
 of `k`, such as the constant normalization of the consumer.
@@ -179,9 +185,5 @@ Not established by these declarations:
   parameters `Q`. categorification-lean proves nondegeneracy only for Khovanov–Lauda scalars;
   `presUnfiltered` there has no nondegeneracy theorem. The relations beyond (2.11) are
   identified by inspection, as in mismatch (4);
-- the direct-sum decomposition of the Hom spaces for `natIntGrading 𝒜`: no `GradedAlgebra`
-  instance is constructed for it, so `SKM.iSupIndep_coefficientGraded` is not applied in the
-  even case (the homogeneous basis gives the decomposition of each Hom space into the spans of
-  its basis elements of each degree, but this is not stated as a theorem);
 - normalizations `c_{λ;i}` of nonzero degree in the graded form;
 - normalizations outside `CScalars`, mismatch (1).
