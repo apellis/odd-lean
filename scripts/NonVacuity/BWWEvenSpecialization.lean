@@ -1,4 +1,5 @@
 import OddMath.QuiverHecke.BWWEvenSpecialization
+import OddMath.QuiverHecke.BWWEvenGradedBasis
 import NonVacuity.BWWNondegeneracy
 
 /-! # The Brundan–Wang–Webster headline at parity zero, on a concrete datum
@@ -6,7 +7,9 @@ import NonVacuity.BWWNondegeneracy
 The datum of `NonVacuity.BWWScalars` (two vertices, Cartan entries `-3`) is purely even. The
 graded parameters `u³ + v³ + h⁶` over `ℚ[h]` of `NonVacuity.BWWNondegeneracy`, written as
 Brundan–Wang–Webster polynomials, satisfy every hypothesis of
-`QuiverHecke.bwwPolynomials_evenNondegeneracy`.
+`QuiverHecke.bwwPolynomials_evenNondegeneracy`. The normalization is `1`, of degree `0`, so the
+graded form `QuiverHecke.bwwPolynomials_evenGradedNondegeneracy` applies as well: the basis
+elements are homogeneous for the total grading.
 -/
 
 noncomputable section
@@ -48,7 +51,53 @@ example (i j : Bool) (ν : Bool → ℤ) :
       pinQuad datum i j ν (polys.Q i j) :=
   quadSum_bwwPolynomials isEven polys i j ν
 
+/-- The transported normalization is `1`. -/
+theorem cs_c (μ : Bool → ℤ) (i : Bool) : (cs.c μ i : MvPolynomial Unit ℚ) = 1 := by
+  have key : ∀ (S : BWWScalars datum (MvPolynomial Unit ℚ))
+      (h : S = BWWReesParameters.scalars symmetrizer constantTerm),
+      ((h ▸ BWWReesParameters.cScalars symmetrizer BWWNondegeneracy.cScalars :
+        CScalars S.toScalars).c μ i : MvPolynomial Unit ℚ) = 1 := by
+    rintro S rfl
+    simp [BWWReesParameters.cScalars, BWWNondegeneracy.cScalars]
+  exact key _ polys_eq
+
+theorem cs_mem_zero (μ : Bool → ℤ) (i : Bool) :
+    (cs.c μ i : MvPolynomial Unit ℚ) ∈ MvPolynomial.homogeneousSubmodule Unit ℚ 0 := by
+  rw [cs_c]
+  exact SetLike.GradedOne.one_mem
+
+/-- The relations are homogeneous for the total grading. -/
+example : Diagrams.CoefficientGrading.IsHomogeneous
+    (natIntGrading (MvPolynomial.homogeneousSubmodule Unit ℚ)) (SKM.gdeg datum symmetrizer)
+    (SKM.pres datum (bwwPolynomialsEquiv isEven polys).toScalars) :=
+  bwwPolynomials_isHomogeneous datum symmetrizer isEven (MvPolynomial Unit ℚ)
+    (MvPolynomial.homogeneousSubmodule Unit ℚ) polys polys_gradedHomogeneous
+
+/-- The graded form: a basis of decorated matchings times bubble monomials, each element in
+its total degree. -/
+example : ∀ (a b : List (Letter Bool)), SKM.wt datum 0 a = SKM.wt datum 0 b →
+    ∀ (μ : Bool → ℤ) (F : MatchingBasisChoice a b), ∃ hF : F.IsBasis cs μ,
+      ∀ x, F.homogeneousBasis cs μ hF x ∈
+        Diagrams.CoefficientGrading.presentedPart
+          (natIntGrading (MvPolynomial.homogeneousSubmodule Unit ℚ)) (SKM.gdeg datum symmetrizer)
+          (SKM.pres datum (bwwPolynomialsEquiv isEven polys).toScalars) (SKM.ob datum μ a)
+          (SKM.ob datum μ b)
+          (SYM.coefficientDegree datum symmetrizer x.2 +
+            SKM.tableDegree datum symmetrizer μ (F.layers x.1)) :=
+  bwwPolynomials_evenGradedNondegeneracy datum symmetrizer isEven (MvPolynomial Unit ℚ)
+    (MvPolynomial.homogeneousSubmodule Unit ℚ) BWWNondegeneracy.isUnit_two_rees polys
+    polys_gradedHomogeneous cs cs_mem_zero
+
 #print axioms bwwPolynomials_evenNondegeneracy
+#print axioms bwwPolynomials_isHomogeneous
+#print axioms bwwPolynomials_evenGradedNondegeneracy
+#print axioms natIntGrading_gradedMonoid
+#print axioms inv_mem_zero_of_mem_zero
+#print axioms SKM.isHomogeneous_coefficientGraded
+#print axioms SKM.iSupIndep_coefficientGraded
+#print axioms SKM.MatchingBasisChoice.homogeneousBasis_mem
+#print axioms SKM.expansion_single_smul_coefficientBasis_mem
+#print axioms SKM.betaSYM_coefficientBasis_mem
 #print axioms quadSum_bwwPolynomials
 
 end NonVacuity.BWWEvenSpecialization

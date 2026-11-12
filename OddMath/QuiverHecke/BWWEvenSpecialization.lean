@@ -45,7 +45,9 @@ The statement keeps three hypotheses beyond Brundan–Wang–Webster, Theorem 5.
 (`docs/Nondegeneracy/BWWEvenComparison.md`, §3): `2` is a unit in `k`; the normalization is a
 `SKM.CScalars`, which exists exactly under the condition of `SKM.RootCover.nonempty_cScalars_iff`
 (for instance for independent simple roots), whereas Brundan–Wang–Webster allow arbitrary
-normalizations (Remark 2.4); and the conclusion is the ungraded basis statement. The
+normalizations (Remark 2.4); and the conclusion is the ungraded basis statement. The graded form
+(homogeneous relations and basis elements for the total grading) is
+`QuiverHecke.bwwPolynomials_evenGradedNondegeneracy` in `QuiverHecke.BWWEvenGradedBasis`. The
 identification of `SKM.presBWW` with the 2-category of Brundan–Wang–Webster beyond the
 quadratic relation is by inspection of their relations (2.10)–(2.15): their 2-category is not
 formalized independently, so no theorem of the even literature is recovered here as a formal
