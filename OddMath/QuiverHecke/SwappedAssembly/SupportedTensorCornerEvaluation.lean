@@ -164,11 +164,13 @@ theorem tensorCornerEv_of_ne (t : List I)
   · exact absurd ‹_› h
   · rfl
 
-variable (sy : Symmetrizer D) (hc : Sc.Homogeneous)
-local notation "c" => elvProbeCrossCoeff D Sc m cutoff N ΛP ΛR hP hR sy hc
-local notation "leftward" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR sy hc
-local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff N ΛP ΛR hP hR sy hc
-  (tensorSourceFamily D Sc m cutoff ΛP ΛR L s) (tensorTargetFamily D Sc m cutoff ΛP ΛR L)
+variable (hF :
+  ProbeActionInputs D Sc m cutoff (PowerWordContent.powerBound D cutoff L) ΛP ΛR hP hR)
+local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR hF.dot
+local notation "leftward" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR hF.dot
+local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff N ΛP ΛR hP hR hF.dot hF.window
+  hF.pure (tensorSourceFamily D Sc m cutoff ΛP ΛR L s) (tensorTargetFamily D Sc m cutoff ΛP ΛR L)
+attribute [local irreducible] elvProbeCrossCoeffOf
 
 /-- The generator square of the corner evaluation on one presented layer. -/
 theorem tensorCornerEv_layer (G : Layer (QuiverHecke.sig D)) (hv : G.Valid)
@@ -184,7 +186,7 @@ theorem tensorCornerEv_layer (G : Layer (QuiverHecke.sig D)) (hv : G.Valid)
         (y ≫ coefficientHom D Sc 1 (t := G.dom.word) (t' := G.cod.word)
           ((QuiverHecke.pres D Sc).diag (Diagram.ofLayer G hv))) := by
   classical
-  rw [pointwiseUpwardModuleAction_act_ofLayer D Sc m cutoff N ΛP ΛR hP hR sy hc
+  rw [pointwiseUpwardModuleAction_act_ofLayer D Sc m cutoff N ΛP ΛR hP hR hF
       (tensorSourceFamily D Sc m cutoff ΛP ΛR L s) (tensorTargetFamily D Sc m cutoff ΛP ΛR L)
       (ΛP - ΛR) G hv,
     coefficientHom_one_ofLayer D Sc G hv]
@@ -243,7 +245,7 @@ def tensorCornerEvaluation :
       (tensorMatrixVacuum D Sc m cutoff ΛP ΛR L s) where
   K t := PowerWordQuotientCoordinates.kernel D Sc cutoff L s t
   ev t := tensorCornerEv D Sc m cutoff ΛP ΛR L hP hR s t
-  ev_layer G hv v y hy := tensorCornerEv_layer D Sc m cutoff ΛP ΛR L hP hR s sy hc G hv v y hy
+  ev_layer G hv v y hy := tensorCornerEv_layer D Sc m cutoff ΛP ΛR L hP hR s hF G hv v y hy
   ev_vacuum a := by
     rw [tensorCornerEv_eq D Sc m cutoff ΛP ΛR L hP hR s s (tensorSourcePath D ΛP ΛR s)]
     exact tensorWordQuotientObservation_coefficient_vacuum D Sc cutoff L m ΛP ΛR hP hR s a

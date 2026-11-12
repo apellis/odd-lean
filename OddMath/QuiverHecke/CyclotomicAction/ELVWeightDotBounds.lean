@@ -21,24 +21,24 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (i : I) (Λ : X) {x y : X} (h : x + D.α i = y)
 
 /-- A fixed source-content bound is uniform in the arbitrary input module. -/
-theorem elvContentDotTo_pow_zero [Finite I] (sy : SKM.Symmetrizer D)
-    (hc : Sc.Homogeneous) (β γ : Multiset I)
+theorem elvContentDotTo_pow_zero [Finite I]
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (β γ : Multiset I)
     (hγ : β + ([i] : Multiset I) = γ) :
     ∃ e : ℕ, 0 < e ∧ ∀ M : ContentModules D Sc cutoff bound β,
       (show End ((contentInductionTo D Sc cutoff bound β [i] γ hγ).obj M) from
         (elvContentDotTo D Sc cutoff bound i β γ hγ).app (D.parity i) M) ^ e = 0 := by
   classical
   subst γ
-  have hp := contentInductionDot_module_pow_zero D Sc cutoff sy hc bound β.toList i
+  have hp := contentInductionDot_module_pow_zero D Sc cutoff bound hdot β.toList i
   rw [Multiset.coe_toList] at hp
   exact hp
 
-theorem elvBlockDot_pow_zero [Finite I] (sy : SKM.Symmetrizer D)
-    (hc : Sc.Homogeneous) (β : WeightBlocks D Λ x) :
+theorem elvBlockDot_pow_zero [Finite I]
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (β : WeightBlocks D Λ x) :
     ∃ e : ℕ, 0 < e ∧ ∀ M : ContentModules D Sc cutoff bound β.1,
       (show End ((elvBlockInd D Sc cutoff bound i Λ h β).obj M) from
         (elvBlockDot D Sc cutoff bound i Λ h β).app (D.parity i) M) ^ e = 0 :=
-  elvContentDotTo_pow_zero D Sc cutoff bound i sy hc β.1
+  elvContentDotTo_pow_zero D Sc cutoff bound i hdot β.1
     (blockSucc D Λ i h β).1 (by rw [blockSucc_val, add_comm]; rfl)
 
 private theorem end_eqToHom_conj_pow
@@ -51,15 +51,15 @@ private theorem end_eqToHom_conj_pow
 
 /-- Each actual target-weight block has one exponent for every input module.
 The exponent may depend on the target block. -/
-theorem elvWeightDotComponent_pow_zero [Finite I] (sy : SKM.Symmetrizer D)
-    (hc : Sc.Homogeneous) (δ : WeightBlocks D Λ y) :
+theorem elvWeightDotComponent_pow_zero [Finite I]
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (δ : WeightBlocks D Λ y) :
     ∃ e : ℕ, 0 < e ∧ ∀ M : ELVWeightProduct D Sc cutoff bound Λ x,
       (show End ((elvInductionComponent D Sc cutoff bound i Λ h δ).obj M) from
         elvWeightDotComponent D Sc cutoff bound i Λ h (D.parity i) M δ) ^ e = 0 := by
   classical
   by_cases hδ : ∃ β, blockSucc D Λ i h β = δ
   · obtain ⟨β, rfl⟩ := hδ
-    obtain ⟨e, he, hp⟩ := elvBlockDot_pow_zero D Sc cutoff bound i Λ h sy hc β
+    obtain ⟨e, he, hp⟩ := elvBlockDot_pow_zero D Sc cutoff bound i Λ h hdot β
     refine ⟨e, he, fun M => ?_⟩
     rw [elvWeightDotComponent_blockSucc, end_eqToHom_conj_pow, hp (M β)]
     simp

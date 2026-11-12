@@ -35,29 +35,29 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (ΛP ΛR : X) (L : I × ℕ → ℕ)
   (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
   (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
-  (sy : Symmetrizer D) (hc : Sc.Homogeneous)
+  (hF : ProbeActionInputs D Sc m cutoff (PowerWordContent.powerBound D cutoff L) ΛP ΛR hP hR)
 
 /-- **The right vacuum entries at negative height** of one probe reservoir. -/
 theorem vacuumRightNegativeEntries :
-    VacuumRightNegativeEntries D Sc m cutoff ΛP ΛR L hP hR sy hc :=
-  ⟨fun i hi hP0 hh s => vacuumEntry_neg_even D Sc m cutoff ΛP ΛR L hP hR sy hc i hi hP0 hh s,
-    fun i hi hP0 hh s => vacuumEntry_neg_odd D Sc m cutoff ΛP ΛR L hP hR sy hc i hi hP0 hh s,
-    fun i hP0 hh => vacuumEntry_odd_neg D Sc m cutoff ΛP ΛR L hP hR sy hc cutoff i hP0 hh rfl⟩
+    VacuumRightNegativeEntries D Sc m cutoff ΛP ΛR L hP hR hF :=
+  ⟨fun i hi hP0 hh s => vacuumEntry_neg_even D Sc m cutoff ΛP ΛR L hP hR hF i hi hP0 hh s,
+    fun i hi hP0 hh s => vacuumEntry_neg_odd D Sc m cutoff ΛP ΛR L hP hR hF i hi hP0 hh s,
+    fun i hP0 hh => vacuumEntry_odd_neg D Sc m cutoff ΛP ΛR L hP hR hF cutoff i hP0 hh rfl⟩
 
 end SwappedAssembly.SupportedSectors
 
 /-- **The right vacuum entries of the probe reservoirs.** -/
 theorem rightVacuumEntrySupply : RightVacuumEntrySupply.{u} := by
   apply rightVacuumEntrySupply_of_negative
-  intro J Y k _ _ _ E Sc m cutoff ΛP ΛR L hP hR sy hc
+  intro J Y k _ _ _ E Sc m cutoff ΛP ΛR L hP hR hF
   exact SwappedAssembly.SupportedSectors.vacuumRightNegativeEntries E Sc m cutoff ΛP ΛR
-    L hP hR sy hc
+    L hP hR hF
 
 variable {I X : Type u} [AddCommGroup X] {D : SKM.Datum I X}
 
 /-- **The right vacuum entries at every route index.** -/
-theorem swappedRightEntriesField (sy : SKM.Symmetrizer D) : SwappedRightEntriesField sy :=
-  swappedRightEntriesField_of_supply rightVacuumEntrySupply sy
+theorem swappedRightEntriesField (D : SKM.Datum I X) : SwappedRightEntriesField D :=
+  swappedRightEntriesField_of_supply rightVacuumEntrySupply
 
 /-- **The Nondegeneracy Conjecture** (Brundan–Ellis, arXiv:1701.04133v2, §8) for a
 symmetrizable Cartan superdatum and homogeneous parameters over a commutative ring in which `2`

@@ -36,11 +36,11 @@ theorem elvPostEndEvaluation_of_mem (M : C) (δ : WeightBlocks D Λ y)
 
 /-- The evaluated chosen postdot has its already constructed component bound. -/
 theorem elvPostEndEvaluation_dot_isNilpotent [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound)
     (M : C) (δ : WeightBlocks D Λ y) :
     IsNilpotent (elvPostEndEvaluation D Sc cutoff bound i Λ h F M δ Y) := by
   rw [elvPostEndEvaluation_of_mem D Sc cutoff bound i Λ h F M δ Y
     (elvPostDot_mem D Sc cutoff bound i Λ h F)]
-  exact elvPostDot_component_isNilpotent D Sc cutoff bound sy hc i Λ h F M δ
+  exact elvPostDot_component_isNilpotent D Sc cutoff bound hdot i Λ h F M δ
 
 end OddMath.QuiverHecke.ELVOld

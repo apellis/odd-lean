@@ -145,9 +145,10 @@ theorem reservoirOutputEval_comp_total :
 
 variable (H : ProbeVacuumCap.modulePiCategory D (parameterTwist D Sc) m ⟶
   elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR (-ΛR))
-variable (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (i : I)
+variable (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
+  (hwin : SupportedSectors.ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hcP hcR) (i : I)
 
-include sy hc in
+include hdot hwin in
 /-- **The chosen vacuum cap inverse in the native chart (odd colour).** If the
 supported vacuum input is the given tensor input, the actual positive factor
 matrix supplies an entrywise inverse of the native cap window
@@ -171,7 +172,7 @@ theorem vacuumCapInverse_odd [Fact Sc.PureNilpotent]
       (B := ContentModules D (parameterTwist D Sc) cutoff bound (0 : Multiset I))
       (sectorRegular D Sc m cutoff bound ΛP ΛR hcP hcR)).Additive := inferInstance
   obtain ⟨j, A, h₁⟩ := (P).centralPadded_capInverse_comp
-    (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i ((0, 0) : Sector I)
+    (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) i ((0, 0) : Sector I)
     Z.obj _ hZ
     (SupportedSectors.reservoirOutputEval D Sc m cutoff bound ΛP ΛR hcP hcR ((0, 0) : Sector I)
       (sectorEmpty D Sc m cutoff bound ΛP ΛR hcP hcR))
@@ -179,19 +180,19 @@ theorem vacuumCapInverse_odd [Fact Sc.PureNilpotent]
     (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR)
     (reservoirOutputEval_comp_total D Sc m cutoff bound ΛP ΛR hcP hcR)
     (a := true) (b := false) trivial trivial
-    ⟨_, _, (SupportedSectors.vacuumCapInverseData D Sc m cutoff bound ΛP ΛR hcP hcR sy hc i Z
+    ⟨_, _, (SupportedSectors.vacuumCapInverseData D Sc m cutoff bound ΛP ΛR hcP hcR hdot hwin i Z
       (sectorEmpty D Sc m cutoff bound ΛP ΛR hcP hcR) hh).isInverse⟩
   have h₃ := (h₁.coordinates (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).symm
     (paddedVacuumTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).symm).target
       (paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H)
   have hs : (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).inv ≫
-      (P).centralPaddedSigma (elvProbeCrossCoeff D Sc m cutoff bound ΛP ΛR hcP hcR sy hc) i
+      (P).centralPaddedSigma (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) i
         ((0, 0) : Sector I) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
         (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) true false ≫
       (paddedVacuumTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).hom =
       ProbeVacuumCap.evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP
         (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) :=
-    (Iso.inv_comp_eq _).2 (paddedVacuumDx_odd D Sc m cutoff bound ΛP ΛR hcP hcR H i sy hc hP hi)
+    (Iso.inv_comp_eq _).2 (paddedVacuumDx_odd D Sc m cutoff bound ΛP ΛR hcP hcR H i hdot hP hi)
   have hw : ∀ n : ℕ, (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).inv ≫
       (P).centralPaddedCap i ((0, 0) : Sector I)
         (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)

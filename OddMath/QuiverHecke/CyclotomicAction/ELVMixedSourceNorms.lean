@@ -60,7 +60,7 @@ theorem elvMixedSourceTransposeDot_eq :
 
 /-- The even source difference is a unit at every original weight. -/
 theorem elvMixedSource_difference_isUnit [Finite I]
-    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (hi : D.parity i = 0)
+    (hdot : TruncatedAppendDotNilpotent D Sc cutoff bound) (hi : D.parity i = 0)
     (xDot : End E) (hx : xDot ∈ parity (R := k) _ _ 0) (hu : IsUnit xDot) :
     IsUnit (SKM.mixedPostSourcePreDot (k := k) E κ H
         (F' := elvF D Sc cutoff bound i Λ h) xDot -
@@ -72,7 +72,7 @@ theorem elvMixedSource_difference_isUnit [Finite I]
       xDot ▷ (SKM.homParityShift (k := k) (C := B ⟶ elvWeightSpace D Sc cutoff bound Λ y) κ).obj H) :=
     hu.map ((SKM.homPost (k := k) ((SKM.homParityShift (k := k) (C := B ⟶ elvWeightSpace D Sc cutoff bound Λ y) κ).obj H)).mapEnd E)
   have hh := elvRestrictionProbe_difference_isUnit D Sc cutoff bound i Λ h
-    (E ≫ (SKM.homParityShift (k := k) (C := B ⟶ elvWeightSpace D Sc cutoff bound Λ y) κ).obj H) sy hc hi
+    (E ≫ (SKM.homParityShift (k := k) (C := B ⟶ elvWeightSpace D Sc cutoff bound Λ y) κ).obj H) hdot hi
     (xDot ▷ (SKM.homParityShift (k := k) (C := B ⟶ elvWeightSpace D Sc cutoff bound Λ y) κ).obj H) hx' hu'
   rw [elvMixedSourceTransposeDot_eq D Sc cutoff bound i Λ h E κ H,
     elvMixedSourceProbeDot_eq D Sc cutoff bound i Λ h E κ H xDot] at hh

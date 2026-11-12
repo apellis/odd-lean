@@ -66,7 +66,8 @@ builds those hypotheses from the bubble fields (`VacuumRouteHypotheses.of_fields
 so they hold for every symmetrizable datum. On purely even
 data with Khovanov–Lauda scalars and finitely many colours, the conclusion
 matches the checked even theorem (#1059); this compares conclusions only.
-Phase 2 (target stated in #1101, see the remaining critical chain) and the
+Phase 2 is proved on BE2's parameter shape (`QuiverHecke.gradedCoefficientNondegeneracy`,
+see the remaining critical chain); the parameters of Brundan–Wang–Webster and the
 full all-even comparison of [FieldScopeBoundary](FieldScopeBoundary.md)
 remain open, so the branch is not complete.
 
@@ -108,7 +109,9 @@ The branch is complete once the odd theorem and its checked all-even
 specialization match the most general cited even nondegeneracy theorems,
 except for requiring 2 invertible in the base ring. The graded-coefficient
 parameter benchmark and exact completion criteria are in
-[FieldScopeBoundary](FieldScopeBoundary.md). Phase 2 is not yet established.
+[FieldScopeBoundary](FieldScopeBoundary.md). Phase 2 is established for BE2's
+parameter shape; the enlarged shape of Brundan–Wang–Webster is open
+([BWWParameters](BWWParameters.md)).
 
 The proposed construction uses a purely even field with 2 invertible,
 compatible symmetrizable Cartan superdata with positive integral symmetrizers,
@@ -174,8 +177,7 @@ the branch are those of [FieldScopeBoundary](FieldScopeBoundary.md):
 1. **Phase 2.** Inhomogeneous parameters for symmetrizable data, at least
    the graded-coefficient generality of Brundan–Wang–Webster,
    arXiv:2505.22929v2, Theorem 5.6, and its underlying ungraded basis
-   statement. Neither the present homogeneous proof nor its ground-ring
-   reduction is known to supply this. The target is stated as
+   statement. The target is stated as
    `SKM.GradedCoefficientNondegeneracy D sy`
    ([GradedParameters](../../OddMath/SKM/GradedParameters.lean), #1101):
    nondegeneracy for parameters over `ℕ`-graded rings with `2` invertible
@@ -198,8 +200,12 @@ the branch are those of [FieldScopeBoundary](FieldScopeBoundary.md):
    lower-degree parameters over characteristic-zero fields
    (`gradedCoefficientNondegeneracy_of_charZeroField`) and to the Rees
    parameters truncated to `K[h]/(h^N)`
-   (`gradedCoefficientNondegeneracy_of_truncated`), whose remaining
-   hypothesis `TruncatedRees.TruncatedReesNondegeneracy D sy` is open.
+   (`gradedCoefficientNondegeneracy_of_truncated`). The truncated case
+   `TruncatedRees.TruncatedReesNondegeneracy D sy` is proved
+   (`QuiverHecke.truncatedReesNondegeneracy`), hence the target
+   (`QuiverHecke.gradedCoefficientNondegeneracy`), for data with colours and
+   weights in one universe; consumer
+   [TruncatedReesNondegeneracy](../../scripts/NonVacuity/TruncatedReesNondegeneracy.lean).
    Grading infrastructure for that case (Phase2Plan, step 2, items 1–3):
    coefficient-graded parts of presented Hom groups
    (`Diagrams.CoefficientGrading.presentedPart`, independence and spanning
@@ -212,8 +218,14 @@ the branch are those of [FieldScopeBoundary](FieldScopeBoundary.md):
    the quiver Hecke case over `K[h]`: `QuiverHecke.reesGradedSupercategory`);
    consumer [CoefficientGrading](../../scripts/NonVacuity/CoefficientGrading.lean).
    The truncations `K[h]/(h^N)`: `QuiverHecke.truncGradedAlgebra`,
-   `QuiverHecke.truncatedReesGradedSupercategory`. Open: the field-route
-   arguments over these bases (step 2, item 4). Plan, comparison and design: [Phase2Plan](Phase2Plan.md).
+   `QuiverHecke.truncatedReesGradedSupercategory`. The field-route
+   arguments over these bases (step 2, item 4): the swapped route uses the
+   parameters only through the two supported-action inputs of each sector
+   (`SectorActionInputs`), which hold over a base graded in degrees `0, …, b`
+   (`SwappedAssembly.SupportedSectors.probeActionInputsOver`), and the route
+   itself is over any commutative ring (`nondegeneracy_of_sectorActionInputs`,
+   `nondegeneracy_of_graded_base`). Open: the pure monomials of
+   Brundan–Wang–Webster ([BWWParameters](BWWParameters.md)). Plan, comparison and design: [Phase2Plan](Phase2Plan.md).
 2. **All-even comparison.** A checked comparison at parity identically zero
    recovering the benchmark's ordinary basis theorem: presentations,
    normalizations, decorated matching families and bubble coefficients, and
