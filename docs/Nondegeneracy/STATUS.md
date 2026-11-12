@@ -241,11 +241,13 @@ the branch are those of [FieldScopeBoundary](FieldScopeBoundary.md):
    recovering the benchmark's ordinary basis theorem: presentations,
    normalizations, decorated matching families and bubble coefficients, and
    the grading. #1059 compares conclusions only, for Khovanov–Lauda scalars
-   and finitely many colours. The parity-zero specialization of the BWW headline
-   (`bwwPolynomials_evenNondegeneracy`, with BWW (2.11) checked) is on draft #1152;
-   identification of the remaining relations with an independent even 2-category for
-   general `Q`, and the graded basis statement, are not established
-   ([BWWEvenComparison](BWWEvenComparison.md)).
+   and finitely many colours. The parity-zero specialization of the BWW headline is
+   checked (#1152): `bwwPolynomials_evenNondegeneracy` (BWW (2.11) checked by
+   `quadSum_bwwPolynomials`), the homogeneous graded basis
+   `bwwPolynomials_evenGradedNondegeneracy` (with `c` in degree zero) and the
+   direct sum `bwwPolynomials_evenDirectSum`. Identification of the remaining
+   relations with an independent even 2-category for general `Q` is not
+   established ([BWWEvenComparison](BWWEvenComparison.md)).
 3. **Normalizations.** `CScalars` is supplied to the end theorem. A choice
    exists whenever the simple roots are linearly independent over `ℤ` in the
    weight group (`SKM.CScalars.nonempty_of_linearIndependent`, combined with

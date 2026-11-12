@@ -22,10 +22,11 @@ Next mathematical targets, in order:
 1. **All-even comparison.** At parity identically zero, identify the
    presentation, normalizations, decorated matching families and bubble
    coefficients with the ordinary Kac–Moody 2-category of the even
-   benchmark, and recover its basis theorem (including the grading). Draft #1152
-   gives the parity-zero specialization `bwwPolynomials_evenNondegeneracy`
-   (ungraded) and checks BWW (2.11); the graded basis statement and the identification
-   of the other relations with an independent even object for general `Q` remain
+   benchmark, and recover its basis theorem (including the grading). Checked (#1152):
+   the parity-zero specialization `bwwPolynomials_evenNondegeneracy`, BWW (2.11),
+   the graded basis `bwwPolynomials_evenGradedNondegeneracy` (with `c` in degree
+   zero) and `bwwPolynomials_evenDirectSum`. Remaining: identification of the other
+   relations with an independent even object for general `Q`
    ([BWWEvenComparison](BWWEvenComparison.md)). #1059 compares conclusions only.
 2. **Normalizations.** Supply compatible `CScalars` under the benchmark's
    realization hypotheses, or prove a change-of-normalization comparison.
