@@ -28,7 +28,10 @@ only `propext`, `Classical.choice` and `Quot.sound`.
 Research on the odd/mixed Nondegeneracy Conjecture of [BE2] §8: the conjecture is proved for
 symmetrizable data and homogeneous parameters (`QuiverHecke.nondegeneracy_of_symmetrizer`), and
 with it the Decategorification Conjecture of [BE2] §12 under the hypotheses of the formalized
-Theorem 12.1. Inhomogeneous parameters (Phase 2) are open. Current status:
+Theorem 12.1. For inhomogeneous parameters (Phase 2) it is proved for the parameters of
+Brundan–Wang–Webster, arXiv:2505.22929v2, §2.2 (`QuiverHecke.bwwLowerDegreeNondegeneracy`,
+`QuiverHecke.bwwGradedNondegeneracy`), given normalizing units; the all-even comparison is open.
+Current status:
 [STATUS](docs/Nondegeneracy/STATUS.md); next targets: [HANDOFF](docs/Nondegeneracy/HANDOFF.md);
 scope: [FieldScopeBoundary](docs/Nondegeneracy/FieldScopeBoundary.md).
 
