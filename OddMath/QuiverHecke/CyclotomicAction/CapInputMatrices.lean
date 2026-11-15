@@ -990,7 +990,7 @@ theorem capRowSign_sgn_iterate (V : SVec k) (T : V →ₗ[k] V)
       exact hc
     have he : capRowSign (k := k) (n + 1) *
         sign k ((n + 1 : ℕ) : ZMod 2) = capRowSign (k := k) n := by
-      rw [capRowSign_succ, mul_right_comm, sign_mul_self, one_mul]
+      rw [capRowSign_succ, mul_right_comm, Supercategory.sign_mul_self, one_mul]
     calc
       capRowSign (k := k) (n + 1) • V.sgn ((n + 1 : ℕ) : ZMod 2)
           ((T.comp (V.sgn 1))^[n + 1] z) =
