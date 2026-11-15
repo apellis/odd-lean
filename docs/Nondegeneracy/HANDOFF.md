@@ -25,8 +25,9 @@ Next mathematical targets, in order:
    benchmark, and recover its basis theorem (including the grading). Checked (#1152):
    the parity-zero specialization `bwwPolynomials_evenNondegeneracy`, BWW (2.11),
    the graded basis `bwwPolynomials_evenGradedNondegeneracy` (with `c` in degree
-   zero) and `bwwPolynomials_evenDirectSum`. Remaining: identification of the other
-   relations with an independent even object for general `Q`
+   zero) and `bwwPolynomials_evenDirectSum`. Closed by the maintainer's decision:
+   the other relations are identified by inspection, with (2.11) checked formally;
+   no formal comparison with an independent even object for general `Q` is planned
    ([BWWEvenComparison](BWWEvenComparison.md)). #1059 compares conclusions only.
 2. **Normalizations.** Supply compatible `CScalars` under the benchmark's
    realization hypotheses, or prove a change-of-normalization comparison.

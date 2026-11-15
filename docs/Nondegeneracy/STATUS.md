@@ -245,9 +245,11 @@ the branch are those of [FieldScopeBoundary](FieldScopeBoundary.md):
    checked (#1152): `bwwPolynomials_evenNondegeneracy` (BWW (2.11) checked by
    `quadSum_bwwPolynomials`), the homogeneous graded basis
    `bwwPolynomials_evenGradedNondegeneracy` (with `c` in degree zero) and the
-   direct sum `bwwPolynomials_evenDirectSum`. Identification of the remaining
-   relations with an independent even 2-category for general `Q` is not
-   established ([BWWEvenComparison](BWWEvenComparison.md)).
+   direct sum `bwwPolynomials_evenDirectSum`. The remaining relations are
+   identified with BWW's even 2-category by inspection; by the maintainer's
+   decision this, together with the formal (2.11) check, closes the all-even
+   comparison. A formal comparison with an independently formalized even
+   2-category for general `Q` is not attempted ([BWWEvenComparison](BWWEvenComparison.md)).
 3. **Normalizations.** `CScalars` is supplied to the end theorem. A choice
    exists whenever the simple roots are linearly independent over `ℤ` in the
    weight group (`SKM.CScalars.nonempty_of_linearIndependent`, combined with
