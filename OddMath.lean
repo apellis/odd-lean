@@ -1,4 +1,7 @@
 import OddMath.QuiverHecke.CyclotomicAction.SignedIntertwiner
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTransport
+import OddMath.QuiverHecke.CyclotomicAction.GlobalHeight
+import OddMath.QuiverHecke.CyclotomicAction.AppendBalance
 import OddMath.SKM.ELVScalarSpecialization
 import OddMath.SKM.ELVScalarParity
 import OddMath.QuiverHecke.CoefficientGrading
@@ -43,7 +46,6 @@ import OddMath.SKM.BubbleELVPolynomialGradingOver
 import OddMath.QuiverHecke.CyclotomicAction.CoefficientTransport
 import OddMath.QuiverHecke.CyclotomicAction.EndpointPolynomials
 import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwiner
-import OddMath.QuiverHecke.CyclotomicAction.TruncatedAppend
 import OddMath.QuiverHecke.CyclotomicAction.ParabolicTransport
 
 import OddMath.QuiverHecke.OutputShuffle
@@ -117,12 +119,10 @@ import OddMath.QuiverHecke.CyclotomicAction.IntertwinerRight
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerChains
 import OddMath.QuiverHecke.CyclotomicAbsentColour
 import OddMath.QuiverHecke.CyclotomicAction.GlobalInduction
-import OddMath.QuiverHecke.CyclotomicAction.GlobalInduction
 import OddMath.QuiverHecke.CyclotomicAction.BoundaryDivision
 import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
 import OddMath.QuiverHecke.CyclotomicAction.SuperAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.LastStrand
-import OddMath.QuiverHecke.CyclotomicAction.SuperAdjunction
 import OddMath.QuiverHecke.CliffordExchangeExamples
 import OddMath.QuiverHecke.SignedNilHecke
 import OddMath.QuiverHecke.SignedNilHeckeExamples

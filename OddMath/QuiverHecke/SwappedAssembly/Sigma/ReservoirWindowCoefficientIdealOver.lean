@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowCoefficientIdeal
 import OddMath.QuiverHecke.CyclotomicAction.ReservoirLayers
-import OddMath.QuiverHecke.CyclotomicAction.SuperAdjunction
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTransport
 
 /-! # Padded chosen reservoir contractions in the coefficient ideal over a graded base
 
