@@ -1,4 +1,4 @@
-import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientTransport
+import OddMath.QuiverHecke.CyclotomicAction.CoefficientTransport
 
 /-! # Scalar specialization of full ELV coefficients
 

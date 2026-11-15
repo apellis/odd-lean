@@ -6,7 +6,7 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumEntryLift
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumDecodeFaithful
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumCoefficientDecode
 import OddMath.QuiverHecke.SwappedAssembly.SupportedPointwiseLeftwardInverse
-import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumRightwardMoments
+import OddMath.QuiverHecke.CyclotomicAction.TensorVacuumMoments
 import OddMath.QuiverHecke.SwappedVacuumAdjunctionBubbles
 
 /-! # Vacuum entries of the odd right bubbles at negative height

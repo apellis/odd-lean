@@ -28,11 +28,11 @@ Declarations that use `Qᵢⱼ(u, 0) = tᵢⱼ u^{dᵢⱼ}`:
    of `Y`). With the lower terms, `Σ_{p<dᵢⱼ} cᵢⱼ(p, 0) X^p` is not admissible. The constant
    term and the pure terms in `Y` are admissible.
    Consumer: `isIso_sigmaEntry_probe_reservoir_sourceUnits`, then
-   `elvProbe_distinct_sigmaEntry_isIso` (`ELVProbeSourcePolynomialUnits.lean`).
+   `elvProbe_distinct_sigmaEntry_isIso` (`ProbeWeightCap.lean`).
 2. `isIso_homDistinctMixedMateDot_param` (`SwappedAssembly/Sigma/MixedEntry.lean`): the same
    argument with a nilpotent reservoir dot.
 3. `probeMixedCross_quadratic`, `probeMixedCross_remainder_right`,
-   `probeMixedCross_remainder_left` (`CyclotomicAction/ProbeMixedRelations.lean`): these write
+   `probeMixedCross_remainder_left` (`CyclotomicAction/ProbeMixed.lean`): these write
    `Qᵢⱼ(u, v) = tᵢⱼ u^{dᵢⱼ} + R v = tᵢⱼ u^{dᵢⱼ} + v R'`. Consumers in
    `ProbeMixedCornerRelations.lean`: `probeMixedCorner_remainders_connected`,
    `probeMixedCorner_remainders` (case `dᵢⱼ = 0`), and `probeMixedCorner_dot_isUnit` through
@@ -41,10 +41,10 @@ Declarations that use `Qᵢⱼ(u, 0) = tᵢⱼ u^{dᵢⱼ}`:
 
 Checked and not of this kind:
 
-* `appendQP_qPoly_top`, `appendQP_qPoly_above` (`ELVAppendQPLeading.lean`) use the leading
+* `appendQP_qPoly_top`, `appendQP_qPoly_above` (`AppendSourceRows.lean`) use the leading
   coefficient in the `u`-degree. Every monomial other than the corner has `u`-exponent
   `< dᵢⱼ` (`BWWScalars.c_top`), so this is a box-membership statement.
-* `product_source_polynomial_isUnit` (`ELVMixedSourcePolynomialUnits.lean`) uses homogeneity
+* `product_source_polynomial_isUnit` (`WeightDenominators.lean`) uses homogeneity
   through `parameterTwist_homogeneous`; this concerns the grading, not `Qᵢⱼ(u, 0)`.
 * The same-colour mates (`RouquierHomPostMateUnits`, `RouquierHomPostInverseUnits`,
   `SwappingReservoir`, `RouquierHomDistinctMixedPostDotsComp`) do not involve `Qᵢⱼ`.

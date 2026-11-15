@@ -3,12 +3,12 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCoefficientAction
-import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumColumnMoments
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedPowerCoefficients
-import OddMath.QuiverHecke.CyclotomicAction.ELVTensorCoefficientNaturality
-import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerQuotient
-import OddMath.QuiverHecke.CyclotomicAction.ELVContentHomVacuum
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumBend
+import OddMath.QuiverHecke.CyclotomicAction.ProbeCentral
+import OddMath.QuiverHecke.CyclotomicAction.WeightedPower
+import OddMath.QuiverHecke.CyclotomicAction.TensorWord
+import OddMath.QuiverHecke.CyclotomicAction.CoefficientPowerAnnihilation
+import OddMath.QuiverHecke.CyclotomicAction.ContentHom
+import OddMath.QuiverHecke.CyclotomicAction.ProbePaddedVacuum
 
 /-! # The decoded coefficient action on the vacuum sector
 

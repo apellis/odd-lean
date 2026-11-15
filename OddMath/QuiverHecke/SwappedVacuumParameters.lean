@@ -1,6 +1,6 @@
 import OddMath.QuiverHecke.SwappedVacuumBlock
 import OddMath.QuiverHecke.ReservoirWeightParameters
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCoefficients
+import OddMath.QuiverHecke.CyclotomicAction.ProbeScalarModules
 
 /-! # Explicit weights and cutoffs for a swapped vacuum observation
 

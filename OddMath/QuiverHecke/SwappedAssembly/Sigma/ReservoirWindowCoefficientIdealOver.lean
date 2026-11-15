@@ -3,8 +3,8 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowCoefficientIdeal
-import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirIdealOver
-import OddMath.QuiverHecke.CyclotomicAction.ParameterTransportGrading
+import OddMath.QuiverHecke.CyclotomicAction.ReservoirLayers
+import OddMath.QuiverHecke.CyclotomicAction.SuperAdjunction
 
 /-! # Padded chosen reservoir contractions in the coefficient ideal over a graded base
 

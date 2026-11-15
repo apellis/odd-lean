@@ -2,7 +2,7 @@
 
 ## Statement and provenance
 
-`ELVPrependCoordinates.lean` proves the coefficient-normalization comparison
+`PrependCoordinates.lean` proves the coefficient-normalization comparison
 needed before the cancellation argument of `DeformedGlobalQP.md` §1.
 The scalar input PBW basis is `prependBasis`, already used by
 `PrependCoefficientCoordinates.lean` and `PrependTensorCoordinates.lean`.
@@ -81,10 +81,10 @@ the old PBW index, and its kernel is the genuine preimage of the old
 cyclotomic relation span described above. It must not be confused with
 the following **old-Hom quotient** equivalence, which is now proved.
 
-`ELVPrependCrossTail.lean` regroups by moving exponent and inverse shuffle
+`PrependCoordinates.lean` regroups by moving exponent and inverse shuffle
 and proves extraction vanishes on every different tail. The old target is
 retained through the dependent coefficient `Old(v,t)`.
-`ELVPrependDescent.lean` then kills every old-relation generator with an
+`PrependCoordinates.lean` then kills every old-relation generator with an
 arbitrary continuation (`prependExtractOldQuotient_old_generator`),
 descends extraction, and proves both inverse laws for
 
@@ -97,7 +97,7 @@ Thus simultaneous quotient coordinates, including arbitrary old Homs and
 all exterior coefficients, are no longer a remaining obligation. Neither
 this equivalence nor its proof asserts injectivity of the raw-index map.
 
-`ELVMovingShift.lean` identifies actual precomposition by the source
+`MovingShiftRelations.lean` identifies actual precomposition by the source
 moving power with shifting the existing tail exponent. Its
 `movingSquare_coordinate_shift` gives shift by two; its
 `movingEvenDot_coordinate_shift` gives shift by one at even moving colour.

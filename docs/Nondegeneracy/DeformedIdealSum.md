@@ -5,7 +5,7 @@
 > proved among that theorem's dependencies or belong to routes it does not use.
 
 **Status: the componentwise full-ELV ideal sum and canonical ground-ring-linear
-P cokernel are proved in `ELVIdealSum.lean` and `ELVCokernel.lean`.** The statements
+P cokernel are proved in `CyclotomicQuotientTop.lean` and `CyclotomicQuotientTop.lean`.** The statements
 use the prescribed scalar datum (including its condition on 2 when odd colours
 exist) and the actual ELV coefficient quotient, with arbitrary words and cutoffs.
 Content-level B[s]-linear exactness and finite projectivity remain separate.

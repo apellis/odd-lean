@@ -3,7 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ModuleCoefficients
-import OddMath.QuiverHecke.CyclotomicAction.PiWeightSpaces
+import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightRouquier
 /-! # Coefficients on content subcategories and their products
 
 For `SwappedHomInversion.md` §4, restrict the regular coefficient realization to full

@@ -8,9 +8,9 @@
 This assembles right projectivity from the all-prefix identity and P balance
 in `DeformedGlobalQP.md` and the written ideal equality
 in `DeformedIdealSum.md`. Full ELV P/Q descent, the signed QP identity and
-injectivity of P are now proved in Lean. `ELVContentModule.lean` constructs
+injectivity of P are now proved in Lean. `ContentModules.lean` constructs
 the content-level ordinary right B[s]-modules and the injective B[s]-linear P.
-`ELVIdealSum.lean` and `ELVCokernel.lean` prove the ideal sum and canonical
+`CyclotomicQuotientTop.lean` and `CyclotomicQuotientTop.lean` prove the ideal sum and canonical
 ground-ring-linear cokernel. `ELVQuotientPresheaf.lean` and
 `ELVContentExactness.lean` construct the quotient action on representatives
 and prove the canonical content B[s]-linear cokernel and short exact sequence.
@@ -127,7 +127,7 @@ structure on the actual tensor quotients, not on replacement modules.
 
 ## 3. P-linearity and injectivity with the typed Q target
 
-**Checked injectivity.** `ELVPInjective.lean` proves `ELVOld.pMap_injective`
+**Checked injectivity.** `EndpointPolynomials.lean` proves `ELVOld.pMap_injective`
 for arbitrary words, cutoffs and full exterior coefficients. The actual
 quotient composite `qMap_comp_pMap` is `signedQPMap`; its injectivity follows
 from `projection_qp_relation_regular` and the proved moving PBW coordinates.

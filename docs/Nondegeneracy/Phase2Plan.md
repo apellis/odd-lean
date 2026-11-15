@@ -249,7 +249,7 @@ with a basis of assigned degrees is graded over `K` by coefficientwise degree
 one-object supercategory of such a superalgebra is a graded supercategory over `K`.
 `OddMath/Diagrams/BoxProductCoefficientGraded.lean` grades box products over `R` of graded
 supercategories over `K` whose degrees are compatible with the base grading, and
-`OddMath/QuiverHecke/CyclotomicAction/ELVHomGradingOver.lean` assembles these into
+`OddMath/QuiverHecke/CyclotomicAction/VacuumTensorFaithful.lean` assembles these into
 `elvHomGradingOver`, the grading of the ELV coefficient category over a graded base.
 Lower degree bounds carry over: if the base is graded in nonnegative degrees and a free
 module is spanned by elements of degree at least `L`, its degree parts below `L` vanish

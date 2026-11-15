@@ -17,7 +17,7 @@ The target is exactly `SKM/Presentation.lean`, `relation` at
 `Rel.braidEq i j λ hij` (lines 264–278). The algebra input is the independent
 quiver-Hecke presentation, `QuiverHecke/Presentation.lean`, `Rel.braidEq`,
 transported to ordinary matrix multiplication by
-`CyclotomicAction/BraidCorrection.lean`, `affineTriple_braid_correction`.
+`CyclotomicAction/SuperAdjunction.lean`, `affineTriple_braid_correction`.
 No action braid is assumed. The argument below applies before taking any
 cyclotomic quotient.
 

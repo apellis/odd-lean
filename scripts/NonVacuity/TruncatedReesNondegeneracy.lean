@@ -1,17 +1,17 @@
 import OddMath.QuiverHecke.TruncatedReesNondegeneracy
-import OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
+import OddMath.QuiverHecke.CyclotomicAction.SignedIntertwiner
 
 /-! # The truncated case, on a concrete datum
 
 The datum, symmetrizer and transported parameters of
-`OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters`, over `ℚ`, with every hypothesis
+`OddMath.QuiverHecke.CyclotomicAction.SignedIntertwiner`, over `ℚ`, with every hypothesis
 proved.
 -/
 
 noncomputable section
 namespace NonVacuity.TruncatedReesNondegeneracy
 open OddMath OddMath.SKM OddMath.QuiverHecke
-open OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
+open OddMath.QuiverHecke.CyclotomicAction.SignedIntertwiner
 
 /-- The truncated case for this datum. -/
 example : TruncatedRees.TruncatedReesNondegeneracy datum symmetrizer :=

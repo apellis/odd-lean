@@ -32,7 +32,7 @@ Our E is induction and F restriction, opposite to KKO's letters. With
 left-to-right functor composition, M is F₁ ≫ E₁ and N is E₂ ≫ F₂.
 
 Use the signed-left, ordinary-right superbimodule convention of the existing
-`CyclotomicAction/SuperDot.lean` and `SuperCrossing.lean`. On an induction
+`CyclotomicAction/SuperAdjunction.lean` and `SuperCrossing.lean`. On an induction
 corner the dot is D_x(z)=(-1)^(p|z|)zx; the equal-colour crossing is
 T(z)=-(-1)^(p|z|)zτ. The extra minus is the prescribed
 `globalActionSignedCross` in `GlobalRouquierData.lean`, not a gauge choice.

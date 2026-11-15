@@ -31,7 +31,7 @@
 * **The factor actions do not.** The cyclotomic factors (`globalPiRouquierFamily`) live in
   `PiSCat`, whose 2-morphisms are supernatural transformations of functors between
   categories of supermodules. Only the parity grading is constructed there (the induced
-  tensors of `CyclotomicAction/IntertwinerGrading.lean` carry parity, not degree). There is
+  tensors of `CyclotomicAction/IntertwinerChains.lean` carry parity, not degree). There is
   no integer grading of the cyclotomic quotients, of the induced kernels, or of the
   natural transformations, and no finiteness (bounded degree) theorem for cyclotomic
   quotients. The full-ELV deformed factor of `SwappedActionAssembly.md` F3 is not

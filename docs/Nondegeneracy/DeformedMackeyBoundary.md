@@ -7,8 +7,8 @@
 **Status: written proof, partially formalized in Lean.** The corrected source
 operator, normalized long lifts and local full-ELV append-crossing triangularity
 are checked. The actual global polynomial projection, crossing-span kernel and
-image splitting are now constructed in `ELVAppendC0Candidate.lean`.
-`ELVBoundaryInputDefect.lean` proves the input-oriented polynomial-constant
+image splitting are now constructed in `AppendContent.lean`.
+`BoundaryNumerator.lean` proves the input-oriented polynomial-constant
 defect, with the total old-coefficient twist. This does not identify input
 precomposition with output postcomposition or certify that the written shift
 convention below has already been identified with the checked operator.
@@ -54,7 +54,7 @@ The deletion terms vanish by the old-ideal calculation used for P in
 the cross terms cancel since x₁d=-dx₁, and d²=0. This checks both cutoff
 parities without replacing x₁ by the crossing-contraction operator X.
 
-**Checked source operator:** `ELVBoundaryRho.lean` constructs (1) on the
+**Checked source operator:** `ParabolicTransport.lean` constructs (1) on the
 actual full-ELV old-only quotient. `pMap_boundaryRho` proves its first-order
 intertwining with P; `boundaryRho_square` proves the square-dot identity.
 `boundaryRho_iterate_even` and `boundaryRho_iterate_odd_projection` give all
