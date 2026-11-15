@@ -8,6 +8,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwiner
 import Mathlib.Algebra.Polynomial.Monic
 import OddMath.QuiverHecke.CyclotomicAction.VacuumGrading
 import OddMath.QuiverHecke.CyclotomicAction.TruncatedAppend
+import OddMath.QuiverHecke.CyclotomicAction.AppendBalance
 
 /-!
 # Endpoint polynomials

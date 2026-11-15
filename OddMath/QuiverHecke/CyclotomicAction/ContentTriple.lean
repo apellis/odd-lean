@@ -8,6 +8,7 @@ import OddMath.QuiverHecke.CyclotomicAction.GlobalInduction
 import OddMath.QuiverHecke.CyclotomicAction.CategoryGrading
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightRouquier
 import OddMath.SKM.AugmentedInverseNaturality
+import OddMath.QuiverHecke.CyclotomicAction.GlobalHeight
 
 /-!
 # Content triple

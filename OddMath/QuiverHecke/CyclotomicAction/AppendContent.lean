@@ -11,6 +11,7 @@ import Mathlib.Logic.Equiv.Fin.Rotate
 import Mathlib.Order.Preorder.Finite
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerRight
 import OddMath.QuiverHecke.AppendShuffleRuns
+import OddMath.QuiverHecke.CyclotomicAction.AppendBalance
 
 /-!
 # Append content

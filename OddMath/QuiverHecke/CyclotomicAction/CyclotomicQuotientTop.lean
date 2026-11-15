@@ -9,6 +9,7 @@ import OddMath.QuiverHecke.CyclotomicAction.TruncatedAppend
 import OddMath.QuiverHecke.CyclotomicAction.ParabolicTransport
 import OddMath.QuiverHecke.OutputShuffle
 import Mathlib.LinearAlgebra.Isomorphisms
+import OddMath.QuiverHecke.CyclotomicAction.AppendBalance
 
 /-!
 # Cyclotomic quotient top

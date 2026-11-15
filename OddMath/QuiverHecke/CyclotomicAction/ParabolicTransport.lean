@@ -5,6 +5,7 @@ import OddMath.QuiverHecke.CyclotomicAction.VacuumGrading
 import OddMath.QuiverHecke.CyclotomicAction.MovingShiftRelations
 import OddMath.QuiverHecke.CentreFinite
 import OddMath.QuiverHecke.CyclotomicAction.EndpointPolynomials
+import OddMath.QuiverHecke.CyclotomicAction.AppendBalance
 
 /-!
 # Parabolic transport

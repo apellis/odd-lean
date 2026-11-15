@@ -12,6 +12,7 @@ import OddMath.QuiverHecke.HomDimension
 import Mathlib.LinearAlgebra.DirectSum.Finsupp
 import OddMath.QuiverHecke.CyclotomicAction.TruncatedAppend
 import OddMath.QuiverHecke.CyclotomicAction.VacuumGrading
+import OddMath.QuiverHecke.CyclotomicAction.AppendBalance
 
 /-!
 # Content modules

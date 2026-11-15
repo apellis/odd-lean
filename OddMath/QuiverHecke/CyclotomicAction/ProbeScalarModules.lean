@@ -19,6 +19,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ModuleInduction
 import Mathlib.LinearAlgebra.Quotient.Bilinear
 import StringDiagrams.Super.SVecQuotient
 import OddMath.QuiverHecke.CyclotomicAction.CyclotomicQuotientTop
+import OddMath.QuiverHecke.CyclotomicAction.AppendBalance
 
 /-!
 # Probe scalar modules

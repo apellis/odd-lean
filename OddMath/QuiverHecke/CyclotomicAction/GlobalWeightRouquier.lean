@@ -9,6 +9,7 @@ import OddMath.SKM.RouquierData
 import OddMath.QuiverHecke.CyclotomicAction.AppendContent
 import OddMath.SKM.RouquierMixedMate
 import StringDiagrams.Super.SCat
+import OddMath.QuiverHecke.CyclotomicAction.GlobalHeight
 
 /-!
 # Global weight rouquier

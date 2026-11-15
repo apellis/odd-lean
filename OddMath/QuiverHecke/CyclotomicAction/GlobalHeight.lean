@@ -5,6 +5,7 @@ import OddMath.QuiverHecke.CyclotomicAction.TruncatedAppend
 import OddMath.QuiverHecke.CyclotomicAction.LastStrand
 import OddMath.SKM.Calculus
 import OddMath.QuiverHecke.MixedRelations
+import OddMath.QuiverHecke.CyclotomicAction.AppendBalance
 
 /-!
 # Global height

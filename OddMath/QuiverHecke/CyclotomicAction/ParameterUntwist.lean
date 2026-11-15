@@ -1,6 +1,7 @@
 import OddMath.QuiverHecke.CyclotomicAction.GlobalInduction
 import OddMath.QuiverHecke.CyclotomicAction.SuperAdjunction
 import OddMath.SKM.BWWPureNilpotent
+import OddMath.QuiverHecke.CyclotomicAction.GlobalHeight
 
 /-!
 # Parameter untwist

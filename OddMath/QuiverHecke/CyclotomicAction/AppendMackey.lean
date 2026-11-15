@@ -6,6 +6,8 @@ import OddMath.QuiverHecke.CyclotomicAction.IntertwinerRight
 import OddMath.QuiverHecke.CyclotomicAction.PrependCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.MovingShiftRelations
 import OddMath.QuiverHecke.CyclotomicAction.BoundaryDivision
+import OddMath.QuiverHecke.CyclotomicAction.GlobalHeight
+import OddMath.QuiverHecke.CyclotomicAction.AppendBalance
 
 /-!
 # Append mackey
