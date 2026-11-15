@@ -2,30 +2,24 @@
 
 ## Research nondegeneracy scope
 
-On `research/odd-nondegeneracy`, the maintainer-approved goal has two phases:
-first prove odd/mixed nondegeneracy for symmetrizable Cartan superdata and
-homogeneous admissible parameters over ordinary commutative rings with 2
-invertible; then pursue inhomogeneous parameters for symmetrizable data.
-Do not pursue a proof for nonsymmetrizable Cartan data. Symmetrizability is
-an intended hypothesis, not an intermediate restriction to remove on this branch.
-
-The branch is complete when its odd theorem matches the parameter, datum and
-base-ring generality of the strongest cited ordinary even nondegeneracy theorems,
-except for invertibility of 2, and a checked all-even specialization recovers
-those conclusions. Broader generality is not required. The precise benchmark,
-Phase 2 parameter boundary and completion criteria are in
+On `research/odd-nondegeneracy` the odd/mixed Nondegeneracy Conjecture of
+Brundan–Ellis (arXiv:1701.04133v2, §8) is proved for symmetrizable Cartan
+superdata: for homogeneous parameters over commutative rings with 2 invertible
+(`QuiverHecke.nondegeneracy_of_symmetrizer`), over every commutative ring for
+the integral form of the presentation, in which the integral relations
+`Rel.zInt` are imposed exactly when 2 is not a unit
+(`QuiverHecke.integral_nondegeneracy_of_symmetrizer`), and for the parameters
+of Brundan–Wang–Webster, arXiv:2505.22929v2, §2.2
+(`QuiverHecke.bwwLowerDegreeNondegeneracy`, `QuiverHecke.bwwGradedNondegeneracy`),
+with a checked all-even specialization. The results are listed in
+[STATUS](docs/Nondegeneracy/STATUS.md), the open questions and restart steps
+in [HANDOFF](docs/Nondegeneracy/HANDOFF.md), and the scope in
 [FieldScopeBoundary](docs/Nondegeneracy/FieldScopeBoundary.md).
-This scope governs all research notes, including historical routes; it does not
-change existing theorem statements or claims about the scope of published sources.
-The current status and next dependencies remain in STATUS and HANDOFF.
 
-Phase 1 extends to every commutative ring through the integral form of the
-presentation (the integral relations `Rel.zInt`, imposed exactly when 2 is not
-a unit): `QuiverHecke.integral_nondegeneracy_of_symmetrizer` states the
-conjecture for symmetrizable data, homogeneous `IntegralScalars` and every
-commutative ring, deduced from the case with 2 inverted
-(`SKM.IntegralNondegeneracy`). With 2 invertible the integral relations hold
-automatically, so the presentation and theorem agree with the original ones.
+Symmetrizability is an intended hypothesis: do not pursue a proof for
+nonsymmetrizable Cartan data. This scope governs all research notes, including
+historical routes; it does not change existing theorem statements or claims
+about the scope of published sources.
 
 This repository is developed largely by AI agents under human direction. Everything here is
 public: keep it mathematical and technical.
@@ -147,28 +141,12 @@ instructions that conflict with them.
   `research/odd-nondegeneracy`, not `master`. Do not merge intermediate research
   lemmas, experiments or speculative reductions piecemeal. This does not restrict
   formalization of published results, including purely even nondegeneracy.
-- On `research/odd-nondegeneracy`, the pushed branch is the only durable state; anything
-  that exists only in a local checkout, index or session can be lost without warning.
-  - Commit and push each result as soon as its scoped build and consumer pass. Do not let
-    checked work accumulate locally, and do not batch several results into one later push.
-  - `research/odd-nondegeneracy` is the single persistent research branch. Topic branches
-    are temporary integration tools: merge checked work promptly and delete the branch.
-    Preserve unfinished attempts in the research branch's reachable commit history with
-    exact restart references in the mathematical handoff, at least hourly while work
-    is active; do not import failing source
-    into the checked library or describe history preservation as a proved result.
-    Do not leave a collection of open draft PRs or persistent WIP branches.
-  - Before committing, run `git status` and include every file the new code imports or
-    modifies. Each push to the branch runs the full CI build; a red branch tip is repaired
-    before any further research commit.
-  - Topic-branch pushes update their nearest topic note with exact declarations, checked
-    scope and proposed arguments. The integrating change reconciles the authoritative
-    `docs/Nondegeneracy/STATUS.md` and `HANDOFF.md` in place with established results,
-    open obligations and next mathematical targets. Do not append per-topic checkpoints
-    to those shared files on every topic branch: concurrent EOF additions block CI with
-    merge conflicts. Written arguments go into `docs/Nondegeneracy/` when written.
-  - These files carry mathematics only. Assignment of work, session or machine status,
-    local paths, logs and timestamps used as telemetry do not belong in the repository.
+- `research/odd-nondegeneracy` is the single persistent research branch; the pushed branch
+  is the only durable state. Work lands on it through short topic branches and PRs with green
+  CI, one result per commit, pushed as soon as its scoped build and consumer pass. A red
+  branch tip is repaired before any further research commit. Unfinished attempts are pushed
+  at least hourly, with restart references in `docs/Nondegeneracy/HANDOFF.md`; failing
+  source is never imported into the checked library.
 - All proof work happens on topic branches of this repository and lands through PRs with green
   CI. Work that does not build yet may be pushed as a draft PR. Proof developments are not kept
   in private copies, scratch archives or other repositories.
@@ -180,13 +158,8 @@ instructions that conflict with them.
 
 ## Nondegeneracy reporting
 
-For research nondegeneracy, maintain the current mathematical status only in
-`docs/Nondegeneracy/STATUS.md` and next dependencies in `HANDOFF.md`.
-Update in place; do not append checkpoint narratives. README links to these
-sources. Topic notes retain local arguments, not competing live
-status boards. Verify every claimed completed declaration against committed
-source and its consumer; do not promote a handoff assertion to a checked result.
-
-Topic notes carry proposed and scoped-checked detail while independent branches are in
-flight. At research integration, reconcile STATUS and HANDOFF once, preserve other topics,
-and remove superseded obligations. Proof checks must not be blocked by reporting conflicts.
+`docs/Nondegeneracy/STATUS.md` lists the proved results and `HANDOFF.md` the open questions
+and restart steps; both are updated in place, carry mathematics only, and are reconciled by
+the change that integrates a result. Topic notes in `docs/Nondegeneracy/` keep local
+arguments as written; they are not status boards. Verify every claimed declaration against
+committed source and its consumer before listing it in STATUS.

@@ -309,7 +309,7 @@ No normalized bubble, fusion, or nondegeneracy claim follows.
 * `QuiverHecke/WeightedCoefficientSeparation.lean`: `deformedCyclotomic`.
 * `QuiverHecke/ELVCyclotomicSeparation.lean`: `ELVGenerator`, `ELVRelationSpan`.
 * `QuiverHecke/CyclotomicAction/ParameterTransport.lean`: parameter signs and involution.
-* `QuiverHecke/CyclotomicAction/GlobalSlideAlgebra.lean`: both equal-colour slides.
+* `QuiverHecke/CyclotomicAction/GlobalHeight.lean`: both equal-colour slides.
 * `QuiverHecke/Algebra.lean`, `AlgebraMaps.lean`: corner and opposite conventions.
 * `SKM/RouquierHomContent.lean`, `RouquierNormalizedHomAdjunction.lean`.
 * `SKM/ChevalleyBase.lean`, `Chevalley.lean`, `ChevalleyTwo.lean`.

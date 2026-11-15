@@ -1,24 +1,46 @@
-# Odd nondegeneracy: current mathematical status
+# Odd nondegeneracy: results
 
-This is the authoritative current status for `research/odd-nondegeneracy`.
-The written proof is [SwappedNondegeneracy](SwappedNondegeneracy.md); the
-actionable dependency order is [HANDOFF](HANDOFF.md).
-Topic notes record local arguments and their original claim boundaries;
-their historical “open” lists do not override this page. Earlier inventories
-and checkpoint narratives remain available in git history.
+This page lists what is proved on `research/odd-nondegeneracy`. The written
+proof is [SwappedNondegeneracy](SwappedNondegeneracy.md), the audit of the
+formal statement against Brundan–Ellis is [StatementAudit](StatementAudit.md),
+and the scope is [FieldScopeBoundary](FieldScopeBoundary.md). Open questions
+and restart steps are in [HANDOFF](HANDOFF.md). Topic notes record local
+arguments as they were written; their "open" lists and module paths do not
+override this page. Every declaration below has axioms `propext`,
+`Classical.choice` and `Quot.sound`, and each headline has a consumer in
+`scripts/NonVacuity/` that applies it to concrete data with every hypothesis
+proved.
 
-**The Phase 1 odd/mixed nondegeneracy theorem is proved in Lean.**
-`QuiverHecke.nondegeneracy_of_symmetrizer`
-([VacuumRouteSwappedRightNegative](../../OddMath/QuiverHecke/VacuumRouteSwappedRightNegative.lean))
-states: for a Cartan superdatum `D` with a symmetrizer `sy : SKM.Symmetrizer D`
-(positive integers `dᵢ` with `dᵢ dᵢⱼ = dⱼ dⱼᵢ`), every commutative ring `R`
-with `IsUnit (2 : R)`, every scalar system `Sc` with `Sc.Homogeneous`, and
-every `cs : SKM.CScalars Sc`, `SKM.NondegeneracyConjecture cs` holds (BE2,
-arXiv:1701.04133v2, §8). It has no further hypotheses; its axioms are
-`propext`, `Classical.choice` and `Quot.sound`, and the concrete consumer
-[SwappedRouteNondegeneracy](../../scripts/NonVacuity/SwappedRouteNondegeneracy.lean)
-applies it to a mixed-parity two-colour datum with distinct symmetrizer
-entries.
+## Main theorems
+
+| Result | Declaration | Hypotheses | Consumer |
+| --- | --- | --- | --- |
+| Nondegeneracy Conjecture (BE2, arXiv:1701.04133v2, §8), homogeneous parameters | `QuiverHecke.nondegeneracy_of_symmetrizer` ([module](../../OddMath/QuiverHecke/VacuumRouteSwappedRightNegative.lean)) | Cartan superdatum with a symmetrizer (`dᵢ dᵢⱼ = dⱼ dⱼᵢ`), commutative ring with `2` invertible, `Sc.Homogeneous`, any `cs : CScalars Sc` | [SwappedRouteNondegeneracy](../../scripts/NonVacuity/SwappedRouteNondegeneracy.lean) |
+| Same, every commutative ring (integral form of the presentation) | `QuiverHecke.integral_nondegeneracy_of_symmetrizer` ([module](../../OddMath/QuiverHecke/IntegralNondegeneracy.lean)) | symmetrizer, any commutative ring, homogeneous `IntegralScalars`, any `CScalars` | [IntegralNondegeneracy](../../scripts/NonVacuity/IntegralNondegeneracy.lean) |
+| Inhomogeneous parameters of Brundan–Wang–Webster, arXiv:2505.22929v2, §2.2 | `QuiverHecke.bwwLowerDegreeNondegeneracy`, `QuiverHecke.bwwGradedNondegeneracy` ([module](../../OddMath/QuiverHecke/BWWNondegeneracy.lean)) | symmetrizer, `2` invertible, `Sc : BWWScalars` with `Sc.LowerDegree sy` (resp. `Sc.GradedHomogeneous sy 𝒜` over an `ℕ`-graded ring, BWW (2.6)–(2.7)), any `CScalars`; colours, weights and ring in one universe | [BWWNondegeneracy](../../scripts/NonVacuity/BWWNondegeneracy.lean) |
+| All-even specialization: BWW's even basis theorem at parity zero | `QuiverHecke.bwwPolynomials_evenNondegeneracy` with BWW (2.11) checked by `quadSum_bwwPolynomials` ([module](../../OddMath/QuiverHecke/BWWEvenSpecialization.lean)); graded basis `bwwPolynomials_evenGradedNondegeneracy` (`c` in degree zero) and `bwwPolynomials_evenDirectSum` ([module](../../OddMath/QuiverHecke/BWWEvenGradedBasis.lean)) | purely even datum with a symmetrizer, `2` invertible, BWW polynomials `P` homogeneous over an `ℕ`-graded ring, any `CScalars` | [BWWEvenSpecialization](../../scripts/NonVacuity/BWWEvenSpecialization.lean) |
+| Existence of normalizations | `SKM.CScalars.nonempty_of_linearIndependent`; combined: `QuiverHecke.exists_nondegeneracy_of_linearIndependent` | simple roots `ℤ`-linearly independent in the weight group | [NondegeneracyIndependentRoots](../../scripts/NonVacuity/NondegeneracyIndependentRoots.lean) |
+
+The all-even comparison is closed by the maintainer's decision: BWW (2.11)
+is checked formally and the remaining relations (2.10)–(2.15) are identified
+with BWW's even 2-category by inspection; no formal comparison with an
+independently formalized even 2-category for general `Q` is made
+([BWWEvenComparison](BWWEvenComparison.md)). On purely even data with
+Khovanov–Lauda scalars and finitely many colours the conclusion also agrees
+with the even theorem `EvenBridge.nondegeneracyConjecture_of_isEven` (this
+compares conclusions only).
+
+The BWW headlines are reached through Rees parameters over `k[h]`
+(`SKM.nondegeneracyConjecture_of_lowerDegree`), their truncations `K[h]/(h^N)`
+(`QuiverHecke.truncatedReesNondegeneracy`, consumer
+[TruncatedReesNondegeneracy](../../scripts/NonVacuity/TruncatedReesNondegeneracy.lean))
+and the graded base `QuiverHecke.nondegeneracy_of_graded_base`, whose sector
+inputs hold over a base graded in degrees `0, …, b`. The route-only hypothesis
+`ScalarData.PureNilpotent` is supplied by the truncations and does not enter
+the headlines. Plan and design: [Phase2Plan](Phase2Plan.md),
+[BWWArchitecture](BWWArchitecture.md).
+
+## Consequences
 
 **Consequence: the Decategorification Conjecture (BE2 §12).**
 `QuiverHecke.SerreComplex.decategorification`
@@ -45,32 +67,6 @@ hypotheses are `2 ≠ 0` (characteristic 2 is not covered) and
 [Decategorification](../../scripts/NonVacuity/Decategorification.lean),
 [DecategorificationWeightLattice](../../scripts/NonVacuity/DecategorificationWeightLattice.lean)
 (infinitely many odd colours on `P`).
-
-The proof follows the swapped route. `nondegeneracy_of_swapped_bubble_fields`
-(#1068) reduces the conjecture to the positive- and nonpositive-height bubble
-fields on the swapped route bases. The positive-height field is proved
-unconditionally (#1094). The nonpositive-height field reduces through
-`SwappedRightEntriesField` to `RightVacuumEntrySupply`, and that to
-`VacuumRightNegativeEntries` at every probe reservoir (#1095). Its three
-fields are `vacuumEntry_neg_even` (#1086), `vacuumEntry_neg_odd` and
-`vacuumEntry_odd_neg` (#1084); #1098 assembles them into
-`rightVacuumEntrySupply`, `swappedRightEntriesField` and the end theorem.
-The ground-ring descent to characteristic-zero fields, finite-colour
-restriction and pairing-extension recovery used by the route are the checked
-reductions described below.
-
-The swapped route enters through the vacuum route of #1056:
-`QuiverHecke.nondegeneracy_of_vacuum_route` proves the conjecture from
-`VacuumRouteHypotheses D sy`, and `nondegeneracy_of_vacuum_route_fields`
-builds those hypotheses from the bubble fields (`VacuumRouteHypotheses.of_fields`),
-so they hold for every symmetrizable datum. On purely even
-data with Khovanov–Lauda scalars and finitely many colours, the conclusion
-matches the checked even theorem (#1059); this compares conclusions only.
-Phase 2 is proved for the parameters of Brundan–Wang–Webster, arXiv:2505.22929v2,
-§2.2 (`QuiverHecke.bwwLowerDegreeNondegeneracy`, `QuiverHecke.bwwGradedNondegeneracy`,
-see the remaining critical chain), given normalizing units `CScalars`. The full
-all-even comparison of [FieldScopeBoundary](FieldScopeBoundary.md) remains open,
-so the branch is not complete.
 
 **Consequences: Hom bases, `β_λ` and graded dimensions.**
 [HomBases](../../OddMath/QuiverHecke/HomBases.lean) (note: [HomBases](HomBases.md))
@@ -101,43 +97,41 @@ over the even generators and `1 + π q^{2 d_i}` over the odd generators, under
 `QuiverHecke.homDimension_eq_form_mul_tprod_symFactor`. Consumer:
 [SymProductFormula](../../scripts/NonVacuity/SymProductFormula.lean).
 
-## Scope
+**Graded components of `SYM`.** The monomials of `SYM.coefficientBasis` of bidegree `z`
+form a basis of the homogeneous component `SYM_z` over every commutative ring
+(`SYM.componentBasis`, `OddMath/SKM/SymComponentBasis.lean`), so `dim SYM_z` is the number of
+monomials of bidegree `z` over every field (`SYM.finrank_component`) and the coefficients of
+`S = symDimension` in BE2 (dum) count monomials (`symDimension_coeff_eq_card`). This is the
+coefficientwise form of the corrected product of ERRATA [BE2] 8. The product identity itself
+is `SKM.hasProd_symFactor` / `SKM.symDimension_eq_tprod` (`OddMath/SKM/SymProductFormula.lean`):
+`S` is the coefficientwise convergent product in `PowerSeries ℚ` of `(1 - q^{deg e_{i,r}})⁻¹`
+over the even generators and `1 + π q^{2 d_i}` over the odd generators, under
+`DegreeLocallyFinite`; composed with (dum) it is
+`QuiverHecke.homDimension_eq_form_mul_tprod_symFactor`. Consumer:
+[SymProductFormula](../../scripts/NonVacuity/SymProductFormula.lean).
 
-**Phase 1:** symmetrizable data and homogeneous admissible parameters.
-**Phase 2:** after Phase 1, pursue inhomogeneous parameters while retaining
-symmetrizability. **Nonsymmetrizable Cartan data are out of scope.**
-The branch is complete once the odd theorem and its checked all-even
-specialization match the most general cited even nondegeneracy theorems,
-except for requiring 2 invertible in the base ring. The graded-coefficient
-parameter benchmark and exact completion criteria are in
-[FieldScopeBoundary](FieldScopeBoundary.md). Phase 2 is established for the
-parameter shape of Brundan–Wang–Webster ([BWWParameters](BWWParameters.md)).
+## Route
 
-The proposed construction uses a purely even field with 2 invertible,
-compatible symmetrizable Cartan superdata with positive integral symmetrizers,
-homogeneous admissible parameters with separate odd-variable exponent support
-and the specified leading units, and supplied `cs : CScalars Sc`.
-It includes connected data, repeated colours and arbitrary colour sets.
+The proof follows the swapped route. `nondegeneracy_of_swapped_bubble_fields`
+(#1068) reduces the conjecture to the positive- and nonpositive-height bubble
+fields on the swapped route bases. The positive-height field is proved
+unconditionally (#1094). The nonpositive-height field reduces through
+`SwappedRightEntriesField` to `RightVacuumEntrySupply`, and that to
+`VacuumRightNegativeEntries` at every probe reservoir (#1095). Its three
+fields are `vacuumEntry_neg_even` (#1086), `vacuumEntry_neg_odd` and
+`vacuumEntry_odd_neg` (#1084); #1098 assembles them into
+`rightVacuumEntrySupply`, `swappedRightEntriesField` and the end theorem.
+The ground-ring descent to characteristic-zero fields, finite-colour
+restriction and pairing-extension recovery used by the route are the checked
+reductions described below.
 
-**Ground-ring descent is already formalized.**
-`SKM.nondegeneracyConjecture_of_charZeroField` in
-[GroundRingNondegeneracy](../../OddMath/SKM/GroundRingNondegeneracy.lean)
-reduces every ordinary commutative ring with 2 invertible to the
-characteristic-zero field case for the same datum and homogeneous parameters.
-It requires no domain, reducedness, flatness, finite-colour or independent-root
-hypothesis on the target ring. Thus proving that field input supplies the
-ordinary-ring conclusion; no additional ground-ring descent remains.
-The field input is supplied by the swapped route (top of this page). This reduction retains the datum and
-homogeneity conditions and does not address genuinely supercommutative
-base rings or existence of CScalars for every weight realization.
-Intermediate lemmas may have broader scope. The field predicate fixes the datum;
-the swapped-route construction with a supplied positive symmetrizer
-therefore establishes Phase 1. Symmetrizability is not implied by `Datum`,
-homogeneous parameters or supplied normalizations, and will remain an intended
-hypothesis. Relaxing parameter homogeneity belongs to Phase 2; proving the
-broader nonsymmetrizable §8 conjecture is not a branch obligation.
+The swapped route enters through the vacuum route of #1056:
+`QuiverHecke.nondegeneracy_of_vacuum_route` proves the conjecture from
+`VacuumRouteHypotheses D sy`, and `nondegeneracy_of_vacuum_route_fields`
+builds those hypotheses from the bubble fields (`VacuumRouteHypotheses.of_fields`),
+so they hold for every symmetrizable datum.
 
-## Proof structure
+### Proof structure
 
 The written argument is [SwappedNondegeneracy](SwappedNondegeneracy.md). In
 Lean the end theorem is assembled from the following reductions and inputs;
@@ -169,112 +163,29 @@ whenever the simple roots are `ℤ`-linearly independent in the weight group
 Modules of earlier routes that no retained result uses were removed; see
 [Cleanup](Cleanup.md).
 
-## Remaining critical chain
+## Scope and open questions
 
-Phase 1 is proved (see the top of this page). The remaining obligations of
-the branch are those of [FieldScopeBoundary](FieldScopeBoundary.md):
+Symmetrizability is an intended hypothesis; nonsymmetrizable Cartan data are
+out of scope. The ground ring
+is purely even (BE2 allows supercommutative rings). The open question is:
 
-1. **Phase 2.** Inhomogeneous parameters for symmetrizable data, at least
-   the graded-coefficient generality of Brundan–Wang–Webster,
-   arXiv:2505.22929v2, Theorem 5.6, and its underlying ungraded basis
-   statement. The target is stated as
-   `SKM.GradedCoefficientNondegeneracy D sy`
-   ([GradedParameters](../../OddMath/SKM/GradedParameters.lean), #1101):
-   nondegeneracy for parameters over `ℕ`-graded rings with `2` invertible
-   whose coefficient `sᵢⱼ^{pq}` lies in degree `2(dᵢdᵢⱼ - dᵢp - dⱼq)`.
-   `SKM.nondegeneracyConjecture_of_lowerDegree` proves that it implies the
-   conjecture for every lower-degree (in particular every homogeneous)
-   parameter system over a commutative ring with `2` invertible, through the
-   Rees family over `k[h]` specialized at `h = 1`; consumer
-   [GradedParameters](../../scripts/NonVacuity/GradedParameters.lean), on
-   inhomogeneous parameters `u³ + uv + v³`. BE2's `Scalars` now carry the whole box of coefficients below the corners, including the
-   pure monomials `u^r` and `v^s` that Brundan–Wang–Webster allow (decision: generalize in
-   place, [BWWArchitecture](BWWArchitecture.md)); BE2's printed parameters are the case
-   `ScalarData.NoPure`. The probe dot units take the route-only hypothesis
-   `ScalarData.PureNilpotent` (pure coefficients in a nilpotent ideal), supplied by
-   homogeneous parameters (`NoPure.pureNilpotent`) and by the truncated Rees parameters
-   (`BWWReesParameters.truncated_pureNilpotent`); it does not enter the target statement.
-   The target is reduced, by ring maps
-   that ignore grading, to its universal instance
-   (`LowerDegreeParameters.gradedCoefficientNondegeneracy_iff`), to
-   lower-degree parameters over characteristic-zero fields
-   (`gradedCoefficientNondegeneracy_of_charZeroField`) and to the Rees
-   parameters truncated to `K[h]/(h^N)`
-   (`gradedCoefficientNondegeneracy_of_truncated`). The truncated case
-   `TruncatedRees.TruncatedReesNondegeneracy D sy` is proved
-   (`QuiverHecke.truncatedReesNondegeneracy`), hence the target
-   (`QuiverHecke.gradedCoefficientNondegeneracy`), for data with colours and
-   weights in one universe; consumer
-   [TruncatedReesNondegeneracy](../../scripts/NonVacuity/TruncatedReesNondegeneracy.lean).
-   Grading infrastructure for that case (Phase2Plan, step 2, items 1–3):
-   coefficient-graded parts of presented Hom groups
-   (`Diagrams.CoefficientGrading.presentedPart`, independence and spanning
-   for homogeneous presentations), homogeneity of the quiver Hecke
-   presentation with graded parameters
-   (`QuiverHecke.isHomogeneous_coefficientGraded`, Rees case
-   `QuiverHecke.isHomogeneous_rees`) and restriction of scalars
-   (`Diagrams.Supercategory.restrictScalars`), bundled as a
-   `GradedSupercategory K` (`Diagrams.CoefficientGrading.gradedSupercategory`;
-   the quiver Hecke case over `K[h]`: `QuiverHecke.reesGradedSupercategory`);
-   consumer [CoefficientGrading](../../scripts/NonVacuity/CoefficientGrading.lean).
-   The truncations `K[h]/(h^N)`: `QuiverHecke.truncGradedAlgebra`,
-   `QuiverHecke.truncatedReesGradedSupercategory`. The field-route
-   arguments over these bases (step 2, item 4): the swapped route uses the
-   parameters only through the two supported-action inputs of each sector
-   (`SectorActionInputs`), which hold over a base graded in degrees `0, …, b`
-   (`SwappedAssembly.SupportedSectors.probeActionInputsOver`), and the route
-   itself is over any commutative ring (`nondegeneracy_of_sectorActionInputs`,
-   `nondegeneracy_of_graded_base`). **Brundan–Wang–Webster parameters** (#1151,
-   [BWWNondegeneracy](../../OddMath/QuiverHecke/BWWNondegeneracy.lean)):
-   `QuiverHecke.bwwLowerDegreeNondegeneracy` proves the conjecture for every
-   `Sc : SKM.BWWScalars D k` with `Sc.LowerDegree sy` over a commutative ring with
-   `2` invertible, and `QuiverHecke.bwwGradedNondegeneracy` for every
-   `Sc.GradedHomogeneous sy 𝒜` over an `ℕ`-graded ring (BWW §2.2, (2.6)–(2.7));
-   both for every `cs : CScalars Sc.toScalars`, with colours, weights and ring in one
-   universe and without `PureNilpotent`. Proof: the truncated Rees parameters lie in
-   the graded base of `nondegeneracy_of_graded_base`
-   (`bwwTruncatedRees_t_mem`, `bwwTruncatedRees_c_mem`, `bwwTruncatedReesCase`),
-   then `lowerDegreeCase_of_truncatedReesCase`. Consumer
-   [BWWNondegeneracy](../../scripts/NonVacuity/BWWNondegeneracy.lean) (`u³ + v³ + 1`
-   over `ℚ`, `u³ + v³ + h⁶` over `ℚ[h]`). Plan, comparison and design: [Phase2Plan](Phase2Plan.md).
-2. **All-even comparison.** A checked comparison at parity identically zero
-   recovering the benchmark's ordinary basis theorem: presentations,
-   normalizations, decorated matching families and bubble coefficients, and
-   the grading. #1059 compares conclusions only, for Khovanov–Lauda scalars
-   and finitely many colours. The parity-zero specialization of the BWW headline is
-   checked (#1152): `bwwPolynomials_evenNondegeneracy` (BWW (2.11) checked by
-   `quadSum_bwwPolynomials`), the homogeneous graded basis
-   `bwwPolynomials_evenGradedNondegeneracy` (with `c` in degree zero) and the
-   direct sum `bwwPolynomials_evenDirectSum`. The remaining relations are
-   identified with BWW's even 2-category by inspection; by the maintainer's
-   decision this, together with the formal (2.11) check, closes the all-even
-   comparison. A formal comparison with an independently formalized even
-   2-category for general `Q` is not attempted ([BWWEvenComparison](BWWEvenComparison.md)).
-3. **Normalizations.** `CScalars` is supplied to the end theorem. A choice
-   exists whenever the simple roots are linearly independent over `ℤ` in the
-   weight group (`SKM.CScalars.nonempty_of_linearIndependent`, combined with
-   the end theorem in `QuiverHecke.exists_nondegeneracy_of_linearIndependent`),
-   which includes Brundan–Ellis's setting. Benchmark realizations with
-   dependent roots still need compatible normalizations or a
-   change-of-normalization comparison. **Open (gap recorded, deferred):** a
-   normalization exists exactly when `Π tᵢⱼ^{nⱼ} = 1` for every `i` and every
-   integer relation `Σ nⱼ αⱼ = 0` among the simple roots
-   (`RootCover.nonempty_cScalars_iff`). For dependent roots the theorem can
-   therefore be vacuous: for affine `A₁` with `α₀ + α₁ = 0` it forces
-   `tᵢ₀ tᵢ₁ = 1` (`CScalars.t_mul_t_eq_one`), so `t₀₁ = 2` admits no
-   normalization. Brundan–Wang–Webster, Remark 2.4, allow arbitrary
-   normalizations; covering that case is not attempted.
+- **Normalizations for dependent roots** (deferred). A normalization exists
+  exactly when `Π tᵢⱼ^{nⱼ} = 1` for every `i` and every integer relation
+  `Σ nⱼ αⱼ = 0` among the simple roots (`RootCover.nonempty_cScalars_iff`).
+  For dependent roots the theorems can therefore be vacuous: for affine `A₁`
+  with `α₀ + α₁ = 0`, `CScalars.t_mul_t_eq_one` forces `tᵢ₀ tᵢ₁ = 1`, so
+  `t₀₁ = 2` admits no normalization. Brundan–Wang–Webster, Remark 2.4, allow
+  arbitrary normalizations.
 
-The audit of the formal statement against Brundan–Ellis §8, and the precise
-scope of the even specialization, are in [StatementAudit](StatementAudit.md).
-
-The sector inputs of the vacuum route are supplied by the swapped bubble fields
-(`VacuumRouteHypotheses.of_fields`).
+When `2` is not a unit the presentation includes the integral relations
+`Rel.zInt`; with `2` invertible they hold automatically.
 
 ## Verification
 
 Every integration into this branch passes the full build with warnings as
-errors, the global axiom audit (`propext`, `Classical.choice`, `Quot.sound`)
-and the non-vacuity library on its exact head; the pull requests record heads,
-runs and merge commits. Finite computations in earlier notes are evidence about
-their instances only and are not part of the proof.
+errors, the global axiom audit and the non-vacuity library on its exact head;
+the pull requests record heads and runs. Finite computations in topic notes
+are evidence about their instances only and are not part of the proof.
+Modules of earlier routes that no retained result uses were removed, and the
+cyclotomic action modules were merged into topical files; see
+[Cleanup](Cleanup.md).

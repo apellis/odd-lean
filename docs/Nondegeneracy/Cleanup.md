@@ -54,6 +54,8 @@ same way as unused modules, unless a retained declaration still refers to them.
 | later research PRs, then removing 20 unreached modules | 2895 | 596,756 | 108 | 4,882 |
 | later research PRs | 2913 | 599,715 | 122 | 6,003 |
 | second pass: removing unused declarations (829) and empty modules (9) | 2904 | 587,640 | 122 | 6,003 |
+| streamlining before the merge (below) | 2921 | 589,746 | 107 | 4,924 |
+| merging the cyclotomic action modules (below) | 2067 | 591,919 | 107 | 4,924 |
 | `master` | 1321 | | 90 | |
 
 The Phase 1 theorem alone uses declarations from 1584 modules; the remaining research
@@ -344,6 +346,16 @@ Names with a process word were renamed: the unswapped frame of the same-colour i
 Topic notes that name removed declarations say so in their header; the removed code is in
 the history at commit `9ceca1d9`.
 
+## Merging the cyclotomic action modules
+
+`QuiverHecke/CyclotomicAction/` held 947 modules, most of a few hundred lines, named after
+the steps of the construction. They were merged into 93 topical modules, each a connected
+group of the import graph (for example `ProbeWeightQuadratic`, `ParameterTransport`,
+`SignedIntertwiner`); declarations and namespaces are unchanged, and the import lists of
+the modules outside the directory were rewritten accordingly. The namespace suffix `ELVOld`
+(Ebert–Lauda–Vera, arXiv:2203.14153v2) became `ELV`; the words "old" and "new" in the
+remaining names refer to the old and new categories of that paper.
+
 ## Documentation
 
 The topic notes in `docs/Nondegeneracy/` went from 847 files to 84 (23,227 lines): notes of
@@ -357,11 +369,10 @@ which declarations prove them.
 * Names: the prefix "actual" was dropped from 67 declaration names, and "native" or
   "actual" was dropped from 66 more (a trailing `_native` became `_eq`, for statements
   that evaluate a construction). 15 names keep the word because dropping it would clash
-  with an existing name (for example `capRowNative`, `directStep`). Many module names in
-  `QuiverHecke/CyclotomicAction/` carry the construction label `ELV`/`ELV`; renaming
-  them touches several hundred files and conflicts with open pull requests.
+  with an existing name (for example `capRowNative`, `directStep`).
 * Inlining single-use wrappers and merging duplicate statements inside the retained
   route: not attempted beyond the removal of unused declarations.
+* Module paths in the topic notes refer to the layout when each note was written.
 
 ## Merging into `master` (on hold)
 
@@ -390,10 +401,8 @@ Proposed procedure:
 4. Open a PR into `master` from that branch. Because it already contains `master`, the merge into
    `master` is conflict-free and the result equals the tested tree. Merge commit, then check the
    `master` CI run.
-5. Afterwards: README status rows become the headline rows; STATUS/HANDOFF keep only the Phase 2
-   work; decide whether `research/odd-nondegeneracy` continues for Phase 2 or Phase 2 moves to
-   topic branches against `master` (Alex's decision; AGENTS currently routes uncertain research
-   to the research branch).
+5. Afterwards: decide whether `research/odd-nondegeneracy` continues or further work moves to
+   topic branches against `master` (the maintainer's decision).
 
-Size after the cleanup so far: 2904 `OddMath` modules (596,582 lines) against 1321 on
-`master`; 104 non-vacuity files against 90. About 1580 research modules would enter `master`.
+Size after the cleanup: 2067 `OddMath` modules (591,919 lines) against 1321 on `master`;
+107 non-vacuity files against 90.
