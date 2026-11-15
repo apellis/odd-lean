@@ -115,7 +115,8 @@ domain up. The right-hand side is
 on purely even data, where `ζ = 1` and the sum is symmetric under `s ↦ p - 1 - s`. So
 `presBWW D (bwwPolynomialsEquiv hD P)` has the relations (2.10)–(2.12) of BWW with
 parameters `P`. This identification is by inspection: BWW's 2-category is not formalized
-independently.
+independently. By the maintainer's decision, inspection together with the formal check of
+(2.11) (`quadSum_bwwPolynomials`) is the accepted all-even comparison.
 
 None of these bears on the truth of the odd/mixed conjecture. (1) and (3) are about which
 even data the statement reaches, (2) about the base ring.
