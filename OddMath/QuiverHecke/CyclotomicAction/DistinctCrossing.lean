@@ -26,7 +26,7 @@ adjunction give the literal cup-crossing-cap of Brundan–Ellis (1.12).
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -94,7 +94,7 @@ def moduleMate (i j : I) :
     (oldAppendAdjunction D Sc cutoff j) (oldAppendAdjunction D Sc cutoff j)
     (oldInduction D Sc cutoff i) (oldInduction D Sc cutoff i) (moduleCross D Sc cutoff i j)
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 end
 
 end
@@ -111,7 +111,7 @@ descend before lower balance is imposed. Bijectivity is a separate result.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory TensorProduct
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -388,7 +388,7 @@ theorem shortCross_quotient_square (i j : I) (v t : List I) :
   rw [shortCross_tensor, shortCrossPair_mk, canonicalAppendTarget_projection]
   exact (toCyclotomic_q_shortTensor D Sc cutoff i j v s.word t c b).symm
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 end
 
 end
@@ -404,7 +404,7 @@ about representing a supernatural map by ordinary precomposition is made.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory TensorProduct
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -484,7 +484,7 @@ def sourceParityEquiv (i j : I) (v t : List I) :
     (parityTransport_involutive D Sc cutoff (D.parity i * D.parity j) 0 i j v t)
     (parityTransport_involutive D Sc cutoff 0 (D.parity i * D.parity j) i j v t)
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 end
 
 end
@@ -500,7 +500,7 @@ the distinct-colour dot slide has no divided-difference correction.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped Classical DirectSum TensorProduct
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -693,7 +693,7 @@ theorem appendTail_mixed_shape (i j : I) (hij : i ≠ j) (v t : List I)
     exact tgt_eq (appendTail_cross_chain x)
   simpa only [hw] using appendRunWord_mixed_shape i j hij x.oldTarget t v.length hl a ht
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 end
 
 end
@@ -709,7 +709,7 @@ full exterior coefficients.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -769,7 +769,7 @@ theorem projection_crossing_power_slide (i j : I) (hij : i ≠ j) (v s t : List 
             rightContext D Sc cutoff [j] _ _ (appendMovingPower D Sc cutoff i s m ≫ c)) := by
   rw [crossing_power_slide D Sc cutoff i j hij, Linear.comp_smul, map_smul]
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 end
 
 end
@@ -785,7 +785,7 @@ The full cyclotomic quotient and prescribed mate comparison are separate.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped Classical DirectSum TensorProduct
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1131,7 +1131,7 @@ def crossingEquiv (i j : I) (hij : i ≠ j) (v t : List I) :
   rw [decode_shortCross D Sc cutoff i j hij]
   exact (crossingEquiv D Sc cutoff i j hij v t).symm_apply_apply w
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 end
 
 end
@@ -1145,7 +1145,7 @@ balanced tensor. No crossing-image source or injectivity assertion is used.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1259,7 +1259,7 @@ theorem ker_q (i j : I) (v t : List I) :
   · exact firstIdeal_le_ker_q D Sc cutoff i j v t
 
 end CyclotomicCrossingTensor.Distinct
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1277,7 +1277,7 @@ parity. No relation is commuted through the first crossing.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1440,7 +1440,7 @@ theorem ideal_eq_appendRelations_sup_outputOldRelations
   · exact sup_le (appendRelations_le_ideal D Sc cutoff i v (t ++ [j]))
       (outputOldRelations_le_ideal D Sc cutoff j (v ++ [i]) t)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1456,7 +1456,7 @@ The literal cup-crossing-cap comparison is a separate obligation.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory TensorProduct
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1574,7 +1574,7 @@ def cyclotomicEquiv (i j : I) (hij : i ≠ j) (v t : List I) :
     ⟨toCyclotomic_injective D Sc cutoff i j hij v t,
       toCyclotomic_surjective D Sc cutoff i j hij v t⟩
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 end
 
 end
@@ -1588,7 +1588,7 @@ cup-crossing-cap equals the checked crossing isomorphism after canonical J.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1670,7 +1670,7 @@ def evaluatedMate (i j : I) (v t : List I) :
     SVec.toLinearMap (((moduleMate D Sc cutoff i j).app (D.parity i * D.parity j)
       (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).total ⟨t⟩)
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 end
 
 end
@@ -1687,7 +1687,7 @@ for the ordinary-right kernel action.
 -/
 noncomputable section
 open CategoryTheory Opposite StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1826,7 +1826,7 @@ def kernelMateIso (i j : I) (hij : i ≠ j) (t : OldCategory D Sc cutoff) :
   BalancedKernelTensor.coefficientIso (kernelMate D Sc cutoff i j t)
     (fun v => kernelMateComponent_bijective D Sc cutoff i j hij v.unop t)
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 end
 
 end
@@ -1842,7 +1842,7 @@ cup-crossing-cap. No flatness or projectivity is required.
 -/
 noncomputable section
 open CategoryTheory Opposite StringDiagrams Supercategory TensorProduct
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1954,7 +1954,7 @@ theorem moduleMateUnderlyingEquiv_toLinearMap (i j : I) (hij : i ≠ j)
     ((append D Sc cutoff j).obj t) v (kernelMateComponent D Sc cutoff i j v t) m x)
   exact hL.trans (hF.trans hA1).symm
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 end
 
 end

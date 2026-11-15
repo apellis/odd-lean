@@ -241,7 +241,7 @@ the old ring, flatness, or cyclotomic finite-dimensionality is imposed.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory Opposite MonoidalCategory
 open scoped Classical TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -418,7 +418,7 @@ def pPolynomial (i : I) (ν : List I) :
       (CyclotomicAction.RightCentralPolynomialModule.of _ z) =
     CyclotomicAction.RightCentralPolynomialModule.of _ (pContent D Sc cutoff i ν z) := rfl
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -432,7 +432,7 @@ append functor. No coefficient truncation occurs.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -510,7 +510,7 @@ theorem oldContentAppend_inclusion (ν : List I) (i : I) :
     oldContentAppend D Sc cutoff ν i ⋙ oldContentInclusion D Sc cutoff (i :: ν) =
       oldContentInclusion D Sc cutoff ν ⋙ CyclotomicCrossingTensor.append D Sc cutoff i := rfl
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -524,7 +524,7 @@ generators, beyond pointwise or input-module naturality.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {k : Type u} [CommRing k]
   {C : Type u} [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
@@ -537,9 +537,9 @@ theorem moduleIsoOfEvenNatIso_inv_total (F G : Superfunctor k C (SVec k))
   change e.inv.app w + (0 : G.obj w ⟶ F.obj w) = e.inv.app w
   exact add_zero _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k : Type u} [CommRing k]
   {C D : Type u} [Category.{u} C] [Category.{u} D]
@@ -555,9 +555,9 @@ private theorem tensor_identity_add_zero (J : C ⥤ D)
         tensor J M.toFunctor v g b := by
   rw [LinearMap.id_apply, LinearMap.zero_apply, tensor_zero_right, add_zero]
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
@@ -612,7 +612,7 @@ theorem quotientInducedWeightedModuleIso_inv_tensor
   exact BalancedInduction.tensor_identity_add_zero Q M
     (⟨w.word⟩ : OldCategory D Sc cutoff) w (𝟙 w) (twist k 1 (𝟙 w)) b
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -625,7 +625,7 @@ the specified five-isomorphism comparison, before evaluating its unit tensors.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {k : Type u} [CommRing k]
   {C : Type u} [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
@@ -649,18 +649,18 @@ theorem moduleIsoOfEvenNatIso_inv_mem (F G : Superfunctor k C (SVec k))
   Supercategory.inv_mem (moduleIsoOfEvenNatIso F G e hh hi)
     (moduleIsoOfEvenNatIso_hom_mem F G e hh hi)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k : Type u} [CommRing k]
   {C D : Type u} [Category.{u} C] [Category.{u} D]
   [Preadditive C] [Linear k C] [Supercategory k C]
   [Preadditive D] [Linear k D] [Supercategory k D]
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
@@ -679,7 +679,7 @@ theorem quotientInductionCounitIso_hom_mem
   rw [quotientInductionCounitIso_hom]
   exact BalancedInduction.adjunctionCounit_mem Q M
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -698,7 +698,7 @@ biadjunction, or the defining relations of the full categorical action.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
@@ -795,7 +795,7 @@ abbrev contentInduction (β : Multiset I) (σ : List I) :
 /-- The one-colour raising functor (`E` in the source convention). -/
 abbrev contentE (β : Multiset I) (i : I) := contentInduction D Sc cutoff N β [i]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -814,7 +814,7 @@ append-old relation span; no quotient independence is asserted here.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -912,7 +912,7 @@ theorem append_insert_twisted_coefficient {i : I} {v w : List I}
       append_insert_coefficient D Sc cutoff x a a.property, koszulSign_smul (R := k),
       mul_comm q, sign_smul_sign_smul]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -962,7 +962,7 @@ theorem replaceOld_injective (x : AppendIdx i v w) : Function.Injective x.replac
     (congrArg (fun a : AppendIdx i v w => a.1.2.2.1) h)
 
 end AppendIdx
-namespace ELVOld
+namespace ELV
 
 /-- Coefficients of a fixed moving tail, with the mandatory coefficient-parity twist. -/
 def appendTailCoefficients {i : I} {v w : List I} (x : AppendIdx i v w) :
@@ -1098,7 +1098,7 @@ theorem appendExtractOldQuotient_insert_tail_eq_zero_iff (p : ZMod 2)
     simpa only [twist_twist] using twist_ideal D Sc cutoff p hr
   · exact twist_ideal D Sc cutoff p
 
-end ELVOld
+end ELV
 end OddMath.QuiverHecke
 end
 
@@ -1181,7 +1181,7 @@ def representative (q : Tail i v w) : AppendIdx i v w := q.property.choose
 end Tail
 
 end AppendIdx
-namespace ELVOld
+namespace ELV
 
 /-- Off-tail restriction vanishes before either parity normalization. -/
 theorem appendTailCoefficients_comap_off_tail {i : I} {v w : List I}
@@ -1223,7 +1223,7 @@ theorem appendExtractOldQuotient_insert_off_tail (p : ZMod 2) {i : I} {v w : Lis
   change (ideal D Sc cutoff v x.oldTarget).mkQ
     (appendExtractOld D Sc cutoff p x _) = 0
   rw [appendExtractOld_insert_off_tail D Sc cutoff p x z h, map_zero]
-end ELVOld
+end ELV
 end OddMath.QuiverHecke
 end
 
@@ -1276,7 +1276,7 @@ def rebase (z : AppendIdx i s w) (y : NFIdx v z.oldTarget) : AppendIdx i v w := 
     (z.rebase y).oldTarget = z.oldTarget := y.tgt_cw
 
 end AppendIdx
-namespace ELVOld
+namespace ELV
 
 private theorem tail_cl_heq {a b w : List I} {L M : List PG}
     (hab : a = b) (hLM : L = M) (ha : SChain a (pl a L) w)
@@ -1517,7 +1517,7 @@ def appendOldCoordinateEquiv (p : ZMod 2) (i : I) (v w : List I) :
       (appendOldReconstruct D Sc cutoff p i v w f) = f :=
   (appendOldCoordinateEquiv D Sc cutoff p i v w).apply_symm_apply f
 
-end ELVOld
+end ELV
 end OddMath.QuiverHecke
 end
 
@@ -1539,7 +1539,7 @@ crossing skeletons and powers strictly below the concrete monic degree.
 
 noncomputable section
 open CategoryTheory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I L k : Type u} [AddCommGroup L] [CommRing k]
   (D : SKM.Datum I L) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1744,7 +1744,7 @@ theorem appendFiniteRangeSpan_eq_top (N : ℕ) (i : I) (v w : List I) :
     rw [appendAffineEquiv_symm_single, ← append_insert_twisted_coefficient D Sc cutoff x a]
     exact append_tail_mem_finiteRangeSpan D Sc cutoff N x _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1755,7 +1755,7 @@ section
 noncomputable section
 open CategoryTheory StringDiagrams MonoidalCategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I L k : Type u} [AddCommGroup L] [CommRing k]
   (D : SKM.Datum I L) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1858,7 +1858,7 @@ theorem appendFiniteRange_degree_support (N : ℕ) (i : I) (v w : List I)
     (affineUnit_mem_degree D Sc cutoff sy hc (appendTail_mem_degree D Sc sy q.index))
     (S q) (hS q)) (le_iSup_of_le q (le_iSup_of_le j le_rfl))
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1873,7 +1873,7 @@ No rank, freeness, or bound on the number of words of a weight is used.
 -/
 noncomputable section
 open CategoryTheory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I L k : Type u} [AddCommGroup L] [CommRing k]
   (D : SKM.Datum I L) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1982,7 +1982,7 @@ theorem truncatedContent_bounded [Finite I] (v w : List I) :
   truncatedContent_bounded_of_finite_support D Sc cutoff sy hc N v w
     (truncatedContent_finite_support D Sc cutoff sy hc N v w)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

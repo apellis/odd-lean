@@ -1364,7 +1364,7 @@ for `DeformedMackeyBoundary.md` (2) and (5).
 noncomputable section
 open CategoryTheory StringDiagrams Categorification.TypeA
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1432,7 +1432,7 @@ theorem prependAffineEquiv_long_last_dots (i : I) (s t : List I)
           (List.replicate m s.length) •
         prependAffineEquiv D Sc cutoff i s t (a ⊗ₜ[k] cl D Sc _ _ _ h') x from ⟨h', he⟩)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1456,7 +1456,7 @@ kernel, corrected-rho intertwining and moving-chain extraction are not asserted.
 noncomputable section
 open CategoryTheory StringDiagrams Categorification.TypeA
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1533,7 +1533,7 @@ theorem prependOldCoordinate_long_last_dots (p : ZMod 2) (i : I) (s t : List I)
       (prependExtractOld D Sc cutoff p x g)
   rw [hc, map_smul]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1556,7 +1556,7 @@ S evaluation and corrected-rho compatibility remain separate obligations.
 noncomputable section
 open CategoryTheory StringDiagrams Categorification.TypeA Supercategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1627,7 +1627,7 @@ def outputLongExtraction (p : ZMod 2) (i : I) (v : List I) :
     outputLongExtraction D Sc cutoff p i v z m =
       outputLongCoordinate D Sc cutoff p i v m z := rfl
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

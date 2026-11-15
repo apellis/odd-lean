@@ -23,7 +23,7 @@ without an independently supplied comparison or a module-Hom grading.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.ReservoirClosures
+namespace OddMath.QuiverHecke.ELV.ReservoirClosures
 open CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -72,7 +72,7 @@ def positiveCoefficient (hh : 0 ≤ D.h i x₁) (r s : ℕ) : ContentCoefficient
 def negativeCoefficient (hh : D.h i x₁ ≤ 0) (r s : ℕ) : ContentCoefficient D Sc cutoff N β.1 :=
   ModuleCentre.reconstruct D Sc cutoff N β.1 (negativeContent D Sc cutoff N Λ hcutoff i h₁ h₂ β hh r s)
 
-end OddMath.QuiverHecke.ELVOld.ReservoirClosures
+end OddMath.QuiverHecke.ELV.ReservoirClosures
 end
 
 end
@@ -89,7 +89,7 @@ principal inverse choice and all dot powers.
 noncomputable section
 set_option backward.dsimp.instances true
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.ReservoirClosures
+namespace OddMath.QuiverHecke.ELV.ReservoirClosures
 open CyclotomicAction
 universe u
 
@@ -124,7 +124,7 @@ theorem negative_total_absent (hh : D.h i x₁ ≤ 0) (r s : ℕ)
   simp only [Superfunctor.comp_total, Pi.comp_apply]
   rw [hc, Limits.comp_zero, Limits.comp_zero, Limits.comp_zero, Limits.comp_zero]
 
-end OddMath.QuiverHecke.ELVOld.ReservoirClosures
+end OddMath.QuiverHecke.ELV.ReservoirClosures
 end
 
 end
@@ -141,7 +141,7 @@ forward-coordinate squares identify these fields without an inverse premise.
 noncomputable section
 set_option backward.dsimp.instances true
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.ReservoirClosures
+namespace OddMath.QuiverHecke.ELV.ReservoirClosures
 open CyclotomicAction BalancedInduction CyclotomicCrossingTensor
 universe u
 section Composition
@@ -673,7 +673,7 @@ theorem negativeCoefficient_mem_degree (hh : D.h i x₁ ≤ 0) (r s : ℕ) :
     exact Submodule.zero_mem _
 end ArbitraryOutputs
 
-end OddMath.QuiverHecke.ELVOld.ReservoirClosures
+end OddMath.QuiverHecke.ELV.ReservoirClosures
 end
 
 end
@@ -690,7 +690,7 @@ The bound is contentwise; no whole-weight nilpotence bound is assumed.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.ReservoirClosures
+namespace OddMath.QuiverHecke.ELV.ReservoirClosures
 open SwappedAssembly CyclotomicAction
 universe u
 local instance closureIdealHomPi {k : Type u} [CommRing k]
@@ -822,7 +822,7 @@ theorem negativeClosure_evaluate_mem
   simpa only [negative, Category.assoc] using
     negativeAction_evaluate_mem D Sc cutoff N Λ hcutoff i h₁ h₂ β sy hc (TF (-muP)) hh r s a b
 
-end OddMath.QuiverHecke.ELVOld.ReservoirClosures
+end OddMath.QuiverHecke.ELV.ReservoirClosures
 end
 
 end
@@ -837,7 +837,7 @@ coefficients. The action comparison follows from naturality on every input.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.ReservoirBoundaries
+namespace OddMath.QuiverHecke.ELV.ReservoirBoundaries
 open CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -882,7 +882,7 @@ def positiveCoefficient (hh : 0 ≤ D.h i x₁) (r s : ℕ) : ContentCoefficient
 def negativeCoefficient (hh : D.h i x₁ ≤ 0) (r s : ℕ) : ContentCoefficient D Sc cutoff N β.1 :=
   ModuleCentre.reconstruct D Sc cutoff N β.1 (negativeContent D Sc cutoff N Λ hcutoff i h₁ h₂ β hh r s)
 
-end OddMath.QuiverHecke.ELVOld.ReservoirBoundaries
+end OddMath.QuiverHecke.ELV.ReservoirBoundaries
 end
 
 end
@@ -898,7 +898,7 @@ blocks use the prescribed local matrices; absent unit windows are retained.
 noncomputable section
 set_option backward.dsimp.instances true
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.ReservoirBoundaries
+namespace OddMath.QuiverHecke.ELV.ReservoirBoundaries
 open CyclotomicAction BalancedInduction CyclotomicCrossingTensor
 universe u
 attribute [local irreducible] positive negative positiveContent negativeContent
@@ -1439,7 +1439,7 @@ theorem negativeCoefficient_mem_degree (hh : D.h i x₁ ≤ 0)
   rw [Category.id_comp]
   exact negativeRepresentedValue_degree D Sc cutoff N Λ hcutoff i γ sy hc hh r j hj w
 
-end OddMath.QuiverHecke.ELVOld.ReservoirBoundaries
+end OddMath.QuiverHecke.ELV.ReservoirBoundaries
 end
 
 end
@@ -1455,7 +1455,7 @@ including arbitrary surrounding morphisms and native Hom-sector charts.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.ReservoirBoundaries
+namespace OddMath.QuiverHecke.ELV.ReservoirBoundaries
 open CyclotomicAction SwappedAssembly
 universe u
 local instance boundaryIdealHomPi {k : Type u} [CommRing k]
@@ -1577,7 +1577,7 @@ theorem negativeBoundary_evaluate_mem
   simpa only [negative] using
     negativeAction_evaluate_mem D Sc cutoff N Λ hcutoff i h₁ h₂ β sy hc (TF (-muP)) hh j r hj hjr a b
 
-end OddMath.QuiverHecke.ELVOld.ReservoirBoundaries
+end OddMath.QuiverHecke.ELV.ReservoirBoundaries
 end
 
 end
@@ -1593,7 +1593,7 @@ No support or boundary vanishing property of arbitrary Hom objects is used.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.ReservoirContexts
+namespace OddMath.QuiverHecke.ELV.ReservoirContexts
 open CyclotomicAction SwappedAssembly
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
@@ -1726,7 +1726,7 @@ def wordAt {l : List (SKM.Col I X)} {c d : I →₀ ℕ}
         (ReservoirWord.weight D Λ d) ((l.map (fun a => a.l.2)).reverse)) :=
   atWeight D Sc cutoff L Λ (word_weight D Λ p hl) (ReservoirWord.word (W) Λ p hl)
 
-end OddMath.QuiverHecke.ELVOld.ReservoirContexts
+end OddMath.QuiverHecke.ELV.ReservoirContexts
 end
 
 end

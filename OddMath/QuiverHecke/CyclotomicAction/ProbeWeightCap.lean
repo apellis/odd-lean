@@ -51,7 +51,7 @@ set_option quotPrecheck false
 open scoped BigOperators
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction SwappedAssembly
+open ELV CyclotomicAction SwappedAssembly
 universe u
 local instance contentBendHomPi {k : Type u} [CommRing k]
     (A B : PiSCat.{u,u,u+1} k) : PiSupercategory k (A ⟶ B) :=
@@ -261,7 +261,7 @@ reservoir window height, including at absent central corners.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction SwappedAssembly
+open ELV CyclotomicAction SwappedAssembly
 universe u
 local instance paddedContentBendHomPi {k : Type u} [CommRing k]
     (A B : PiSCat.{u,u,u+1} k) : PiSupercategory k (A ⟶ B) :=
@@ -373,7 +373,7 @@ mate theorem then applies to the chosen mixed crossing coefficient.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction SwappedAssembly
+open ELV CyclotomicAction SwappedAssembly
 universe u
 local instance probeTransposeHomPi {k : Type u} [CommRing k]
     (A B : PiSCat.{u,u,u + 1} k) : PiSupercategory k (A ⟶ B) :=
@@ -457,7 +457,7 @@ units needed by each distinct-colour sideways crossing.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction SwappedAssembly OddMath.SKM
+open ELV CyclotomicAction SwappedAssembly OddMath.SKM
 universe u
 local instance probeSourcePolynomialHomPi {k : Type u} [CommRing k]
     (A B : PiSCat.{u,u,u + 1} k) : PiSupercategory k (A ⟶ B) :=
@@ -536,7 +536,7 @@ The canonical factor left-mate theorem supplies the pure probe input.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
 namespace OddMath.QuiverHecke.CyclotomicAction
-open ELVOld SwappedAssembly
+open ELV SwappedAssembly
 universe u
 local instance sigmaPermutationHomPi {k : Type u} [CommRing k]
     (A B : PiSCat.{u,u,u+1} k) : PiSupercategory k (A ⟶ B) :=
@@ -619,7 +619,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor CyclotomicAction
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor CyclotomicAction
 universe u v w
 private theorem cap_window_total
     {k : Type u} {C : Type v} [CommRing k] [Category.{w} C]
@@ -720,7 +720,7 @@ the cap is then the previously identified stored local row.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction
+open ELV CyclotomicAction
 universe u
 private theorem total_zsmul
     {k C A : Type*} [CommRing k] [Category C] [Category A]
@@ -789,7 +789,7 @@ it does not assume a left adjunction or a cap-identification premise.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped BigOperators
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 
 private theorem assembled_row_ext {k : Type u} [CommRing k]
@@ -886,9 +886,9 @@ private theorem module_column_equality
   rw [← SVec.toLinearMap_comp, ← SVec.toLinearMap_comp,
     ← Superfunctor.comp_total, ← Superfunctor.comp_total, h]
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 
-namespace OddMath.QuiverHecke.ELVOld.ProbeVacuumCap
+namespace OddMath.QuiverHecke.ELV.ProbeVacuumCap
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -935,7 +935,7 @@ theorem cap_eq_of_unitDot_window (i : I) (hP : 0 < cut i)
     exact module_column_equality (K i) (probeOldContentAppendDot_supernatural D Sc m [] i) N w a
       f (cap D Sc m i hP) ((hf a ha).trans (unitDotColumn_cap D Sc m i hP a ha).symm)
 
-end OddMath.QuiverHecke.ELVOld.ProbeVacuumCap
+end OddMath.QuiverHecke.ELV.ProbeVacuumCap
 end
 
 end
@@ -951,7 +951,7 @@ chart. All module components and full OLD coefficients are retained.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor CyclotomicAction
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -1037,7 +1037,7 @@ regular-probe evaluation of the chosen central bend.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open CyclotomicAction BalancedInduction CyclotomicCrossingTensor
 attribute [local irreducible] probeAppendUpperLoopSuperIso
 universe u
@@ -1149,7 +1149,7 @@ theorem vacuumLeftCounit_eq [Fintype I]
   simp only [vacuumCapSourceIso, Iso.trans_hom, Functor.mapIso_hom, eqToIso.hom,
     totalEvaluation, Iso.symm_hom, Category.assoc]
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end
@@ -1165,7 +1165,7 @@ are supplied by these coordinates.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.ProbeVacuumCap
+namespace OddMath.QuiverHecke.ELV.ProbeVacuumCap
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 
@@ -1356,7 +1356,7 @@ theorem coordinatePreDot_odd_polynomial (R : PiSCat.{u,u,u+1} k) (i : I) (hi : D
     coordinate_polynomial (preSourceComponent D Sc m R i H) (preDotEnd D Sc m R i H) (m i)
       (preDot_odd_polynomial D Sc m R i hi H)
 
-end OddMath.QuiverHecke.ELVOld.ProbeVacuumCap
+end OddMath.QuiverHecke.ELV.ProbeVacuumCap
 end
 
 end
@@ -1372,7 +1372,7 @@ cap through the source shift, whole-weight FE, and native source charts.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open CyclotomicAction
 universe u
 local instance preCapHomPi {k : Type u} [CommRing k] (A B : PiSCat.{u,u,u+1} k) :
@@ -1474,7 +1474,7 @@ theorem vacuumPreCounit_eq (hP : 0 < probeCutoff D m i) :
   simp only [vacuumPreSourceIso, Iso.trans_hom, Functor.mapIso_hom, Iso.symm_hom,
     totalEvaluation_2, Category.assoc, Iso.inv_hom_id_assoc]
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end
@@ -1490,7 +1490,7 @@ chart as the whole-weight left cap, at every input weight module.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction
+open ELV CyclotomicAction
 universe u
 
 private theorem rightWhisker_total
@@ -1537,7 +1537,7 @@ raw restricted induction dot at every input module.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor
 universe u
 attribute [local irreducible] oldAppendReindexIso
 private theorem restriction_total
@@ -1603,7 +1603,7 @@ isomorphism used for the normalized whole-weight cap.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open CyclotomicAction BalancedInduction CyclotomicCrossingTensor
 attribute [local irreducible] probeAppendUpperLoopSuperIso
 universe u
@@ -1733,7 +1733,7 @@ theorem vacuumLoopDot_source :
     (ProbeVacuumCap.moduleDot D Sc m i) ha hb hc hd
   convert hf using 1 <;> rfl
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end
@@ -1748,7 +1748,7 @@ same probe polynomial survives this signed change of coordinates.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.ProbeVacuumCap
+namespace OddMath.QuiverHecke.ELV.ProbeVacuumCap
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 local instance probeCapPreDotHomPi {k : Type u} [CommRing k]
@@ -1892,7 +1892,7 @@ theorem shiftedPreDot_odd_polynomial (R : PiSCat.{u,u,u+1} k) (i : I) (hi : D.pa
   rw [shiftedPreDot_coordinates]
   exact signed_polynomial _ _ _ _ (coordinatePreDot_odd_polynomial D Sc m R i hi H)
 
-end OddMath.QuiverHecke.ELVOld.ProbeVacuumCap
+end OddMath.QuiverHecke.ELV.ProbeVacuumCap
 end
 
 end
@@ -1907,7 +1907,7 @@ with the same source chart as the normalized pre-Hom counit.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open CyclotomicAction
 universe u
 local instance preDotHomPi {k : Type u} [CommRing k] (A B : PiSCat.{u,u,u+1} k) :
@@ -2020,7 +2020,7 @@ theorem vacuumPreDot_source (hP : 0 < probeCutoff D m i) :
   have hf := signed_three_squares a b c x y z v q ha hb hc
   convert hf using 1 <;> rfl
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end

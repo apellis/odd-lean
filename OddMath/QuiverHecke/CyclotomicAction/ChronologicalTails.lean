@@ -28,7 +28,7 @@ prescribed balanced tensor target, are not asserted here.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -91,7 +91,7 @@ theorem pMap_chronologicalShortSpan_le (i : I) (v t : List I) :
   exact Submodule.subset_span ⟨s, twist k (appendQ D cutoff i v) r,
     appendW D Sc cutoff i s ≫ h, rfl⟩
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -105,7 +105,7 @@ Their square uses the literal moving-word map, before the final cyclotomic quoti
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -258,7 +258,7 @@ theorem shortColumn_quotient_square (i : I) (v t : List I) :
     toCyclotomic_q_shortTensor]
 
 end CyclotomicCrossingTensor
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -344,7 +344,7 @@ theorem canWord_cast {n m : ℕ} (e : n = m) (u : PrependShuffle n) :
 
 end OddMath.QuiverHecke.PrependShuffle
 
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -699,7 +699,7 @@ theorem extract_comp_alpha (i : I) (v t : List I) :
     extract D Sc cutoff i v t (alpha D Sc cutoff i v t z) = z :=
   LinearMap.congr_fun (extract_comp_alpha D Sc cutoff i v t) z
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -792,7 +792,7 @@ This isolates the old coefficient before any total-crossing estimate is applied.
 theorem arbitrary_old_on_short_tail {i : I} {s t : List I}
     (x : PrependIdx i s t) (hx : x.1.2.2.2 ≠ longPrependShuffle s.length)
     (f : (pres D Sc).obj (ob D s) ⟶ (pres D Sc).obj (ob D x.oldTarget)) :
-    ELVOld.affineInsert D Sc i s x.oldTarget f ≫ ELVOld.prependTail D Sc x ∈
+    ELV.affineInsert D Sc i s x.oldTarget f ≫ ELV.prependTail D Sc x ∈
       shortSpan D Sc i s t := by
   have hf : f ∈ Submodule.span k (Set.range (basisNF D Sc s x.oldTarget)) := by
     rw [Module.Basis.span_eq]
@@ -800,7 +800,7 @@ theorem arbitrary_old_on_short_tail {i : I} {s t : List I}
   induction hf using Submodule.span_induction with
   | mem f hf =>
     obtain ⟨y, rfl⟩ := hf
-    rw [basisNF_apply, ← ELVOld.prependElt_replaceOld]
+    rw [basisNF_apply, ← ELV.prependElt_replaceOld]
     apply Submodule.subset_span
     exact ⟨x.replaceOld y, hx, prependBasis_apply D Sc _⟩
   | zero => simp
@@ -814,9 +814,9 @@ theorem arbitrary_old_on_short_tail {i : I} {s t : List I}
 /-- Only the bare smaller tail is bounded; its old coefficient is excluded. -/
 theorem extended_prependTail_low {i : I} {s t : List I}
     (x : PrependIdx i s t) (j : I) :
-    ELVOld.prependTail D Sc x ▷ (pres D Sc).obj (ob D [j]) ∈
+    ELV.prependTail D Sc x ▷ (pres D Sc).obj (ob D [j]) ∈
       Low D Sc (i :: (x.oldTarget ++ [j])) (t ++ [j]) (s.length + 1) := by
-  unfold ELVOld.prependTail
+  unfold ELV.prependTail
   rw [cl_whiskerRight D Sc _ _ [j] (fits_append
     (fits_dots (by intro p hp; have he := (List.mem_replicate.mp hp).2; subst p; simp))
     (by simpa only [List.length_cons, PrependIdx.oldTarget, length_tgt]
@@ -827,11 +827,11 @@ theorem extended_prependTail_low {i : I} {s t : List I}
 
 theorem extended_prependTail_short {i : I} {s t : List I}
     (x : PrependIdx i s t) (j : I) :
-    ELVOld.prependTail D Sc x ▷ (pres D Sc).obj (ob D [j]) ∈
+    ELV.prependTail D Sc x ▷ (pres D Sc).obj (ob D [j]) ∈
       shortSpan D Sc i (x.oldTarget ++ [j]) (t ++ [j]) := by
   apply low_le_shortSpan
   have hf := extended_prependTail_low D Sc x j
-  change (ELVOld.prependTail D Sc x ▷ (pres D Sc).obj (ob D [j]) :
+  change (ELV.prependTail D Sc x ▷ (pres D Sc).obj (ob D [j]) :
     (pres D Sc).obj (ob D (i :: (x.oldTarget ++ [j]))) ⟶
       (pres D Sc).obj (ob D (t ++ [j]))) ∈
       Low D Sc (i :: (x.oldTarget ++ [j])) (t ++ [j]) (s.length + 1) at hf
@@ -845,8 +845,8 @@ private theorem insert_tail_transport {i : I} {v t t' w : List I}
     (f : (pres D Sc).obj (ob D (i :: t)) ⟶ (pres D Sc).obj (ob D w))
     (g : (pres D Sc).obj (ob D (i :: t')) ⟶ (pres D Sc).obj (ob D w))
     (h : HEq f g) :
-    ELVOld.affineInsert D Sc i v t r ≫ f =
-    ELVOld.affineInsert D Sc i v t' (e ▸ r) ≫ g := by
+    ELV.affineInsert D Sc i v t r ≫ f =
+    ELV.affineInsert D Sc i v t' (e ▸ r) ≫ g := by
   subst t'
   cases h
   rfl
@@ -865,7 +865,7 @@ theorem rebase_short {i : I} {v s t : List I} (z : PrependIdx i s t)
 theorem arbitrary_old_cross_source {i : I} {v s t : List I}
     (z : PrependIdx i s t) (hz : z.1.2.2.2 ≠ longPrependShuffle s.length)
     (r : (pres D Sc).obj (ob D v) ⟶ (pres D Sc).obj (ob D z.oldTarget)) :
-    ELVOld.affineInsert D Sc i v z.oldTarget r ≫ ELVOld.prependTail D Sc z ∈
+    ELV.affineInsert D Sc i v z.oldTarget r ≫ ELV.prependTail D Sc z ∈
       shortSpan D Sc i v t := by
   by_cases hr : r = 0
   · simp [hr]
@@ -878,21 +878,21 @@ theorem arbitrary_old_cross_source {i : I} {v s t : List I}
       exact isEmptyElim y
     obtain ⟨y⟩ := hn
     rw [insert_tail_transport D Sc (z.rebase_target y).symm r _ _
-      (ELVOld.prependTail_rebase D Sc z y).symm]
+      (ELV.prependTail_rebase D Sc z y).symm]
     exact arbitrary_old_on_short_tail D Sc (z.rebase y) (rebase_short z hz y) _
 
 theorem old_comp_short {i : I} {v s t : List I}
     (r : (pres D Sc).obj (ob D v) ⟶ (pres D Sc).obj (ob D s))
     (f : (pres D Sc).obj (ob D (i :: s)) ⟶ (pres D Sc).obj (ob D t))
     (hf : f ∈ shortSpan D Sc i s t) :
-    ELVOld.affineInsert D Sc i v s r ≫ f ∈ shortSpan D Sc i v t := by
+    ELV.affineInsert D Sc i v s r ≫ f ∈ shortSpan D Sc i v t := by
   induction hf using Submodule.span_induction with
   | mem f hf =>
     obtain ⟨z, hz, rfl⟩ := hf
-    rw [prependBasis_apply, ELVOld.prependElt_insert_tail, ← Category.assoc]
-    have he : ELVOld.affineInsert D Sc i v s r ≫
-        ELVOld.affineInsert D Sc i s z.oldTarget z.old.nf =
-        ELVOld.affineInsert D Sc i v z.oldTarget (r ≫ z.old.nf) := by
+    rw [prependBasis_apply, ELV.prependElt_insert_tail, ← Category.assoc]
+    have he : ELV.affineInsert D Sc i v s r ≫
+        ELV.affineInsert D Sc i s z.oldTarget z.old.nf =
+        ELV.affineInsert D Sc i v z.oldTarget (r ≫ z.old.nf) := by
       exact (MonoidalSupercategory.whiskerLeft_comp (R := k) _ _ _).symm
     rw [he]
     exact arbitrary_old_cross_source D Sc z hz _
@@ -908,7 +908,7 @@ theorem old_comp_short {i : I} {v s t : List I}
 theorem chronological_scalar_short {i j : I} {v s t : List I}
     (r : (pres D Sc).obj (ob D v) ⟶ (pres D Sc).obj (ob D (s ++ [j])))
     (h : (pres D Sc).obj (ob D (i :: s)) ⟶ (pres D Sc).obj (ob D t)) :
-    ELVOld.affineInsert D Sc i v (s ++ [j]) r ≫
+    ELV.affineInsert D Sc i v (s ++ [j]) r ≫
       (h ▷ (pres D Sc).obj (ob D [j])) ∈ shortSpan D Sc i v (t ++ [j]) := by
   have hh : h ∈ Submodule.span k (Set.range (prependBasis D Sc (i := i) (s := s) (t := t))) := by
     rw [Module.Basis.span_eq]
@@ -916,11 +916,11 @@ theorem chronological_scalar_short {i j : I} {v s t : List I}
   induction hh using Submodule.span_induction with
   | mem h hh =>
     obtain ⟨x, rfl⟩ := hh
-    rw [prependBasis_apply, ELVOld.prependElt_insert_tail]
+    rw [prependBasis_apply, ELV.prependElt_insert_tail]
     erw [MonoidalSupercategory.comp_whiskerRight (R := k), ← Category.assoc]
-    have he : ELVOld.affineInsert D Sc i v (s ++ [j]) r ≫
-        (ELVOld.affineInsert D Sc i s x.oldTarget x.old.nf ▷ (pres D Sc).obj (ob D [j])) =
-        ELVOld.affineInsert D Sc i v (x.oldTarget ++ [j])
+    have he : ELV.affineInsert D Sc i v (s ++ [j]) r ≫
+        (ELV.affineInsert D Sc i s x.oldTarget x.old.nf ▷ (pres D Sc).obj (ob D [j])) =
+        ELV.affineInsert D Sc i v (x.oldTarget ++ [j])
           (r ≫ (x.old.nf ▷ (pres D Sc).obj (ob D [j]))) := by
       change ((pres D Sc).obj (ob D [i]) ◁ r) ≫
         (((pres D Sc).obj (ob D [i]) ◁ x.old.nf) ▷ (pres D Sc).obj (ob D [j])) =
@@ -952,7 +952,7 @@ theorem chronological_scalar_long_zero {i j : I} {v s t : List I}
     (x : PrependIdx i v (t ++ [j]))
     (hx : x.1.2.2.2 = longPrependShuffle v.length) :
     (prependBasis D Sc).repr
-      (ELVOld.affineInsert D Sc i v (s ++ [j]) r ≫
+      (ELV.affineInsert D Sc i v (s ++ [j]) r ≫
         (h ▷ (pres D Sc).obj (ob D [j]))) x = 0 :=
   (mem_shortSpan_iff D Sc i v (t ++ [j]) _).mp
     (chronological_scalar_short D Sc r h) x hx
@@ -978,7 +978,7 @@ the kernel with the short span, a canonical splitting, or the boundary S formula
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1081,7 +1081,7 @@ theorem chronologicalShortSpan_le_ker_outputLongExtraction (p : ZMod 2) (i : I)
   rintro _ ⟨s, r, h, rfl⟩
   exact outputLongExtraction_chronological_generator D Sc cutoff p i v s r h
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1090,7 +1090,7 @@ section
 
 noncomputable section
 open CategoryTheory StringDiagrams MonoidalCategory Categorification.TypeA
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1189,7 +1189,7 @@ theorem prepend_short_mem (i : I) (v t : List I)
   unfold prependTail
   exact positioned_short_mem_of_eq D Sc cutoff i v x.oldTarget s t hs _ hfull _ r
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1211,7 +1211,7 @@ correction is killed only after its separate vanishing law is proved.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped Classical DirectSum TensorProduct
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 namespace ShortCrossCoordinates
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1733,7 +1733,7 @@ def crossingEquiv (i : I) (v t : List I) :
   map_smul' a b := Subtype.ext (map_smul _ a b)
 
 end ShortCrossCoordinates
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end

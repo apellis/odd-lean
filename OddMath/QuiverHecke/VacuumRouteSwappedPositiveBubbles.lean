@@ -88,7 +88,7 @@ theorem VacuumBubblesPositiveHeight.of_closed {μ : X}
 end Closed
 
 namespace SwappedAssembly.SupportedSectors
-open SKM CyclotomicAction ELVOld
+open SKM CyclotomicAction ELV
 
 section Tensor
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]

@@ -27,7 +27,7 @@ fully faithful unit compares its empty component with the original A/T.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (L : I × ℕ → ℕ)
@@ -201,7 +201,7 @@ def coefficientPowerVacuumObject : CoefficientPowerModules D Sc cutoff
     (elementaryCoefficients (k := k) D cutoff) L :=
   ⟨coefficientPowerVacuum D Sc cutoff L, coefficientPowerVacuum_property D Sc cutoff L⟩
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -217,7 +217,7 @@ the original even empty-component unit identify the target with literal A/T.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerVacuumCoefficient
+namespace OddMath.QuiverHecke.ELV.PowerVacuumCoefficient
 open CyclotomicCrossingTensor CyclotomicCrossingTensor.TensorMatrixCoordinates
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -401,7 +401,7 @@ theorem functional_coefficient (i : I) (hN : 0 < cutoff i) {q : ZMod 2}
     _ = K • e.symm (M.map (X := ⟨[]⟩) (Y := ⟨[]⟩) f (row z)) := by rw [map_zsmul]
     _ = _ := congrArg (fun w : CoefficientPowerQuotient (k := k) D cutoff L => K • w) hd
 
-end OddMath.QuiverHecke.ELVOld.PowerVacuumCoefficient
+end OddMath.QuiverHecke.ELV.PowerVacuumCoefficient
 end
 
 end
@@ -418,7 +418,7 @@ is supplied as an additional hypothesis.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerVacuumCoefficient
+namespace OddMath.QuiverHecke.ELV.PowerVacuumCoefficient
 open CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -562,7 +562,7 @@ theorem rawMoment_one_recurrence (i : I) (hN : 0 < cutoff i) (m : ℕ) :
     _ = 0 := by
       simpa only [one_mul] using rawMoment_recurrence D Sc cutoff L i hN 1 m
 
-end OddMath.QuiverHecke.ELVOld.PowerVacuumCoefficient
+end OddMath.QuiverHecke.ELV.PowerVacuumCoefficient
 end
 
 end
@@ -578,7 +578,7 @@ recurrence. Coefficient order and the top inverse-row sign are retained.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerVacuumCoefficient
+namespace OddMath.QuiverHecke.ELV.PowerVacuumCoefficient
 open CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -836,7 +836,7 @@ theorem signedMoment_remainder (i : I) (hi : D.parity i = 1)
     nsmul_eq_mul, mul_one, smul_smul]
   rw [triangular_ordinary_sign (k := k) cutoff i l]
 
-end OddMath.QuiverHecke.ELVOld.PowerVacuumCoefficient
+end OddMath.QuiverHecke.ELV.PowerVacuumCoefficient
 end
 
 end
@@ -853,7 +853,7 @@ The latter retains its original ring and exterior coefficient order.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerVacuumCoefficient
+namespace OddMath.QuiverHecke.ELV.PowerVacuumCoefficient
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (L : I × ℕ → ℕ)
@@ -1199,7 +1199,7 @@ theorem signedMoment_odd (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i) (r : 
   simp only [mul_smul_comm, smul_smul]
   rw [mul_comm ((-1 : k) ^ r) ((-1 : k) ^ (cutoff i + 1))]
 
-end OddMath.QuiverHecke.ELVOld.PowerVacuumCoefficient
+end OddMath.QuiverHecke.ELV.PowerVacuumCoefficient
 end
 
 end
@@ -1215,7 +1215,7 @@ signed induction dot and prescribed inverse row define the maps.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerVacuumCoefficient
+namespace OddMath.QuiverHecke.ELV.PowerVacuumCoefficient
 open CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1459,7 +1459,7 @@ theorem momentMap_odd (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i) (r : ℕ
           completeCoefficient D cutoff L i r)) := by
   rw [momentMap_eq_mulLeft, signedMoment_odd D Sc cutoff L i hi hN r]
 
-end OddMath.QuiverHecke.ELVOld.PowerVacuumCoefficient
+end OddMath.QuiverHecke.ELV.PowerVacuumCoefficient
 end
 
 end
@@ -1475,7 +1475,7 @@ parity and their signed balanced-induction tensor formula.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1658,7 +1658,7 @@ def powerModuleCoefficientAction
       ((coefficientPowerIdeal D cutoff (elementaryCoefficients (k := k) D cutoff) L).ringCon.mkₐ k a) =
         coefficientModuleAction D Sc cutoff M.obj a := rfl
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1677,7 +1677,7 @@ higher reservoir moments are the coefficients of `1/E(-w)`:
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerVacuumCoefficient
+namespace OddMath.QuiverHecke.ELV.PowerVacuumCoefficient
 open CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1892,7 +1892,7 @@ theorem even_colour_signedMoment (i : I) (hi : D.parity i = 0) (hN : 0 < cutoff 
   rw [evenRemainderSeries, PowerSeries.coeff_mk, PowerSeries.coeff_map] at h
   exact h
 
-end OddMath.QuiverHecke.ELVOld.PowerVacuumCoefficient
+end OddMath.QuiverHecke.ELV.PowerVacuumCoefficient
 end
 
 end

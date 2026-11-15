@@ -28,7 +28,7 @@ or complete factor-family assertion is supplied.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 
 section Total
@@ -108,7 +108,7 @@ theorem elvRouquierData_square (i : I) (Λ : X) {x₀ x₁ x₂ : X}
       (elvRouquierData D Sc cutoff bound Λ).cross i i h₁ h₂ h₁ h₂ = 0 :=
   elvActionCross_square D Sc cutoff bound i Λ h₁ h₂
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -122,7 +122,7 @@ regular-power vacuum and retain the selected recursive, even word chart.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordEvaluation
+namespace OddMath.QuiverHecke.ELV.PowerWordEvaluation
 open CyclotomicAction
 universe u
 section Generic
@@ -258,7 +258,7 @@ theorem cross_pair_value (ν : List I) (i j : I) {xj xu xi : X}
     (natural_even _ _ (elvActionCross D Sc cutoff N i j Λ h₁ h₂ h₃ h₄)
       (chart D Sc cutoff L Λ ν) (chart_even D Sc cutoff L Λ ν) (D.parity i * D.parity j))
     (PowerWordPairCoherence.recursive_pair_cross D Sc cutoff L Λ ν i j rfl h₁ h₂ h₃ h₄)
-end OddMath.QuiverHecke.ELVOld.PowerWordEvaluation
+end OddMath.QuiverHecke.ELV.PowerWordEvaluation
 end
 
 end
@@ -274,7 +274,7 @@ original weight group and all strand labels are retained.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.ReservoirWordValue
+namespace OddMath.QuiverHecke.ELV.ReservoirWordValue
 open SwappedAssembly CyclotomicAction
 universe u
 variable {I X : Type u} [AddCommGroup X] (D : SKM.Datum I X) (Λ : X)
@@ -316,7 +316,7 @@ def initialValue : ELVWeightProduct D Sc cutoff N Λ (ReservoirWord.weight D Λ 
 
 end ChosenValue
 
-end OddMath.QuiverHecke.ELVOld.ReservoirWordValue
+end OddMath.QuiverHecke.ELV.ReservoirWordValue
 end
 
 end
@@ -331,7 +331,7 @@ to the native two-morphism relation without commuting odd operators.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {k : Type u} [CommRing k]
     {C B : Type*} [Category* C] [Category* B]
@@ -430,7 +430,7 @@ theorem moduleFamily_polynomial_of_components
   change ((c.total M t) ≫ (d.total M t)).total w = _
   rw [Superfunctor.comp_total]
   exact h M t w
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -444,7 +444,7 @@ before specializing large chosen action data.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u v w r
 variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
@@ -493,7 +493,7 @@ theorem rouquierMulticolourBraidEquation_of_paths
     rouquierMulticolourBraidEquation D R i j l hal haj hai hlj hli hjl hji hil hij hd₁ hd₂ hd₃ := by
   simpa only [rouquierMulticolourBraidEquation, Category.assoc] using h
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -507,7 +507,7 @@ as one generic proposition before specializing large selected functors.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u v w r
 variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
@@ -571,7 +571,7 @@ theorem rouquierMixedBraidEquation_of_polynomial
   have hh := h.trans hp
   simpa only [rouquierMixedBraidEquation, Category.assoc] using hh
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -585,7 +585,7 @@ single-append charts on arbitrary full old-Hom arrows.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordWeightContexts
+namespace OddMath.QuiverHecke.ELV.PowerWordWeightContexts
 open CyclotomicAction CyclotomicCrossingTensor
 universe u
 section Weight
@@ -696,7 +696,7 @@ private theorem pair_weight (ν : List I) (i j : I) {xj xu : X}
     (h₁.symm.trans (PowerWordWeight.wordWeight_append D Λ ν j))).trans
       (PowerWordWeight.wordWeight_append D Λ (ν ++ [j]) i))
 
-end OddMath.QuiverHecke.ELVOld.PowerWordWeightContexts
+end OddMath.QuiverHecke.ELV.PowerWordWeightContexts
 end
 
 end
@@ -711,7 +711,7 @@ The full coefficient algebra and chronological multiplication are retained.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordCoefficients
+namespace OddMath.QuiverHecke.ELV.PowerWordCoefficients
 open CyclotomicAction CyclotomicCrossingTensor
 universe u
 section Generic
@@ -762,7 +762,7 @@ variable [Fintype I] (Λ : X)
 local notation "N" => PowerWordContent.powerBound D cutoff L
 
 end Weight
-end OddMath.QuiverHecke.ELVOld.PowerWordCoefficients
+end OddMath.QuiverHecke.ELV.PowerWordCoefficients
 end
 
 end
@@ -777,7 +777,7 @@ content block and the same-weight target word family.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordHomCoordinates
+namespace OddMath.QuiverHecke.ELV.PowerWordHomCoordinates
 open CyclotomicAction
 universe u
 section Generic
@@ -909,7 +909,7 @@ private theorem chart_pair_hom (i j : I) :
     PowerWordEvaluation.pairChart, recursivePair_canonical]
   exact hh
 
-end OddMath.QuiverHecke.ELVOld.PowerWordHomCoordinates
+end OddMath.QuiverHecke.ELV.PowerWordHomCoordinates
 end
 
 end

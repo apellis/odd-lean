@@ -12,7 +12,7 @@ form of the layer action consumed by the corner square of
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld
+open CyclotomicAction ELV
 universe u
 local instance supportedActionAlphaLayerHomPi {k : Type u} [CommRing k]
     (A C : PiSCat.{u,u,u + 1} k) : PiSupercategory k (A ⟶ C) :=

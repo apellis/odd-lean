@@ -137,15 +137,15 @@ exercised intermediate lemmas only and are removed with them. Git history keeps 
 | `OddMath/QuiverHecke/CyclotomicAction/ELVModuleZeroLocalInverse.lean` | 115 |
 | `OddMath/QuiverHecke/CyclotomicAction/ELVMovingNormRegularity.lean` | 125 |
 | `OddMath/QuiverHecke/CyclotomicAction/ELVNegativeCrossing.lean` | 294 |
-| `OddMath/QuiverHecke/CyclotomicAction/ELVOldContentBraid.lean` | 46 |
-| `OddMath/QuiverHecke/CyclotomicAction/ELVOldContentRouquierInverse.lean` | 43 |
-| `OddMath/QuiverHecke/CyclotomicAction/ELVOldCorrectedInductionBraid.lean` | 108 |
-| `OddMath/QuiverHecke/CyclotomicAction/ELVOldCorrectedNestedBraid.lean` | 213 |
-| `OddMath/QuiverHecke/CyclotomicAction/ELVOldInductionBraid.lean` | 42 |
-| `OddMath/QuiverHecke/CyclotomicAction/ELVOldMateTensors.lean` | 67 |
-| `OddMath/QuiverHecke/CyclotomicAction/ELVOldNestedBraid.lean` | 86 |
-| `OddMath/QuiverHecke/CyclotomicAction/ELVOldNestedMulticolourBraid.lean` | 181 |
-| `OddMath/QuiverHecke/CyclotomicAction/ELVOldPolynomialTransport.lean` | 66 |
+| `OddMath/QuiverHecke/CyclotomicAction/ELVContentBraid.lean` | 46 |
+| `OddMath/QuiverHecke/CyclotomicAction/ELVContentRouquierInverse.lean` | 43 |
+| `OddMath/QuiverHecke/CyclotomicAction/ELVCorrectedInductionBraid.lean` | 108 |
+| `OddMath/QuiverHecke/CyclotomicAction/ELVCorrectedNestedBraid.lean` | 213 |
+| `OddMath/QuiverHecke/CyclotomicAction/ELVInductionBraid.lean` | 42 |
+| `OddMath/QuiverHecke/CyclotomicAction/ELVMateTensors.lean` | 67 |
+| `OddMath/QuiverHecke/CyclotomicAction/ELVNestedBraid.lean` | 86 |
+| `OddMath/QuiverHecke/CyclotomicAction/ELVNestedMulticolourBraid.lean` | 181 |
+| `OddMath/QuiverHecke/CyclotomicAction/ELVPolynomialTransport.lean` | 66 |
 | `OddMath/QuiverHecke/CyclotomicAction/ELVPositiveCrossing.lean` | 118 |
 | `OddMath/QuiverHecke/CyclotomicAction/ELVPowerWordDistinctCrossing.lean` | 325 |
 | `OddMath/QuiverHecke/CyclotomicAction/ELVProbeCoefficientCapUniqueness.lean` | 92 |
@@ -358,7 +358,7 @@ which declarations prove them.
   "actual" was dropped from 66 more (a trailing `_native` became `_eq`, for statements
   that evaluate a construction). 15 names keep the word because dropping it would clash
   with an existing name (for example `capRowNative`, `directStep`). Many module names in
-  `QuiverHecke/CyclotomicAction/` carry the construction label `ELV`/`ELVOld`; renaming
+  `QuiverHecke/CyclotomicAction/` carry the construction label `ELV`/`ELV`; renaming
   them touches several hundred files and conflicts with open pull requests.
 * Inlining single-use wrappers and merging duplicate statements inside the retained
   route: not attempted beyond the removal of unused declarations.

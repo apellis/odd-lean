@@ -33,7 +33,7 @@ noncomputable section
 set_option quotPrecheck false
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld ELVOld.PowerVacuumCoefficient ELVOld.WeightTensorVacuum
+open CyclotomicAction ELV ELV.PowerVacuumCoefficient ELV.WeightTensorVacuum
 universe u
 local instance supportedVacuumRightOddHomPi {k : Type u} [CommRing k]
     (A C : PiSCat.{u,u,u+1} k) : PiSupercategory k (A ⟶ C) :=
@@ -89,17 +89,17 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
       (∀ (r : ℕ) (z : (V).obj (⟨⟨[]⟩, rfl⟩ :
           ContentCategory D (parameterTwist D Sc) cutoff N 0)),
         (∀ e', e' = cutoff i - 2 * m i - 1 + 2 * r →
-          ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
+          ELV.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
           polynomialToPower D cutoff L (PowerSeries.coeff r
               (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
             tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) ∧
         ∀ e', e' = cutoff i - 2 * m i - 1 + (2 * r + 1) →
-          ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
-          ELVOld.rightwardOddScalar D cutoff L i hi *
+          ELV.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
+          ELV.rightwardOddScalar D cutoff L i hi *
             (polynomialToPower D cutoff L (PowerSeries.coeff r
               (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
               tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z)) →
-      ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e z =
+      ELV.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e z =
         coefficientPowerQuotientMap D cutoff L a *
           tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) :
     VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF ν₀
@@ -126,9 +126,9 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
   subst hn
   rw [← hcup ⟨cutoff i - 2 * m i - 1, by omega⟩ e]
   exact hmom c B z fun r z =>
-    ⟨fun e' he' => ELVOld.rightwardLastColumnDecode_even D (parameterTwist D Sc) m cutoff L hF.dot
+    ⟨fun e' he' => ELV.rightwardLastColumnDecode_even D (parameterTwist D Sc) m cutoff L hF.dot
       i hi hPi hPN j B hB r e' he' z,
-     fun e' he' => ELVOld.rightwardLastColumnDecode_odd D (parameterTwist D Sc) m cutoff L hF.dot
+     fun e' he' => ELV.rightwardLastColumnDecode_odd D (parameterTwist D Sc) m cutoff L hF.dot
       i hi hPi hPN j B hB r e' he' z⟩
 
 include hF in
@@ -175,6 +175,6 @@ theorem vacuumEntry_odd_neg (N' : I → ℕ) (i : {i : I // D.parity i = 1})
     (by rw [hhe] at hh; omega) _ _
     (by rw [hhe]; omega) _ (fun c B z hm => ?_)
   rw [(hm 0 z).2 _ rfl, AdjunctionBubbleSeries.coeff_zero_momentSeries, map_one, one_mul,
-    ELVOld.rightwardOddScalar_eq, hN']
+    ELV.rightwardOddScalar_eq, hN']
 
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

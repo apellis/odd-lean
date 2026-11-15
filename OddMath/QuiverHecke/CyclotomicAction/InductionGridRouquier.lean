@@ -33,7 +33,7 @@ attaching the prescribed grid inverse entries to the local data.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k : Type u} [CommRing k]
 
@@ -118,7 +118,7 @@ theorem inductionModuleMate_eq_grid :
   · rw [ite_eq_right hq, ite_eq_right hq]
     simp only [Functor.map_zero, Limits.comp_zero, Limits.zero_comp]
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -132,7 +132,7 @@ chosen negative crossing on the double induction, on every input module.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C A B : Type u} [CommRing k]
   [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
@@ -184,7 +184,7 @@ theorem inductionModuleCross_square (hs : ∀ s, γ s ≫ γ s = 0) :
   simpa only [Preadditive.neg_comp, Preadditive.comp_neg, neg_neg] using
     gridDoubleCrossComponent_square J K hγ hs M
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -199,7 +199,7 @@ unit columns and cap rows on all input modules.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 private theorem power_total
     {k : Type u} [CommRing k] {A B : PiSCat.{u,u,u+1} k}
@@ -262,7 +262,7 @@ theorem inductionModuleCapPower_eq (n : ℕ) :
     module_counit_total, gridCapRowTransformation_total]
   rfl
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -277,7 +277,7 @@ These module equations retain the given induced objects and ordinary maps.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C A B : Type u} [CommRing k]
   [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
@@ -349,7 +349,7 @@ theorem inductionComp_outer_dot
     dsimp only [SVec.toLinearMap, compForward, induction, SuperNatTrans.total] at h ⊢
   simpa only [inductionComp_hom_app_one, add_zero] using h
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -365,7 +365,7 @@ functors are retained, as required by the fixed-content probe action.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 private theorem conjugated_square {C : Type*} [Category C]
     {A B E : C} (e : A ≅ B) (f : End B) (g : B ⟶ E) (h : End E)
@@ -484,7 +484,7 @@ theorem inductionModuleCross_braid (M : Superfunctor k C (SVec k)) :
     Preadditive.neg_comp, Preadditive.comp_neg, neg_neg]
   exact congrArg Neg.neg (gridDoubleCrossComponent_braid J K L hγ hδ hb M)
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -499,7 +499,7 @@ Four categories and all four append functors remain independent.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 private theorem rectangular_slide_of_squares
     {k C : Type*} [CommRing k] [Category C] [Preadditive C] [Linear k C]
@@ -577,7 +577,7 @@ theorem rectangularCrossComponent_slide_outer_inner
   rw [he]
   convert! h using 1
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -592,7 +592,7 @@ supply an even module inverse, retaining every original source shift.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C : Type u} [CommRing k] [Category.{u} C]
   [Preadditive C] [Linear k C] [Supercategory k C]
@@ -653,7 +653,7 @@ theorem unitColumnModuleIso_hom
     (unitColumnModuleIso J hα M m e he).hom = unitColumnModuleMap J hα M m :=
   OddMath.HomogeneousSuperfunctorIso.ofHom_hom _ _ _ _
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -669,7 +669,7 @@ have the prescribed finite Kronecker window and reconstruct the target.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped BigOperators
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C A : Type u} [CommRing k] [Category.{u} C] [Category.{u} A]
   [Preadditive C] [Linear k C] [Supercategory k C]
@@ -729,7 +729,7 @@ theorem sum_unitColumnModuleInverseRow_unitDotColumn :
   OddMath.FiniteSupermodule.sum_inverseCoordinateRow_forward rIso rParity rMem column columnMem e
     (he.trans (unitModuleMap_restored J hα M m))
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -745,7 +745,7 @@ No inverse-naturality condition is imposed.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C : Type u} [CommRing k] [Category.{u} C]
   [Preadditive C] [Linear k C] [Supercategory k C]
@@ -869,7 +869,7 @@ theorem unitColumnModuleInverseTransformation_total (r : Fin m) (M : Superfuncto
     (F := ⟨induction (k := k) J ⋙ restriction (k := k) J⟩) (G := Superfunctor.id k (Superfunctor k C (SVec k)))
     (unitColumnModuleInverseRow_supernatural J hα m e he r) M
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -885,7 +885,7 @@ reconstruction identity. The ordinary unit and signed dot are unchanged.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open scoped BigOperators
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 private def evaluation {k : Type u} [CommRing k] {C R : Type*}
     [Category C] [Category R] [Preadditive C] [Linear k C] [Supercategory k C]
@@ -990,7 +990,7 @@ def inductionVacuumCoefficients :
   total := coefficient_reconstruction J hα m e he
   entry := coefficient_entry J hα m e he
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -1005,7 +1005,7 @@ negative crossing and the unchanged inner and outer module dots.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 private theorem total_sub {k C R : Type*} [CommRing k] [Category* C] [Category* R]
     [Preadditive C] [Linear k C] [Supercategory k C]
@@ -1322,7 +1322,7 @@ theorem inductionModuleCross_slide_right
   rw [total_sub, total_zsmul, Superfunctor.comp_total, Superfunctor.comp_total] at h ⊢
   convert! h using 1
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -1338,7 +1338,7 @@ right-counit/dot fields. Their finite profile is the local presentation's
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C A B : Type u} [CommRing k]
   [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
@@ -1389,7 +1389,7 @@ def inductionModuleInverseToFamily
   rw [hc]
   exact (gridLocalInverseToFamily J K hγ hα m e he).mulProfile
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -1406,7 +1406,7 @@ the constructed prescribed inverses.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 private theorem cup_as_function
     {k : Type u} [CommRing k] {R S : PiSCat.{u,u,u+1} k}
@@ -1453,7 +1453,7 @@ def inductionModuleLoc (c : ℤ)
     rw [cup_as_function] at H
     simpa only [neg_neg] using H
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -1468,7 +1468,7 @@ separate from the crossings; concrete applications must prove its relation.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 private theorem conjugate_pair_comp {V : Type*} [Category V]
     {x x' y y' : V} (e : x ≅ x') (f : y ≅ y')
@@ -1575,7 +1575,7 @@ theorem rectangularCrossComponent_signed_quadratic_of_parity
   exact rectangularCrossComponent_signed_quadratic J K L T hα hβ' hP hsource N
 
 end Rectangular
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -1590,7 +1590,7 @@ source and target categories and all coefficient parities are retained.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C E : Type u} [CommRing k]
   [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
@@ -1682,7 +1682,7 @@ theorem transformLinear_pairPolynomial (hij : i ≠ j)
     transformLinear_pairPolynomial_tensor F D Sc i j ha hb hij N w s g n]
   rfl
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -1697,7 +1697,7 @@ the prescribed composition isomorphism, as whole module endomorphisms.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 private theorem transform_total {k C E : Type u} [CommRing k]
     [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
@@ -1814,7 +1814,7 @@ theorem inductionComp_pairPolynomial (hij : i ≠ j)
   rw [h₁, h₂, inductionEndConjugation_apply] at hc
   exact hc
 end Pair
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -1830,7 +1830,7 @@ These entire module-map squares retain the supernaturality kernel twists.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C A B : Type u} [CommRing k]
   [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
@@ -1906,7 +1906,7 @@ theorem inductionComp_outer_transform
     dsimp only [SVec.toLinearMap, compForward, induction, SuperNatTrans.total] at h ⊢
   simpa only [inductionComp_hom_app_one, add_zero] using h
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -1922,7 +1922,7 @@ These are comparison identities, without a braid or comparison premise.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 
 private theorem rectangular_conjugation_square {C : Type*} [Category* C]
@@ -2013,7 +2013,7 @@ theorem inductionTripleFlattening_suffix_rectangular {p : ZMod 2}
     (transformComponent (hδ.whiskerLeft J) M)
     (inductionComp_outer_transform J (K' ⋙ L') (K ⋙ L) hδ M)
 end Suffix
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end

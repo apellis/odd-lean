@@ -676,7 +676,7 @@ and satisfies signed balance using total parity, including exterior coefficients
 `insert_elvPolynomial` identifies the old polynomial with F₂, and
 `projection_elvPolynomial` proves its vanishing. No moving F₁ relation is imposed.
 
-`ELVOldBalancedTensor` supplies the bundled signed tensor equivalence.
+`ELVBalancedTensor` supplies the bundled signed tensor equivalence.
 Right PBW coordinates for this coefficient extension, nonvanishing of the
 moving polynomial, and all-prefix QP/cancellation remain unproved.
 No flatness or cyclotomic freeness is assumed.
@@ -685,7 +685,7 @@ No flatness or cyclotomic freeness is assumed.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -978,7 +978,7 @@ theorem oldTwist_twice (p : ZMod 2) (v w : List I) (b : Old D Sc cutoff v w) :
   change (ideal D Sc cutoff v w).mkQ (twist k p (twist k p b)) = _
   rw [twist_twist]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -991,7 +991,7 @@ section
 The quotient comparison of `DeformedGlobalQP.md` §1, with the full exterior
 coefficient algebra. The tensor is the coend of the coefficient-category
 Homs with the old cyclotomic quotient. Its balance twists the old action by
-total parity. `balancedEquiv` identifies it with `ELVOld.Target`, by pairing
+total parity. `balancedEquiv` identifies it with `ELV.Target`, by pairing
 and insertion of the old identity class, without flatness assumptions.
 This is the quotient comparison needed for right PBW coordinates; those
 coordinates and moving-polynomial cancellation are not asserted here.
@@ -1000,7 +1000,7 @@ coordinates and moving-polynomial cancellation are not asserted here.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct DirectSum Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1173,7 +1173,7 @@ def balancedEquiv (p : ZMod 2) (i : I) (v w : List I) :
         projection D Sc cutoff i v w (insert D Sc cutoff i v t (twist k p b) ≫ h) :=
   balancedForward_tmul D Sc cutoff p i h _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

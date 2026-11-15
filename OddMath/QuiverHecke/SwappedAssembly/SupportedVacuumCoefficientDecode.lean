@@ -31,7 +31,7 @@ noncomputable section
 set_option quotPrecheck false
 open CategoryTheory StringDiagrams Supercategory
 
-namespace OddMath.QuiverHecke.ELVOld.VacuumTensorCoefficientMaps
+namespace OddMath.QuiverHecke.ELV.VacuumTensorCoefficientMaps
 open CyclotomicAction PowerVacuumCoefficient WeightTensorVacuum
 universe u
 
@@ -103,9 +103,9 @@ theorem selectedVacuum_coefficient_endDecode
   · congr 1
   · rfl
 
-end OddMath.QuiverHecke.ELVOld.VacuumTensorCoefficientMaps
+end OddMath.QuiverHecke.ELV.VacuumTensorCoefficientMaps
 
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open CyclotomicAction SwappedAssembly
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -133,10 +133,10 @@ theorem total_heq_of_heq {x : X} (hx : -ΛP = x)
   subst e
   rfl
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld ELVOld.WeightTensorVacuum ELVOld.VacuumTensorCoefficientMaps
+open CyclotomicAction ELV ELV.WeightTensorVacuum ELV.VacuumTensorCoefficientMaps
 universe u
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]

@@ -29,7 +29,7 @@ The source-required cutoff/highest-weight match fixes the finite count.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -121,7 +121,7 @@ theorem elvWeightAbsentUnitInverse_nonempty
       Iso.hom_inv_id, Category.comp_id] using he.symm
   simpa only [hf, hg] using H
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -138,7 +138,7 @@ with no naturality assumption on a chosen inverse.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private theorem homogeneousTotal_postcompose
     {k C D E : Type*} [CommRing k]
@@ -175,7 +175,7 @@ local notation "φ" => SKM.rouquierMate
 local notation "τ" n => elvActionUnit D Sc cutoff N i Λ h₂ ≫
   SKM.rouquierPower (elvActionDot D Sc cutoff N i Λ h₂) n ▷ F₂
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -191,7 +191,7 @@ family needed to bundle the local positive-height inverse.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private theorem homogeneousTotal_postcompose_2
     {k C D E : Type*} [CommRing k]
@@ -235,7 +235,7 @@ theorem elvWeightCapPower_block_supernatural (n : ℕ) :
       (fun M => (ρ n).total M δ) :=
   homogeneousTotal_postcompose_2 (ρ n) (elvWeightCapPower_mem D Sc cutoff N i Λ h n) Ev
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -252,7 +252,7 @@ Both pointwise and input-natural fields retain the prescribed maps.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private def emptyFromTo
     {k C : Type*} [CommRing k] [Category C] [Preadditive C]
@@ -315,7 +315,7 @@ local notation "EF" => Superfunctor.comp (F₁ ≫ E₁) (Superfunctor.mk Ev)
 local notation "IdEv" => Superfunctor.comp
   (Superfunctor.id k (ELVWeightProduct D Sc cutoff N Λ x₁)) (Superfunctor.mk Ev)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -332,7 +332,7 @@ principal, unit/power and cap/power maps of the Rouquier presentation.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 section Recovery
 universe u₀ v₀ w₀
@@ -462,7 +462,7 @@ theorem elvWeightLocalCapFamily_nonempty
     (fun M => Classical.choice
       (elvWeightLocalCapInverse_nonempty D Sc cutoff N i Λ h₁ h₂ M hcutoff hh))).mulProfile⟩
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -478,7 +478,7 @@ The ordered polynomial retains the original scalar parameters.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
@@ -552,7 +552,7 @@ theorem elvActionCross_quadNe (hij : i ≠ j) (hd : D.d i j ≠ 0) :
   rw [Finset.sum_comm]
   simp only [Sc.s_symm j i]
   abel
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -568,7 +568,7 @@ weight sector.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 section Coordinates
 variable {k C : Type u} [CommRing k] [Category.{u} C]
@@ -783,7 +783,7 @@ theorem elvWeightCrossComponent_slideRight
   · exact moduleSlide_of_isZero
       (elvEFunctor_comp₂_isZero D Sc cutoff bound i i Λ h₁ h₂ ε hε M) _ _ _ _ w _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -798,7 +798,7 @@ whiskered dots and crossing obey both local signed slides as two-morphisms.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 section Evaluation
 variable {k : Type u} [CommRing k] {C : Type*} [Category* C]
@@ -858,7 +858,7 @@ theorem elvActionCross_slideRight :
         (elvActionDot_mem D Sc cutoff bound i Λ h₂)) M]
   exact elvWeightCrossComponent_slideRight D Sc cutoff bound i Λ h₁ h₂ M ε w
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -873,7 +873,7 @@ or local-inverse existence assumption is supplied.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
@@ -904,7 +904,7 @@ theorem elvWeightRouquierLocal_nonempty
   simpa only [SKM.zmod2_mul_self] using
     elvActionCross_mem D Sc cutoff N i i Λ h₁ h₂ h₁ h₂
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -922,7 +922,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1040,7 +1040,7 @@ theorem elvEFunctor_comp₃_isZero (ε : WeightBlocks D Λ x₃)
       (eqToIso (elvInductionComponent_obj_blockSucc D Sc cutoff bound i Λ h₃ γ _))
   · exact elvInductionComponent_isZero D Sc cutoff bound i Λ h₃ ε hγ _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1056,7 +1056,7 @@ explicit, as required when transporting the two given weight crossings.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private theorem tripleEvaluation_reencode
     {C B E : Type*} [Category* C] [Category* B] [Category* E]
@@ -1173,7 +1173,7 @@ theorem elvWeightTripleComparison_viaLast :
 
 end Weight
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1188,7 +1188,7 @@ associator and the selected predecessor-coordinate maps.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open OddMath.QuiverHecke.CyclotomicAction
 universe u
 section Total
@@ -1290,7 +1290,7 @@ theorem elvWeightBraidSuffix_blockSucc
     (D.parity i * D.parity i) _ β₁ β₃ rfl
 end Supported
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1306,7 +1306,7 @@ new choice of crossing or intermediate module identification.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private theorem tripleEvaluation_pairFirst
     {C A B E : Type*} [Category* C] [Category* A] [Category* B] [Category* E]
@@ -1398,7 +1398,7 @@ theorem elvWeightTripleComparison_pairFirst_hom
     (elvWeightTripleComparison D Sc cutoff bound i j l Λ h₁ h₂ h₃ β β₃ rfl)
     (elvWeightTripleComparison_pairFirst D Sc cutoff bound i j l Λ h₁ h₂ h₃ β) M
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1414,7 +1414,7 @@ chart, retaining the normalized equal-colour affine crossing.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private theorem braid_prefix_comparison
     {C B : Type*} [Category* C] [Category* B]
@@ -1474,7 +1474,7 @@ theorem elvWeightBraidPrefix_comparison
       hP hP [i] β₃.1 h₃c hT hT (contentCrossAffine_mem D Sc i i)
       (contentTriplePrefixAffine_mem D Sc i i i) (contentTriplePrefixAffine_eq_whisker D Sc i i i) (M β)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1490,7 +1490,7 @@ comparison, without changing either prescribed crossing.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private theorem tripleEvaluation_pairLast
     {C₀ C₁ A A₁ A₂ B : Type*}
@@ -1586,7 +1586,7 @@ theorem elvWeightTripleComparison_pairLast_hom
     (elvWeightTripleComparison D Sc cutoff bound i j l Λ h₁ h₂ h₃ β β₃ rfl)
     (elvWeightTripleComparison_pairLast D Sc cutoff bound i j l Λ h₁ h₂ h₃ β) M
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1602,7 +1602,7 @@ first-value cast and the normalized equal-colour coefficient.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private theorem braid_suffix_comparison
     {A B : Type*} [Category* A] [Category* B]
@@ -1682,7 +1682,7 @@ theorem elvWeightBraidSuffix_comparison
   · exact contentInductionCompTo_outer_map D Sc cutoff bound β.1 [i] [i,i] [i,i]
       β₁.1 β₃.1 hc₁ hQ hQ hT hT (contentCrossAffine_mem D Sc i i) (M β)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1700,7 +1700,7 @@ statement. No crossing-compatibility or invertibility premise is added.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private theorem intertwine_product
     {C : Type*} [Category* C] {X Y : C} (e : X ⟶ Y)
@@ -1777,7 +1777,7 @@ theorem elvRouquierData_braid :
     b ≫ a ≫ b = a ≫ b ≫ a :=
   elvActionCross_braid D Sc cutoff bound i Λ h₁ h₂ h₃
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1792,7 +1792,7 @@ charts retain the given crossing and the independently defined dots.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 section Coordinates
 variable {k C : Type u} [CommRing k] [Category.{u} C]
@@ -2001,7 +2001,7 @@ theorem elvWeightDistinct_slideRight_component (hij : i ≠ j)
   · exact crossSlide_of_isZero
       (elvEFunctor_comp₂_isZero D Sc cutoff bound i j Λ h₁ h₂ ε hε M) _ _ _ w _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

@@ -532,8 +532,8 @@ local notation "F" => elvProbeAffineSpecialization D m Sc
 
 /-- Every original first relation maps to its prescribed probe first relation. -/
 theorem elvProbeAffineSpecialization_relation (i : I) (v : List I) :
-    (F).map (ELVOld.relation D Sc cut i v) = firstDotPoly D Sc a i v := by
-  unfold ELVOld.relation
+    (F).map (ELV.relation D Sc cut i v) = firstDotPoly D Sc a i v := by
+  unfold ELV.relation
   split_ifs with hi
   · change (F).map (elvQuotientMap D Sc cut _ _ (elvCyclotomic D Sc ⟨i,hi⟩ v (cut i))) = _
     rw [elvAffineScalarSpecialization_elvCyclotomic]
@@ -552,28 +552,28 @@ theorem elvProbeAffineSpecialization_relation (i : I) (v : List I) :
 
 /-- The existing scalar Hom map as a linear map, before cyclotomic descent. -/
 def elvProbeScalarHom (v w : List I) :
-    ELVOld.hom D Sc cut v w →ₗ[k]
+    ELV.hom D Sc cut v w →ₗ[k]
       ((pres D Sc).obj (ob D v) ⟶ (pres D Sc).obj (ob D w)) :=
   (F).toFunctor.mapLinearMap k
 
 theorem elvProbeScalarHom_comp {v t w : List I}
-    (f : ELVOld.hom D Sc cut v t) (g : ELVOld.hom D Sc cut t w) :
+    (f : ELV.hom D Sc cut v t) (g : ELV.hom D Sc cut t w) :
     elvProbeScalarHom D m Sc v w (f ≫ g) =
       elvProbeScalarHom D m Sc v t f ≫ elvProbeScalarHom D m Sc t w g :=
   (F).toFunctor.map_comp f g
 
 theorem elvProbeScalarHom_id (v : List I) :
-    elvProbeScalarHom D m Sc v v (𝟙 (ELVOld.obj D Sc cut v)) = 𝟙 ((pres D Sc).obj (ob D v)) :=
+    elvProbeScalarHom D m Sc v v (𝟙 (ELV.obj D Sc cut v)) = 𝟙 ((pres D Sc).obj (ob D v)) :=
   (F).toFunctor.map_id _
 
 theorem elvProbeScalarHom_relation (i : I) (v : List I) :
-    elvProbeScalarHom D m Sc (i::v) (i::v) (ELVOld.relation D Sc cut i v) =
+    elvProbeScalarHom D m Sc (i::v) (i::v) (ELV.relation D Sc cut i v) =
       firstDotPoly D Sc a i v :=
   elvProbeAffineSpecialization_relation D m Sc i v
 
 /-- The actual ELV cyclotomic ideal maps into the existing ordinary Hom ideal. -/
 theorem elvProbeAffineSpecialization_ideal {v w : List I}
-    {f : ELVOld.hom D Sc cut v w} (hf : f ∈ ELVOld.ideal D Sc cut v w) :
+    {f : ELV.hom D Sc cut v w} (hf : f ∈ ELV.ideal D Sc cut v w) :
     elvProbeScalarHom D m Sc v w f ∈ cycHom D Sc a v w := by
   induction hf using Submodule.span_induction with
   | mem f hf =>
@@ -586,16 +586,16 @@ theorem elvProbeAffineSpecialization_ideal {v w : List I}
 
 /-- The scalar Hom functor descends through the original cyclotomic ideals. -/
 def elvProbeOldHom (v w : List I) :
-    ELVOld.Old D Sc cut v w →ₗ[k]
+    ELV.Old D Sc cut v w →ₗ[k]
       (((pres D Sc).obj (ob D v) ⟶ (pres D Sc).obj (ob D w)) ⧸ cycHom D Sc a v w) :=
-  (ELVOld.ideal D Sc cut v w).liftQ
+  (ELV.ideal D Sc cut v w).liftQ
     ((cycHom D Sc a v w).mkQ.comp (elvProbeScalarHom D m Sc v w)) (by
       intro f hf
       change (cycHom D Sc a v w).mkQ ((F).map f) = 0
       exact (Submodule.Quotient.mk_eq_zero _).mpr (elvProbeAffineSpecialization_ideal D m Sc hf))
 
-@[simp] theorem elvProbeOldHom_mk (v w : List I) (f : ELVOld.hom D Sc cut v w) :
-    elvProbeOldHom D m Sc v w ((ELVOld.ideal D Sc cut v w).mkQ f) =
+@[simp] theorem elvProbeOldHom_mk (v w : List I) (f : ELV.hom D Sc cut v w) :
+    elvProbeOldHom D m Sc v w ((ELV.ideal D Sc cut v w).mkQ f) =
       (cycHom D Sc a v w).mkQ ((F).map f) := rfl
 
 theorem elvProbeOldHom_surjective (v w : List I) :
@@ -604,17 +604,17 @@ theorem elvProbeOldHom_surjective (v w : List I) :
   obtain ⟨f, rfl⟩ := (cycHom D Sc a v w).mkQ_surjective y
   obtain ⟨g, hg⟩ := elvAffineScalarSpecialization_surjective D Sc cut
     (probeScalarValues D m) (probeScalarValues_vanish D m) v w f
-  refine ⟨(ELVOld.ideal D Sc cut v w).mkQ g, ?_⟩
+  refine ⟨(ELV.ideal D Sc cut v w).mkQ g, ?_⟩
   rw [elvProbeOldHom_mk, hg]
 
 /-- Append on the original ELV old quotient, using its existing ideal stability. -/
 def elvProbeOldRightContext (σ v w : List I) :
-    ELVOld.Old D Sc cut v w →ₗ[k] ELVOld.Old D Sc cut (v++σ) (w++σ) :=
-  (ELVOld.ideal D Sc cut v w).liftQ
-    ((ELVOld.ideal D Sc cut (v++σ) (w++σ)).mkQ.comp (ELVOld.rightContext D Sc cut σ v w)) (by
+    ELV.Old D Sc cut v w →ₗ[k] ELV.Old D Sc cut (v++σ) (w++σ) :=
+  (ELV.ideal D Sc cut v w).liftQ
+    ((ELV.ideal D Sc cut (v++σ) (w++σ)).mkQ.comp (ELV.rightContext D Sc cut σ v w)) (by
       intro f hf
-      change (ELVOld.ideal D Sc cut (v++σ) (w++σ)).mkQ _ = 0
-      exact (Submodule.Quotient.mk_eq_zero _).mpr (ELVOld.ideal_rightContext D Sc cut σ hf))
+      change (ELV.ideal D Sc cut (v++σ) (w++σ)).mkQ _ = 0
+      exact (Submodule.Quotient.mk_eq_zero _).mpr (ELV.ideal_rightContext D Sc cut σ hf))
 
 /-- Append on the existing ordinary cyclotomic Hom quotient. -/
 def probeCycHomRightContext (σ v w : List I) :
@@ -622,20 +622,20 @@ def probeCycHomRightContext (σ v w : List I) :
       (((pres D Sc).obj (ob D (v++σ)) ⟶ (pres D Sc).obj (ob D (w++σ))) ⧸
         cycHom D Sc a (v++σ) (w++σ)) :=
   (cycHom D Sc a v w).liftQ
-    ((cycHom D Sc a (v++σ) (w++σ)).mkQ.comp (ELVOld.affineRightContext D Sc σ v w)) (by
+    ((cycHom D Sc a (v++σ) (w++σ)).mkQ.comp (ELV.affineRightContext D Sc σ v w)) (by
       intro f hf
       change (cycHom D Sc a (v++σ) (w++σ)).mkQ _ = 0
       exact (Submodule.Quotient.mk_eq_zero _).mpr (cycHom_whiskerRight D Sc hf σ))
 
 /-- The descended scalar Hom map commutes with append. -/
-theorem elvProbeOldHom_rightContext (σ v w : List I) (f : ELVOld.Old D Sc cut v w) :
+theorem elvProbeOldHom_rightContext (σ v w : List I) (f : ELV.Old D Sc cut v w) :
     elvProbeOldHom D m Sc (v++σ) (w++σ) (elvProbeOldRightContext D m Sc σ v w f) =
       probeCycHomRightContext D m Sc σ v w (elvProbeOldHom D m Sc v w f) := by
-  obtain ⟨f, rfl⟩ := (ELVOld.ideal D Sc cut v w).mkQ_surjective f
+  obtain ⟨f, rfl⟩ := (ELV.ideal D Sc cut v w).mkQ_surjective f
   change (cycHom D Sc a (v++σ) (w++σ)).mkQ
-      ((F).map (ELVOld.rightContext D Sc cut σ v w f)) =
+      ((F).map (ELV.rightContext D Sc cut σ v w f)) =
     (cycHom D Sc a (v++σ) (w++σ)).mkQ
-      (ELVOld.affineRightContext D Sc σ v w ((F).map f))
+      (ELV.affineRightContext D Sc σ v w ((F).map f))
   congr 1
   exact elvAffineScalarSpecialization_rightContext D Sc cut
     (probeScalarValues D m) (probeScalarValues_vanish D m) σ v w f
@@ -665,12 +665,12 @@ def probeCycHomWordEntry {n : ℕ} (s t : Word I (n+1)) :
 
 /-- The scalar Hom functor descends into the actual probe cyclotomic algebra. -/
 def elvProbeWordEntry {n : ℕ} (s t : Word I (n+1)) :
-    ELVOld.Old D Sc cut s.val t.val →ₗ[k] CyclotomicAlgebra D Sc a n :=
+    ELV.Old D Sc cut s.val t.val →ₗ[k] CyclotomicAlgebra D Sc a n :=
   (probeCycHomWordEntry D m Sc s t).comp (elvProbeOldHom D m Sc s.val t.val)
 
 @[simp] theorem elvProbeWordEntry_mk {n : ℕ} (s t : Word I (n+1))
-    (f : ELVOld.hom D Sc cut s.val t.val) :
-    elvProbeWordEntry D m Sc s t ((ELVOld.ideal D Sc cut s.val t.val).mkQ f) =
+    (f : ELV.hom D Sc cut s.val t.val) :
+    elvProbeWordEntry D m Sc s t ((ELV.ideal D Sc cut s.val t.val).mkQ f) =
       cyclotomicWordEntry D Sc a s t ((F).map f) := rfl
 
 end OddMath.QuiverHecke
@@ -683,7 +683,7 @@ section
 /-! # Scalar probe specialization of the untruncated ELV content ring
 This supplies the ring input for the probe-factor base change of
 InvertibleDotProbe.md Sections 1 and 5. The source is the untruncated
-ELVOld.ContentRing. The target uses the existing heightAlgebra, including
+ELV.ContentRing. The target uses the existing heightAlgebra, including
 the vacuum height. Module-action and prescribed inverse-matrix comparison
 are separate.
 -/
@@ -714,18 +714,18 @@ private def probeHeightAffineEntry {n : ℕ} (s t : Word I n) :
     rfl
 
 private def elvProbeHeightRawEntry {n : ℕ} (s t : Word I n) :
-    ELVOld.hom D Sc cut s.val t.val →ₗ[k] heightAlgebra D Sc a n :=
+    ELV.hom D Sc cut s.val t.val →ₗ[k] heightAlgebra D Sc a n :=
   (probeHeightAffineEntry D m Sc s t).comp (elvProbeScalarHom D m Sc s.val t.val)
 
 private theorem elvProbeHeightRawEntry_ideal {n : ℕ} (s t : Word I n)
-    (f : ELVOld.hom D Sc cut s.val t.val) (hf : f ∈ ELVOld.ideal D Sc cut s.val t.val) :
+    (f : ELV.hom D Sc cut s.val t.val) (hf : f ∈ ELV.ideal D Sc cut s.val t.val) :
     elvProbeHeightRawEntry D m Sc s t f = 0 := by
   cases n with
   | zero =>
     rcases s with ⟨sv, hsv⟩
     have hs : sv = [] := List.length_eq_zero_iff.mp hsv
     subst sv
-    have hf0 : f = 0 := by simpa only [ELVOld.ideal_nil, Submodule.mem_bot] using hf
+    have hf0 : f = 0 := by simpa only [ELV.ideal_nil, Submodule.mem_bot] using hf
     rw [hf0, map_zero]
   | succ n =>
     change cyclotomicMk D Sc a n
@@ -736,32 +736,32 @@ private theorem elvProbeHeightRawEntry_ideal {n : ℕ} (s t : Word I n)
 
 /-- Literal specialized matrix entries at every height, including zero. -/
 def elvProbeHeightWordEntry {n : ℕ} (s t : Word I n) :
-    ELVOld.Old D Sc cut s.val t.val →ₗ[k] heightAlgebra D Sc a n :=
-  (ELVOld.ideal D Sc cut s.val t.val).liftQ (elvProbeHeightRawEntry D m Sc s t)
+    ELV.Old D Sc cut s.val t.val →ₗ[k] heightAlgebra D Sc a n :=
+  (ELV.ideal D Sc cut s.val t.val).liftQ (elvProbeHeightRawEntry D m Sc s t)
     (by intro f hf; exact elvProbeHeightRawEntry_ideal D m Sc s t f hf)
 
 @[simp] theorem elvProbeHeightWordEntry_mk {n : ℕ} (s t : Word I n)
-    (f : ELVOld.hom D Sc cut s.val t.val) :
-    elvProbeHeightWordEntry D m Sc s t ((ELVOld.ideal D Sc cut s.val t.val).mkQ f) =
+    (f : ELV.hom D Sc cut s.val t.val) :
+    elvProbeHeightWordEntry D m Sc s t ((ELV.ideal D Sc cut s.val t.val).mkQ f) =
       probeHeightMk D m Sc n
         (FiniteHomMatrix.single t s (elvProbeScalarHom D m Sc s.val t.val f)) := rfl
 
 theorem elvProbeHeightWordEntry_comp {n : ℕ} (s t z : Word I n)
-    (f : ELVOld.Old D Sc cut s.val t.val) (g : ELVOld.Old D Sc cut t.val z.val) :
-    elvProbeHeightWordEntry D m Sc s z (ELVOld.oldComp D Sc cut s.val t.val z.val f g) =
+    (f : ELV.Old D Sc cut s.val t.val) (g : ELV.Old D Sc cut t.val z.val) :
+    elvProbeHeightWordEntry D m Sc s z (ELV.oldComp D Sc cut s.val t.val z.val f g) =
       elvProbeHeightWordEntry D m Sc t z g * elvProbeHeightWordEntry D m Sc s t f := by
-  obtain ⟨f, rfl⟩ := (ELVOld.ideal D Sc cut s.val t.val).mkQ_surjective f
-  obtain ⟨g, rfl⟩ := (ELVOld.ideal D Sc cut t.val z.val).mkQ_surjective g
-  rw [ELVOld.oldComp_mk, elvProbeHeightWordEntry_mk, elvProbeHeightWordEntry_mk,
+  obtain ⟨f, rfl⟩ := (ELV.ideal D Sc cut s.val t.val).mkQ_surjective f
+  obtain ⟨g, rfl⟩ := (ELV.ideal D Sc cut t.val z.val).mkQ_surjective g
+  rw [ELV.oldComp_mk, elvProbeHeightWordEntry_mk, elvProbeHeightWordEntry_mk,
     elvProbeHeightWordEntry_mk, ← map_mul, FiniteHomMatrix.single_mul_single]
   exact congrArg (fun h : (pres D Sc).obj (ob D s.val) ⟶ (pres D Sc).obj (ob D z.val) =>
     probeHeightMk D m Sc n (FiniteHomMatrix.single z s h)) (elvProbeScalarHom_comp D m Sc f g)
 
 theorem elvProbeHeightWordEntry_mul_of_ne {n : ℕ} (s t z w : Word I n) (htz : t ≠ z)
-    (f : ELVOld.Old D Sc cut t.val s.val) (g : ELVOld.Old D Sc cut w.val z.val) :
+    (f : ELV.Old D Sc cut t.val s.val) (g : ELV.Old D Sc cut w.val z.val) :
     elvProbeHeightWordEntry D m Sc t s f * elvProbeHeightWordEntry D m Sc w z g = 0 := by
-  obtain ⟨f, rfl⟩ := (ELVOld.ideal D Sc cut t.val s.val).mkQ_surjective f
-  obtain ⟨g, rfl⟩ := (ELVOld.ideal D Sc cut w.val z.val).mkQ_surjective g
+  obtain ⟨f, rfl⟩ := (ELV.ideal D Sc cut t.val s.val).mkQ_surjective f
+  obtain ⟨g, rfl⟩ := (ELV.ideal D Sc cut w.val z.val).mkQ_surjective g
   rw [elvProbeHeightWordEntry_mk, elvProbeHeightWordEntry_mk, ← map_mul]
   have hm : (FiniteHomMatrix.single s t (elvProbeScalarHom D m Sc t.val s.val f) : Hn D Sc n) *
       FiniteHomMatrix.single z w (elvProbeScalarHom D m Sc w.val z.val g) = 0 :=
@@ -769,14 +769,14 @@ theorem elvProbeHeightWordEntry_mul_of_ne {n : ℕ} (s t z w : Word I n) (htz : 
   exact (congrArg (probeHeightMk D m Sc n) hm).trans (map_zero _)
 
 theorem elvProbeHeightWordEntry_id {n : ℕ} (s : Word I n) :
-    elvProbeHeightWordEntry D m Sc s s ((ELVOld.ideal D Sc cut s.val s.val).mkQ
-      (𝟙 (ELVOld.obj D Sc cut s.val))) = probeHeightMk D m Sc n (Hn.wordIdempotent s) := by
+    elvProbeHeightWordEntry D m Sc s s ((ELV.ideal D Sc cut s.val s.val).mkQ
+      (𝟙 (ELV.obj D Sc cut s.val))) = probeHeightMk D m Sc n (Hn.wordIdempotent s) := by
   rw [elvProbeHeightWordEntry_mk]
   exact congrArg (fun h : End ((pres D Sc).obj (ob D s.val)) =>
     probeHeightMk D m Sc n (FiniteHomMatrix.single s s h)) (elvProbeScalarHom_id D m Sc s.val)
 
 /-- A content permutation viewed in the existing fixed-height word type. -/
-def probeContentWord (ν : List I) (v : ELVOld.ContentWords ν) : Word I ν.length :=
+def probeContentWord (ν : List I) (v : ELV.ContentWords ν) : Word I ν.length :=
   ⟨v.val, v.property.length_eq⟩
 
 omit [Fintype I] in
@@ -786,8 +786,8 @@ theorem probeContentWord_injective (ν : List I) : Function.Injective (probeCont
   exact congrArg (fun z : Word I ν.length => z.val) h
 
 /-- Specialization on the canonical matrix-entry Hom type. -/
-def elvProbeContentEntry (ν : List I) (p : ELVOld.ContentWords ν × ELVOld.ContentWords ν) :
-    (ELVOld.contentObject D Sc cut ν p.2 ⟶ ELVOld.contentObject D Sc cut ν p.1) →ₗ[k]
+def elvProbeContentEntry (ν : List I) (p : ELV.ContentWords ν × ELV.ContentWords ν) :
+    (ELV.contentObject D Sc cut ν p.2 ⟶ ELV.contentObject D Sc cut ν p.1) →ₗ[k]
       heightAlgebra D Sc a ν.length where
   toFun f := elvProbeHeightWordEntry D m Sc (probeContentWord ν p.2) (probeContentWord ν p.1) f
   map_add' f g := map_add _ f g
@@ -795,19 +795,19 @@ def elvProbeContentEntry (ν : List I) (p : ELVOld.ContentWords ν × ELVOld.Con
 
 /-- The finite content-matrix map, assembled from the literal height entries. -/
 def elvProbeContentLinear (ν : List I) :
-    ELVOld.ContentRing D Sc cut ν →ₗ[k] heightAlgebra D Sc a ν.length :=
+    ELV.ContentRing D Sc cut ν →ₗ[k] heightAlgebra D Sc a ν.length :=
   DFinsupp.lsum k (elvProbeContentEntry D m Sc ν)
 
-@[simp] theorem elvProbeContentLinear_single (ν : List I) (v w : ELVOld.ContentWords ν)
-    (f : ELVOld.contentObject D Sc cut ν w ⟶ ELVOld.contentObject D Sc cut ν v) :
+@[simp] theorem elvProbeContentLinear_single (ν : List I) (v w : ELV.ContentWords ν)
+    (f : ELV.contentObject D Sc cut ν w ⟶ ELV.contentObject D Sc cut ν v) :
     elvProbeContentLinear D m Sc ν (FiniteHomMatrix.single v w f) =
       elvProbeContentEntry D m Sc ν (v,w) f := by
-  let : DecidableEq (ELVOld.ContentWords ν) := Classical.decEq _
+  let : DecidableEq (ELV.ContentWords ν) := Classical.decEq _
   exact DFinsupp.lsum_single (S := k) (elvProbeContentEntry D m Sc ν) (v,w) f
 
-private theorem elvProbeContentLinear_single_product (ν : List I) (s t u v : ELVOld.ContentWords ν)
-    (f : ELVOld.contentObject D Sc cut ν t ⟶ ELVOld.contentObject D Sc cut ν s)
-    (g : ELVOld.contentObject D Sc cut ν v ⟶ ELVOld.contentObject D Sc cut ν u) :
+private theorem elvProbeContentLinear_single_product (ν : List I) (s t u v : ELV.ContentWords ν)
+    (f : ELV.contentObject D Sc cut ν t ⟶ ELV.contentObject D Sc cut ν s)
+    (g : ELV.contentObject D Sc cut ν v ⟶ ELV.contentObject D Sc cut ν u) :
     elvProbeContentLinear D m Sc ν (FiniteHomMatrix.single s t f * FiniteHomMatrix.single u v g) =
       elvProbeContentLinear D m Sc ν (FiniteHomMatrix.single s t f) *
         elvProbeContentLinear D m Sc ν (FiniteHomMatrix.single u v g) := by
@@ -824,7 +824,7 @@ private theorem elvProbeContentLinear_single_product (ν : List I) (s t u v : EL
     exact (elvProbeHeightWordEntry_mul_of_ne D m Sc (probeContentWord ν s) (probeContentWord ν t)
       (probeContentWord ν u) (probeContentWord ν v) hn f g).symm
 
-theorem elvProbeContentLinear_mul (ν : List I) (x y : ELVOld.ContentRing D Sc cut ν) :
+theorem elvProbeContentLinear_mul (ν : List I) (x y : ELV.ContentRing D Sc cut ν) :
     elvProbeContentLinear D m Sc ν (x*y) =
       elvProbeContentLinear D m Sc ν x * elvProbeContentLinear D m Sc ν y := by
   induction x using FiniteHomMatrix.induction with
@@ -838,7 +838,7 @@ theorem elvProbeContentLinear_mul (ν : List I) (x y : ELVOld.ContentRing D Sc c
 
 /-- The untruncated content-ring specialization before restriction to its unit corner. -/
 def elvProbeContentNonUnital (ν : List I) :
-    ELVOld.ContentRing D Sc cut ν →ₙₐ[k] heightAlgebra D Sc a ν.length where
+    ELV.ContentRing D Sc cut ν →ₙₐ[k] heightAlgebra D Sc a ν.length where
   toFun := elvProbeContentLinear D m Sc ν
   map_zero' := map_zero _
   map_add' := map_add _
@@ -861,7 +861,7 @@ abbrev ProbeHeightContentCorner (ν : List I) :=
 
 omit [Fintype I] in
 private def probeContentWordEquiv (ν : List I) :
-    ELVOld.ContentWords ν ≃ {w : Word I ν.length // wordContent w = (ν : Multiset I)} where
+    ELV.ContentWords ν ≃ {w : Word I ν.length // wordContent w = (ν : Multiset I)} where
   toFun v := ⟨probeContentWord ν v, Multiset.coe_eq_coe.mpr v.property⟩
   invFun w := ⟨w.val.val, Multiset.coe_eq_coe.mp w.property⟩
   left_inv _v := Subtype.ext rfl
@@ -917,7 +917,7 @@ instance probeHeightContentCornerAlgebra (ν : List I) :
 
 /-- The untruncated ELV old content ring maps to the literal ordinary probe content corner. -/
 def elvProbeContentSpecialization (ν : List I) :
-    ELVOld.ContentRing D Sc cut ν →ₐ[k] ProbeHeightContentCorner D m Sc ν where
+    ELV.ContentRing D Sc cut ν →ₐ[k] ProbeHeightContentCorner D m Sc ν where
   toFun x := ⟨elvProbeContentNonUnital D m Sc ν x, by
     apply (Subsemigroup.mem_corner_iff (probeHeightContentIdempotent_idem D m Sc ν)).mpr
     constructor
@@ -930,13 +930,13 @@ def elvProbeContentSpecialization (ν : List I) :
   commutes' c := by
     apply Subtype.ext
     change elvProbeContentNonUnital D m Sc ν
-        (algebraMap k (ELVOld.ContentRing D Sc cut ν) c) =
+        (algebraMap k (ELV.ContentRing D Sc cut ν) c) =
       (algebraMap k (ProbeHeightContentCorner D m Sc ν) c).val
     rw [Algebra.algebraMap_eq_smul_one, map_smul, elvProbeContentNonUnital_one]
     rw [Algebra.algebraMap_eq_smul_one]
     rfl
 
-@[simp] theorem elvProbeContentSpecialization_val (ν : List I) (x : ELVOld.ContentRing D Sc cut ν) :
+@[simp] theorem elvProbeContentSpecialization_val (ν : List I) (x : ELV.ContentRing D Sc cut ν) :
     (elvProbeContentSpecialization D m Sc ν x).val = elvProbeContentNonUnital D m Sc ν x := rfl
 
 end OddMath.QuiverHecke
@@ -1029,8 +1029,8 @@ theorem probeHeightMk_parity (ha : CyclotomicPolynomialParity D a) (n : ℕ)
 coefficients that the scalar specialization sends to zero. -/
 theorem elvProbeHeightWordEntry_parity (ha : CyclotomicPolynomialParity D a)
     {n : ℕ} (s t : Word I n) {p : ZMod 2}
-    {f : ELVOld.Old D Sc cut s.val t.val}
-    (hf : f ∈ ELVOld.oldParity D Sc cut s.val t.val p) :
+    {f : ELV.Old D Sc cut s.val t.val}
+    (hf : f ∈ ELV.oldParity D Sc cut s.val t.val p) :
     elvProbeHeightWordEntry D m Sc s t f ∈ heightParity D Sc a ha n p := by
   obtain ⟨f, hf, rfl⟩ := hf
   rw [elvProbeHeightWordEntry_mk]
@@ -1040,21 +1040,21 @@ theorem elvProbeHeightWordEntry_parity (ha : CyclotomicPolynomialParity D a)
 
 /-- The canonical probe parity proof supplies the preceding bridge directly. -/
 theorem elvProbeHeightWordEntry_probeParity {n : ℕ} (s t : Word I n)
-    {p : ZMod 2} {f : ELVOld.Old D Sc cut s.val t.val}
-    (hf : f ∈ ELVOld.oldParity D Sc cut s.val t.val p) :
+    {p : ZMod 2} {f : ELV.Old D Sc cut s.val t.val}
+    (hf : f ∈ ELV.oldParity D Sc cut s.val t.val p) :
     elvProbeHeightWordEntry D m Sc s t f ∈
       heightParity D Sc a (probePolynomial_parity D m) n p :=
   elvProbeHeightWordEntry_parity D m Sc (probePolynomial_parity D m) s t hf
 
 /-- The specialized rectangular entry lands in its actual target word summand. -/
 theorem elvProbeHeightWordEntry_target {n : ℕ} (s t : Word I n)
-    (f : ELVOld.Old D Sc cut s.val t.val) :
+    (f : ELV.Old D Sc cut s.val t.val) :
     probeHeightMk D m Sc n (Hn.wordIdempotent t) *
       elvProbeHeightWordEntry D m Sc s t f = elvProbeHeightWordEntry D m Sc s t f := by
   rw [← elvProbeHeightWordEntry_id D m Sc t,
     ← elvProbeHeightWordEntry_comp D m Sc s t t]
-  obtain ⟨f, rfl⟩ := (ELVOld.ideal D Sc cut s.val t.val).mkQ_surjective f
-  rw [ELVOld.oldComp_mk, Category.comp_id]
+  obtain ⟨f, rfl⟩ := (ELV.ideal D Sc cut s.val t.val).mkQ_surjective f
+  rw [ELV.oldComp_mk, Category.comp_id]
 
 end OddMath.QuiverHecke
 end
@@ -1079,8 +1079,8 @@ local notation "cut" => probeCutoff D m
 local notation "a" => probePolynomial (k := k) (probeDotExponent D) m
 variable (ν : List I)
 local notation "ha" => probePolynomial_parity (k := k) D m
-local notation "C" => ELVOld.OldContentCategory D Sc cut ν
-local notation "word" => fun v : C => probeContentWord ν (ELVOld.oldContentWord D Sc cut ν v)
+local notation "C" => ELV.OldContentCategory D Sc cut ν
+local notation "word" => fun v : C => probeContentWord ν (ELV.oldContentWord D Sc cut ν v)
 
 def probeOldWordIdempotent (v : C) : heightAlgebra D Sc a ν.length :=
   probeHeightMk D m Sc ν.length (Hn.wordIdempotent (word v))
@@ -1236,15 +1236,15 @@ local notation "cut" => probeCutoff D m
 local notation "A" => SKM.SYM.ELVCoefficientAlgebra (k := k) D cut
 local notation "ev" => SKM.SYM.elvScalarEvaluation D cut (probeScalarValues D m) (probeScalarValues_vanish D m)
 variable (ν : List I)
-local notation "C" => ELVOld.OldContentCategory D Sc cut ν
+local notation "C" => ELV.OldContentCategory D Sc cut ν
 
 /-- The actual full coefficient at an old-content word identity. -/
 def probeOldCoefficient (v : C) (c : A) : v ⟶ v :=
-  (ELVOld.ideal D Sc cut v.obj.word v.obj.word).mkQ (c ⊗ₜ[k] (𝟙 _))
+  (ELV.ideal D Sc cut v.obj.word v.obj.word).mkQ (c ⊗ₜ[k] (𝟙 _))
 
 /-- Scalar evaluation of coefficients, as a property of the actual old module. -/
 def ProbeEvaluatesCoefficients
-    (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k)) : Prop :=
+    (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k)) : Prop :=
   ∀ (v : C) (c : A), N.toFunctor.map (probeOldCoefficient D m Sc ν v c) = ev c • 𝟙 (N.obj v)
 
 omit ν in
@@ -1254,36 +1254,36 @@ theorem elvProbeScalarHom_tmul {v w : List I} (c : A)
     elvProbeScalarHom D m Sc v w (c ⊗ₜ[k] f) = ev c • f := by
   change (elvAffineScalarSpecialization D Sc cut (probeScalarValues D m)
     (probeScalarValues_vanish D m)).map
-      (BoxProd.tmulHom (X := ELVOld.obj D Sc cut v) (Y := ELVOld.obj D Sc cut w)
+      (BoxProd.tmulHom (X := ELV.obj D Sc cut v) (Y := ELV.obj D Sc cut w)
         (SuperalgebraCat.ofElem c) f) = _
   rw [elvAffineScalarSpecialization_tmul, SuperalgebraCat.toElem_ofElem]
 
 variable
-  (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
+  (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
 
 /-- The existing old module action on raw full-coefficient Homs. -/
 def probeOldModuleRawAction (v w : C) :
-    ELVOld.hom D Sc cut v.obj.word w.obj.word →ₗ[k] (N.obj v ⟶ N.obj w) :=
+    ELV.hom D Sc cut v.obj.word w.obj.word →ₗ[k] (N.obj v ⟶ N.obj w) :=
   (N.toFunctor.mapLinearMap k (X := v) (Y := w)).comp
-    (ELVOld.ideal D Sc cut v.obj.word w.obj.word).mkQ
+    (ELV.ideal D Sc cut v.obj.word w.obj.word).mkQ
 
 @[simp] theorem probeOldModuleRawAction_apply (v w : C)
-    (f : ELVOld.hom D Sc cut v.obj.word w.obj.word) :
+    (f : ELV.hom D Sc cut v.obj.word w.obj.word) :
     probeOldModuleRawAction D m Sc ν N v w f =
       N.toFunctor.map (show v ⟶ w from
-        (ELVOld.ideal D Sc cut v.obj.word w.obj.word).mkQ f) := rfl
+        (ELV.ideal D Sc cut v.obj.word w.obj.word).mkQ f) := rfl
 
 /-- Coefficient evaluation forces raw module action to factor through the
 actual scalar specialization. No tensor-kernel or flatness assumption is used. -/
 theorem probeOldModuleRawAction_factor (hN : ProbeEvaluatesCoefficients D m Sc ν N)
-    (v w : C) (f : ELVOld.hom D Sc cut v.obj.word w.obj.word) :
+    (v w : C) (f : ELV.hom D Sc cut v.obj.word w.obj.word) :
     probeOldModuleRawAction D m Sc ν N v w f =
       probeOldModuleRawAction D m Sc ν N v w
-        (ELVOld.affineUnit D Sc cut v.obj.word w.obj.word
+        (ELV.affineUnit D Sc cut v.obj.word w.obj.word
           (elvProbeScalarHom D m Sc v.obj.word w.obj.word f)) := by
   have hlin : probeOldModuleRawAction D m Sc ν N v w =
       ((probeOldModuleRawAction D m Sc ν N v w).comp
-        (ELVOld.affineUnit D Sc cut v.obj.word w.obj.word)).comp
+        (ELV.affineUnit D Sc cut v.obj.word w.obj.word)).comp
           (elvProbeScalarHom D m Sc v.obj.word w.obj.word) := by
     apply TensorProduct.ext
     apply LinearMap.ext
@@ -1294,21 +1294,21 @@ theorem probeOldModuleRawAction_factor (hN : ProbeEvaluatesCoefficients D m Sc �
     change ((pres D Sc).obj (ob D v.obj.word) ⟶ (pres D Sc).obj (ob D w.obj.word)) at g
     change probeOldModuleRawAction D m Sc ν N v w (c ⊗ₜ[k] g) =
       probeOldModuleRawAction D m Sc ν N v w
-        (ELVOld.affineUnit D Sc cut v.obj.word w.obj.word
+        (ELV.affineUnit D Sc cut v.obj.word w.obj.word
           (elvProbeScalarHom D m Sc v.obj.word w.obj.word (c ⊗ₜ[k] g)))
-    have hraw : ELVOld.affineUnit D Sc cut v.obj.word w.obj.word g ≫
-        (c ⊗ₜ[k] (𝟙 ((pres D Sc).obj (ob D w.obj.word))) : ELVOld.hom D Sc cut w.obj.word w.obj.word) =
-          (c ⊗ₜ[k] g : ELVOld.hom D Sc cut v.obj.word w.obj.word) := by
+    have hraw : ELV.affineUnit D Sc cut v.obj.word w.obj.word g ≫
+        (c ⊗ₜ[k] (𝟙 ((pres D Sc).obj (ob D w.obj.word))) : ELV.hom D Sc cut w.obj.word w.obj.word) =
+          (c ⊗ₜ[k] g : ELV.hom D Sc cut v.obj.word w.obj.word) := by
       simpa only [Category.comp_id] using
-        (ELVOld.affineUnit_comp_coefficient D Sc cut (v := v.obj.word) (w := w.obj.word) (z := w.obj.word)
+        (ELV.affineUnit_comp_coefficient D Sc cut (v := v.obj.word) (w := w.obj.word) (z := w.obj.word)
           g (𝟙 ((pres D Sc).obj (ob D w.obj.word))) c)
     have hcomp : (show v ⟶ w from
-        (ELVOld.ideal D Sc cut v.obj.word w.obj.word).mkQ (c ⊗ₜ[k] g)) =
+        (ELV.ideal D Sc cut v.obj.word w.obj.word).mkQ (c ⊗ₜ[k] g)) =
       (show v ⟶ w from
-        (ELVOld.ideal D Sc cut v.obj.word w.obj.word).mkQ
-          (ELVOld.affineUnit D Sc cut v.obj.word w.obj.word g)) ≫
+        (ELV.ideal D Sc cut v.obj.word w.obj.word).mkQ
+          (ELV.affineUnit D Sc cut v.obj.word w.obj.word g)) ≫
             probeOldCoefficient D m Sc ν w c :=
-      congrArg (ELVOld.ideal D Sc cut v.obj.word w.obj.word).mkQ hraw.symm
+      congrArg (ELV.ideal D Sc cut v.obj.word w.obj.word).mkQ hraw.symm
     rw [probeOldModuleRawAction_apply, hcomp, N.toFunctor.map_comp, hN w c]
     rw [elvProbeScalarHom_tmul, map_smul, map_smul]
     rw [Linear.comp_smul, Category.comp_id]
@@ -1370,7 +1370,7 @@ local notation "a" => probePolynomial (k := k) (probeDotExponent D) m
 
 /-- The scalar image of the full old ideal is the entire ordinary Hom ideal. -/
 theorem elvProbeScalarHom_ideal_image (v w : List I) :
-    (ELVOld.ideal D Sc cut v w).map (elvProbeScalarHom D m Sc v w) = cycHom D Sc a v w := by
+    (ELV.ideal D Sc cut v w).map (elvProbeScalarHom D m Sc v w) = cycHom D Sc a v w := by
   apply le_antisymm
   · rintro _ ⟨g,hg,rfl⟩
     exact elvProbeAffineSpecialization_ideal D m Sc hg
@@ -1378,34 +1378,34 @@ theorem elvProbeScalarHom_ideal_image (v w : List I) :
     rintro _ ⟨i,t,p,q,rfl⟩
     have hunit {s u : List I}
         (f : (pres D Sc).obj (ob D s) ⟶ (pres D Sc).obj (ob D u)) :
-        elvProbeScalarHom D m Sc s u (ELVOld.affineUnit D Sc cut s u f) = f := by
+        elvProbeScalarHom D m Sc s u (ELV.affineUnit D Sc cut s u f) = f := by
       change elvProbeScalarHom D m Sc s u ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cut) ⊗ₜ[k] f) = _
       rw [elvProbeScalarHom_tmul, map_one, one_smul]
-    refine ⟨ELVOld.affineUnit D Sc cut _ _ p ≫ ELVOld.relation D Sc cut i t ≫
-      ELVOld.affineUnit D Sc cut _ _ q, ?_, ?_⟩
+    refine ⟨ELV.affineUnit D Sc cut _ _ p ≫ ELV.relation D Sc cut i t ≫
+      ELV.affineUnit D Sc cut _ _ q, ?_, ?_⟩
     · exact Submodule.subset_span ⟨i,t,
-        ELVOld.affineUnit D Sc cut _ _ p, ELVOld.affineUnit D Sc cut _ _ q,rfl⟩
+        ELV.affineUnit D Sc cut _ _ p, ELV.affineUnit D Sc cut _ _ q,rfl⟩
     · rw [elvProbeScalarHom_comp, elvProbeScalarHom_comp,
         hunit, hunit, elvProbeScalarHom_relation]
 
 variable (ν : List I)
-local notation "C" => ELVOld.OldContentCategory D Sc cut ν
+local notation "C" => ELV.OldContentCategory D Sc cut ν
 variable
-  (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
+  (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
 
 /-- No ordinary first-dot relation survives in an actual scalar-evaluated old module. -/
 theorem probeOldModuleRawAction_kills_cycHom
     (hN : ProbeEvaluatesCoefficients D m Sc ν N) (v w : C) :
     cycHom D Sc a v.obj.word w.obj.word ≤
       LinearMap.ker ((probeOldModuleRawAction D m Sc ν N v w).comp
-        (ELVOld.affineUnit D Sc cut v.obj.word w.obj.word)) := by
+        (ELV.affineUnit D Sc cut v.obj.word w.obj.word)) := by
   intro f hf
   rw [← elvProbeScalarHom_ideal_image D m Sc] at hf
   obtain ⟨g,hg,rfl⟩ := hf
   change probeOldModuleRawAction D m Sc ν N v w
-    (ELVOld.affineUnit D Sc cut _ _ (elvProbeScalarHom D m Sc _ _ g)) = 0
+    (ELV.affineUnit D Sc cut _ _ (elvProbeScalarHom D m Sc _ _ g)) = 0
   rw [← probeOldModuleRawAction_factor D m Sc ν N hN]
-  have hz : (ELVOld.ideal D Sc cut v.obj.word w.obj.word).mkQ g = 0 :=
+  have hz : (ELV.ideal D Sc cut v.obj.word w.obj.word).mkQ g = 0 :=
     (Submodule.Quotient.mk_eq_zero _).mpr hg
   rw [probeOldModuleRawAction_apply, hz, N.toFunctor.map_zero]
 
@@ -1415,23 +1415,23 @@ def probeOrdinaryModuleHom (hN : ProbeEvaluatesCoefficients D m Sc ν N) (v w : 
       cycHom D Sc a v.obj.word w.obj.word) →ₗ[k] (N.obj v ⟶ N.obj w) :=
   (cycHom D Sc a v.obj.word w.obj.word).liftQ
     ((probeOldModuleRawAction D m Sc ν N v w).comp
-      (ELVOld.affineUnit D Sc cut v.obj.word w.obj.word))
+      (ELV.affineUnit D Sc cut v.obj.word w.obj.word))
     (probeOldModuleRawAction_kills_cycHom D m Sc ν N hN v w)
 
 @[simp] theorem probeOrdinaryModuleHom_mk (hN : ProbeEvaluatesCoefficients D m Sc ν N)
     (v w : C) (f : (pres D Sc).obj (ob D v.obj.word) ⟶ (pres D Sc).obj (ob D w.obj.word)) :
     probeOrdinaryModuleHom D m Sc ν N hN v w ((cycHom D Sc a v.obj.word w.obj.word).mkQ f) =
-      probeOldModuleRawAction D m Sc ν N v w (ELVOld.affineUnit D Sc cut v.obj.word w.obj.word f) := rfl
+      probeOldModuleRawAction D m Sc ν N v w (ELV.affineUnit D Sc cut v.obj.word w.obj.word f) := rfl
 
 /-- This is descent of the existing actual old arrow action, not a new representation choice. -/
 theorem probeOrdinaryModuleHom_old (hN : ProbeEvaluatesCoefficients D m Sc ν N)
     (v w : C) (f : v ⟶ w) :
     probeOrdinaryModuleHom D m Sc ν N hN v w
       (elvProbeOldHom D m Sc v.obj.word w.obj.word f) = N.toFunctor.map f := by
-  obtain ⟨f,rfl⟩ := (ELVOld.ideal D Sc cut v.obj.word w.obj.word).mkQ_surjective f
+  obtain ⟨f,rfl⟩ := (ELV.ideal D Sc cut v.obj.word w.obj.word).mkQ_surjective f
   rw [elvProbeOldHom_mk, probeOrdinaryModuleHom_mk]
   change probeOldModuleRawAction D m Sc ν N v w
-    (ELVOld.affineUnit D Sc cut v.obj.word w.obj.word
+    (ELV.affineUnit D Sc cut v.obj.word w.obj.word
       (elvProbeScalarHom D m Sc v.obj.word w.obj.word f)) =
         probeOldModuleRawAction D m Sc ν N v w f
   exact (probeOldModuleRawAction_factor D m Sc ν N hN v w f).symm
@@ -1525,7 +1525,7 @@ instance ordinaryContentLinear (ν : List I) : Linear k (OrdinaryContentCategory
 variable (m : I → ℕ) (ν : List I)
 local notation "cut" => probeCutoff D m
 local notation "probe" => probePolynomial (k := k) (probeDotExponent D) m
-local notation "C" => ELVOld.OldContentCategory D Sc cut ν
+local notation "C" => ELV.OldContentCategory D Sc cut ν
 local notation "Q" => OrdinaryContentCategory D Sc probe ν
 
 /-- Actual scalar specialization, on the literal ordinary quotient category. -/
@@ -1534,12 +1534,12 @@ def probeOldOrdinaryFunctor : C ⥤ Q where
   map {v w} := elvProbeOldHom D m Sc v.obj.word w.obj.word
   map_id v := by
     change (cycHom D Sc probe v.obj.word v.obj.word).mkQ
-      (elvProbeScalarHom D m Sc v.obj.word v.obj.word (𝟙 (ELVOld.obj D Sc cut v.obj.word))) = _
+      (elvProbeScalarHom D m Sc v.obj.word v.obj.word (𝟙 (ELV.obj D Sc cut v.obj.word))) = _
     rw [elvProbeScalarHom_id]
     rfl
   map_comp {v t w} f g := by
-    obtain ⟨f,rfl⟩ := (ELVOld.ideal D Sc cut v.obj.word t.obj.word).mkQ_surjective f
-    obtain ⟨g,rfl⟩ := (ELVOld.ideal D Sc cut t.obj.word w.obj.word).mkQ_surjective g
+    obtain ⟨f,rfl⟩ := (ELV.ideal D Sc cut v.obj.word t.obj.word).mkQ_surjective f
+    obtain ⟨g,rfl⟩ := (ELV.ideal D Sc cut t.obj.word w.obj.word).mkQ_surjective g
     change (cycHom D Sc probe v.obj.word w.obj.word).mkQ
       (elvProbeScalarHom D m Sc v.obj.word w.obj.word (f ≫ g)) =
       ordinaryContentComp D Sc probe v.obj.word t.obj.word w.obj.word
@@ -1563,7 +1563,7 @@ def probeOrdinaryOldObject (v : Q) : C := ⟨⟨v.word⟩,v.wordPerm⟩
   rfl
 
 variable
-  (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
+  (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
   (hN : ProbeEvaluatesCoefficients D m Sc ν N)
 
 /-- The actual descended ordinary module on precisely the original old module values. -/
@@ -1574,27 +1574,27 @@ def probeOrdinaryModuleFunctor : Q ⥤ SVec k where
   map_id v := by
     change probeOldModuleRawAction D m Sc ν N
       (probeOrdinaryOldObject D Sc m ν v) (probeOrdinaryOldObject D Sc m ν v)
-      (ELVOld.affineUnit D Sc cut v.word v.word (𝟙 _)) = _
-    rw [ELVOld.affineUnit_id]
+      (ELV.affineUnit D Sc cut v.word v.word (𝟙 _)) = _
+    rw [ELV.affineUnit_id]
     exact N.toFunctor.map_id _
   map_comp {v t w} f g := by
     obtain ⟨f,rfl⟩ := (cycHom D Sc probe v.word t.word).mkQ_surjective f
     obtain ⟨g,rfl⟩ := (cycHom D Sc probe t.word w.word).mkQ_surjective g
     change probeOldModuleRawAction D m Sc ν N
       (probeOrdinaryOldObject D Sc m ν v) (probeOrdinaryOldObject D Sc m ν w)
-      (ELVOld.affineUnit D Sc cut v.word w.word (f ≫ g)) =
+      (ELV.affineUnit D Sc cut v.word w.word (f ≫ g)) =
       probeOldModuleRawAction D m Sc ν N
         (probeOrdinaryOldObject D Sc m ν v) (probeOrdinaryOldObject D Sc m ν t)
-        (ELVOld.affineUnit D Sc cut v.word t.word f) ≫
+        (ELV.affineUnit D Sc cut v.word t.word f) ≫
       probeOldModuleRawAction D m Sc ν N
         (probeOrdinaryOldObject D Sc m ν t) (probeOrdinaryOldObject D Sc m ν w)
-        (ELVOld.affineUnit D Sc cut t.word w.word g)
-    rw [ELVOld.affineUnit_comp]
+        (ELV.affineUnit D Sc cut t.word w.word g)
+    rw [ELV.affineUnit_comp]
     exact N.toFunctor.map_comp
       (show probeOrdinaryOldObject D Sc m ν v ⟶ probeOrdinaryOldObject D Sc m ν t from
-        (ELVOld.ideal D Sc cut v.word t.word).mkQ (ELVOld.affineUnit D Sc cut v.word t.word f))
+        (ELV.ideal D Sc cut v.word t.word).mkQ (ELV.affineUnit D Sc cut v.word t.word f))
       (show probeOrdinaryOldObject D Sc m ν t ⟶ probeOrdinaryOldObject D Sc m ν w from
-        (ELVOld.ideal D Sc cut t.word w.word).mkQ (ELVOld.affineUnit D Sc cut t.word w.word g))
+        (ELV.ideal D Sc cut t.word w.word).mkQ (ELV.affineUnit D Sc cut t.word w.word g))
 
 instance : (probeOrdinaryModuleFunctor D Sc m ν N hN).Additive where
   map_add {v w} f g := (probeOrdinaryModuleHom D m Sc ν N hN
@@ -1665,7 +1665,7 @@ instance (i : I) : (probeOrdinaryAppend D Sc m ν i).Linear k where
 /-- The square uses the actual old append, actual full scalar functors and
 actual ordinary quotient append, with no assumed natural comparison. -/
 theorem probeOldOrdinaryFunctor_append (i : I) :
-    ELVOld.oldContentAppend D Sc cut ν i ⋙ probeOldOrdinaryFunctor D Sc m (i :: ν) =
+    ELV.oldContentAppend D Sc cut ν i ⋙ probeOldOrdinaryFunctor D Sc m (i :: ν) =
       probeOldOrdinaryFunctor D Sc m ν ⋙ probeOrdinaryAppend D Sc m ν i := by
   apply CategoryTheory.Functor.ext
   case h_obj =>
@@ -1698,7 +1698,7 @@ local notation "cut" => probeCutoff D m
 local notation "a" => probePolynomial (k := k) (probeDotExponent D) m
 
 theorem elvProbeScalarHom_proj {v w : List I} (p : ZMod 2)
-    (f : ELVOld.hom D Sc cut v w) :
+    (f : ELV.hom D Sc cut v w) :
     elvProbeScalarHom D m Sc v w (proj k p f) =
       proj k p (elvProbeScalarHom D m Sc v w f) :=
   Supercategory.map_proj (elvProbeAffineSpecialization D m Sc).toFunctor p f
@@ -1710,7 +1710,7 @@ theorem probeCycHom_proj_mem {v w : List I}
     proj k p f ∈ cycHom D Sc a v w := by
   rw [← elvProbeScalarHom_ideal_image D m Sc] at hf
   obtain ⟨g,hg,rfl⟩ := hf
-  have h := elvProbeAffineSpecialization_ideal D m Sc (ELVOld.ideal_proj_mem D Sc cut hg p)
+  have h := elvProbeAffineSpecialization_ideal D m Sc (ELV.ideal_proj_mem D Sc cut hg p)
   rw [elvProbeScalarHom_proj] at h
   exact h
 
@@ -1771,11 +1771,11 @@ instance probeOrdinaryAppend_super (ν : List I) (i : I) :
       (MonoidalSupercategory.whiskerRight_mem ((pres D Sc).obj (ob D [i])) hfr)
 
 def probeOldOrdinarySuperfunctor (ν : List I) :
-    Superfunctor k (ELVOld.OldContentCategory D Sc cut ν) (OrdinaryContentCategory D Sc a ν) :=
+    Superfunctor k (ELV.OldContentCategory D Sc cut ν) (OrdinaryContentCategory D Sc a ν) :=
   ⟨probeOldOrdinaryFunctor D Sc m ν⟩
 
 variable (ν : List I)
-  (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
+  (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
   (hN : ProbeEvaluatesCoefficients D m Sc ν N)
 
 instance probeOrdinaryModuleFunctor_super :
@@ -1819,17 +1819,17 @@ local notation "cut" => probeCutoff D m
 local notation "A" => SKM.SYM.ELVCoefficientAlgebra (k := k) D cut
 local notation "ev" => SKM.SYM.elvScalarEvaluation D cut (probeScalarValues D m) (probeScalarValues_vanish D m)
 variable (ν : List I)
-local notation "C" => ELVOld.OldContentCategory D Sc cut ν
+local notation "C" => ELV.OldContentCategory D Sc cut ν
 
 @[simp] theorem probeOldCoefficient_zero (v : C) :
     probeOldCoefficient D m Sc ν v 0 = 0 := by
-  change (ELVOld.ideal D Sc cut _ _).mkQ (0 ⊗ₜ[k] (𝟙 _)) = 0
+  change (ELV.ideal D Sc cut _ _).mkQ (0 ⊗ₜ[k] (𝟙 _)) = 0
   rw [TensorProduct.zero_tmul, map_zero]
 
 theorem probeOldCoefficient_add (v : C) (c d : A) :
     probeOldCoefficient D m Sc ν v (c + d) =
       probeOldCoefficient D m Sc ν v c + probeOldCoefficient D m Sc ν v d := by
-  change (ELVOld.ideal D Sc cut _ _).mkQ ((c+d) ⊗ₜ[k] (𝟙 _)) = _
+  change (ELV.ideal D Sc cut _ _).mkQ ((c+d) ⊗ₜ[k] (𝟙 _)) = _
   rw [TensorProduct.add_tmul, map_add]
   rfl
 
@@ -1838,22 +1838,22 @@ theorem probeOldCoefficient_slide {v w : C} {p : ZMod 2} {c : A}
     (hc : c ∈ SKM.SYM.elvCoefficientParity D cut p) (f : v ⟶ w) :
     f ≫ probeOldCoefficient D m Sc ν w c =
       probeOldCoefficient D m Sc ν v c ≫ twist k p f := by
-  obtain ⟨f, rfl⟩ := (ELVOld.ideal D Sc cut v.obj.word w.obj.word).mkQ_surjective f
+  obtain ⟨f, rfl⟩ := (ELV.ideal D Sc cut v.obj.word w.obj.word).mkQ_surjective f
   have htw : twist k p (X := v) (Y := w)
-      ((ELVOld.ideal D Sc cut v.obj.word w.obj.word).mkQ f) =
-    (ELVOld.ideal D Sc cut v.obj.word w.obj.word).mkQ
-      (twist k p (X := ELVOld.obj D Sc cut v.obj.word) (Y := ELVOld.obj D Sc cut w.obj.word) f) := by
+      ((ELV.ideal D Sc cut v.obj.word w.obj.word).mkQ f) =
+    (ELV.ideal D Sc cut v.obj.word w.obj.word).mkQ
+      (twist k p (X := ELV.obj D Sc cut v.obj.word) (Y := ELV.obj D Sc cut w.obj.word) f) := by
     change twist k p (X := v.obj) (Y := w.obj) _ = _
-    simp only [twist_apply, ELVOld.oldCategory_proj, ELVOld.oldProj_mk, map_add, map_smul]
+    simp only [twist_apply, ELV.oldCategory_proj, ELV.oldProj_mk, map_add, map_smul]
   rw [htw]
-  exact congrArg (ELVOld.ideal D Sc cut v.obj.word w.obj.word).mkQ
+  exact congrArg (ELV.ideal D Sc cut v.obj.word w.obj.word).mkQ
     (ELVPScalar.scalar_slide_homogeneous D Sc cut hc f)
 
 @[simp] theorem probeOldCoefficient_append (i : I) (v : C) (c : A) :
-    (ELVOld.oldContentAppend D Sc cut ν i).map (probeOldCoefficient D m Sc ν v c) =
-      probeOldCoefficient D m Sc (i :: ν) ((ELVOld.oldContentAppend D Sc cut ν i).obj v) c := by
-  change (ELVOld.ideal D Sc cut _ _).mkQ
-    (ELVOld.rightContext D Sc cut [i] v.obj.word v.obj.word
+    (ELV.oldContentAppend D Sc cut ν i).map (probeOldCoefficient D m Sc ν v c) =
+      probeOldCoefficient D m Sc (i :: ν) ((ELV.oldContentAppend D Sc cut ν i).obj v) c := by
+  change (ELV.ideal D Sc cut _ _).mkQ
+    (ELV.rightContext D Sc cut [i] v.obj.word v.obj.word
       (ELVPScalar.scalar D Sc cut v.obj.word c)) = _
   rw [ELVPScalar.rightContext_scalar]
   rfl
@@ -1861,35 +1861,35 @@ theorem probeOldCoefficient_slide {v w : C} {p : ZMod 2} {c : A}
 /-- The concrete scalar-evaluation class is closed under the actual old
 content append induction, including its odd coefficient kernel. -/
 theorem probeOldInduced_evaluatesCoefficients (i : I)
-    (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
+    (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
     (hN : ProbeEvaluatesCoefficients D m Sc ν N) :
     ProbeEvaluatesCoefficients D m Sc (i :: ν)
-      (ELVOld.BalancedInduction.induced (ELVOld.oldContentAppend D Sc cut ν i) N) := by
+      (ELV.BalancedInduction.induced (ELV.oldContentAppend D Sc cut ν i) N) := by
   intro t c
-  let J := ELVOld.oldContentAppend D Sc cut ν i
-  let L := ELVOld.BalancedInduction.induced J N
+  let J := ELV.oldContentAppend D Sc cut ν i
+  let L := ELV.BalancedInduction.induced J N
   change L.toFunctor.map (probeOldCoefficient D m Sc (i :: ν) t c) = ev c • 𝟙 (L.obj t)
   refine DirectSum.Decomposition.inductionOn (SKM.SYM.elvCoefficientParity D cut) ?_ ?_ ?_ c
   · rw [probeOldCoefficient_zero, L.toFunctor.map_zero, map_zero, zero_smul]
   · intro p c
-    change ELVOld.BalancedInduction.postcompose J N.toFunctor
+    change ELV.BalancedInduction.postcompose J N.toFunctor
       (probeOldCoefficient D m Sc (i :: ν) t c.val) = ev c.val • LinearMap.id
-    apply ELVOld.BalancedInduction.hom_ext
+    apply ELV.BalancedInduction.hom_ext
     intro v g b
-    rw [ELVOld.BalancedInduction.postcompose_tensor,
+    rw [ELV.BalancedInduction.postcompose_tensor,
       probeOldCoefficient_slide D m Sc (i :: ν) c.property]
     have hcoef : probeOldCoefficient D m Sc (i :: ν) (J.obj v) c.val =
         J.map (probeOldCoefficient D m Sc ν v c.val) :=
       (probeOldCoefficient_append D m Sc ν i v c.val).symm
-    rw [hcoef, ELVOld.BalancedInduction.balance, hN v c.val]
-    change ELVOld.BalancedInduction.tensor J N.toFunctor v (twist k p g) (ev c.val • b) =
-      ev c.val • ELVOld.BalancedInduction.tensor J N.toFunctor v g b
+    rw [hcoef, ELV.BalancedInduction.balance, hN v c.val]
+    change ELV.BalancedInduction.tensor J N.toFunctor v (twist k p g) (ev c.val • b) =
+      ev c.val • ELV.BalancedInduction.tensor J N.toFunctor v g b
     rcases parity_eq_zero_or_one p with rfl | rfl
     · rw [twist_zero]
-      simp only [ELVOld.BalancedInduction.tensor, TensorProduct.tmul_smul, map_smul]
+      simp only [ELV.BalancedInduction.tensor, TensorProduct.tmul_smul, map_smul]
     · have hc : ev c.val = 0 := SKM.SYM.elvScalarEvaluation_odd_zero D cut
         (probeScalarValues D m) (probeScalarValues_vanish D m) c.property
-      simp only [hc, zero_smul, ELVOld.BalancedInduction.tensor, TensorProduct.tmul_zero, map_zero]
+      simp only [hc, zero_smul, ELV.BalancedInduction.tensor, TensorProduct.tmul_zero, map_zero]
   · intro c d hc hd
     rw [probeOldCoefficient_add, L.toFunctor.map_add, hc, hd, map_add, add_smul]
 
@@ -1915,7 +1915,7 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 local notation "a" => probePolynomial (k := k) (probeDotExponent D) m
 local notation "cut" => probeCutoff D m
 local notation "Q" => probeOldOrdinaryFunctor D Sc m ν
-local notation "C" => ELVOld.OldContentCategory D Sc cut ν
+local notation "C" => ELV.OldContentCategory D Sc cut ν
 local notation "O" => OrdinaryContentCategory D Sc a ν
 
 /-- Restriction uses the existing full scalar Superfunctor. -/
@@ -1926,41 +1926,41 @@ variable (M : Superfunctor k (OrdinaryContentCategory D Sc
   (probePolynomial (k := k) (probeDotExponent D) m) ν) (SVec k))
 
 private def probeQuotientCounitInverse (w : O) :
-    M.obj w →ₗ[k] ELVOld.BalancedInduction.Obj Q (Q ⋙ M.toFunctor) w :=
-  ELVOld.BalancedInduction.unit Q (Q ⋙ M.toFunctor) (probeOrdinaryOldObject D Sc m ν w)
+    M.obj w →ₗ[k] ELV.BalancedInduction.Obj Q (Q ⋙ M.toFunctor) w :=
+  ELV.BalancedInduction.unit Q (Q ⋙ M.toFunctor) (probeOrdinaryOldObject D Sc m ν w)
 
 private theorem probeQuotientCounit_right_inv (w : O) :
-    (ELVOld.BalancedInduction.counit Q M.toFunctor w).comp
+    (ELV.BalancedInduction.counit Q M.toFunctor w).comp
       (probeQuotientCounitInverse D Sc m ν M w) = LinearMap.id :=
-  ELVOld.BalancedInduction.counit_unit Q M.toFunctor (probeOrdinaryOldObject D Sc m ν w)
+  ELV.BalancedInduction.counit_unit Q M.toFunctor (probeOrdinaryOldObject D Sc m ν w)
 
 private theorem probeQuotientCounit_left_inv (w : O) :
     (probeQuotientCounitInverse D Sc m ν M w).comp
-      (ELVOld.BalancedInduction.counit Q M.toFunctor w) = LinearMap.id :=
-  ELVOld.BalancedInduction.unit_counit_of_full Q M.toFunctor (probeOrdinaryOldObject D Sc m ν w)
+      (ELV.BalancedInduction.counit Q M.toFunctor w) = LinearMap.id :=
+  ELV.BalancedInduction.unit_counit_of_full Q M.toFunctor (probeOrdinaryOldObject D Sc m ν w)
 
 /-- The full scalar quotient counit is an even isomorphism on modules. -/
 def probeQuotientCounitIso :
-    ELVOld.BalancedInduction.induced Q (probeOrdinaryRestriction D Sc m ν M) ≅ M :=
-  ELVOld.moduleIsoOfEvenNatIso _ _
+    ELV.BalancedInduction.induced Q (probeOrdinaryRestriction D Sc m ν M) ≅ M :=
+  ELV.moduleIsoOfEvenNatIso _ _
     (NatIso.ofComponents (fun w =>
-      { hom := ELVOld.BalancedInduction.counit Q M.toFunctor w
+      { hom := ELV.BalancedInduction.counit Q M.toFunctor w
         inv := probeQuotientCounitInverse D Sc m ν M w
         hom_inv_id := probeQuotientCounit_left_inv D Sc m ν M w
         inv_hom_id := probeQuotientCounit_right_inv D Sc m ν M w })
-      (fun f => ELVOld.BalancedInduction.counit_naturality Q M.toFunctor f))
-    (fun w => ELVOld.BalancedInduction.counit_mem Q M w)
-    (fun w => ELVOld.BalancedInduction.unit_mem Q (probeOrdinaryRestriction D Sc m ν M)
+      (fun f => ELV.BalancedInduction.counit_naturality Q M.toFunctor f))
+    (fun w => ELV.BalancedInduction.counit_mem Q M w)
+    (fun w => ELV.BalancedInduction.unit_mem Q (probeOrdinaryRestriction D Sc m ν M)
       (probeOrdinaryOldObject D Sc m ν w))
 
 variable
-  (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
+  (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
   (hN : ProbeEvaluatesCoefficients D m Sc ν N)
 
 /-- The scalar-evaluated old module has precisely its descended ordinary induction. -/
 def probeQuotientInducedModuleIso :
-    ELVOld.BalancedInduction.induced Q N ≅ probeOrdinaryModuleSuperfunctor D Sc m ν N hN :=
-  ((ELVOld.BalancedInduction.induction Q).mapIso
+    ELV.BalancedInduction.induced Q N ≅ probeOrdinaryModuleSuperfunctor D Sc m ν N hN :=
+  ((ELV.BalancedInduction.induction Q).mapIso
     (eqToIso (probeOrdinaryModuleSuperfunctor_restrict D Sc m ν N hN))).symm ≪≫
       probeQuotientCounitIso D Sc m ν (probeOrdinaryModuleSuperfunctor D Sc m ν N hN)
 
@@ -1968,21 +1968,21 @@ def probeQuotientInducedModuleIso :
 agrees with literal ordinary append induction of the descended module. -/
 def probeAppendOrdinaryModuleIso (i : I) :
     probeOrdinaryModuleSuperfunctor D Sc m (i :: ν)
-      (ELVOld.BalancedInduction.induced (ELVOld.oldContentAppend D Sc cut ν i) N)
+      (ELV.BalancedInduction.induced (ELV.oldContentAppend D Sc cut ν i) N)
       (probeOldInduced_evaluatesCoefficients D m Sc ν i N hN) ≅
-    ELVOld.BalancedInduction.induced (probeOrdinaryAppend D Sc m ν i)
+    ELV.BalancedInduction.induced (probeOrdinaryAppend D Sc m ν i)
       (probeOrdinaryModuleSuperfunctor D Sc m ν N hN) :=
-  let J := ELVOld.oldContentAppend D Sc cut ν i
+  let J := ELV.oldContentAppend D Sc cut ν i
   let T := probeOrdinaryAppend D Sc m ν i
   let U := probeOldOrdinaryFunctor D Sc m (i :: ν)
-  let L := ELVOld.BalancedInduction.induced J N
+  let L := ELV.BalancedInduction.induced J N
   let hL := probeOldInduced_evaluatesCoefficients D m Sc ν i N hN
   (probeQuotientInducedModuleIso D Sc m (i :: ν) L hL).symm ≪≫
-    (ELVOld.BalancedInduction.inductionComp J U).app N ≪≫
-      ELVOld.BalancedInduction.inducedIsoOfFunctorEq (J ⋙ U) (Q ⋙ T)
+    (ELV.BalancedInduction.inductionComp J U).app N ≪≫
+      ELV.BalancedInduction.inducedIsoOfFunctorEq (J ⋙ U) (Q ⋙ T)
         (probeOldOrdinaryFunctor_append D Sc m ν i) N ≪≫
-      ((ELVOld.BalancedInduction.inductionComp Q T).app N).symm ≪≫
-      (ELVOld.BalancedInduction.induction T).mapIso
+      ((ELV.BalancedInduction.inductionComp Q T).app N).symm ≪≫
+      (ELV.BalancedInduction.induction T).mapIso
         (probeQuotientInducedModuleIso D Sc m ν N hN)
 
 end OddMath.QuiverHecke

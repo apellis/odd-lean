@@ -22,7 +22,7 @@ classes. No complete swapped factor or faithfulness premise is needed.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.TensorLayerClasses
+namespace OddMath.QuiverHecke.ELV.TensorLayerClasses
 open CyclotomicAction SwappedAssembly CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -221,7 +221,7 @@ theorem cross_class_square (ν η : List I) (i j : I) {xj xu xi : X}
   exact PowerWordLayerClasses.class_square D Sc cutoff L s ν η (.cross i j) _ y hy
 
 end Tensor
-end OddMath.QuiverHecke.ELVOld.TensorLayerClasses
+end OddMath.QuiverHecke.ELV.TensorLayerClasses
 end
 
 end
@@ -237,7 +237,7 @@ observation independent of the chosen local layer decomposition.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.TensorVacuumWords
+namespace OddMath.QuiverHecke.ELV.TensorVacuumWords
 open CyclotomicAction SwappedAssembly
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
@@ -256,7 +256,7 @@ theorem chart_append_hom (ν : List I) (i : I) :
     Iso.trans_hom, Functor.mapIso_hom, eqToIso.hom, Iso.symm_hom]
   simp only [eqToIso.inv, Category.assoc, eqToHom_trans_assoc, eqToHom_refl, Category.id_comp]
 
-end OddMath.QuiverHecke.ELVOld.TensorVacuumWords
+end OddMath.QuiverHecke.ELV.TensorVacuumWords
 end
 
 end
@@ -270,7 +270,7 @@ with the prescribed two-letter chart at the canonical successive weights.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.TensorVacuumWords
+namespace OddMath.QuiverHecke.ELV.TensorVacuumWords
 open CyclotomicAction SwappedAssembly
 private theorem eqToHom_comp_heq {C : Type*} [Category* C]
     {A B T : C} (h : A = B) (f : B ⟶ T) : HEq (eqToHom h ≫ f) f := by
@@ -328,7 +328,7 @@ theorem chart_pair_heq (ν : List I) (i j : I) :
   (heq_of_eq (chart_pair_hom D Sc m cutoff L ΛP ΛR ν i j)).trans
     (eqToHom_comp_heq _ _)
 
-end OddMath.QuiverHecke.ELVOld.TensorVacuumWords
+end OddMath.QuiverHecke.ELV.TensorVacuumWords
 end
 
 end
@@ -344,7 +344,7 @@ by the actual word constructions.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.TensorVacuumWords
+namespace OddMath.QuiverHecke.ELV.TensorVacuumWords
 open CyclotomicAction SwappedAssembly
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
@@ -471,7 +471,7 @@ theorem pairContextChart_global_heq (ν η : List I) (i j : I) {xj xu : X}
     (chart_word_heq D Sc m cutoff L ΛP ΛR
       (PowerWordContexts.extendedWord_eq ((ν ++ [j]) ++ [i]) η))
 
-end OddMath.QuiverHecke.ELVOld.TensorVacuumWords
+end OddMath.QuiverHecke.ELV.TensorVacuumWords
 end
 
 end
@@ -486,7 +486,7 @@ normalizing word equalities are transported by their specified isomorphisms.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.TensorWordCoefficientAction
+namespace OddMath.QuiverHecke.ELV.TensorWordCoefficientAction
 open CyclotomicAction SwappedAssembly VacuumTensorCoefficientMaps
 universe u
 section Generic
@@ -544,7 +544,7 @@ theorem wordAction_append (ν : List I) (i : I) (a : SKM.SYM D k) :
   simp only [wordAction, List.reverseRecOn_concat, AlgHom.comp_apply, eqEndAction_apply]
   rfl
 
-end OddMath.QuiverHecke.ELVOld.TensorWordCoefficientAction
+end OddMath.QuiverHecke.ELV.TensorWordCoefficientAction
 end
 
 end
@@ -558,7 +558,7 @@ coefficient with the recursive whole-word coefficient, before evaluation.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.TensorPathCoefficientCoherence
+namespace OddMath.QuiverHecke.ELV.TensorPathCoefficientCoherence
 open CyclotomicAction SwappedAssembly VacuumTensorCoefficientMaps TensorWordCoefficientAction
 universe u
 section Generic
@@ -702,7 +702,7 @@ theorem pathAction_heq {l : List (SKM.Col I X)} {c : I →₀ ℕ}
           (hf.trans ((wordAction_append_heq D Sc m cutoff L ΛP ΛR
             ((l.map (fun b => b.l.2)).reverse) i a).symm.trans
               (wordAction_word_heq D Sc m cutoff L ΛP ΛR hwords a)))
-end OddMath.QuiverHecke.ELVOld.TensorPathCoefficientCoherence
+end OddMath.QuiverHecke.ELV.TensorPathCoefficientCoherence
 end
 
 end
@@ -717,7 +717,7 @@ charts therefore intertwine both odd and even source coefficients.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.TensorCoefficientNaturality
+namespace OddMath.QuiverHecke.ELV.TensorCoefficientNaturality
 open VacuumTensorCoefficientMaps CyclotomicAction SwappedAssembly
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
@@ -755,7 +755,7 @@ theorem coefficientAction_output
   rw [coefficientAction_total, vacuumBlockAction_total]
   rfl
 
-end OddMath.QuiverHecke.ELVOld.TensorCoefficientNaturality
+end OddMath.QuiverHecke.ELV.TensorCoefficientNaturality
 end
 
 end
@@ -769,7 +769,7 @@ intertwines the full source coefficient with its signed old-Hom arrow.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.TensorWordCoefficientChart
+namespace OddMath.QuiverHecke.ELV.TensorWordCoefficientChart
 open CyclotomicAction SwappedAssembly VacuumTensorCoefficientMaps TensorWordCoefficientAction
 open TensorPathCoefficientCoherence TensorCoefficientNaturality
 universe u
@@ -939,7 +939,7 @@ theorem chart_square (ν : List I) (a : SKM.SYM D k) :
       (TensorVacuumWords.chart D Sc m cutoff L ΛP ΛR (ν ++ [i])).hom
       (TensorVacuumWords.chart_append_heq D Sc m cutoff L ΛP ΛR ν i).symm _ hs
 
-end OddMath.QuiverHecke.ELVOld.TensorWordCoefficientChart
+end OddMath.QuiverHecke.ELV.TensorWordCoefficientChart
 end
 
 end
@@ -954,7 +954,7 @@ uniqueness identifies the result with the given native boundary inverse.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u v w
 
@@ -1103,7 +1103,7 @@ theorem tensorPowerVacuumCap_window (hN : 0 < cutoff i)
     (tensorPowerVacuumCap_unitDotColumn D Sc m cutoff L i hN a ha)
 
 end PowerVacuumCoefficient
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1121,7 +1121,7 @@ assumed.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u v w
 
@@ -1365,7 +1365,7 @@ theorem tensorPowerVacuumCap_moment_odd (hi : D.parity i = 1) (hN : 0 < cutoff i
   rfl
 
 end PowerVacuumCoefficient
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

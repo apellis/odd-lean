@@ -24,7 +24,7 @@ specified boundary polynomial S in corrected rho coordinates remains separate.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -384,12 +384,12 @@ def outputOldExtraction (p : ZMod 2) (i : I) (v : List I)
       outputLongExtraction D Sc cutoff p i v
         (act D Sc cutoff i (appendInsert D Sc cutoff i v v g) z) := rfl
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory Categorification.TypeA
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -529,7 +529,7 @@ theorem canonical_output_extraction (p : ZMod 2) (i : I) (v : List I) (m : ℕ)
   by_cases hn : n = m
   · subst n; simp only [ite_true, Finsupp.single_eq_same]
   · rw [ite_eq_right hn, Finsupp.single_eq_of_ne hn]
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 end
 
@@ -634,7 +634,7 @@ theorem leadingSourceDots_separate_hom (i : I) (v : List I) (c : MoveChoices v) 
       dotE D Sc (i :: v) 0 ^ sourceMovingDegree (leadingSourceDots D i 0 0 v c) := by
   rw [endpointDotMonomial_separate_hom, separatedSourceOldHom_leading]
 
-namespace ELVOld
+namespace ELV
 variable (cutoff : I → ℕ)
 
 /-- The old affine dot monomial specified by a choice in the ordered product. -/
@@ -730,7 +730,7 @@ theorem leading_source_output_extraction (p : ZMod 2) (i : I) (v : List I)
   change (ideal D Sc cutoff v v).mkQ (𝟙 _ ≫ twist k _ _) = _
   rw [Category.id_comp, leadingSourceOldArrow_twist]
 
-end ELVOld
+end ELV
 end OddMath.QuiverHecke
 end
 

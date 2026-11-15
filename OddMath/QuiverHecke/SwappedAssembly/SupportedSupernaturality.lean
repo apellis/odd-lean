@@ -13,7 +13,7 @@ The unequal-colour permutation input remains explicit at this step.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld ProbeReservoir
+open CyclotomicAction ELV ProbeReservoir
 universe u
 local instance supportedNaturalityHomPi {k : Type u} [CommRing k]
     (A B : PiSCat.{u,u,u+1} k) : PiSupercategory k (A ⟶ B) :=

@@ -48,11 +48,11 @@ private theorem scalarTensorIdentityAddZero
     {D' : Type u} [Category.{u} D'] [Preadditive D'] [Linear k D'] (J : C ⥤ D')
     (N : Superfunctor k C (SVec k)) (v : C) (w : D')
     (g h : J.obj v ⟶ w) (b : N.obj v) :
-    ELVOld.BalancedInduction.tensor J N.toFunctor v g ((LinearMap.id : N.obj v →ₗ[k] N.obj v) b) +
-      ELVOld.BalancedInduction.tensor J N.toFunctor v h ((0 : N.obj v →ₗ[k] N.obj v) b) =
-        ELVOld.BalancedInduction.tensor J N.toFunctor v g b := by
+    ELV.BalancedInduction.tensor J N.toFunctor v g ((LinearMap.id : N.obj v →ₗ[k] N.obj v) b) +
+      ELV.BalancedInduction.tensor J N.toFunctor v h ((0 : N.obj v →ₗ[k] N.obj v) b) =
+        ELV.BalancedInduction.tensor J N.toFunctor v g b := by
   rw [LinearMap.id_apply, LinearMap.zero_apply,
-    ELVOld.BalancedInduction.tensor_zero_right, add_zero]
+    ELV.BalancedInduction.tensor_zero_right, add_zero]
 
 end Components
 
@@ -63,9 +63,9 @@ local notation "a" => probePolynomial (k := k) (probeDotExponent D) m
 local notation "Q" => probeOldOrdinaryFunctor D Sc m ν
 
 @[simp] theorem probeRestrictionEqToIso_hom_app
-    (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
+    (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
     (hN : ProbeEvaluatesCoefficients D m Sc ν N) (p : ZMod 2)
-    (v : ELVOld.OldContentCategory D Sc cut ν) :
+    (v : ELV.OldContentCategory D Sc cut ν) :
     (eqToIso (probeOrdinaryModuleSuperfunctor_restrict D Sc m ν N hN)).hom.app p v =
       if p = 0 then LinearMap.id else 0 := by
   rw [eqToIso.hom, scalarModuleEqToHom_app]
@@ -76,23 +76,23 @@ theorem probeQuotientCounitIso_inv_total
     (M : Superfunctor k (OrdinaryContentCategory D Sc (probePolynomial (k := k) (probeDotExponent D) m) ν) (SVec k))
     (w : OrdinaryContentCategory D Sc a ν) :
     (probeQuotientCounitIso D Sc m ν M).inv.total w =
-      ELVOld.BalancedInduction.unit Q (Q ⋙ M.toFunctor) (probeOrdinaryOldObject D Sc m ν w) :=
-  ELVOld.moduleIsoOfEvenNatIso_inv_total _ _ _ _ _ w
+      ELV.BalancedInduction.unit Q (Q ⋙ M.toFunctor) (probeOrdinaryOldObject D Sc m ν w) :=
+  ELV.moduleIsoOfEvenNatIso_inv_total _ _ _ _ _ w
 
 /-- The inverse comparison is the literal unit tensor on the same old module vector. -/
 theorem probeQuotientInducedModuleIso_inv_tensor
-    (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
+    (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
     (hN : ProbeEvaluatesCoefficients D m Sc ν N)
     (w : OrdinaryContentCategory D Sc a ν) (b : N.obj (probeOrdinaryOldObject D Sc m ν w)) :
     (probeQuotientInducedModuleIso D Sc m ν N hN).inv.total w b =
-      ELVOld.BalancedInduction.tensor Q N.toFunctor
+      ELV.BalancedInduction.tensor Q N.toFunctor
         (probeOrdinaryOldObject D Sc m ν w) (𝟙 w) b := by
   let S := probeOrdinaryModuleSuperfunctor D Sc m ν N hN
   let u := eqToIso (probeOrdinaryModuleSuperfunctor_restrict D Sc m ν N hN)
   let c := probeQuotientCounitIso D Sc m ν S
-  let IQ := ELVOld.BalancedInduction.induction (k := k) Q
+  let IQ := ELV.BalancedInduction.induction (k := k) Q
   have hc : c.inv.total w b =
-      ELVOld.BalancedInduction.tensor Q (probeOrdinaryRestriction D Sc m ν S).toFunctor
+      ELV.BalancedInduction.tensor Q (probeOrdinaryRestriction D Sc m ν S).toFunctor
         (probeOrdinaryOldObject D Sc m ν w) (𝟙 w) b := by
     rw [probeQuotientCounitIso_inv_total]
     rfl
@@ -102,13 +102,13 @@ theorem probeQuotientInducedModuleIso_inv_tensor
     exact Superfunctor.comp_total _ _ w
   have hv : (probeQuotientInducedModuleIso D Sc m ν N hN).inv.total w b =
       (IQ.map u.hom).total w (c.inv.total w b) :=
-    congrArg (fun f : S.obj w →ₗ[k] ELVOld.BalancedInduction.Obj Q N.toFunctor w => f b) ht
+    congrArg (fun f : S.obj w →ₗ[k] ELV.BalancedInduction.Obj Q N.toFunctor w => f b) ht
   refine hv.trans ?_
   refine (congrArg ((IQ.map u.hom).total w) hc).trans ?_
-  change (ELVOld.BalancedInduction.moduleMap Q u.hom).total w
-    (ELVOld.BalancedInduction.tensor Q (probeOrdinaryRestriction D Sc m ν S).toFunctor
+  change (ELV.BalancedInduction.moduleMap Q u.hom).total w
+    (ELV.BalancedInduction.tensor Q (probeOrdinaryRestriction D Sc m ν S).toFunctor
       (probeOrdinaryOldObject D Sc m ν w) (𝟙 w) b) = _
-  refine (ELVOld.BalancedInduction.moduleMap_total_tensor Q u.hom w
+  refine (ELV.BalancedInduction.moduleMap_total_tensor Q u.hom w
     (probeOrdinaryOldObject D Sc m ν w)
     (show (Q).obj (probeOrdinaryOldObject D Sc m ν w) ⟶ w from 𝟙 w) b).trans ?_
   simp only [u, probeRestrictionEqToIso_hom_app, ↓reduceIte, one_ne_zero]
@@ -872,10 +872,10 @@ omit [Fintype I] in
 /-- Unit-coefficient affine arrows specialize to themselves. -/
 theorem elvProbeScalarHom_affineUnit {v w : List I}
     (f : (pres D Sc).obj (ob D v) ⟶ (pres D Sc).obj (ob D w)) :
-    elvProbeScalarHom D m Sc v w (ELVOld.affineUnit D Sc cut v w f) = f := by
+    elvProbeScalarHom D m Sc v w (ELV.affineUnit D Sc cut v w f) = f := by
   change (elvAffineScalarSpecialization D Sc cut (probeScalarValues D m)
       (probeScalarValues_vanish D m)).map
-    (BoxProd.tmulHom (X := ELVOld.obj D Sc cut v) (Y := ELVOld.obj D Sc cut w)
+    (BoxProd.tmulHom (X := ELV.obj D Sc cut v) (Y := ELV.obj D Sc cut w)
       (SuperalgebraCat.ofElem 1) f) = f
   rw [elvAffineScalarSpecialization_tmul, SuperalgebraCat.toElem_ofElem, map_one, one_smul]
 
@@ -914,16 +914,16 @@ def probeOrdinaryAppendDot (i : I) (v : O) :
 
 /-- No new dot normalization is chosen: this is the scalar image of the old component. -/
 theorem probeOrdinaryAppendDot_old (i : I)
-    (v : ELVOld.OldContentCategory D Sc cut ν) :
+    (v : ELV.OldContentCategory D Sc cut ν) :
     (probeOldOrdinaryFunctor D Sc m (i :: ν)).map
-      (show (ELVOld.oldContentAppend D Sc cut ν i).obj v ⟶
-        (ELVOld.oldContentAppend D Sc cut ν i).obj v from
-          ELVOld.CyclotomicCrossingTensor.oldAppendDotComponent D Sc cut i v.obj) =
+      (show (ELV.oldContentAppend D Sc cut ν i).obj v ⟶
+        (ELV.oldContentAppend D Sc cut ν i).obj v from
+          ELV.CyclotomicCrossingTensor.oldAppendDotComponent D Sc cut i v.obj) =
       probeOrdinaryAppendDot D Sc m ν i ((probeOldOrdinaryFunctor D Sc m ν).obj v) := by
-  rw [ELVOld.CyclotomicCrossingTensor.oldAppendDotComponent_eq]
+  rw [ELV.CyclotomicCrossingTensor.oldAppendDotComponent_eq]
   change (cycHom D Sc a _ _).mkQ
     (elvProbeScalarHom D m Sc _ _
-      (ELVOld.affineUnit D Sc cut _ _ (dotE D Sc (v.obj.word ++ [i]) v.obj.word.length ^ 1))) = _
+      (ELV.affineUnit D Sc cut _ _ (dotE D Sc (v.obj.word ++ [i]) v.obj.word.length ^ 1))) = _
   rw [pow_one, elvProbeScalarHom_affineUnit]
   rfl
 
@@ -972,7 +972,7 @@ hypothesis for parameters with pure terms: homogeneous parameters supply it
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k : Type u} [CommRing k]
   {C D : Type u} [Category.{u} C] [Category.{u} D]
@@ -997,7 +997,7 @@ theorem inverseComponent_supernatural :
 
 variable (M : Superfunctor k C (SVec k))
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 
 namespace OddMath.QuiverHecke
 universe u
@@ -1044,11 +1044,11 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ) (ν : List I)
 local notation "cut" => probeCutoff D m
 local notation "a" => probePolynomial (k := k) (probeDotExponent D) m
-local notation "C" => ELVOld.OldContentCategory D Sc cut ν
+local notation "C" => ELV.OldContentCategory D Sc cut ν
 local notation "Q" => probeOldOrdinaryFunctor D Sc m ν
 
 section Action
-variable (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
+variable (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
   (hN : ProbeEvaluatesCoefficients D m Sc ν N)
 
 /-- The literal ordinary Hom action retains the original old module values. -/
@@ -1083,37 +1083,37 @@ end Action
 
 /-- The prescribed old dot, on the existing content append functor. -/
 def probeOldContentAppendDot (i : I) (v : C) :
-    (ELVOld.oldContentAppend D Sc cut ν i).obj v ⟶
-      (ELVOld.oldContentAppend D Sc cut ν i).obj v :=
-  ELVOld.CyclotomicCrossingTensor.oldAppendDotComponent D Sc cut i v.obj
+    (ELV.oldContentAppend D Sc cut ν i).obj v ⟶
+      (ELV.oldContentAppend D Sc cut ν i).obj v :=
+  ELV.CyclotomicCrossingTensor.oldAppendDotComponent D Sc cut i v.obj
 
 theorem probeOldContentAppendDot_supernatural (i : I) :
     IsSupernatural k (D.parity i) (probeOldContentAppendDot D Sc m ν i) where
-  mem v := (ELVOld.CyclotomicCrossingTensor.oldAppendDot_supernatural D Sc cut i).mem v.obj
+  mem v := (ELV.CyclotomicCrossingTensor.oldAppendDot_supernatural D Sc cut i).mem v.obj
   naturality hf :=
-    (ELVOld.CyclotomicCrossingTensor.oldAppendDot_supernatural D Sc cut i).naturality hf
+    (ELV.CyclotomicCrossingTensor.oldAppendDot_supernatural D Sc cut i).naturality hf
 
 /-- The original signed balanced transform, on the actual old content coend. -/
 def probeOldContentInductionDot (i : I)
-    (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
-    ELVOld.BalancedInduction.Obj (ELVOld.oldContentAppend D Sc cut ν i) N.toFunctor t →ₗ[k]
-      ELVOld.BalancedInduction.Obj (ELVOld.oldContentAppend D Sc cut ν i) N.toFunctor t :=
-  ELVOld.BalancedInduction.transformLinear (probeOldContentAppendDot_supernatural D Sc m ν i) N t
+    (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
+    (t : ELV.OldContentCategory D Sc cut (i :: ν)) :
+    ELV.BalancedInduction.Obj (ELV.oldContentAppend D Sc cut ν i) N.toFunctor t →ₗ[k]
+      ELV.BalancedInduction.Obj (ELV.oldContentAppend D Sc cut ν i) N.toFunctor t :=
+  ELV.BalancedInduction.transformLinear (probeOldContentAppendDot_supernatural D Sc m ν i) N t
 
 @[simp] theorem probeOldContentInductionDot_tensor (i : I)
-    (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
-    (v : C) (t : ELVOld.OldContentCategory D Sc cut (i :: ν))
-    (g : (ELVOld.oldContentAppend D Sc cut ν i).obj v ⟶ t) (b : N.obj v) :
+    (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
+    (v : C) (t : ELV.OldContentCategory D Sc cut (i :: ν))
+    (g : (ELV.oldContentAppend D Sc cut ν i).obj v ⟶ t) (b : N.obj v) :
     probeOldContentInductionDot D Sc m ν i N t
-      (ELVOld.BalancedInduction.tensor (ELVOld.oldContentAppend D Sc cut ν i) N.toFunctor v g b) =
-    ELVOld.BalancedInduction.tensor (ELVOld.oldContentAppend D Sc cut ν i) N.toFunctor v
+      (ELV.BalancedInduction.tensor (ELV.oldContentAppend D Sc cut ν i) N.toFunctor v g b) =
+    ELV.BalancedInduction.tensor (ELV.oldContentAppend D Sc cut ν i) N.toFunctor v
       (probeOldContentAppendDot D Sc m ν i v ≫ twist k (D.parity i) g) b :=
-  ELVOld.BalancedInduction.transformLinear_tensor _ _ _ _ _ _
+  ELV.BalancedInduction.transformLinear_tensor _ _ _ _ _ _
 
 section SourceInverse
 variable [Fintype I] (i : I)
-local notation "J" => ELVOld.oldContentAppend D Sc cut ν i
+local notation "J" => ELV.oldContentAppend D Sc cut ν i
 local notation "T" => probeOrdinaryAppend D Sc m ν i
 local notation "U" => probeOldOrdinaryFunctor D Sc m (i :: ν)
 
@@ -1158,7 +1158,7 @@ theorem probeOrdinarySourceDotInverse_naturality [Fact Sc.PureNilpotent] (v w : 
   have hs : (U).map (X := (J).obj v) (Y := (J).obj w) ((J).map (X := v) (Y := w) f) =
       (T).map (X := (Q).obj v) (Y := (Q).obj w) qf :=
     elvProbeOldHom_rightContext D m Sc [i] v.obj.word w.obj.word f
-  have hi := (ELVOld.BalancedInduction.inverseComponent_supernatural T
+  have hi := (ELV.BalancedInduction.inverseComponent_supernatural T
     (probeOrdinaryAppendDotIso D Sc m ν i)
     (probeOrdinaryAppendDot_supernatural D Sc m ν i)).naturality_twist qf
   calc
@@ -1170,21 +1170,21 @@ theorem probeOrdinarySourceDotInverse_naturality [Fact Sc.PureNilpotent] (v w : 
     _ = _ := congrArg (fun x => probeOrdinarySourceDotInverse D Sc m ν i v ≫ twist k (D.parity i) x) hs.symm
 /-- The inverse-dot/twisted-Hom expression is linear in the actual old Hom. -/
 def probeOrdinaryInverseHom [Fact Sc.PureNilpotent] (v : C)
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
+    (t : ELV.OldContentCategory D Sc cut (i :: ν)) :
     ((J).obj v ⟶ t) →ₗ[k] ((U).obj ((J).obj v) ⟶ (U).obj t) :=
   (Linear.leftComp k ((U).obj t) (probeOrdinarySourceDotInverse D Sc m ν i v)).comp
     ((twist k (D.parity i) (X := (U).obj ((J).obj v)) (Y := (U).obj t)).comp
       ((U).mapLinearMap (R := k) (X := (J).obj v) (Y := t)))
 
 @[simp] theorem probeOrdinaryInverseHom_apply [Fact Sc.PureNilpotent] (v : C)
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) :
+    (t : ELV.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) :
     probeOrdinaryInverseHom D Sc m ν i v t g =
       probeOrdinarySourceDotInverse D Sc m ν i v ≫
         twist k (D.parity i) ((U).map (X := (J).obj v) (Y := t) g) := rfl
 
 /-- This is the ordinary Hom identity needed for actual old coend balancing. -/
 theorem probeOrdinaryInverseHom_balance [Fact Sc.PureNilpotent] (v w : C)
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν))
+    (t : ELV.OldContentCategory D Sc cut (i :: ν))
     (f : v ⟶ w) (g : (J).obj w ⟶ t) :
     probeOrdinaryInverseHom D Sc m ν i v t ((J).map (X := v) (Y := w) f ≫ g) =
       (U).map (X := (J).obj v) (Y := (J).obj w) ((J).map (X := v) (Y := w) f) ≫
@@ -1208,7 +1208,7 @@ theorem probeOrdinaryInverseHom_balance [Fact Sc.PureNilpotent] (v w : C)
 
 /-- The first inverse product reduces to the scalar image of the old Hom. -/
 theorem probeOrdinaryInverseHom_dot [Fact Sc.PureNilpotent] (v : C)
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) :
+    (t : ELV.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) :
     probeOrdinaryInverseHom D Sc m ν i v t
       (probeOldContentAppendDot D Sc m ν i v ≫ twist k (D.parity i) g) =
       sign k (D.parity i * D.parity i) • (U).map (X := (J).obj v) (Y := t) g := by
@@ -1231,7 +1231,7 @@ theorem probeOrdinaryInverseHom_dot [Fact Sc.PureNilpotent] (v : C)
 
 /-- The other inverse product retains the same parity-square sign. -/
 theorem probeOrdinaryDot_twist_inverseHom [Fact Sc.PureNilpotent] (v : C)
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) :
+    (t : ELV.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) :
     (U).map (X := (J).obj v) (Y := (J).obj v) (probeOldContentAppendDot D Sc m ν i v) ≫
       twist k (D.parity i) (probeOrdinaryInverseHom D Sc m ν i v t g) =
       sign k (D.parity i * D.parity i) • (U).map (X := (J).obj v) (Y := t) g := by
@@ -1247,64 +1247,64 @@ end SourceInverse
 
 section InverseSummand
 variable [Fintype I] (i : I)
-  (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
+  (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
   (hN : ProbeEvaluatesCoefficients D m Sc ν N)
-local notation "J" => ELVOld.oldContentAppend D Sc cut ν i
-local notation "L" => ELVOld.BalancedInduction.induced J N
+local notation "J" => ELV.oldContentAppend D Sc cut ν i
+local notation "L" => ELV.BalancedInduction.induced J N
 local notation "hL" => probeOldInduced_evaluatesCoefficients D m Sc ν i N hN
 local notation "U" => probeOldOrdinaryFunctor D Sc m (i :: ν)
 
 /-- Ordinary Hom action on the unchanged actual induced old module values. -/
 def probeOldInverseHomAction [Fact Sc.PureNilpotent] (v : C)
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
+    (t : ELV.OldContentCategory D Sc cut (i :: ν)) :
     ((J).obj v ⟶ t) →ₗ[k] ((L).obj ((J).obj v) ⟶ (L).obj t) :=
   (probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) t).comp
     (probeOrdinaryInverseHom D Sc m ν i v t)
 
 /-- The inverse summand is bilinear in the original old Hom and module vector. -/
 def probeOldInverseGenerator [Fact Sc.PureNilpotent] (v : C)
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
-    ((J).obj v ⟶ t) →ₗ[k] (N.obj v →ₗ[k] ELVOld.BalancedInduction.Obj J N.toFunctor t) :=
+    (t : ELV.OldContentCategory D Sc cut (i :: ν)) :
+    ((J).obj v ⟶ t) →ₗ[k] (N.obj v →ₗ[k] ELV.BalancedInduction.Obj J N.toFunctor t) :=
   (Linear.leftComp k ((L).obj t)
-    (show N.obj v ⟶ (L).obj ((J).obj v) from ELVOld.BalancedInduction.unit J N.toFunctor v)).comp
+    (show N.obj v ⟶ (L).obj ((J).obj v) from ELV.BalancedInduction.unit J N.toFunctor v)).comp
       (probeOldInverseHomAction D Sc m ν i N hN v t)
 
 @[simp] theorem probeOldInverseGenerator_apply [Fact Sc.PureNilpotent] (v : C)
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) (b : N.obj v) :
+    (t : ELV.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) (b : N.obj v) :
     probeOldInverseGenerator D Sc m ν i N hN v t g b =
       probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) t
         (probeOrdinaryInverseHom D Sc m ν i v t g)
-        (ELVOld.BalancedInduction.unit J N.toFunctor v b) := rfl
+        (ELV.BalancedInduction.unit J N.toFunctor v b) := rfl
 
 def probeOldInverseSummand [Fact Sc.PureNilpotent] (v : C)
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
-    (((J).obj v ⟶ t) ⊗[k] N.obj v) →ₗ[k] ELVOld.BalancedInduction.Obj J N.toFunctor t :=
+    (t : ELV.OldContentCategory D Sc cut (i :: ν)) :
+    (((J).obj v ⟶ t) ⊗[k] N.obj v) →ₗ[k] ELV.BalancedInduction.Obj J N.toFunctor t :=
   TensorProduct.lift (probeOldInverseGenerator D Sc m ν i N hN v t)
 
 @[simp] theorem probeOldInverseSummand_tmul [Fact Sc.PureNilpotent] (v : C)
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) (b : N.obj v) :
+    (t : ELV.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) (b : N.obj v) :
     probeOldInverseSummand D Sc m ν i N hN v t (g ⊗ₜ[k] b) =
       probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) t
         (probeOrdinaryInverseHom D Sc m ν i v t g)
-        (ELVOld.BalancedInduction.unit J N.toFunctor v b) :=
+        (ELV.BalancedInduction.unit J N.toFunctor v b) :=
   TensorProduct.lift.tmul g b
 /-- Balancing is proved inside the original old coend. -/
 theorem probeOldInverseSummand_balance [Fact Sc.PureNilpotent] (v w : C)
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν))
+    (t : ELV.OldContentCategory D Sc cut (i :: ν))
     (f : v ⟶ w) (g : (J).obj w ⟶ t) (b : N.obj v) :
     probeOldInverseSummand D Sc m ν i N hN v t (((J).map f ≫ g) ⊗ₜ[k] b) =
       probeOldInverseSummand D Sc m ν i N hN w t (g ⊗ₜ[k] N.toFunctor.map f b) := by
   rw [probeOldInverseSummand_tmul, probeOldInverseSummand_tmul]
   let uf := (U).map (X := (J).obj v) (Y := (J).obj w) ((J).map (X := v) (Y := w) f)
   let hg := probeOrdinaryInverseHom D Sc m ν i w t g
-  let uv := ELVOld.BalancedInduction.unit J N.toFunctor v b
+  let uv := ELV.BalancedInduction.unit J N.toFunctor v b
   have hb := probeOrdinaryInverseHom_balance D Sc m ν i v w t f g
   have hc := probeScalarAction_comp D Sc m (i :: ν) L hL ((J).obj v) ((J).obj w) t uf hg
   have ho : probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) ((J).obj w) uf =
       (show (L).obj ((J).obj v) ⟶ (L).obj ((J).obj w) from
-        ELVOld.BalancedInduction.postcompose J N.toFunctor ((J).map f)) :=
+        ELV.BalancedInduction.postcompose J N.toFunctor ((J).map f)) :=
     probeScalarAction_old D Sc m (i :: ν) L hL ((J).obj v) ((J).obj w) ((J).map f)
-  have hu := LinearMap.congr_fun (ELVOld.BalancedInduction.unit_naturality J N.toFunctor f) b
+  have hu := LinearMap.congr_fun (ELV.BalancedInduction.unit_naturality J N.toFunctor f) b
   calc
     _ = probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) t (uf ≫ hg) uv :=
       congrArg (fun z => probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) t z uv) hb
@@ -1313,7 +1313,7 @@ theorem probeOldInverseSummand_balance [Fact Sc.PureNilpotent] (v w : C)
       simpa only [SVec.comp_apply] using congrArg
         (fun z : (L).obj ((J).obj v) ⟶ (L).obj t => z uv) hc
     _ = probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj w) t hg
-        (ELVOld.BalancedInduction.postcompose J N.toFunctor ((J).map f) uv) :=
+        (ELV.BalancedInduction.postcompose J N.toFunctor ((J).map f) uv) :=
       congrArg (fun z => probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj w) t hg z)
         (congrArg (fun z : (L).obj ((J).obj v) ⟶ (L).obj ((J).obj w) => z uv) ho)
     _ = _ := congrArg (probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj w) t hg)
@@ -1321,64 +1321,64 @@ theorem probeOldInverseSummand_balance [Fact Sc.PureNilpotent] (v w : C)
 
 /-- Explicit signed inverse candidate on the actual old balanced quotient. -/
 def probeOldContentInductionDotInverse [Fact Sc.PureNilpotent]
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
-    ELVOld.BalancedInduction.Obj J N.toFunctor t →ₗ[k]
-      ELVOld.BalancedInduction.Obj J N.toFunctor t :=
-  sign k (D.parity i * D.parity i) • ELVOld.BalancedInduction.lift J N.toFunctor t
+    (t : ELV.OldContentCategory D Sc cut (i :: ν)) :
+    ELV.BalancedInduction.Obj J N.toFunctor t →ₗ[k]
+      ELV.BalancedInduction.Obj J N.toFunctor t :=
+  sign k (D.parity i * D.parity i) • ELV.BalancedInduction.lift J N.toFunctor t
     (fun v => probeOldInverseSummand D Sc m ν i N hN v t)
     (fun v w f g b => probeOldInverseSummand_balance D Sc m ν i N hN v w t f g b)
 
 @[simp] theorem probeOldContentInductionDotInverse_tensor [Fact Sc.PureNilpotent] (v : C)
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) (b : N.obj v) :
+    (t : ELV.OldContentCategory D Sc cut (i :: ν)) (g : (J).obj v ⟶ t) (b : N.obj v) :
     probeOldContentInductionDotInverse D Sc m ν i N hN t
-      (ELVOld.BalancedInduction.tensor J N.toFunctor v g b) =
+      (ELV.BalancedInduction.tensor J N.toFunctor v g b) =
     sign k (D.parity i * D.parity i) •
       probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) t
         (probeOrdinaryInverseHom D Sc m ν i v t g)
-        (ELVOld.BalancedInduction.unit J N.toFunctor v b) := by
+        (ELV.BalancedInduction.unit J N.toFunctor v b) := by
   rw [probeOldContentInductionDotInverse, LinearMap.smul_apply,
-    ELVOld.BalancedInduction.lift_tensor, probeOldInverseSummand_tmul]
+    ELV.BalancedInduction.lift_tensor, probeOldInverseSummand_tmul]
 
 /-- No finite-dimensionality is used: one inverse product is checked on the old generators. -/
 theorem probeOldContentInductionDotInverse_comp_dot [Fact Sc.PureNilpotent]
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
+    (t : ELV.OldContentCategory D Sc cut (i :: ν)) :
     (probeOldContentInductionDotInverse D Sc m ν i N hN t).comp
       (probeOldContentInductionDot D Sc m ν i N t) = LinearMap.id := by
-  apply ELVOld.BalancedInduction.hom_ext
+  apply ELV.BalancedInduction.hom_ext
   intro v g b
   rw [LinearMap.comp_apply, probeOldContentInductionDot_tensor,
     probeOldContentInductionDotInverse_tensor, probeOrdinaryInverseHom_dot,
     map_smul, SVec.smul_apply, sign_smul_sign_smul]
   have h := probeScalarAction_old D Sc m (i :: ν) L hL ((J).obj v) t g
   have hv := congrArg (fun z : (L).obj ((J).obj v) ⟶ (L).obj t =>
-    z (ELVOld.BalancedInduction.unit J N.toFunctor v b)) h
-  exact hv.trans (ELVOld.BalancedInduction.postcompose_unit J N.toFunctor g b)
+    z (ELV.BalancedInduction.unit J N.toFunctor v b)) h
+  exact hv.trans (ELV.BalancedInduction.postcompose_unit J N.toFunctor g b)
 
 omit [Fintype I] in
 private theorem probeOldContentInductionDot_unit_action (v : C) (b : N.obj v) :
     probeOldContentInductionDot D Sc m ν i N ((J).obj v)
-      (ELVOld.BalancedInduction.unit J N.toFunctor v b) =
+      (ELV.BalancedInduction.unit J N.toFunctor v b) =
     probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) ((J).obj v)
       ((U).map (X := (J).obj v) (Y := (J).obj v) (probeOldContentAppendDot D Sc m ν i v))
-      (ELVOld.BalancedInduction.unit J N.toFunctor v b) := by
+      (ELV.BalancedInduction.unit J N.toFunctor v b) := by
   have h := probeScalarAction_old D Sc m (i :: ν) L hL ((J).obj v) ((J).obj v)
     (probeOldContentAppendDot D Sc m ν i v)
-  exact (ELVOld.BalancedInduction.transform_unit
+  exact (ELV.BalancedInduction.transform_unit
     (probeOldContentAppendDot_supernatural D Sc m ν i) N v b).trans
       (congrArg (fun z : (L).obj ((J).obj v) ⟶ (L).obj ((J).obj v) =>
-        z (ELVOld.BalancedInduction.unit J N.toFunctor v b)) h).symm
+        z (ELV.BalancedInduction.unit J N.toFunctor v b)) h).symm
 
 /-- The second inverse product uses the old dot's descended full supernaturality. -/
 theorem probeOldContentInductionDot_comp_inverse [Fact Sc.PureNilpotent]
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
+    (t : ELV.OldContentCategory D Sc cut (i :: ν)) :
     (probeOldContentInductionDot D Sc m ν i N t).comp
       (probeOldContentInductionDotInverse D Sc m ν i N hN t) = LinearMap.id := by
-  apply ELVOld.BalancedInduction.hom_ext
+  apply ELV.BalancedInduction.hom_ext
   intro v g b
   rw [LinearMap.comp_apply, probeOldContentInductionDotInverse_tensor, map_smul]
   let hf := probeOrdinaryInverseHom D Sc m ν i v t g
   let ad := (U).map (X := (J).obj v) (Y := (J).obj v) (probeOldContentAppendDot D Sc m ν i v)
-  let uv := ELVOld.BalancedInduction.unit J N.toFunctor v b
+  let uv := ELV.BalancedInduction.unit J N.toFunctor v b
   have hv : probeOldContentInductionDot D Sc m ν i N t
       (probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) t hf uv) =
       probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) t
@@ -1389,7 +1389,7 @@ theorem probeOldContentInductionDot_comp_inverse [Fact Sc.PureNilpotent]
     have hfr' : (U).map (X := (J).obj v) (Y := t) f₀ = hf := hfr
     rw [← hfr', probeScalarAction_old, ← map_twist (U) (D.parity i) f₀,
       probeScalarAction_old]
-    exact LinearMap.congr_fun (ELVOld.BalancedInduction.transformLinear_naturality
+    exact LinearMap.congr_fun (ELV.BalancedInduction.transformLinear_naturality
       (probeOldContentAppendDot_supernatural D Sc m ν i) N f₀) uv
   have hc := probeScalarAction_comp D Sc m (i :: ν) L hL ((J).obj v) ((J).obj v) t
     ad (twist k (D.parity i) hf)
@@ -1422,13 +1422,13 @@ theorem probeOldContentInductionDot_comp_inverse [Fact Sc.PureNilpotent]
       rw [map_smul, SVec.smul_apply, sign_smul_sign_smul]
     _ = _ := (congrArg (fun z : (L).obj ((J).obj v) ⟶ (L).obj t => z uv)
       (probeScalarAction_old D Sc m (i :: ν) L hL ((J).obj v) t g)).trans
-        (ELVOld.BalancedInduction.postcompose_unit J N.toFunctor g b)
+        (ELV.BalancedInduction.postcompose_unit J N.toFunctor g b)
 
 /-- Intermediate unit for a scalar-evaluated old module. The canonical probe-module
 specialization below proves the scalar-evaluation hypothesis. -/
 def probeOldContentInductionDotUnit [Fact Sc.PureNilpotent]
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
-    (End (ELVOld.BalancedInduction.superspace J N.toFunctor t))ˣ where
+    (t : ELV.OldContentCategory D Sc cut (i :: ν)) :
+    (End (ELV.BalancedInduction.superspace J N.toFunctor t))ˣ where
   val := End.of (probeOldContentInductionDot D Sc m ν i N t)
   inv := End.of (probeOldContentInductionDotInverse D Sc m ν i N hN t)
   val_inv := probeOldContentInductionDot_comp_inverse D Sc m ν i N hN t
@@ -1436,9 +1436,9 @@ def probeOldContentInductionDotUnit [Fact Sc.PureNilpotent]
 
 include hN in
 theorem probeOldContentInductionDot_isUnit [Fact Sc.PureNilpotent]
-    (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
+    (t : ELV.OldContentCategory D Sc cut (i :: ν)) :
     IsUnit (End.of (probeOldContentInductionDot D Sc m ν i N t) :
-      End (ELVOld.BalancedInduction.superspace J N.toFunctor t)) :=
+      End (ELV.BalancedInduction.superspace J N.toFunctor t)) :=
   (probeOldContentInductionDotUnit D Sc m ν i N hN t).isUnit
 
 end InverseSummand
@@ -1498,9 +1498,9 @@ private theorem scalarTensor_congr
     (J : C ⥤ E) (M : Superfunctor k C (SVec k)) (v : C) (w : E)
     {g h : J.obj v ⟶ w} {b₀ b₁ : M.obj v}
     (hg : g = h) (hb : b₀ = b₁) :
-    ELVOld.BalancedInduction.tensor J M.toFunctor v g b₀ =
-      ELVOld.BalancedInduction.tensor J M.toFunctor v h b₁ :=
-  congrArg₂ (fun a x => ELVOld.BalancedInduction.tensor J M.toFunctor v a x) hg hb
+    ELV.BalancedInduction.tensor J M.toFunctor v g b₀ =
+      ELV.BalancedInduction.tensor J M.toFunctor v h b₁ :=
+  congrArg₂ (fun a x => ELV.BalancedInduction.tensor J M.toFunctor v a x) hg hb
 
 private theorem scalarIso_total_hom_inv
     {F G : Superfunctor k C (SVec k)} (e : F ≅ G) (w : C) (b : G.obj w) :
@@ -1529,27 +1529,27 @@ local notation "Q" => probeOldOrdinaryFunctor D Sc m ν
 
 /-- The prescribed scalar quotient comparison is even. -/
 theorem probeQuotientInducedModuleIso_hom_mem
-    (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
+    (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
     (hN : ProbeEvaluatesCoefficients D m Sc ν N) :
     (probeQuotientInducedModuleIso D Sc m ν N hN).hom ∈ parity (R := k) _ _ 0 := by
   let u := eqToIso (probeOrdinaryModuleSuperfunctor_restrict D Sc m ν N hN)
-  let IQ := ELVOld.BalancedInduction.induction (k := k) Q
+  let IQ := ELV.BalancedInduction.induction (k := k) Q
   have hu : u.inv ∈ parity (R := k) _ _ 0 :=
     scalarEqToHom_mem (probeOrdinaryModuleSuperfunctor_restrict D Sc m ν N hN).symm
   have hi : IQ.map u.inv ∈ parity (R := k) _ _ 0 := IsSuperfunctor.map_mem hu
   have hc : (probeQuotientCounitIso D Sc m ν
       (probeOrdinaryModuleSuperfunctor D Sc m ν N hN)).hom ∈ parity (R := k) _ _ 0 := by
     unfold probeQuotientCounitIso
-    exact ELVOld.moduleIsoOfEvenNatIso_hom_mem _ _ _ _ _
+    exact ELV.moduleIsoOfEvenNatIso_hom_mem _ _ _ _ _
   exact comp_mem hi hc
 
 /-- The scalar quotient comparison cancels its canonical inverse unit tensor. -/
 theorem probeQuotientInducedModuleIso_hom_unit
-    (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
+    (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
     (hN : ProbeEvaluatesCoefficients D m Sc ν N)
     (w : OrdinaryContentCategory D Sc a ν) (b : N.obj (probeOrdinaryOldObject D Sc m ν w)) :
     (probeQuotientInducedModuleIso D Sc m ν N hN).hom.app 0 w
-      (ELVOld.BalancedInduction.tensor Q N.toFunctor
+      (ELV.BalancedInduction.tensor Q N.toFunctor
         (probeOrdinaryOldObject D Sc m ν w) (𝟙 w) b) = b := by
   let e := probeQuotientInducedModuleIso D Sc m ν N hN
   have h := probeQuotientInducedModuleIso_inv_tensor D Sc m ν N hN w b
@@ -1562,46 +1562,46 @@ theorem probeQuotientInducedModuleIso_hom_unit
 
 section Append
 variable
-  (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
+  (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
   (hN : ProbeEvaluatesCoefficients D m Sc ν N) (i : I)
-local notation "J" => ELVOld.oldContentAppend D Sc cut ν i
+local notation "J" => ELV.oldContentAppend D Sc cut ν i
 local notation "T" => probeOrdinaryAppend D Sc m ν i
 local notation "U" => probeOldOrdinaryFunctor D Sc m (i :: ν)
-local notation "L" => ELVOld.BalancedInduction.induced J N
+local notation "L" => ELV.BalancedInduction.induced J N
 local notation "O" => probeOrdinaryModuleSuperfunctor D Sc m ν N hN
 local notation "hL" => probeOldInduced_evaluatesCoefficients D m Sc ν i N hN
 
-private def probeQuotientComparisonMap : (ELVOld.BalancedInduction.induction Q).obj N ⟶ O :=
+private def probeQuotientComparisonMap : (ELV.BalancedInduction.induction Q).obj N ⟶ O :=
   (probeQuotientInducedModuleIso D Sc m ν N hN).hom
 
-local notation "S" => ELVOld.BalancedInduction.squareLinear J U Q T
+local notation "S" => ELV.BalancedInduction.squareLinear J U Q T
   (probeOldOrdinaryFunctor_append D Sc m ν i) N O
   (probeQuotientComparisonMap D Sc m ν N hN)
 
 private theorem probeAppend_hom_square :
     (probeAppendOrdinaryModuleIso D Sc m ν N hN i).hom =
       (probeQuotientInducedModuleIso D Sc m (i :: ν) L hL).inv ≫
-        ELVOld.BalancedInduction.squareComparison J U Q T
+        ELV.BalancedInduction.squareComparison J U Q T
           (probeOldOrdinaryFunctor_append D Sc m ν i) N O
           (probeQuotientInducedModuleIso D Sc m ν N hN).hom := by
-  rw [ELVOld.BalancedInduction.squareComparison_eq]
+  rw [ELV.BalancedInduction.squareComparison_eq]
   rfl
 
 /-- The chosen comparison expressed on the literal old and ordinary coends.
 This exposes identical module instances before computing generators. -/
-def probeAppendComparisonLinear (w : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
-    ELVOld.BalancedInduction.Obj J N.toFunctor w →ₗ[k]
-      ELVOld.BalancedInduction.Obj T (O).toFunctor ((U).obj w) :=
+def probeAppendComparisonLinear (w : ELV.OldContentCategory D Sc cut (i :: ν)) :
+    ELV.BalancedInduction.Obj J N.toFunctor w →ₗ[k]
+      ELV.BalancedInduction.Obj T (O).toFunctor ((U).obj w) :=
   (probeAppendOrdinaryModuleIso D Sc m ν N hN i).hom.total ((U).obj w)
 
 private def probeAppendQuotientInverseLinear
-    (w : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
-    ELVOld.BalancedInduction.Obj J N.toFunctor w →ₗ[k]
-      ELVOld.BalancedInduction.Obj U (L).toFunctor ((U).obj w) :=
+    (w : ELV.OldContentCategory D Sc cut (i :: ν)) :
+    ELV.BalancedInduction.Obj J N.toFunctor w →ₗ[k]
+      ELV.BalancedInduction.Obj U (L).toFunctor ((U).obj w) :=
   (probeQuotientInducedModuleIso D Sc m (i :: ν) L hL).inv.total ((U).obj w)
 
 private theorem probeAppendComparisonLinear_factor
-    (w : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
+    (w : ELV.OldContentCategory D Sc cut (i :: ν)) :
     probeAppendComparisonLinear D Sc m ν N hN i w =
       S ((U).obj w) ∘ₗ
         probeAppendQuotientInverseLinear D Sc m ν N hN i w := by
@@ -1610,32 +1610,32 @@ private theorem probeAppendComparisonLinear_factor
 
 /-- The selected comparison on arbitrary old tensor generators. -/
 theorem probeAppendOrdinaryModuleIso_hom_tensor
-    (v : ELVOld.OldContentCategory D Sc cut ν)
-    (w : ELVOld.OldContentCategory D Sc cut (i :: ν))
+    (v : ELV.OldContentCategory D Sc cut ν)
+    (w : ELV.OldContentCategory D Sc cut (i :: ν))
     (g : (J).obj v ⟶ w) (b : N.obj v) :
     probeAppendComparisonLinear D Sc m ν N hN i w
-      (ELVOld.BalancedInduction.tensor J N.toFunctor v g b) =
-      ELVOld.BalancedInduction.tensor T (O).toFunctor ((Q).obj v) ((U).map g) b := by
+      (ELV.BalancedInduction.tensor J N.toFunctor v g b) =
+      ELV.BalancedInduction.tensor T (O).toFunctor ((Q).obj v) ((U).map g) b := by
   let c := probeQuotientComparisonMap D Sc m ν N hN
   have h₁ : probeAppendQuotientInverseLinear D Sc m ν N hN i w
-      (ELVOld.BalancedInduction.tensor J N.toFunctor v g b) =
-      ELVOld.BalancedInduction.tensor U (L).toFunctor w (𝟙 ((U).obj w))
-        (ELVOld.BalancedInduction.tensor J N.toFunctor v g b) :=
+      (ELV.BalancedInduction.tensor J N.toFunctor v g b) =
+      ELV.BalancedInduction.tensor U (L).toFunctor w (𝟙 ((U).obj w))
+        (ELV.BalancedInduction.tensor J N.toFunctor v g b) :=
     probeQuotientInducedModuleIso_inv_tensor D Sc m (i :: ν) L hL
-      ((U).obj w) (ELVOld.BalancedInduction.tensor J N.toFunctor v g b)
-  have h₂ := ELVOld.BalancedInduction.squareLinear_tensor
+      ((U).obj w) (ELV.BalancedInduction.tensor J N.toFunctor v g b)
+  have h₂ := ELV.BalancedInduction.squareLinear_tensor
     J U Q T (probeOldOrdinaryFunctor_append D Sc m ν i) N O
     (probeQuotientComparisonMap D Sc m ν N hN)
     (probeQuotientInducedModuleIso_hom_mem D Sc m ν N hN) v w g b
   have hunit : c.app 0 ((Q).obj v)
-      (ELVOld.BalancedInduction.unit Q N.toFunctor v b) = b :=
+      (ELV.BalancedInduction.unit Q N.toFunctor v b) = b :=
     probeQuotientInducedModuleIso_hom_unit D Sc m ν N hN ((Q).obj v) b
   have hs : S ((U).obj w)
-      (ELVOld.BalancedInduction.tensor U (L).toFunctor w (𝟙 ((U).obj w))
-        (ELVOld.BalancedInduction.tensor J N.toFunctor v g b)) =
-      ELVOld.BalancedInduction.tensor T (O).toFunctor ((Q).obj v) ((U).map g) b := by
+      (ELV.BalancedInduction.tensor U (L).toFunctor w (𝟙 ((U).obj w))
+        (ELV.BalancedInduction.tensor J N.toFunctor v g b)) =
+      ELV.BalancedInduction.tensor T (O).toFunctor ((Q).obj v) ((U).map g) b := by
     have ha : eqToHom (congrArg
-        (fun F : ELVOld.OldContentCategory D Sc cut ν ⥤
+        (fun F : ELV.OldContentCategory D Sc cut ν ⥤
             OrdinaryContentCategory D Sc a (i :: ν) => F.obj v)
         (probeOldOrdinaryFunctor_append D Sc m ν i)).symm ≫ (U).map g =
           (U).map g := by
@@ -1645,46 +1645,46 @@ theorem probeAppendOrdinaryModuleIso_hom_tensor
   rw [probeAppendComparisonLinear_factor, LinearMap.comp_apply]
   calc
     _ = S ((U).obj w)
-        (ELVOld.BalancedInduction.tensor U (L).toFunctor w (𝟙 ((U).obj w))
-          (ELVOld.BalancedInduction.tensor J N.toFunctor v g b)) :=
+        (ELV.BalancedInduction.tensor U (L).toFunctor w (𝟙 ((U).obj w))
+          (ELV.BalancedInduction.tensor J N.toFunctor v g b)) :=
       congrArg (S ((U).obj w)) h₁
     _ = _ := hs
 
 /-- In particular, the chosen comparison intertwines the literal append units. -/
 theorem probeAppendOrdinaryModuleIso_hom_unit
-    (v : ELVOld.OldContentCategory D Sc cut ν) (b : N.obj v) :
+    (v : ELV.OldContentCategory D Sc cut ν) (b : N.obj v) :
     probeAppendComparisonLinear D Sc m ν N hN i ((J).obj v)
-      (ELVOld.BalancedInduction.unit J N.toFunctor v b) =
-      ELVOld.BalancedInduction.unit T (O).toFunctor ((Q).obj v) b := by
+      (ELV.BalancedInduction.unit J N.toFunctor v b) =
+      ELV.BalancedInduction.unit T (O).toFunctor ((Q).obj v) b := by
   have h := probeAppendOrdinaryModuleIso_hom_tensor D Sc m ν N hN i v ((J).obj v) (𝟙 _) b
   have hin := congrArg (probeAppendComparisonLinear D Sc m ν N hN i ((J).obj v))
-    (ELVOld.BalancedInduction.unit_apply J N.toFunctor v b)
-  have hout := ELVOld.BalancedInduction.unit_apply T (O).toFunctor ((Q).obj v) b
+    (ELV.BalancedInduction.unit_apply J N.toFunctor v b)
+  have hout := ELV.BalancedInduction.unit_apply T (O).toFunctor ((Q).obj v) b
   exact hin.trans ((h.trans (congrArg
-    (fun z => ELVOld.BalancedInduction.tensor T (O).toFunctor ((Q).obj v) z b)
+    (fun z => ELV.BalancedInduction.tensor T (O).toFunctor ((Q).obj v) z b)
     ((U).map_id ((J).obj v)))).trans hout.symm)
 
 /-- The chosen comparison intertwines the prescribed signed induction dots,
 including the odd twist on inhomogeneous coend arrows. -/
 theorem probeAppendOrdinaryModuleIso_hom_dot
-    (w : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
+    (w : ELV.OldContentCategory D Sc cut (i :: ν)) :
     probeAppendComparisonLinear D Sc m ν N hN i w ∘ₗ
         probeOldContentInductionDot D Sc m ν i N w =
-      ELVOld.BalancedInduction.transformLinear
+      ELV.BalancedInduction.transformLinear
         (probeOrdinaryAppendDot_supernatural D Sc m ν i) O ((U).obj w) ∘ₗ
         probeAppendComparisonLinear D Sc m ν N hN i w := by
-  apply ELVOld.BalancedInduction.hom_ext
+  apply ELV.BalancedInduction.hom_ext
   intro v g b
   rw [LinearMap.comp_apply, probeOldContentInductionDot_tensor,
     probeAppendOrdinaryModuleIso_hom_tensor, LinearMap.comp_apply,
     probeAppendOrdinaryModuleIso_hom_tensor,
-    ELVOld.BalancedInduction.transformLinear_tensor]
+    ELV.BalancedInduction.transformLinear_tensor]
   have hg : (U).map (probeOldContentAppendDot D Sc m ν i v ≫ twist k (D.parity i) g) =
       probeOrdinaryAppendDot D Sc m ν i ((Q).obj v) ≫
         twist k (D.parity i) ((U).map g) := by
     rw [Functor.map_comp, probeOldContentAppendDot_image, map_twist]
     rfl
-  exact congrArg (fun h => ELVOld.BalancedInduction.tensor T (O).toFunctor ((Q).obj v) h b) hg
+  exact congrArg (fun h => ELV.BalancedInduction.tensor T (O).toFunctor ((Q).obj v) h b) hg
 
 end Append
 end OddMath.QuiverHecke
@@ -1711,7 +1711,7 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ) (ν : List I) (i : I)
 local notation "cut" => probeCutoff D m
 local notation "a" => probePolynomial (k := k) (probeDotExponent D) m
-local notation "J" => ELVOld.oldContentAppend D Sc cut ν i
+local notation "J" => ELV.oldContentAppend D Sc cut ν i
 local notation "T" => probeOrdinaryAppend D Sc m ν i
 local notation "Q" => probeOldOrdinaryFunctor D Sc m ν
 local notation "U" => probeOldOrdinaryFunctor D Sc m (i :: ν)
@@ -1719,10 +1719,10 @@ local notation "U" => probeOldOrdinaryFunctor D Sc m (i :: ν)
 /-- Restriction preserves the full scalar coefficient evaluation condition,
 including the odd coefficient kernel. -/
 theorem probeOldRestriction_evaluatesCoefficients
-    (N : Superfunctor k (ELVOld.OldContentCategory D Sc cut (i :: ν)) (SVec k))
+    (N : Superfunctor k (ELV.OldContentCategory D Sc cut (i :: ν)) (SVec k))
     (hN : ProbeEvaluatesCoefficients D m Sc (i :: ν) N) :
     ProbeEvaluatesCoefficients D m Sc ν
-      ((ELVOld.BalancedInduction.restriction J).obj N) := by
+      ((ELV.BalancedInduction.restriction J).obj N) := by
   intro v c
   change N.toFunctor.map ((J).map (probeOldCoefficient D m Sc ν v c)) = _
   rw [probeOldCoefficient_append]
@@ -1731,14 +1731,14 @@ theorem probeOldRestriction_evaluatesCoefficients
 /-- Scalar descent commutes with the specified old and ordinary append
 restrictions, as an equality of supermodules on the original vector values. -/
 theorem probeOrdinaryRestrictionModule_eq
-    (N : Superfunctor k (ELVOld.OldContentCategory D Sc cut (i :: ν)) (SVec k))
+    (N : Superfunctor k (ELV.OldContentCategory D Sc cut (i :: ν)) (SVec k))
     (hN : ProbeEvaluatesCoefficients D m Sc (i :: ν) N) :
     probeOrdinaryModuleSuperfunctor D Sc m ν
-      ((ELVOld.BalancedInduction.restriction J).obj N)
+      ((ELV.BalancedInduction.restriction J).obj N)
       (probeOldRestriction_evaluatesCoefficients D Sc m ν i N hN) =
-        (ELVOld.BalancedInduction.restriction T).obj
+        (ELV.BalancedInduction.restriction T).obj
           (probeOrdinaryModuleSuperfunctor D Sc m (i :: ν) N hN) := by
-  let R := (ELVOld.BalancedInduction.restriction J).obj N
+  let R := (ELV.BalancedInduction.restriction J).obj N
   let hR := probeOldRestriction_evaluatesCoefficients D Sc m ν i N hN
   apply Superfunctor.ext
   apply CategoryTheory.Functor.ext
@@ -1791,7 +1791,7 @@ no assertion is made about arbitrary unevaluated old modules.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction
+open ELV ELV.BalancedInduction
 universe u
 private theorem comp_scalar_action
     {k C : Type u} [CommRing k] [Category.{u} C]
@@ -1882,7 +1882,7 @@ the probe algebra or imposing coefficient-power truncation.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1908,10 +1908,10 @@ instance (h : ν.Perm μ) : IsSuperfunctor k (oldContentReindex D Sc cutoff h) w
 @[simp] theorem oldContentReindex_refl :
     oldContentReindex D Sc cutoff (List.Perm.refl ν) = 𝟭 _ := rfl
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction
+open ELV ELV.BalancedInduction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)

@@ -139,9 +139,9 @@ def elvHomGrading : GradedSupercategory k (ELVCoefficientCategory D Sc cutoff) :
   exact BoxProd.instGradedSupercategory
 
 /-- The integer homogeneous parts of the existing coefficient quotient Homs. -/
-abbrev elvHomDegree (v w : List I) (n : ℤ) : Submodule k (ELVOld.hom D Sc cutoff v w) :=
+abbrev elvHomDegree (v w : List I) (n : ℤ) : Submodule k (ELV.hom D Sc cutoff v w) :=
   letI := elvHomGrading D sy Sc hc cutoff
-  GradedSupercategory.degree (R := k) (ELVOld.obj D Sc cutoff v) (ELVOld.obj D Sc cutoff w) n
+  GradedSupercategory.degree (R := k) (ELV.obj D Sc cutoff v) (ELV.obj D Sc cutoff w) n
 
 /-- These parts form a direct sum, not merely a filtration. -/
 theorem elvHomDegree_internal (v w : List I) :
@@ -160,8 +160,8 @@ theorem elvQuotientMap_source_mem_degree {v w : List I} {a : SKM.SYM D k}
   rw [elvQuotientMap_source]
   let _ := elvCoefficientCategoryGrading (k := k) D sy cutoff
   let _ := gradedSupercategory D sy Sc hc
-  exact BoxProd.tmulHom_mem_degree (X := ELVOld.obj D Sc cutoff v)
-    (Y := ELVOld.obj D Sc cutoff w) (Submodule.mem_map_of_mem ha) hf
+  exact BoxProd.tmulHom_mem_degree (X := ELV.obj D Sc cutoff v)
+    (Y := ELV.obj D Sc cutoff w) (Submodule.mem_map_of_mem ha) hf
 
 /-- Dot powers on a nonempty word have their affine symmetrizer degree. -/
 theorem firstDotPower_mem_gdeg (j : I) (v : List I) (n : ℕ) :
@@ -200,10 +200,10 @@ theorem deformedCyclotomic_mem_elvHomDegree (j : I) (v : List I) (N : ℕ)
 
 /-- Both parity cases of the first-position cyclotomic relation have degree
 `2 d_j cutoff_j`, with the original exterior coefficients. -/
-theorem ELVOld.relation_mem_degree (j : I) (v : List I) :
-    ELVOld.relation D Sc cutoff j v ∈
+theorem ELV.relation_mem_degree (j : I) (v : List I) :
+    ELV.relation D Sc cutoff j v ∈
       elvHomDegree D sy Sc hc cutoff (j :: v) (j :: v) (2 * sy.d j * cutoff j) := by
-  unfold ELVOld.relation
+  unfold ELV.relation
   split_ifs with hj
   · exact deformedCyclotomic_mem_elvHomDegree D sy Sc hc cutoff j v (cutoff j) _
       (SKM.SYM.elvMonicCoefficient_mem_coefficientDegreePart D k sy ⟨j, hj⟩ (cutoff j))
@@ -223,7 +223,7 @@ section
 Integer projections preserve the two-sided old cyclotomic ideal: decompose
 both surrounding coefficient-category morphisms into homogeneous summands,
 then use the homogeneity of the first-position relation. The quotient is
-`ELVOld.Old` with its full exterior coefficients, not a replacement quotient.
+`ELV.Old` with its full exterior coefficients, not a replacement quotient.
 
 The degree images form an internal direct sum under `Sc.Homogeneous`.
 Total super parity descends independently and commutes with integer projection;
@@ -233,7 +233,7 @@ degrees. No positive-content support bound or enlarged target action is claimed.
 
 noncomputable section
 open CategoryTheory StringDiagrams GradedSupercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (sy : SKM.Symmetrizer D)
@@ -394,7 +394,7 @@ theorem oldProj_mem_oldDegree (p : ZMod 2) {v w : List I} {n : ℤ}
   obtain ⟨a, ha, rfl⟩ := hf
   exact Submodule.mem_map_of_mem (proj_mem_degree p ha)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -412,7 +412,7 @@ coefficient algebra. This is not an upper-support assertion for that algebra.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -503,7 +503,7 @@ theorem single_recurrence (i : I)
   rw [map_sum] at hz
   exact hz
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -521,7 +521,7 @@ coefficients are unchanged. Bounds below concern only one-strand corners.
 noncomputable section
 open CategoryTheory StringDiagrams GradedSupercategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -797,7 +797,7 @@ theorem truncateOld_mem_degree {v w : List I} {n : ℤ} {f : Old D Sc cutoff v w
   obtain ⟨a, ha, rfl⟩ := hf
   exact Submodule.mem_map_of_mem ha
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -807,7 +807,7 @@ section
 noncomputable section
 open CategoryTheory StringDiagrams GradedSupercategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -947,7 +947,7 @@ theorem truncatedVacuum_support_of_bound (M : ℤ) (hM : 0 ≤ M)
   · rw [vacuum_hom_eq_zero D Sc cutoff hw f, map_zero]
     exact Submodule.zero_mem _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

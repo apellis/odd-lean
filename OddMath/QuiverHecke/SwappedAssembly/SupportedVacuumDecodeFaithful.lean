@@ -34,7 +34,7 @@ noncomputable section
 set_option quotPrecheck false
 open CategoryTheory StringDiagrams Supercategory
 
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open CyclotomicAction SwappedAssembly
 universe u
 
@@ -118,10 +118,10 @@ theorem tensorVacuumEndDecode_injective :
   exact h'
 
 end Decode
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld ELVOld.WeightTensorVacuum
+open CyclotomicAction ELV ELV.WeightTensorVacuum
 universe u
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]

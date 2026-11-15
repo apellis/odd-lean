@@ -25,7 +25,7 @@ with the prescribed old induction dot. All coefficient twists are retained.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor
 universe u
 
@@ -138,7 +138,7 @@ theorem oldContentAppendExtensionIso_dot
   simpa only [LinearMap.comp_apply] using
     oldContentAppendExtensionIso_dot_tensor D Sc cutoff ν i M s t w h g b
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -154,7 +154,7 @@ content dot and the restricted old induction dot, with either moving parity.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor
 universe u
 
@@ -276,7 +276,7 @@ theorem oldContentAppendRestrictionIso_dot
   rw [LinearMap.comp_assoc, ← hu, ← LinearMap.comp_assoc,
     oldContentAppendExtensionIso_dot, LinearMap.comp_assoc]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -292,7 +292,7 @@ of the existing units and counits, on every input module and every vector.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor
 universe u
 namespace BalancedInduction
@@ -399,7 +399,7 @@ theorem oldContentRestrictionExtensionComponent_zero
       oldContentRestrictionExtensionComponent D Sc cutoff ν i 1 N w
   rw [hz, add_zero]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -416,7 +416,7 @@ unit and retain each old coefficient arrow.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open CategoryTheory.Functor
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor
 universe u
 namespace BalancedInduction
@@ -571,7 +571,7 @@ theorem oldContentEFRestrictionLinear_tensor
       s.obj a z) (twist_zero g) he)
   exact hResult
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -587,7 +587,7 @@ module mate through the chosen E/F charts, on literal balanced tensors.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open CategoryTheory.Functor
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor
 universe u
 namespace BalancedInduction
@@ -766,7 +766,7 @@ theorem oldContentAppendRestrictionLinear_mate_tensor
       (BalancedInduction.tensor J₀ ((Fc).obj N).toFunctor s g b))
   exact hCore.trans hActual
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -780,7 +780,7 @@ that content; no equivalence between old and truncated categories is used.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -844,7 +844,7 @@ theorem oldContent_capCount_height (i : I) (ν : List I)
   have hm := contentCapCount_cast D cutoff i (ν : Multiset I) h
   omega
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end

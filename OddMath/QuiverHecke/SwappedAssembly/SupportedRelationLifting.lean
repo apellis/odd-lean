@@ -11,7 +11,7 @@ layer-representation relation for supported rightmost inputs.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld ProbeReservoir
+open CyclotomicAction ELV ProbeReservoir
 universe u
 local instance supportedRelationHomPi {k : Type u} [CommRing k]
     (A B : PiSCat.{u,u,u+1} k) : PiSupercategory k (A ⟶ B) :=

@@ -9,7 +9,7 @@ endomorphism algebra of the same supported matrix module.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld
+open CyclotomicAction ELV
 universe u
 section Product
 variable {k B : Type*} [CommRing k] [Semiring B] [Algebra k B]

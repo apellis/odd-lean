@@ -22,7 +22,7 @@ any exact-content supermodule. Its inverse uses the total-parity twist.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.ModuleYoneda
+namespace OddMath.QuiverHecke.ELV.ModuleYoneda
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
@@ -149,7 +149,7 @@ theorem evaluate_proj (t : contentRepresentable D Sc cutoff N β v ⟶ M) (p : Z
     simp only [Superfunctor.proj_app, ite_true, zero_ne_one, ite_false]
     exact zero_add _
 
-end OddMath.QuiverHecke.ELVOld.ModuleYoneda
+end OddMath.QuiverHecke.ELV.ModuleYoneda
 end
 
 end
@@ -164,7 +164,7 @@ homogeneous Yoneda naturality cancel over any ordinary commutative ring.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.ModuleCentre
+namespace OddMath.QuiverHecke.ELV.ModuleCentre
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
@@ -301,7 +301,7 @@ theorem realize_reconstruct (η : Centre D Sc cutoff N β) :
   · rw [ite_eq_right h, Superfunctor.app_eq_zero_of_mem (moduleMap_mem D Sc cutoff N β η p M) h]
     exact M.toFunctor.map_zero v v
 
-end OddMath.QuiverHecke.ELVOld.ModuleCentre
+end OddMath.QuiverHecke.ELV.ModuleCentre
 end
 
 end
@@ -316,7 +316,7 @@ diagrams, independently of their super parity.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory GradedSupercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -348,7 +348,7 @@ theorem equalCrossComponent_degree (i : I) (s : OldCategory D Sc cutoff) :
   simp [pl, PG.ld, gdeg, SKM.Datum.d_self]
   ring
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -364,7 +364,7 @@ module Homs or inverse-degree premise is used.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory GradedSupercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -514,7 +514,7 @@ theorem unitKernelComponent_degree (i : I) (v t : OldCategory D Sc cutoff)
       exact Submodule.smul_mem _ _ (oldComp_degree D Sc cutoff sy hc _ _
         (oldAppend_mem_degree D Sc cutoff sy hc i hb) hm)
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -533,7 +533,7 @@ Homs or grading transported through a matrix is assumed.
 noncomputable section
 open CategoryTheory Opposite StringDiagrams Supercategory GradedSupercategory
 open OddMath.IntegerMatrix
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -731,7 +731,7 @@ theorem negativeKernelPrincipalInverse_degree (i : I) (v t : OldCategory D Sc cu
     rw [Pi.single_eq_of_ne (by simp)]
     exact Submodule.zero_mem _
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -745,7 +745,7 @@ including its action on every pure tensor and the principal finite slot.
 -/
 noncomputable section
 open CategoryTheory Opposite StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 namespace BalancedKernelTensor
 variable {k C : Type u} [CommRing k] [Category.{u} C]
@@ -855,7 +855,7 @@ theorem moduleCapMatrixIso_principal_inv_tensor
   rfl
 
 end CyclotomicCrossingTensor.TensorMatrixCoordinates
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -872,7 +872,7 @@ and all their canonical parity coordinates.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 open TensorMatrixCoordinates
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -988,7 +988,7 @@ theorem negativeKernelClosure_evaluate
     ← moduleCapMatrixIso_principal_inv_tensor,
     negativeKernelCoordinates_single_tensor, unitKernel_evaluate]
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -1003,7 +1003,7 @@ then recover both components without grading arbitrary module morphisms.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory GradedSupercategory
-namespace OddMath.QuiverHecke.ELVOld.ModuleCentre
+namespace OddMath.QuiverHecke.ELV.ModuleCentre
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
@@ -1053,7 +1053,7 @@ theorem reconstruct_mem_degree_of_total_evaluation (η : Centre D Sc cutoff N β
   rw [reconstruct_app_eq_proj_total, reconstruct_total_evaluate]
   exact (contentGradedSupercategory D Sc cutoff N sy hc β).proj_mem_degree p (h w)
 
-end OddMath.QuiverHecke.ELVOld.ModuleCentre
+end OddMath.QuiverHecke.ELV.ModuleCentre
 end
 
 end
@@ -1071,7 +1071,7 @@ This calculation does not identify them with a chosen content local `g'`.
 -/
 noncomputable section
 open CategoryTheory Opposite StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1169,7 +1169,7 @@ theorem negativeKernelBoundary_degree (i : I) (v t : OldCategory D Sc cutoff)
       q + 2 * sy.d i * ((m : ℤ) - n.val) := by ring
   simpa only [negativeKernelBoundary, LinearMap.comp_apply, he] using h
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -1184,7 +1184,7 @@ retained. This is the OLD evaluation step, before weighted content transport.
 -/
 noncomputable section
 open CategoryTheory Opposite StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 open TensorMatrixCoordinates
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1279,7 +1279,7 @@ theorem negativeKernelBoundary_evaluate
   rw [negativeKernelBoundary, LinearMap.comp_apply,
     capKernel_evaluate_moduleCapRow, ← moduleCapMatrixIso_window_inv_tensor]
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end

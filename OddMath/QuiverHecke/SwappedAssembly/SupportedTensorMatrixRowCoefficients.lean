@@ -11,7 +11,7 @@ ambient path. Both terminal-object transport and full inclusion are retained.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld
+open CyclotomicAction ELV
 universe u
 private theorem functorEquality_square {C B : Type*} [Category* C] [Category* B]
     (F G : C ⥤ B) (h : F = G) {V W : C} (f : V ⟶ W) :

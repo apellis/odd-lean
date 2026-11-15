@@ -127,11 +127,11 @@ structure on the actual tensor quotients, not on replacement modules.
 
 ## 3. P-linearity and injectivity with the typed Q target
 
-**Checked injectivity.** `EndpointPolynomials.lean` proves `ELVOld.pMap_injective`
+**Checked injectivity.** `EndpointPolynomials.lean` proves `ELV.pMap_injective`
 for arbitrary words, cutoffs and full exterior coefficients. The actual
 quotient composite `qMap_comp_pMap` is `signedQPMap`; its injectivity follows
 from `projection_qp_relation_regular` and the proved moving PBW coordinates.
-`ELVOld.pPolynomial_injective` now transports this injectivity to
+`ELV.pPolynomial_injective` now transports this injectivity to
 the content-level ordinary right B[s]-linear map. The exact projective
 sequence, including the finite-projective PBW identification, remains open.
 

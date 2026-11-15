@@ -32,7 +32,7 @@ noncomputable section
 set_option quotPrecheck false
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld ELVOld.PowerVacuumCoefficient ELVOld.WeightTensorVacuum
+open CyclotomicAction ELV ELV.PowerVacuumCoefficient ELV.WeightTensorVacuum
 universe u
 local instance supportedVacuumRightEvenHomPi {k : Type u} [CommRing k]
     (A C : PiSCat.{u,u,u+1} k) : PiSupercategory k (A ⟶ C) :=

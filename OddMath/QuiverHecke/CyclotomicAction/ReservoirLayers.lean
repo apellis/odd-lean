@@ -24,7 +24,7 @@ No complete swapped factor, boundary-support or faithfulness premise is used.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.ReservoirLayerCells
+namespace OddMath.QuiverHecke.ELV.ReservoirLayerCells
 open CyclotomicAction SwappedAssembly
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
@@ -429,7 +429,7 @@ theorem cross_class_square (i j : I) {xj xi : X} (h₁ : xR + D.α j = xj) (h₂
 
 end Cross
 
-end OddMath.QuiverHecke.ELVOld.ReservoirLayerCells
+end OddMath.QuiverHecke.ELV.ReservoirLayerCells
 end
 
 end
@@ -444,7 +444,7 @@ output shift comparison and selected whole-weight successor chart.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor CyclotomicAction
 universe u
 local instance reservoirPostUnitHomPi {k : Type u} [CommRing k]
@@ -495,7 +495,7 @@ theorem reservoirPostCup_block (r : ℕ) (Z : SKM.homWeightSector T (W).obj muP 
   simpa only [Category.assoc] using
     ht.trans (elvWeightUnitPower_following_coordinates D Sc cutoff bound Λ i h (Z.obj N) δ r)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -509,7 +509,7 @@ its actual content equality, retaining the raw unit and every dot power.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicAction
 universe u
 local instance postStandardHomPi {k : Type u} [CommRing k] (A B : PiSCat.{u,u,u+1} k) :
@@ -573,7 +573,7 @@ theorem reservoirPostCup_canonical (r : ℕ) (Z : SKM.homWeightSector T (W).obj 
   rw [← reservoirPostCup_block D Sc cutoff bound Λ hc T i β muP h r Z N δ]
   simp only [Category.assoc]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -604,7 +604,7 @@ set_option backward.dsimp.instances true
 
 open CategoryTheory StringDiagrams Supercategory GradedSupercategory OddMath.Diagrams
 
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 
 open CyclotomicAction BalancedInduction CyclotomicCrossingTensor
 
@@ -780,7 +780,7 @@ theorem negativeCoefficient_mem_degreeOver (hh : D.h i x₁ ≤ 0) (r s : ℕ) :
 
 end ReservoirClosures
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -808,7 +808,7 @@ set_option backward.dsimp.instances true
 open CategoryTheory Opposite StringDiagrams Supercategory GradedSupercategory OddMath.Diagrams
 open OddMath.IntegerMatrix
 
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 
 open CyclotomicAction BalancedInduction CyclotomicCrossingTensor
 
@@ -999,7 +999,7 @@ theorem negativeCoefficient_mem_degreeOver (hh : D.h i x₁ ≤ 0)
 
 end ReservoirBoundaries
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1013,7 +1013,7 @@ degrees `0, …, b`. The chosen principal closures and the off-window finite bou
 through source coefficients of strictly positive degree in the truncated quotient over `K`, so
 their post-whiskering actions, with arbitrary morphisms on either side and after native
 Hom-sector charts, lie in level one of the jointly nilpotent coefficient ideal
-`ELVOld.contentModuleCoefficientIdealOver`
+`ELV.contentModuleCoefficientIdealOver`
 (`ReservoirClosures.positiveDirectClosure_evaluate_memOver`,
 `ReservoirClosures.negativeDirectClosure_evaluate_memOver`,
 `ReservoirBoundaries.positiveDirectBoundary_evaluate_memOver`,
@@ -1028,7 +1028,7 @@ noncomputable section
 
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct OddMath.Diagrams
 
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 
 open SwappedAssembly CyclotomicAction
 
@@ -1301,7 +1301,7 @@ theorem negativeDirectBoundary_evaluate_memOver
 
 end ReservoirBoundaries
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

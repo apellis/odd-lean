@@ -38,7 +38,7 @@ variable {i : I} {v w : List I}
 def shift (x : PrependIdx i v w) (d : ℕ) : PrependIdx i v w :=
   ⟨(d + x.1.1, x.1.2), x.2⟩
 end PrependIdx
-namespace ELVOld
+namespace ELV
 private theorem dotPower_mem (i : I) (v : List I) (d : ℕ) :
     (dotE D Sc (i :: v) 0 ^ d : End _) ∈ parity (R := k) _ _ (d • D.parity i) := by
   have hx : dotE D Sc (i :: v) 0 ∈ parity (R := k) _ _ (D.parity i) :=
@@ -346,7 +346,7 @@ theorem insert_sourceDotPower (i : I) (v : List I) (a d : ℕ) :
   rw [affineInsert_positionedDot_pow]
   rfl
 
-end ELVOld
+end ELV
 end OddMath.QuiverHecke
 end
 
@@ -366,7 +366,7 @@ is used for vanishing. All cutoffs and both moving-colour parities are retained.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -508,7 +508,7 @@ theorem allPrefix_relation_context (i : I) (μ σ z : List I)
     List.map_nil, List.sum_cons, List.sum_nil, add_zero]
   exact add_comm _ _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -525,7 +525,7 @@ The library's even crossing convention contributes a minus sign, as in
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -654,7 +654,7 @@ theorem qp_repeated_even (i : I) (hi : D.parity i = 0) (μ σ z : List I)
   rw [moveHom_lastToFirstHom_append_self_even D Sc i hi μ]
   exact eq_neg_of_add_eq_zero_right hc
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -797,7 +797,7 @@ theorem elv_comm (cutoff : I → ℕ) {p q : ZMod 2}
   simpa only [map_mul, map_zsmul] using
     congrArg (SKM.SYM.elvModelQuotient (k := k) D cutoff) (polynomialExterior_comm D ha' hb')
 variable (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
-open ELVOld
+open ELV
 
 def scalar (v : List I) : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff →ₗ[k]
     hom D Sc cutoff v v :=
@@ -1059,7 +1059,7 @@ in the old-only quotient. No moving cyclotomic relation is imposed.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1323,7 +1323,7 @@ theorem qp_repeated_odd (i : I) (hi : D.parity i = 1) (μ σ z : List I)
   congr 1
   simp only [E, A, pow_two, End.mul_def, Category.assoc]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1341,7 +1341,7 @@ use the same evaluation as the repeated-colour recursions.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1393,7 +1393,7 @@ theorem qp_nil (i : I) (σ z : List I) (h : hom D Sc cutoff (i :: σ) z) :
   congr 1
   simp [moveHom, lastToFirstHom, qpProduct, End.one_def]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1413,7 +1413,7 @@ No restriction on colours, coefficients, or cutoffs is imposed.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1606,7 +1606,7 @@ theorem qp_projection_product (i : I) (μ : List I) :
       rw [MonoidalSupercategory.comp_whiskerRight (R := k)] at hr
       simpa only [qpFactor, ite_eq_right hx] using hr
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1625,7 +1625,7 @@ inputs to signed polynomial regularity; no parity-zero restriction is imposed.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct DirectSum Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1766,7 +1766,7 @@ theorem signedMovingPower_coordinate (p : ZMod 2) {i : I} {v w : List I}
     signedMovingPower_coordinate_shift D Sc cutoff p q d
       (prependOldCoordinateEquiv D Sc cutoff p i v w z)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1787,7 +1787,7 @@ rings, including zero cutoffs, without flatness or nonvanishing hypotheses.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct DirectSum Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1936,7 +1936,7 @@ theorem projection_relation_regular (i : I) (v w : List I)
       (SKM.SYM.evenMonicCoefficient D k i (cutoff i))
       (SKM.SYM.evenMonicCoefficient_top D k i (cutoff i)) h hh
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

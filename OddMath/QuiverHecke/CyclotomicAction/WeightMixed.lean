@@ -32,7 +32,7 @@ with the same original weight are retained, rather than identified.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open CyclotomicAction SwappedAssembly
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -222,7 +222,7 @@ def selectedIso :
       ReservoirWordValue.initialValue D ΛR Sc cutoff L :=
   regularIso D Sc m cutoff _ ΛP ΛR _
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end
@@ -237,7 +237,7 @@ weight adjunction maps through the supported content coordinates.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private theorem unit_transport
     {k C B : Type u} [CommRing k] [Category.{u} C] [Category.{u} B]
@@ -347,7 +347,7 @@ theorem elvWeightMixedCounit_comparison (M : ELVWeightProduct D Sc cutoff bound 
     Superfunctor.comp, elvBlockRes, elvBlockAdj, BalancedInduction.adjunction, elvWeightCounit] at h ht ⊢
   exact ht.trans h
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -363,7 +363,7 @@ use the proved vanishing of both existing mixed-functor coordinates.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private theorem mate_transport
     {A B : Type*} [Category* A] [Category* B] (R : A ⥤ B)
@@ -546,7 +546,7 @@ theorem elvWeightMixedMate_isIso (hij : i ≠ j) :
   isIso_of_homogeneous_components _ (elvWeightMixedMate_mem D Sc cutoff bound i j Λ h₁ h₂ h₃ h₄)
     (elvWeightMixedMate_component_isIso D Sc cutoff bound i j Λ h₁ h₂ h₃ h₄ hij)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -590,7 +590,7 @@ theorem crossMate_piscat_eq_rectangular :
       (Superfunctor.app_eq_zero_of_mem A₁.counit_mem (by decide : (1 : ZMod 2) ≠ 0)) p Z).symm
 end OddMath.SKM
 
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
@@ -613,7 +613,7 @@ theorem elvActionCrossMate_isIso (hij : i ≠ j) :
       (elvActionCross D Sc cutoff bound i j Λ h₁ h₂ h₃ h₄)) := by
   rw [elvActionCrossMate_eq]
   exact elvWeightMixedMate_isIso D Sc cutoff bound j i Λ h₃ h₄ h₁ h₂ hij.symm
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -631,7 +631,7 @@ No injectivity of the root or coroot maps is assumed.
 
 noncomputable section
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X : Type u} [AddCommGroup X]
   (D : SKM.Datum I X) (cutoff : I → ℕ)
@@ -669,7 +669,7 @@ theorem contentCapCount_weightBlock (i : I) (Λ x : X)
   unfold contentCapCount
   rw [contentCrossingHeight_eq_neg_weight D cutoff i Λ x hcutoff β, neg_neg]
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -770,7 +770,7 @@ the prescribed adjacent weight steps.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
@@ -793,7 +793,7 @@ theorem elvWeightRouquierMate_mem :
   simpa only [SKM.zmod2_mul_self] using
     elvWeightMixedMate_mem D Sc cutoff bound i i Λ h₁ h₂ h₁ h₂
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -808,7 +808,7 @@ negative equal-colour crossing and positive distinct-colour crossing.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private theorem mate_transport_2
     {A B : Type*} [Category* A] [Category* B] (R : A ⥤ B)
@@ -955,7 +955,7 @@ theorem elvWeightRouquierMate_comparison
     (elvWeightMixedTarget_obj D Sc cutoff bound a a Λ ha hb ha hb b N)) hp.symm).trans h
 end RankOne
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -970,7 +970,7 @@ precisely the ordinary grid mate used by the prescribed finite matrices.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
@@ -1006,7 +1006,7 @@ theorem elvWeightRouquierGridMate_comparison
   exact h.trans (congrArg (fun f =>
     eqToHom (elvWeightMixedSource_obj D Sc cutoff bound i i Λ h₁ h₁ β M) ≫ f) hg)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1022,7 +1022,7 @@ induction always has the selected successor and retains every dot power.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private theorem rouquierPower_total
     {k : Type u} [CommRing k] {A B : PiSCat.{u,u,u + 1} k}
@@ -1132,7 +1132,7 @@ theorem elvWeightUnitPower_total_comparison
     (eqToHom (elvInductionComponent_obj_blockSucc D Sc cutoff bound i Λ h δ M))) ha).trans
       (elvWeightUnit_dotPower_comparison D Sc cutoff bound i Λ h δ M n)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1148,7 +1148,7 @@ source coordinate. Every power and the full input module are retained.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private theorem left_whisker_total
     {k : Type u} [CommRing k] {A B E : PiSCat.{u,u,u + 1} k}
@@ -1214,7 +1214,7 @@ theorem elvWeightCapPower_total_comparison
   rw [elvWeightDotPower_total_component] at ha
   exact ha.trans (elvWeightCounit_dotPower_comparison D Sc cutoff bound i Λ h β M n)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1229,7 +1229,7 @@ module maps after applying the selected successor-content coordinate.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
@@ -1291,7 +1291,7 @@ theorem elvWeightCap_gridRow_comparison
         (d ^ n) ≫ (BalancedInduction.adjunctionCounit J).app (M δ)) hD
   exact hC.trans hR
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1308,7 +1308,7 @@ for the supported weight local inverse.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1352,7 +1352,7 @@ theorem elvWeightCapPower_localCoordinates (n : ℕ) :
         (elvBlockGridDot_supernatural D Sc cutoff N i Λ h₁ β) (M δ) n :=
   elvWeightCap_gridRow_comparison D Sc cutoff N i Λ h₁ β M n
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1373,7 +1373,7 @@ the same parity. This is the generating hypothesis of
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open CyclotomicAction SwappedAssembly
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1572,7 +1572,7 @@ theorem regularProbe_generating (Λ : X) (Y : ProbeOldWeightProduct D Sc m Λ (-
     rw [hf, hgm, regularVector]
     exact (eqToHom_comp_app D Sc m _ _ τ q vac _).trans (vacuumHom_vector D Sc m _ q n hN hn)
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end

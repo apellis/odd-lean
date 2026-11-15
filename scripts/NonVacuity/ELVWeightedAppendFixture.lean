@@ -2,7 +2,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ContentModules
 import OddMath.QuiverHecke.CyclotomicAction.SignedIntertwiner
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.WeightedAppendFixture
+namespace OddMath.QuiverHecke.ELV.WeightedAppendFixture
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
@@ -49,9 +49,9 @@ def truncatedRepresentable (v : TruncatedCategory D Sc cutoff N) :
     (f : w ⟶ z) (h : v ⟶ w) :
     (truncatedRepresentable D Sc cutoff N v).map f h = h ≫ f := rfl
 
-end OddMath.QuiverHecke.ELVOld.WeightedAppendFixture
+end OddMath.QuiverHecke.ELV.WeightedAppendFixture
 
-namespace OddMath.QuiverHecke.ELVOld.WeightedAppendFixture
+namespace OddMath.QuiverHecke.ELV.WeightedAppendFixture
 open CyclotomicAction.AsymmetricParameters
 /-- An even and an odd moving colour with connected Cartan data. -/
 def datum : SKM.Datum Bool (Bool → ℤ) :=
@@ -67,4 +67,4 @@ def scalars : SKM.Scalars datum ℚ where
   s_symm := fun _ _ _ _ => rfl
   s_eq_zero := fun _ _ _ _ _ => rfl
   two_isUnit := by intro _; norm_num
-end OddMath.QuiverHecke.ELVOld.WeightedAppendFixture
+end OddMath.QuiverHecke.ELV.WeightedAppendFixture

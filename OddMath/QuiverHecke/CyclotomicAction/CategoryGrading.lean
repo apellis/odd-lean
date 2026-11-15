@@ -24,7 +24,7 @@ remain separate obligations.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
@@ -232,7 +232,7 @@ def contentModuleCoefficientIdeal [Finite I] (T : PiSCat k) :
     (contentCategory_end_bounded D Sc cutoff N β sy hc).choose
     (contentModule_coefficient_eq_zero D Sc cutoff N β sy hc)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -247,7 +247,7 @@ Evaluation at their identity detects every central coefficient component.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
@@ -307,7 +307,7 @@ instance contentRepresentableFunctor_super (v : ContentCategory D Sc cutoff N β
 def contentRepresentable (v : ContentCategory D Sc cutoff N β) :
     ContentModules D Sc cutoff N β := ⟨contentRepresentableFunctor D Sc cutoff N β v⟩
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -324,7 +324,7 @@ is introduced.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory GradedSupercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -365,7 +365,7 @@ def oldAppendGraded (i : I) :
   exact { toFunctor := CyclotomicCrossingTensor.append D Sc cutoff i
           isGraded := { map_mem_degree := oldAppend_mem_degree D Sc cutoff sy hc i } }
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

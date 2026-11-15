@@ -25,7 +25,7 @@ not a polynomial over an ordinary commutative coefficient ring.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -683,7 +683,7 @@ theorem appendError_mem_appendRelations (i : I) {s t : List I}
       rw [span_normalForms D Sc s t] at hle
       exact hle Submodule.mem_top
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

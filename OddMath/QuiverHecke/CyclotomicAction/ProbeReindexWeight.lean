@@ -30,7 +30,7 @@ homogeneous component on the full evaluated module categories.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 universe u
 section Composition
 variable {k C A : Type*} [CommRing k]
@@ -154,7 +154,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 universe u
 private theorem rouquierPower_total
     {k : Type u} [CommRing k] {A B : PiSCat.{u,u,u + 1} k}
@@ -291,7 +291,7 @@ noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open scoped BigOperators
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor CyclotomicAction
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor CyclotomicAction
 universe u
 attribute [local irreducible] contentMissingBoundaryCoefficients
 private def evaluation {k C R : Type*} [CommRing k]
@@ -456,7 +456,7 @@ the twist of arbitrary inhomogeneous quotient arrows.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction
+open ELV ELV.BalancedInduction
 universe u
 
 private theorem transform_total
@@ -540,7 +540,7 @@ The central content need not contain the moving colour.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction
+open ELV ELV.BalancedInduction
 universe u
 attribute [local irreducible] oldAppendReindexIso oldAppendReindexLinear
 private theorem reindex_unit_eq {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -646,7 +646,7 @@ lower predecessor. This is the chart needed at a missing-colour boundary.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 universe u
 attribute [local irreducible] oldAppendReindexIso
 section Generic
@@ -752,7 +752,7 @@ chart-compatibility premise is supplied.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor CyclotomicAction
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor CyclotomicAction
 universe u
 attribute [local irreducible] oldAppendReindexIso probeAppendUpperLoopSuperIso
   probeEvaluatedMissingCoefficients
@@ -799,7 +799,7 @@ retain the actual evaluated category and all independently chosen E maps.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ) (γ : List I)
@@ -902,7 +902,7 @@ inverse at every missing-colour content, including height zero.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor CyclotomicAction
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -944,7 +944,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor CyclotomicAction
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -1079,7 +1079,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 universe u
 private theorem rouquierPower_total_2
     {k : Type u} [CommRing k] {A B : PiSCat.{u,u,u + 1} k}
@@ -1191,7 +1191,7 @@ parity are retained. No inverse or complete-factor hypothesis is supplied.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction
+open ELV ELV.BalancedInduction
 open CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1255,7 +1255,7 @@ retained literally.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor CyclotomicAction
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor CyclotomicAction
 universe u
 section Restriction
 variable {k C A : Type*} [CommRing k]
@@ -1734,7 +1734,7 @@ counits, are retained in the comparison.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -1835,7 +1835,7 @@ private theorem evenNaturalIso_hom_total_2 {F G : Superfunctor k C A}
   OddMath.HomogeneousSuperfunctorIso.ofComponents_hom_total e.app _ N
 
 end Generic
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 section Probe
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -1950,7 +1950,7 @@ formed from the original evaluated adjunctions and negative crossing.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -2017,7 +2017,7 @@ evaluation certificates.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 universe u
 attribute [local irreducible] oldAppendReindexIso
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]

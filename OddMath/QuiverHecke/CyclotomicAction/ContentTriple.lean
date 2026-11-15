@@ -29,7 +29,7 @@ introduced.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 open BalancedInduction Distinct
 universe u
 
@@ -97,7 +97,7 @@ theorem tripleCorrection_tripleDots (i j : I) (s : OldCategory D Sc cutoff) :
   simp only [coefficientCorrection, positionalCorrection, tripleDotCorrectionPolynomial,
     tripleDotCorrectionSum, pow_zero, mul_one]
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -112,7 +112,7 @@ kept and is not declared zero from the absence of the moving colour.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -172,7 +172,7 @@ theorem contentAbsentUnitInverse_nonempty :
     simpa only [Functor.id_map, Category.assoc, Iso.hom_inv_id, Category.comp_id] using he.symm
   simpa only [hf, hg] using H
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -183,7 +183,7 @@ section
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 universe u
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 variable {k : Type u} [CommRing k]
 variable {C D E : Type u} [Category.{u} C] [Category.{u} D] [Category.{u} E]
   [Preadditive C] [Linear k C] [Supercategory k C]
@@ -231,9 +231,9 @@ theorem compForward_inner_arrow_recast
   simp only [inductionCompOfEq, eqToIso_refl, Iso.trans_refl, moduleIsoLinearEquiv,
     Iso.app_hom, SuperNatTrans.total, inductionComp_hom_app_one, add_zero]
   exact compForward_transform_inner K ha M z
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open MonoidalCategory
 open scoped TensorProduct
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -549,7 +549,7 @@ variable
 
 end PrefixComparisonPremises
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -560,7 +560,7 @@ section
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 universe u
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
 
@@ -569,7 +569,7 @@ theorem contentTripleRight_whisker (i j l : I) :
   rw [crossTwo, cl_whiskerLeft]
   rfl
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -584,7 +584,7 @@ three-factor braid fields of Brundan–Ellis Definition 1.5.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 universe u
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
 
@@ -621,7 +621,7 @@ private theorem family_total
     simp [SuperNatTrans.total, IsSupernatural.toSuperNatTrans]
 
 end Suffix
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -637,7 +637,7 @@ comparison used by the selected weight charts.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open OddMath.QuiverHecke.CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -672,7 +672,7 @@ theorem contentInductionCompTo_outer_map (β : Multiset I) (σ τ τ' : List I)
   rw [contentInductionTransform_total, contentInductionTransform_total]
   exact contentInductionComp_outer_arrow D Sc cutoff N β σ τ τ' γ hγ htγ h ht ha M z
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -688,7 +688,7 @@ whiskerings. No local inverse or factor action is assumed.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 universe u
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
 
@@ -734,7 +734,7 @@ theorem contentNormalized_braid (i j l : I) (hb : ¬ (i = l ∧ i ≠ j)) :
   congr 1
   ring
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -750,7 +750,7 @@ is needed by the selected weight triple chart.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private theorem moduleBraid_of_total
     {k : Type u} [CommRing k]
@@ -820,7 +820,7 @@ theorem contentInduction_sameColour_braid (β : Multiset I) (i : I) (γ : Multis
   · intro z
     exact contentInduction_sameColour_linear_braid D Sc cutoff N β i γ h M z
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -836,7 +836,7 @@ both words; full coefficient parity is carried by balanced induction.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 universe u
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
 
@@ -937,7 +937,7 @@ theorem contentInduction_distinct_slide_right_linear (β : Multiset I) {i j : I}
     | exact firstDot_parity D Sc j [i]
     | exact contentPairDot_one_parity D Sc i j
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -954,7 +954,7 @@ independently selected weight triple charts.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private theorem moduleThree_eq_of_totals
     {k : Type u} [CommRing k]
@@ -1065,7 +1065,7 @@ theorem contentInduction_uncorrected_braid (M : ContentModules D Sc cutoff N β)
   · intro w
     exact (inductionLinear_braid D Sc cutoff N β i j l hb γ h₀ h₁ h₂ h₃ h₄ h₅ M w).symm
 end Braid
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1081,7 +1081,7 @@ source positions, before any module or coefficient evaluation.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k)
@@ -1129,7 +1129,7 @@ theorem tripleLastDot_affineIndex (l j i : I) :
     (pres D Sc).obj (ob D [l,j]) ◁ dotE D Sc [i] 0 = dotE D Sc [l,j,i] 2 := by
   erw [tripleLastDot_affineContexts D Sc l j i, whiskerLeft_letter_dotE, whiskerLeft_letter_dotE]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1146,7 +1146,7 @@ separately normalized canonical-content model.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
@@ -1185,7 +1185,7 @@ theorem contentMixedBraid_at_polynomial
   have hp := contentMixedBraidPolynomial_eq_ordered D Sc cutoff bound β i j M w
   exact hs.trans hp
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1200,7 +1200,7 @@ minus signs and all intermediate word contents in the corrected relation.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
@@ -1302,7 +1302,7 @@ theorem contentNormalizedMixedBraid_at_polynomial
   rw [h0, he1, h2, h3, he4, h5]
   exact contentMixedBraid_at_polynomial D Sc cutoff bound β i j hij γ h₀ h₁ h₂ M w
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1317,7 +1317,7 @@ object while retaining the entire probe input category.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicAction
 universe u
 local instance contentZeroHomPi {k : Type u} [CommRing k]
@@ -1344,7 +1344,7 @@ instance contentHom_hasZeroObject (β : Multiset I) (A : PiSCat.{u,u,u+1} k) :
     Limits.HasZeroObject (A ⟶ contentModuleTarget D Sc cutoff bound β) :=
   ⟨⟨contentHomZero D Sc cutoff bound β A, contentHomZero_isZero D Sc cutoff bound β A⟩⟩
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1358,7 +1358,7 @@ precomposes with that arrow and twists the argument by its total parity.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.ContentYoneda
+namespace OddMath.QuiverHecke.ELV.ContentYoneda
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
@@ -1487,14 +1487,14 @@ theorem evaluate_proj (t : contentRepresentable D Sc cutoff N β v ⟶
     rw [map_add, proj_of_mem_ne (evaluate_part D Sc cutoff N β t 0) (by decide),
       proj_of_mem (evaluate_part D Sc cutoff N β t 1)]
 
-end OddMath.QuiverHecke.ELVOld.ContentYoneda
+end OddMath.QuiverHecke.ELV.ContentYoneda
 
-namespace OddMath.QuiverHecke.ELVOld.VacuumRepresentable
+namespace OddMath.QuiverHecke.ELV.VacuumRepresentable
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
 
-end OddMath.QuiverHecke.ELVOld.VacuumRepresentable
+end OddMath.QuiverHecke.ELV.VacuumRepresentable
 end
 
 end
@@ -1510,7 +1510,7 @@ without assuming a comparison of inverses or unfolding a choice.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 section Uniqueness
@@ -1685,7 +1685,7 @@ local notation "Target" => contentPrincipalTargetIso D Sc cutoff N γ δ i hδ M
 
 end Targets
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1701,7 +1701,7 @@ attachment does not yet compare weighted windows with raw OLD kernels.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 section Uniqueness
@@ -1888,7 +1888,7 @@ theorem contentTargetsLocalInverseTo_window
   exact contentSupportedLocalInverseTo_window D Sc cutoff N β i M L hh m hm
 end Targets
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

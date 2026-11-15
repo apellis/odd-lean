@@ -22,7 +22,7 @@ through the constructed C₀. It retains both signs and the ordered numerator.
 No monic division or prescribed balanced crossing-column inverse is asserted.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CategoryTheory StringDiagrams Supercategory
 open scoped Classical
 universe u
@@ -91,7 +91,7 @@ theorem outputPolynomialBoundary_independentS (p : ZMod 2)
   rw [outputLongExtraction_boundaryRho_move_polynomial, map_smul] at h
   exact h.symm
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -108,7 +108,7 @@ append class. This does not identify the input shift with output postcomposition
 or assert monic S-division or the prescribed crossing-column inverse.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CategoryTheory StringDiagrams Supercategory
 open scoped Classical
 universe u
@@ -223,7 +223,7 @@ theorem outputPolynomialBoundary_rho (p : ZMod 2)
   rw [← outputLiftBoundary_rho] at h
   exact (sub_eq_iff_eq_add.mp h).trans (add_comm _ _)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -238,7 +238,7 @@ chronological old composition and the total input-dot twist. All coefficients
 belong to the full old ELV quotient, not a commutative scalar replacement.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CategoryTheory StringDiagrams Supercategory
 open scoped Classical TensorProduct
 universe u
@@ -453,7 +453,7 @@ theorem outputPolynomialBoundary_independentS_coefficients (p : ZMod 2)
           (endpointOutputCoefficients D Sc cutoff j.1 v)) := by
   rw [outputPolynomialBoundary_independentS, appendC0_orderedReverseNumerator]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -565,7 +565,7 @@ theorem outputSTopChoice_unique (i : I) (v : List I) (a : ℕ) (c : MoveChoices 
     change (0, c) = (0, outputSTopChoice v)
     rw [ih (a + 1) c ht htail]
 
-namespace ELVOld
+namespace ELV
 
 theorem independentOutputS_above (i : I) (v : List I) (n : ℕ)
     (hn : outputSDegree D i v < n) : independentOutputS D Sc cutoff i v n = 0 := by
@@ -616,7 +616,7 @@ theorem independentOutputS_support (i : I) (v : List I) :
   exact (Finsupp.mem_support_iff.mp hn)
     (independentOutputS_above D Sc cutoff i v n (by omega))
 
-end ELVOld
+end ELV
 end OddMath.QuiverHecke
 end
 
@@ -633,7 +633,7 @@ long-row balance parity. This is the coefficient bridge needed in
 is asserted.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CategoryTheory StringDiagrams Supercategory
 open scoped Classical
 universe u
@@ -796,7 +796,7 @@ theorem outputPolynomialBoundary_independentS_postcomp (p : ZMod 2)
     (independentOutputS D Sc cutoff j.1 v n) f
   simpa only [he] using h
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -811,7 +811,7 @@ ordered fold in `DeformedBoundaryDivision.md` (7). These statements allow zero
 old endomorphism spaces: no nonzero leading coefficient is asserted.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CategoryTheory StringDiagrams Supercategory
 open scoped Classical TensorProduct
 universe u
@@ -1023,7 +1023,7 @@ theorem appendC0_orderedReverseNumerator_above (i : I) (v : List I) (d n : ℕ)
   exact inputCoefficientShift_above D Sc cutoff i v d _ n _
     (orderedReverseNumerator_above D Sc cutoff i v) hn
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1039,7 +1039,7 @@ polynomial division interface. This is `DeformedBoundaryDivision.md` (9)–(11)
 in the input-oriented full-ELV convention.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CategoryTheory StringDiagrams Supercategory
 open scoped Classical
 universe u
@@ -1280,7 +1280,7 @@ theorem outputBoundaryPhi_signed_top (p : ZMod 2)
       (orderedReverseNumerator_top D Sc cutoff j.1 v)] at ht
   exact ht.symm
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1296,7 +1296,7 @@ These are the coefficient-sensitive inputs to row division and then to the
 snake-sequence matrix argument; no balanced crossing-column inverse is asserted.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CategoryTheory StringDiagrams Supercategory
 open scoped Classical
 universe u
@@ -1495,7 +1495,7 @@ theorem outputBoundary_corrected_top (p : ZMod 2)
       oldTwist D Sc cutoff (n • D.parity j.1 + (p + D.parity j.1 * wordSumParity D v)) v v c
     rw [mul_smul, mul_smul])
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

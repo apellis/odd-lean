@@ -67,7 +67,7 @@ theorem wordContent_eq_sum (w : List (Col I X)) :
 end SPath
 
 namespace SupportedSectors
-open CyclotomicAction ELVOld
+open CyclotomicAction ELV
 universe u
 local instance tensorCornerEvaluationHomPi {k : Type u} [CommRing k]
     (A C : PiSCat.{u,u,u + 1} k) : PiSupercategory k (A ⟶ C) :=

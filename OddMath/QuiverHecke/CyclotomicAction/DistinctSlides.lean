@@ -23,7 +23,7 @@ inputs for the canonical-content and weight probe relations.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -92,7 +92,7 @@ theorem crossComponent_slide_last {i j : I} (hij : i ≠ j)
   rw [← affineUnit_comp, ← affineUnit_comp,
     lastDotE_comp_crossLast_ne D Sc s.word hij.symm, map_smul, ← sign_eq_zsign]
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 end
 
 end
@@ -109,7 +109,7 @@ No truncation, quadratic premise or action premise is imposed.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -178,7 +178,7 @@ def signedQuadraticComponent (i j : I)
         (dotE D (parameterTwist D Sc) (s.word ++ [i] ++ [j]) s.word.length)
         (dotE D (parameterTwist D Sc) (s.word ++ [i] ++ [j]) (s.word.length + 1))))
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.Distinct
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.Distinct
 end
 
 end
@@ -193,7 +193,7 @@ No commutation or action relation is imposed on these dots.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -275,7 +275,7 @@ theorem signedQuadraticComponent_pairDots (i j : I)
   rfl
 
 end CyclotomicCrossingTensor.Distinct
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -291,7 +291,7 @@ superopposite signs. No source braid or truncation premise is imposed.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 open Distinct
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -427,7 +427,7 @@ theorem tripleCross_braid_correction (i j : I) (hij : i ≠ j)
   exact congrArg (fun f => (ideal D Sc cutoff _ _).mkQ
     (affineUnit D Sc cutoff _ _ f)) (affineMulticolour_braid_correction D Sc s.word i j hij)
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -444,7 +444,7 @@ and repeated-outer ordered correction are separate attachments.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 open BalancedInduction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -454,7 +454,7 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 abbrev tripleAppend (i j l : I) :=
   (append D Sc cutoff i ⋙ append D Sc cutoff j) ⋙ append D Sc cutoff l
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end

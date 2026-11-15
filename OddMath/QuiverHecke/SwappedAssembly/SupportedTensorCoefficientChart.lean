@@ -9,7 +9,7 @@ path chart intertwines the direct full-input source coefficient action.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld
+open CyclotomicAction ELV
 universe u
 /-- A coefficient square before evaluation in an arbitrary actual Hom. -/
 def tensorCoefficientSquare {k : Type u} [CommRing k]

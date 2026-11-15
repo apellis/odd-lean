@@ -13,7 +13,7 @@ SwappedHomInversion §4 (7)–(9), over a commutative `K`-algebra `k` graded by 
 have their coefficient degree. The transported parameters `parameterTwist D Sc` are then
 coefficient-graded homogeneous (`isHomogeneous_parameterTwist`), and the named principal and
 finite inverse entries of `ReservoirWindowInverseData` lie in the jointly nilpotent coefficient
-ideal `ELVOld.contentModuleCoefficientIdealOver` after the whole-output evaluation.
+ideal `ELV.contentModuleCoefficientIdealOver` after the whole-output evaluation.
 
 For `K = k` with the trivial grading these are the statements of
 `OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowCoefficientIdeal`.
@@ -22,7 +22,7 @@ noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM BicategoryStruct
 open scoped Classical
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld
+open CyclotomicAction ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : Datum I X) (Sc : Scalars D k) (m : I → ℕ) (cutoff : I → ℕ) (bound : ℕ)

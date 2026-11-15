@@ -11,7 +11,7 @@ word Homs carry literal postcomposition with the original multiplication.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld VacuumTensorCoefficientMaps
+open CyclotomicAction ELV VacuumTensorCoefficientMaps
 universe u
 local instance tensorCoefficientHomPi {k : Type u} [CommRing k] (A C : PiSCat.{u,u,u + 1} k) :
     PiSupercategory k (A ⟶ C) := PiTwoSupercategory.homPiLeft A C

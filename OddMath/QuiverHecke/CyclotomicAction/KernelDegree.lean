@@ -23,7 +23,7 @@ first-position relation then have a cutoff-dependent lower degree.
 noncomputable section
 open CategoryTheory StringDiagrams GradedSupercategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (sy : SKM.Symmetrizer D)
@@ -39,7 +39,7 @@ theorem hom_eq_zero_of_not_perm (cutoff : I → ℕ) {v w : List I}
   · rw [QuiverHecke.hom_eq_zero_of_not_perm D Sc h g, TensorProduct.tmul_zero]
   · rw [ha, hb, add_zero]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -58,7 +58,7 @@ and identification of a particular action kernel are separate statements.
 noncomputable section
 open CategoryTheory Opposite StringDiagrams TensorProduct
 open scoped DirectSum Classical
-namespace OddMath.QuiverHecke.ELVOld.BalancedKernelTensor
+namespace OddMath.QuiverHecke.ELV.BalancedKernelTensor
 universe u
 variable {k : Type u} [CommRing k] {C : Type u} [Category.{u} C]
 variable (K : Cᵒᵖ ⥤ ModuleCat k) (M : C ⥤ SVec k)
@@ -181,7 +181,7 @@ def equivOfBijective (e : K ⟶ L) (he : ∀ v, Function.Bijective (e.app v)) :
     Obj K M ≃ₗ[k] Obj L M :=
   equiv M (coefficientIso e he)
 
-end OddMath.QuiverHecke.ELVOld.BalancedKernelTensor
+end OddMath.QuiverHecke.ELV.BalancedKernelTensor
 end
 
 end
@@ -199,7 +199,7 @@ separate from this underlying ground-ring equivalence.
 noncomputable section
 open CategoryTheory Opposite StringDiagrams Supercategory TensorProduct
 open scoped Classical
-namespace OddMath.QuiverHecke.ELVOld.IndResKernel
+namespace OddMath.QuiverHecke.ELV.IndResKernel
 universe u
 variable {k : Type u} [CommRing k]
 variable {C D : Type u} [Category.{u} C] [Category.{u} D]
@@ -418,7 +418,7 @@ def equiv (t : D) : BalancedKernelTensor.Obj (kernel (k := k) J t) M ≃ₗ[k]
   LinearEquiv.ofLinearMap (forward J M t) (backward J M t)
     (forward_backward J M t) (backward_forward J M t)
 
-end OddMath.QuiverHecke.ELVOld.IndResKernel
+end OddMath.QuiverHecke.ELV.IndResKernel
 end
 
 end
@@ -435,7 +435,7 @@ fixed-target finite matrix count on the full old coefficient category.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -511,7 +511,7 @@ theorem indResKernel_subsingleton_of_content_ne
   ⟨fun x y => (indResKernel_eq_zero_of_content_ne D Sc cutoff J h x).trans
     (indResKernel_eq_zero_of_content_ne D Sc cutoff J h y).symm⟩
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

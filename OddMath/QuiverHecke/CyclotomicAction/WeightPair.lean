@@ -24,7 +24,7 @@ open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
 universe u
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
 
@@ -103,7 +103,7 @@ theorem elvEFunctor_comp₂_isZero (ε : WeightBlocks D Λ x₃)
   · exact elvInductionComponent_isZero D Sc cutoff bound i Λ h₂ ε hγ _
 
 end Pair
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -128,7 +128,7 @@ open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
 universe u
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
 
@@ -338,7 +338,7 @@ theorem elvActionCross_mem :
     (elvWeightCross_homogeneous D Sc cutoff bound i j Λ h₁ h₂ h₃ h₄)
 
 end Pair
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -358,7 +358,7 @@ open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
 universe u
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
 
@@ -468,7 +468,7 @@ theorem elvWeightPairComparison_eq (β : WeightBlocks D Λ x₀)
     crossing_eqIso_whiskerLeft, ← Iso.trans_assoc, eqToIso_trans]
 
 end Weight
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -484,7 +484,7 @@ This construction asserts no uniform nilpotence exponent over a weight fibre.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open OddMath.QuiverHecke.CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -670,7 +670,7 @@ theorem elvActionDot_mem :
 
 end Weight
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -688,7 +688,7 @@ whiskering relations; they do not assume any matrix inverse.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private theorem map_conjugate_eqToHom
     {C B : Type*} [Category C] [Category B] (F : C ⥤ B)
@@ -753,7 +753,7 @@ theorem elvWeightOuterDot_blockSucc (p : ZMod 2)
     (fun L => (elvBlockDot D Sc cutoff bound i Λ h₂ (blockSucc D Λ j h₁ β)).app p L)
     (elvInductionComponent_obj_blockSucc D Sc cutoff bound j Λ h₁ β M) _ _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -768,7 +768,7 @@ canonical pair coordinates in pointwise linear quadratic relations.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 
 private theorem crossing_total_of_component
@@ -896,7 +896,7 @@ theorem elvWeightCrossComponent_total_absent (p : ZMod 2)
   change (0 : _ →ₗ[k] _) + (0 : _ →ₗ[k] _) = 0
   exact add_zero _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -913,7 +913,7 @@ dots. The content endpoint is arbitrary, with its specified equality.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
@@ -984,7 +984,7 @@ theorem elvWeightCrossVia_quadratic_total (hij : i ≠ j)
   rw [contentInductionTransform_total, contentInductionTransform_total]
   exact contentInduction_quadratic_linear_to D Sc cutoff bound β.1 hij.symm ε.1 _ _ (M β) w
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1000,7 +1000,7 @@ operators under exactly the pair comparison used for the crossing square.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 
 /-- The literal component square, kept as a named proposition while
@@ -1167,7 +1167,7 @@ theorem elvWeightPairComparison_outer_total
       (elvBlockSucc_content_eq D i Λ h₂ (blockSucc D Λ j h₁ β))
       (elvBlockPair_content_eq D i j Λ h₁ h₂ β) (M β) w)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1184,7 +1184,7 @@ pair comparison, retaining the independently assembled weight operators.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k)
@@ -1340,7 +1340,7 @@ theorem elvWeightCrossVia_quadratic_independent (hij : i ≠ j)
   rw [hx, hy] at hp
   exact hq.trans hp
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1358,7 +1358,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 
 /-- A zero supermodule has zero value at every object, before specializing
@@ -1413,7 +1413,7 @@ theorem elvWeightCrossComponent_quadratic_total (hij : i ≠ j)
     intro v
     exact Subsingleton.elim _ _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1430,7 +1430,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
@@ -1482,7 +1482,7 @@ theorem elvWeightCrossComponent_square_total
       (D.parity i * D.parity i) M ε hε w]
     exact LinearMap.zero_comp _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1501,7 +1501,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private theorem isIso_between_zero
     {C : Type*} [Category C] [Limits.HasZeroMorphisms C] {M P : C} (f : M ⟶ P)
@@ -1584,7 +1584,7 @@ theorem elvWeightMixedMate_absent_isIso (hij : i ≠ j) (δ : WeightBlocks D Λ 
     (elvWeightMixedSource_isZero D Sc cutoff bound i j Λ h₁ h₃ δ hδ M)
     (elvWeightMixedTarget_isZero D Sc cutoff bound i j Λ h₂ h₃ h₄ hij δ hδ M)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1601,7 +1601,7 @@ output block, with the i-successor comparison kept explicit.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
@@ -1654,7 +1654,7 @@ theorem elvWeightMixedTarget_obj (M : ELVWeightProduct D Sc cutoff bound Λ xj) 
     (elvInductionComponent_obj_of D Sc cutoff bound i Λ h₂ δj ε
       (blockSucc_comm D Λ i j h₁ h₂ h₃ h₄ β) M)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1671,7 +1671,7 @@ inductions at these contents.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private theorem transform_app_regrade
     {k C E : Type u} [CommRing k] [Category.{u} C] [Category.{u} E]
@@ -1801,7 +1801,7 @@ theorem elvWeightCrossVia_rectangular (hne : i ≠ j)
     (blockSucc D Λ i h₃ β).1 (blockSucc D Λ j h₁ β).1 ε.1 hi hj hUpperSwap hUpper
     (elvWeightPair_content_eq D j i Λ h₃ h₄ β ε hSwap) hWord hne.symm (M β)]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1813,7 +1813,7 @@ including equal colours and their prescribed extra minus. -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 private theorem normalized_transform_app_regrade
     {k C E : Type u} [CommRing k] [Category.{u} C] [Category.{u} E]
@@ -1891,7 +1891,7 @@ theorem elvWeightCrossVia_normalized_rectangular
     (blockSucc D Λ i h₃ β).1 (blockSucc D Λ j h₁ β).1 ε.1 hi hj hUpperSwap hUpper
     (elvWeightPair_content_eq D j i Λ h₃ h₄ β ε hSwap) hWord (M β)]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

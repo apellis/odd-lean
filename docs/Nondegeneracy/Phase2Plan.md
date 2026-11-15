@@ -188,8 +188,8 @@ as it is and grade the `R`-linear KLR category as a `K`-linear supercategory:
    `QuiverHecke.truncGradedAlgebra`), and the truncated Rees parameters give
    `QuiverHecke.isHomogeneous_truncatedRees` and
    `QuiverHecke.truncatedReesGradedSupercategory`. Open: the monoidal version.
-4. *Downstream threading*: the ELV coefficient grading (`ELVHomGrading`, `ELVOldGrading`,
-   `ELVOldCategoryGrading`, `ELVLowerDegree`, `ELVKernelDegree`, `ELVKernelBoundaryDegrees`,
+4. *Downstream threading*: the ELV coefficient grading (`ELVHomGrading`, `ELVGrading`,
+   `ELVCategoryGrading`, `ELVLowerDegree`, `ELVKernelDegree`, `ELVKernelBoundaryDegrees`,
    `ELVWeightedKernelBoundaryCoordinates`, `ELVTruncatedNilpotence` and the other files
    that use `elvHomDegree`), then the files carrying `hc`. The edit is uniform: replace
    `(hc : Sc.Homogeneous)` by `[GradedAlgebra 𝒜] (hc : Sc.GradedHomogeneous sy 𝒜)`, degrees

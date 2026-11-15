@@ -30,7 +30,7 @@ No assertion that all whole-weight Hom functors have this support is made.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped Classical
-namespace OddMath.QuiverHecke.ELVOld.ContentHomSupport
+namespace OddMath.QuiverHecke.ELV.ContentHomSupport
 open CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -231,7 +231,7 @@ theorem shift_off_isZero (p : ZMod 2) (G : Hom D Sc m cutoff bound β γ)
 
 end Shift
 
-end OddMath.QuiverHecke.ELVOld.ContentHomSupport
+end OddMath.QuiverHecke.ELV.ContentHomSupport
 end
 
 end
@@ -248,7 +248,7 @@ functors, on every input and every retained original-weight block.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped Classical
-namespace OddMath.QuiverHecke.ELVOld.ContentHomSupport
+namespace OddMath.QuiverHecke.ELV.ContentHomSupport
 open CyclotomicAction
 universe u
 private theorem superfunctor_isZero {k : Type*} [CommRing k]
@@ -585,7 +585,7 @@ def supportedPi : PiSupercategory k (SupportedHom D Sc m cutoff bound β γ) :=
 
 end Shift
 
-end OddMath.QuiverHecke.ELVOld.ContentHomSupport
+end OddMath.QuiverHecke.ELV.ContentHomSupport
 end
 
 end
@@ -600,7 +600,7 @@ all collision blocks. Its support is proved from its construction.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.ContentHomSupport
+namespace OddMath.QuiverHecke.ELV.ContentHomSupport
 open CyclotomicAction SwappedAssembly
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -685,7 +685,7 @@ theorem selectedVacuum_supported :
     (selectedVacuum_component D Sc m cutoff ΛP ΛR L)
     (fun M δ hδ => selectedVacuum_off_isZero D Sc m cutoff ΛP ΛR L M δ hδ)
 
-end OddMath.QuiverHecke.ELVOld.ContentHomSupport
+end OddMath.QuiverHecke.ELV.ContentHomSupport
 end
 
 end
@@ -702,7 +702,7 @@ on the right. These are the coefficient inputs for the probe local action.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -834,7 +834,7 @@ theorem oldContentEqualCross_slideRight :
   rw [koszulSign_smul (R := k)]
   exact oldCross_slideRight D Sc cutoff i s.obj
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -850,7 +850,7 @@ the two upper contents share a prescribed permutation index.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor
 universe u
 namespace DistinctContent
@@ -1251,7 +1251,7 @@ def oldContentDistinctMateEquiv (hij : i ≠ j)
   BalancedInduction.orderedRectangularMateEquiv_toLinearMap J K L M
     (oldContentDistinctCross_supernatural D Sc cutoff ν i j) N t _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1266,7 +1266,7 @@ literal old matrix mate on every coend vector, before finite parity shifts.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor BalancedInduction
 universe u
 namespace BalancedInduction
@@ -1343,7 +1343,7 @@ theorem oldContentMatrixCharts_mate_comp
       (tensor J₀ ((restriction J₀).obj N).toFunctor s a b))
   exact h.trans hm.symm
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1358,7 +1358,7 @@ parity coordinates. No cap compatibility premise is introduced.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor BalancedInduction
 universe u
 private theorem coendComp_ext
@@ -1511,7 +1511,7 @@ theorem oldContentEFLinearEquiv_capDot
   dsimp only [inductionDot] at hp
   exact hp.trans ht.symm
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1527,7 +1527,7 @@ independently of any inverse-matrix or chart-evenness premise.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor BalancedInduction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1588,7 +1588,7 @@ def oldContentCapFamilyEquiv :
       capMatrixTargetSpace D Sc cutoff i M m t.obj :=
   LinearEquiv.piCongrRight (oldContentCapSlotEquiv D Sc cutoff ν i N m t)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1603,7 +1603,7 @@ coordinates under the genuine selected content charts.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor BalancedInduction
 universe u
 namespace BalancedInduction
@@ -1873,7 +1873,7 @@ theorem oldContentCapEntry_some_square
   have hn := oldCap_some_total D Sc cutoff i (induced Q₁ N) m r t.obj
   exact matrixRow_decorate _ _ _ _ _ _ _ _ _ h hz ho hn
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1889,7 +1889,7 @@ The input module retains the full old coefficient algebra.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 
@@ -1966,7 +1966,7 @@ theorem contentMissingUnitMatrixIso_hom :
     (oldContentFEChart D Sc cutoff γ i N w).toLinearMap
     (content_unitColumn_square D Sc cutoff γ i N w) count
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1981,7 +1981,7 @@ empty old content category and its full coefficient algebra.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -2005,7 +2005,7 @@ theorem contentMissingUnitModuleIso_hom :
     (contentMissingUnitModuleIso D Sc cutoff γ i hi N).hom = unitColumnModuleMap K hDot N count :=
   unitColumnModuleIso_hom K hDot N count _ _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

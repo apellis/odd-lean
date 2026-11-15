@@ -33,7 +33,7 @@ retains the exact fixed scalar from `RouquierFTriangle`.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.ProbeVacuumCap
+namespace OddMath.QuiverHecke.ELV.ProbeVacuumCap
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 
@@ -93,7 +93,7 @@ end Adjacent
 
 end Local
 
-end OddMath.QuiverHecke.ELVOld.ProbeVacuumCap
+end OddMath.QuiverHecke.ELV.ProbeVacuumCap
 end
 
 end
@@ -110,7 +110,7 @@ including both diagonal Koszul factors. This supplies no arbitrary mate.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams BicategoryStruct Supercategory
-namespace OddMath.QuiverHecke.ELVOld.ProbeVacuumCap
+namespace OddMath.QuiverHecke.ELV.ProbeVacuumCap
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 local instance probeLocalPreAdjunctionPi {k : Type u} [CommRing k]
@@ -181,7 +181,7 @@ variable {Z : PiSCat.{u,u,u+1} k}
 
 end Adjacent
 end Local
-end OddMath.QuiverHecke.ELVOld.ProbeVacuumCap
+end OddMath.QuiverHecke.ELV.ProbeVacuumCap
 end
 
 end
@@ -197,7 +197,7 @@ to the complete swapped matrix is separate.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams BicategoryStruct Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 
@@ -548,7 +548,7 @@ end Adjacent
 end Local
 
 end ProbeVacuumCap
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -564,7 +564,7 @@ map is assumed.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams BicategoryStruct Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 section Series
@@ -658,7 +658,7 @@ theorem evaluatedMixedBend_odd_slide_neg
   simpa only [hi, koszulSign_one_one, neg_one_zsmul, neg_one_smul] using hs
 
 end ProbeVacuumCap
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -691,7 +691,7 @@ window. See `docs/Nondegeneracy/InverseColumnMoments.md`.
 noncomputable section
 set_option quotPrecheck false
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor PowerVacuumCoefficient ProbeVacuumCap
 open Finset
 universe u
@@ -1004,7 +1004,7 @@ theorem tensorVacuumCapInverse_odd_moments
   exact tensorVacuumColumn_odd_moments D Sc m cutoff L hdot i hi hP hN h hh hhN
     (A ⟨h - 1, by omega⟩) (hA.2.1 _) hcol s z
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1019,7 +1019,7 @@ specified supported tensor Hom, with both weight presentations retained.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open CyclotomicAction SwappedAssembly
 universe u
 local instance tensorWholeHomPi {k : Type u} [CommRing k]
@@ -1153,7 +1153,7 @@ theorem tensorSectorInput_eq_supported :
       (SupportedSectors.probeWeight_vacuum D ΛP).symm _
   exact (h₁.trans h₂).trans h₃.symm
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end

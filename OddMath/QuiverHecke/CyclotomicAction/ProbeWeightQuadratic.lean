@@ -27,7 +27,7 @@ selected ordinary adjunctions and all super parities.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 universe u
 attribute [local irreducible] oldAppendReindexIso orderedGridMateComponent
 section EvenComposition
@@ -181,7 +181,7 @@ the canonical append comparisons, at every dot exponent including zero.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction
+open ELV ELV.BalancedInduction
 universe u
 attribute [local irreducible] oldAppendReindexIso oldAppendReindexLinear
 private theorem reindex_unit_eq {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -343,7 +343,7 @@ under the selected change of central and upper content representatives.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 universe u
 attribute [local irreducible] oldAppendReindexIso
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -469,7 +469,7 @@ is used.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 universe u
 private theorem conjugate_of_square
     {C : Type*} [Category* C] {A A' B B' : C}
@@ -583,7 +583,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor CyclotomicAction
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -717,7 +717,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction
+open ELV CyclotomicAction
 universe u
 section Recovery
 universe u₀ v₀ w₀
@@ -867,7 +867,7 @@ supply the comparison required by the signed two-strand slide equations.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction
+open ELV CyclotomicAction
 universe u v w t z
 
 private theorem outerDot_conjugate
@@ -991,7 +991,7 @@ coordinates on every supported block and the actual zero absent sectors.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -1185,7 +1185,7 @@ the selected negative crossing are retained, including absent sectors.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 universe u
 private theorem conjugate_relation {C : Type*} [Category C] [Preadditive C]
     {A B : C} (e : A = B) (a b c d : End B) (q : ℤ)
@@ -1318,7 +1318,7 @@ hypothesis for parameters with pure terms: homogeneous parameters supply it
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction
+open ELV CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -1378,7 +1378,7 @@ literal untruncated OLD relation supplies the quadratic, not an action premise.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor CyclotomicAction
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -1473,7 +1473,7 @@ source relation, and the original parameters are retained.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor CyclotomicAction
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -1712,7 +1712,7 @@ coordinates; absent double predecessors use their constructed zero object.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 universe u
 
 private theorem orderedPolynomial_total
@@ -1831,7 +1831,7 @@ No multicolour action record or unproved presentation field is constructed.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction
+open ELV CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -1896,7 +1896,7 @@ record or assumed slide relation is introduced.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction
+open ELV CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)

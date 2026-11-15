@@ -711,7 +711,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
@@ -1044,7 +1044,7 @@ theorem elvWeightCounit_mem (M : ELVWeightProduct D Sc cutoff bound Λ y) :
     exact Submodule.zero_mem _
 
 end Weight
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1059,7 +1059,7 @@ action target. No local-inverse or factor-family assumption is supplied.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
@@ -1110,7 +1110,7 @@ def elvActionAdjunction :
     (elvWeightUnit_mem D Sc cutoff bound i Λ h)
     (elvWeightCounit_mem D Sc cutoff bound i Λ h)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1548,7 +1548,7 @@ construction; coefficient-truncated exact-content transport is separate.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1649,7 +1649,7 @@ theorem oldModuleMate_app (i : I) (r : ZMod 2)
     (fun Z => by simp only [oldAppendAdjunction_counit_app, one_ne_zero, ↓reduceIte]) r M
   exact h
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end

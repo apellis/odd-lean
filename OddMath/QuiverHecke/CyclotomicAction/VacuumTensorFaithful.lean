@@ -30,7 +30,7 @@ coefficient algebra. Postcomposition on word Homs preserves that order.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld.VacuumTensorCoefficientMaps
+namespace OddMath.QuiverHecke.ELV.VacuumTensorCoefficientMaps
 universe u
 private theorem total_add {k : Type*} [CommRing k] {B E : Type*}
     [Category* B] [Preadditive B] [Linear k B] [Supercategory k B]
@@ -471,7 +471,7 @@ coefficients and arbitrary whole-functor maps from the source. -/
 
 end Paths
 
-end OddMath.QuiverHecke.ELVOld.VacuumTensorCoefficientMaps
+end OddMath.QuiverHecke.ELV.VacuumTensorCoefficientMaps
 end
 
 end
@@ -495,7 +495,7 @@ probe.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld.VacuumTensor
+namespace OddMath.QuiverHecke.ELV.VacuumTensor
 universe u
 variable {k A C : Type u} [CommRing k]
   [Category.{u} A] [Preadditive A] [Linear k A] [Supercategory k A]
@@ -587,7 +587,7 @@ theorem hom_ext_of_generating_total (W : Superfunctor k C (SVec k)) (a : A)
   intro p
   rw [hp φ, hp ψ, h]
 
-end OddMath.QuiverHecke.ELVOld.VacuumTensor
+end OddMath.QuiverHecke.ELV.VacuumTensor
 end
 
 end
@@ -682,14 +682,14 @@ section
 Let `R` be a commutative `K`-algebra graded by `𝒜`, and let the quiver Hecke presentation over
 `R` be coefficient-graded homogeneous. For the grading `QuiverHecke.elvHomGradingOver` of the ELV
 coefficient category over `R`, the first-position cyclotomic relation is homogeneous of degree
-`2 d_j cutoff_j` (`ELVOld.relation_mem_degreeOver`), and every homogeneous component of an
+`2 d_j cutoff_j` (`ELV.relation_mem_degreeOver`), and every homogeneous component of an
 element of the old two-sided cyclotomic ideal lies in the ideal
-(`ELVOld.ideal_dproj_mem_over`).
+(`ELV.ideal_dproj_mem_over`).
 
 The ideal is an `R`-span, while the degree projections are only `K`-linear: the step from the
 generators to the span decomposes the scalars into homogeneous parts
 (`BasisGrading.decompose_mem_span`). For `K = R` with the trivial grading these are
-`ELVOld.relation_mem_degree` and `ELVOld.ideal_dproj_mem`.
+`ELV.relation_mem_degree` and `ELV.ideal_dproj_mem`.
 -/
 
 -- `letI` keeps the restricted-scalar instances available to instance search in these proofs.
@@ -740,15 +740,15 @@ theorem firstDotPower_mem_presentedPart (j : I) (v : List I) (n : ℕ) :
 /-- The degree-`n` part of a Hom module of the ELV coefficient category over `R`. -/
 abbrev elvHomDegreeOver (v w : List I) (n : ℤ) :
     letI := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
-    Submodule K (ELVOld.hom D Sc cutoff v w) :=
+    Submodule K (ELV.hom D Sc cutoff v w) :=
   letI := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
   letI := Supercategory.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
   letI := elvHomGradingOver D sy 𝒜 Sc hP cutoff
-  GradedSupercategory.degree (R := K) (ELVOld.obj D Sc cutoff v) (ELVOld.obj D Sc cutoff w) n
+  GradedSupercategory.degree (R := K) (ELV.obj D Sc cutoff v) (ELV.obj D Sc cutoff w) n
 
 /-- Homogeneous scalars of `R` raise degrees in the ELV coefficient category over `R`. -/
 theorem smul_mem_elvHomDegreeOver {v w : List I} {e n : ℤ} {r : R}
-    {y : ELVOld.hom D Sc cutoff v w} (hr : r ∈ 𝒜 e)
+    {y : ELV.hom D Sc cutoff v w} (hr : r ∈ 𝒜 e)
     (hy : y ∈ elvHomDegreeOver D sy 𝒜 Sc hP cutoff v w n) :
     r • y ∈ elvHomDegreeOver D sy 𝒜 Sc hP cutoff v w (e + n) := by
   letI := Linear.restrictScalars K R
@@ -791,8 +791,8 @@ theorem elvQuotientMap_source_mem_degreeOver {v w : List I} {a : SKM.SYM D R}
       SKM.SYM.elvCoefficientDegreeOver D sy 𝒜 cutoff r :=
     Submodule.mem_map_of_mem (f := ((SKM.SYM.elvCoefficientQuotient D cutoff).restrictScalars
       K).toLinearMap) ha
-  exact BoxProdCoefficient.tmulHom_mem_homDegree (X := ELVOld.obj D Sc cutoff v)
-    (Y := ELVOld.obj D Sc cutoff w) ha' hf
+  exact BoxProdCoefficient.tmulHom_mem_homDegree (X := ELV.obj D Sc cutoff v)
+    (Y := ELV.obj D Sc cutoff w) ha' hf
 
 /-- A coefficient polynomial with complementary coefficient degrees is homogeneous over `R`. -/
 theorem deformedCyclotomic_mem_degreeOver (j : I) (v : List I) (N : ℕ)
@@ -814,10 +814,10 @@ theorem deformedCyclotomic_mem_degreeOver (j : I) (v : List I) (N : ℕ)
 
 /-- **The first-position cyclotomic relation over a graded base** has degree
 `2 d_j cutoff_j`. -/
-theorem ELVOld.relation_mem_degreeOver (j : I) (v : List I) :
-    ELVOld.relation D Sc cutoff j v ∈
+theorem ELV.relation_mem_degreeOver (j : I) (v : List I) :
+    ELV.relation D Sc cutoff j v ∈
       elvHomDegreeOver D sy 𝒜 Sc hP cutoff (j :: v) (j :: v) (2 * sy.d j * cutoff j) := by
-  unfold ELVOld.relation
+  unfold ELV.relation
   split_ifs with hj
   · exact deformedCyclotomic_mem_degreeOver D sy 𝒜 Sc hP cutoff j v (cutoff j) _
       (SKM.SYM.elvMonicCoefficient_mem_coefficientDegreePartOver D sy 𝒜 ⟨j, hj⟩ (cutoff j))
@@ -828,22 +828,22 @@ theorem ELVOld.relation_mem_degreeOver (j : I) (v : List I) :
 
 /-- **Homogeneity of the old cyclotomic ideal over a graded base.** Every homogeneous
 component of an element of the two-sided old cyclotomic ideal lies in the ideal. -/
-theorem ELVOld.ideal_dproj_mem_over {v w : List I} {f : ELVOld.hom D Sc cutoff v w}
-    (hf : f ∈ ELVOld.ideal D Sc cutoff v w) (n : ℤ) :
+theorem ELV.ideal_dproj_mem_over {v w : List I} {f : ELV.hom D Sc cutoff v w}
+    (hf : f ∈ ELV.ideal D Sc cutoff v w) (n : ℤ) :
     letI := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
     letI := Supercategory.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
     letI := elvHomGradingOver D sy 𝒜 Sc hP cutoff
-    dproj K n f ∈ ELVOld.ideal D Sc cutoff v w := by
+    dproj K n f ∈ ELV.ideal D Sc cutoff v w := by
   letI := Linear.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
   letI := Supercategory.restrictScalars K R (ELVCoefficientCategory D Sc cutoff)
   letI := elvHomGradingOver D sy 𝒜 Sc hP cutoff
-  let S : ∀ v w : List I, Set (ELVOld.hom D Sc cutoff v w) := fun v w => {f | ∃ j t,
-    ∃ a : ELVOld.hom D Sc cutoff v (j :: t), ∃ b : ELVOld.hom D Sc cutoff (j :: t) w,
-      a ≫ ELVOld.relation D Sc cutoff j t ≫ b = f}
-  letI := degreeDecomposition K (ELVOld.obj D Sc cutoff v) (ELVOld.obj D Sc cutoff w)
+  let S : ∀ v w : List I, Set (ELV.hom D Sc cutoff v w) := fun v w => {f | ∃ j t,
+    ∃ a : ELV.hom D Sc cutoff v (j :: t), ∃ b : ELV.hom D Sc cutoff (j :: t) w,
+      a ≫ ELV.relation D Sc cutoff j t ≫ b = f}
+  letI := degreeDecomposition K (ELV.obj D Sc cutoff v) (ELV.obj D Sc cutoff w)
   rw [dproj_apply]
   refine BasisGrading.decompose_mem_span 𝒜
-    (GradedSupercategory.degree (R := K) (ELVOld.obj D Sc cutoff v) (ELVOld.obj D Sc cutoff w))
+    (GradedSupercategory.degree (R := K) (ELV.obj D Sc cutoff v) (ELV.obj D Sc cutoff w))
     (fun hr hy => smul_mem_elvHomDegreeOver D sy 𝒜 Sc hP cutoff hr hy) (S := S v w)
     ?_ hf n
   rintro g ⟨j, t, a, b, rfl⟩ m
@@ -853,7 +853,7 @@ theorem ELVOld.ideal_dproj_mem_over {v w : List I} {f : ELVOld.hom D Sc cutoff v
   · refine induction_on_degree (R := K) b (by simp) (fun s b hb => ?_)
       (fun b b' hb hb' => ?_)
     · have hg := comp_mem_degree ha
-        (comp_mem_degree (ELVOld.relation_mem_degreeOver D sy 𝒜 Sc hP cutoff j t) hb)
+        (comp_mem_degree (ELV.relation_mem_degreeOver D sy 𝒜 Sc hP cutoff j t) hb)
       by_cases h : r + (2 * sy.d j * cutoff j + s) = m
       · rw [← h, dproj_of_mem hg]
         exact Submodule.subset_span ⟨j, t, a, b, rfl⟩
@@ -874,12 +874,12 @@ section
 
 Let `R` be a commutative `K`-algebra graded by `𝒜`, with a coefficient-graded homogeneous quiver
 Hecke presentation over `R`. The coefficient truncation ideal is homogeneous for the grading
-`QuiverHecke.elvHomGradingOver` (`ELVOld.truncatedIdeal_dproj_mem_over`), so the
+`QuiverHecke.elvHomGradingOver` (`ELV.truncatedIdeal_dproj_mem_over`), so the
 coefficient-truncated quotient category is a graded supercategory over `K`
-(`ELVOld.truncatedGradedSupercategoryOver`): the degree parts are the images of the degree parts
+(`ELV.truncatedGradedSupercategoryOver`): the degree parts are the images of the degree parts
 of the ELV coefficient category, and the degree projections descend as additive maps.
 
-For `K = R` with the trivial grading this is `ELVOld.truncatedGradedSupercategory`.
+For `K = R` with the trivial grading this is `ELV.truncatedGradedSupercategory`.
 -/
 
 -- `letI` keeps the restricted-scalar instances available to instance search in these proofs.
@@ -889,7 +889,7 @@ noncomputable section
 
 open CategoryTheory StringDiagrams OddMath.Diagrams GradedSupercategory
 
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 
 universe u
 
@@ -1098,7 +1098,7 @@ def truncatedGradedSupercategoryOver :
       letI := elvHomGradingOver D sy 𝒜 Sc hP cutoff
       exact mkQ_mem_truncatedDegreeOver D sy 𝒜 Sc hP cutoff N (comp_mem_degree ha hb) }
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1111,11 +1111,11 @@ section
 Over a commutative `K`-algebra `R` graded by `𝒜` in degrees `0, …, b`, the Hom modules out of
 the empty word in the coefficient-truncated quotient lie in degrees `0, …, b + M N`, where `M`
 bounds coefficient degree against coefficient weight
-(`ELVOld.truncatedVacuum_support_of_boundOver`). The vacuum is spanned over `R` by the
+(`ELV.truncatedVacuum_support_of_boundOver`). The vacuum is spanned over `R` by the
 coefficient basis vectors, and homogeneous scalars of `R` shift degrees by at most `b`
 (`BasisGrading.mem_iSup_of_mem_span`).
 
-For `K = R` with the trivial grading (`b = 0`) this is `ELVOld.truncatedVacuum_support_of_bound`.
+For `K = R` with the trivial grading (`b = 0`) this is `ELV.truncatedVacuum_support_of_bound`.
 -/
 
 -- `letI` keeps the restricted-scalar instances available to instance search in these proofs.
@@ -1125,7 +1125,7 @@ noncomputable section
 
 open CategoryTheory StringDiagrams OddMath.Diagrams GradedSupercategory
 
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 
 universe u
 
@@ -1197,7 +1197,7 @@ theorem truncatedVacuum_support_of_boundOver (b : ℤ)
     rw [vacuum_hom_eq_zero D Sc cutoff hw f, map_zero]
     exact Submodule.zero_mem _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

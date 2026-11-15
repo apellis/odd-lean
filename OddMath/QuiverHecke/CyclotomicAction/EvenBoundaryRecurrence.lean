@@ -26,7 +26,7 @@ are constructed pointwise before induction, keeping the literal coend.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -381,7 +381,7 @@ theorem evenSourceInputContraction_tensor (i : {i : I // D.parity i = 0})
       evenSourceInputContraction_counit D Sc cutoff i v t _
     _ = _ := congrArg Neg.neg (unshiftedCounitComponent_tensor D Sc cutoff i.1 v s t g b)
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -398,7 +398,7 @@ coefficients are retained; there is no delta correction at even colour.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct DirectSum Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -560,7 +560,7 @@ theorem evenMoving_offDiagonalLongSection (p : ZMod 2) (i : I)
     rw [hf]
     simp only [map_zero]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -578,7 +578,7 @@ numerator. No boundary division or categorical inverse is assumed.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -694,7 +694,7 @@ theorem offDiagonalPolynomialBoundary_even_independentS (p : ZMod 2) (i : I)
   rw [hp, offDiagonalLongExtraction_evenMoving_move D Sc cutoff p i hi] at h
   exact h.symm
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -712,7 +712,7 @@ retained; no restriction is imposed on the other colours or their support.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -778,7 +778,7 @@ theorem offDiagonalPolynomialBoundary_even_iterate_high (p : ZMod 2) (i : I)
     rw [he, Finsupp.add_apply, Finsupp.single_eq_of_ne (by omega), add_zero,
       evenLongShift_apply_succ, ih]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -795,7 +795,7 @@ support restriction on exterior coefficients or the other colours is used.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -866,7 +866,7 @@ theorem independentSRightProduct_even_detect_bound (i : I) (hi : D.parity i = 0)
   rw [hf _ (by omega) (by omega)] at ht
   exact (Finsupp.mem_support_iff.mp hM) ht.symm
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -884,7 +884,7 @@ This is a diagonal coefficient theorem, not an even categorical inverse.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1038,7 +1038,7 @@ theorem evenBoundaryPhi_top (p : ZMod 2) (i : I) (hi : D.parity i = 0)
     appendC0_orderedReverseNumerator_top] at ht
   exact ht.symm
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1057,7 +1057,7 @@ No diagonal-corner sufficiency or even categorical inverse is assumed.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1198,7 +1198,7 @@ theorem offDiagonalBoundary_even_top (p : ZMod 2) (i : I) (hi : D.parity i = 0)
   obtain ⟨b, hb⟩ := (ideal D Sc cutoff v t).mkQ_surjective (oldTwist D Sc cutoff p v t c)
   rw [← hb, oldComp_mk, Category.id_comp]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1214,7 +1214,7 @@ kernel support and unique quotient/remainder windows. No corrected-coordinate
 basis change or categorical crossing inverse is assumed.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CategoryTheory StringDiagrams Supercategory
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1284,7 +1284,7 @@ def evenBoundaryRowDivisionEquiv (p : ZMod 2) (i : I) (hi : D.parity i = 0)
     evenBoundaryRowDivisionEquiv D Sc cutoff p i hi v t x =
       offDiagonalPolynomialBoundary D Sc cutoff p i v t x.1 + x.2 := rfl
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1299,7 +1299,7 @@ height ranges of DeformedRouquierMatrix, section 4. The same generic snake
 comparison identifies its kernel with the even polynomial boundary kernel.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 open CategoryTheory StringDiagrams Supercategory
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1391,7 +1391,7 @@ def evenToCyclotomicEquiv_zero_height (p : ZMod 2)
     evenToCyclotomicEquiv_zero_height D Sc cutoff p j hj v t h z =
       toCyclotomic D Sc cutoff j v t z := rfl
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -1405,7 +1405,7 @@ uses the ordinary even polynomial coefficients. The actual generic snake map
 carries precisely that low window onto the balanced crossing kernel.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 open CategoryTheory StringDiagrams Supercategory
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1453,7 +1453,7 @@ def evenCrossingKernelEquiv (p : ZMod 2) (i : I) (hi : D.parity i = 0) (v t : Li
       offDiagonalBoundarySnake D Sc cutoff p i v t
         (evenBoundaryKernelEquiv D Sc cutoff p i hi v t f) := rfl
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -1468,7 +1468,7 @@ The actual even degree-shift division and separation prove its inverse on
 arbitrary old Hom endpoints, without repeating coefficient elimination.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 open CategoryTheory StringDiagrams Supercategory
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1599,7 +1599,7 @@ theorem evenBoundaryRowWindow_eq_height (i : I) (v t : List I) (a : ℕ)
   change (n + outputSDegree D i v < endpointQPDegree D cutoff i v) ↔ n < a
   omega
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -1613,7 +1613,7 @@ The ordered categorical mate identity remains separate.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1664,7 +1664,7 @@ theorem evenUnitPositiveMatrixEquiv_apply (p : ZMod 2) (i : {i : I // D.parity i
   rw [map_neg, evenUnitDotPolynomialMap_eq, unitDotPolynomialMap_eq]
   rfl
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -1679,7 +1679,7 @@ The actual ordered-mate comparison remains separate.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped BigOperators
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 open OddMath.LowPolynomialCoordinates
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1764,7 +1764,7 @@ theorem evenUnitFamilyComponentEquiv_apply (p : ZMod 2) (i : {i : I // D.parity 
   rw [unitCoefficientDiagonal_even D Sc cutoff i] at h
   exact h
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -1781,7 +1781,7 @@ The actual coefficient(0) module/counit attachment is separate.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1940,7 +1940,7 @@ theorem evenInputContraction_iterate_q (i : I) (hi : D.parity i = 0) (v t : List
   rw [evenCrossingInputDot_iterate_q, evenInputContraction_q]
 
 end CyclotomicCrossingTensor
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

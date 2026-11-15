@@ -26,7 +26,7 @@ They retain the signed coefficient slide and actual balanced induction.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -151,7 +151,7 @@ theorem induced_killsEvenPower (i : I)
         SetLike.mul_mem_graded ih ha
   exact induced_killsCoefficient D Sc cutoff i M hp hM
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -169,7 +169,7 @@ No coefficient independence of the oriented action is assumed.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -268,7 +268,7 @@ instance emptyCoefficientEmbedding_full : (emptyCoefficientEmbedding (k := k) D 
 instance emptyCoefficientEmbedding_faithful : (emptyCoefficientEmbedding (k := k) D Sc cutoff).Faithful where
   map_injective h := (emptyCoefficientEquiv D Sc cutoff).injective h
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -285,7 +285,7 @@ replaced by a weighted coefficient ideal.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -471,7 +471,7 @@ def inductionDot (i : I) : SuperNatTrans k
 
 end CoefficientPowerModules
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -488,7 +488,7 @@ power quotients are not identified, and no evaluation kernel is assumed.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -613,7 +613,7 @@ instance powerToWeighted_super (N : ℕ)
     (v : List I) :
     ((powerToWeighted D Sc cutoff c L N hW).map f).app p ⟨v⟩ = f.hom.app p ⟨v⟩ := rfl
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -630,7 +630,7 @@ vacuum evaluation-kernel identification is asserted.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -683,7 +683,7 @@ def elementaryPowerToWeighted (L : I × ℕ → ℕ) :=
     (SKM.SYM.elvPowerWeightBound D cutoff L + 1)
     (weighted_le_elementaryPowerIdeal D cutoff L)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -700,7 +700,7 @@ defining ideals. All maps are induced by the original coefficient maps.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (cutoff : I → ℕ) (L : I × ℕ → ℕ)
@@ -828,7 +828,7 @@ theorem coefficientPowerQuotientMap_eq_zero_iff (a : SKM.SYM D k) :
       SKM.SYM.coefficientPowerIdeal D k L).ringCon.mkₐ k a = 0 from Quotient.sound ha).trans
         (map_zero (coefficientPowerQuotientEquiv (k := k) D cutoff L)).symm
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -845,7 +845,7 @@ This file does not infer positive-dot nilpotence from finite dimension.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (cutoff : I → ℕ) (L : I × ℕ → ℕ)
@@ -997,7 +997,7 @@ theorem coefficientPowerRegular_kills
     Quotient.sound ha
   rw [SuperalgebraCat.toElem_ofElem, hz, zero_mul]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

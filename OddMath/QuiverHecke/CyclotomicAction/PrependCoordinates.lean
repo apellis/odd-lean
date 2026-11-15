@@ -734,7 +734,7 @@ The affine input PBW basis underlying KKO I, arXiv:1206.5933v2,
 Lemma 8.1 (p. 39), extended to the coefficient algebra of
 `DeformedGlobalQP.md` §1. The extension to exterior coefficients is not
 attributed to KKO. The existing `PrependIdx`, `prependBasis`, and
-`ELVOld.balancedEquiv` are used throughout.
+`ELV.balancedEquiv` are used throughout.
 
 `prependAffineEquiv` is a proved affine coordinate equivalence, without
 flatness. `balancedEquiv_prependExpansion` compares its normalized finite
@@ -751,7 +751,7 @@ cancellation. No moving cyclotomic polynomial is imposed.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -884,7 +884,7 @@ def prependBalancedExpansion (p : ZMod 2) (i : I) (v w : List I) :
     prependBalancedExpansion D Sc cutoff p i v w (Finsupp.single x a) =
       prependBalancedTerm D Sc cutoff p x a := Finsupp.lsum_single _ _ _ _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -934,7 +934,7 @@ theorem replaceOld_injective (x : PrependIdx i v w) : Function.Injective x.repla
     (congrArg (fun a : PrependIdx i v w => a.1.2.2.1) h)
 
 end PrependIdx
-namespace ELVOld
+namespace ELV
 
 /-- Full coefficient coordinates on the old affine Hom. -/
 def oldAffineEquiv (v t : List I) : hom D Sc cutoff v t ≃ₗ[k]
@@ -1087,7 +1087,7 @@ theorem prependExtractOldQuotient_insert_tail_eq_zero_iff (p : ZMod 2)
     simpa only [twist_twist] using twist_ideal D Sc cutoff p hr
   · exact twist_ideal D Sc cutoff p
 
-end ELVOld
+end ELV
 end OddMath.QuiverHecke
 end
 
@@ -1170,7 +1170,7 @@ def representative (q : Tail i v w) : PrependIdx i v w := q.property.choose
 end Tail
 
 end PrependIdx
-namespace ELVOld
+namespace ELV
 
 /-- Off-tail restriction vanishes before either parity normalization. -/
 theorem prependTailCoefficients_comap_off_tail {i : I} {v w : List I}
@@ -1212,7 +1212,7 @@ theorem prependExtractOldQuotient_insert_off_tail (p : ZMod 2) {i : I} {v w : Li
   change (ideal D Sc cutoff v x.oldTarget).mkQ
     (prependExtractOld D Sc cutoff p x _) = 0
   rw [prependExtractOld_insert_off_tail D Sc cutoff p x z h, map_zero]
-end ELVOld
+end ELV
 end OddMath.QuiverHecke
 end
 
@@ -1261,7 +1261,7 @@ def rebase (z : PrependIdx i s w) (y : NFIdx v z.oldTarget) : PrependIdx i v w :
     (z.rebase y).oldTarget = z.oldTarget := y.tgt_cw
 
 end PrependIdx
-namespace ELVOld
+namespace ELV
 
 private theorem tail_cl_heq {a b w : List I} {L M : List PG}
     (hab : a = b) (hLM : L = M) (ha : SChain a (pl a L) w)
@@ -1497,7 +1497,7 @@ def prependOldCoordinateEquiv (p : ZMod 2) (i : I) (v w : List I) :
       (prependOldReconstruct D Sc cutoff p i v w f) = f :=
   (prependOldCoordinateEquiv D Sc cutoff p i v w).apply_symm_apply f
 
-end ELVOld
+end ELV
 end OddMath.QuiverHecke
 end
 

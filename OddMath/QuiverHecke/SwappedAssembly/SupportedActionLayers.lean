@@ -11,7 +11,7 @@ used by bounded recovery to the native tensor-row layer formulas.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld
+open CyclotomicAction ELV
 universe u
 local instance supportedActionLayerHomPi {k : Type u} [CommRing k]
     (A C : PiSCat.{u,u,u + 1} k) : PiSupercategory k (A ⟶ C) :=

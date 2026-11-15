@@ -28,8 +28,8 @@ is identified with the prescribed finite shifted unit/dot columns.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-open OddMath.QuiverHecke.ELVOld OddMath.QuiverHecke.ELVOld.BalancedInduction
-open OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+open OddMath.QuiverHecke.ELV OddMath.QuiverHecke.ELV.BalancedInduction
+open OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 namespace OddMath.QuiverHecke
 universe u
 private theorem missingUnitDot_congr
@@ -181,8 +181,8 @@ and scalar charts, so the original inverse row is preserved as well.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-open OddMath.QuiverHecke.ELVOld OddMath.QuiverHecke.ELVOld.BalancedInduction
-open OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+open OddMath.QuiverHecke.ELV OddMath.QuiverHecke.ELV.BalancedInduction
+open OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 namespace OddMath.QuiverHecke
 universe u
 private theorem inverseRowUnitDot_congr
@@ -289,7 +289,7 @@ map; at genuine empty output it is the original moduleUnitCoefficient.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 open BalancedInduction TensorMatrixCoordinates
 universe u
 
@@ -355,7 +355,7 @@ theorem missingColourUnitInverseRow_eq_coefficientMap (r : Fin count) :
     (contentCrossingHeight_nonneg_of_not_mem D cutoff γ i hi) w
     (oldContentUnitPrincipal_subsingleton_of_not_mem D Sc cutoff γ i hi N count w.obj) r
   exact h
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 
 namespace OddMath.QuiverHecke
 universe u
@@ -375,7 +375,7 @@ private theorem leftCap_relative_square
 end OddMath.QuiverHecke
 
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ) (γ : List I)
@@ -422,7 +422,7 @@ theorem probeMissingColourUnitCoefficient_relative (r : Fin count) :
 end OddMath.QuiverHecke
 
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -451,7 +451,7 @@ value and append charts, with the canonical row normalization unchanged.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor
 universe u
 
 private theorem leftCap_field_total
@@ -508,7 +508,7 @@ native cap and ground probe functional.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped BigOperators
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 section GenericWindow
 variable {k C A : Type u} [CommRing k] [Category.{u} C] [Category.{u} A]
@@ -604,10 +604,10 @@ theorem unitColumnInverseRow_unitDot_window
     intro b
     exact inverseWindow_other J hα M m w e he r ⟨a, ha⟩ (fun h => har (congrArg Fin.val h).symm) b
 end GenericWindow
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ) (γ : List I)
@@ -693,7 +693,7 @@ private theorem heightZeroLinearEquiv_one :
     (b' := Hn.basis D Sc 0) (e := Equiv.refl _) (zeroIndex (I := I))
   rw [Module.Basis.singleton_apply, Equiv.refl_apply] at h
   change heightZeroLinearEquiv D Sc 1 = _ at h
-  rw [h, Hn.basis_apply, ELVOld.vacuum_nf D Sc]
+  rw [h, Hn.basis_apply, ELV.vacuum_nf D Sc]
   rfl
 
 variable [Fintype I]
@@ -793,7 +793,7 @@ identification with a separate action's left counit is asserted here.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.ProbeVacuumCap
+namespace OddMath.QuiverHecke.ELV.ProbeVacuumCap
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 
@@ -841,7 +841,7 @@ theorem cap_mem (i : I) (hP : 0 < cut i) :
     cap D Sc m i hP ∈ parity (R := k) _ _ ((cut i - 1) • D.parity i) :=
   contentCoefficientCap_mem D Sc cut [] i N (height D m i) (topIndex D m i hP)
 
-end OddMath.QuiverHecke.ELVOld.ProbeVacuumCap
+end OddMath.QuiverHecke.ELV.ProbeVacuumCap
 end
 
 end
@@ -856,7 +856,7 @@ annihilator of `SwappedVacuumBubbles.md`, (5), to the old module itself.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-open OddMath.QuiverHecke.ELVOld OddMath.QuiverHecke.ELVOld.BalancedInduction
+open OddMath.QuiverHecke.ELV OddMath.QuiverHecke.ELV.BalancedInduction
 namespace OddMath.QuiverHecke
 universe u v
 
@@ -885,24 +885,24 @@ private theorem intertwine_probe_polynomial
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) [Fintype I] (m : I → ℕ)
-  (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) []) (SVec k))
+  (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) []) (SVec k))
   (hN : ProbeEvaluatesCoefficients D m Sc [] N)
 include hN
 
 /-- The given signed dot on the unchanged old vacuum coend has the plus-one
 probe annihilator. Scalar evaluation and the chosen append comparison are proved inputs. -/
 theorem probeOldVacuumInductionDot_odd (i : I) (hi : D.parity i = 1)
-    (w : ELVOld.OldContentCategory D Sc (probeCutoff D m) [i]) :
+    (w : ELV.OldContentCategory D Sc (probeCutoff D m) [i]) :
     (probeOldContentInductionDot D Sc m [] i N w ^ 2 + 1) ^ m i = 0 := by
   rcases w with ⟨⟨word⟩, hw⟩
-  let w : ELVOld.OldContentCategory D Sc (probeCutoff D m) [i] := ⟨⟨word⟩, hw⟩
+  let w : ELV.OldContentCategory D Sc (probeCutoff D m) [i] := ⟨⟨word⟩, hw⟩
   let O := probeOrdinaryModuleSuperfunctor D Sc m [] N hN
   let U := probeOldOrdinaryFunctor D Sc m [i]
-  let L := ELVOld.BalancedInduction.induced
-    (ELVOld.oldContentAppend D Sc (probeCutoff D m) [] i) N
+  let L := ELV.BalancedInduction.induced
+    (ELV.oldContentAppend D Sc (probeCutoff D m) [] i) N
   let hL := probeOldInduced_evaluatesCoefficients D m Sc [] i N hN
   let S := probeOrdinaryModuleSuperfunctor D Sc m [i] L hL
-  let T := ELVOld.BalancedInduction.induced (probeOrdinaryAppend D Sc m [] i) O
+  let T := ELV.BalancedInduction.induced (probeOrdinaryAppend D Sc m [] i) O
   let e : S ≅ T := probeAppendOrdinaryModuleIso D Sc m [] N hN i
   let C := probeAppendComparisonLinear D Sc m [] N hN i w
   let x := probeOldContentInductionDot D Sc m [] i N w
@@ -921,24 +921,24 @@ theorem probeOldVacuumInductionDot_odd (i : I) (hi : D.parity i = 1)
 /-- The literal old vacuum probe satisfies its polynomial as an endomorphism
 of the entire old induced supermodule, before scalar descent. -/
 theorem probeOldVacuumModuleDot_odd (i : I) (hi : D.parity i = 1) :
-    let x : End (ELVOld.BalancedInduction.induced
-        (ELVOld.oldContentAppend D Sc (probeCutoff D m) [] i) N) :=
-      ELVOld.BalancedInduction.transformComponent
+    let x : End (ELV.BalancedInduction.induced
+        (ELV.oldContentAppend D Sc (probeCutoff D m) [] i) N) :=
+      ELV.BalancedInduction.transformComponent
         (probeOldContentAppendDot_supernatural D Sc m [] i) N
     (x ^ 2 + 1) ^ m i = 0 := by
   dsimp only
-  apply ELVOld.BalancedInduction.end_eq_zero_of_total
+  apply ELV.BalancedInduction.end_eq_zero_of_total
   intro w
-  let P := ELVOld.BalancedInduction.induced
-    (ELVOld.oldContentAppend D Sc (probeCutoff D m) [] i) N
-  let x : End P := ELVOld.BalancedInduction.transformComponent
+  let P := ELV.BalancedInduction.induced
+    (ELV.oldContentAppend D Sc (probeCutoff D m) [] i) N
+  let x : End P := ELV.BalancedInduction.transformComponent
     (probeOldContentAppendDot_supernatural D Sc m [] i) N
   have hx : x.total w = probeOldContentInductionDot D Sc m [] i N w := by
     dsimp only [probeOldContentInductionDot]
-    simp only [x, SuperNatTrans.total, ELVOld.BalancedInduction.transformComponent_app,
+    simp only [x, SuperNatTrans.total, ELV.BalancedInduction.transformComponent_app,
       hi, zero_ne_one, ↓reduceIte, zero_add]
   change ((x ^ 2 + 1) ^ m i).total w = 0
-  rw [ELVOld.BalancedInduction.end_total_pow]
+  rw [ELV.BalancedInduction.end_total_pow]
   have hs : (x ^ 2 + 1).total w = (x ^ 2).total w + (1 : End P).total w := by
     change ((x ^ 2).app 0 w + (1 : End P).app 0 w) +
       ((x ^ 2).app 1 w + (1 : End P).app 1 w) =
@@ -946,7 +946,7 @@ theorem probeOldVacuumModuleDot_odd (i : I) (hi : D.parity i = 1) :
         ((1 : End P).app 0 w + (1 : End P).app 1 w)
     abel
   have h1 : (1 : End P).total w = (1 : End (P.obj w)) := SuperNatTrans.id_total _ _
-  rw [hs, ELVOld.BalancedInduction.end_total_pow, h1, hx]
+  rw [hs, ELV.BalancedInduction.end_total_pow, h1, hx]
   exact probeOldVacuumInductionDot_odd D Sc m N hN i hi w
 
 end OddMath.QuiverHecke
@@ -965,7 +965,7 @@ are cancelled, retaining the actual module unit, dot and coefficient cap.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor
 universe u
 
 private theorem inverseRow_window_cancel
@@ -1030,7 +1030,7 @@ theorem probeContentCoefficientCap_unitDotColumn
 
 end OddMath.QuiverHecke
 
-namespace OddMath.QuiverHecke.ELVOld.ProbeVacuumCap
+namespace OddMath.QuiverHecke.ELV.ProbeVacuumCap
 open BalancedInduction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1048,7 +1048,7 @@ abbrev dot (i : I) : End ((source D Sc m i).obj s) :=
 def unitVector (i : I) (c : k) : (source D Sc m i).obj s :=
   ((adjunction (K i)).unit.app N).total s ((probeVacuumScalarEquiv D Sc m) c)
 
-end OddMath.QuiverHecke.ELVOld.ProbeVacuumCap
+end OddMath.QuiverHecke.ELV.ProbeVacuumCap
 end
 
 end
@@ -1063,7 +1063,7 @@ window and signed dot polynomial to that level, without a left adjunction.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.ProbeVacuumCap
+namespace OddMath.QuiverHecke.ELV.ProbeVacuumCap
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 
@@ -1134,7 +1134,7 @@ theorem moduleDot_odd_polynomial (i : I) (hi : D.parity i = 1) :
     (probeOldVacuumModuleDot_odd D Sc m N
       (probeOldModule_evaluatesCoefficients D m Sc [] _) i hi)
 
-end OddMath.QuiverHecke.ELVOld.ProbeVacuumCap
+end OddMath.QuiverHecke.ELV.ProbeVacuumCap
 end
 
 end
@@ -1151,7 +1151,7 @@ and triangles.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.ProbeVacuumCap
+namespace OddMath.QuiverHecke.ELV.ProbeVacuumCap
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 
@@ -1294,7 +1294,7 @@ theorem preDot_odd_polynomial (R : PiSCat.{u,u,u+1} k) (i : I) (hi : D.parity i 
   exact additiveFunctor_odd_probe_polynomial H.toFunctor (moduleDot D Sc m i) (m i)
     (moduleDot_odd_polynomial D Sc m i hi)
 
-end OddMath.QuiverHecke.ELVOld.ProbeVacuumCap
+end OddMath.QuiverHecke.ELV.ProbeVacuumCap
 end
 
 end
@@ -1315,7 +1315,7 @@ open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
 universe u
 namespace OddMath.QuiverHecke
-open ELVOld
+open ELV
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
 
@@ -1378,7 +1378,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction
+open ELV CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)

@@ -10,7 +10,7 @@ transport. This supplies the coefficient square for the specified row pullback.
 noncomputable section
 open CategoryTheory StringDiagrams BicategoryStruct Supercategory OddMath.SKM
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld VacuumTensorCoefficientMaps
+open CyclotomicAction ELV VacuumTensorCoefficientMaps
 universe u
 local instance tensorRowCoefficientHomPi {k : Type u} [CommRing k]
     (A C : PiSCat.{u,u,u + 1} k) : PiSupercategory k (A ⟶ C) :=

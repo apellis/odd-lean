@@ -98,7 +98,7 @@ The sign σ' is immaterial for vanishing; no such unspecified sign is used
 in the surviving QP calculation below.
 
 **Checked full-coefficient relation killing.** `MovingShiftRelations.lean`
-proves `ELVOld.allPrefix_relation_context` using the actual `moveHom` and
+proves `ELV.allPrefix_relation_context` using the actual `moveHom` and
 `lastToFirstHom`. It includes every prefix `μ`, spectator word `σ`, cutoff,
 and moving-colour parity, with an arbitrary ambient continuation in the
 full ELV category. The stronger `projection_prefix_relation_context`
@@ -114,7 +114,7 @@ package. This establishes (K); the signed repeated-colour induction in
 
 ## 3. Induction, with the surviving signs
 
-**Checked library convention.** `ELVOld.qp_repeated_even` in
+**Checked library convention.** `ELV.qp_repeated_even` in
 `MovingShiftRelations.lean` proves the repeated-even recursion in the full ELV
 old-only quotient, with arbitrary spectators and continuations. In the
 library's `EvenTwo` crossing convention the recursion has factor **−1**,
@@ -122,7 +122,7 @@ not the factor +1 in the proposed calculation below. This agrees with
 `PrefixQPEquation.lean`. Thus the displayed no-factor global formula still
 requires a crossing-normalization comparison; the checked theorem does not
 assert that literal formula. `MovingShiftRelations.lean` now proves the repeated-odd
-recursion `ELVOld.qp_repeated_odd`: square cancellation and preservation by
+recursion `ELV.qp_repeated_odd`: square cancellation and preservation by
 the odd source difference give the first prefix sign, and the affine
 recursion gives the second; their product is one. Preservation follows from
 `movingDot_insert`, with the twist on total coefficient-plus-diagram parity.
@@ -131,7 +131,7 @@ transport with the full relation and arbitrary continuation.
 `relations_rightContext` and `qpEval_of_projection_eq` prove spectator descent
 on the actual old-only quotient; `qp_nil` checks the empty signed-product base.
 Full-ELV all-word signed induction is proved in `MovingShiftRelations.lean`:
-`ELVOld.qp_projection_product` gives the raw projected identity and `qp_product`
+`ELV.qp_projection_product` gives the raw projected identity and `qp_product`
 extends it to all spectators and full-coefficient continuations. The subalgebra
 `relationPreserving` contains every dot and hence each `qpFactor`; preservation
 of old dots follows from the actual old-source quotient action. Reverse-word
@@ -215,7 +215,7 @@ append-old relation span, including the exceptional braid correction. Spectator
 recursion and normal-form spanning extend balance to arbitrary old morphisms,
 with the twist on total coefficient-plus-diagram parity. `EndpointPolynomials.lean`
 then proves preservation of the prepend-old relation span and defines
-`ELVOld.pMap : Target →ₗ[k] AppendTarget`. Its representative formula is
+`ELV.pMap : Target →ₗ[k] AppendTarget`. Its representative formula is
 precomposition by the prescribed W. `EndpointPolynomials.lean` proves injectivity;
 `EndpointPolynomials.lean` proves wordwise k[s]-linearity and twisted old-operator
 compatibility. Content-level B[s]-module assembly and exactness remain open.

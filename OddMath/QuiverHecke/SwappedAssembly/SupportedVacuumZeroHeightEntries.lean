@@ -176,7 +176,7 @@ end Reservoir
 
 end OddMath.QuiverHecke.SwappedAssembly
 
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open BalancedInduction CyclotomicAction SwappedAssembly ProbeVacuumCap PowerVacuumCoefficient
 universe u
@@ -273,11 +273,11 @@ theorem vacuumZeroHeight_bubbleEntries [Fact Sc.PureNilpotent] (Z : (P).H ((0, 0
 
 end Generic
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
-open CyclotomicAction ELVOld ELVOld.PowerVacuumCoefficient ELVOld.WeightTensorVacuum
+open CyclotomicAction ELV ELV.PowerVacuumCoefficient ELV.WeightTensorVacuum
 universe u
 local instance zeroHeightEntryHomPi {k : Type u} [CommRing k]
     (A C : PiSCat.{u,u,u+1} k) : PiSupercategory k (A ⟶ C) :=

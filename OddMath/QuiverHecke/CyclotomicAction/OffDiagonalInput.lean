@@ -21,7 +21,7 @@ nonnegative KKO height and surjectivity in nonpositive KKO height. These are
 diagram chases on the prescribed balanced source, not assumed snake data.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 open CategoryTheory StringDiagrams Supercategory
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -112,7 +112,7 @@ def offDiagonalToCyclotomicEquiv_zero_height (p : ZMod 2)
     offDiagonalToCyclotomicEquiv_zero_height D Sc cutoff p j v t h z =
       toCyclotomic D Sc cutoff j.1 v t z := rfl
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -128,7 +128,7 @@ arbitrary-Hom boundary division and the prescribed short-column diagram.
 The old source and target words are independent.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 open CategoryTheory StringDiagrams Supercategory
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -235,7 +235,7 @@ def offDiagonalPositiveCrossingEquiv (p : ZMod 2) (j : {j : I // D.parity j = 1}
     ⟨offDiagonalPositiveCrossingAssembly_injective D Sc cutoff p j v t h,
       offDiagonalPositiveCrossingAssembly_surjective D Sc cutoff p j v t h⟩
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -252,7 +252,7 @@ mate identification remains separate. No coefficient elimination is repeated.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -288,7 +288,7 @@ theorem unitPositiveMatrixEquiv_apply (p : ZMod 2) (j : {j : I // D.parity j = 1
   rw [map_neg, unitDotPolynomialMap_eq]
   rfl
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -306,7 +306,7 @@ the ordered-mate comparison is proved. No column equality is assumed.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped BigOperators
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 open OddMath.LowPolynomialCoordinates
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -450,7 +450,7 @@ theorem unitFamilyComponentEquiv_apply (p : ZMod 2) (j : {j : I // D.parity j = 
         (unitFamilyPlainCoordinates D Sc cutoff j.1 v t m x).2)).val) = _
   exact unitDotPolynomialMap_diagonal D Sc cutoff j.1 v t m _
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -467,7 +467,7 @@ are valid for every moving colour; parity enters the subsequent row and cap
 normal forms rather than this snake comparison.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 open CategoryTheory StringDiagrams Supercategory
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -627,7 +627,7 @@ def offDiagonalBoundarySnakeKernelEquiv (p : ZMod 2)
         obtain ⟨f, hf⟩ := hz
         exact ⟨f, Subtype.ext hf⟩⟩
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -643,7 +643,7 @@ proves descent. These are concrete input-oriented operators on Source;
 their categorical counit/dot comparison is a separate obligation.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CategoryTheory StringDiagrams Supercategory
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -810,7 +810,7 @@ theorem offDiagonalInputContraction_iterate_q (j : {j : I // D.parity j = 1}) (v
   rw [offDiagonalCrossingInputDot_iterate_q, offDiagonalInputContraction_q]
 
 end CyclotomicCrossingTensor
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -827,7 +827,7 @@ These statements concern the prescribed input operators on arbitrary old
 Hom coefficients. Their categorical counit/dot comparison remains separate.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 open CategoryTheory StringDiagrams Supercategory
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -943,7 +943,7 @@ theorem offDiagonalInputContractionAffine_corrected_pivot (p : ZMod 2)
   rw [offDiagonalInputContractionAffine_corrected_iterate]
   exact offDiagonalBoundary_corrected_top D Sc cutoff p j v t (r + d + 1) 0 b (by omega)
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -960,7 +960,7 @@ matrix on arbitrary old Hom coefficients. Its categorical signed-dot/cap
 comparison and naturality are separate obligations; no equality is assumed.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 open CategoryTheory StringDiagrams Supercategory
 open scoped BigOperators
 open OddMath.LowPolynomialCoordinates
@@ -1186,7 +1186,7 @@ theorem offDiagonalInputMatrix_bijective (p : ZMod 2)
       rw [hf]
       abel
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -1203,7 +1203,7 @@ The unshifted source and row sign/twist normalization remain separate.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1358,7 +1358,7 @@ def offDiagonalShiftedInputMatrixEquiv (p : ZMod 2)
     rw [offDiagonalShiftedInputMatrix_eq]
     exact offDiagonalInputMatrix_bijective D Sc cutoff p j v t m hm)
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -1376,7 +1376,7 @@ mate is a separate obligation.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1458,7 +1458,7 @@ theorem counitInputMatrixEquiv_cap (p : ZMod 2)
     sourceInputContraction_carrier]
   exact shiftedCapRow_normalization D Sc cutoff j v t r.val z
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -1473,7 +1473,7 @@ inverse. The actual mate evaluation and arbitrary-module transfer remain separat
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1564,7 +1564,7 @@ theorem capFamilyComponentEquiv_cap (p : ZMod 2) (j : {j : I // D.parity j = 1})
   rw [capFamilyComponentEquiv_coordinates]
   exact counitInputMatrixEquiv_cap D Sc cutoff p j v t m hm z r
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end

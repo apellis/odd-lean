@@ -10,7 +10,7 @@ homogeneous parameters over `ZMod 2`, where `2` is not a unit, with every hypoth
 noncomputable section
 open OddMath OddMath.SKM OddMath.QuiverHecke
 namespace IntegralNondegeneracyConsumer
-private abbrev D := ELVOld.WeightedAppendFixture.datum
+private abbrev D := ELV.WeightedAppendFixture.datum
 
 private def sy : Symmetrizer D where
   d := fun i => if i then 1 else 2

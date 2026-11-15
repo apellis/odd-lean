@@ -23,7 +23,7 @@ before specializing any coefficient quotient or content category.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 private theorem blockFullComparison_total
     {k C A : Type u} [CommRing k] [Category.{u} C] [Category.{u} A]
@@ -110,7 +110,7 @@ theorem fullSquareRestrictionLinear_tensor (M : Superfunctor k C (SVec k))
   rw [unit_apply] at h3
   exact h3.trans h2
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -126,7 +126,7 @@ specializing the old and truncated categories. The right action is unchanged.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C : Type u} [CommRing k] [Category.{u} C]
   [Preadditive C] [Linear k C] [Supercategory k C]
@@ -172,7 +172,7 @@ theorem restrictionCoendCoordinates_inv_tensor (s w : C) (g : A.obj s ⟶ w)
       tensor A ((restriction B).obj M).toFunctor s g b :=
   coefficientMap_tensor A (restrictionCoefficientCoordinates B M).inv w s g b
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -188,7 +188,7 @@ content categories and their quotient coefficients are substituted.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 private theorem sourceRestriction_total
     {k C E : Type u} [CommRing k] [Category.{u} C] [Category.{u} E]
@@ -357,7 +357,7 @@ theorem fullSquareTargetLinear_tensor (s : C) (w : A) (z : E) (hz : U.obj w = z)
     (Q.obj s) (eqToHom (congrArg (fun F : C ⥤ E => F.obj s) h).symm ≫ U.map g)
     (unit Q M.toFunctor s b))
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -374,7 +374,7 @@ on either mate. Ordinary coend balance retains the whole right action.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C H V W E : Type u} [CommRing k]
   [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
@@ -448,7 +448,7 @@ theorem fullContentMate_square
   simp only [LinearMap.comp_apply]
   exact (hLeft.trans (hT.trans (hC.trans hBalance))).trans (hRight.trans hGlobal).symm
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -463,7 +463,7 @@ whose forward and inverse module maps are even.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 private theorem natIso_app_hom {C D : Type*} [Category C] [Category D]
     {F G : C ⥤ D} (e : F ≅ G) (x : C) : (e.app x).hom = e.hom.app x := rfl
@@ -563,7 +563,7 @@ theorem fullSquareTargetRetargetIso_total_apply
   simpa only [fullSquareTargetRetargetIso, Iso.trans_hom, Functor.mapIso_hom] using
     restrictedTriple_total J Q (fullSquareRestrictionIso J U Q T h M).hom a.hom b.hom w x
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -578,7 +578,7 @@ ordinary unit, and all dot powers retain their literal coend formulas.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 private theorem coend_ext
     {k C A V : Type u} [CommRing k] [Category.{u} C] [Category.{u} A]
@@ -694,7 +694,7 @@ theorem fullSquareTargetLinear_unitDot (s : C) (n : ℕ) (b : M.obj s)
   have hFinal := hL.trans hMid
   exact hFinal
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -709,7 +709,7 @@ zeroth-component transpose is specialized to the identity map.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 private theorem coend_ext_2
     {k C A V : Type u} [CommRing k] [Category.{u} C] [Category.{u} A]
@@ -845,7 +845,7 @@ theorem fullSquareOrdinarySourceLinear_counit_unit
   have hU := unit_total_apply U M w (restrictionCounitLinear J M w x)
   exact hU.symm.trans (hI.symm.trans hPoint)
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -860,7 +860,7 @@ coordinates agree and its whole signed dot operator is intertwined.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 private theorem coend_ext_3
     {k C A V : Type u} [CommRing k] [Category.{u} C] [Category.{u} A]
@@ -1013,7 +1013,7 @@ theorem fullSquareSourceLinear_capDot_unit
   exact hFinal
 
 end Caps
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end

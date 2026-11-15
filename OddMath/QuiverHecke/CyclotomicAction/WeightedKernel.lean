@@ -24,7 +24,7 @@ independently constructed weighted inverse with the selected OLD inverse.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor BalancedInduction TensorMatrixCoordinates
 universe u
 private theorem inverse_square {k : Type u} [CommRing k] {V W V' W' : SVec k}
@@ -119,7 +119,7 @@ theorem weightedContentCapInverse_atWord (w : OldCategory D Sc cutoff)
   apply inverse_total
   rw [weightedContentCapMatrixIso_hom_total,weightedCapMatrixComponentIso_hom]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -133,7 +133,7 @@ of the same finite content matrix inverse, with its named parity isomorphism.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction OddMath.FiniteSupermodule CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -195,7 +195,7 @@ theorem weightedContentLocalInverseTo_principal_total
       apply Pi.single_eq_of_ne
       exact Option.some_ne_none a
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -209,7 +209,7 @@ and cap as the raw represented kernel closure, before applying integer grading.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor CyclotomicCrossingTensor.TensorMatrixCoordinates
 universe u
 private theorem moduleIso_apply {k C : Type u} [CommRing k] [Category.{u} C]
@@ -371,7 +371,7 @@ theorem weightedContentCapClosureValue_atWord (w : OldCategory D Sc cutoff)
   rw [hi] at h
   exact h.symm
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -386,7 +386,7 @@ the literal weighted local closure by the truncated raw kernel coefficient.
 noncomputable section
 set_option backward.dsimp.instances true
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u v
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -672,7 +672,7 @@ theorem weightedContentCapClosureCoefficient_induction
         exact h l hh r s) β w
   exact hw hh r s
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -686,7 +686,7 @@ of the same finite content matrix inverse, with its named parity isomorphism.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction OddMath.FiniteSupermodule CyclotomicCrossingTensor
   CyclotomicCrossingTensor.TensorMatrixCoordinates
 universe u
@@ -852,7 +852,7 @@ theorem weightedContentCapWindow_chart (w : OldCategory D Sc cutoff)
         (j.val • D.parity i)).iso RM) w).symm z))
   exact h₀.trans (h₁.symm.trans h₂.symm)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -866,7 +866,7 @@ contractions by the raw OLD boundary coefficients in both height orientations.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -926,7 +926,7 @@ theorem weightedContentCapBoundaryValue_atWord (w : OldCategory D Sc cutoff)
 
 variable (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -942,7 +942,7 @@ degree, for arbitrary formal content and every finite window slot.
 noncomputable section
 set_option backward.dsimp.instances true
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u v
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1236,7 +1236,7 @@ theorem weightedContentCapBoundaryCoefficient_induction
         exact h l hh r s) β w
   exact hw hh r s
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1252,7 +1252,7 @@ square determines this inverse comparison, with its original parity unshift.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor CyclotomicCrossingTensor.TensorMatrixCoordinates
 universe u
 
@@ -1356,7 +1356,7 @@ theorem weightedUnitCoefficient_unitDotColumn (w : OldCategory D Sc cutoff)
     exact hc.trans (moduleUnitCoefficient_column_ne D Sc cutoff RM i w hh r ⟨a, ha⟩
       (fun he => har (congrArg Fin.val he).symm) b)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1373,7 +1373,7 @@ functional. No quotient equality or extra inverse is assumed.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor CyclotomicCrossingTensor.TensorMatrixCoordinates
 universe u
 private theorem inductionRestrictionIsoChart_apply
@@ -1539,7 +1539,7 @@ theorem weightedFunctional_compare (i : I) (hN : 0 < cutoff i)
   exact congrArg (coefficientPowerVacuumEmptyEquiv D Sc cutoff L).symm hc
 
 end PowerVacuumCoefficient
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

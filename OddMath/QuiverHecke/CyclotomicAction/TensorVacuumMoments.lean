@@ -48,7 +48,7 @@ inverse row is assumed beyond the stated inverse. See
 noncomputable section
 set_option quotPrecheck false
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor PowerVacuumCoefficient ProbeVacuumCap
 open Finset
 universe u
@@ -652,7 +652,7 @@ theorem tensorVacuumZeroHeightCap_even_moments
   rw [tensorVacuumEndDecode_apply, capCoefficientLmul_apply] at e1
   convert e1 using 3
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -686,7 +686,7 @@ hypothesis for parameters with pure terms: homogeneous parameters supply it
 noncomputable section
 set_option quotPrecheck false
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor PowerVacuumCoefficient ProbeVacuumCap
 open Finset
 universe u
@@ -840,9 +840,9 @@ theorem tensorVacuumCapInverse_even_moments
 
 end Tensor
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open BalancedInduction CyclotomicAction SwappedAssembly ProbeVacuumCap PowerVacuumCoefficient
 universe u
 
@@ -1085,7 +1085,7 @@ theorem tensorVacuum_leftward_even_moments [Fact Sc.PureNilpotent] (hi : D.parit
 
 end Tensor
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end
@@ -1108,7 +1108,7 @@ other hom-category instances refer to this one composite.
 noncomputable section
 set_option quotPrecheck false
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor PowerVacuumCoefficient ProbeVacuumCap
 universe u
 
@@ -1206,7 +1206,7 @@ theorem rightwardLastColumnDecode_odd
   rw [rightwardOddScalar_eq, map_smul]
   exact h
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1232,7 +1232,7 @@ noncomputable section
 set_option quotPrecheck false
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open BalancedInduction CyclotomicAction SwappedAssembly ProbeVacuumCap PowerVacuumCoefficient
 universe u
 
@@ -1308,7 +1308,7 @@ theorem tensorVacuum_rightward_odd_bubbleEntries [Fact Sc.PureNilpotent] (hi : D
   simp only [unitDotColumn_eq_restrictedDotEnd, Category.assoc] at hex
   exact hex
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end
@@ -1335,7 +1335,7 @@ noncomputable section
 set_option quotPrecheck false
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open BalancedInduction CyclotomicAction SwappedAssembly
 universe u
 
@@ -1479,9 +1479,9 @@ theorem vacuumRightwardCupInverse_bubbleEntries_even [Fact Sc.PureNilpotent] (Z 
 
 end Native
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open BalancedInduction CyclotomicAction SwappedAssembly ProbeVacuumCap PowerVacuumCoefficient
 universe u
 
@@ -1583,7 +1583,7 @@ theorem tensorVacuum_rightward_even_extreme_moments (hi : D.parity i = 0)
   tensorVacuumNegativeCap_even_moments D (parameterTwist D Sc) m cutoff L
     hdot i hi hP (by omega) hPN j B hB l z
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end

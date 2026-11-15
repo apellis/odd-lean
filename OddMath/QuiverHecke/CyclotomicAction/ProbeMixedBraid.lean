@@ -32,7 +32,7 @@ and dot maps and the original scalar coefficients.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction
+open ELV CyclotomicAction
 universe u v w r
 section Decode
 variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
@@ -140,7 +140,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 universe u
 private theorem mate_transport
     {A B : Type*} [Category* A] [Category* B] (R : A ⥤ B)
@@ -360,7 +360,7 @@ Sc. No action, local inverse or generator comparison is assumed.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction
+open ELV CyclotomicAction
 universe u v w r
 section Field
 variable {k : Type u} [CommRing k] {B : Type v} [BicategoryStruct.{w,r} B]
@@ -464,7 +464,7 @@ hypothesis for parameters with pure terms: homogeneous parameters supply it
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction SwappedAssembly
+open ELV CyclotomicAction SwappedAssembly
 universe u
 local instance elvProbeReservoirHomPi {k : Type u} [CommRing k] (A C : PiSCat.{u,u,u + 1} k) :
     PiSupercategory k (A ⟶ C) := PiTwoSupercategory.homPiLeft A C
@@ -514,7 +514,7 @@ of the bends in `Sigma/ProbeToReservoirBend` and
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicAction
 universe u
 
@@ -694,7 +694,7 @@ theorem shiftedPostRestriction_component_isNilpotent (p : ZMod 2)
 
 end Restriction
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -710,7 +710,7 @@ No exponent uniform over a weight fibre is asserted.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicAction SwappedAssembly
 universe u
 local instance outputBoundHomPi {k : Type u} [CommRing k]
@@ -824,7 +824,7 @@ theorem elvShiftedPostEndEvaluation_dot_pow_zero [Finite I]
   exact homParityShift_component_pow_zero D Sc cutoff bound Λ y A κ
     (elvPostInduction D Sc cutoff bound i Λ h F) (elvPostDot D Sc cutoff bound i Λ h F) M δ n (hp M)
 end PostDot
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -846,7 +846,7 @@ hypothesis for parameters with pure terms: homogeneous parameters supply it
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction
+open ELV CyclotomicAction
 universe u
 local instance mixedDotsHomPi {k : Type u} [CommRing k]
     (A B : PiSCat.{u,u,u + 1} k) : PiSupercategory k (A ⟶ B) :=
@@ -937,7 +937,7 @@ noncomputable section
 open scoped Classical BigOperators
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction SwappedAssembly
+open ELV CyclotomicAction SwappedAssembly
 universe u
 local instance probeDenominatorHomPi {k : Type u} [CommRing k]
     (A B : PiSCat.{u,u,u + 1} k) : PiSupercategory k (A ⟶ B) :=
@@ -1058,7 +1058,7 @@ noncomputable section
 set_option quotPrecheck false
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction SwappedAssembly
+open ELV CyclotomicAction SwappedAssembly
 universe u
 local instance finiteBendHomPi {k : Type u} [CommRing k]
     (A B : PiSCat.{u,u,u+1} k) : PiSupercategory k (A ⟶ B) :=

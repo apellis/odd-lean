@@ -77,7 +77,7 @@ abbrev reservoirHW : X × (ι.J → ℤ) :=
 abbrev power : ι.J × ℕ → ℕ := SwappedVacuumParameters.coefficientPower ι.t ι.d
 
 /-- The degree bound of the tensor families. -/
-abbrev bound : ℕ := ELVOld.PowerWordContent.powerBound ι.datum ι.level ι.power
+abbrev bound : ℕ := ELV.PowerWordContent.powerBound ι.datum ι.level ι.power
 
 theorem probe_pairing (i : ι.J) :
     (probeCutoff ι.datum ι.exponent i : ℤ) = ι.datum.h i ι.probeHW :=

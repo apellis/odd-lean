@@ -19,18 +19,18 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 /-- The signed source coordinate in an actual word value of regular A/T. -/
 def powerWordHalfTurnCoordinate (s t : List I) :
     (coefficientObj D Sc s ⟶ coefficientObj D Sc t) →ₗ[k]
-      (ELVOld.powerWordModule D (parameterTwist D Sc) cutoff L t.reverse).obj
-        (⟨s.reverse⟩ : ELVOld.OldCategory D (parameterTwist D Sc) cutoff) :=
-  (ELVOld.powerWordSourceMap D (parameterTwist D Sc) cutoff L t.reverse ⟨s.reverse⟩).comp
+      (ELV.powerWordModule D (parameterTwist D Sc) cutoff L t.reverse).obj
+        (⟨s.reverse⟩ : ELV.OldCategory D (parameterTwist D Sc) cutoff) :=
+  (ELV.powerWordSourceMap D (parameterTwist D Sc) cutoff L t.reverse ⟨s.reverse⟩).comp
     (htCoef D Sc s t)
 
 /-- The intermediate map is the literal old Hom half-turn, followed by its
 original balanced coend unit h tensor 1. -/
 theorem powerWordHalfTurnCoordinate_eq (s t : List I) :
     powerWordHalfTurnCoordinate D Sc cutoff L s t =
-      (ELVOld.powerWordGenerator D (parameterTwist D Sc) cutoff L t.reverse ⟨s.reverse⟩).comp
+      (ELV.powerWordGenerator D (parameterTwist D Sc) cutoff L t.reverse ⟨s.reverse⟩).comp
         (halfTurnOldHom D Sc cutoff s t) := by
-  unfold powerWordHalfTurnCoordinate ELVOld.powerWordSourceMap halfTurnOldHom
+  unfold powerWordHalfTurnCoordinate ELV.powerWordSourceMap halfTurnOldHom
   exact LinearMap.comp_assoc _ _ _
 
 /-- Exact source kernel, including the paper's literal elementary powers. -/
@@ -38,8 +38,8 @@ theorem powerWordHalfTurnCoordinate_ker (s t : List I) :
     LinearMap.ker (powerWordHalfTurnCoordinate D Sc cutoff L s t) =
       TransformedIdeal D Sc cutoff
         (Set.range fun j : I × ℕ => SKM.SYM.e D k j.1 j.2 ^ L j) s t := by
-  rw [powerWordHalfTurnCoordinate, LinearMap.ker_comp, ELVOld.powerWordSourceMap_ker,
-    ← ELVOld.comap_oldIdeal_sup_elementaryPowers D (parameterTwist D Sc) cutoff L t.reverse s.reverse,
+  rw [powerWordHalfTurnCoordinate, LinearMap.ker_comp, ELV.powerWordSourceMap_ker,
+    ← ELV.comap_oldIdeal_sup_elementaryPowers D (parameterTwist D Sc) cutoff L t.reverse s.reverse,
     ← Submodule.comap_comp]
   exact halfTurn_oldElementaryPowers_preimage D Sc cutoff L s t
 
