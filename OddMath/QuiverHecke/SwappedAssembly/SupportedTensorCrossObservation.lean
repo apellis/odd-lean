@@ -34,7 +34,7 @@ local instance tensorCrossObservationHomPi {k : Type u} [CommRing k]
 
 open private OddMath.QuiverHecke.ELVOld.ReservoirLayerCells.crossCell_heq
   OddMath.QuiverHecke.ELVOld.ReservoirLayerCells.crossFunctor_heq
-  from OddMath.QuiverHecke.CyclotomicAction.ELVReservoirLayerCells
+  from OddMath.QuiverHecke.CyclotomicAction.ReservoirLayers
 
 namespace TensorDotObservation
 

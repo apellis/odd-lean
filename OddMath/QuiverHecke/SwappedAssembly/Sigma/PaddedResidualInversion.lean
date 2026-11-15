@@ -1,7 +1,7 @@
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.SignedResidualWindows
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowCoefficientIdeal
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedContentBends
-import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightCap
+import OddMath.QuiverHecke.CyclotomicAction.ParameterUntwist
 
 /-! # The chosen central augmented matrix on each output content
 

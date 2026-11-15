@@ -2,12 +2,9 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumLeftwardMoments
-import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumCapMoments
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumBend
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumUnit
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumCap
-import OddMath.QuiverHecke.CyclotomicAction.ELVUnitDotComponents
+import OddMath.QuiverHecke.CyclotomicAction.ProbePaddedVacuum
+import OddMath.QuiverHecke.CyclotomicAction.TensorVacuumMoments
+import OddMath.QuiverHecke.CyclotomicAction.ProbeVacuumCharts
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorFamilies
 import OddMath.QuiverHecke.SwappedAssembly.SupportedPointwiseLeftwardInverse
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumEntryLift
@@ -17,7 +14,7 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedRightBubbleCoefficients
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseCupInverse
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseRightBubbleEntry
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.VacuumInverseWindow
-import OddMath.QuiverHecke.CyclotomicAction.ParameterTwistPureNilpotent
+import OddMath.QuiverHecke.CyclotomicAction.ParameterUntwist
 
 /-!
 # Right bubble entries of the vacuum sector at zero height

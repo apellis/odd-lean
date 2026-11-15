@@ -1,6 +1,6 @@
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorVacuum
 import OddMath.QuiverHecke.SwappedAssembly.SupportedMatrixModules
-import OddMath.QuiverHecke.CyclotomicAction.ELVContentHomZero
+import OddMath.QuiverHecke.CyclotomicAction.ContentTriple
 import OddMath.QuiverHecke.Label
 
 /-! # Sector families of the selected tensor-vacuum source row

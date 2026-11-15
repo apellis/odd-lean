@@ -1,5 +1,5 @@
 import OddMath.QuiverHecke.HalfTurn.PowerWordCoordinates
-import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordCoefficients
+import OddMath.QuiverHecke.CyclotomicAction.RouquierPowerWords
 import OddMath.QuiverHecke.ReservoirSourceCoordinates
 
 /-! # Source quotient classes of actual regular-power word vectors

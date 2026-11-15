@@ -1,5 +1,5 @@
 import OddMath.QuiverHecke.HalfTurn.PowerWordQuotientCoordinates
-import OddMath.QuiverHecke.CyclotomicAction.ELVTensorHomContexts
+import OddMath.QuiverHecke.CyclotomicAction.TensorWords
 
 /-! # The contextual half-turn table in actual old Homs
 

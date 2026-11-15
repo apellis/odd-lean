@@ -432,10 +432,10 @@ first- and last-boundary indexed ideals.
 * `OddMath/SKM/RouquierHomContent.lean`: `homWeightSector`, `homContentPostE`,
   `homContentPreE`, `homContentShift`.
 * `OddMath/QuiverHecke/Algebra.lean`: `Hn.single_mul_single`, word idempotents.
-* `OddMath/QuiverHecke/CyclotomicAction/InductionComposition.lean`:
+* `OddMath/QuiverHecke/CyclotomicAction/ModuleInduction.lean`:
   `compositionCornerLinear`, `compositionCornerInverseLinear`,
   `inductionCompositionIso` (ordinary-polynomial implementation).
-* `OddMath/QuiverHecke/CyclotomicAction/ParameterTransport.lean`:
+* `OddMath/QuiverHecke/CyclotomicAction/SuperAdjunction.lean`:
   `parameterSignExponent`, `parameterTwist_involutive`.
 * `OddMath/QuiverHecke/Presentation.lean`: `relation`, especially both slides
   and the ordered `braidEq` correction.

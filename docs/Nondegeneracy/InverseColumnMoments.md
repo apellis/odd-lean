@@ -80,7 +80,7 @@ The proof is the odd argument with `e = 0`.
 
 ## Tensor vacuum and the actual positive inverse
 
-`ELVTensorVacuumColumnMoments.lean` instantiates the odd identity on the
+`ProbeCentral.lean` instantiates the odd identity on the
 tensor vacuum. `tensorVacuumEndDecode` evaluates an endomorphism of the
 vacuum value at the vacuum point and conjugates by the decode chart.
 `tensorVacuumColumn_odd_moments` takes any column `a` with
@@ -104,14 +104,14 @@ windows are the native probe caps `centralPaddedCap true n`.
 
 ## Attachment to the vacuum adjunction (odd colours, positive height)
 
-`ELVProbePaddedVacuumCap.lean` identifies the prescribed padded cap rows
+`ProbePaddedVacuum.lean` identifies the prescribed padded cap rows
 `centralPaddedCap true n` at the vacuum sector with the native `x^n ≫ v`
 of the output block (`paddedVacuumCap_eq`), through the same source
 chart as the padded Dx entry and the target chart
 `paddedVacuumCapTargetIso`. `vacuumPreReservoirCap_eq` does this on the
 regular probe for every dotted reservoir cap, without parity.
 
-`ELVProbePaddedVacuumCapInverse.lean` transports `vacuumCapInverseData`
+`ProbePaddedVacuum.lean` transports `vacuumCapInverseData`
 entrywise (`IsCapInverse.map`, `.coordinates`, `.target`) to the native
 chart: `vacuumCapInverse_odd` is a cap inverse of
 `[evaluatedMixedBend; x^n ≫ v]_(n < h)` for the vacuum bend block of any
@@ -180,13 +180,13 @@ Open when this section was written (all proved since; see item 5 and [STATUS](ST
    multiplication by the image of `a`, and an endomorphism of `tensorVacuum` is
    determined by its decoded evaluation at the regular probe object
    (faithfulness of the vacuum sector evaluation on that endomorphism space).
-   The generic Yoneda step is checked (`ELVVacuumTensorFaithful.lean`):
+   The generic Yoneda step is checked (`VacuumTensorFaithful.lean`):
    `VacuumTensor.hom_ext_of_generating` and `hom_ext_of_generating_total` show
    that a transformation out of `G` followed by the tensor vacuum `M ↦ W ⊗ M(a)`
    is determined by its component at one object `Y₀`, when every homogeneous
    vector of every `(G X)(a)` is `(G f)(y₀)` for a fixed `y₀` and a homogeneous
    `f : Y₀ ⟶ X` of the same parity (here `G = emptyProbe`, `Y₀ = regularProbe`).
-   The generating hypothesis is checked (`ELVRegularProbeGenerating.lean`):
+   The generating hypothesis is checked (`WeightMixed.lean`):
    `regularProbe_generating` gives, for every homogeneous vector `n` of the
    empty block of a probe weight product `Y`, a morphism
    `regularProbe ⟶ Y` of the same parity carrying `regularVector` to `n`.
@@ -222,7 +222,7 @@ Open when this section was written (all proved since; see item 5 and [STATUS](ST
    `dcupL i (h-1) ++ epsL i h` with coefficient `probeSign cutoff i • δᵢ`. Both use the
    cutoff of the tensor target family as `N`; the route transport identifies it.
 2. The odd bubble `oddBubble` at positive height, the same way.
-3. Even colours: `ELVTensorVacuumLeftwardEvenMoments.lean` gives the even moment
+3. Even colours: `TensorVacuumMoments.lean` gives the even moment
    identity `tensorVacuum_leftward_even_moments` (from the generic
    `even_column_moments_of_slide`, the probe polynomial `(x - 1)^m`, the even central
    slide and the reservoir series `1/E(-z)`), and

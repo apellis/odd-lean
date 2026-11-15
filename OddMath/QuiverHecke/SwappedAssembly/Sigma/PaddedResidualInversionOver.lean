@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PaddedResidualInversion
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowCoefficientIdealOver
-import OddMath.QuiverHecke.CyclotomicAction.ELVParameterTwistNilpotenceOver
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTransport
 
 /-! # The central augmented matrix over a graded base
 

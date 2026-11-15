@@ -2,7 +2,7 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.CyclotomicAction.Quotient
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
 import Mathlib.Algebra.Category.ModuleCat.Basic
 import Mathlib.CategoryTheory.Linear.LinearFunctor
 import Mathlib.CategoryTheory.Preadditive.Opposite

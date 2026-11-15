@@ -1,5 +1,5 @@
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorUnitObservation
-import OddMath.QuiverHecke.CyclotomicAction.ELVTensorContextChartCoherence
+import OddMath.QuiverHecke.CyclotomicAction.TensorWord
 
 /-! # Supported path charts and the global tensor word chart
 

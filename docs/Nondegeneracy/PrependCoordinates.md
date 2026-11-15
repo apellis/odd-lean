@@ -3,7 +3,7 @@
 ## Status and precise assertion
 
 The whole affine corner coordinate equivalence is **Lean-checked** in
-`CyclotomicAction/PrependEquivalence.lean` as `prependCoordinateEquiv`. Its
+`CyclotomicAction/PrependCoordinates.lean` as `prependCoordinateEquiv`. Its
 forward map is the literal finite sum of `prependPBWCorner`, its inverse is
 the entrywise assembly `prependCoefficients`, and both directions satisfy
 the right-old-algebra law. Balanced tensor descent is also Lean-checked as

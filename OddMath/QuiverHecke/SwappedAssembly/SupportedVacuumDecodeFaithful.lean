@@ -3,10 +3,10 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorFamilies
-import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumColumnMoments
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumBend
-import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumTensorFaithful
-import OddMath.QuiverHecke.CyclotomicAction.ELVRegularProbeGenerating
+import OddMath.QuiverHecke.CyclotomicAction.ProbeCentral
+import OddMath.QuiverHecke.CyclotomicAction.ProbePaddedVacuum
+import OddMath.QuiverHecke.CyclotomicAction.VacuumTensorFaithful
+import OddMath.QuiverHecke.CyclotomicAction.WeightMixed
 
 /-! # Faithfulness of the decoded vacuum reading
 

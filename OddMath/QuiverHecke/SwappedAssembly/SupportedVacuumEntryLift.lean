@@ -3,8 +3,8 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.SwappedAssembly.SupportedRightBubbleCoefficients
-import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumColumnMoments
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumBend
+import OddMath.QuiverHecke.CyclotomicAction.ProbeCentral
+import OddMath.QuiverHecke.CyclotomicAction.ProbePaddedVacuum
 
 /-! # Vacuum entries from their decoded evaluation
 

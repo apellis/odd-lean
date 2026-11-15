@@ -39,7 +39,7 @@ Use left modules and signed-left, ordinary-right maps of superbimodules.
 Our E is induction and F restriction, so weights are λ=−Λ+β, not Λ−β.
 The upward dot is R_x(z)=(-1)^(|x||z|)zx. The crossing is R_τ for distinct
 colours and −R_τ for equal colours. This is the normalization of
-`CyclotomicAction/GlobalRouquierData.lean`, not a freely chosen Mackey map.
+`CyclotomicAction/GlobalWeightRouquier.lean`, not a freely chosen Mackey map.
 
 ## 2. Deformed equality (9.3)
 

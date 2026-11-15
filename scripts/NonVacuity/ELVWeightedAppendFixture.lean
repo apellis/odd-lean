@@ -1,5 +1,5 @@
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendParity
-import OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
+import OddMath.QuiverHecke.CyclotomicAction.ContentModules
+import OddMath.QuiverHecke.CyclotomicAction.SignedIntertwiner
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke.ELVOld.WeightedAppendFixture

@@ -6,7 +6,7 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedAugmentedInverse
 import OddMath.QuiverHecke.SwappedAssembly.SupportedInversionRelations
 import OddMath.QuiverHecke.SwappedAssembly.SupportedSupernaturality
 import OddMath.QuiverHecke.SwappedAssembly.SupportedPresentation
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeSigmaPermutation
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightCap
 
 /-! # The native presentation obligations on supported inputs
 

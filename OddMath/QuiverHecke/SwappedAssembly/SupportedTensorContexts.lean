@@ -1,6 +1,6 @@
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorVacuum
 import OddMath.QuiverHecke.SwappedAssembly.ReservoirContextCoordinates
-import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirLayerCells
+import OddMath.QuiverHecke.CyclotomicAction.ReservoirLayers
 
 /-! # The chosen tensor vacuum in both reservoir path contexts
 
