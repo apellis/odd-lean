@@ -233,7 +233,7 @@ private def inducedCounit (N : Superfunctor k C (SVec k)) :
     induced A (induced B ((restriction B).obj N)) ⟶ induced A N :=
   (induction A).map (moduleCounit B N)
 
-private theorem unit_total_apply (M : Superfunctor k C (SVec k)) (t : C) (b : M.obj t) :
+private theorem unit_total_apply_mixed (M : Superfunctor k C (SVec k)) (t : C) (b : M.obj t) :
     (moduleUnit A M).total t b = unit A M.toFunctor t b := by
   simp only [moduleUnit, adjunctionUnit, Superfunctor.homMk, SuperNatTrans.total,
     unitTransform_app, ↓reduceIte, one_ne_zero, add_zero]
@@ -279,7 +279,7 @@ private theorem orderedMixedMateComponent_total (N : Superfunctor k C (SVec k))
           (unit B (induced A ((restriction B).obj N)).toFunctor t x)) := by
   rw [orderedMixedMateComponent, Superfunctor.comp_total, Superfunctor.comp_total]
   simp only [SVec.comp_apply]
-  rw [unit_total_apply, restriction_map_total_apply, restriction_map_total_apply]
+  rw [unit_total_apply_mixed, restriction_map_total_apply, restriction_map_total_apply]
 
 theorem orderedMixedMateComponent_total_tensor (N : Superfunctor k C (SVec k))
     (s t : C) (g : A.obj s ⟶ t) (b : N.obj (B.obj s)) :

@@ -1304,36 +1304,6 @@ variable {i j : I}
 
 end Word
 
-section Affine
-variable [Fintype I] {i j : I}
-
-private theorem affineLastDot_mul_single (c : I) {m : ℕ} (t : Word I m)
-    (s : Word I (m + 1))
-    (f : wordObj D Sc s ⟶ wordObj D Sc (appendWord c t)) :
-    affineLastDot D Sc c m * FiniteHomMatrix.single (appendWord c t) s f =
-      FiniteHomMatrix.single (appendWord c t) s (f ≫ inductionLastDot D Sc c t) := by
-  rw [affineLastDot, Finset.sum_mul, Finset.sum_eq_single t]
-  · simp
-  · intro b _ hb
-    exact FiniteHomMatrix.single_mul_single_of_ne _ _ _ _
-      (fun h => hb (appendWord_injective c m h)) _ _
-  · simp
-
-private theorem single_mul_affineLastCrossing {n : ℕ} (s : Word I n)
-    (r : Word I (n + 1 + 1))
-    (f : wordObj D Sc (appendWord i (appendWord j s)) ⟶ wordObj D Sc r) :
-    FiniteHomMatrix.single r (appendWord i (appendWord j s)) f * affineLastCrossing D Sc i j n =
-    FiniteHomMatrix.single r (appendWord j (appendWord i s))
-      (inductionLastCrossing D Sc i j s ≫ f) := by
-  rw [affineLastCrossing, Finset.mul_sum, Finset.sum_eq_single s]
-  · simp
-  · intro b _ hb
-    exact FiniteHomMatrix.single_mul_single_of_ne _ _ _ _
-      (fun h => hb (appendWord_injective j n (appendWord_injective i (n + 1) h.symm))) _ _
-  · simp
-
-end Affine
-
 end OddMath.QuiverHecke
 
 namespace OddMath.QuiverHecke.CyclotomicAction
