@@ -9,7 +9,7 @@ retaining arbitrary coefficient components and both reservoir contexts.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM BicategoryStruct
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld
+open CyclotomicAction ELV
 universe u
 local instance tensorCrossClassHomPi {k : Type u} [CommRing k] (A C : PiSCat.{u,u,u + 1} k) :
     PiSupercategory k (A ⟶ C) := PiTwoSupercategory.homPiLeft A C

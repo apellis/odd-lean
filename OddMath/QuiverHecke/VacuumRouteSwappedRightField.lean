@@ -32,7 +32,7 @@ namespace OddMath.QuiverHecke
 universe u w
 
 namespace SwappedAssembly.SupportedSectors
-open SKM CyclotomicAction ELVOld
+open SKM CyclotomicAction ELV
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (ΛP ΛR : X) (L : I × ℕ → ℕ)
@@ -96,7 +96,7 @@ theorem rightVacuumEntrySupply_of_negative
       (L : J × ℕ → ℕ) (hP : ∀ i, (probeCutoff E m i : ℤ) = E.h i ΛP)
       (hR : ∀ i, (cutoff i : ℤ) = E.h i ΛR)
       (hF : SwappedAssembly.SupportedSectors.ProbeActionInputs E Sc m cutoff
-        (ELVOld.PowerWordContent.powerBound E cutoff L) ΛP ΛR hP hR),
+        (ELV.PowerWordContent.powerBound E cutoff L) ΛP ΛR hP hR),
       SwappedAssembly.SupportedSectors.VacuumRightNegativeEntries E Sc m cutoff ΛP ΛR L hP hR
         hF) :
     RightVacuumEntrySupply.{u} := by

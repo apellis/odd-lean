@@ -31,7 +31,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 universe u v w t z
 
 private def crossingTransport
@@ -341,7 +341,7 @@ no braid, comparison or scalar-specialization faithfulness premise is used.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 universe u v w z t
 
 private theorem braid_whiskerRight_total
@@ -447,7 +447,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 universe u v w z
 
 private theorem braid_prefix_conjugate
@@ -636,7 +636,7 @@ hypothesis for parameters with pure terms: homogeneous parameters supply it
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction
+open ELV ELV.BalancedInduction
 universe u
 private theorem transform_total
     {k C A : Type u} [CommRing k] [Category.{u} C] [Category.{u} A]
@@ -747,7 +747,7 @@ native old-content induction dot, with no change of sign or adjunction.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction
+open ELV ELV.BalancedInduction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ) (ν : List I) (i : I)
@@ -815,7 +815,7 @@ right unit, counit, evenness and triangles are the actual balanced ones.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction
+open ELV ELV.BalancedInduction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ) (ν : List I) (i : I) (μ : List I) (h : (i :: ν).Perm μ)
@@ -881,7 +881,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor CyclotomicAction
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor CyclotomicAction
 universe u v w t z
 
 private def distinctTransport
@@ -1174,7 +1174,7 @@ open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
 namespace OddMath.QuiverHecke
-open ELVOld
+open ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -1346,7 +1346,7 @@ theorem probeOldWeightCounit_mem (M : ProbeOldWeightProduct D Sc m Λ y) :
 /-- The actual OLD probe weight functors carry the prescribed even right adjunction. -/
 def probeOldActionAdjunction :
     SKM.SuperAdjunction (k := k) (probeOldE D Sc m i Λ h) (probeOldF D Sc m i Λ h) :=
-  ELVOld.ordinaryEvenSuperAdjunction (probeOldE D Sc m i Λ h) (probeOldF D Sc m i Λ h)
+  ELV.ordinaryEvenSuperAdjunction (probeOldE D Sc m i Λ h) (probeOldF D Sc m i Λ h)
     (probeOldWeightAdjunction D Sc m i Λ h) (probeOldWeightUnit_mem D Sc m i Λ h)
     (probeOldWeightCounit_mem D Sc m i Λ h)
 
@@ -1372,7 +1372,7 @@ hypothesis for parameters with pure terms: homogeneous parameters supply it
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction
+open ELV ELV.BalancedInduction
 universe u
 private theorem appendTo_transform_total
     {k C A : Type u} [CommRing k] [Category.{u} C] [Category.{u} A]
@@ -1505,7 +1505,7 @@ open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
 namespace OddMath.QuiverHecke
-open ELVOld
+open ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -1661,7 +1661,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction SwappedAssembly
+open ELV CyclotomicAction SwappedAssembly
 universe u v w t z
 
 private def homogeneousTotalUnitIso
@@ -1780,7 +1780,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction
+open ELV CyclotomicAction
 universe u
 private theorem braid_of_equal_crosses
     {k : Type u} [CommRing k] {A B C E : PiSCat.{u,u,u + 1} k}

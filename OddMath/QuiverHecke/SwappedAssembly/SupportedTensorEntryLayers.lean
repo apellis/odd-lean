@@ -10,7 +10,7 @@ change-of-chart isomorphisms; no generator-comparison premise is supplied.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM BicategoryStruct
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld
+open CyclotomicAction ELV
 namespace TensorEntryPullback
 universe v₁ v₂ u₁ u₂
 variable {C : Type u₁} [Category.{v₁} C] {D : Type u₂} [Category.{v₂} D]

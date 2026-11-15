@@ -24,7 +24,7 @@ are retained. The S/rho and balanced output-order comparisons are separate.
 noncomputable section
 open CategoryTheory StringDiagrams Categorification.TypeA Supercategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -135,7 +135,7 @@ theorem ker_outputLongExtraction_eq_chronologicalShortSpan
       (fun q _ => hterm q)
   · exact chronologicalShortSpan_le_ker_outputLongExtraction D Sc cutoff p i v
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -154,7 +154,7 @@ This does not yet identify the output balanced action or the boundary polynomial
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct DirectSum Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -229,7 +229,7 @@ theorem outputLongCoordinate_oldSource (p : ZMod 2) (i : I) (v : List I)
   apply transport (longOutputIndex_oldTarget i v m)
   simp only [LinearMap.smul_apply, prependOldCoordinate_oldSource, map_smul]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -249,7 +249,7 @@ elements of the full old-only quotient, not just individual scalar tails.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct DirectSum Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -417,7 +417,7 @@ theorem outputLongCoordinate_boundaryRho_zero (p : ZMod 2)
     outputLongCoordinate_signedMoving_zero D Sc cutoff p j.1 v 1 (by decide),
     zero_add, outputLongCoordinate_oldSource]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -436,7 +436,7 @@ normalized polynomial coefficients with the corrected rho iterates.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -477,7 +477,7 @@ theorem outputLongExtraction_move_endpointPolynomial (p : ZMod 2) (i : I) (v : L
   rw [prependAffineEquiv_tmul, prependAffineEquiv_tmul,
     moveHom_long_prepend_repr_endpointPolynomial D Sc i v y hy]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -498,7 +498,7 @@ the ordered polynomial S still require separate comparison.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -559,7 +559,7 @@ theorem outputLongExtraction_boundaryRho (p : ZMod 2)
     rw [Finsupp.mapDomain_apply_of_injective Nat.succ_injective]
     rfl
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -578,7 +578,7 @@ coefficient. No section or intertwining identity is assumed.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -844,7 +844,7 @@ private theorem corrected_changeInv_single (p : ZMod 2) (j : {j : I // D.parity 
     LinearMap.sub_apply, LinearMap.comp_apply, Finsupp.lsingle_apply, Nat.add_sub_cancel]
   exact ⟨trivial, trivial⟩
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -866,7 +866,7 @@ rows descend to old quotient arrows.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -910,7 +910,7 @@ theorem outputLongExtraction_act_appendInsert_congr (p : ZMod 2) (i : I) (v : Li
     (act D Sc cutoff i (appendInsert D Sc cutoff i v v g) (x - y)) = 0 at hm
   rwa [map_sub, map_sub, sub_eq_zero] at hm
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 
 noncomputable section
 open CategoryTheory StringDiagrams MonoidalCategory
@@ -1261,7 +1261,7 @@ theorem run_eq_leading (l v : List I) :
 end OddMath.QuiverHecke.OutputOldCrossTransport
 
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1296,7 +1296,7 @@ theorem tmul_shortSpan (i : I) (v t : List I)
     rw [map_smul]
     exact Submodule.smul_mem _ c hf
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 
 noncomputable section
 open CategoryTheory StringDiagrams Categorification.TypeA
@@ -1434,7 +1434,7 @@ theorem bareLong_dot_low (i a : I) (l r : List I)
   exact hh
 
 open scoped TensorProduct
-namespace ELVOld
+namespace ELV
 variable (cutoff : I → ℕ)
 
 theorem bareLong_dot_chains (i a : I) (l r : List I) :
@@ -1453,7 +1453,7 @@ theorem bareLong_dot_chains (i a : I) (l r : List I) :
   exact ⟨sChain_append_of hU (sChain_dotAny _ _),
     sChain_append_of (sChain_dotAny _ _) hU⟩
 
-end ELVOld
+end ELV
 end OddMath.QuiverHecke
 
 noncomputable section
@@ -1468,7 +1468,7 @@ private theorem prependTail_short_factor (i : I) (v t : List I)
     (hx : x.1.2.2.2 ≠ longPrependShuffle v.length) :
     ∃ (s : List I) (_hs : x.oldTarget = s ++ [i])
       (f : (pres D Sc).obj (ob D (i :: s)) ⟶ (pres D Sc).obj (ob D t)),
-      HEq (ELVOld.prependTail D Sc x) (f ▷ (pres D Sc).obj (ob D [i])) := by
+      HEq (ELV.prependTail D Sc x) (f ▷ (pres D Sc).obj (ob D [i])) := by
   have hv : 0 < v.length := by
     cases v with
     | nil =>
@@ -1534,7 +1534,7 @@ private theorem prependTail_short_factor (i : I) (v t : List I)
         cw (canWord (v.length + 1) x.1.2.2.2.1⁻¹))
     simpa only [tgt_append, tgt_map_dot, ht'] using hd
   · rw [cl_whiskerRight D Sc _ _ [i] hfull]
-    unfold ELVOld.prependTail
+    unfold ELV.prependTail
     have aux {q q' t : List I} (e : q = q') (gs : List PG)
         (h : SChain q (pl q gs) t) (h' : SChain q' (pl q' gs) t) :
         HEq (cl D Sc q t gs h) (cl D Sc q' t gs h') := by
@@ -1549,13 +1549,13 @@ theorem short_comp_old {i : I} {v t w : List I}
   induction hf using Submodule.span_induction with
   | mem f hf =>
     obtain ⟨x, hx, rfl⟩ := hf
-    rw [prependBasis_apply, ELVOld.prependElt_insert_tail]
+    rw [prependBasis_apply, ELV.prependElt_insert_tail]
     obtain ⟨s, hs, h, hh⟩ := prependTail_short_factor D Sc i v t x hx
     have aux {q : List I} (e : q = s ++ [i])
         (r : (pres D Sc).obj (ob D v) ⟶ (pres D Sc).obj (ob D q))
         (z : (pres D Sc).obj (ob D (i :: q)) ⟶ (pres D Sc).obj (ob D (t ++ [i])))
         (hz : HEq z (h ▷ (pres D Sc).obj (ob D [i]))) :
-        (ELVOld.affineInsert D Sc i v q r ≫ z) ≫
+        (ELV.affineInsert D Sc i v q r ≫ z) ≫
           (g ▷ (pres D Sc).obj (ob D [i])) ∈ shortSpan D Sc i v (w ++ [i]) := by
       subst q
       cases hz
@@ -1618,9 +1618,9 @@ private theorem error_comp_mem (i : I) {v w z : List I}
     (twist k (D.parity i * wordSumParity D v) f) _ hg
   have he : error D Sc i v z (f ≫ g) =
       (error D Sc i v w f ≫ (g ▷ O[[i]]) : O[i :: v] ⟶ O[z ++ [i]]) +
-      ELVOld.affineInsert D Sc i v w (twist k (D.parity i * wordSumParity D v) f) ≫
+      ELV.affineInsert D Sc i v w (twist k (D.parity i * wordSumParity D v) f) ≫
         error D Sc i w z g := by
-    dsimp only [error, ELVOld.affineInsert, LinearMap.coe_mk, AddHom.coe_mk]
+    dsimp only [error, ELV.affineInsert, LinearMap.coe_mk, AddHom.coe_mk]
     erw [twist_comp, MonoidalSupercategory.comp_whiskerRight (R := k),
       MonoidalSupercategory.whiskerLeft_comp (R := k)]
     rw [hp]
@@ -1659,7 +1659,7 @@ private theorem error_dot_mem (i a : I) (l r : List I) :
       (cl D Sc _ _ [.dot l.length] (sChain_dotAny _ _)) ∈
         shortSpan D Sc i (l ++ a :: r) ((l ++ a :: r) ++ [i]) := by
   rw [error_cl D Sc i _ _ (by intro g hg; simp only [List.mem_singleton] at hg; subst g; simp [PG.pos, PG.width])]
-  have hc := ELVOld.bareLong_dot_chains i a l r
+  have hc := ELV.bareLong_dot_chains i a l r
   have h := low_le_shortSpan D Sc i (l ++ a :: r) ((l ++ a :: r) ++ [i])
     (bareLong_dot_low D Sc i a l r hc.1 hc.2)
   simpa [PG.shift, chainParity, PG.par, Nat.add_comm] using h
@@ -1787,7 +1787,7 @@ end OddMath.QuiverHecke.OutputOldComposite
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1913,7 +1913,7 @@ theorem bareUFull_transport (i : I) {v w : List I} (g : hom D Sc cutoff v w) :
   · rw [hom_zero_of_wordParity_ne D Sc cutoff hp g, map_zero, map_zero]
     exact Submodule.zero_mem _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 end
 end

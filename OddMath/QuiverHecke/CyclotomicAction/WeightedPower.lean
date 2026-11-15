@@ -35,7 +35,7 @@ weighted coefficient row already attached to the literal A/T vacuum.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 
@@ -177,7 +177,7 @@ theorem weightedFunctional_coefficientCap (hN : 0 < cutoff i)
   exact (congrArg (weightedEmptyEquiv D Sc cutoff L).symm h).symm
 
 end PowerVacuumCoefficient
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -192,7 +192,7 @@ the given unit/dot columns. No finite-matrix inverse compatibility is assumed.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u v w
 
@@ -306,7 +306,7 @@ theorem contentVacuumCoefficientMap_eq_inverseRow
     rw [contentVacuumCoefficientMap_unitDotColumn D Sc cutoff N i M hh r a ha]
     exact (J.gg a r.val ha r.isLt).symm
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -321,7 +321,7 @@ module map. These families are proved before any quotient specialization.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C : Type u} [CommRing k] [Category.{u} C]
   [Preadditive C] [Linear k C] [Supercategory k C]
@@ -347,7 +347,7 @@ theorem unitDotColumn_supernatural (n : ℕ) :
   simpa only [zero_add, unitDotColumn, adjunction] using hu.comp
     ((dotEnd_power_supernatural A hδ n).whiskerRight (restriction A))
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -362,7 +362,7 @@ chart attaches the boundary inverse coefficient to its given weighted row.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 
@@ -502,7 +502,7 @@ theorem contentPowerVacuumCap_eq_inverseRow (hN : 0 < cutoff i)
     (contentVacuumCoefficientMap_eq_inverseRow D Sc cutoff bound i M₀ hh r J)
 
 end PowerVacuumCoefficient
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -518,7 +518,7 @@ has its full signed A/T-linearity, in the original left multiplication order.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 
@@ -589,7 +589,7 @@ theorem weightedEmptyEquiv_coefficient_action
   exact hn.symm.trans (congrArg ((weightedRestrictionIso D Sc cutoff L).inv.total ⟨[]⟩) ha)
 
 end PowerVacuumCoefficient
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -606,7 +606,7 @@ maps, including the full chi/delta series and the cutoff-parity sign.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 
@@ -755,7 +755,7 @@ theorem weightedMomentMap_odd (i : I) (hi : D.parity i = 1) (hN : 0 < cutoff i) 
   exact momentMap_odd D Sc cutoff L i hi hN r
 
 end PowerVacuumCoefficient
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -773,7 +773,7 @@ every A/T vector. Identification with the mixed inverse cap remains separate.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped BigOperators
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 
@@ -788,7 +788,7 @@ local notation "Q₀" => contentInclusion D Sc cutoff bound (0 : Multiset I)
 local notation "AQ" => CoefficientPowerQuotient (k := k) D cutoff L
 
 end PowerVacuumCoefficient
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -800,12 +800,12 @@ section
 
 Let `R` be a commutative `K`-algebra graded by `𝒜`, with a coefficient-graded homogeneous quiver
 Hecke presentation over `R`. The old cyclotomic ideal is homogeneous for the grading
-`QuiverHecke.elvHomGradingOver` (`ELVOld.ideal_dproj_mem_over`), so the old quotient category is
-a graded supercategory over `K` (`ELVOld.oldCategoryGradedSupercategoryOver`): the degree parts
+`QuiverHecke.elvHomGradingOver` (`ELV.ideal_dproj_mem_over`), so the old quotient category is
+a graded supercategory over `K` (`ELV.oldCategoryGradedSupercategoryOver`): the degree parts
 are the images of the degree parts of the ELV coefficient category, and the degree projections
 descend to the quotient as additive maps.
 
-For `K = R` with the trivial grading this is `ELVOld.oldCategoryGradedSupercategory`.
+For `K = R` with the trivial grading this is `ELV.oldCategoryGradedSupercategory`.
 -/
 
 -- `letI` keeps the restricted-scalar instances available to instance search in these proofs.
@@ -815,7 +815,7 @@ noncomputable section
 
 open CategoryTheory StringDiagrams OddMath.Diagrams GradedSupercategory
 
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 
 universe u
 
@@ -941,7 +941,7 @@ def oldCategoryGradedSupercategoryOver :
       letI := elvHomGradingOver D sy 𝒜 Sc hP cutoff
       exact mkQ_mem_oldDegreeOver D sy 𝒜 Sc hP cutoff (comp_mem_degree ha hb) }
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -953,13 +953,13 @@ section
 
 Over a commutative `K`-algebra `R` graded by `𝒜` in degrees `0, …, b`, every Hom module of the
 coefficient-truncated quotient has bounded degree support
-(`ELVOld.truncatedContent_boundedOver`). As over a ring, the proof is an induction on the source
-word: the vacuum support (`ELVOld.truncatedVacuum_support_of_boundOver`) starts it, and the
+(`ELV.truncatedContent_boundedOver`). As over a ring, the proof is an induction on the source
+word: the vacuum support (`ELV.truncatedVacuum_support_of_boundOver`) starts it, and the
 finite append spanning family, whose maps shift degrees by explicit amounts
-(`ELVOld.appendBoundedOldMap_mem_degreeOver`), propagates finite support from a word to the
+(`ELV.appendBoundedOldMap_mem_degreeOver`), propagates finite support from a word to the
 word with one more strand.
 
-For `K = R` with the trivial grading (`b = 0`) this is `ELVOld.truncatedContent_bounded`.
+For `K = R` with the trivial grading (`b = 0`) this is `ELV.truncatedContent_bounded`.
 -/
 
 -- `letI` keeps the restricted-scalar instances available to instance search in these proofs.
@@ -969,7 +969,7 @@ noncomputable section
 
 open CategoryTheory StringDiagrams OddMath.Diagrams GradedSupercategory MonoidalCategory
 
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 
 universe u
 
@@ -1195,7 +1195,7 @@ theorem truncatedContent_boundedOver [Finite I] (b : ℤ)
   obtain ⟨M, hM, hb⟩ := SKM.SYM.exists_coefficientDegree_bound D sy
   exact truncatedContent_bounded_of_boundOver D sy 𝒜 Sc hP cutoff N b h𝒜 M hM hb v w
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1208,8 +1208,8 @@ section
 Over a commutative `K`-algebra `R` graded by `𝒜` in degrees `0, …, b`, every endomorphism of
 positive degree of a word in the coefficient-truncated quotient is nilpotent, with an exponent
 depending only on the content of the word
-(`ELVOld.truncatedContent_positive_pow_zero_of_boundOver`). The exponent comes from the bounded
-degree support of the endomorphism module (`ELVOld.truncatedContent_bounded_of_boundOver`):
+(`ELV.truncatedContent_positive_pow_zero_of_boundOver`). The exponent comes from the bounded
+degree support of the endomorphism module (`ELV.truncatedContent_bounded_of_boundOver`):
 the `e`-th power of an endomorphism of degree `d > 0` has degree `e d`, which lies outside the
 support once `e` is large. Positioned dots and the appended last-strand dot are endomorphisms
 of positive degree, so they are nilpotent too.
@@ -1225,7 +1225,7 @@ noncomputable section
 
 open CategoryTheory StringDiagrams OddMath.Diagrams GradedSupercategory MonoidalCategory
 
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 
 universe u
 
@@ -1345,7 +1345,7 @@ theorem truncatedAppendDotNilpotentOver [Finite I] (b : ℤ)
     (h𝒜 : ∀ m, m ∉ Set.Icc (0 : ℤ) b → 𝒜 m = ⊥) : TruncatedAppendDotNilpotent D Sc cutoff N :=
   ⟨truncatedAppendDot_pow_zeroOver D sy 𝒜 Sc hP cutoff N b h𝒜⟩
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1356,7 +1356,7 @@ section
 # Degrees of the represented kernel matrix entries over a graded base ring
 
 Over a commutative `K`-algebra `R` graded by `𝒜`, the old quotient category is a graded
-supercategory over `K` (`ELVOld.oldCategoryGradedSupercategoryOver`). The append functor
+supercategory over `K` (`ELV.oldCategoryGradedSupercategoryOver`). The append functor
 preserves its degrees (`oldAppend_mem_degreeOver`), the appended dot has degree `2 dᵢ` and the
 equal-colour crossing has degree `-2 dᵢ`. The represented kernels carry the integer degree of
 `IndResKernel.integerDegreeOver`, and the signed mate, the induction dot, the counit, the
@@ -1371,7 +1371,7 @@ noncomputable section
 
 open CategoryTheory StringDiagrams Supercategory GradedSupercategory OddMath.Diagrams
 
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 
 universe u
 
@@ -1585,7 +1585,7 @@ theorem unitKernelComponent_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
       exact sign_smul_mem _ _ (oldComp_mem_degreeOver D sy 𝒜 Sc hP cutoff
         (oldAppend_mem_degreeOver D sy 𝒜 Sc hP cutoff i hb) hm)
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -1596,7 +1596,7 @@ section
 # Integer degrees of the represented matrix inverses over a graded base ring
 
 Over a commutative `K`-algebra `R` graded by `𝒜`, the Hom modules of the old quotient carry the
-`K`-linear degrees of `ELVOld.oldCategoryGradedSupercategoryOver`, and the represented kernels
+`K`-linear degrees of `ELV.oldCategoryGradedSupercategoryOver`, and the represented kernels
 carry `IndResKernel.integerDegreeOver`. The finite unit/cap matrices have degree zero after the
 prescribed coordinate shifts (`positiveKernelMap_degreeOver`,
 `negativeKernelMap_degreeOver`), so their proved bijectivity gives homogeneous inverses,
@@ -1614,7 +1614,7 @@ noncomputable section
 open CategoryTheory Opposite StringDiagrams Supercategory GradedSupercategory OddMath.Diagrams
 open OddMath.IntegerMatrix
 
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 
 universe u
 
@@ -1821,7 +1821,7 @@ theorem negativeKernelClosure_degreeOver (i : I) (v t : OldCategory D Sc cutoff)
       n + 2 * sy.d i * (r + s + 1 : ℕ) := by push_cast; ring
   simpa only [negativeKernelClosure, LinearMap.comp_apply, he] using h
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -1833,12 +1833,12 @@ section
 
 Over a commutative `K`-algebra `R` graded by `𝒜`, central families on the exact-content source
 category are graded by the degree of their components in the truncated quotient over `K`
-(`ELVOld.contentCoefficientDegreeOver`). Their images on the exact-content module category form
-a coefficient grading (`ELVOld.contentModuleCoeffGradingOver`). If `𝒜` lives in degrees
+(`ELV.contentCoefficientDegreeOver`). Their images on the exact-content module category form
+a coefficient grading (`ELV.contentModuleCoeffGradingOver`). If `𝒜` lives in degrees
 `0, …, b` and there are finitely many colours, bounded degree support of the source category
-(`ELVOld.contentCategory_end_boundedOver`) makes every coefficient of high degree vanish, so
+(`ELV.contentCategory_end_boundedOver`) makes every coefficient of high degree vanish, so
 these coefficients generate a jointly nilpotent coefficient ideal
-(`ELVOld.contentModuleCoefficientIdealOver`).
+(`ELV.contentModuleCoefficientIdealOver`).
 
 For `K = R` with the trivial grading these are the constructions of
 `OddMath.QuiverHecke.CyclotomicAction.CategoryGrading`.
@@ -1851,7 +1851,7 @@ noncomputable section
 
 open CategoryTheory StringDiagrams Supercategory OddMath.Diagrams
 
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 
 universe u
 
@@ -1968,7 +1968,7 @@ def contentModuleCoefficientIdealOver [Finite I] (b : ℤ)
     (contentCategory_end_boundedOver D sy 𝒜 Sc hP cutoff N β b h𝒜).choose
     (contentModule_coefficient_eq_zeroOver D sy 𝒜 Sc hP cutoff N β b h𝒜)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

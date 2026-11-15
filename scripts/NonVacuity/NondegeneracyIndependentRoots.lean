@@ -11,7 +11,7 @@ noncomputable section
 open OddMath OddMath.SKM OddMath.QuiverHecke
 namespace NondegeneracyIndependentRootsConsumer
 
-private abbrev D := ELVOld.WeightedAppendFixture.datum
+private abbrev D := ELV.WeightedAppendFixture.datum
 
 /-- The simple roots `(2, -4)` and `(-2, 2)` of the fixture are linearly independent. -/
 private theorem roots_linearIndependent : LinearIndependent ℤ D.α := by
@@ -31,7 +31,7 @@ private def two : ℚˣ := Units.mk0 2 (by norm_num)
 
 /-- Scalars with `t₀₁ = t₁₀ = 2` and vanishing `s`. -/
 private def scalars : Scalars D ℚ :=
-  { ELVOld.WeightedAppendFixture.scalars with
+  { ELV.WeightedAppendFixture.scalars with
     t := fun i j => if i = j then 1 else two
     t_self := fun _ => by simp
     t_symm_of_d_eq_zero := by intro i j _; cases i <;> cases j <;> rfl }

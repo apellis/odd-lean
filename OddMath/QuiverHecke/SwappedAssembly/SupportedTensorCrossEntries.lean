@@ -12,7 +12,7 @@ is imposed on the crossing coefficient.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM BicategoryStruct
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld
+open CyclotomicAction ELV
 universe u
 local instance tensorCrossHomPi {k : Type u} [CommRing k] (A C : PiSCat.{u,u,u + 1} k) :
     PiSupercategory k (A ⟶ C) := PiTwoSupercategory.homPiLeft A C

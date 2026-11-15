@@ -10,7 +10,7 @@ the prescribed local dot and pair charts in every outer tensor context.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld
+open CyclotomicAction ELV
 universe u
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]

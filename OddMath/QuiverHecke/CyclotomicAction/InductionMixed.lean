@@ -21,7 +21,7 @@ signed induction: an odd source relation (a²−1)^m becomes (x²+1)^m.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C B : Type u} [CommRing k]
   [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
@@ -75,16 +75,16 @@ theorem transformLinear_odd_probe_polynomial {p : ZMod 2} (ha : IsSupernatural k
     ← neg_one_smul k (transformLinear (squareDefect_supernatural ha) M w), smul_pow,
     transformLinear_pow_zero (squareDefect_supernatural ha) m hm M w, smul_zero]
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u v w
 variable {k : Type w} {A : Type u} [CommRing k] [Category.{v} A] [Preadditive A] [Linear k A]
   {V W : A}
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u v u' v'
 variable {A : Type u} {B : Type u'} [Category.{v} A] [Category.{v'} B]
   [Preadditive A] [Preadditive B]
@@ -105,7 +105,7 @@ theorem additiveFunctor_odd_probe_polynomial (F : A ⥤ B) [F.Additive]
   change (((F.mapEnd V) x) ^ 2 + 1) ^ m = 0 at hh
   exact hh
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -120,7 +120,7 @@ the distinct-colour cup-crossing-cap in Brundan–Ellis (1.12).
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C : Type u} [CommRing k] [Category.{u} C]
   [Preadditive C] [Linear k C] [Supercategory k C]
@@ -200,7 +200,7 @@ theorem mixedCrossComponent_total_tensor (M : Superfunctor k C (SVec k))
   exact hx.trans (mixedUnflatten_tensor B A M s t
     (α s ≫ twist k p (B.map h ≫ g)) b)
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -214,7 +214,7 @@ composed in that order. The generator formula keeps the whole parity twist.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C : Type u} [CommRing k] [Category.{u} C]
   [Preadditive C] [Linear k C] [Supercategory k C]
@@ -304,7 +304,7 @@ theorem orderedMixedMateComponent_total_tensor (N : Superfunctor k C (SVec k))
   simp only [Category.comp_id]
   exact hn
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -321,7 +321,7 @@ Its tensor formula keeps the twist of the entire coefficient arrow.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k : Type u} [CommRing k]
   {C A B E : Type u} [Category.{u} C] [Category.{u} A] [Category.{u} B] [Category.{u} E]
@@ -529,7 +529,7 @@ def orderedRectangularMateEquiv (N : Superfunctor k A (SVec k)) (t : B)
     (orderedRectangularMateEquiv J K L M hα N t h).toLinearMap =
       orderedRectangularMateLinear J K L M hα N t := rfl
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -545,7 +545,7 @@ before specializing to successor content certificates.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {k C A B E : Type u} [CommRing k]
   [Category.{u} C] [Category.{u} A] [Category.{u} B] [Category.{u} E]
@@ -594,7 +594,7 @@ theorem inductionTransform_app_self (P : Superfunctor k C (SVec k)) :
     (BalancedInduction.transform hβ).app p P = BalancedInduction.transformComponent hβ P := by
   simp only [BalancedInduction.transform, IsSupernatural.toSuperNatTrans, ↓reduceIte]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -609,7 +609,7 @@ before any module induction map or supernatural representing map is formed.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams TensorProduct
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C D : Type u} [CommRing k] [Category.{u} C] [Category.{u} D]
   [Preadditive D] [Linear k D] (J : C ⥤ D)
@@ -657,7 +657,7 @@ def coefficientEquiv (e : M ≅ N) (w : D) : Obj J M w ≃ₗ[k] Obj J N w :=
     coefficientEquiv J e w (tensor J M v g m) = tensor J N v g (e.hom.app v m) :=
   coefficientMap_tensor J e.hom w v g m
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -675,7 +675,7 @@ separate from this underlying ground-ring equivalence.
 noncomputable section
 open CategoryTheory Opposite StringDiagrams Supercategory TensorProduct
 open scoped Classical
-namespace OddMath.QuiverHecke.ELVOld.MixedIndResKernel
+namespace OddMath.QuiverHecke.ELV.MixedIndResKernel
 universe u
 variable {k : Type u} [CommRing k]
 variable {C D : Type u} [Category.{u} C] [Category.{u} D]
@@ -888,7 +888,7 @@ def equiv (t : D) : BalancedKernelTensor.Obj (kernel (k := k) A B t) M ≃ₗ[k]
     equiv A B M t (BalancedKernelTensor.tensor (kernel (k := k) A B t) M v x m) =
       evaluate A B M v t m x := forward_tensor A B M t v x m
 
-end OddMath.QuiverHecke.ELVOld.MixedIndResKernel
+end OddMath.QuiverHecke.ELV.MixedIndResKernel
 end
 
 end
@@ -903,7 +903,7 @@ ordinary right precomposition is retained without a representing sign.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory TensorProduct
-namespace OddMath.QuiverHecke.ELVOld.MixedIndResKernel
+namespace OddMath.QuiverHecke.ELV.MixedIndResKernel
 universe u
 variable {k C : Type u} [CommRing k] [Category.{u} C]
   [Preadditive C] [Linear k C] [Supercategory k C]
@@ -964,7 +964,7 @@ theorem mateComponent_precompose (u v t : C) (r : u ⟶ v) :
   simp only [LinearMap.comp_apply, precompose_tensor, mateComponent_tensor,
     Linear.leftComp_apply, Functor.map_comp, Category.assoc]
 
-end OddMath.QuiverHecke.ELVOld.MixedIndResKernel
+end OddMath.QuiverHecke.ELV.MixedIndResKernel
 end
 
 end
@@ -979,7 +979,7 @@ before specializing to the old ELV category.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C : Type u} [CommRing k] [Category.{u} C]
   [Preadditive C] [Linear k C] [Supercategory k C]
@@ -1029,7 +1029,7 @@ theorem orderedMixedMateCoend_eq_linear (N : Superfunctor k C (SVec k)) (t : C) 
   have ht := orderedMixedMateLinear_tensor (k := k) A B hα N s t g b
   exact he.trans ((congrArg (orderedMixedMateLinear (k := k) A B hα N t) hs).trans ht)
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -1045,7 +1045,7 @@ content proof supplies that bijectivity from its chosen chart square.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k : Type u} [CommRing k]
   {C A B E : Type u} [Category.{u} C] [Category.{u} A] [Category.{u} B] [Category.{u} E]
@@ -1139,7 +1139,7 @@ def rectangularMateFunctorIso
     (rectangularMateFunctorIso J K L M hα h).hom = rectangularMateHom J K L M hα :=
   HomogeneousSuperfunctorIso.ofHom_hom _ _ _ _
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -1155,7 +1155,7 @@ specializing to the old category, including arbitrary coefficient modules.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k : Type u} [CommRing k]
 
@@ -1197,7 +1197,7 @@ theorem coendIsoLinear_bijective : Function.Bijective (coendIsoLinear K H Q P N 
   have h := svecIso_bijective ((evaluationFunctor t).mapIso e)
   exact h
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -1213,7 +1213,7 @@ No invertibility of the mate is assumed.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 private theorem even_comp_homogeneous_comp_even
     {k : Type u} [CommRing k] {E : Type*} [Category E]
@@ -1253,7 +1253,7 @@ theorem orderedGridMateComponent_mem (N : Superfunctor k A (SVec k)) :
       (Submodule.neg_mem _ (gridDoubleCrossComponent_mem J K hα ((restriction J).obj N))))
     (map_mem (restriction K) (map_mem (induction K) (adjunctionCounit_mem J N)))
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end

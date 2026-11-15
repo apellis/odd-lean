@@ -30,7 +30,7 @@ module linearity is asserted.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -80,7 +80,7 @@ def pMap (i : I) (v w : List I) :
         ((affineUnit D Sc cutoff (v ++ [i]) (i :: v) (lastToFirstHom D Sc i v) ≫
           relation D Sc cutoff i v) ≫ h) := rfl
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -104,7 +104,7 @@ right B[s]-module, and projectivity, are separate obligations.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -275,7 +275,7 @@ def pCentralMap (i : I) (v w : List I) :
     pCentralMap D Sc cutoff i v w (Module.AEval'.of (centralSource D Sc cutoff i v w) z) =
       Module.AEval'.of (centralAppend D Sc cutoff i v w) (pMap D Sc cutoff i v w z) := rfl
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -290,7 +290,7 @@ Hom matrices give the ordinary coefficient ring in the square resolution.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -365,7 +365,7 @@ instance oldLinear : Linear k (OldCategory D Sc cutoff) where
     intro v t w f r g
     exact (oldComp D Sc cutoff v.word t.word w.word f).map_smul r g
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -383,7 +383,7 @@ endomorphisms of a fixed word.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory Opposite MonoidalCategory
 open scoped Classical TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -539,7 +539,7 @@ instance appendPresheaf_additive (i : I) (w : List I) :
     apply ModuleCat.hom_ext
     exact (appendPull D Sc cutoff i _ _ w).map_add f.unop g.unop
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -558,7 +558,7 @@ with P is the existing signed QP polynomial, including repeated-even factors
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -670,7 +670,7 @@ theorem qMap_comp_pMap (i : I) (v w : List I) :
   obtain ⟨h, rfl⟩ := (relations D Sc cutoff i v w).mkQ_surjective x
   exact qMap_pMap_projection D Sc cutoff i v w h
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -687,7 +687,7 @@ the total old-coefficient parity involution and the repeated-even minus signs.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct DirectSum Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -894,7 +894,7 @@ theorem projection_qp_relation_regular (i : I) (v w : List I)
   projection_relation_regular D Sc cutoff i v w h
     (projection_qpProduct_regular D Sc cutoff i v w _ hh)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -912,7 +912,7 @@ identification of the cokernel and projectivity are separate obligations.
 
 noncomputable section
 open CategoryTheory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -936,7 +936,7 @@ theorem pMap_injective (i : I) (v w : List I) :
     ((qMap D Sc cutoff i v w).comp (pMap D Sc cutoff i v w)) y at h
   simpa only [qMap_comp_pMap] using h
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1309,7 +1309,7 @@ ELV relation. All coefficients lie in the original full super coefficient catego
 noncomputable section
 open CategoryTheory Polynomial
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I L k : Type u} [AddCommGroup L] [CommRing k]
   (D : SKM.Datum I L) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1427,7 +1427,7 @@ theorem monicELVEndpointProduct_eval (i : I) (v : List I) :
     (movingELVPolynomial_eval D Sc cutoff i v)
     (affineNormalizedEndpointNormPolynomial_eval D Sc cutoff i v)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1444,7 +1444,7 @@ cyclotomic relation on the moving endpoint.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1529,7 +1529,7 @@ theorem relation_comp_move (i : I) (v : List I) :
     Functor.map_comp, Functor.map_smul] at hq
   dsimp only [elvQuotientFunctor] at hq ⊢
   exact hq
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1547,7 +1547,7 @@ needed for bounded moving-exponent reduction at arbitrary content.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory Polynomial
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1589,7 +1589,7 @@ theorem monicELVEndpointProduct_eval_mem_ideal (i : I) (v : List I) :
   rw [he, affineUnitEndHom_smul, End.mul_def, Linear.smul_comp]
   exact Submodule.smul_mem _ c (endpointNorm_endpointELV_mem_ideal D Sc cutoff i v)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1606,7 +1606,7 @@ no centrality of arbitrary full ELV coefficients is assumed.
 
 noncomputable section
 open CategoryTheory Polynomial
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I L k : Type u} [AddCommGroup L] [CommRing k]
   (D : SKM.Datum I L) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1681,7 +1681,7 @@ theorem monicELVEndpointProduct_coeff_mem_range (i : I) (v : List I) (n : ℕ) :
   refine ⟨(oldMonicELVEndpointProduct D Sc cutoff i v).coeff n, ?_⟩
   rw [← Polynomial.coeff_map, oldMonicELVEndpointProduct_map]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1700,7 +1700,7 @@ support bound still requires finite-shuffle spanning and homogeneous projection.
 noncomputable section
 open CategoryTheory Polynomial
 
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 
 private theorem powers_mem_ideal_sup_span
     {R A : Type*} [CommRing R] [Ring A] [Algebra R A]
@@ -1788,7 +1788,7 @@ theorem movingDot_pow_mem_bounded_old_span (i : I) (v : List I) (n : ℕ) :
   | add b c _ _ hb hc => simpa only [map_add] using Submodule.add_mem _ hb hc
   | smul r b _ hb => simpa only [map_smul] using Submodule.smul_mem _ r hb
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1827,7 +1827,7 @@ theorem reverseMoveHom_parity (i : I) (l ν : List I) :
           (Supercategory.comp_mem (he _) (Supercategory.comp_mem
             (intertwinerHom_parity D Sc l ν j i) (he _))))
 
-namespace ELVOld
+namespace ELV
 variable (cutoff : I → ℕ)
 
 /-- The reverse affine moving chain with unit ELV coefficient. -/
@@ -1904,7 +1904,7 @@ theorem rMap_qMap_projection (i : I) (v w : List I)
           (reverseMoveHom D Sc i [] v ≫ moveHom D Sc i [] v) ≫ h) := by
   simp only [qMap_projection, rMap_projection, affineUnit_comp, Category.assoc, List.nil_append]
 
-end ELVOld
+end ELV
 end OddMath.QuiverHecke
 end
 

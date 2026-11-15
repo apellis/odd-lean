@@ -23,7 +23,7 @@ are retained. The datum may contain other odd colours.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction
+open ELV ELV.BalancedInduction
 universe u v
 
 private theorem evenDefect_supernatural
@@ -109,24 +109,24 @@ private theorem intertwine_even_polynomial
   simpa only [LinearMap.comp_apply, hy, LinearMap.zero_apply, map_zero] using hh
 
 section Old
-variable (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) []) (SVec k))
+variable (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) []) (SVec k))
   (hN : ProbeEvaluatesCoefficients D m Sc [] N)
 include hN
 
 /-- The even annihilator survives the prescribed old/ordinary comparison
 on every old vacuum induction vector. -/
 theorem probeOldVacuumInductionDot_even (i : I) (hi : D.parity i = 0)
-    (w : ELVOld.OldContentCategory D Sc (probeCutoff D m) [i]) :
+    (w : ELV.OldContentCategory D Sc (probeCutoff D m) [i]) :
     (probeOldContentInductionDot D Sc m [] i N w - 1) ^ m i = 0 := by
   rcases w with ⟨⟨word⟩, hw⟩
-  let w : ELVOld.OldContentCategory D Sc (probeCutoff D m) [i] := ⟨⟨word⟩, hw⟩
+  let w : ELV.OldContentCategory D Sc (probeCutoff D m) [i] := ⟨⟨word⟩, hw⟩
   let O := probeOrdinaryModuleSuperfunctor D Sc m [] N hN
   let U := probeOldOrdinaryFunctor D Sc m [i]
-  let L := ELVOld.BalancedInduction.induced
-    (ELVOld.oldContentAppend D Sc (probeCutoff D m) [] i) N
+  let L := ELV.BalancedInduction.induced
+    (ELV.oldContentAppend D Sc (probeCutoff D m) [] i) N
   let hL := probeOldInduced_evaluatesCoefficients D m Sc [] i N hN
   let S := probeOrdinaryModuleSuperfunctor D Sc m [i] L hL
-  let T := ELVOld.BalancedInduction.induced (probeOrdinaryAppend D Sc m [] i) O
+  let T := ELV.BalancedInduction.induced (probeOrdinaryAppend D Sc m [] i) O
   let e : S ≅ T := probeAppendOrdinaryModuleIso D Sc m [] N hN i
   let C := probeAppendComparisonLinear D Sc m [] N hN i w
   let x := probeOldContentInductionDot D Sc m [] i N w
@@ -145,24 +145,24 @@ theorem probeOldVacuumInductionDot_even (i : I) (hi : D.parity i = 0)
 /-- The literal old vacuum probe satisfies its polynomial as an endomorphism
 of the entire old induced supermodule, before scalar descent. -/
 theorem probeOldVacuumModuleDot_even (i : I) (hi : D.parity i = 0) :
-    let x : End (ELVOld.BalancedInduction.induced
-        (ELVOld.oldContentAppend D Sc (probeCutoff D m) [] i) N) :=
-      ELVOld.BalancedInduction.transformComponent
+    let x : End (ELV.BalancedInduction.induced
+        (ELV.oldContentAppend D Sc (probeCutoff D m) [] i) N) :=
+      ELV.BalancedInduction.transformComponent
         (probeOldContentAppendDot_supernatural D Sc m [] i) N
     (x - 1) ^ m i = 0 := by
   dsimp only
-  apply ELVOld.BalancedInduction.end_eq_zero_of_total
+  apply ELV.BalancedInduction.end_eq_zero_of_total
   intro w
-  let P := ELVOld.BalancedInduction.induced
-    (ELVOld.oldContentAppend D Sc (probeCutoff D m) [] i) N
-  let x : End P := ELVOld.BalancedInduction.transformComponent
+  let P := ELV.BalancedInduction.induced
+    (ELV.oldContentAppend D Sc (probeCutoff D m) [] i) N
+  let x : End P := ELV.BalancedInduction.transformComponent
     (probeOldContentAppendDot_supernatural D Sc m [] i) N
   have hx : x.total w = probeOldContentInductionDot D Sc m [] i N w := by
     dsimp only [probeOldContentInductionDot]
-    simp only [x, SuperNatTrans.total, ELVOld.BalancedInduction.transformComponent_app,
+    simp only [x, SuperNatTrans.total, ELV.BalancedInduction.transformComponent_app,
       hi, one_ne_zero, ↓reduceIte, add_zero]
   change ((x - 1) ^ m i).total w = 0
-  rw [ELVOld.BalancedInduction.end_total_pow]
+  rw [ELV.BalancedInduction.end_total_pow]
   have hs : (x - 1).total w = x.total w - (1 : End P).total w := by
     change (x.app 0 w - (1 : End P).app 0 w) +
       (x.app 1 w - (1 : End P).app 1 w) =
@@ -174,7 +174,7 @@ theorem probeOldVacuumModuleDot_even (i : I) (hi : D.parity i = 0) :
 
 end Old
 
-namespace ELVOld.ProbeVacuumCap
+namespace ELV.ProbeVacuumCap
 
 /-- The actual restricted module dot retains the even probe annihilator. -/
 theorem moduleDot_even_polynomial (i : I) (hi : D.parity i = 0) :
@@ -230,7 +230,7 @@ theorem shiftedPreDot_even_isUnit (R : PiSCat.{u,u,u+1} k) (i : I) (hi : D.parit
     ⟨m i, shiftedPreDot_even_polynomial D Sc m R i hi H⟩
   simpa only [sub_add_cancel] using hn.isUnit_add_one
 
-end ELVOld.ProbeVacuumCap
+end ELV.ProbeVacuumCap
 
 end OddMath.QuiverHecke
 end
@@ -251,7 +251,7 @@ hypothesis for parameters with pure terms: homogeneous parameters supply it
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open CyclotomicAction
 universe u
 local instance negativeCapHomPi {k : Type u} [CommRing k] (A B : PiSCat.{u,u,u+1} k) :
@@ -383,7 +383,7 @@ theorem vacuumPreNegativeCap_even [Fact Sc.PureNilpotent] (hP : 0 < probeCutoff 
     ← Category.assoc, vacuumPreInverseDot_source_even D Sc m Λ hc W muM i h H hP hi n,
     Category.assoc]
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end
@@ -403,7 +403,7 @@ hypothesis for parameters with pure terms: homogeneous parameters supply it
 noncomputable section
 set_option autoImplicit false
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open BalancedInduction CyclotomicAction
 universe u
 local instance bendMonomialHomPi {k : Type u} [CommRing k] (A B : PiSCat.{u,u,u+1} k) :
@@ -707,7 +707,7 @@ theorem vacuumBendMonomial_even [Fact Sc.PureNilpotent] (hP : 0 < probeCutoff D 
   rw [Category.assoc, hp, ← Category.assoc, hc, unitDotColumn_eq_restrictedDotEnd]
   simp only [Category.assoc]
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end

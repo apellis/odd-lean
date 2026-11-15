@@ -54,7 +54,7 @@ def RightVacuumEntrySupply : Prop :=
     (L : J × ℕ → ℕ) (hP : ∀ i, (probeCutoff E m i : ℤ) = E.h i ΛP)
     (hR : ∀ i, (cutoff i : ℤ) = E.h i ΛR)
       (hF : SwappedAssembly.SupportedSectors.ProbeActionInputs E Sc m cutoff
-        (ELVOld.PowerWordContent.powerBound E cutoff L) ΛP ΛR hP hR),
+        (ELV.PowerWordContent.powerBound E cutoff L) ΛP ΛR hP hR),
     (∀ i, 0 < probeCutoff E m i) → (∀ i, 0 < cutoff i) →
       SwappedAssembly.SupportedSectors.VacuumRightEntries E Sc m cutoff ΛP ΛR L hP hR hF
         (ΛP - ΛR) m cutoff

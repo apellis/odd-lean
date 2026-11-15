@@ -9,7 +9,7 @@ including the canonical source unit, under its quotient coordinate. No supported
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld
+open CyclotomicAction ELV
 universe u
 attribute [local irreducible] tensorPathValueChart PowerWordQuotientCoordinates.coordinate
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]

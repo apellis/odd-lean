@@ -20,7 +20,7 @@ Words here are reservoir append tuples: the source strand word is reversed.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.TensorVacuumWords
+namespace OddMath.QuiverHecke.ELV.TensorVacuumWords
 open CyclotomicAction SwappedAssembly
 universe u
 
@@ -275,7 +275,7 @@ theorem cross_apply (ν : List I) (i j : I) {xj xu xi : X}
   rw [Superfunctor.comp_total, Superfunctor.comp_total] at hs
   exact congrArg (fun f => f z) hs
 
-end OddMath.QuiverHecke.ELVOld.TensorVacuumWords
+end OddMath.QuiverHecke.ELV.TensorVacuumWords
 end
 
 end
@@ -291,7 +291,7 @@ This is a comparison of whole functors, not only their regular-probe value.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.TensorReservoirWords
+namespace OddMath.QuiverHecke.ELV.TensorReservoirWords
 open CyclotomicAction SwappedAssembly
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
@@ -451,7 +451,7 @@ theorem pathHomAt_eq_wordHom {l : List (SKM.Col I X)} {c : I →₀ ℕ}
   eq_of_heq ((atWeight_heq D Sc m cutoff L ΛP ΛR _ _).trans
     (pathHom_heq D Sc m cutoff L ΛP ΛR p hl))
 
-end OddMath.QuiverHecke.ELVOld.TensorReservoirWords
+end OddMath.QuiverHecke.ELV.TensorReservoirWords
 end
 
 end
@@ -467,7 +467,7 @@ signed old-Hom arrow on every source vector. No faithfulness is assumed.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.TensorHomContexts
+namespace OddMath.QuiverHecke.ELV.TensorHomContexts
 open CyclotomicAction SwappedAssembly
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
@@ -663,7 +663,7 @@ theorem cross_apply (ν η : List I) (i j : I) {xj xu xi : X}
   exact square_apply D Sc cutoff L ΛR _ _ _ _
     (cross D Sc m cutoff L ΛP ΛR ν η i j h₁ h₂ h₃ h₄) β c (((f.total P₀) β).total c z)
 
-end OddMath.QuiverHecke.ELVOld.TensorHomContexts
+end OddMath.QuiverHecke.ELV.TensorHomContexts
 end
 
 end

@@ -36,7 +36,7 @@ The result is ground-ring linear; bimodule and categorical naturality are separa
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory TensorProduct
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -138,7 +138,7 @@ def sourceCoordinateEquiv (p : ZMod 2) (i : I) (v : List I) :
     sourceCoordinateEquiv D Sc cutoff p i v (alpha D Sc cutoff i v v a) = (a, 0) := by
   simp only [sourceCoordinateEquiv_apply, extract_alpha, outputLongExtraction_alpha]
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -156,7 +156,7 @@ This is the fixed-word polynomial comparison for `DeformedBoundaryDivision.md`
 It is not the corrected-rho iterate comparison, boundary division or prescribed inverse.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CategoryTheory StringDiagrams Supercategory
 open scoped Classical
 universe u
@@ -245,7 +245,7 @@ theorem outputLongExtraction_move_independentS (p : ZMod 2) (i : I) (v : List I)
   rw [h, leadingMoveEndpointPolynomial_eq_sign_smul_squareProduct,
     Linear.smul_comp, map_smul, map_smul, map_smul, outputLongExtraction_squareProduct]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -387,7 +387,7 @@ The intended application is the source endpoint of the deformed square resolutio
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory Opposite MonoidalCategory
 open scoped Classical TensorProduct DirectSum
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -514,7 +514,7 @@ def sourceRowsReconstruct (p : ZMod 2) (i : I) (ν : List I) :
       sourceTailRow D Sc cutoff p i ν q.1 q.2 b :=
   DirectSum.toModule_lof _ _ _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -533,7 +533,7 @@ coordinates for the underlying old-ring module of K₀ in the deformed square.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory Opposite MonoidalCategory
 open scoped Classical TensorProduct DirectSum
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -636,7 +636,7 @@ def appendRowsReconstruct (i : I) (ν : List I) :
       appendTailRow D Sc cutoff i ν q.1 q.2 b :=
   DirectSum.toModule_lof _ _ _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -661,7 +661,7 @@ variable {i : I} {v w : List I}
 def shift (x : AppendIdx i v w) (d : ℕ) : AppendIdx i v w :=
   ⟨(d + x.1.1, x.1.2), x.2⟩
 end AppendIdx
-namespace ELVOld
+namespace ELV
 theorem appendTail_shift {i : I} {v w : List I} (x : AppendIdx i v w) (d : ℕ) :
     (dotE D Sc (x.oldTarget ++ [i]) x.oldTarget.length ^ d : End _) ≫ appendTail D Sc x =
       appendTail D Sc (x.shift d) := by
@@ -671,7 +671,7 @@ theorem appendTail_shift {i : I} {v w : List I} (x : AppendIdx i v w) (d : ℕ) 
   simp only [AppendIdx.shift, List.replicate_add, List.map_append, List.append_assoc,
     List.map_replicate, hl]
 
-end ELVOld
+end ELV
 end OddMath.QuiverHecke
 end
 
@@ -688,7 +688,7 @@ therefore proves moving-minus-old cancellation, without exterior flatness.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct DirectSum Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -864,7 +864,7 @@ theorem appendOldSource_movingPower_above (p : ZMod 2) {i : I} {v w : List I}
   change q.representative.1.1 = q.1.1 at hk
   omega
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -882,7 +882,7 @@ the reverse boundary comparison of §3 is separate.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct DirectSum Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1087,7 +1087,7 @@ theorem qMap_injective (i : I) (v w : List I) :
     reverseMoveHom_comp_moveHom_eq_endpointNorm] at he
   exact appendProjection_endpointNorm_regular D Sc cutoff i v w h he
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1106,7 +1106,7 @@ longest-output coordinates, and not the full reverse-chain norm.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1190,7 +1190,7 @@ theorem pMap_evenDot_move_iterate (i : I) (hi : D.parity i = 0)
   simp only [hi, nsmul_zero, zero_mul, sign_zero, one_smul,
     appendMovingPowerTarget_projection]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1210,7 +1210,7 @@ splitting is necessary before deriving the degree-zero polynomial defect.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1249,7 +1249,7 @@ theorem pMap_sub_outputLiftBoundary_mem (p : ZMod 2) (j : {j : I // D.parity j =
     (Submodule.mem_map.mpr ⟨_, hs, rfl⟩)
   simpa only [map_sub, outputLiftBoundary, LinearMap.comp_apply] using h
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1276,7 +1276,7 @@ not assume or construct C₀, S-division, or a matrix inverse. The global librar
 sign is retained, rather than replaced by the source-convention sign.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CategoryTheory StringDiagrams Supercategory
 open scoped Classical
 universe u
@@ -1472,7 +1472,7 @@ theorem outputLongExtraction_boundaryRho_move_polynomial (p : ZMod 2)
     (independentOutputS_oldTwist D Sc cutoff j.1 v n (D.parity j.1)),
     outputLongExtraction_correctedLift, outputLongExtraction_correctedLift,
     Nat.add_comm d n, Function.iterate_add_apply]
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1491,7 +1491,7 @@ not a transported prepend regularity or the full reverse-chain norm.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct DirectSum Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1502,7 +1502,7 @@ def appendQPDegree (i j : I) : ℕ :=
 def appendQPUnit (i j : I) : kˣ :=
   if j = i then if D.parity i = 1 then 1 else -1 else Sc.t i j
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1522,7 +1522,7 @@ No injectivity on the final full cyclotomic quotient is used or claimed.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct DirectSum Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1543,7 +1543,7 @@ theorem append_coefficient_monomial (i : I) (v : List I) (d : ℕ)
   rw [ELVPScalar.rightContext_scalar]
   exact (affineUnit_comp_scalar D Sc cutoff (dotE D Sc (v ++ [i]) v.length ^ d) a).symm
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1561,7 +1561,7 @@ No arbitrary polynomial-evaluation multiplicativity or output S identity is used
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct DirectSum Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1572,7 +1572,7 @@ def endpointQPDegree (i : I) (v : List I) : ℕ := cutoff i +
 def appendQPProductUnit (i : I) (v : List I) : kˣ :=
   ((List.range v.length).map (fun b => appendQPUnit D Sc i (v.getD b i))).prod
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1663,41 +1663,41 @@ theorem elvQuotientMap_ker_eq_coefficientRelationSpan (s t : List I) :
 private theorem elvGenerator_image_mem_oldIdeal {v : List I}
     {r : coefficientObj D Sc v ⟶ coefficientObj D Sc v}
     (hr : ELVGenerator D Sc cutoff v r) :
-    elvQuotientMap D Sc cutoff _ _ r ∈ ELVOld.ideal D Sc cutoff v v := by
+    elvQuotientMap D Sc cutoff _ _ r ∈ ELV.ideal D Sc cutoff v v := by
   rcases hr with ⟨a, ha, rfl⟩ | ⟨i, tail, h, rfl⟩ | ⟨i, hi, tail, h, rfl⟩
   · rw [elvQuotientMap_kills D Sc ha]
     exact Submodule.zero_mem _
   · subst v
     simp only [eqToHom_refl, Category.id_comp, Category.comp_id]
     have hrel : elvQuotientMap D Sc cutoff _ _
-        (elvCyclotomic D Sc i tail (cutoff i.1)) = ELVOld.relation D Sc cutoff i.1 tail := by
-      rw [ELVOld.relation, dite_eq_left i.property]
+        (elvCyclotomic D Sc i tail (cutoff i.1)) = ELV.relation D Sc cutoff i.1 tail := by
+      rw [ELV.relation, dite_eq_left i.property]
       rfl
     rw [hrel]
-    exact ELVOld.relation_mem D Sc cutoff i.1 tail
+    exact ELV.relation_mem D Sc cutoff i.1 tail
   · subst v
     simp only [eqToHom_refl, Category.id_comp, Category.comp_id]
     have hn : D.parity i ≠ 1 := by rw [hi]; exact zero_ne_one
     have hrel : elvQuotientMap D Sc cutoff _ _
-        (evenCyclotomic D Sc i tail (cutoff i)) = ELVOld.relation D Sc cutoff i tail := by
-      rw [ELVOld.relation, dite_eq_right hn]
+        (evenCyclotomic D Sc i tail (cutoff i)) = ELV.relation D Sc cutoff i tail := by
+      rw [ELV.relation, dite_eq_right hn]
       rfl
     rw [hrel]
-    exact ELVOld.relation_mem D Sc cutoff i tail
+    exact ELV.relation_mem D Sc cutoff i tail
 
 private theorem oldRelation_source_lift (j : I) (tail : List I) :
     ∃ r : coefficientObj D Sc (j :: tail) ⟶ coefficientObj D Sc (j :: tail),
       ELVGenerator D Sc cutoff (j :: tail) r ∧
-        elvQuotientMap D Sc cutoff _ _ r = ELVOld.relation D Sc cutoff j tail := by
+        elvQuotientMap D Sc cutoff _ _ r = ELV.relation D Sc cutoff j tail := by
   by_cases hj : D.parity j = 1
   · refine ⟨elvCyclotomic D Sc ⟨j, hj⟩ tail (cutoff j),
       Or.inr (Or.inl ⟨⟨j, hj⟩, tail, rfl, by simp⟩), ?_⟩
-    rw [ELVOld.relation, dite_eq_left hj]
+    rw [ELV.relation, dite_eq_left hj]
     rfl
   · have hz : D.parity j = 0 := (Supercategory.parity_eq_zero_or_one (D.parity j)).resolve_right hj
     refine ⟨evenCyclotomic D Sc j tail (cutoff j),
       Or.inr (Or.inr ⟨j, hz, tail, rfl, by simp⟩), ?_⟩
-    rw [ELVOld.relation, dite_eq_right hj]
+    rw [ELV.relation, dite_eq_right hj]
     rfl
 
 /-- The source relation span maps onto the literal old cyclotomic ideal.
@@ -1705,15 +1705,15 @@ Every target coefficient and context is lifted through the actual quotient. -/
 theorem map_elvRelationSpan_eq_oldIdeal (s t : List I) :
     (ELVRelationSpan D Sc cutoff s t).map
         (elvQuotientMap D Sc cutoff (coefficientObj D Sc s) (coefficientObj D Sc t)) =
-      ELVOld.ideal D Sc cutoff s t := by
+      ELV.ideal D Sc cutoff s t := by
   apply le_antisymm
   · apply (Submodule.map_le_iff_le_comap).mpr
     apply Submodule.span_le.mpr
     rintro _ ⟨v, _, r, hr, a, b, rfl⟩
-    change elvQuotientMap D Sc cutoff _ _ (a ≫ r ≫ b) ∈ ELVOld.ideal D Sc cutoff s t
+    change elvQuotientMap D Sc cutoff _ _ (a ≫ r ≫ b) ∈ ELV.ideal D Sc cutoff s t
     rw [elvQuotientMap_comp, elvQuotientMap_comp]
-    exact ELVOld.comp_ideal D Sc cutoff _
-      (ELVOld.ideal_comp D Sc cutoff (elvGenerator_image_mem_oldIdeal D Sc cutoff hr) _)
+    exact ELV.comp_ideal D Sc cutoff _
+      (ELV.ideal_comp D Sc cutoff (elvGenerator_image_mem_oldIdeal D Sc cutoff hr) _)
   · apply Submodule.span_le.mpr
     rintro _ ⟨j, v, a, b, rfl⟩
     by_cases hlen : (j :: v).length = s.length
@@ -1722,13 +1722,13 @@ theorem map_elvRelationSpan_eq_oldIdeal (s t : List I) :
       obtain ⟨r, hr, hrel⟩ := oldRelation_source_lift D Sc cutoff j v
       refine ⟨a' ≫ r ≫ b', Submodule.subset_span ⟨j :: v, hlen, r, hr, a', b', rfl⟩, ?_⟩
       rw [elvQuotientMap_comp, elvQuotientMap_comp, ha, hb, hrel]
-    · have ha : a = 0 := ELVOld.hom_eq_zero_of_length_ne D Sc cutoff (Ne.symm hlen) a
+    · have ha : a = 0 := ELV.hom_eq_zero_of_length_ne D Sc cutoff (Ne.symm hlen) a
       rw [ha, Limits.zero_comp]
       exact Submodule.zero_mem _
 
 /-- The actual quotient projection to old cyclotomic Homs. -/
 def sourceToOldHom (s t : List I) :=
-  (ELVOld.ideal D Sc cutoff s t).mkQ ∘ₗ
+  (ELV.ideal D Sc cutoff s t).mkQ ∘ₗ
     elvQuotientMap D Sc cutoff (coefficientObj D Sc s) (coefficientObj D Sc t)
 
 end OddMath.QuiverHecke
@@ -1747,7 +1747,7 @@ old ideal, and powers are the actual elementary coefficient powers.
 -/
 noncomputable section
 open scoped Classical TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CategoryTheory StringDiagrams
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1828,7 +1828,7 @@ theorem comap_oldIdeal_sup_elementaryPowers (L : I × ℕ → ℕ) (s t : List I
   rw [elementaryPower_image] at h
   exact h
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1844,7 +1844,7 @@ No coefficient-power truncation or scalar faithfulness is used.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1898,7 +1898,7 @@ theorem equalCrossComponent_braid (i : I) (s : OldCategory D Sc cutoff) :
       (s.word ++ [i] ++ [i] ++ [i])).mkQ
       (affineUnit D Sc cutoff _ _ f)) (affineEqual_braid D Sc s.word i)
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end

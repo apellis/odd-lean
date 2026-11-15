@@ -97,7 +97,7 @@ private def upwardModuleActionOfFunctor
   act_comp t t' t'' f g := by ext x; simp
 
 namespace SupportedSectors
-open CyclotomicAction ELVOld
+open CyclotomicAction ELV
 universe u
 local instance presentationHomPi {k : Type u} [CommRing k] (A C : PiSCat.{u,u,u + 1} k) :
     PiSupercategory k (A ⟶ C) := PiTwoSupercategory.homPiLeft A C

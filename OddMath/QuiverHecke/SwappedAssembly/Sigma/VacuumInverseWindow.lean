@@ -13,7 +13,7 @@ square retains the original augmented matrix and all its path indices.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM BicategoryStruct
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld ProbeWindow
+open CyclotomicAction ELV ProbeWindow
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (bound : ℕ)

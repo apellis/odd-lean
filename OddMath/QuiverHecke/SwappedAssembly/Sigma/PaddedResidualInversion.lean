@@ -16,7 +16,7 @@ there is no uniform bound over a weight fibre and no Hom grading.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM BicategoryStruct
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld ProbeWindow
+open CyclotomicAction ELV ProbeWindow
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Finite I]
   (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (bound : ℕ)

@@ -71,7 +71,7 @@ theorem inversionRelations_on
 end ProbeReservoir
 
 namespace SupportedSectors
-open CyclotomicAction ELVOld
+open CyclotomicAction ELV
 universe uS
 local instance supportedInverseRelationHomPi {k : Type uS} [CommRing k]
     (A B : PiSCat.{uS,uS,uS+1} k) : PiSupercategory k (A ⟶ B) :=

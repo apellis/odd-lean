@@ -20,16 +20,16 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 /-- The full half-turn followed by the actual old cyclotomic quotient. -/
 def halfTurnOldHom (s t : List I) :
     (coefficientObj D Sc s ⟶ coefficientObj D Sc t) →ₗ[k]
-      ((⟨t.reverse⟩ : ELVOld.OldCategory D (parameterTwist D Sc) cutoff) ⟶ ⟨s.reverse⟩) :=
+      ((⟨t.reverse⟩ : ELV.OldCategory D (parameterTwist D Sc) cutoff) ⟶ ⟨s.reverse⟩) :=
   sourceToOldHom D (parameterTwist D Sc) cutoff t.reverse s.reverse ∘ₗ htCoef D Sc s t
 
 private theorem sourceToOldHom_comp {s t r : List I}
     (f : coefficientObj D Sc s ⟶ coefficientObj D Sc t)
     (g : coefficientObj D Sc t ⟶ coefficientObj D Sc r) :
     sourceToOldHom D Sc cutoff s r (f ≫ g) =
-      ELVOld.oldComp D Sc cutoff s t r
+      ELV.oldComp D Sc cutoff s t r
         (sourceToOldHom D Sc cutoff s t f) (sourceToOldHom D Sc cutoff t r g) := by
-  change (ELVOld.ideal D Sc cutoff s r).mkQ (elvQuotientMap D Sc cutoff _ _ (f ≫ g)) = _
+  change (ELV.ideal D Sc cutoff s r).mkQ (elvQuotientMap D Sc cutoff _ _ (f ≫ g)) = _
   rw [elvQuotientMap_comp]
   rfl
 
@@ -68,13 +68,13 @@ private theorem elementaryPowers_parity (L : I × ℕ → ℕ) :
 under U is the prescribed transformed ideal. It retains the original power
 exponents and does not replace them by a weighted ideal. -/
 theorem halfTurn_oldElementaryPowers_preimage (L : I × ℕ → ℕ) (s t : List I) :
-    (ELVOld.ideal D (parameterTwist D Sc) cutoff t.reverse s.reverse ⊔
-        ELVOld.elementaryPowerHomSpan D (parameterTwist D Sc) cutoff L t.reverse s.reverse).comap
+    (ELV.ideal D (parameterTwist D Sc) cutoff t.reverse s.reverse ⊔
+        ELV.elementaryPowerHomSpan D (parameterTwist D Sc) cutoff L t.reverse s.reverse).comap
       (elvQuotientMap D (parameterTwist D Sc) cutoff (coefficientObj D (parameterTwist D Sc) t.reverse)
         (coefficientObj D (parameterTwist D Sc) s.reverse) ∘ₗ htCoef D Sc s t) =
       TransformedIdeal D Sc cutoff
         (Set.range fun j : I × ℕ => SKM.SYM.e D k j.1 j.2 ^ L j) s t := by
-  rw [Submodule.comap_comp, ELVOld.comap_oldIdeal_sup_elementaryPowers]
+  rw [Submodule.comap_comp, ELV.comap_oldIdeal_sup_elementaryPowers]
   exact comap_htCoef_elvRelationSpan_sup D Sc cutoff _ (elementaryPowers_parity D L) s t
 
 end OddMath.QuiverHecke

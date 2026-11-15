@@ -31,7 +31,7 @@ no balance for the moving-strand map or descent of a prescribed map is assumed.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -126,7 +126,7 @@ theorem appendProjection_eq_zero_iff (i : I) (v w : List I)
 theorem appendProjection_surjective (i : I) (v w : List I) :
     Function.Surjective (appendProjection D Sc cutoff i v w) := Submodule.mkQ_surjective _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1000,7 +1000,7 @@ cyclotomic relation.
 
 noncomputable section
 open CategoryTheory StringDiagrams GradedSupercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
@@ -1158,7 +1158,7 @@ instance truncatedEndDegreeGrading (v : List I) :
     GradedAlgebra (truncatedEndDegree D Sc cutoff N sy hc v) :=
   { (truncatedDegree_internal D Sc cutoff sy hc N v v).chooseDecomposition with }
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1175,7 +1175,7 @@ coefficient composition; no left-context stability is asserted.
 noncomputable section
 open CategoryTheory StringDiagrams MonoidalCategory Supercategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1311,7 +1311,7 @@ theorem rightContext_mem_degree (σ : List I) {v w : List I} {n : ℤ}
     (Y := obj D Sc cutoff (w ++ σ)) ha
     (GradedMonoidalSupercategory.whiskerRight_mem_degree ((pres D Sc).obj (ob D σ)) hg)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1326,7 +1326,7 @@ supernaturality uses total coefficient-plus-diagram parity.
 noncomputable section
 open CategoryTheory StringDiagrams MonoidalCategory Supercategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1511,7 +1511,7 @@ theorem truncatedAppendDot_degree (i : I) (v : TruncatedCategory D Sc cutoff N) 
     simp [pl, PG.ld, gdeg]
   · exact Submodule.zero_mem _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

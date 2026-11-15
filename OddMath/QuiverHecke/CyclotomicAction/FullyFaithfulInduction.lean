@@ -18,7 +18,7 @@ without an equivalence with arbitrary modules on the whole old category.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory TensorProduct
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k : Type u} [CommRing k]
   {C D : Type u} [Category.{u} C] [Category.{u} D]
@@ -106,9 +106,9 @@ def fullyFaithfulUnitNaturalIso :
     simp only [fullyFaithfulUnitIso_hom]
     exact (adjunctionUnit J).naturality f)
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (ν : List I)
@@ -120,7 +120,7 @@ def oldContentExtensionUnitIso (M : Superfunctor k (OldContentCategory D Sc cuto
       (BalancedInduction.induced (oldContentInclusion D Sc cutoff ν) M) :=
   BalancedInduction.fullyFaithfulUnitIso (oldContentInclusion D Sc cutoff ν) M
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

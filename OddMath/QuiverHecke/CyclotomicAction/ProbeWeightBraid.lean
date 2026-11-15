@@ -27,7 +27,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor CyclotomicAction
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor CyclotomicAction
 universe u
 
 private theorem equal_rectangle_grid
@@ -173,8 +173,8 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction
-attribute [local irreducible] ELVOld.BalancedInduction.induced
+open ELV CyclotomicAction
+attribute [local irreducible] ELV.BalancedInduction.induced
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -281,7 +281,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction
+open ELV CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -358,7 +358,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction
+open ELV CyclotomicAction
 universe u v w z
 
 private theorem prefix_conjugate {C A : Type v} [Category.{w} C] [Category.{z} A]
@@ -525,7 +525,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor
 universe u
 private theorem cube_degree_congr
     {k C E : Type u} [CommRing k]
@@ -597,7 +597,7 @@ theorem probeStoredBraid_source (hb : ¬ (i = l ∧ i ≠ j))
       triplePrefix D Sc' cut j l i s.obj =
     tripleSuffix D Sc' cut i j l s.obj ≫ triplePrefix D Sc' cut i l j s.obj ≫
       tripleSuffix D Sc' cut l i j s.obj
-  exact ELVOld.CyclotomicCrossingTensor.tripleCross_braid D Sc' cut i j l hb s.obj
+  exact ELV.CyclotomicCrossingTensor.tripleCross_braid D Sc' cut i j l hb s.obj
 
 /-- The first path uses the three separately normalized stored pair crossings. -/
 def probeOldStoredBraidLeft (N : Superfunctor k (OldContentCategory D Sc' cut ν) (SVec k)) :
@@ -648,7 +648,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor
 universe u
 private theorem rectangle_degree_congr
     {k C A B E : Type u} [CommRing k]
@@ -785,7 +785,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction
+open ELV CyclotomicAction
 universe u
 
 private theorem conjugate_three_paths {C : Type*} [Category* C]
@@ -1050,8 +1050,8 @@ identities precede transport of the ordered correction polynomial.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction
-attribute [local irreducible] ELVOld.BalancedInduction.induced
+open ELV CyclotomicAction
+attribute [local irreducible] ELV.BalancedInduction.induced
 universe u v w z
 private theorem inner_conjugate {C A : Type v} [Category.{w} C] [Category.{z} A]
     (G : C ⥤ A) {M₀ M₁ : C} (hM : M₀ = M₁) {V : A}
@@ -1193,7 +1193,7 @@ No braid, naturality, comparison or inverse premise is supplied.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor
 universe u
 
 private theorem stored_degree_congr
@@ -1275,7 +1275,7 @@ theorem probeStoredMixedBraid_source (hne : i ≠ j) (s : OldContentCategory D S
       (R := End ((tripleAppend D Sc' cut i j i).obj s.obj)) i j
       (tripleLastDot D Sc' cut i j s.obj) (tripleMiddleDot D Sc' cut i j s.obj)
       (tripleFirstDot D Sc' cut i j s.obj)
-  exact (ELVOld.CyclotomicCrossingTensor.tripleCross_braid_correction D Sc' cut i j hne s.obj).trans
+  exact (ELV.CyclotomicCrossingTensor.tripleCross_braid_correction D Sc' cut i j hne s.obj).trans
     (tripleCorrection_tripleDots D Sc' cut i j s.obj)
 
 /-- The actual seven-edge OLD probe grid at its prescribed stored lists. -/
@@ -1312,7 +1312,7 @@ corrected braid. Their entire native OLD module maps are retained.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction ELVOld.CyclotomicCrossingTensor
+open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor
 universe u
 
 private theorem rectangle_degree_congr_2
@@ -1491,7 +1491,7 @@ stored-target dot maps. The acting parameters are parameterTwist Sc.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction CyclotomicAction
+open ELV ELV.BalancedInduction CyclotomicAction
 universe u v w
 
 private theorem conjugation_polynomial
@@ -1554,7 +1554,7 @@ noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke
-open ELVOld CyclotomicAction
+open ELV CyclotomicAction
 universe u
 
 private theorem conjugate_three_paths_2 {C : Type*} [Category* C]

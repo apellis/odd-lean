@@ -5,8 +5,8 @@ import Lean.Util.CollectAxioms
 noncomputable section
 open OddMath OddMath.SKM OddMath.QuiverHecke
 namespace SwappedRouteNondegeneracyConsumer
-private abbrev D := ELVOld.WeightedAppendFixture.datum
-private abbrev Sc := ELVOld.WeightedAppendFixture.scalars
+private abbrev D := ELV.WeightedAppendFixture.datum
+private abbrev Sc := ELV.WeightedAppendFixture.scalars
 private def sy : Symmetrizer D where
   d := fun i => if i then 1 else 2
   pos := by intro i; cases i <;> norm_num
@@ -16,7 +16,7 @@ private theorem hc : Sc.Homogeneous := by
   exact (h rfl).elim
 private def bubbles : CScalars Sc where
   c := fun _ _ => 1
-  shift := fun _ _ _ => by simp [Sc, ELVOld.WeightedAppendFixture.scalars]
+  shift := fun _ _ _ => by simp [Sc, ELV.WeightedAppendFixture.scalars]
 
 /-- The Nondegeneracy Conjecture for a mixed even/odd datum with homogeneous scalars over `ℚ`,
 with every hypothesis proved. -/

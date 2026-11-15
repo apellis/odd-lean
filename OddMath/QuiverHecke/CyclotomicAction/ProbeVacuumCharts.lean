@@ -38,7 +38,7 @@ noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction
+open ELV ELV.BalancedInduction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -135,7 +135,7 @@ instance : IsSuperfunctor k (probeEvaluatedRestrictTo D Sc m ν i μ h) where
 end OddMath.QuiverHecke
 
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction
+open ELV ELV.BalancedInduction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -167,7 +167,7 @@ open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
 namespace OddMath.QuiverHecke
-open ELVOld
+open ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
@@ -369,7 +369,7 @@ coefficient-extraction functional or basis hypothesis is assumed.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.TensorMatrixCoordinates
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.TensorMatrixCoordinates
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -648,9 +648,9 @@ theorem moduleUnitCoefficient_end_naturality (i : I) (t : OldCategory D Sc cutof
     ← Category.assoc (S.map f) pr, hp, Category.assoc, hs]
   simp only [Preadditive.comp_zsmul]
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.TensorMatrixCoordinates
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.TensorMatrixCoordinates
 
-namespace OddMath.QuiverHecke.ELVOld.VacuumCoefficient
+namespace OddMath.QuiverHecke.ELV.VacuumCoefficient
 open CyclotomicCrossingTensor CyclotomicCrossingTensor.TensorMatrixCoordinates
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -704,7 +704,7 @@ theorem functional_dot_window (i : I) (hN : 0 < cutoff i)
     ⟨[]⟩ (height D cutoff i) (topSlot D cutoff i hN) a (by simpa only [count] using ha) z
   simpa only [functional, topSlot, he] using h
 
-end OddMath.QuiverHecke.ELVOld.VacuumCoefficient
+end OddMath.QuiverHecke.ELV.VacuumCoefficient
 end
 
 end
@@ -728,7 +728,7 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 variable [Fintype I] (m : I → ℕ)
 
 /-- The original empty object in the old scalar-probe source category. -/
-def probeOldVacuumObject : ELVOld.OldContentCategory D Sc (probeCutoff D m) [] :=
+def probeOldVacuumObject : ELV.OldContentCategory D Sc (probeCutoff D m) [] :=
   ⟨⟨[]⟩, List.Perm.refl _⟩
 
 /-- The literal regular height-zero probe, with its existing old Hom action. -/
@@ -764,7 +764,7 @@ selected scalar comparison; no rescaling of a dotted cap is introduced.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 
 section ShiftedRows
@@ -835,17 +835,17 @@ local instance shiftedCapComparisonSourcePi : PiSupercategory k (Superfunctor k 
 local instance shiftedCapComparisonTargetPi : PiSupercategory k (Superfunctor k B (SVec k)) := supermodulePiSupercategory
 
 end Comparison
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction
+open ELV ELV.BalancedInduction
 universe u
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ) (ν : List I) (i : I)
-  (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) (i :: ν)) (SVec k))
+  (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) (i :: ν)) (SVec k))
   (hN : ProbeEvaluatesCoefficients D m Sc (i :: ν) N)
-local notation "J" => ELVOld.oldContentAppend D Sc (probeCutoff D m) ν i
+local notation "J" => ELV.oldContentAppend D Sc (probeCutoff D m) ν i
 local notation "T" => probeOrdinaryAppend D Sc m ν i
 local notation "U" => probeOldOrdinaryFunctor D Sc m (i :: ν)
 local notation "O" => probeOrdinaryModuleSuperfunctor D Sc m (i :: ν) N hN
@@ -854,7 +854,7 @@ local notation "hR" => probeOldRestriction_evaluatesCoefficients D Sc m ν i N h
 local notation "c" => eqToIso (probeOrdinaryRestrictionModule_eq D Sc m ν i N hN)
 local notation "e" => eqToIso (probeOrdinaryModuleSuperfunctor_restrict D Sc m (i :: ν) N hN)
 local instance scalarShiftedCapOldPi : PiSupercategory k
-    (Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) (i :: ν)) (SVec k)) :=
+    (Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) (i :: ν)) (SVec k)) :=
   supermodulePiSupercategory
 local instance scalarShiftedCapOrdinaryPi : PiSupercategory k
     (Superfunctor k (OrdinaryContentCategory D Sc
@@ -863,14 +863,14 @@ local instance scalarShiftedCapOrdinaryPi : PiSupercategory k
 
 end OddMath.QuiverHecke
 
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
 local instance capMatrixEntryComparisonPi : PiSupercategory k (Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :=
   supermodulePiSupercategory
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -885,7 +885,7 @@ as a module map, then transported through the scalar restriction bridge.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 
 section ShiftedColumns
@@ -981,10 +981,10 @@ local instance shiftedUnitComparisonTargetPi : PiSupercategory k (Superfunctor k
 
 end Comparison
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 
 namespace OddMath.QuiverHecke
-open ELVOld ELVOld.BalancedInduction
+open ELV ELV.BalancedInduction
 universe u
 private def unitDotCoefficient
     {k C A : Type u} [CommRing k] [Category.{u} C] [Category.{u} A]
@@ -1019,9 +1019,9 @@ private theorem unitTensorSource_congr
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ) (ν : List I)
-  (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
+  (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
   (hN : ProbeEvaluatesCoefficients D m Sc ν N) (i : I)
-local notation "J" => ELVOld.oldContentAppend D Sc (probeCutoff D m) ν i
+local notation "J" => ELV.oldContentAppend D Sc (probeCutoff D m) ν i
 local notation "T" => probeOrdinaryAppend D Sc m ν i
 local notation "Q" => probeOldOrdinaryFunctor D Sc m ν
 local notation "U" => probeOldOrdinaryFunctor D Sc m (i :: ν)
@@ -1029,7 +1029,7 @@ local notation "O" => probeOrdinaryModuleSuperfunctor D Sc m ν N hN
 
 /-- The original selected append map intertwines the given signed dots. -/
 theorem probeAppendComparisonLinear_dot
-    (w : ELVOld.OldContentCategory D Sc (probeCutoff D m) (i :: ν)) :
+    (w : ELV.OldContentCategory D Sc (probeCutoff D m) (i :: ν)) :
     probeAppendComparisonLinear D Sc m ν N hN i w ∘ₗ
         probeOldContentInductionDot D Sc m ν i N w =
       transformLinear (probeOrdinaryAppendDot_supernatural D Sc m ν i) O ((U).obj w) ∘ₗ
@@ -1060,7 +1060,7 @@ theorem probeAppendComparisonLinear_dot
 /-- The selected append chart transports every actual unit/dot column, with
 its canonical output-object identification. -/
 theorem probeAppendComparisonLinear_unitDotColumn
-    (w : ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (n : ℕ) :
+    (w : ELV.OldContentCategory D Sc (probeCutoff D m) ν) (n : ℕ) :
     probeAppendComparisonLinear D Sc m ν N hN i ((J).obj w) ∘ₗ
         unitDotLinear J (probeOldContentAppendDot_supernatural D Sc m ν i) N n w =
       endpointUnitDotLinear T (probeOrdinaryAppendDot_supernatural D Sc m ν i) O n
@@ -1080,7 +1080,7 @@ theorem probeAppendComparisonLinear_unitDotColumn
 
 local notation "e" => eqToIso (probeOrdinaryModuleSuperfunctor_restrict D Sc m ν N hN)
 local instance scalarShiftedUnitOldPi : PiSupercategory k
-    (Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k)) :=
+    (Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k)) :=
   supermodulePiSupercategory
 local instance scalarShiftedUnitOrdinaryPi : PiSupercategory k
     (Superfunctor k (OrdinaryContentCategory D Sc
@@ -1089,14 +1089,14 @@ local instance scalarShiftedUnitOrdinaryPi : PiSupercategory k
 
 end OddMath.QuiverHecke
 
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
 local instance unitMatrixEntryComparisonPi : PiSupercategory k (Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :=
   supermodulePiSupercategory
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -1113,7 +1113,7 @@ be different; their full parity actions are retained.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C D : Type u} [CommRing k] [Category.{u} C] [Category.{u} D]
   [Preadditive C] [Linear k C] [Supercategory k C]
@@ -1147,7 +1147,7 @@ theorem shiftedModuleValueLinearEquiv_inv_coordinate (q : ZMod 2) (b : M.obj w) 
     (moduleIsoLinearEquiv ((SKM.homParityShiftDatum (k := k) q).iso N) v).symm (e x))
       ((moduleIsoLinearEquiv ((SKM.homParityShiftDatum (k := k) q).iso M) w).apply_symm_apply b)
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -1163,25 +1163,25 @@ The charts are independent of the matrix's invertibility.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-open OddMath.QuiverHecke.ELVOld OddMath.QuiverHecke.ELVOld.BalancedInduction
+open OddMath.QuiverHecke.ELV OddMath.QuiverHecke.ELV.BalancedInduction
 namespace OddMath.QuiverHecke
 universe u
 
 section AppendCharts
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ) (ν : List I)
-  (R : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
+  (R : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
   (hR : ProbeEvaluatesCoefficients D m Sc ν R)
   (M : Superfunctor k (OrdinaryContentCategory D Sc
     (probePolynomial (k := k) (probeDotExponent D) m) ν) (SVec k))
   (c : probeOrdinaryModuleSuperfunctor D Sc m ν R hR ≅ M) (i : I)
-local notation "J" => ELVOld.oldContentAppend D Sc (probeCutoff D m) ν i
+local notation "J" => ELV.oldContentAppend D Sc (probeCutoff D m) ν i
 local notation "T" => probeOrdinaryAppend D Sc m ν i
 local notation "U" => probeOldOrdinaryFunctor D Sc m (i :: ν)
 local notation "O" => probeOrdinaryModuleSuperfunctor D Sc m ν R hR
 
 /-- The original chosen append isomorphism on its literal old/ordinary coends. -/
-def probeAppendLinearEquiv (w : ELVOld.OldContentCategory D Sc (probeCutoff D m) (i :: ν)) :
+def probeAppendLinearEquiv (w : ELV.OldContentCategory D Sc (probeCutoff D m) (i :: ν)) :
     Obj J R.toFunctor w ≃ₗ[k] Obj T (O).toFunctor ((U).obj w) :=
   moduleIsoLinearEquiv (probeAppendOrdinaryModuleIso D Sc m ν R hR i) ((U).obj w)
 
@@ -1190,10 +1190,10 @@ end AppendCharts
 section MatrixCharts
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ) (ν : List I) (i : I)
-  (N : Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) (i :: ν)) (SVec k))
+  (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) (i :: ν)) (SVec k))
   (hN : ProbeEvaluatesCoefficients D m Sc (i :: ν) N)
-local notation "J" => ELVOld.oldContentAppend D Sc (probeCutoff D m) ν i
-local notation "K" => ELVOld.oldContentAppend D Sc (probeCutoff D m) (i :: ν) i
+local notation "J" => ELV.oldContentAppend D Sc (probeCutoff D m) ν i
+local notation "K" => ELV.oldContentAppend D Sc (probeCutoff D m) (i :: ν) i
 local notation "T" => probeOrdinaryAppend D Sc m ν i
 local notation "U" => probeOldOrdinaryFunctor D Sc m (i :: ν)
 local notation "O" => probeOrdinaryModuleSuperfunctor D Sc m (i :: ν) N hN
@@ -1250,7 +1250,7 @@ theorem probeOrdinaryVacuumInductionDot_odd (i : I) (hi : D.parity i = 1)
     (M : Superfunctor k
       (OrdinaryContentCategory D Sc (probePolynomial (k := k) (probeDotExponent D) m) []) (SVec k))
     (w : OrdinaryContentCategory D Sc (probePolynomial (k := k) (probeDotExponent D) m) [i]) :
-    (ELVOld.BalancedInduction.transformLinear
+    (ELV.BalancedInduction.transformLinear
       (probeOrdinaryAppendDot_supernatural D Sc m [] i) M w ^ 2 + 1) ^ m i = 0 := by
   let J := probeOrdinaryAppend D Sc m [] i
   let a : ∀ v, End (J.obj v) := fun v => probeOrdinaryAppendDot D Sc m [] i v
@@ -1261,7 +1261,7 @@ theorem probeOrdinaryVacuumInductionDot_odd (i : I) (hi : D.parity i = 1)
     have he : probeDotExponent D i = 2 := by rw [probeDotExponent, ite_eq_left hi]
     rw [he] at h
     exact h
-  exact ELVOld.BalancedInduction.transformLinear_odd_probe_polynomial
+  exact ELV.BalancedInduction.transformLinear_odd_probe_polynomial
     (J := J) (a := a) ha hi (m i) hn M w
 
 end OddMath.QuiverHecke
@@ -1279,9 +1279,9 @@ splits the append unit; no new polynomial quotient presentation is used.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-open OddMath.QuiverHecke.ELVOld OddMath.QuiverHecke.ELVOld.BalancedInduction
-open OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
-open OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.TensorMatrixCoordinates
+open OddMath.QuiverHecke.ELV OddMath.QuiverHecke.ELV.BalancedInduction
+open OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
+open OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.TensorMatrixCoordinates
 namespace OddMath.QuiverHecke
 universe u
 
@@ -1317,7 +1317,7 @@ for any output content, with every prescribed unscaled unit/dot column.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-open OddMath.QuiverHecke.ELVOld OddMath.QuiverHecke.ELVOld.BalancedInduction
+open OddMath.QuiverHecke.ELV OddMath.QuiverHecke.ELV.BalancedInduction
 namespace OddMath.QuiverHecke
 universe u
 section Generic
@@ -1419,7 +1419,7 @@ Actual scalar and weighted consumers use the selected module coordinates.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 
 section GenericCoordinates
@@ -1491,7 +1491,7 @@ theorem linearSquare_reencode
   rw [hc, hf, hg, hd]
   exact h
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -1508,7 +1508,7 @@ or induced module carriers.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped BigOperators
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 section Families
 variable {k C : Type u} [CommRing k] [Category.{u} C]
@@ -1624,7 +1624,7 @@ theorem unitColumnMatrix_square
     (shiftedModuleValueLinearEquiv_source_square M N w v e (r.val • p))
     (unitColumn_total J hα M r.val w) (unitColumn_total T hβ N r.val v)
 end Comparison
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -1640,7 +1640,7 @@ right counit is a different field and is not substituted for it.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 section Rows
 variable {k C : Type u} [CommRing k] [Category.{u} C]
@@ -1734,7 +1734,7 @@ theorem unitColumnInverseRow_compare_common
     (SVec.toLinearMap (unitColumnUnshift M₂ w₂ p m a)) hMatrix hCoordinate
   simpa only [unitColumnInverseRow_linear] using h
 end CommonComparison
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -1751,7 +1751,7 @@ same component endomorphism.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 
 private theorem total_add
@@ -1802,7 +1802,7 @@ theorem unitDotColumn_eq_restrictedDotEnd (M : Superfunctor k C (SVec k)) (n : �
   congr 1
   exact map_pow ((restriction J).mapEnd ((induction J).obj M)) (dotEnd J hα M) n
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end

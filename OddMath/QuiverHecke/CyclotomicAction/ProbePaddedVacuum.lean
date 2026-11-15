@@ -30,7 +30,7 @@ calculation. Other colours of the datum may be odd.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 
@@ -117,7 +117,7 @@ theorem evaluatedMixedBend_even_expansion (i : I) (hi : D.parity i = 0)
     (fun r => Ring.inverse (shiftedPreDot D Sc m R₀ i H) ^ (r + 1)) (fun _ => -1) n
 
 end ProbeVacuumCap
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -137,7 +137,7 @@ hypothesis for parameters with pure terms: homogeneous parameters supply it
 noncomputable section
 set_option autoImplicit false
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open BalancedInduction CyclotomicAction
 universe u
 local instance bendSeriesHomPi {k : Type u} [CommRing k] (A B : PiSCat.{u,u,u+1} k) :
@@ -208,7 +208,7 @@ theorem vacuumBendWordSum_even [Fact Sc.PureNilpotent] (hP : 0 < probeCutoff D m
   rw [← neg_zsmul, hs]
   congr 1
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end
@@ -231,7 +231,7 @@ noncomputable section
 set_option quotPrecheck false
 set_option autoImplicit false
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open BalancedInduction CyclotomicAction SwappedAssembly
 universe u
 local instance paddedVacuumBendHomPi {k : Type u} [CommRing k]
@@ -572,7 +572,7 @@ theorem paddedVacuumDx_even [Fact Sc.PureNilpotent] (hP : 0 < probeCutoff D m i)
   exact paddedVacuumDx_even_at D Sc m cutoff bound ΛP ΛR hcP hcR H i hdot hP hi n hb'
     (((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR)).centralPaddedDx_separated i (((0, 0) : Sector I)) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H) (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) (factorDotIso D Sc m cutoff bound ΛP ΛR hcP hcR i) (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) n hD)
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end
@@ -601,7 +601,7 @@ noncomputable section
 set_option quotPrecheck false
 set_option autoImplicit false
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open BalancedInduction CyclotomicAction SwappedAssembly
 universe u
 local instance paddedVacuumCapHomPi {k : Type u} [CommRing k]
@@ -903,7 +903,7 @@ theorem paddedVacuumCap_eq [Fact Sc.PureNilpotent] (i : I) (hP : 0 < probeCutoff
   exact hs
 end Padded
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end
@@ -977,7 +977,7 @@ end ProbeReservoir
 
 end OddMath.QuiverHecke.SwappedAssembly
 
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open BalancedInduction CyclotomicAction SwappedAssembly
 universe u
 
@@ -1004,7 +1004,7 @@ variable (H : ProbeVacuumCap.modulePiCategory D (parameterTwist D Sc) m ⟶
 variable (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
   (hwin : SupportedSectors.ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hcP hcR) (i : I)
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end
@@ -1035,7 +1035,7 @@ noncomputable section
 set_option quotPrecheck false
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open BalancedInduction CyclotomicAction SwappedAssembly
 universe u
 
@@ -1173,7 +1173,7 @@ theorem vacuumLeftwardColumn_cap_eq [Fact Sc.PureNilpotent]
       (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) (dc n (.nil _) p₀) N]
   simp only [Category.assoc]
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end
@@ -1200,7 +1200,7 @@ noncomputable section
 set_option quotPrecheck false
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open BalancedInduction CyclotomicAction SwappedAssembly ProbeVacuumCap PowerVacuumCoefficient
 universe u
 
@@ -1412,7 +1412,7 @@ theorem tensorVacuum_leftward_odd_moments [Fact Sc.PureNilpotent] (hi : D.parity
 
 end Tensor
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end
@@ -1427,7 +1427,7 @@ carrier, retaining the prescribed cap and post unit.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 section Series
@@ -1513,7 +1513,7 @@ theorem evaluatedMixedBend_even_slide_one
   simpa only [hi, koszulSign_zero_left, one_smul] using hs
 
 end ProbeVacuumCap
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1535,7 +1535,7 @@ noncomputable section
 set_option quotPrecheck false
 set_option autoImplicit false
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open BalancedInduction CyclotomicAction SwappedAssembly
 universe u
 local instance paddedVacuumUnitHomPi {k : Type u} [CommRing k]
@@ -1678,7 +1678,7 @@ theorem paddedVacuumUnit_eq (i : I) (n : ℕ) :
 
 end Padded
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end
@@ -1723,7 +1723,7 @@ theorem IsCupInverse.target (H : IsCupInverse s u j B) (c : O ≅ O') :
 
 end OddMath.QuiverHecke.SwappedAssembly.ProbeWindow
 
-namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+namespace OddMath.QuiverHecke.ELV.WeightTensorVacuum
 open BalancedInduction CyclotomicAction SwappedAssembly
 universe u
 
@@ -1932,7 +1932,7 @@ theorem vacuumRightwardCupInverse_bubbleEntries [Fact Sc.PureNilpotent] (Z : (P)
     paddedVacuumCapTargetIso_hom_eq_eqToHom D Sc m cutoff bound ΛP ΛR hcP hcR H,
     fun n N => vacuumRightwardColumn_unit D Sc m cutoff bound ΛP ΛR hcP hcR H i cc dc n N⟩
 
-end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+end OddMath.QuiverHecke.ELV.WeightTensorVacuum
 end
 
 end

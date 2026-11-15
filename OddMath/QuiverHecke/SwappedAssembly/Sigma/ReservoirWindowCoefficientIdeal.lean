@@ -113,7 +113,7 @@ theorem reservoirCupInverseData_boundary_eq_of_absent (hh : D.h i (P.muM t) ≤ 
 end OddMath.QuiverHecke.SwappedAssembly.ProbeReservoir
 
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld
+open CyclotomicAction ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : Datum I X) (Sc : Scalars D k) (m : I → ℕ) (cutoff : I → ℕ) (bound : ℕ)

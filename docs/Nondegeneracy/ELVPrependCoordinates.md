@@ -46,7 +46,7 @@ insert (c_(r_x)(a) ⊗ b) ≫ (1 ⊗ T_x) = a ⊗ prependElt x.
 
 The coefficient stays in the first tensor position. The multiplication
 in `SuperalgebraCat` has the categorical/opposite orientation used by
-`ELVOld`; the proof uses `BoxProd.tmulHom_comp_tmulHom`, not an unsigned
+`ELV`; the proof uses `BoxProd.tmulHom_comp_tmulHom`, not an unsigned
 tensor multiplication formula.
 
 If `p` is the balance parity, the old coefficient of this term is
@@ -72,7 +72,7 @@ balancedEquiv (prependBalancedExpansion f)
 ```
 
 Thus the expansion is surjective onto the proved balanced tensor. Its
-kernel is exactly the preimage of `ELVOld.relations`, the old-only relation
+kernel is exactly the preimage of `ELV.relations`, the old-only relation
 span (`prependBalancedExpansion_eq_zero_iff`). The old quotient is kept
 as a coefficient object in every term; its flatness is never required.
 

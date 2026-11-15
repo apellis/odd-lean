@@ -37,7 +37,7 @@ relations are still required for an action of the complete presentation.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
@@ -60,7 +60,7 @@ theorem elvRouquierFamily_F (i : I) {x y : X} (h : x + D.α i = y) :
     (elvRouquierFamily D Sc cutoff bound Λ hcutoff).F i h =
       elvF D Sc cutoff bound i Λ h := rfl
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -76,7 +76,7 @@ the presentation parameters remain Sc.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u v w r
 section Field
 variable {k : Type u} [CommRing k] {B : Type v} [BicategoryStruct.{w,r} B]
@@ -160,7 +160,7 @@ theorem elvRouquierMulticolour :
   · intro i j hij a b c d h₁ h₂ h₃ h₄
     exact elvActionCrossMate_isIso D Sc' cutoff bound i j Λ h₁ h₂ h₃ h₄ hij
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -177,7 +177,7 @@ used in the integer-degree calculation of ReservoirClosureDegree.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicAction BalancedInduction CyclotomicCrossingTensor
 universe u
 section Detection
@@ -334,7 +334,7 @@ theorem elvChosenUnitPrincipal_coordinates (hh : D.h i x₁ ≤ 0) :
   elvUnitPrincipal_coordinates D Sc cutoff N Λ hcutoff i h₁ h₂ M β hh
     (((elvRouquierFamily D Sc cutoff N Λ hcutoff).loc i h₁ h₂).invNeg hh)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -350,7 +350,7 @@ content coefficient ideal without a uniform bound on the weight fibre.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld.WeightCentreBlocks
+namespace OddMath.QuiverHecke.ELV.WeightCentreBlocks
 open CyclotomicAction SwappedAssembly
 universe u
 private theorem postCoeff_eq_whiskerLeft {k : Type u} [CommRing k]
@@ -380,7 +380,7 @@ theorem postCoeff_evaluate (Z : T ⟶ elvWeightSpace D Sc cutoff N Λ x)
   change η.app p (Z.obj M) β = (restrict D Sc cutoff N Λ β η).app p (Z.obj M β)
   exact (restrict_app D Sc cutoff N Λ β η p (Z.obj M)).symm
 
-end OddMath.QuiverHecke.ELVOld.WeightCentreBlocks
+end OddMath.QuiverHecke.ELV.WeightCentreBlocks
 end
 
 end
@@ -396,7 +396,7 @@ charts in both orientations, without a new inverse comparison premise.
 noncomputable section
 set_option backward.dsimp.instances true
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicAction BalancedInduction CyclotomicCrossingTensor
 universe u
 private theorem identity_obj {k : Type u} [CommRing k]
@@ -552,7 +552,7 @@ theorem elvChosenUnitWindow_coordinates (hh : D.h i x₁ ≤ 0)
   elvUnitWindow_coordinates D Sc cutoff N Λ hcutoff i h₁ h₂ M β hh
     (((W).loc i h₁ h₂).invNeg hh) j hj
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -568,7 +568,7 @@ inverse rows retain the weighted content inverse at every absent block.
 noncomputable section
 set_option backward.dsimp.instances true
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicAction BalancedInduction CyclotomicCrossingTensor
 universe u
 private theorem identity_obj_2 {k : Type u} [CommRing k]
@@ -721,7 +721,7 @@ theorem elvChosenAbsentUnitWindow_coordinates
   elvAbsentUnitWindow_coordinates D Sc cutoff N Λ hcutoff i h₁ h₂ M δ hδ
     (((elvRouquierFamily D Sc cutoff N Λ hcutoff).loc i h₁ h₂).invNeg hh) j hj
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -737,7 +737,7 @@ No exponent over an entire original-weight fibre is asserted.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open OddMath.QuiverHecke.CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -792,7 +792,7 @@ theorem elvWeightDotComponent_pow_zero [Finite I]
       (elvInductionComponent_isZero D Sc cutoff bound i Λ h δ hδ M).eq_of_src
         (elvWeightDotComponent D Sc cutoff bound i Λ h (D.parity i) M δ) 0
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -809,7 +809,7 @@ finite, and no global reservoir-dot exponent is used.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open OddMath.QuiverHecke.CyclotomicAction OddMath.QuiverHecke.SwappedAssembly
 universe u v w
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -893,7 +893,7 @@ theorem elvPostDot_square_difference_isUnit [Finite I] (hi : D.parity i = 1)
           elvPostDot_component_isNilpotent D Sc cutoff bound hdot i Λ h F M δ)
       (hanti M)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -908,7 +908,7 @@ vary with the block; no full-weight support bound is imposed.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open SwappedAssembly CyclotomicAction
 universe u v w
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -940,7 +940,7 @@ theorem elvPostEndEvaluation_dot_isNilpotent [Finite I]
     (elvPostDot_mem D Sc cutoff bound i Λ h F)]
   exact elvPostDot_component_isNilpotent D Sc cutoff bound hdot i Λ h F M δ
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -956,7 +956,7 @@ transported through this functor; no alternative action or dot gauge is used.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open OddMath.QuiverHecke.CyclotomicAction
 universe u
 
@@ -1092,7 +1092,7 @@ theorem elvShiftedPostProbe_square_difference_isUnit [Finite I]
   rw [Functor.map_sub, functor_map_end_pow, functor_map_end_pow] at hh
   exact hh
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1107,7 +1107,7 @@ to that component, without a common bound on the whole weight fibre.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicAction
 universe u
 
@@ -1212,7 +1212,7 @@ theorem elvShiftedPostEndEvaluation_dot_isNilpotent [Finite I]
       (productPiEndComponent (k := k) (fun β : WeightBlocks D Λ y => ContentModules D Sc cutoff bound β.1)
         ((G).obj M) δ)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1228,7 +1228,7 @@ weight fibre or additional grading is assumed.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open OddMath.QuiverHecke.CyclotomicAction
 universe u v w t
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1444,7 +1444,7 @@ theorem elvActionDotTranspose_component_pow_zero [Finite I]
   change (show End (((elvF D Sc cutoff bound i Λ h).obj N) β) from t.total N β) ^ e = 0 at ht
   simpa only [end_total_eq_app t (D.parity i) hmem] using ht
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1460,7 +1460,7 @@ normalized full-ELV induction dot.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open OddMath.QuiverHecke.CyclotomicAction OddMath.QuiverHecke.SwappedAssembly
 universe u v w
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1565,7 +1565,7 @@ theorem elvRestrictionProbe_difference_isUnit [Finite I]
       t α M δ
 
 end Probe
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1581,7 +1581,7 @@ mixedPostSourcePreDot and mixedPostSourcePostDot operators, using strict
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 
 local instance elvSourceHomPi {k : Type u} [CommRing k]
@@ -1644,7 +1644,7 @@ theorem elvMixedSource_difference_isUnit [Finite I]
     elvMixedSourceProbeDot_eq D Sc cutoff bound i Λ h E κ H xDot] at hh
   simpa only [neg_sub] using hh.neg
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1659,7 +1659,7 @@ transporting a norm through an equality of functor parenthesizations.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open OddMath.QuiverHecke.SwappedAssembly OddMath.QuiverHecke.CyclotomicAction
 universe u v w v' w'
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1816,7 +1816,7 @@ theorem elvMixedSource_square_sum_isUnit [Finite I]
   have hh := elvMixedSource_oddNorms D Sc cutoff bound Λ x i h E κ H hdot hi a ha hu
   exact hh.2
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1831,7 +1831,7 @@ input and output content; a common nilpotence exponent is not required.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open SwappedAssembly CyclotomicAction
 universe u v w r
 
@@ -2015,7 +2015,7 @@ theorem elvMixedSource_polynomialUnits [Finite I]
   exact product_source_polynomial_isUnit F pre post hpre hpost hpreu hcomm hnil c e hN
 
 end ELV
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

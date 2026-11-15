@@ -22,7 +22,7 @@ has that arrow's parity, including the full coefficient parity.
 -/
 noncomputable section
 open CategoryTheory Opposite StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.IndResKernel
+namespace OddMath.QuiverHecke.ELV.IndResKernel
 universe u
 variable {k : Type u} [CommRing k]
 variable {C D : Type u} [Category.{u} C] [Category.{u} D]
@@ -87,7 +87,7 @@ def componentTensor (v t : D) (s : C) (g : J.obj s ⟶ t)
 variable [Preadditive C] [Linear k C] [Supercategory k C]
   [J.Additive] [J.Linear k] [IsSuperfunctor k J]
 
-end OddMath.QuiverHecke.ELVOld.IndResKernel
+end OddMath.QuiverHecke.ELV.IndResKernel
 end
 
 end
@@ -104,7 +104,7 @@ grade Homs between arbitrary ungraded modules.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory GradedSupercategory TensorProduct
 open scoped Classical
-namespace OddMath.QuiverHecke.ELVOld.IndResKernel
+namespace OddMath.QuiverHecke.ELV.IndResKernel
 universe u
 variable {k : Type u} [CommRing k]
   {C D : Type u} [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
@@ -295,7 +295,7 @@ theorem integerProjection_mem (v t : D) (n : ℤ) (x : Component (k := k) J v t)
   rw [iSup_integerDegree_eq_top J v t] at hle
   exact hle (Submodule.mem_top : x ∈ (⊤ : Submodule k _))
 
-end OddMath.QuiverHecke.ELVOld.IndResKernel
+end OddMath.QuiverHecke.ELV.IndResKernel
 end
 
 end
@@ -321,7 +321,7 @@ noncomputable section
 open CategoryTheory StringDiagrams Supercategory GradedSupercategory TensorProduct
 open OddMath.Diagrams
 attribute [local instance] Classical.propDecidable Classical.decEq
-namespace OddMath.QuiverHecke.ELVOld.IndResKernel
+namespace OddMath.QuiverHecke.ELV.IndResKernel
 universe u
 variable {K : Type u} [CommRing K] {R : Type u} [CommRing R] [Algebra K R]
   (𝒜 : ℤ → Submodule K R) [GradedAlgebra 𝒜]
@@ -611,7 +611,7 @@ theorem integerProjectionOver_mem (v t : D) (n : ℤ) (x : Component (k := R) J 
   rw [iSup_integerDegreeOver_eq_top (K := K) (R := R) J v t] at hle
   exact hle (Submodule.mem_top : x ∈ (⊤ : Submodule K _))
 
-end OddMath.QuiverHecke.ELVOld.IndResKernel
+end OddMath.QuiverHecke.ELV.IndResKernel
 end
 
 end

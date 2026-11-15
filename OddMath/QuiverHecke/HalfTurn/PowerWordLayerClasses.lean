@@ -11,7 +11,7 @@ No abstract action-comparison or faithfulness hypothesis is used.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke.PowerWordLayerClasses
-open ELVOld ELVOld.CyclotomicCrossingTensor
+open ELV ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (L : I × ℕ → ℕ)

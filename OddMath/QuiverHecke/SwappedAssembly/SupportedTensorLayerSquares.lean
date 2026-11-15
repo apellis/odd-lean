@@ -19,7 +19,7 @@ word objects `ob μ (upWord t)` of a presented layer of `H`.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM BicategoryStruct
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld
+open CyclotomicAction ELV
 universe u
 local instance tensorLayerSquaresHomPi {k : Type u} [CommRing k] (A C : PiSCat.{u,u,u + 1} k) :
     PiSupercategory k (A ⟶ C) := PiTwoSupercategory.homPiLeft A C

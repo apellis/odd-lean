@@ -26,7 +26,7 @@ components, independently of any inverse or comparison assumption.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C A B : Type u} [CommRing k]
   [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
@@ -171,7 +171,7 @@ theorem gridCapMatrixModuleMap_total (N : Superfunctor k A (SVec k)) (m : ℕ) (
   funext a
   exact OddMath.FiniteSupermodule.rowsHom_total_apply _ _ w b a
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -187,7 +187,7 @@ unit or cap fields, retaining the canonical parity coordinates.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.FiniteSupermodule
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C A B : Type u} [CommRing k]
   [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
@@ -253,7 +253,7 @@ def gridLocalInverseTo
       rw [he, restoredRows, gridCapMatrixModuleMap]
       simp only [hc])
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -269,7 +269,7 @@ The negative crossing is retained while composing the homogeneous family laws.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 private theorem gridFamily_neg
     {k : Type u} {C A : Type*} [CommRing k] [Category C] [Category A]
@@ -331,7 +331,7 @@ theorem orderedGridMateComponent_supernatural :
     dsimp only [induction] at h ⊢
   simpa only [Functor.comp_id, Functor.id_comp, Functor.comp_obj, zero_add, add_zero,
     Category.assoc] using h
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -347,7 +347,7 @@ into even natural transformations, including on odd and inhomogeneous maps.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 section Dots
 variable {k C A : Type u} [CommRing k] [Category.{u} C] [Category.{u} A]
@@ -433,7 +433,7 @@ variable {p : ZMod 2} {γ : ∀ s, (J ⋙ K).obj s ⟶ (J ⋙ K).obj s}
   {β : ∀ s, K.obj s ⟶ K.obj s} (hβ : IsSupernatural k p β)
 
 end Families
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end
@@ -448,7 +448,7 @@ follows from that of the given forward mate and dotted columns or rows.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C A B : Type u} [CommRing k]
   [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
@@ -522,7 +522,7 @@ def gridLocalInverseToFamily (m : ℕ)
     (orderedGridMateComponent_supernatural J K hγ)
     (gridCapDotRow_supernatural J hα)
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 end
 
 end

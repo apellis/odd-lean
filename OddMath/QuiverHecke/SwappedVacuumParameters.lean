@@ -11,7 +11,7 @@ weights in the pairing extension. Their difference retains the original
 weight, including its common coroot kernel. The constant coefficient-power
 exponent satisfies the lower bound needed by the half-turn coordinates;
 the upper coefficient bound for the resulting power module is supplied
-separately by `ELVOld.PowerWordContent.powerBound`.
+separately by `ELV.PowerWordContent.powerBound`.
 -/
 noncomputable section
 namespace OddMath.QuiverHecke

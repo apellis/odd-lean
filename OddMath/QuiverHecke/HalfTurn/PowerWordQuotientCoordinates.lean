@@ -14,7 +14,7 @@ class. This is a quotient-coordinate input, not a swapped action record.
 noncomputable section
 namespace OddMath.QuiverHecke.PowerWordQuotientCoordinates
 open CategoryTheory StringDiagrams Supercategory
-open ELVOld
+open ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (L : I × ℕ → ℕ)

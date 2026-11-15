@@ -34,7 +34,7 @@ required to put these terms in the append-old span plus the prescribed W image.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -176,7 +176,7 @@ theorem ideal_le_appendRelations_sup_range_of_parabolic_terms (i : I) (v w : Lis
       LinearMap.range (Linear.leftComp k (obj D Sc cutoff w) (appendW D Sc cutoff i v)) :=
   ideal_le_of_parabolic_terms D Sc cutoff (v ++ [i]) w _ hS
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -194,7 +194,7 @@ The coefficient boundary relation is used, including at cutoff zero.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -379,7 +379,7 @@ theorem firstDot_relation_transport (j : {j : I // D.parity j = 1}) (v : List I)
   intro r _
   simpa only [term_pre, term_dot] using term_difference D Sc cutoff j v (cutoff j.1) r.val r.isLt
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -402,7 +402,7 @@ coefficient algebra. This module does not perform short/long shuffle reduction.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -692,7 +692,7 @@ theorem outputParabolic_relation_transport {s t : List I} {j : I}
         outputParabolicSourceRelation D Sc cutoff x ≫ c := by
   exact parabolic_nf_transport D Sc cutoff j (outputParabolic_first_block x) x.2.1 x.2.2.nf a
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -713,7 +713,7 @@ central-square linearity. No inverse or boundary compatibility is assumed.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -869,7 +869,7 @@ theorem boundaryRho_iterate_even (j : {j : I // D.parity j = 1}) (v w : List I)
       Function.iterate_succ_apply', Function.iterate_one, boundaryRho_square,
       ih, signedMovingPowerTarget_add]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -890,7 +890,7 @@ requires its separate triangular coordinate comparison.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -952,7 +952,7 @@ theorem boundaryRho_iterate_even_pair (p : ZMod 2) (j : {j : I // D.parity j = 1
   change (ideal D Sc cutoff v x.oldTarget).mkQ (twist k 0 r) = _
   rw [twist_zero]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

@@ -34,7 +34,7 @@ no action-faithfulness or replacement quotient premise is used.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (L : I × ℕ → ℕ)
@@ -468,7 +468,7 @@ theorem powerWordSourceMap_ker (w : OldCategory D Sc cutoff) :
     Submodule.comap_comp, Submodule.comap_map_eq, Submodule.ker_mkQ, sup_comm]
   exact comap_oldIdeal_sup_elementaryPowers D Sc cutoff L ν w.word
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -484,7 +484,7 @@ the actual inclusion counit recovers each supported module.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordContent
+namespace OddMath.QuiverHecke.ELV.PowerWordContent
 open CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
@@ -562,7 +562,7 @@ def contentAppendIso (ν : List I) (i : I) :
       ((BalancedInduction.induction (truncatedAppend D Sc cutoff (powerBound D cutoff L) [i])).mapIso
         (contentExtensionIso D Sc cutoff L ν) ≪≫ weightedAppendIso D Sc cutoff L ν i)
 
-end OddMath.QuiverHecke.ELVOld.PowerWordContent
+end OddMath.QuiverHecke.ELV.PowerWordContent
 end
 
 end
@@ -578,7 +578,7 @@ of chosen dot/crossing maps remains a separate step.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordWeight
+namespace OddMath.QuiverHecke.ELV.PowerWordWeight
 open CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
@@ -705,7 +705,7 @@ def weightAppendIso (Λ : X) (ν : List I) (i : I) :
     wordFamily D Sc cutoff L Λ (wordWeight D Λ (ν ++ [i])) (ν ++ [i]) :=
   Pi.isoMk (fun δ => weightAppendAtIso D Sc cutoff L Λ ν i δ)
 
-end OddMath.QuiverHecke.ELVOld.PowerWordWeight
+end OddMath.QuiverHecke.ELV.PowerWordWeight
 end
 
 end
@@ -721,7 +721,7 @@ kernel, including every coefficient vector.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordYoneda
+namespace OddMath.QuiverHecke.ELV.PowerWordYoneda
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (L : I × ℕ → ℕ)
@@ -945,7 +945,7 @@ theorem evaluate_proj (t : W ⟶ F) (p : ZMod 2) :
     simp only [Superfunctor.proj_app, ite_true, zero_ne_one, ite_false]
     exact zero_add _
 
-end OddMath.QuiverHecke.ELVOld.PowerWordYoneda
+end OddMath.QuiverHecke.ELV.PowerWordYoneda
 end
 
 end
@@ -961,7 +961,7 @@ surjectivity, not an assumed faithful evaluation.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordContentCyclicity
+namespace OddMath.QuiverHecke.ELV.PowerWordContentCyclicity
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (L : I × ℕ → ℕ)
@@ -1067,7 +1067,7 @@ theorem hom_ext (f g : PowerWordWeight.wordAt D Sc cutoff L ν β ⟶ M)
   rw [app_generator, app_generator]
   rw [← evaluate_component, ← evaluate_component, h]
 
-end OddMath.QuiverHecke.ELVOld.PowerWordContentCyclicity
+end OddMath.QuiverHecke.ELV.PowerWordContentCyclicity
 end
 
 end
@@ -1077,7 +1077,7 @@ section
 /-! Native signed old-Hom maps between actual regular-power word modules. -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordMorphisms
+namespace OddMath.QuiverHecke.ELV.PowerWordMorphisms
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (L : I × ℕ → ℕ)
@@ -1205,7 +1205,7 @@ theorem composition_generator (u : List I) (g : vt ⟶ vs)
     twist_of_mem p (proj_mem 0 g), twist_of_mem (p + 1) (proj_mem 1 g),
     mul_zero, mul_one, sign_zero, one_smul, Linear.comp_smul, map_smul]
 
-end OddMath.QuiverHecke.ELVOld.PowerWordMorphisms
+end OddMath.QuiverHecke.ELV.PowerWordMorphisms
 end
 
 end
@@ -1215,7 +1215,7 @@ section
 /-! The selected regular-power word append comparison and its actual dot. -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordAppend
+namespace OddMath.QuiverHecke.ELV.PowerWordAppend
 open CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1393,7 +1393,7 @@ theorem appendLinear_dot (w : OldCategory D Sc cutoff) :
     rfl
   exact appendLinear_dot_tensor D Sc cutoff L ν i s w g h a
 
-end OddMath.QuiverHecke.ELVOld.PowerWordAppend
+end OddMath.QuiverHecke.ELV.PowerWordAppend
 end
 
 end
@@ -1404,7 +1404,7 @@ section
 crossing, via existing whole-comparison coherence and outer recasting. -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordPair
+namespace OddMath.QuiverHecke.ELV.PowerWordPair
 open CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1476,7 +1476,7 @@ variable {C B : Type u} [Category.{u} C] [Category.{u} B]
 
 end Signed
 
-end OddMath.QuiverHecke.ELVOld.PowerWordPair
+end OddMath.QuiverHecke.ELV.PowerWordPair
 end
 
 end
@@ -1491,7 +1491,7 @@ The full old-arrow parity twist and all exterior coefficients are retained.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordContentDot
+namespace OddMath.QuiverHecke.ELV.PowerWordContentDot
 open CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
@@ -1838,7 +1838,7 @@ theorem content_append_dot (ν : List I) (i : I) :
         ((ν ++ [i] : List I) : Multiset I))) (extendedWordComparison D Sc cutoff L ν i) _ _
       (extendedWord_dot D Sc cutoff L ν i))
 
-end OddMath.QuiverHecke.ELVOld.PowerWordContentDot
+end OddMath.QuiverHecke.ELV.PowerWordContentDot
 end
 
 end

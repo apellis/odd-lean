@@ -26,7 +26,7 @@ DeformedMatrixComparison §4 agree with the prescribed raw input operators.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -173,7 +173,7 @@ theorem evenCapRow_normalization (i : {i : I // D.parity i = 0})
           (⟨t⟩ : OldCategory D Sc cutoff))^[n] z) := by
   rw [evenSourceInputDot_iterate_sourceEquiv, evenSourceInputContraction_counit]
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -190,7 +190,7 @@ vanishing, with every old coefficient and balance twist retained.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -281,7 +281,7 @@ theorem evenInputContractionAffine_pivot (p : ZMod 2) (i : I) (hi : D.parity i =
   rw [evenInputContractionAffine_iterate_boundaryCrossCoordinates D Sc cutoff p i hi]
   exact offDiagonalBoundary_even_top D Sc cutoff p i hi v t (r + d + 1) 0 b (by omega)
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -297,7 +297,7 @@ its cap matrix has the proved anti-triangular unit pivots on every old Hom.
 The categorical coefficient(0) counit comparison remains separate.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 open CategoryTheory StringDiagrams Supercategory
 open scoped BigOperators
 open OddMath.LowPolynomialCoordinates
@@ -530,7 +530,7 @@ def evenInputMatrixEquiv (p : ZMod 2) (i : I) (hi : D.parity i = 0)
   LinearEquiv.ofBijective (evenInputMatrix D Sc cutoff i hi v t m)
     (evenInputMatrix_bijective D Sc cutoff p i hi v t m hm)
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -545,7 +545,7 @@ identification is a separate obligation.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -590,7 +590,7 @@ theorem evenCounitMatrixEquiv_cap (p : ZMod 2)
   rw [← evenSourceInputContraction_eq, ← evenSourceInputDot_eq, Module.End.pow_apply,
     evenCapRow_normalization, neg_neg]
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -604,7 +604,7 @@ Only representable component inversion is asserted here.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -658,7 +658,7 @@ theorem evenCapFamilyComponentEquiv_cap (p : ZMod 2) (i : {i : I // D.parity i =
   rw [evenCapFamilyComponentEquiv_coordinates]
   exact evenCounitMatrixEquiv_cap D Sc cutoff p i v t m hm z r
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -672,7 +672,7 @@ The fixed signed mate evaluates to minus toCyclotomic after this actual J0.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -731,7 +731,7 @@ theorem evenModuleMate_firstRow (i : {i : I // D.parity i = 0}) (v t : List I)
       cases s with
       | mk s => exact evenModuleMate_firstRow_tensor D Sc cutoff i v s t g b) z
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -746,7 +746,7 @@ remain the ordinary unscaled columns, with canonical source coordinates.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped BigOperators
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -896,7 +896,7 @@ theorem evenCapFamilyComponentEquiv_eq (p : ZMod 2) (i : {i : I // D.parity i = 
     rw [Module.End.pow_apply] at h
     exact h.symm
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -912,7 +912,7 @@ between the concrete IndRes and upper Hom coefficient presheaves.
 -/
 noncomputable section
 open CategoryTheory Opposite StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1064,7 +1064,7 @@ def mateKernel (i : I) (t : OldCategory D Sc cutoff) :
     (rfl : mateKernelComponent D Sc cutoff i v t =
       mateKernelComponent D Sc cutoff i v t) z
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -1080,7 +1080,7 @@ Consequently every actual ordinary counit/dot-power row is right natural.
 -/
 noncomputable section
 open CategoryTheory Opposite StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1246,7 +1246,7 @@ def capKernel (i : I) (n : ℕ) (t : OldCategory D Sc cutoff) :
     apply ModuleCat.hom_ext
     exact capKernelComponent_precompose D Sc cutoff i n a.unop t
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -1261,7 +1261,7 @@ coefficient is composed without a parity twist.
 -/
 noncomputable section
 open CategoryTheory Opposite StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1315,7 +1315,7 @@ def unitKernel (i : I) (n : ℕ) (t : OldCategory D Sc cutoff) :
     apply ModuleCat.hom_ext
     exact unitKernelComponent_precompose D Sc cutoff i n a.unop t
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -1331,7 +1331,7 @@ identities hold in the balanced quotient. No flatness premise occurs.
 -/
 noncomputable section
 open CategoryTheory Opposite StringDiagrams TensorProduct
-namespace OddMath.QuiverHecke.ELVOld.BalancedKernelTensor
+namespace OddMath.QuiverHecke.ELV.BalancedKernelTensor
 universe u
 variable {k C : Type u} {ι : Type} [CommRing k] [Category.{u} C]
 variable (K : ι → Cᵒᵖ ⥤ ModuleCat k)
@@ -1469,7 +1469,7 @@ def piEquiv : Obj (piKernel K) M ≃ₗ[k] (∀ a, Obj (K a) M) :=
     (piEquiv K M).symm (Pi.single a z) = map M (piInjection K a) z :=
   fromPi_single K M a z
 
-end OddMath.QuiverHecke.ELVOld.BalancedKernelTensor
+end OddMath.QuiverHecke.ELV.BalancedKernelTensor
 end
 
 end
@@ -1482,7 +1482,7 @@ entries on the actual finite parity-shifted superspace families.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.MatrixComponentParity
+namespace OddMath.QuiverHecke.ELV.MatrixComponentParity
 universe u
 variable {k : Type u} [CommRing k]
 variable {C : Type u} [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
@@ -1508,9 +1508,9 @@ private theorem postcompose_total {F G H : Superfunctor k C (SVec k)}
   rw [Superfunctor.comp_total]
   rfl
 
-end OddMath.QuiverHecke.ELVOld.MatrixComponentParity
+end OddMath.QuiverHecke.ELV.MatrixComponentParity
 
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1640,7 +1640,7 @@ theorem capMatrixEntry_none_apply (i : I)
   rw [capMatrixEntry_none_unshifted] at h
   exact h
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end

@@ -873,7 +873,7 @@ to the two-sided old ideal. No finiteness condition on the colour set is needed.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1001,7 +1001,7 @@ theorem ideal_rightContext (σ : List I) {v w : List I} {f : hom D Sc cutoff v w
   | add f g _ _ hf hg => simpa only [map_add] using Submodule.add_mem _ hf hg
   | smul c f _ hf => simpa only [map_smul] using Submodule.smul_mem _ c hf
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1080,34 +1080,34 @@ theorem elvAffineScalarSpecialization_evenCyclotomic
 /-- Appending spectator strands commutes with actual scalar specialization.
 This supplies the append-range compatibility before quotient descent. -/
 theorem elvAffineScalarSpecialization_rightContext
-    (σ v w : List I) (f : ELVOld.hom D Sc cutoff v w) :
+    (σ v w : List I) (f : ELV.hom D Sc cutoff v w) :
     (elvAffineScalarSpecialization D Sc cutoff values hvalues).map
-      (ELVOld.rightContext D Sc cutoff σ v w f) =
-        ELVOld.affineRightContext D Sc σ v w
+      (ELV.rightContext D Sc cutoff σ v w f) =
+        ELV.affineRightContext D Sc σ v w
           ((elvAffineScalarSpecialization D Sc cutoff values hvalues).map f) := by
-  let F : ELVOld.hom D Sc cutoff v w →ₗ[k]
+  let F : ELV.hom D Sc cutoff v w →ₗ[k]
       ((pres D Sc).obj (ob D v) ⟶ (pres D Sc).obj (ob D w)) :=
     (elvAffineScalarSpecialization D Sc cutoff values hvalues).toFunctor.mapLinearMap k
-  let G : ELVOld.hom D Sc cutoff (v ++ σ) (w ++ σ) →ₗ[k]
+  let G : ELV.hom D Sc cutoff (v ++ σ) (w ++ σ) →ₗ[k]
       ((pres D Sc).obj (ob D (v ++ σ)) ⟶ (pres D Sc).obj (ob D (w ++ σ))) :=
     (elvAffineScalarSpecialization D Sc cutoff values hvalues).toFunctor.mapLinearMap k
-  change G (ELVOld.rightContext D Sc cutoff σ v w f) =
-    ELVOld.affineRightContext D Sc σ v w (F f)
+  change G (ELV.rightContext D Sc cutoff σ v w f) =
+    ELV.affineRightContext D Sc σ v w (F f)
   induction f using TensorProduct.inductionOn with
   | add f g hf hg => simp only [map_add, hf, hg]
   | tmul a f =>
     change (elvAffineScalarSpecialization D Sc cutoff values hvalues).map
       (BoxProd.tmulHom
-        (X := ELVOld.obj D Sc cutoff (v ++ σ))
-        (Y := ELVOld.obj D Sc cutoff (w ++ σ))
-        (SuperalgebraCat.ofElem a) (ELVOld.affineRightContext D Sc σ v w f)) =
-      ELVOld.affineRightContext D Sc σ v w
+        (X := ELV.obj D Sc cutoff (v ++ σ))
+        (Y := ELV.obj D Sc cutoff (w ++ σ))
+        (SuperalgebraCat.ofElem a) (ELV.affineRightContext D Sc σ v w f)) =
+      ELV.affineRightContext D Sc σ v w
         ((elvAffineScalarSpecialization D Sc cutoff values hvalues).map
           (BoxProd.tmulHom
-            (X := ELVOld.obj D Sc cutoff v) (Y := ELVOld.obj D Sc cutoff w)
+            (X := ELV.obj D Sc cutoff v) (Y := ELV.obj D Sc cutoff w)
             (SuperalgebraCat.ofElem a) f))
     rw [elvAffineScalarSpecialization_tmul, elvAffineScalarSpecialization_tmul]
-    exact (map_smul (ELVOld.affineRightContext D Sc σ v w) _ _).symm
+    exact (map_smul (ELV.affineRightContext D Sc σ v w) _ _).symm
 
 end OddMath.QuiverHecke
 end

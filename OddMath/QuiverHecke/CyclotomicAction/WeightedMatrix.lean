@@ -24,7 +24,7 @@ coordinates. Their pointwise charts use the selected append comparisons.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+namespace OddMath.QuiverHecke.ELV.BalancedInduction
 universe u
 variable {k C : Type u} [CommRing k] [Category.{u} C]
   [Preadditive C] [Linear k C] [Supercategory k C]
@@ -216,9 +216,9 @@ theorem inductionCapMatrixEntry_some_total {q : ZMod 2} {δ : ∀ s, A.obj s ⟶
   dsimp only [datumCapEntry, inductionMatrixDatum, capRowNative]
   rw [Superfunctor.comp_total, SVec.toLinearMap_comp, capDotRow_total]
 
-end OddMath.QuiverHecke.ELVOld.BalancedInduction
+end OddMath.QuiverHecke.ELV.BalancedInduction
 
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ) (i : I)
@@ -318,7 +318,7 @@ private theorem total_even {C : Type u} [Category.{u} C] [Preadditive C]
   have hz := Superfunctor.app_eq_zero_of_mem h (by decide : (1 : ZMod 2) ≠ 0) w
   simpa only [SuperNatTrans.total, hz, add_zero] using f.app_mem 0 w
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -334,7 +334,7 @@ with the finite prescribed weighted matrices is a separate obligation.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor
 universe u
 section DotComponents
@@ -504,7 +504,7 @@ def weightedCapMatrixValueEquiv (m : ℕ) (w : OldCategory D Sc cutoff) :
       weightedCapMatrixTargetSpace D Sc cutoff N i M m ((Q).obj w) :=
   LinearEquiv.piCongrRight (weightedCapFamilyValueEquiv D Sc cutoff N i M m w)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -519,7 +519,7 @@ specializing the input module to the weighted restriction.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor BalancedInduction
 universe u
 
@@ -737,7 +737,7 @@ theorem weightedMatrixCharts_capEntry (m : ℕ) (a : Option (Fin m)) (w : OldCat
   | none => exact weightedMatrixCharts_capEntry_none D Sc cutoff N i M m w
   | some r => exact weightedMatrixCharts_capEntry_some D Sc cutoff N i M m r w
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -753,7 +753,7 @@ the whole prescribed matrices before any inverse is attached.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped BigOperators
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor BalancedInduction
 universe u
 section FiniteKernels
@@ -868,7 +868,7 @@ theorem weightedMatrixCharts_capMatrix (m : ℕ) (w : OldCategory D Sc cutoff) :
     (newCapMatrix_proj D Sc cutoff N i M m ((Q).obj w))
     (fun a => piChart_proj (weightedCapFamilyValueEquiv D Sc cutoff N i M m w) a)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -883,7 +883,7 @@ bijective. The resulting isomorphisms use those exact forward maps.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor BalancedInduction
 universe u
 
@@ -1000,7 +1000,7 @@ theorem weightedCapMatrixComponentIso_hom (w : OldCategory D Sc cutoff)
       weightedCapMatrixComponent D Sc cutoff N i M
         (contentCapCount D cutoff i (w.word : Multiset I)) ((Q).obj w) := rfl
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1015,7 +1015,7 @@ The proof uses the established inverses of those exact forward components.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor BalancedInduction
 universe u
 
@@ -1162,7 +1162,7 @@ theorem weightedContentCapMatrixIso_hom_total (β : Multiset I)
   rw [weightedContentCapMatrixIso_hom]
   exact weightedCapMatrixModuleMap_total D Sc cutoff N i M _ w.obj
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

@@ -155,7 +155,7 @@ coordinates, is
       = f_i(x₁) ∏_(ν_a≠i) Q_(i,ν_a)(x₁,x_(a+1))
                   ∏_(ν_a=i odd) (x₁²+x_(a+1)²) e(i,ν).   (3)
 
-**Convention comparison:** `ELVOld.qp_repeated_even` proves the corresponding
+**Convention comparison:** `ELV.qp_repeated_even` proves the corresponding
 full-ELV repeated-even recursion with factor −1 for the library's `EvenTwo`
 crossing convention. The no-factor normalization in (3) is not yet identified
 with that convention. See `DeformedGlobalQP.md` §3 and `HANDOFF.md`.

@@ -30,7 +30,7 @@ transport of the polynomial boundary remain separate.
 noncomputable section
 open CategoryTheory StringDiagrams Categorification.TypeA Supercategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -373,7 +373,7 @@ theorem offDiagonalLongSection_eq (p : ZMod 2) (i : I) {v t : List I}
       exact old_eq_zero_of_no_normal_form D Sc cutoff h (f n)
     rw [hf, map_zero, map_zero]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -390,7 +390,7 @@ No field, flatness, or action hypothesis is introduced.
 noncomputable section
 open CategoryTheory StringDiagrams Categorification.TypeA Supercategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -605,7 +605,7 @@ theorem ker_offDiagonalLongExtraction_eq_chronologicalShortSpan
       exact mem_chronologicalShortSpan_of_no_old_normal_form D Sc cutoff p i v t h z
     · exact le_top
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -620,7 +620,7 @@ Both old endpoints are arbitrary; every moving colour is retained.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory TensorProduct
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -700,7 +700,7 @@ def offDiagonalSourceCoordinateEquiv (p : ZMod 2) (i : I) (v t : List I) :
     offDiagonalSourceCoordinateEquiv D Sc cutoff p i v t (alpha D Sc cutoff i v t a) = (a, 0) := by
   simp only [offDiagonalSourceCoordinateEquiv_apply, extract_alpha, offDiagonalLongExtraction_alpha]
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -716,7 +716,7 @@ coordinates; its leading coefficient and division remain separate.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -749,7 +749,7 @@ theorem appendC0_pMap_offDiagonal (p : ZMod 2) (i : I) (v t : List I)
   rw [map_sub, map_sub, sub_eq_zero] at hp
   exact hp
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -764,7 +764,7 @@ diagonal section modulo the actual chronological short span. Corrected rho
 commutes with arbitrary target postcomposition by associativity.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct Classical
 universe u
@@ -881,7 +881,7 @@ theorem boundaryRho_iterate_act (j : {j : I // D.parity j = 1}) (v w t : List I)
   | succ d ih => rw [Function.iterate_succ_apply', ih, boundaryRho_act,
       Function.iterate_succ_apply']
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -898,7 +898,7 @@ or supplied coordinate-intertwining hypothesis is used.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1036,7 +1036,7 @@ theorem offDiagonalLongExtraction_correctedLift (p : ZMod 2)
       (offDiagonalCoefficientRho D Sc cutoff p j v t)^[d] (Finsupp.single 0 b) := by
   rw [← offDiagonalLongSection_rho_iterate, offDiagonalLongExtraction_section]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1052,7 +1052,7 @@ section. All total-parity and source-delta terms are retained.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct DirectSum Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1200,7 +1200,7 @@ theorem offDiagonalLongExtraction_boundaryRho (p : ZMod 2)
     exact longHomExtraction_boundaryRho D Sc cutoff p j y z
   · simp only [offDiagonalLongExtraction, dite_eq_right h, LinearMap.zero_apply, map_zero]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1215,7 +1215,7 @@ Its polynomial projection is covariant with the prescribed twist; no
 diagonal-corner sufficiency or module-level inverse is asserted.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CategoryTheory StringDiagrams Supercategory
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1307,7 +1307,7 @@ theorem appendC0_postcomp_general (i : I) (v s t : List I)
     sub_eq_zero] at h
   exact h
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1322,7 +1322,7 @@ the entire off-diagonal coefficient. The specified scalar-unit leading map
 therefore extends without a diagonal-corner sufficiency assumption.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CategoryTheory StringDiagrams Supercategory
 open scoped Classical
 universe u
@@ -1491,7 +1491,7 @@ theorem offDiagonalBoundary_corrected_top (p : ZMod 2)
       (n • D.parity j.1 + (p + D.parity j.1 * wordSumParity D v)) v t c)
   rw [← hb, oldComp_mk, Category.id_comp]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1508,7 +1508,7 @@ and entire old-coefficient twist are retained, including empty old Homs.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1698,7 +1698,7 @@ theorem offDiagonalCorrectedCoordinateEquiv_single (p : ZMod 2)
     rw [(corrected_change_single D Sc cutoff p j v t q b).2,
       (offDiagonalCorrectedLift_coordinates D Sc cutoff p j v t q b).2]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1713,7 +1713,7 @@ proved leading maps on Old(v,t), retaining full exterior coefficients.
 The resulting row normal forms feed the arbitrary-Hom snake argument.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CategoryTheory StringDiagrams Supercategory
 open scoped Classical
 universe u
@@ -1860,7 +1860,7 @@ theorem offDiagonalBoundaryRowDivisionEquiv_apply (p : ZMod 2)
       offDiagonalPolynomialBoundary D Sc cutoff p j.1 v t
         (offDiagonalCorrectedCoordinateEquiv D Sc cutoff p j v t x.1) + x.2 := rfl
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1877,7 +1877,7 @@ are proved here. These row results feed the snake and augmented-inverse
 arguments; they do not identify the prescribed balanced crossing-column domain.
 -/
 noncomputable section
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CategoryTheory StringDiagrams Supercategory
 open scoped Classical
 universe u
@@ -2013,7 +2013,7 @@ theorem offDiagonalBoundaryPositiveEquiv_symm_boundary (p : ZMod 2)
   rw [LinearEquiv.apply_symm_apply, offDiagonalBoundaryPositiveEquiv_apply]
   exact (add_zero _).symm
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

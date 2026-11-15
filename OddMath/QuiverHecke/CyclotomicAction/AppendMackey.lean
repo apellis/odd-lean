@@ -1342,7 +1342,7 @@ shorter old ideal element.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped TensorProduct Classical
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1504,7 +1504,7 @@ theorem lastDotSquare_comp_appendDecoratedW_mem (i : I) (s : List I) (d : ℕ) :
   simpa only [Preadditive.comp_sub, Linear.comp_smul, smul_sub, smul_smul, hc,
     one_smul, sub_add_sub_cancel, Category.assoc] using h
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

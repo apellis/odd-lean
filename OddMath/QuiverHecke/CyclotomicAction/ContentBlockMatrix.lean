@@ -29,7 +29,7 @@ with the ordinary unit, the chosen dot and full old coefficients.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -48,7 +48,7 @@ def contentMissingBoundaryCoefficients :
     (contentMissingUnitModuleIso D Sc cutoff γ i hi)
     (contentMissingUnitModuleIso_hom D Sc cutoff γ i hi)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -63,7 +63,7 @@ unit/cap entries assemble under the selected content E/F family charts.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open scoped BigOperators
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor BalancedInduction
 universe u
 section FiniteKernels
@@ -217,7 +217,7 @@ theorem oldContentMatrixCharts_capMatrix :
   · exact oldCapMatrix_proj D Sc cutoff i (induced Q₁ N) m t.obj
   · exact fun a => piChart_proj (oldContentCapSlotEquiv D Sc cutoff ν i N m t) a
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -232,7 +232,7 @@ inverses to the given content unit/cap matrices, without an inverse premise.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor BalancedInduction
 universe u
 private theorem iso_hom_bijective {k : Type u} [CommRing k] {V W : SVec k} (e : V ≅ W) :
@@ -419,7 +419,7 @@ theorem oldContentGridCapMatrixIso_hom
         (contentCapCount D cutoff i ((i :: ν : List I) : Multiset I)) :=
   BalancedInduction.gridCapIsoOfBijective_hom J₀ J₁ _ _ N _ _
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -435,7 +435,7 @@ compatibility, or complete-family hypothesis remains.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -468,7 +468,7 @@ def oldContentLoc : SKM.SuperRouquierLoc (k := k)
     rw [koszulSign_smul (R := k)] at h
     convert! h using 1
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -483,7 +483,7 @@ ambient map is the already inverted weighted diagonal matrix mate.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction
 universe u
 private theorem map_id_left {C : Type u} [Category.{u} C] (F : C ⥤ C)
@@ -557,7 +557,7 @@ theorem contentBlockMatrixMate_square (M : ContentModules D Sc cutoff N γ)
   exact (congrArg (fun f => fullSquareTargetLinear K Q₂ Q₁ T sqK M ((K).obj t)
     ((T).obj ((Q₁).obj t)) (congrArg (fun F => F.obj t) sqK) ∘ₗ f) he).symm.trans h
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -572,7 +572,7 @@ retaining arbitrary input vectors and every dot power.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction
 universe u
 private theorem unitDot_value
@@ -650,7 +650,7 @@ theorem contentBlockUnitDotColumn_square (M : ContentModules D Sc cutoff N β)
     (fun x => unit Q₀ M.toFunctor t x)
     (fun x => contentBlockUnitDot_square D Sc cutoff N β i M t n x) b
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -664,7 +664,7 @@ through the same selected source chart and input inclusion unit.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction
 universe u
 private theorem capDot_value
@@ -743,7 +743,7 @@ theorem contentBlockCapDotRow_square (M : ContentModules D Sc cutoff N γ)
       (contentAppendToRestrictionExtensionIso D Sc cutoff N β i γ hJ M) t)
     (fun y => contentBlockCapDot_square D Sc cutoff N β i M t n y) x
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -757,7 +757,7 @@ charts compare the prescribed crossing mate as a whole module morphism.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction
 universe u
 private def rawValue {k V W : Type u} [CommRing k]
@@ -1083,7 +1083,7 @@ theorem contentPrincipalMate_square :
   rw [← hOp] at h
   exact h
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1098,7 +1098,7 @@ morphisms, on all vectors and arrows.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction
 universe u
 private theorem total_comp_apply_2
@@ -1215,7 +1215,7 @@ theorem contentMatrixCapDotRow_square (n : ℕ) :
   have hRaw := contentBlockCapDotRow_square D Sc cutoff N β i M w n b
   exact hLeftValue.trans (hRaw.trans hRightValue.symm)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1230,7 +1230,7 @@ predecessor or lower append is required.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction
 universe u
 private theorem total_comp_apply_3
@@ -1372,7 +1372,7 @@ theorem contentUnitDotColumn_square (n : ℕ) :
   have hJoined := hCL.trans hER
   exact hLeft.trans (hJoined.trans hRightValue.symm)
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1387,7 +1387,7 @@ This also supplies the absent-predecessor boundary without a lower append.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 namespace BalancedInduction
 universe u
 variable {k C A : Type u} [CommRing k]
@@ -1468,7 +1468,7 @@ def weightedContentLocalInverseFrom
           simp only [restoredColumn, optionRestoringIso, optionForwardColumns,
             Functor.mapIso_hom, ← CategoryTheory.Functor.map_comp, weightedUnitMatrixEntry_some])
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1482,7 +1482,7 @@ specified output content with the given mate and ordinary dot/cap fields.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 namespace BalancedInduction
 universe u
 variable {k C A : Type u} [CommRing k]
@@ -1554,7 +1554,7 @@ def weightedContentLocalInverseTo
           simp only [restoredRow, optionRestoringIso, optionForwardRows,
             Functor.mapIso_inv, ← CategoryTheory.Functor.map_comp, weightedCapMatrixEntry_some])
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1570,7 +1570,7 @@ ordinary unit/dot column or cap/dot row.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1700,7 +1700,7 @@ theorem contentTargetsLocalInverseTo_nonempty (M' : ContentModules D Sc cutoff N
   exact contentSupportedLocalInverseTo_nonempty D Sc cutoff N β i M' hh
 end Targets
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1717,7 +1717,7 @@ compatibility identifies every content count with categorical height.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open BalancedInduction CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1834,7 +1834,7 @@ theorem elvWeightSupportedCapInverse_nonempty
       _ = _ := hs.symm
   exact ⟨by simpa only [hf, hg] using H⟩
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1852,7 +1852,7 @@ a predecessor, so its row matrix has the supported content coordinates.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.CyclotomicAction
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 open CyclotomicCrossingTensor BalancedInduction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -1910,7 +1910,7 @@ theorem elvWeightPredecessor_of_positive_height (i : I) (Λ : X) {x₀ x : X}
   by_contra hδ
   exact (not_lt_of_ge (elvWeightHeight_nonpos_of_absent D cutoff i Λ h hcutoff δ hδ)) hpos
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

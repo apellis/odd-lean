@@ -9,7 +9,7 @@ faithfulness of regular-probe evaluation is asserted.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld
+open CyclotomicAction ELV
 universe u
 private def totalLinear {k : Type u} [CommRing k]
     (A B : PiSCat.{u,u,u + 1} k) (F G : A ⟶ B) (R : A) :

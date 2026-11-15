@@ -28,7 +28,7 @@ descends to the existing old quotient and is supernatural there.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -74,7 +74,7 @@ def inductionDot (i : I)
         (oldAppendDotComponent D Sc cutoff i s ≫ twist k (D.parity i) g) b :=
   BalancedInduction.transformLinear_tensor _ _ _ _ _ _
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -92,7 +92,7 @@ or matrix inverse is assumed here.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+namespace OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -193,7 +193,7 @@ def signedEqualInductionCross (i : I) :
     if q = D.parity i * D.parity i then -equalCrossOnDoubleInduction D Sc cutoff i M else 0
   split_ifs <;> simp
 
-end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+end OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
 end
 
 end
@@ -215,7 +215,7 @@ nonidentity-coordinate assembly, directness, and C0 are not asserted.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -369,7 +369,7 @@ theorem appendOutputPolynomial_precomp (i : I) (v s t : List I)
     simp only [Finsupp.lsum_single, LinearMap.comp_apply, Linear.leftComp_apply,
       Finsupp.lsingle_apply, appendOutputPolynomial_single, rightContext_comp, Category.assoc]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -388,7 +388,7 @@ This module does not assert the global corrected polynomial projection.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -516,7 +516,7 @@ theorem appendOutputDot_crossingClass (i : I) (v s t : List I)
     pow_zero, End.one_def, affineUnit_id, Category.comp_id]
   simp only [rightContext_comp, Category.assoc]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end
@@ -1135,7 +1135,7 @@ linearity, old-quotient flatness, or finite-colour assumption is used.
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
 open scoped Classical DirectSum TensorProduct
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -1886,7 +1886,7 @@ def appendC0Defect (i : I) (v t : List I) :
   simp only [appendC0Defect, LinearMap.sub_apply, LinearMap.comp_apply,
     appendC0_outputDot_crossing, appendC0_crossing, map_zero, sub_zero]
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

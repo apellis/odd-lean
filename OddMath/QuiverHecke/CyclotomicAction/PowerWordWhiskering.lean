@@ -24,7 +24,7 @@ with proved cyclicity this supports comparison of whole chosen crossing maps.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordAppendUnits
+namespace OddMath.QuiverHecke.ELV.PowerWordAppendUnits
 open CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
@@ -384,7 +384,7 @@ theorem content_append_tensor_unit (ν : List I) (i : I)
     apply congrArg ((extendedComparison D Sc cutoff L ν i).hom.total w.obj)
     rfl
 
-end OddMath.QuiverHecke.ELVOld.PowerWordAppendUnits
+end OddMath.QuiverHecke.ELV.PowerWordAppendUnits
 end
 
 end
@@ -399,7 +399,7 @@ is used to identify the independently induced old-Hom module map.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordWhiskering
+namespace OddMath.QuiverHecke.ELV.PowerWordWhiskering
 open CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -460,7 +460,7 @@ variable {C B E : Type u} [Category.{u} C] [Category.{u} B] [Category.{u} E]
   (R : Superfunctor k C (SVec k))
 end Chosen
 
-end OddMath.QuiverHecke.ELVOld.PowerWordWhiskering
+end OddMath.QuiverHecke.ELV.PowerWordWhiskering
 end
 
 end
@@ -475,7 +475,7 @@ of every old arrow and the full coefficient-power quotient.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordContexts
+namespace OddMath.QuiverHecke.ELV.PowerWordContexts
 open CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -530,7 +530,7 @@ private theorem comparison_step {C B E : Type*} [Category* C] [Category* B] [Cat
   simp only [Functor.comp_map, Iso.trans_hom, Functor.mapIso_hom, Category.assoc]
   rw [← Category.assoc, ← H.map_comp, h₀, H.map_comp, Category.assoc, h₁]
 
-end OddMath.QuiverHecke.ELVOld.PowerWordContexts
+end OddMath.QuiverHecke.ELV.PowerWordContexts
 end
 
 end
@@ -544,7 +544,7 @@ old-Hom word chart is retained before combining it with the signed half-turn.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordComposition
+namespace OddMath.QuiverHecke.ELV.PowerWordComposition
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (L : I × ℕ → ℕ)
@@ -678,7 +678,7 @@ theorem sourceMap_evaluate (s t : List I)
   rw [LinearEquiv.apply_symm_apply, powerWordHalfTurnCoordinate_eq]
   rfl
 
-end OddMath.QuiverHecke.ELVOld.PowerWordComposition
+end OddMath.QuiverHecke.ELV.PowerWordComposition
 end
 
 end
@@ -693,7 +693,7 @@ comparisons, retaining all exterior coefficients and intermediate labels. -/
 noncomputable section
 open scoped Classical
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordContentCross
+namespace OddMath.QuiverHecke.ELV.PowerWordContentCross
 universe u
 section Generic
 variable {k C B : Type u} [CommRing k] [Category.{u} C] [Category.{u} B]
@@ -1169,7 +1169,7 @@ local notation "HIJ" => pairContentEq β δi γ j i hi hTarget
 
 end UnitWord
 
-end OddMath.QuiverHecke.ELVOld.PowerWordContentCross
+end OddMath.QuiverHecke.ELV.PowerWordContentCross
 end
 
 end
@@ -1183,7 +1183,7 @@ respect arbitrary full old-Hom maps, including all exterior coefficients.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordContentWhiskering
+namespace OddMath.QuiverHecke.ELV.PowerWordContentWhiskering
 universe u
 section Generic
 variable {k C B : Type u} [CommRing k] [Category.{u} C] [Category.{u} B]
@@ -1335,7 +1335,7 @@ theorem append_word_arrow :
     exact hr.trans hWord.symm
   have hh := congrArg (fun f => (ES).hom ≫ f) hconj
   simpa only [Category.assoc, Iso.hom_inv_id_assoc] using hh
-end OddMath.QuiverHecke.ELVOld.PowerWordContentWhiskering
+end OddMath.QuiverHecke.ELV.PowerWordContentWhiskering
 end
 
 end
@@ -1349,7 +1349,7 @@ the selected content pair comparisons, with both colour cases included.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordWeightCross
+namespace OddMath.QuiverHecke.ELV.PowerWordWeightCross
 open CyclotomicAction
 universe u
 private theorem crossing_paste {C : Type*} [Category* C] {A B E F S T : C}
@@ -1533,7 +1533,7 @@ theorem weight_pair_cross :
   · exact (pair_source_isZero D Sc cutoff L Λ ν i j h₁ h₂ β hν ε hε).eq_of_src _ _
 end Family
 
-end OddMath.QuiverHecke.ELVOld.PowerWordWeightCross
+end OddMath.QuiverHecke.ELV.PowerWordWeightCross
 end
 
 end
@@ -1547,7 +1547,7 @@ while transporting arbitrary full old-Hom maps through the chosen E functor.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordWeightWhiskering
+namespace OddMath.QuiverHecke.ELV.PowerWordWeightWhiskering
 open CyclotomicAction CyclotomicCrossingTensor
 universe u
 private theorem square_paste {C : Type*} [Category* C] {A B E F S T : C}
@@ -1651,7 +1651,7 @@ theorem append_family_arrow (Λ : X) (s t : List I) (i : I) (x y : X)
       exact add_comm _ _
     exact (append_source_isZero D Sc cutoff L Λ s i x y hxs hys h δ hd).eq_of_src _ _
 
-end OddMath.QuiverHecke.ELVOld.PowerWordWeightWhiskering
+end OddMath.QuiverHecke.ELV.PowerWordWeightWhiskering
 end
 
 end
@@ -1665,7 +1665,7 @@ with the unchanged recursively selected whole single-append comparisons.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordPairCoherence
+namespace OddMath.QuiverHecke.ELV.PowerWordPairCoherence
 open CyclotomicAction CyclotomicCrossingTensor
 universe u
 private theorem chart_join {C B : Type*} [Category* C] [Category* B]
@@ -1752,7 +1752,7 @@ theorem recursive_pair_cross :
   rw [recursive_pair_hom D Sc cutoff L Λ ν j i hx h₃ h₄ β₀ rfl,
     recursive_pair_hom D Sc cutoff L Λ ν i j hx h₁ h₂ β₀ rfl]
   exact PowerWordWeightCross.weight_pair_cross D Sc cutoff L Λ ν i j h₁ h₂ β₀ rfl h₃ h₄
-end OddMath.QuiverHecke.ELVOld.PowerWordPairCoherence
+end OddMath.QuiverHecke.ELV.PowerWordPairCoherence
 end
 
 end
@@ -1766,7 +1766,7 @@ parity of the existing word comparisons before odd generator transport.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordChartParity
+namespace OddMath.QuiverHecke.ELV.PowerWordChartParity
 open CyclotomicAction
 universe u
 section Generic
@@ -1882,7 +1882,7 @@ theorem weight_append_even (Λ : X) :
     rw [hz]
     exact Submodule.zero_mem _
 
-end OddMath.QuiverHecke.ELVOld.PowerWordChartParity
+end OddMath.QuiverHecke.ELV.PowerWordChartParity
 end
 
 end
@@ -1896,7 +1896,7 @@ on every actual word-family E component through its selected comparison.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-namespace OddMath.QuiverHecke.ELVOld.PowerWordWeightDot
+namespace OddMath.QuiverHecke.ELV.PowerWordWeightDot
 open CyclotomicAction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
@@ -1988,7 +1988,7 @@ theorem weight_append_dot (Λ : X) (ν : List I) (i : I) :
     exact weight_dot_component D Sc cutoff L Λ ν i
   · exact (PowerWordWeight.weightAppend_isZero D Sc cutoff L Λ ν i δ hδ).eq_of_src _ _
 
-end OddMath.QuiverHecke.ELVOld.PowerWordWeightDot
+end OddMath.QuiverHecke.ELV.PowerWordWeightDot
 end
 
 end

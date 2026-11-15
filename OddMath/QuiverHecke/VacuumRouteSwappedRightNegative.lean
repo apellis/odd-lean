@@ -29,7 +29,7 @@ namespace OddMath.QuiverHecke
 universe u w
 
 namespace SwappedAssembly.SupportedSectors
-open SKM CyclotomicAction ELVOld
+open SKM CyclotomicAction ELV
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (ΛP ΛR : X) (L : I × ℕ → ℕ)

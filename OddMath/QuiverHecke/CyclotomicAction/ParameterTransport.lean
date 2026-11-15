@@ -104,7 +104,7 @@ reservoir dot nilpotence and of the mixed denominator units
 
 noncomputable section
 
-namespace OddMath.QuiverHecke.ELVOld
+namespace OddMath.QuiverHecke.ELV
 
 universe u
 
@@ -123,7 +123,7 @@ theorem parameterTwist_truncatedAppendDotNilpotentOver [Finite I]
   truncatedAppendDotNilpotentOver D sy 𝒜 (parameterTwist D Sc)
     (isHomogeneous_parameterTwist D sy 𝒜 Sc ht hs) cutoff N b h𝒜
 
-end OddMath.QuiverHecke.ELVOld
+end OddMath.QuiverHecke.ELV
 end
 
 end

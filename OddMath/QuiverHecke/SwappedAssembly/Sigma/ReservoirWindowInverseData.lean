@@ -185,7 +185,7 @@ def centralPaddedReservoir_cupInverseData_of_source_isZero
 end ProbeReservoir
 
 namespace SupportedSectors
-open CyclotomicAction ELVOld
+open CyclotomicAction ELV
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : Datum I X) (Sc : Scalars D k) (m : I → ℕ) (cutoff : I → ℕ) (bound : ℕ)

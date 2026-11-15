@@ -37,7 +37,7 @@ theorem inv_smul_bubLs_of_pos {I X k : Type*} [AddCommGroup X] [CommRing k] {D :
 end OddMath.SKM
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
 namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
-open CyclotomicAction ELVOld
+open CyclotomicAction ELV
 universe u
 local instance supportedClosedCoefficientsHomPi {k : Type u} [CommRing k]
     (A C : PiSCat.{u,u,u + 1} k) : PiSupercategory k (A ⟶ C) :=
