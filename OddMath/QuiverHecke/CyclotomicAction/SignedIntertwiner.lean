@@ -1557,7 +1557,7 @@ quadratic polynomial absorbs that discrepancy. This excludes only the
 fixed-dot, unchanged-parameter scalar-crossing prescription, not an action
 with transported parameters.
 -/
-namespace OddMath.QuiverHecke.CyclotomicAction.SignedIntertwiner
+namespace OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
 open SKM SKM.SerrePolynomial
 
 /-- Both vertices are odd; the off-diagonal exponents differ. -/
@@ -1657,6 +1657,6 @@ theorem transported_mixed_square {A : Type*} [Ring A] (σ : A →+* A)
 #print axioms quadratic
 #print axioms no_common_quadratic_scalar
 
-end OddMath.QuiverHecke.CyclotomicAction.SignedIntertwiner
+end OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
 
 end

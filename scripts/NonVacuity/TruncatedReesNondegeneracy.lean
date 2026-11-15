@@ -11,7 +11,7 @@ proved.
 noncomputable section
 namespace NonVacuity.TruncatedReesNondegeneracy
 open OddMath OddMath.SKM OddMath.QuiverHecke
-open OddMath.QuiverHecke.CyclotomicAction.SignedIntertwiner
+open OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
 
 /-- The truncated case for this datum. -/
 example : TruncatedRees.TruncatedReesNondegeneracy datum symmetrizer :=
