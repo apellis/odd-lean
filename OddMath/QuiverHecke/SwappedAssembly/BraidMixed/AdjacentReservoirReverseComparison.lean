@@ -99,7 +99,7 @@ private lemma rectangle {C : Type*} [Category C]
   rw [← Category.assoc F E.hom, ← Category.assoc H.inv (F ≫ E.hom), hr']
   simp only [Category.assoc]
 
-lemma native_entry
+lemma direct_entry
     (hs0 : nextSector (true, j) false (nextSector (true, i) false s) =
       nextSector (true, i) false (nextSector (true, j) false s))
     (hij : i ≠ j) :
@@ -184,7 +184,7 @@ lemma braid_entry (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData) (hij : i �
   have hl := comp_common_grid_heq hn rfl rfl (comp_common_grid_heq hn ha rfl hl₁ hl₂) hl₃
   have hr := comp_common_grid_heq hn rfl rfl (comp_common_grid_heq hn hb rfl hr₁ hr₂) hr₃
   exact eq_of_heq (hl.trans ((heq_of_eq
-    (native_entry P i j s hi hj hj0 hi0 hs Z hs0 hij)).trans hr.symm))
+    (direct_entry P i j s hi hj hj0 hi0 hs Z hs0 hij)).trans hr.symm))
 
 lemma braid_entry_transport (ν : X) {t : Sector I}
     (e : nextSector (true, i) false (nextSector (true, j) false (nextSector (true, i) true s)) = t)

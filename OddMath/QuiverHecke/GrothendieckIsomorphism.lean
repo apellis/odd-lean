@@ -82,12 +82,6 @@ def gammaIntEquiv (hN : SKM.NondegeneracyConjecture cs)
     gammaIntEquiv Q hS cs hf hN hα hh x = gammaInt Q hS cs hf x :=
   rfl
 
-theorem gammaIntEquiv_smul (hN : SKM.NondegeneracyConjecture cs)
-    (hα : LinearIndependent ℤ Q.α) (hh : LinearIndependent ℤ Q.cd.coroot)
-    (r : LaurentPolynomial Zπ) (x : lForm Q Coefficients.q Coefficients.pi (LaurentPolynomial Zπ)) :
-    gammaIntEquiv Q hS cs hf hN hα hh (r • x) = r • gammaIntEquiv Q hS cs hf hN hα hh x := by
-  simp only [gammaIntEquiv_apply, map_smul]
-
 /-- **BE2 Theorems 11.7 and 12.1, conditional on the field case.** If the Nondegeneracy
 Conjecture holds over every field of characteristic zero for the datum, then `γ` is bijective
 over every ground field in which `2 ≠ 0`. -/

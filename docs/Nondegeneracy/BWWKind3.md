@@ -1,5 +1,9 @@
 # Brundan–Wang–Webster parameters: the exact form of `Qᵢⱼ(u, 0)`
 
+> Declarations named below that are not in the current library were removed in the
+> streamlining because the headline theorems do not use them; they remain in the history
+> at commit `9ceca1d9`.
+
 Topic note for the extension to the parameters of Brundan–Wang–Webster, arXiv:2505.22929v2,
 §2.2 (see `BWWParameters.md`, §5, kind 3). For Brundan–Ellis parameters
 

@@ -1,5 +1,9 @@
 # Brundan–Wang–Webster parameters for the odd/mixed presentation
 
+> Declarations named below that are not in the current library were removed in the
+> streamlining because the headline theorems do not use them; they remain in the history
+> at commit `9ceca1d9`.
+
 This note plans the Phase 2 extension of the parameter shape. The target generality is
 [Brundan–Wang–Webster, arXiv:2505.22929v2](https://arxiv.org/pdf/2505.22929v2), §2.2
 and Theorem 5.6. It records the enlarged presentation, its parity constraints, the change

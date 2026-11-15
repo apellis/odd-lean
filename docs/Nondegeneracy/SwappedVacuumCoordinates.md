@@ -9,6 +9,10 @@
 > (with `RegularVacuumIdentification`, `FusedVacuumWords`, `FusedRegularVacuumFamily`
 > and the coupled-sector interface mentioned below) were removed: no retained result used
 > them. Git history keeps them.
+>
+> Declarations named below that are not in the current library were removed in the
+> streamlining because the headline theorems do not use them; they remain in the history
+> at commit `9ceca1d9`.
 
 **Status: the reservoir/vacuum action construction remains proposed.** The
 signed affine presentation comparison, transformed-ideal identification and

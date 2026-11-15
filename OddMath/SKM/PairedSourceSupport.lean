@@ -91,7 +91,7 @@ private theorem swappedCoordinates_local_capSpan_off
     {g : (pres D Sc).obj (ob D (wt D μ Q) [up i, dn i]) ⟶
       (pres D Sc).obj (ob D (wt D μ Q) [])}
     (hg : g ∈ sourceCapSpan (Sc := Sc) i (wt D μ Q))
-    (d : SYM D k) (t : F.original.Labels) (ht : t ∉ Set.range F.paired) :
+    (d : SYM D k) (t : F.unswapped.Labels) (ht : t ∉ Set.range F.paired) :
     F.swappedCoordinates hG (MatchingBasisChoice.rightAction cs μ
       (plcW μ (P ++ up i :: dn i :: Q) (P ++ Q) P Q [up i, dn i] [] g ≫ f) d)
         (F.exchange t) = 0 := by
@@ -110,15 +110,15 @@ private theorem swappedCoordinates_local_capSpan_off
       Linear.comp_smul, Finsupp.smul_apply] at *
     rw [hg, smul_zero]
 
-/-- Every actual paired original column has zero unpaired principal coordinates. -/
+/-- Every actual paired unswapped column has zero unpaired principal coordinates. -/
 theorem swappedCoordinates_paired_cross_off
     (hG : Function.Injective (F.swapped.expansion cs μ)) (b : ℕ)
-    (r : F.residual.Labels) (d : SYM D k) (t : F.original.Labels)
+    (r : F.residual.Labels) (d : SYM D k) (t : F.unswapped.Labels)
     (ht : t ∉ Set.range F.paired) :
     F.swappedCoordinates hG
       (sameColourSourceCross (Sc := Sc) μ P Q i ≫
-        F.original.expansion cs μ (Finsupp.single (F.paired (b, r)) d)) (F.exchange t) = 0 := by
-  rw [F.original.source_expansion_single, F.original_row, sameColourSourceCross_rightAction]
+        F.unswapped.expansion cs μ (Finsupp.single (F.paired (b, r)) d)) (F.exchange t) = 0 := by
+  rw [F.unswapped.source_expansion_single, F.unswapped_row, sameColourSourceCross_rightAction]
   unfold sameColourSourceCross
   rw [← Category.assoc, sourcePlcW_comp_at μ _ _ (P ++ dn i :: up i :: Q)
     P Q [up i, dn i] [dn i, up i] [] (by simp)]

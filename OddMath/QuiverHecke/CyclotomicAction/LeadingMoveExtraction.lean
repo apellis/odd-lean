@@ -64,18 +64,4 @@ theorem leadingMoveOldDots_twist (i : I) (ν : List I) (c : MoveChoices ν) (q :
   exact (Supercategory.twist_of_mem q hm).trans (by
     simp [wordEndpointDots, endpointDotMonomial])
 
-/-- Explicit old diagonal coefficient at an arbitrary old height. -/
-def leadingMoveWordCoefficient (i : I) {n : ℕ} (s : Word I n) (m : ℕ) : Hn D Sc n :=
-  ∑ c : MoveChoices s.1,
-    if sourceMovingDegree (leadingSourceDots D i 0 0 s.1 c) = m then
-      leadingMoveCoeff D (k := k) i s.1 c •
-        FiniteHomMatrix.single s s (wordEndpointDots D Sc s
-          (sourceOldDots (leadingSourceDots D i 0 0 s.1 c)))
-    else 0
-
-/-- A finite sum over content words and local square choices; no inverse coordinates. -/
-def leadingMoveContentCoefficient (i : I) (n : ℕ) (β : Multiset I) (m : ℕ) : Hn D Sc n :=
-  ∑ s ∈ Finset.univ.filter (fun s : Word I n => wordContent s = β),
-    leadingMoveWordCoefficient D Sc i s m
-
 end OddMath.QuiverHecke

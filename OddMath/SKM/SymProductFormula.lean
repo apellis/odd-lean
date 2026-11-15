@@ -310,21 +310,6 @@ theorem sum_finsuppAntidiag_factorCoeff [DecidableEq (E ⊕ O)] (hE : ∀ e, 0 <
 (`one_sub_X_pow_mul_geomSeries`). -/
 def geomSeries (d : ℕ) : PowerSeries R := PowerSeries.mk fun n => if d ∣ n then 1 else 0
 
-/-- The geometric series is the inverse of `1 - X^d`. -/
-theorem one_sub_X_pow_mul_geomSeries {d : ℕ} (hd : 0 < d) :
-    (1 - X ^ d) * geomSeries (R := R) d = 1 := by
-  ext n
-  rw [sub_mul, one_mul, map_sub, coeff_X_pow_mul', geomSeries, coeff_mk, coeff_one]
-  rcases Nat.eq_zero_or_pos n with rfl | hn
-  · simp [Nat.not_le.mpr hd]
-  · by_cases hdn : d ≤ n
-    · by_cases h : d ∣ n
-      · simp [hn.ne', hdn, h, Nat.dvd_sub_self_right]
-      · have hlt : d < n := lt_of_le_of_ne hdn (by rintro rfl; exact h dvd_rfl)
-        simp [hn.ne', hdn, h, Nat.dvd_sub_self_right, hlt]
-    · have : ¬ d ∣ n := Nat.not_dvd_of_pos_of_lt hn (by omega)
-      simp [hn.ne', hdn, this]
-
 /-- Generating function of the monomials `(E →₀ ℕ) × Finset O`, graded by weight, with the
 parity of the number of odd factors evaluated at `σ`. -/
 def monomialSeries (σ : R) : PowerSeries R :=
@@ -389,11 +374,6 @@ even generator `e_{i,r}` and `1 + σ q^{2 d_i}` at an odd generator `δ_i`. -/
 def symFactor (σ : ℚ) : SYMGen D → PowerSeries ℚ :=
   Sum.elim (fun a => MonomialSeries.geomSeries (symGenNatDegree D sy (Sum.inl a)))
     (fun i => 1 + PowerSeries.C σ * PowerSeries.X ^ symGenNatDegree D sy (Sum.inr i))
-
-/-- The even factor is the inverse of `1 - q^{deg e_{i,r}}`. -/
-theorem one_sub_X_pow_mul_symFactor_inl (σ : ℚ) (a : I × ℕ) :
-    (1 - PowerSeries.X ^ symGenNatDegree D sy (Sum.inl a)) * symFactor sy σ (Sum.inl a) = 1 :=
-  MonomialSeries.one_sub_X_pow_mul_geomSeries (symGenNatDegree_pos sy _)
 
 /-- `symDimension` as a power series: its coefficients in nonnegative degrees. -/
 def symPowerSeries (k : Type w) [Field k] (σ : ℚ) : PowerSeries ℚ :=

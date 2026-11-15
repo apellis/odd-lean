@@ -52,14 +52,4 @@ theorem upward_independence_of_coefficientMap
     exact U.expansion_injective_of_choice cs μ F hF
   · exact upward_choice_injective_of_length_ne D Sc cs hlen μ U
 
-/-- The exact action obligation at each fixed external weight implies full
-upward independence for every complete matching choice. -/
-theorem upward_independence_of_finite_observations
-    (hobs : ∀ (a b : List I), SKM.wt D 0 (SKM.ups a) = SKM.wt D 0 (SKM.ups b) →
-      ∀ μ : X, FiniteUpwardObservations D Sc cs μ a b) :
-    SKM.WeakMate.UpwardIndependence cs := by
-  apply upward_independence_of_coefficientMap D Sc cs
-  intro a b hw μ
-  exact upwardCoefficientMap_injective_of_observations D Sc cs μ a b (hobs a b hw μ)
-
 end OddMath.QuiverHecke

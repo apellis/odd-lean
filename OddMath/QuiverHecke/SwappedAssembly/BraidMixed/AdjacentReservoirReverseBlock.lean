@@ -190,7 +190,7 @@ lemma target_square (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData) :
   erw [swappedGens_cross_self]
   rfl
 
-lemma native_pair
+lemma direct_pair
     (hs0 : nextSector (true, j) false (nextSector (true, i) false s) =
       nextSector (true, i) false (nextSector (true, j) false s))
     (c : P.CrossCoeff Sc) (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
@@ -209,9 +209,9 @@ lemma native_pair
     (Y ≫ (-(E.hom ≫ a ≫ E.inv)) = (-(K.hom ≫ b ≫ K.inv)) ≫ Y) := by
   dsimp only
   apply remaining
-  · exact (AdjacentReservoirReverseCoefficient.native_entry P i j s hi hj hj0 hi0 hs Z hs0 c hc h hij).trans
+  · exact (AdjacentReservoirReverseCoefficient.direct_entry P i j s hi hj hj0 hi0 hs Z hs0 c hc h hij).trans
       (Category.assoc _ _ _)
-  · exact (AdjacentReservoirReverseComparison.native_entry P i j s hi hj hj0 hi0 hs Z hs0 hij).trans
+  · exact (AdjacentReservoirReverseComparison.direct_entry P i j s hi hj hj0 hi0 hs Z hs0 hij).trans
       (Category.assoc _ _ _)
 
 lemma square_braid_entry (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
@@ -244,7 +244,7 @@ lemma square_braid_entry (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
   have hr := comp_common_grid_heq hn hu rfl hr₁ (comp_common_grid_heq hu ht rfl hr₂ hr₃)
   have hr' := (heq_of_eq (Category.assoc _ _ _)).trans hr
   exact eq_of_heq (hl.trans ((heq_of_eq
-    (native_pair P i j s hi hj hj0 hi0 hs Z hs0 c hc h hij).1).trans hr'.symm))
+    (direct_pair P i j s hi hj hj0 hi0 hs Z hs0 c hc h hij).1).trans hr'.symm))
 
 lemma diag_braid_entry (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
     (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
@@ -273,7 +273,7 @@ lemma diag_braid_entry (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
   have hr := comp_common_grid_heq hu hu rfl hS (comp_common_grid_heq hu ht rfl hF hG)
   have hr' := (heq_of_eq (Category.assoc _ _ _)).trans hr
   exact eq_of_heq (hl.trans ((heq_of_eq
-    (native_pair P i j s hi hj hj0 hi0 hs Z hs0 c hc h hij).2).trans hr'.symm))
+    (direct_pair P i j s hi hj hj0 hi0 hs Z hs0 c hc h hij).2).trans hr'.symm))
 
 lemma square_braid_entry_transport (ν : X) {t : Sector I}
     (e : nextSector (true, i) false (nextSector (true, j) false (nextSector (true, i) true s)) = t)

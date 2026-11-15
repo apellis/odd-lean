@@ -376,12 +376,6 @@ def presentedComponent (hP : IsHomogeneous 𝒜 deg P) (d : A) :
     (f : LinDiagram R a b) :
     presentedComponent hP d (P.lin f) = P.lin (component 𝒜 deg d f) := rfl
 
-theorem presentedComponent_mem (hP : IsHomogeneous 𝒜 deg P) (d : A)
-    (x : P.obj a ⟶ P.obj b) : presentedComponent hP d x ∈ presentedPart 𝒜 deg P a b d := by
-  obtain ⟨x, rfl⟩ := P.lin_surjective x
-  rw [presentedComponent_lin]
-  exact lin_mem_presentedPart (component_mem d x)
-
 theorem presentedComponent_of_mem (hP : IsHomogeneous 𝒜 deg P) {d : A}
     {x : P.obj a ⟶ P.obj b} (hx : x ∈ presentedPart 𝒜 deg P a b d) :
     presentedComponent hP d x = x := by

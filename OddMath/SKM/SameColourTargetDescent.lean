@@ -14,15 +14,15 @@ variable {cs : CScalars Sc} {μ : X} {a P Q : List (Letter I)} {i : I}
   (F : SameColourTargetFrame cs μ a P Q i)
 
 def principalCoordinates (hG : Function.Injective (F.swapped.expansion cs μ)) :
-    (F.original.Labels →₀ SYM D k) →ₗ[k] (F.swapped.Labels →₀ SYM D k) where
+    (F.unswapped.Labels →₀ SYM D k) →ₗ[k] (F.swapped.Labels →₀ SYM D k) where
   toFun v := F.swappedCoordinates hG
-    (F.original.expansion cs μ v ≫ sameColourTargetCross (Sc := Sc) μ P Q i)
+    (F.unswapped.expansion cs μ v ≫ sameColourTargetCross (Sc := Sc) μ P Q i)
   map_add' v w := by rw [map_add, Preadditive.add_comp, map_add]
   map_smul' c v := by rw [map_smul, Linear.smul_comp, map_smul]; rfl
 
 private theorem principalCoordinates_off
     (hG : Function.Injective (F.swapped.expansion cs μ))
-    (s t : F.original.Labels) (ht : t ∉ Set.range F.paired) (hst : s ≠ t) (d : SYM D k) :
+    (s t : F.unswapped.Labels) (ht : t ∉ Set.range F.paired) (hst : s ≠ t) (d : SYM D k) :
     F.principalCoordinates hG (Finsupp.single s d) (F.exchange t) = 0 := by
   classical
   by_cases hs : s ∈ Set.range F.paired
@@ -34,18 +34,18 @@ private theorem principalCoordinates_off
 
 private theorem principalCoordinates_diagonal
     (hG : Function.Injective (F.swapped.expansion cs μ))
-    (t : F.original.Labels) (ht : t ∉ Set.range F.paired) (d : SYM D k) :
+    (t : F.unswapped.Labels) (ht : t ∉ Set.range F.paired) (d : SYM D k) :
     F.principalCoordinates hG (Finsupp.single t d) (F.exchange t) = d ∨
       F.principalCoordinates hG (Finsupp.single t d) (F.exchange t) = -d := by
   simpa [principalCoordinates] using F.swappedCoordinates_unpaired_cross hG t t ht ht d
 
-/-- A relation among the complete original family has only paired support. -/
+/-- A relation among the complete unswapped family has only paired support. -/
 theorem kernel_supported_paired
     (hG : Function.Injective (F.swapped.expansion cs μ))
-    (f : F.original.Labels →₀ SYM D k) (hf : F.original.expansion cs μ f = 0)
-    (t : F.original.Labels) (ht : t ∉ Set.range F.paired) : f t = 0 := by
+    (f : F.unswapped.Labels →₀ SYM D k) (hf : F.unswapped.expansion cs μ f = 0)
+    (t : F.unswapped.Labels) (ht : t ∉ Set.range F.paired) : f t = 0 := by
   classical
-  have proj (v : F.original.Labels →₀ SYM D k) :
+  have proj (v : F.unswapped.Labels →₀ SYM D k) :
       F.principalCoordinates hG v (F.exchange t) =
         F.principalCoordinates hG (Finsupp.single t (v t)) (F.exchange t) := by
     induction v using Finsupp.induction_linear with
@@ -65,17 +65,17 @@ theorem kernel_supported_paired
   · exact neg_eq_zero.mp (H.symm.trans hz)
 
 /-- Full same-colour target-family descent, not merely paired-sector descent. -/
-theorem originalExpansion_injective
+theorem unswappedExpansion_injective
     (hG : Function.Injective (F.swapped.expansion cs μ))
     (hB : Function.Injective (F.residual.expansion cs μ)) :
-    Function.Injective (F.original.expansion cs μ) := by
+    Function.Injective (F.unswapped.expansion cs μ) := by
   classical
-  let p : F.residual.Labels × ℕ ↪ F.original.Labels :=
+  let p : F.residual.Labels × ℕ ↪ F.unswapped.Labels :=
     ⟨fun r => F.paired (r.2, r.1), by
       intro r s he
       have H := F.paired.injective he
       exact Prod.ext (congrArg Prod.snd H) (congrArg Prod.fst H)⟩
-  have hz (f : F.original.Labels →₀ SYM D k) (hf : F.original.expansion cs μ f = 0) : f = 0 := by
+  have hz (f : F.unswapped.Labels →₀ SYM D k) (hf : F.unswapped.expansion cs μ f = 0) : f = 0 := by
     have hs : ↑f.support ⊆ Set.range p := by
       intro t ht
       by_contra hn
@@ -84,11 +84,11 @@ theorem originalExpansion_injective
         exact hn ⟨(r, b), he⟩
       exact (Finsupp.mem_support_iff.mp ht) (F.kernel_supported_paired hG f hf t hn')
     let g := Finsupp.comapDomain p f p.injective.injOn
-    have hg : F.originalPairedInclusion g = f := by
+    have hg : F.unswappedPairedInclusion g = f := by
       exact (Finsupp.embDomain_eq_mapDomain p g).symm.trans (Finsupp.embDomain_comapDomain hs)
     have hgz : g = 0 := by
       apply F.pairedExpansion_injective hG hB
-      change F.original.expansion cs μ (F.originalPairedInclusion g) = F.pairedExpansion 0
+      change F.unswapped.expansion cs μ (F.unswappedPairedInclusion g) = F.pairedExpansion 0
       rw [hg, hf, map_zero]
     rw [← hg, hgz, map_zero]
   intro f g he
@@ -111,8 +111,8 @@ theorem same_colour_target_exchange_descent (cs : CScalars Sc) (μ : X)
     hab.trans (wt_context_opposite_swap 0 P Q i i).symm
   have hres : wt D 0 a = wt D 0 (P ++ Q) :=
     hswap.trans (wt_context_pair_delete 0 P Q i)
-  exact A.expansion_injective_of_choice cs μ F.original
-    (F.originalExpansion_injective (hG hswap F.swapped) (hB hres F.residual))
+  exact A.expansion_injective_of_choice cs μ F.unswapped
+    (F.unswappedExpansion_injective (hG hswap F.swapped) (hB hres F.residual))
 
 /-- Full contextual target descent for equal and distinct colours. -/
 theorem target_exchange_descent (cs : CScalars Sc) : TargetExchangeDescent cs := by

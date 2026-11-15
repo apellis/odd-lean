@@ -114,14 +114,6 @@ theorem dotE_mem_presentedPart {v : List I} {r : ℕ} {i : I} (hi : v[r]? = some
     exact cl_mem_presentedPart D sy 𝒜 Sc [PG.dot r] h
   · exact zero_mem _
 
-/-- A positioned dot of the truncated quotient has its symmetrizer degree, over a graded
-base. -/
-theorem truncatedDot_degreeOver {v : List I} {r : ℕ} {i : I} (hi : v[r]? = some i) :
-    truncatedDot D Sc cutoff N v r ∈
-      truncatedDegreeOver D sy 𝒜 Sc hP cutoff N ⟨v⟩ ⟨v⟩ (2 * sy.d i) :=
-  mkQ_mem_truncatedDegreeOver D sy 𝒜 Sc hP cutoff N
-    (affineUnit_mem_degreeOver D sy 𝒜 Sc hP cutoff (dotE_mem_presentedPart D sy 𝒜 Sc hi))
-
 /-- The appended last-strand dot has its symmetrizer degree, over a graded base. -/
 theorem truncatedAppendDot_degreeOver (i : I) (v : TruncatedCategory D Sc cutoff N) :
     (truncatedAppendDot D Sc cutoff N i).app (D.parity i) v ∈
@@ -132,20 +124,6 @@ theorem truncatedAppendDot_degreeOver (i : I) (v : TruncatedCategory D Sc cutoff
     (affineUnit_mem_degreeOver D sy 𝒜 Sc hP cutoff
       (CoefficientGrading.wL_mem_presentedPart (ob D v.word)
         (dotE_mem_presentedPart D sy 𝒜 Sc (v := [i]) (r := 0) rfl)))
-
-include sy 𝒜 hP in
-/-- All active positioned dots of the words of a fixed content have one nilpotence exponent,
-over a base ring graded in degrees `0, …, b`. -/
-theorem truncatedContent_dot_pow_zeroOver [Finite I] (b : ℤ)
-    (h𝒜 : ∀ m, m ∉ Set.Icc (0 : ℤ) b → 𝒜 m = ⊥) (ν : List I) :
-    ∃ e : ℕ, 0 < e ∧ ∀ (v : List I), v.Perm ν →
-      ∀ (r : ℕ) (i : I), v[r]? = some i →
-        truncatedDot D Sc cutoff N v r ^ e = 0 := by
-  obtain ⟨e, he, hp⟩ := truncatedContent_positive_pow_zeroOver D sy 𝒜 Sc hP cutoff N b h𝒜 ν
-  refine ⟨e, he, fun v hv r i hi => hp v hv _ ?_ _
-    (truncatedDot_degreeOver D sy 𝒜 Sc hP cutoff N hi)⟩
-  have := sy.pos i
-  omega
 
 include sy 𝒜 hP in
 /-- The appended last-strand dot is nilpotent, uniformly on the source content, over a base

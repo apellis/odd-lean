@@ -3,7 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.SpectatorDetection
-import OddMath.SKM.ReservoirBubbleCoordinates
+import OddMath.SKM.Bubbles
 
 /-! # Reservoir-vacuum detection at a prescribed weight
 
@@ -142,40 +142,6 @@ namespace FusedFixedWeightFamily
 variable {D Sc cs} {μ : X} (F : FusedFixedWeightFamily D Sc cs μ)
 include F
 
-/-- C0 consumes the joint C2 identity, with the number of active strands fixed.
-The proof covers even, odd, and mixed cutoff parities without modification. -/
-theorem vacuum_evaluations_jointly_detect (t t' : List I)
-    (f : coefficientObj D Sc t ⟶ coefficientObj D Sc t')
-    (hf : ∀ a, (F.evaluation a).observe t t' (upwardCoefficientMap D Sc cs μ t t' f) = 0) :
-    f = 0 := by
-  obtain ⟨d, hd⟩ := exists_mem_extendedAtMost D Sc t t' f
-  obtain ⟨a, N, hw, hN, hb⟩ := F.covers t t' d
-  have hmem : f ∈ ExtendedAtMost D Sc t t' ((F.evaluation a).window t t') :=
-    (Submodule.span_mono (Set.image_mono (fun _ hi => hi.trans hw))) hd
-  have he := (F.evaluation a).observe_coefficient (F.normalizedBubbleFormula a) t t' f hmem
-  have hz : (ELVRelationSpan D Sc (F.cutoff a) t t').mkQ f = 0 := he.symm.trans (hf a)
-  have hinj := elv_quotient_injective_on_extendedAtMost D Sc (t := t) (t' := t')
-    (d := d) hN hb
-  exact congrArg Subtype.val (hinj (a₁ := ⟨f, hd⟩) (a₂ := 0) (by simpa using hz))
-
-/-- C3 at the prescribed external weight. The family contains no injectivity
-hypothesis; detection is supplied by the independently checked C0 theorem. -/
-theorem upwardCoefficientMap_injective (t t' : List I) :
-    Function.Injective (upwardCoefficientMap D Sc cs μ t t') := by
-  intro f g h
-  apply sub_eq_zero.mp
-  apply F.vacuum_evaluations_jointly_detect t t' (f - g)
-  intro a
-  rw [map_sub, h, sub_self, map_zero]
-
 end FusedFixedWeightFamily
-
-/-- C3 for the oriented reduction, conditional on fused reservoir data at each
-weight. A2, A3, and the normalized categorical bubble formula remain premises. -/
-theorem upward_independence_of_fused_fixed_weight_families
-    (F : ∀ μ, FusedFixedWeightFamily D Sc cs μ) : SKM.WeakMate.UpwardIndependence cs := by
-  apply upward_independence_of_coefficientMap D Sc cs
-  intro t t' _ μ
-  exact (F μ).upwardCoefficientMap_injective t t'
 
 end OddMath.QuiverHecke

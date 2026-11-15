@@ -106,10 +106,4 @@ def appendTargetRt : appendTensorFixed D Sc i n B →+ appendTensorFixed D Sc i 
 
 variable [IsScalarTower (Hn D Sc (n + 1)) B B]
 
-/-- Right multiplication by `b` as a left `Hn (n+1)`-linear map of `B`. -/
-def appendCoefficientMulRight (b : B) : B →ₗ[Hn D Sc (n + 1)] B where
-  toFun y := y * b
-  map_add' y y' := add_mul y y' b
-  map_smul' r y := smul_mul_assoc r y b
-
 end OddMath.QuiverHecke

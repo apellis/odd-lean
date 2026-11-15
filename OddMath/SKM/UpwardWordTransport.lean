@@ -101,11 +101,6 @@ def wordTwist : List I → SYM D k →ₐ[k] SYM D k
   | [] => AlgHom.id k _
   | j :: q => (wordTwist q).comp (slideTwist Sc j)
 
-theorem wordTwist_nil (p : SYM D k) : wordTwist Sc [] p = p := rfl
-
-theorem wordTwist_cons (j : I) (q : List I) (p : SYM D k) :
-    wordTwist Sc (j :: q) p = wordTwist Sc q (slideTwist Sc j p) := rfl
-
 theorem wordTwist_bijective (q : List I) : Function.Bijective (wordTwist Sc q) := by
   induction q with
   | nil => exact Function.bijective_id

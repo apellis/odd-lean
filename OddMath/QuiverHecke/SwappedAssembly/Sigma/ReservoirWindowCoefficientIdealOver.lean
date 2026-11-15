@@ -63,7 +63,7 @@ theorem reservoirCapInverseData_closure_memOver (i : I) (t : Sector I)
   · simp only [reservoirCapInverseData, dite_eq_left ha]
     rw [ProbeReservoir.reservoirCapInverseData_closure_eq]
     simpa only [reservoirOutputEval_map, reservoirOutputEval_obj, elvProbeReservoir_W, Category.id_comp, Category.comp_id] using
-      ReservoirClosures.positiveNativeClosure_evaluate_memOver D sy 𝒜 Sc' hG cutoff bound ΛR hR i
+      ReservoirClosures.positiveDirectClosure_evaluate_memOver D sy 𝒜 Sc' hG cutoff bound ΛR hR i
         ((P).muM_postE i ha) ((P).muM_postF i t) β b h𝒜 (P).T.obj t.1 ((P).muP t) hh r s
         (𝟙 Z.obj) (𝟙 Z.obj)
   · rw [reservoirCapInverseData_principal_of_absent D Sc m cutoff bound ΛP ΛR hP hR i t Z (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) c hh ha]
@@ -82,7 +82,7 @@ theorem reservoirCupInverseData_closure_memOver (i : I) (t : Sector I)
   · simp only [reservoirCupInverseData, dite_eq_left ha]
     rw [ProbeReservoir.reservoirCupInverseData_closure_eq]
     simpa only [reservoirOutputEval_map, reservoirOutputEval_obj, elvProbeReservoir_W, Category.id_comp, Category.comp_id] using
-      ReservoirClosures.negativeNativeClosure_evaluate_memOver D sy 𝒜 Sc' hG cutoff bound ΛR hR i
+      ReservoirClosures.negativeDirectClosure_evaluate_memOver D sy 𝒜 Sc' hG cutoff bound ΛR hR i
         ((P).muM_postE i ha) ((P).muM_postF i t) β b h𝒜 (P).T.obj t.1 ((P).muP t) hh r s
         (𝟙 Z.obj) (𝟙 Z.obj)
   · rw [reservoirCupInverseData_principal_of_absent D Sc m cutoff bound ΛP ΛR hP hR i t Z (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) c hh ha]
@@ -101,7 +101,7 @@ theorem reservoirCapInverseData_boundary_memOver (i : I) (t : Sector I)
   · simp only [reservoirCapInverseData, dite_eq_left ha]
     rw [ProbeReservoir.reservoirCapInverseData_boundary_eq]
     simpa only [reservoirOutputEval_map, reservoirOutputEval_obj, elvProbeReservoir_W, Category.id_comp, Category.comp_id] using
-      ReservoirBoundaries.positiveNativeBoundary_evaluate_memOver D sy 𝒜 Sc' hG cutoff bound ΛR hR i
+      ReservoirBoundaries.positiveDirectBoundary_evaluate_memOver D sy 𝒜 Sc' hG cutoff bound ΛR hR i
         ((P).muM_postE i ha) ((P).muM_postF i t) β b h𝒜 (P).T.obj t.1 ((P).muP t) hh j r j.isLt hjr
         (𝟙 Z.obj) (𝟙 Z.obj)
   · rw [reservoirCapInverseData_window_of_absent D Sc m cutoff bound ΛP ΛR hP hR i t Z (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) c hh ha]
@@ -120,70 +120,14 @@ theorem reservoirCupInverseData_boundary_memOver (i : I) (t : Sector I)
   · simp only [reservoirCupInverseData, dite_eq_left ha]
     rw [ProbeReservoir.reservoirCupInverseData_boundary_eq]
     simpa only [reservoirOutputEval_map, reservoirOutputEval_obj, elvProbeReservoir_W, Category.id_comp, Category.comp_id] using
-      ReservoirBoundaries.negativeNativeBoundary_evaluate_memOver D sy 𝒜 Sc' hG cutoff bound ΛR hR i
+      ReservoirBoundaries.negativeDirectBoundary_evaluate_memOver D sy 𝒜 Sc' hG cutoff bound ΛR hR i
         ((P).muM_postE i ha) ((P).muM_postF i t) β b h𝒜 (P).T.obj t.1 ((P).muP t) hh j r j.isLt hjr
         (𝟙 Z.obj) (𝟙 Z.obj)
   · simp only [reservoirCupInverseData, dite_eq_right ha]
     rw [ProbeReservoir.reservoirCupInverseData_boundary_eq_of_absent]
     simpa only [reservoirOutputEval_map, reservoirOutputEval_obj, elvProbeReservoir_W, Category.id_comp, Category.comp_id] using
-      ReservoirBoundaries.negativeNativeBoundary_evaluate_memOver D sy 𝒜 Sc' hG cutoff bound ΛR hR i
+      ReservoirBoundaries.negativeDirectBoundary_evaluate_memOver D sy 𝒜 Sc' hG cutoff bound ΛR hR i
         (show (P).muM t - D.α i + D.α i = (P).muM t from sub_add_cancel _ _) ((P).muM_postF i t) β b h𝒜 (P).T.obj t.1 ((P).muP t) hh j r j.isLt hjr
         (𝟙 Z.obj) (𝟙 Z.obj)
-
-/-- All dotted cap rows agree with the finite Kronecker pairing modulo level one. -/
-theorem reservoirCapInverseData_contraction_memOver (i : I) (t : Sector I)
-    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
-    (β : WeightBlocks D ΛR ((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).muM t))
-    (c : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).CrossCoeff)
-    (hh : 0 ≤ D.h i ((P).muM t))
-    (j : Fin (D.h i ((P).muM t)).toNat) (r : ℕ) :
-    (contentModuleCoefficientIdealOver D sy 𝒜 Sc' hG cutoff bound β.1 b h𝒜 ((P).T.obj (-((P).muP t)))).mem 1 ((reservoirCapInverseData D Sc m cutoff bound ΛP ΛR hP hR i t Z (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) c hh).window j ≫
-      (P).centralPaddedCap i t Z.obj (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) false r - if (j : ℕ) = r then 𝟙 _ else 0) := by
-  apply ProbeWindow.cap_contraction (contentModuleCoefficientIdealOver D sy 𝒜 Sc' hG cutoff bound β.1 b h𝒜 ((P).T.obj (-((P).muP t))))
-    (reservoirCapInverseData D Sc m cutoff bound ΛP ΛR hP hR i t Z (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) c hh).isInverse
-  intro n a ha
-  exact reservoirCapInverseData_boundary_memOver D Sc m cutoff bound ΛP ΛR hP hR sy 𝒜 ht hs b h𝒜 i t Z β c hh n a
-    (lt_of_lt_of_le n.isLt ha)
-
-/-- All dotted unit rows agree with the finite Kronecker pairing modulo level one. -/
-theorem reservoirCupInverseData_contraction_memOver (i : I) (t : Sector I)
-    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
-    (β : WeightBlocks D ΛR ((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).muM t))
-    (c : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).CrossCoeff)
-    (hh : D.h i ((P).muM t) ≤ 0)
-    (r : ℕ) (j : Fin (-D.h i ((P).muM t)).toNat) :
-    (contentModuleCoefficientIdealOver D sy 𝒜 Sc' hG cutoff bound β.1 b h𝒜 ((P).T.obj (-((P).muP t)))).mem 1 ((P).centralPaddedUnit i t Z.obj (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) false r ≫
-      (reservoirCupInverseData D Sc m cutoff bound ΛP ΛR hP hR i t Z (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) c hh).window j -
-        if r = (j : ℕ) then 𝟙 _ else 0) := by
-  apply ProbeWindow.cup_contraction (contentModuleCoefficientIdealOver D sy 𝒜 Sc' hG cutoff bound β.1 b h𝒜 ((P).T.obj (-((P).muP t))))
-    (reservoirCupInverseData D Sc m cutoff bound ΛP ΛR hP hR i t Z (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) c hh).isInverse
-  intro n a ha
-  exact reservoirCupInverseData_boundary_memOver D Sc m cutoff bound ΛP ΛR hP hR sy 𝒜 ht hs b h𝒜 i t Z β c hh n a
-    (lt_of_lt_of_le n.isLt ha)
-
-/-- The central negative-principal cap convention preserves closure membership. -/
-theorem reservoirCapInverseData_negPrincipal_closure_memOver (i : I) (t : Sector I)
-    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
-    (β : WeightBlocks D ΛR ((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).muM t))
-    (c : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).CrossCoeff)
-    (hh : 0 ≤ D.h i ((P).muM t)) (r s : ℕ) :
-    (contentModuleCoefficientIdealOver D sy 𝒜 Sc' hG cutoff bound β.1 b h𝒜 ((P).T.obj (-((P).muP t)))).mem 1 ((P).centralPaddedUnit i t Z.obj (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) false r ≫
-      (reservoirCapInverseData D Sc m cutoff bound ΛP ΛR hP hR i t Z (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) c hh).negPrincipal.principal ≫
-        (P).centralPaddedCap i t Z.obj (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) false s) := by
-  simpa only [ProbeWindow.CapInverseData.negPrincipal, Preadditive.comp_neg, Preadditive.neg_comp] using
-    (contentModuleCoefficientIdealOver D sy 𝒜 Sc' hG cutoff bound β.1 b h𝒜 ((P).T.obj (-((P).muP t)))).neg_mem (reservoirCapInverseData_closure_memOver D Sc m cutoff bound ΛP ΛR hP hR sy 𝒜 ht hs b h𝒜 i t Z β c hh r s)
-
-/-- The central negative-principal unit convention preserves closure membership. -/
-theorem reservoirCupInverseData_negPrincipal_closure_memOver (i : I) (t : Sector I)
-    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
-    (β : WeightBlocks D ΛR ((elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).muM t))
-    (c : (elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR).CrossCoeff)
-    (hh : D.h i ((P).muM t) ≤ 0) (r s : ℕ) :
-    (contentModuleCoefficientIdealOver D sy 𝒜 Sc' hG cutoff bound β.1 b h𝒜 ((P).T.obj (-((P).muP t)))).mem 1 ((P).centralPaddedUnit i t Z.obj (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) false r ≫
-      (reservoirCupInverseData D Sc m cutoff bound ΛP ΛR hP hR i t Z (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) c hh).negPrincipal.principal ≫
-        (P).centralPaddedCap i t Z.obj (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β) false s) := by
-  simpa only [ProbeWindow.CupInverseData.negPrincipal, Preadditive.comp_neg, Preadditive.neg_comp] using
-    (contentModuleCoefficientIdealOver D sy 𝒜 Sc' hG cutoff bound β.1 b h𝒜 ((P).T.obj (-((P).muP t)))).neg_mem (reservoirCupInverseData_closure_memOver D Sc m cutoff bound ΛP ΛR hP hR sy 𝒜 ht hs b h𝒜 i t Z β c hh r s)
-
 
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

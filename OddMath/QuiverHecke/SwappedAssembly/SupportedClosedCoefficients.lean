@@ -146,23 +146,6 @@ theorem pointwiseUpwardModuleAction_act_bubAt_cl_eq_coefficient (μ : X) (t : Li
           (⟨ProbeReservoir.compDiag gens (SKM.mkD D μ M hM) (SPath.nil s) (SPath.nil s)
             (Ys s).obj⟩ : End (Ys s)) _)
 
-/-- **Normalized left bubbles at positive height as source coefficients.** At `hᵢ(μ) > 0`,
-`c_{μ;i}⁻¹ bubLs(s)` beside the upward word of `t` acts as the source coefficient `a` once the
-vacuum entry of its closed diagram (`SKM.inv_smul_bubLs_of_pos`) is the coefficient action
-of `a`. -/
-theorem pointwiseUpwardModuleAction_act_bubAt_bubLs_eq_coefficient (cs : SKM.CScalars Sc)
-    (i : I) (μ : X) (h : 0 < D.h i μ) (n : ℕ) (t : List I) (a : SYM D k)
-    (hvac : ProbeReservoir.compDiag gens
-      (SKM.mkD D μ (SKM.dcupL i (D.h i μ - 1).toNat ++ SKM.epsL i ((n : ℤ) + D.h i μ - 1).toNat)
-        ((SKM.sChain_dcupL i _).append (SKM.sChain_epsL i _)))
-      (SPath.nil (0,0)) (SPath.nil (0,0)) (Ys (0,0)).obj =
-        (tensorTargetFamilyCoefficientAction D Sc m cutoff L ΛP ΛR (0,0) a).hom) :
-    (action μ).act t t (SKM.bubAt D Sc μ (upWord t) ((↑(cs.c μ i)⁻¹ : k) • SKM.bubLs cs i μ n)) =
-      tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L sw (SKM.ob D μ (upWord t)) a := by
-  rw [SKM.inv_smul_bubLs_of_pos cs i μ h n]
-  exact pointwiseUpwardModuleAction_act_bubAt_cl_eq_coefficient D Sc m cutoff ΛP ΛR L hP hR hF
-    sw μ t _ _ a hvac
-
 end Tensor
 
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

@@ -13,7 +13,7 @@ namespace OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
 open CyclotomicAction ELVOld
 universe u
 attribute [local irreducible] tensorMatrixQuotientObservation tensorPathValueChart
-  tensorOriginalWordEntry tensorOriginalSourceUnit tensorMatrixCoefficientAction
+  tensorPullbackWordEntry tensorPullbackSourceUnit tensorMatrixCoefficientAction
   PowerWordQuotientCoordinates.coordinate
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (ΛP ΛR : X) (L : I × ℕ → ℕ)
@@ -42,13 +42,13 @@ theorem tensorMatrixCoefficient_observation {b : Obj (SKM.sig D)}
       ((tensorWordCoefficientArrow D Sc cutoff ΛR L (ReservoirWord.weight D ΛR cS)
         (b.word.map (fun d => d.l.2)).reverse a βS).total wS
         (((tensorPathValueChart D Sc m cutoff ΛP ΛR L p hup).hom βS).total wS
-          (((tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s hEnd p hup x).total R₀ βS).total wS
-            (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)))) := by
+          (((tensorPullbackWordEntry D Sc m cutoff ΛP ΛR L hP hR s hEnd p hup x).total R₀ βS).total wS
+            (tensorPullbackSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)))) := by
   unfold tensorMatrixQuotientObservation
-  rw [tensorOriginalWordEntry_coefficient D Sc m cutoff ΛP ΛR L hP hR s hEnd p hup a x]
-  generalize hf : tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s hEnd p hup x = f at ⊢
+  rw [tensorPullbackWordEntry_coefficient D Sc m cutoff ΛP ΛR L hP hR s hEnd p hup a x]
+  generalize hf : tensorPullbackWordEntry D Sc m cutoff ΛP ΛR L hP hR s hEnd p hup x = f at ⊢
   clear hf
-  generalize hz : tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s = z at ⊢
+  generalize hz : tensorPullbackSourceUnit D Sc m cutoff ΛP ΛR L hP hR s = z at ⊢
   clear hz
-  exact tensorOriginalWordCoefficient_observation D Sc m cutoff ΛP ΛR L s p hup f z a
+  exact tensorPullbackWordCoefficient_observation D Sc m cutoff ΛP ΛR L s p hup f z a
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

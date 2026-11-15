@@ -160,8 +160,5 @@ def toInt {K : Type*} [CommRing K] [Module K M] (A : Coordinates (k := K) M) :
       y ∈ ⨆ n, (A.degree n).restrictScalars ℤ) hx
       (fun n y hy => Submodule.mem_iSup_of_mem n hy) (zero_mem _) (fun _ _ => add_mem)
 
-theorem mem_toInt {K : Type*} [CommRing K] [Module K M] (A : Coordinates (k := K) M)
-    (n : ℤ) (x : M) : x ∈ A.toInt.degree n ↔ x ∈ A.degree n := Iff.rfl
-
 end Coordinates
 end OddMath.IntegerMatrix

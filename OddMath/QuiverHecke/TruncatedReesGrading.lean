@@ -49,10 +49,6 @@ attribute [local instance] MvPolynomial.weightedGradedAlgebra
 def truncAlg (N : ℕ) : MvPolynomial Unit K →ₐ[K] SKM.TruncatedRees.TruncRing K N :=
   (Ideal.Quotient.mkₐ K _).comp (MvPolynomial.uniqueAlgEquiv K Unit).toAlgHom
 
-theorem truncAlg_apply (N : ℕ) (x : MvPolynomial Unit K) :
-    truncAlg K N x = SKM.TruncatedRees.trunc K N x :=
-  rfl
-
 theorem truncAlg_surjective (N : ℕ) : Function.Surjective (truncAlg K N) :=
   (Ideal.Quotient.mkₐ_surjective K _).comp (MvPolynomial.uniqueAlgEquiv K Unit).surjective
 

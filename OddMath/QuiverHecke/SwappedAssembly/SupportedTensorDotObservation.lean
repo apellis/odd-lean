@@ -11,8 +11,8 @@ full chosen action `(P).swappedGens a leftward` multiplies the observed
 class on the right by the original affine dot `sourceCoefficientHom 1` of
 `layerDiagram`. The proof composes:
 
-* the literal layer entry `tensorOriginalWordEntry_layer`;
-* the equality-transport coherence `tensorOriginalWordLayer_dot_transport`;
+* the literal layer entry `tensorPullbackWordEntry_layer`;
+* the equality-transport coherence `tensorPullbackWordLayer_dot_transport`;
 * the global/local chart identification `tensorPathValueChart_dot_heq`;
 * the contextual dot class square `TensorLayerClasses.dot_class_square`.
 
@@ -403,18 +403,18 @@ theorem tensorMatrixQuotientObservation_dot
             (y ≫ sourceCoefficientHom D Sc 1
               (ContextualOldGenerators.layerDiagram D Sc (List.reverse ηL) (.dot i) (List.reverse νR)))) := by
   have hA := SKM.lay_valid D ν u (.dot i) v
-  have hE := tensorOriginalWordEntry_layer D Sc m cutoff ΛP ΛR L hP hR s
+  have hE := tensorPullbackWordEntry_layer D Sc m cutoff ΛP ΛR L hP hR s
     ((P).swappedGens a leftward) (Aℓ) hA hEnd p p hp hp x
-  obtain ⟨h₁, h₂, hT⟩ := tensorOriginalWordLayer_dot_transport D Sc m cutoff ΛP ΛR L hP hR
+  obtain ⟨h₁, h₂, hT⟩ := tensorPullbackWordLayer_dot_transport D Sc m cutoff ΛP ΛR L hP hR
     ν u v i hv pL hl pR hr
     (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom) p hp)
     (tensorRowTargetIso_hom_eqToHom D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom) p hp)
     a leftward
-  have hout : tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).cod) hEnd p hp
+  have hout : tensorPullbackWordEntry D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).cod) hEnd p hp
         (((Q ((P).swappedGens a leftward)).res (Aℓ).cod)
           ((Q ((P).swappedGens a leftward)).op (Aℓ)
             ((Q ((P).swappedGens a leftward)).ext (Aℓ).dom x))) =
-      tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom)
+      tensorPullbackWordEntry D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom)
         (hEnd.trans hA.endR_eq) p hp x ≫ eqToHom h₁ ≫
         tensorLayerDotRaw D Sc m cutoff L ΛP ΛR hP hR ν u v i hv pL hl pR hr a ≫
           eqToHom h₂.symm := by
@@ -431,7 +431,7 @@ theorem tensorMatrixQuotientObservation_dot
     (tensorPathValueChart_dot_heq D Sc m cutoff ΛP ΛR L p hp νR ηL i (dotPathWord D ν u v i))
     (tensorDotLayer_domWord D ν u v i) (tensorDotLayer_codWord D ν u v i)
     s (tensorSourceWordBlock D ΛP ΛR s) rfl
-    (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s) y hy
+    (tensorPullbackSourceUnit D Sc m cutoff ΛP ΛR L hP hR s) y hy
 
 end Dot
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

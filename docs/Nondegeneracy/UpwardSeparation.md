@@ -3,6 +3,10 @@
 > The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
 > [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
 > proved among that theorem's dependencies or belong to routes it does not use.
+>
+> Declarations named below that are not in the current library were removed in the
+> streamlining because the headline theorems do not use them; they remain in the history
+> at commit `9ceca1d9`.
 
 Research toward Brundan–Ellis, *Super Kac–Moody 2-categories*, §8,
 Nondegeneracy Conjecture; tracking issue #345. This note supplies a mathematical

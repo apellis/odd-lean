@@ -1,4 +1,4 @@
-import OddMath.SKM.RouquierMateCoordinates
+import OddMath.SKM.RouquierMate
 
 /-!
 # Mate projection coordinates from sector summands
@@ -120,15 +120,6 @@ namespace SourceSector
 variable {a b : B} {E₁ : a ⟶ b} {F₁ : b ⟶ a}
   {A₁ : SuperAdjunction (k := k) E₁ F₁} {x₁ : E₁ ⟶ E₁} (S : SourceSector A₁ x₁)
 
-/-- The coupled dot restricts to the sector dot through the inclusion. -/
-theorem in_dot : sectorIn S.iE S.iF ≫ (F₁ ◁ x₁) = (S.F ◁ S.dot) ≫ sectorIn S.iE S.iF := by
-  obtain ⟨q, hq⟩ := S.dot_mem
-  unfold sectorIn
-  rw [Category.assoc, ← TwoSupercategory.whiskerLeft_comp (R := k), S.dot_comm,
-    TwoSupercategory.whiskerLeft_comp (R := k), ← Category.assoc,
-    TwoSupercategory.super_interchange S.iF_mem hq, koszulSign_zero_left, one_smul,
-    Category.assoc]
-
 /-- The whole factor is a source sector of itself. -/
 def self (A₁ : SuperAdjunction (k := k) E₁ F₁) (x₁ : E₁ ⟶ E₁) {q : ZMod 2}
     (hx : x₁ ∈ parity (R := k) _ _ q) : SourceSector A₁ x₁ where
@@ -153,15 +144,6 @@ end SourceSector
 namespace TargetSector
 variable {b c : B} {E₂ : b ⟶ c} {F₂ : c ⟶ b}
   {A₂ : SuperAdjunction (k := k) E₂ F₂} {x₂ : E₂ ⟶ E₂} (S : TargetSector A₂ x₂)
-
-/-- The coupled dot restricts to the sector dot through the projection. -/
-theorem dot_out : (x₂ ▷ F₂) ≫ sectorOut S.pE S.pF = sectorOut S.pE S.pF ≫ (S.dot ▷ S.F) := by
-  obtain ⟨q, hq⟩ := S.dot_mem
-  unfold sectorOut
-  rw [← Category.assoc, ← TwoSupercategory.comp_whiskerRight (R := k), S.dot_comm,
-    TwoSupercategory.comp_whiskerRight (R := k), Category.assoc,
-    TwoSupercategory.super_interchange hq S.pF_mem, koszulSign_zero_right, one_smul,
-    Category.assoc]
 
 /-- The whole factor is a target sector of itself. -/
 def self (A₂ : SuperAdjunction (k := k) E₂ F₂) (x₂ : E₂ ⟶ E₂) {q : ZMod 2}
@@ -195,59 +177,5 @@ def probeCap (S : SourceSector A₁ x₁) (w : S.E ⟶ S.E) (n : ℤ) : S.F ≫ 
 /-- Probe cups: negative indices use powers of the inverse probe dot. -/
 def probeCup (S : TargetSector A₂ x₂) (z : S.E ⟶ S.E) (n : ℤ) : 𝟙 b ⟶ S.E ≫ S.F :=
   S.adj.unit ≫ rouquierPower z (-n).toNat ▷ S.F
-
-/-- The normalized mate formula with the actual dotted sector cups and caps.
-The source and target reservoir sectors are `RA`, `TA`; the probe sectors are
-`RB`, `TB`, with inverse dots `w`, `z`. Besides the upward slide of the coupled
-crossing, only the probe inverses and reservoir nilpotence are assumed. -/
-theorem SuperRouquierLoc.MateProjectionFormula.of_sectors
-    (t : E₁ ≫ E₂ ⟶ E₁ ≫ E₂) (p : ZMod 2)
-    (hslide : t ≫ E₁ ◁ x₂ - koszulSign p p • (x₁ ▷ E₂ ≫ t) = 𝟙 (E₁ ≫ E₂))
-    (RA RB : SourceSector A₁ x₁) (TA TB : TargetSector A₂ x₂)
-    (w : RB.E ⟶ RB.E) (hw : w ≫ RB.dot = 𝟙 RB.E)
-    (z : TB.E ⟶ TB.E) (hz : TB.dot ≫ z = 𝟙 TB.E)
-    (nC nD : ℕ) (hnC : rouquierPower TA.dot nC = 0) (hnD : rouquierPower RA.dot nD = 0) :
-    SuperRouquierLoc.MateProjectionFormula A₁ A₂ t p
-      (sectorIn RA.iE RA.iF) (sectorIn RB.iE RB.iF)
-      (sectorOut TA.pE TA.pF) (sectorOut TB.pE TB.pF)
-      TA.cup RA.cap (probeCup TB z) (probeCap RB w) nC nD := by
-  refine SuperRouquierLoc.MateProjectionFormula.of_coordinates (k := k) A₁ A₂ x₁ x₂ t p hslide
-    _ _ _ _ (RA.F ◁ RA.dot) (RB.F ◁ RB.dot) (RB.F ◁ w) (TA.dot ▷ TA.F)
-    (TB.dot ▷ TB.F) (z ▷ TB.F)
-    RA.in_dot RB.in_dot TA.dot_out TB.dot_out ?_ ?_ _ _ _ _ ?_ ?_ nC nD ?_ ?_ ?_ ?_ ?_ ?_
-  · rw [← TwoSupercategory.whiskerLeft_comp (R := k), hw,
-      TwoSupercategory.whiskerLeft_id (R := k)]
-  · rw [← TwoSupercategory.comp_whiskerRight (R := k), hz,
-      TwoSupercategory.id_whiskerRight (R := k)]
-  · simp only [Category.assoc]
-    rw [reassoc_of% RB.counit_comm, TA.unit_comm]
-    simp only [probeCap, TargetSector.cup, neg_zero, Int.toNat_zero,
-      rouquierPower_zero, TwoSupercategory.whiskerLeft_id (R := k),
-      TwoSupercategory.id_whiskerRight (R := k), Category.id_comp, Category.comp_id]
-  · simp only [Category.assoc]
-    rw [reassoc_of% RA.counit_comm, TB.unit_comm]
-    simp only [probeCup, SourceSector.cap, neg_zero, Int.toNat_zero,
-      rouquierPower_zero, TwoSupercategory.whiskerLeft_id (R := k),
-      TwoSupercategory.id_whiskerRight (R := k), Category.id_comp, Category.comp_id]
-  · rw [whiskerRight_rouquierPower (k := k), hnC, zero_whiskerRight' (k := k)]
-  · rw [whiskerLeft_rouquierPower (k := k), hnD, whiskerLeft_zero' (k := k)]
-  · intro r _
-    rw [whiskerRight_rouquierPower (k := k)]
-    simp only [TargetSector.cup, rouquierPower_zero,
-      TwoSupercategory.id_whiskerRight (R := k), Category.comp_id]
-  · intro r _
-    rw [whiskerLeft_rouquierPower (k := k)]
-    simp only [probeCap, neg_zero, Int.toNat_zero, rouquierPower_zero,
-      TwoSupercategory.whiskerLeft_id (R := k), Category.id_comp]
-    rw [show (-(-(r : ℤ) - 1)).toNat = r + 1 by omega]
-  · intro r _
-    rw [whiskerLeft_rouquierPower (k := k)]
-    simp only [SourceSector.cap, rouquierPower_zero,
-      TwoSupercategory.whiskerLeft_id (R := k), Category.id_comp]
-  · intro r _
-    rw [whiskerRight_rouquierPower (k := k)]
-    simp only [probeCup, neg_zero, Int.toNat_zero, rouquierPower_zero,
-      TwoSupercategory.id_whiskerRight (R := k), Category.comp_id]
-    rw [show (-(-(r : ℤ) - 1)).toNat = r + 1 by omega]
 
 end OddMath.SKM

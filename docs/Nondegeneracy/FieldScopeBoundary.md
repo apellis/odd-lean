@@ -101,17 +101,9 @@ ordinary commutative-ring conclusion with 2 invertible. There is no remaining
 Phase 1 ground-ring descent obligation. The reduction retains the datum and
 parameter restrictions; it does not establish Phase 2.
 
-The current full-ELV route has no extra even-height restriction. In the
-balanced schedule the probe level P is even and the reservoir level is
-N=P−hᵢ(μ), so N has the required parity. `ReservoirWeights.reservoir_parity`
-and the odd-pairing invariant retain the original weight coset. Both weighted
-component matrix-inverse APIs accept arbitrary cutoff parity; the
-polynomial-cap consumer includes occupied odd cutoff five. The older
-even-cutoff action note describes a narrower candidate. The chosen native factors, canonical all-height distinct left mate and
-complete supported action are now scoped-checked. The remaining field input
-requires their vacuum/layer/bubble observations, affine and bubble
-compatibility of the checked original-datum action pullback, and bounded
-recovery; see STATUS.
+The proof route imposes no extra parity restriction on the weight: the reservoir level
+has the parity required by the original weight coset, and the cutoff may have either
+parity. The field input is discharged; see [STATUS](STATUS.md).
 
 ## Integral form
 

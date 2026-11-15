@@ -23,7 +23,7 @@ local instance (x y : X) : PiSupercategory k
   PiTwoSupercategory.homPiLeft _ _
 
 /-- The native OLD/ELV step, before restricting its objects to exact support. -/
-def nativeStep : (l : Letter I) → (side : Bool) → (t : Sector I) → StepValid l side t →
+def directStep : (l : Letter I) → (side : Bool) → (t : Sector I) → StepValid l side t →
     Superfunctor k (Ambient D Sc m cutoff bound ΛP ΛR (nextSector l side t))
       (Ambient D Sc m cutoff bound ΛP ΛR t)
   | (true, i), true, t, _ =>
@@ -42,7 +42,7 @@ def nativeStep : (l : Letter I) → (side : Bool) → (t : Sector I) → StepVal
 theorem step_closed (l : Letter I) (side : Bool) (t : Sector I) (hv : StepValid l side t)
     (Z : Ambient D Sc m cutoff bound ΛP ΛR (nextSector l side t))
     (hZ : support D Sc m cutoff bound ΛP ΛR (nextSector l side t) Z) :
-    support D Sc m cutoff bound ΛP ΛR t ((nativeStep D Sc m cutoff bound ΛP ΛR l side t hv).obj Z) := by
+    support D Sc m cutoff bound ΛP ΛR t ((directStep D Sc m cutoff bound ΛP ΛR l side t hv).obj Z) := by
   obtain ⟨up, i⟩ := l
   cases up <;> cases side
   · have hs := ContentHomSupport.shift_supported D Sc m cutoff bound
@@ -83,7 +83,7 @@ def step (l : Letter I) (side : Bool) (t : Sector I) (hv : StepValid l side t) :
   SupportedRestriction.functor
     (support D Sc m cutoff bound ΛP ΛR (nextSector l side t))
     (support D Sc m cutoff bound ΛP ΛR t)
-    (nativeStep D Sc m cutoff bound ΛP ΛR l side t hv)
+    (directStep D Sc m cutoff bound ΛP ΛR l side t hv)
     (step_closed D Sc m cutoff bound ΛP ΛR l side t hv)
 
 /-- The full inclusion recovers the literal native step on every supported object and map. -/
@@ -91,6 +91,6 @@ theorem step_inclusion (l : Letter I) (side : Bool) (t : Sector I) (hv : StepVal
     (step D Sc m cutoff bound ΛP ΛR l side t hv).toFunctor ⋙
       inclusion D Sc m cutoff bound ΛP ΛR t =
     inclusion D Sc m cutoff bound ΛP ΛR (nextSector l side t) ⋙
-      (nativeStep D Sc m cutoff bound ΛP ΛR l side t hv).toFunctor := rfl
+      (directStep D Sc m cutoff bound ΛP ΛR l side t hv).toFunctor := rfl
 
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

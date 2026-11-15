@@ -24,12 +24,12 @@ local notation "wS" => PowerWordContentCyclicity.wordObject D Tw cutoff L s.reve
 
 private theorem originalWordCoefficient_value {l : List (Col I X)}
     (p : SPath l (0,cS) (0,0)) (hup : ∀ d ∈ l, d.l.1 = true)
-    (f : tensorOriginalRowSource D Sc m cutoff ΛP ΛR L s ⟶
+    (f : tensorPullbackRowSource D Sc m cutoff ΛP ΛR L s ⟶
       TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hup)
-    (z : (((tensorOriginalRowSource D Sc m cutoff ΛP ΛR L s).obj R₀) βS).obj wS)
+    (z : (((tensorPullbackRowSource D Sc m cutoff ΛP ΛR L s).obj R₀) βS).obj wS)
     (a : SYM D k) :
       ((VacuumTensorCoefficientMaps.pathHomCoefficientAction D Tw m cutoff L ΛP ΛR p hup
-        (tensorOriginalRowSource D Sc m cutoff ΛP ΛR L s) a f).total R₀ βS).total wS z =
+        (tensorPullbackRowSource D Sc m cutoff ΛP ΛR L s) a f).total R₀ βS).total wS z =
       ((VacuumTensorCoefficientMaps.pathCoefficientAction D Tw m cutoff L ΛP ΛR p hup a).total R₀ βS).total wS
         ((f.total R₀ βS).total wS z) := by
   change (((f ≫ VacuumTensorCoefficientMaps.pathCoefficientAction D Tw m cutoff L ΛP ΛR p hup a).total R₀ βS).total wS z) = _
@@ -42,16 +42,16 @@ private theorem originalWordCoefficient_value {l : List (Col I X)}
 /-- Raw source coefficients act by postcomposition on the entire original
 row Hom; evaluation at every source vector has the same coefficient
 under the prescribed global path chart and quotient coordinate. -/
-theorem tensorOriginalWordCoefficient_observation {l : List (Col I X)}
+theorem tensorPullbackWordCoefficient_observation {l : List (Col I X)}
     (p : SPath l (0,cS) (0,0)) (hup : ∀ d ∈ l, d.l.1 = true)
-    (f : tensorOriginalRowSource D Sc m cutoff ΛP ΛR L s ⟶
+    (f : tensorPullbackRowSource D Sc m cutoff ΛP ΛR L s ⟶
       TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hup)
-    (z : (((tensorOriginalRowSource D Sc m cutoff ΛP ΛR L s).obj R₀) βS).obj wS)
+    (z : (((tensorPullbackRowSource D Sc m cutoff ΛP ΛR L s).obj R₀) βS).obj wS)
     (a : SYM D k) :
     PowerWordQuotientCoordinates.coordinate D Sc cutoff L s (l.map (fun d => d.l.2))
       (((tensorPathValueChart D Sc m cutoff ΛP ΛR L p hup).hom βS).total wS
         (((VacuumTensorCoefficientMaps.pathHomCoefficientAction D Tw m cutoff L ΛP ΛR p hup
-          (tensorOriginalRowSource D Sc m cutoff ΛP ΛR L s) a
+          (tensorPullbackRowSource D Sc m cutoff ΛP ΛR L s) a
           f).total R₀ βS).total wS
             z)) =
     PowerWordQuotientCoordinates.coordinate D Sc cutoff L s (l.map (fun d => d.l.2))

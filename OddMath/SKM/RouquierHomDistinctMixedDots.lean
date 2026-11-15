@@ -77,19 +77,6 @@ variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
   (adjd : homPre (k := k) (c := d) E ⊣ homPre (k := k) F ⋙ homParityShift (k := k) σ)
   (adjc : homPre (k := k) (c := c) E ⊣ homPre (k := k) F ⋙ homParityShift (k := k) σ)
 
-/-- The mate `V = M(J ≫ S_u(Φ))` of `J` followed by an endomorphism `Φ` of the target. -/
-def homDistinctMixedPreMateDot (H : a ⟶ c)
-    (Φ : (E ≫ (homParityShift (k := k) σ).obj (F ≫ H)) ≫ E' ⟶
-      (E ≫ (homParityShift (k := k) σ).obj (F ≫ H)) ≫ E') :
-    (homParityShift (k := k) t).obj ((homParityShift (k := k) σ).obj (F ≫ H) ≫ E') ⟶
-      (homParityShift (k := k) σ).obj (F ≫ (homParityShift (k := k) u).obj (H ≫ E')) :=
-  adjd.unit.app ((homParityShift (k := k) t).obj
-      ((homParityShift (k := k) σ).obj (F ≫ H) ≫ E')) ≫
-    (homPre (k := k) F ⋙ homParityShift (k := k) σ).map
-      ((homMixedInterchange (k := k) E E' t u
-          ((homParityShift (k := k) σ).obj (F ≫ H))).hom ≫
-        (homParityShift (k := k) u).map (Φ ≫ adjc.counit.app H ▷ E'))
-
 variable {E E' t u}
 
 /-- The transport relation `J ≫ S_u(Φ) = E ◁ g ≫ J`. -/
@@ -133,20 +120,8 @@ variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
   {a b c : B} {E : a ⟶ b}
 
-/-- An even dot on `E`, whiskered on the right, as a natural endomorphism of `homPre E`. -/
-def homPreDot (c : B) (x : E ⟶ E) (hx : x ∈ parity (R := k) E E 0) :
-    homPre (k := k) (c := c) E ⟶ homPre (k := k) (c := c) E where
-  app H := x ▷ H
-  naturality _ _ g := (TwoSupercategory.whisker_exchange_of_even_left (R := k) hx g).symm
-
 variable {F : b ⟶ a} {σ : ZMod 2}
   (adj : homPre (k := k) (c := c) E ⊣ homPre (k := k) F ⋙ homParityShift (k := k) σ)
-
-/-- The conjugate `c(x)` of the dot `x ▷ (-)`: the cup–dot–cap word (10). -/
-def homPreDotConj (x : E ⟶ E) (hx : x ∈ parity (R := k) E E 0) :
-    homPre (k := k) (c := c) F ⋙ homParityShift (k := k) σ ⟶
-      homPre (k := k) (c := c) F ⋙ homParityShift (k := k) σ :=
-  conjugateEquiv adj adj (homPreDot c x hx)
 
 end Conjugate
 

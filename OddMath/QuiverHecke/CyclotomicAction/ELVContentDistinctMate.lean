@@ -177,7 +177,7 @@ def oldContentDistinctSourceIso
         (oldContentRestrictionExtensionIso D Sc cutoff ν j N))
 
 /-- The selected source chart on literal balanced coends. -/
-def oldContentDistinctSourceNativeLinear
+def oldContentDistinctSourceDirectLinear
     (N : Superfunctor k (OldContentCategory D Sc cutoff (j :: ν)) (SVec k))
     (t : OldContentCategory D Sc cutoff (i :: ν)) :
     BalancedInduction.Obj K ((BalancedInduction.restriction J).obj N).toFunctor t →ₗ[k]
@@ -189,7 +189,7 @@ private theorem oldContentDistinctSourceLinear_apply
     (N : Superfunctor k (OldContentCategory D Sc cutoff (j :: ν)) (SVec k))
     (t : OldContentCategory D Sc cutoff (i :: ν))
     (z : BalancedInduction.Obj K ((BalancedInduction.restriction J).obj N).toFunctor t) :
-    oldContentDistinctSourceNativeLinear D Sc cutoff ν i j N t z =
+    oldContentDistinctSourceDirectLinear D Sc cutoff ν i j N t z =
       BalancedInduction.mapComponent A (oldContentRestrictionExtensionIso D Sc cutoff ν j N).hom
         0 t.obj (oldContentAppendRestrictionLinear D Sc cutoff ν i
           ((BalancedInduction.restriction J).obj N) t z) := by
@@ -207,11 +207,11 @@ private theorem oldContentDistinctSourceLinear_apply
   exact hc.trans hx
 
 /-- The chosen mixed source comparison inserts precisely the input inclusion unit. -/
-theorem oldContentDistinctSourceNativeLinear_tensor
+theorem oldContentDistinctSourceDirectLinear_tensor
     (N : Superfunctor k (OldContentCategory D Sc cutoff (j :: ν)) (SVec k))
     (s : OldContentCategory D Sc cutoff ν) (t : OldContentCategory D Sc cutoff (i :: ν))
     (g : (A).obj s.obj ⟶ t.obj) (b : N.obj ((J).obj s)) :
-    oldContentDistinctSourceNativeLinear D Sc cutoff ν i j N t
+    oldContentDistinctSourceDirectLinear D Sc cutoff ν i j N t
       (BalancedInduction.tensor K ((BalancedInduction.restriction J).obj N).toFunctor s g b) =
       BalancedInduction.tensor A ((BalancedInduction.restriction B).obj
         (BalancedInduction.induced Qj N)).toFunctor s.obj g
@@ -245,7 +245,7 @@ def oldContentDistinctSourceLinear
     BalancedInduction.Obj K ((BalancedInduction.restriction J).obj N).toFunctor t →ₗ[k]
       BalancedInduction.Obj A ((B) ⋙ (BalancedInduction.induced Qj N).toFunctor) t.obj :=
   (DistinctContent.restrictionCoendEquiv A B (BalancedInduction.induced Qj N) t.obj).toLinearMap ∘ₗ
-    oldContentDistinctSourceNativeLinear D Sc cutoff ν i j N t
+    oldContentDistinctSourceDirectLinear D Sc cutoff ν i j N t
 
 /-- Ordinary coefficient coordinates preserve the entire selected source tensor. -/
 theorem oldContentDistinctSourceLinear_tensor
@@ -257,7 +257,7 @@ theorem oldContentDistinctSourceLinear_tensor
       BalancedInduction.tensor A ((B) ⋙ (BalancedInduction.induced Qj N).toFunctor) s.obj g
         (BalancedInduction.tensor Qj N.toFunctor ((J).obj s) (𝟙 ((B).obj s.obj)) b) := by
   rw [oldContentDistinctSourceLinear, LinearMap.comp_apply,
-    oldContentDistinctSourceNativeLinear_tensor, LinearEquiv.coe_coe]
+    oldContentDistinctSourceDirectLinear_tensor, LinearEquiv.coe_coe]
   exact DistinctContent.restrictionCoendEquiv_tensor A B (BalancedInduction.induced Qj N)
     s.obj t.obj g (BalancedInduction.tensor Qj N.toFunctor ((J).obj s) (𝟙 ((B).obj s.obj)) b)
 
@@ -353,15 +353,15 @@ theorem oldContentDistinctSourceLinear_bijective
     (N : Superfunctor k (OldContentCategory D Sc cutoff (j :: ν)) (SVec k))
     (t : OldContentCategory D Sc cutoff (i :: ν)) :
     Function.Bijective (oldContentDistinctSourceLinear D Sc cutoff ν i j N t) := by
-  have hNative : Function.Bijective (oldContentDistinctSourceNativeLinear D Sc cutoff ν i j N t) := by
+  have hNative : Function.Bijective (oldContentDistinctSourceDirectLinear D Sc cutoff ν i j N t) := by
     have h := BalancedInduction.coendIsoLinear_bijective K A Qi
       ((BalancedInduction.restriction J).obj N)
       ((BalancedInduction.restriction B).obj (BalancedInduction.induced Qj N))
       (oldContentDistinctSourceIso D Sc cutoff ν i j N) t
-    simpa only [oldContentDistinctSourceNativeLinear, BalancedInduction.coendIsoLinear,
+    simpa only [oldContentDistinctSourceDirectLinear, BalancedInduction.coendIsoLinear,
       oldContentInclusion_obj] using h
   exact DistinctContent.linearMap_comp_bijective (k := k)
-    (oldContentDistinctSourceNativeLinear D Sc cutoff ν i j N t)
+    (oldContentDistinctSourceDirectLinear D Sc cutoff ν i j N t)
     (DistinctContent.restrictionCoendEquiv A B (BalancedInduction.induced Qj N) t.obj).toLinearMap
     hNative (DistinctContent.linearEquiv_toLinearMap_bijective (k := k) _)
 

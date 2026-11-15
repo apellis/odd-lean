@@ -42,11 +42,6 @@ def Linear.restrictScalars : Linear K C where
   smul_comp X Y Z r f g := Linear.smul_comp (R := R) X Y Z (algebraMap K R r) f g
   comp_smul X Y Z f r g := Linear.comp_smul (R := R) X Y Z f (algebraMap K R r) g
 
-theorem Linear.restrictScalars_smul {X Y : C} (r : K) (f : X ⟶ Y) :
-    letI := Linear.restrictScalars K R C
-    r • f = algebraMap K R r • f :=
-  rfl
-
 /-- The restricted and the original scalar actions on a Hom module form a scalar tower. -/
 theorem Linear.isScalarTower_restrictScalars (X Y : C) :
     letI := Linear.restrictScalars K R C

@@ -64,7 +64,7 @@ local notation "Q" => interpretation D Sc m cutoff N ΛP ΛR hP hR
   (tensorSourceFamily D Sc m cutoff ΛP ΛR L s) (tensorTargetFamily D Sc m cutoff ΛP ΛR L)
 
 /-- The literal layer pulled back through the canonical global path charts. -/
-def tensorOriginalWordLayer (gens : (P).Generators) (A : Layer (SKM.sig D))
+def tensorPullbackWordLayer (gens : (P).Generators) (A : Layer (SKM.sig D))
     (p : SPath A.dom.word (0,cS) (0,0)) (q : SPath A.cod.word (0,cS) (0,0))
     (hp : ∀ c ∈ A.dom.word, c.l.1 = true) (hq : ∀ c ∈ A.cod.word, c.l.1 = true) :
     TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hp ⟶
@@ -76,7 +76,7 @@ def tensorOriginalWordLayer (gens : (P).Generators) (A : Layer (SKM.sig D))
 
 /-- Every actual native matrix layer becomes postcomposition on the
 canonical original-weight whole-Hom row, without a comparison hypothesis. -/
-theorem tensorOriginalWordEntry_layer (gens : (P).Generators)
+theorem tensorPullbackWordEntry_layer (gens : (P).Generators)
     (A : Layer (SKM.sig D)) (hA : A.Valid)
     (hEnd : (ΛP - contentWeight D (0 : I →₀ ℕ)) +
       (-ΛR + contentWeight D (0 : I →₀ ℕ)) = A.cod.endR)
@@ -85,10 +85,10 @@ theorem tensorOriginalWordEntry_layer (gens : (P).Generators)
     (x : matrixModule D Sc m cutoff N ΛP ΛR
       (tensorSourceFamily D Sc m cutoff ΛP ΛR L s)
       (tensorTargetFamily D Sc m cutoff ΛP ΛR L) A.dom) :
-    tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s hEnd q hq
+    tensorPullbackWordEntry D Sc m cutoff ΛP ΛR L hP hR s hEnd q hq
       (((Q gens).res A.cod) ((Q gens).op A ((Q gens).ext A.dom x))) =
-    tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s (hEnd.trans hA.endR_eq) p hp x ≫
-      tensorOriginalWordLayer D Sc m cutoff ΛP ΛR L hP hR s gens A p q hp hq := by
+    tensorPullbackWordEntry D Sc m cutoff ΛP ΛR L hP hR s (hEnd.trans hA.endR_eq) p hp x ≫
+      tensorPullbackWordLayer D Sc m cutoff ΛP ΛR L hP hR s gens A p q hp hq := by
   change TensorEntryPullback.map (E)
     (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s q hq)
     (tensorVacuumRowProjection D Sc m cutoff ΛP ΛR L hP hR s hEnd q

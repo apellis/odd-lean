@@ -1,5 +1,9 @@
 # Brundan–Wang–Webster parameters: architecture of the extension
 
+> Declarations named below that are not in the current library were removed in the
+> streamlining because the headline theorems do not use them; they remain in the history
+> at commit `9ceca1d9`.
+
 Topic note for Phase 2 Stage B (inhomogeneous parameters), complementing
 [BWWParameters](BWWParameters.md).
 

@@ -1,5 +1,9 @@
 # Phase 2: inhomogeneous parameters
 
+> Declarations named below that are not in the current library were removed in the
+> streamlining because the headline theorems do not use them; they remain in the history
+> at commit `9ceca1d9`.
+
 Phase 1 proves the nondegeneracy conjecture for symmetrizable Cartan superdata and
 homogeneous admissible parameters (`OddMath.QuiverHecke.nondegeneracy_of_symmetrizer`,
 under `Scalars.Homogeneous`, BE2 (1.31)). Phase 2 removes homogeneity for symmetrizable

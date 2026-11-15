@@ -240,7 +240,7 @@ theorem tensorLayerDotIso_hom_eqToHom :
 /-- **Dot layer coherence.** In every global chart that is an equality
 transport, the pulled-back literal dot layer of the full chosen action is the
 frozen local dot operator, up to equality transport of its endpoints. -/
-theorem tensorOriginalWordLayer_dot_transport
+theorem tensorPullbackWordLayer_dot_transport
     {G : probeOldWeightSpace D (parameterTwist D Sc) m ΛP (-ΛP) ⟶
       elvWeightSpace D (parameterTwist D Sc) cutoff N ΛR (ReservoirWord.weight D ΛR cL)}
     (g : ((P).pathFunctor (SPath.append (SPath.append pL
@@ -306,7 +306,7 @@ theorem tensorLayerSameCrossIso_hom_eqToHom :
 equality transport, the pulled-back literal equal-colour crossing layer of the
 full chosen action is the frozen local crossing operator, up to equality
 transport of its endpoints. -/
-theorem tensorOriginalWordLayer_sameCross_transport
+theorem tensorPullbackWordLayer_sameCross_transport
     {G : probeOldWeightSpace D (parameterTwist D Sc) m ΛP (-ΛP) ⟶
       elvWeightSpace D (parameterTwist D Sc) cutoff N ΛR (ReservoirWord.weight D ΛR cL)}
     (g : ((P).pathFunctor (SPath.append (SPath.append pL
@@ -417,7 +417,7 @@ theorem tensorLayerCrossTargetIso_hom_eqToHom :
 that are equality transports, the pulled-back literal distinct-colour crossing
 layer of the full chosen action is the frozen local crossing operator between
 the two words, up to equality transport of its endpoints. -/
-theorem tensorOriginalWordLayer_cross_transport
+theorem tensorPullbackWordLayer_cross_transport
     {U V : probeOldWeightSpace D (parameterTwist D Sc) m ΛP (-ΛP) ⟶
       elvWeightSpace D (parameterTwist D Sc) cutoff N ΛR (ReservoirWord.weight D ΛR cL)}
     (gS : ((P).pathFunctor (SPath.append (SPath.append pL

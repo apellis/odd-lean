@@ -35,10 +35,10 @@ theorem cap_column (N b s : ℕ) (r : F.residual.Labels) (d : SYM D k)
     (hN : D.h i (wt D μ Q) = (N : ℤ)) (hpos : 0 < N) :
     F.residual.expansion cs μ (MatchingTransition.rightColumn (k := k)
       (F.residual.targetCapColumn cs μ i N b s r) d) =
-    F.original.expansion cs μ (Finsupp.single (F.paired (b, r)) d) ≫
+    F.unswapped.expansion cs μ (Finsupp.single (F.paired (b, r)) d) ≫
       targetCap (Sc := Sc) (μ := μ) (P := P) (Q := Q) (i := i) s := by
   rw [F.residual.expansion_rightColumn, F.residual.targetCapColumn_eval cs μ i N b s r hN hpos,
-    F.original.expansion_single, F.original_row]
+    F.unswapped.expansion_single, F.unswapped_row]
   simp only [MatchingBasisChoice.rightAction, targetCap, Category.assoc]
   rw [plcW_comp_at μ (P ++ Q) (P ++ Q) (P ++ up i :: dn i :: Q)
     P Q [] [up i, dn i] [] (by simp)]

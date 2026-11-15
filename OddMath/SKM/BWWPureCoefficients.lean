@@ -43,28 +43,6 @@ the condition that every pure coefficient below the corners lies in `J`. -/
 def PureIn (Sc : BWWScalars D k) (J : Ideal k) : Prop :=
   ∀ (i j : I) (p : ℕ), i ≠ j → p < D.dn i j → Sc.c i j p 0 ∈ J
 
-/-- Graded-homogeneous parameters have their pure coefficients in any ideal that contains the
-homogeneous elements of positive degree. -/
-theorem PureIn.of_gradedHomogeneous {σ : Type*} [SetLike σ k] {sy : Symmetrizer D}
-    {𝒜 : ℕ → σ} {Sc : BWWScalars D k} (hg : Sc.GradedHomogeneous sy 𝒜) (J : Ideal k)
-    (hJ : ∀ n : ℕ, 0 < n → ∀ x ∈ 𝒜 n, x ∈ J) : Sc.PureIn J := by
-  intro i j p hij hp
-  by_cases hc : Sc.c i j p 0 = 0
-  · rw [hc]
-    exact J.zero_mem
-  have hpd : (p : ℤ) < D.d i j := by
-    rw [← D.dn_cast hij]
-    exact_mod_cast hp
-  have hji : D.dn j i ≠ 0 := fun h =>
-    absurd ((ScalarData.dn_eq_zero_iff (D := D) i j).mpr h) (by omega)
-  have hqd : ((0 : ℕ) : ℤ) < D.d j i := by
-    rw [← D.dn_cast hij.symm]
-    exact_mod_cast Nat.pos_of_ne_zero hji
-  obtain ⟨n, hn, hmem⟩ := hg.2 i j p 0 hij hpd hqd hc
-  have hpos := coefficientDegree_pos_of_pure sy hpd hqd (Or.inr rfl)
-  rw [← hn] at hpos
-  exact hJ n (by exact_mod_cast hpos) _ hmem
-
 /-- Parameters without pure terms below the corners (`ScalarData.NoPure`, as in BE2) have no
 lower terms in `Qᵢⱼ(u, 0)`. -/
 theorem PureIn.of_toBWW (Sc : Scalars D k) (hn : Sc.NoPure) (J : Ideal k) :
@@ -75,16 +53,6 @@ theorem PureIn.of_toBWW (Sc : Scalars D k) (hn : Sc.NoPure) (J : Ideal k) :
   rw [ScalarData.toBWW_c_of_lt Sc hij hp (Nat.pos_of_ne_zero hji),
     hn i j p 0 hij hp (Nat.pos_of_ne_zero hji) (Or.inr rfl)]
   exact J.zero_mem
-
-/-- `Qᵢⱼ(u, 0) = tᵢⱼ u^{dᵢⱼ} + Σ_{p<dᵢⱼ} cᵢⱼ(p, 0) u^p` is a unit when `u` is a unit and the
-pure coefficients lie in a nilpotent ideal. -/
-theorem isUnit_lowerPoly {Sc : BWWScalars D k} {J : Ideal k} {N : ℕ} (hJ : J ^ N = ⊥)
-    (hpure : Sc.PureIn J) {i j : I} (hij : i ≠ j) {R : Type*} [Ring R] [Algebra k R] {x : R}
-    (hx : IsUnit x) :
-    IsUnit ((Sc.t i j : k) • x ^ D.dn i j +
-      ∑ p ∈ Finset.range (D.dn i j), Sc.c i j p 0 • x ^ p) :=
-  OddMath.Algebra.isUnit_smul_pow_add_sum J hJ hx (Sc.t i j) (D.dn i j) (fun p => Sc.c i j p 0)
-    fun p hp => hpure i j p hij hp
 
 /-- **The distinct-colour quadratic with a unit leading part.** For a unit `x` and the pure
 coefficients in a nilpotent ideal, `Qᵢⱼ(x, y) = U + R y = U + y R'` with `U = Qᵢⱼ(x, 0)` a unit.

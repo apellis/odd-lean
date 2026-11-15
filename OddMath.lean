@@ -1,3 +1,4 @@
+import OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
 import OddMath.SKM.ELVScalarSpecialization
 import OddMath.SKM.ELVScalarParity
 import OddMath.QuiverHecke.CoefficientGrading
@@ -107,7 +108,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOldMateEvaluation
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldMateFirstRow
 import OddMath.QuiverHecke.CyclotomicAction.ELVHomGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVHomGradingOver
-import OddMath.QuiverHecke.CyclotomicAction.ELVLowerDegreeOver
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldGradingOver
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldCategoryGradingOver
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientTruncationOver
@@ -338,7 +338,6 @@ import OddMath.QuiverHecke.CyclotomicAction.SignedPolynomialTransport
 import OddMath.QuiverHecke.CyclotomicAction.CoefficientPolynomialTransport
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientTransport
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientCategory
-import OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
 import OddMath.QuiverHecke.CyclotomicAction.SignedMultipliers
 import OddMath.QuiverHecke.CyclotomicAbsentColour
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightSlides
@@ -752,7 +751,6 @@ import OddMath.Diagrams.OddNilHecke.DifferentialAnsatz
 import OddMath.Diagrams.OddNilHecke.DifferentialComparison
 import OddMath.Diagrams.OddNilHecke.DifferentialLongest
 import OddMath.Diagrams.OddNilHecke.DifferentialLongestComparison
-import OddMath.Diagrams.OddNilHecke.ExteriorDeformation
 import OddMath.Diagrams.OddNilHecke.Intertwiner
 import OddMath.Diagrams.OddNilHecke.Relations
 import OddMath.Diagrams.OddNilHecke
@@ -1385,8 +1383,6 @@ import OddMath.SKM.Grading
 import OddMath.SKM.BWWScalars
 import OddMath.SKM.BWWBoxSum
 import OddMath.SKM.BWWPresentation
-import OddMath.QuiverHecke.BWWPresentation
-import OddMath.QuiverHecke.BWWGrading
 import OddMath.SKM.Grassmannian
 import OddMath.SKM.GrassmannianCor
 import OddMath.SKM.GrassmannianOdd
@@ -1514,7 +1510,6 @@ import OddMath.CoveringQuantum.UDot.WindowForm
 import OddMath.CoveringQuantum.UDot.FiniteWeightFormExamples
 import OddMath.SKM.MatchingChoiceTransition
 import OddMath.SKM.RightClosure
-import OddMath.SKM.CoupledBubbleEvaluation
 import OddMath.QuiverHecke.WeightedSeparation
 import OddMath.QuiverHecke.CyclotomicSeparation
 import OddMath.SKM.RightMateMatchings
@@ -1534,7 +1529,6 @@ import OddMath.SKM.PairingRotation
 import OddMath.SKM.PositiveClosureDetector
 import OddMath.SKM.TwistedClosureDetector
 import OddMath.SKM.SYMLowerTwist
-import OddMath.SKM.BWWBoxSums
 import OddMath.SKM.UpwardTopDots
 import OddMath.SKM.WeakMatchingChoice
 import OddMath.SKM.WeakMateMatchings
@@ -1602,7 +1596,6 @@ import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.WindowCases
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.BlockMaps
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.MixedCases
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.NilpotentLifting
-import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.PositiveVacuumWindow
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.TwoSector
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.CoefficientIdeal
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ResidualComparison
@@ -1731,7 +1724,6 @@ import OddMath.QuiverHecke.SwappedAssembly.Sigma.SwappingEntries
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SwappingMate
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SwappingReservoir
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirProbeEntry
-import OddMath.SKM.ReservoirBubbleCoordinates
 import OddMath.QuiverHecke.UpwardPBWCoordinates
 import OddMath.SKM.AdaptedDistinctChoices
 import OddMath.SKM.AdaptedPointedPair
@@ -1750,7 +1742,6 @@ import OddMath.SKM.BubbleSubstitution
 import OddMath.QuiverHecke.PlacementSign
 import OddMath.QuiverHecke.SwappedVacuumBlock
 import OddMath.QuiverHecke.SwappedVacuumBubbleSeries
-import OddMath.QuiverHecke.SwappedVacuumBasisEvaluation
 import OddMath.QuiverHecke.SwappedVacuumCornerEvaluation
 import OddMath.QuiverHecke.SwappedVacuumAdjunctionBubbles
 import OddMath.QuiverHecke.HalfTurn.Mirror
@@ -1845,7 +1836,6 @@ import OddMath.Algebra.NilpotentPerturbationRing
 import OddMath.Algebra.BoxPolynomialUnits
 import OddMath.SKM.BWWPureCoefficients
 import OddMath.SKM.BWWPureNilpotent
-import OddMath.SKM.BWWReesPureNilpotent
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.BWWMixedEntry
 import OddMath.QuiverHecke.CyclotomicAction.ELVMatrixFunctorNaturality
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixFunctorInverse
@@ -2665,7 +2655,6 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorLayerChartTransport
 import OddMath.QuiverHecke.VacuumCornerChartCoherence
 import OddMath.QuiverHecke.VacuumRouteNondegeneracy
 import OddMath.QuiverHecke.VacuumRightBubbles
-import OddMath.QuiverHecke.VacuumRouteEvenComparison
 import OddMath.QuiverHecke.VacuumRouteFields
 import OddMath.QuiverHecke.VacuumRouteSwappedBases
 import OddMath.QuiverHecke.VacuumRouteSwappedCharts
@@ -2694,3 +2683,4 @@ import OddMath.SKM.BWWEvenGraded
 import OddMath.SKM.RootCover
 import OddMath.SKM.RootCoverUnits
 import OddMath.SKM.RootCoverPresentation
+import OddMath.Diagrams.OddNilHecke.DotTranslation

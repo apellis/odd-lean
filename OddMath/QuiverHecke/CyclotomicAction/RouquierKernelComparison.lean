@@ -58,11 +58,6 @@ local notation "p" => D.parity i
 
 /-! ### Powers of the dot on the induction corner -/
 
-/-- The `m`-th power of the dot on `P = B e`, in the order of `SKM.rouquierPower`. -/
-def heightInductionDotPow : ℕ → (P₁ ⟶ P₁)
-  | 0 => 𝟙 P₁
-  | m + 1 => heightInductionDotPow m ≫ heightInductionSuperDot D Sc i a ha n
-
 /-! ### The dotted unit and the dotted counit -/
 
 /-! ### The Rouquier mate -/

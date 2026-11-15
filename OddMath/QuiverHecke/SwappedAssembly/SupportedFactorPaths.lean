@@ -26,13 +26,13 @@ local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR
 
 /-- Each of the chosen factor's four steps is the literal native supported-sector step. -/
 theorem factor_step (l : Letter I) (side : Bool) (t : Sector I) (hv : StepValid l side t) :
-    (P).step l side t hv = (nativeStep D Sc' m cutoff bound ΛP ΛR l side t hv).toFunctor := by
+    (P).step l side t hv = (directStep D Sc' m cutoff bound ΛP ΛR l side t hv).toFunctor := by
   obtain ⟨up, i⟩ := l
   cases up <;> cases side <;> rfl
 
 /-- The chosen factor and native path functors agree on objects and all maps. -/
 theorem factor_pathFunctor {w : List (Col I X)} {s t : Sector I} (p : SPath w s t) :
-    (P).pathFunctor p = (nativePathFunctor D Sc' m cutoff bound ΛP ΛR p).toFunctor := by
+    (P).pathFunctor p = (directPathFunctor D Sc' m cutoff bound ΛP ΛR p).toFunctor := by
   induction p with
   | nil t => rfl
   | cons c side s hv p ih =>

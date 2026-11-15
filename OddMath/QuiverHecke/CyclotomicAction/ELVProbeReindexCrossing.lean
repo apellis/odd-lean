@@ -117,7 +117,7 @@ def probeAppendToCross :
     (appendToCrossTarget_closed D Sc m ν i j hj hL)
     (rectangularCrossComponent_supernatural J K L M hc).toSuperNatTrans
 
-theorem probeAppendToCross_native_total (N : ProbeEvaluatedModules D Sc m ν) :
+theorem probeAppendToCross_direct_total (N : ProbeEvaluatedModules D Sc m ν) :
     ((probeAppendToCross D Sc m ν i j hj hi hL hM).total N).hom =
       rectangularCrossComponent J K L M hc N.obj := by
   change (rectangularCrossComponent_supernatural J K L M hc).toSuperNatTrans.total N.obj = _
@@ -133,7 +133,7 @@ theorem probeAppendToCross_native_total (N : ProbeEvaluatedModules D Sc m ν) :
 theorem probeAppendToCross_total (N : ProbeEvaluatedModules D Sc m ν) :
     (probeAppendToCross D Sc m ν i j hj hi hL hM).total N =
       probeAppendToCrossComponent D Sc m ν i j hj hi hL hM N :=
-  InducedCategory.hom_ext (probeAppendToCross_native_total D Sc m ν i j hj hi hL hM N)
+  InducedCategory.hom_ext (probeAppendToCross_direct_total D Sc m ν i j hj hi hL hM N)
 
 local notation "r₀" => List.Perm.refl ν
 local notation "rj" => List.Perm.refl (j :: ν)

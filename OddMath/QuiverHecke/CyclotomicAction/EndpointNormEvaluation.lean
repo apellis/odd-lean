@@ -232,7 +232,7 @@ theorem endpointOldDotEntries_eval_prod (i : I) (w : List I) (moving old : ℕ) 
   | cons j ν ih =>
     simp only [endpointOldDotEntries, List.map_cons, List.prod_cons, endpointNormAux, ih]
 
-theorem eval₂_actual_normalizedEndpointNormPolynomial (i : I) (l ν : List I) :
+theorem eval₂_normalizedEndpointNormPolynomial_dotE (i : I) (l ν : List I) :
     let xs := endpointOldDotEntries D Sc (l ++ ν ++ [i]) l.length ν
     (normalizedEndpointNormPolynomial D Sc i xs).eval₂ (RingHom.id _)
         (dotE D Sc (l ++ ν ++ [i]) (l.length + ν.length)) =

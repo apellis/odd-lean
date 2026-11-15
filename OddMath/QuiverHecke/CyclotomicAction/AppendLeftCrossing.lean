@@ -575,28 +575,6 @@ theorem appendLeftSum_add_appendPolySum_eq_zero (i : I) (n : ℕ)
 
 /-! ## Right multiplication by the new dot -/
 
-/-- The parity twist of the appended colour, coefficientwise. -/
-abbrev appendTwist (i : I) (n : ℕ) : Hn D Sc (n + 1) →+ Hn D Sc (n + 1) :=
-  (homMatrixTwist D Sc (n + 1) (D.parity i)).toAddMonoidHom
-
-/-- Shift of the dot exponent of left-crossing coordinates, with the parity twist. -/
-def appendLeftShift (i : I) (n : ℕ) :
-    ((Fin (n + 1) × ℕ) →₀ Hn D Sc (n + 1)) →+ ((Fin (n + 1) × ℕ) →₀ Hn D Sc (n + 1)) :=
-  (Finsupp.mapDomain.addMonoidHom fun p : Fin (n + 1) × ℕ => (p.1, p.2 + 1)).comp
-    (Finsupp.mapRange.addMonoidHom (appendTwist D Sc i n))
-
-/-- The degree-zero correction `Σ c'_j x^m ψ(1) tw(u_(j,m))`. -/
-def appendLeftDegree (i : I) (n : ℕ) :
-    ((Fin (n + 1) × ℕ) →₀ Hn D Sc (n + 1)) →+ Hn D Sc (n + 1) :=
-  Finsupp.liftAddHom fun p =>
-    (AddMonoidHom.mulLeft (appendShuffleElement D Sc i (appendRun n p.1) *
-      affineLastDot D Sc i n ^ p.2 * appendAlgebra D Sc i n 1)).comp (appendTwist D Sc i n)
-
-/-- Shift of the polynomial coordinates, with the parity twist. -/
-def appendPolyShift (i : I) (n : ℕ) : (ℕ →₀ Hn D Sc (n + 1)) →+ (ℕ →₀ Hn D Sc (n + 1)) :=
-  (Finsupp.mapDomain.addMonoidHom Nat.succ).comp
-    (Finsupp.mapRange.addMonoidHom (appendTwist D Sc i n))
-
 /-! ## The two-sided corner as a direct sum -/
 
 /-- Left multiplication by `ψ'(1)` on left-crossing coordinates. -/

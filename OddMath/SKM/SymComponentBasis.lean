@@ -222,10 +222,6 @@ def componentBasis (z : ℤ × ZMod 2) :
     (componentBasis sy k z η : SYM D k) = coefficientBasis D k η.1 := by
   simp [componentBasis]
 
-/-- The homogeneous components of `SYM` are free modules. -/
-theorem free_component (z : ℤ × ZMod 2) : Module.Free k (component sy k z) :=
-  Module.Free.of_basis (componentBasis sy k z)
-
 /-- **`dim SYM_z` counts monomials of bidegree `z`**, over every field. In particular it does
 not depend on the field. -/
 theorem finrank_component (K : Type w) [Field K] (z : ℤ × ZMod 2) :

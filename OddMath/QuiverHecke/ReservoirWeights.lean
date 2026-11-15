@@ -25,19 +25,6 @@ def probeLevel (h : I → ℤ) (m : ℕ) (i : I) : ℕ :=
 def reservoirLevel (h : I → ℤ) (m : ℕ) (i : I) : ℕ :=
   2 * m + (h i).toNat + (-h i).toNat
 
-/-- Balancing changes neither the external pairing nor the cofinal parameter. -/
-theorem level_difference (h : I → ℤ) (m : ℕ) (i : I) :
-    (reservoirLevel h m i : ℤ) - probeLevel h m i = h i := by
-  simp only [reservoirLevel, probeLevel, Nat.cast_add, Nat.cast_mul, Nat.cast_ofNat]
-  omega
-
-/-- In particular this applies to every odd colour, without restricting its pairing. -/
-theorem reservoir_parity (h : I → ℤ) (m : ℕ) (i : I) :
-    (reservoirLevel h m i : ℤ) % 2 = h i % 2 := by
-  have hd := level_difference h m i
-  simp only [probeLevel, Nat.cast_add, Nat.cast_mul, Nat.cast_ofNat] at hd
-  omega
-
 variable {X : Type*} [AddCommGroup X] (D : SKM.Datum I X)
 
 /-- Add independent coroot coordinates while preserving the roots, Cartan

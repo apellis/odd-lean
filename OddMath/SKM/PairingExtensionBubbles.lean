@@ -42,7 +42,7 @@ local notation "csₑ" => ReservoirWeights.pairingExtensionCScalars D cs
 theorem homMap_etaP (i : I) (μ : X) :
     homMap D Sc μ [] [up i, dn i] (etaP cs i μ) = etaP csₑ i (μ, 0) := by
   simp only [etaP, height, ReservoirWeights.pairingExtensionCScalars_c,
-    ReservoirWeights.pairingExtension_ipar_original]
+    ReservoirWeights.pairingExtension_ipar_fst]
   split_ifs <;> simp only [map_smul, homMap_cl]
 
 theorem homMap_epsP (i : I) (μ : X) :

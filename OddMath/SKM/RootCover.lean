@@ -79,8 +79,6 @@ def rootCover : Datum I (X × (I →₀ ℤ)) where
 
 @[simp] theorem rootCover_dn (i j : I) : (rootCover D).dn i j = D.dn i j := rfl
 
-theorem rootCover_cartanMatrix : (rootCover D).cd.cartanMatrix = D.cd.cartanMatrix := rfl
-
 /-- The roots of the cover are independent: `Σ nⱼ (αⱼ, eⱼ) = (Σ nⱼ αⱼ, n)`. -/
 theorem rootSum_rootCover (n : I →₀ ℤ) : rootSum (rootCover D) n = (rootSum D n, n) := by
   induction n using Finsupp.induction_linear with

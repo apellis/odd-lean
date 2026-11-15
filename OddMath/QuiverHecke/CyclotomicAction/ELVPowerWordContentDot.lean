@@ -55,11 +55,11 @@ identity needed by weighted descent. -/
 theorem append_dot (ν : List I) (i : I) :
     BalancedInduction.transformComponent (oldAppendDot_supernatural D Sc cutoff i)
       (powerWordModule D Sc cutoff L ν) ≫ (powerWordAppendIso D Sc cutoff L ν i).hom =
-    (powerWordAppendIso D Sc cutoff L ν i).hom ≫ PowerWordAppend.nativeDot D Sc cutoff L ν i := by
+    (powerWordAppendIso D Sc cutoff L ν i).hom ≫ PowerWordAppend.directDot D Sc cutoff L ν i := by
   apply square_of_total
   intro w
   rw [transform_total]
-  have hn : PowerWordAppend.nativeDot D Sc cutoff L ν i ∈ parity (R := k) _ _ (D.parity i) :=
+  have hn : PowerWordAppend.directDot D Sc cutoff L ν i ∈ parity (R := k) _ _ (D.parity i) :=
     PowerWordMorphisms.fromArrow_mem D Sc cutoff L (ν ++ [i]) (ν ++ [i]) _
       ((oldAppendDot_supernatural D Sc cutoff i).mem (OldCategory.mk ν))
   rw [total_of_mem hn]
@@ -138,7 +138,7 @@ private theorem oldWord_dot (ν : List I) (i : I) :
     BalancedInduction.transformComponent (oldAppendDot_supernatural D Sc cutoff i)
       (weightedRestriction D Sc cutoff (PowerWordContent.powerBound D cutoff L)
         (PowerWordContent.weightedWord D Sc cutoff L ν)) ≫ (oldWordComparison D Sc cutoff L ν i).hom =
-      (oldWordComparison D Sc cutoff L ν i).hom ≫ PowerWordAppend.nativeDot D Sc cutoff L ν i := by
+      (oldWordComparison D Sc cutoff L ν i).hom ≫ PowerWordAppend.directDot D Sc cutoff L ν i := by
   unfold oldWordComparison
   apply compose_squares
   · exact natural_even
@@ -152,7 +152,7 @@ def weightedWordDot (ν : List I) (i : I) : End (PowerWordContent.weightedWord D
     (powerWordModule D Sc cutoff L (ν ++ [i])) (powerWordModule D Sc cutoff L (ν ++ [i]))
     (PowerWordContent.word_killsWeighted D Sc cutoff L (ν ++ [i]))
     (PowerWordContent.word_killsWeighted D Sc cutoff L (ν ++ [i]))
-    (PowerWordAppend.nativeDot D Sc cutoff L ν i)
+    (PowerWordAppend.directDot D Sc cutoff L ν i)
 
 omit [Fintype I] in
 private theorem descend_square (N : ℕ)
@@ -201,7 +201,7 @@ private theorem oldWordWeightedDot_square (ν : List I) (i : I) :
     (BalancedInduction.transformComponent (oldAppendDot_supernatural D Sc cutoff i)
       (weightedRestriction D Sc cutoff (PowerWordContent.powerBound D cutoff L)
         (PowerWordContent.weightedWord D Sc cutoff L ν)))
-    (PowerWordAppend.nativeDot D Sc cutoff L ν i) (oldWord_dot D Sc cutoff L ν i)
+    (PowerWordAppend.directDot D Sc cutoff L ν i) (oldWord_dot D Sc cutoff L ν i)
 
 /-- The independently chosen truncated induction dot intertwines with the
 literal descended old-Hom word dot through the prescribed weighted comparison. -/

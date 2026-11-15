@@ -65,7 +65,7 @@ variable {cs : CScalars Sc} {μ : X} {a P Q : List (Letter I)} {i : I}
 theorem swappedCoordinates_reverse_cross
     (hG : Function.Injective (F.swapped.expansion cs μ))
     (f : (pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ (P ++ dn i :: up i :: Q)))
-    (t : F.original.Labels) (ht : t ∉ Set.range F.paired) :
+    (t : F.unswapped.Labels) (ht : t ∉ Set.range F.paired) :
     F.swappedCoordinates hG (f ≫ sameColourReverseCross (Sc := Sc) μ P Q i ≫
       sameColourTargetCross μ P Q i) (F.exchange t) = -(F.swappedCoordinates hG f (F.exchange t)) := by
   by_cases hh : 0 ≤ D.h i (wt D μ Q)
@@ -88,25 +88,25 @@ theorem swappedCoordinates_reverse_cross
 height and for every abstract coefficient, including in nonempty contexts. -/
 theorem swappedCoordinates_unpaired_cross
     (hG : Function.Injective (F.swapped.expansion cs μ))
-    (s t : F.original.Labels) (hs : s ∉ Set.range F.paired) (ht : t ∉ Set.range F.paired)
+    (s t : F.unswapped.Labels) (hs : s ∉ Set.range F.paired) (ht : t ∉ Set.range F.paired)
     (d : SYM D k) :
     F.swappedCoordinates hG
-      (F.original.expansion cs μ (Finsupp.single s d) ≫ sameColourTargetCross (Sc := Sc) μ P Q i)
+      (F.unswapped.expansion cs μ (Finsupp.single s d) ≫ sameColourTargetCross (Sc := Sc) μ P Q i)
         (F.exchange t) = Finsupp.single (F.exchange s) d (F.exchange t) ∨
     F.swappedCoordinates hG
-      (F.original.expansion cs μ (Finsupp.single s d) ≫ sameColourTargetCross (Sc := Sc) μ P Q i)
+      (F.unswapped.expansion cs μ (Finsupp.single s d) ≫ sameColourTargetCross (Sc := Sc) μ P Q i)
         (F.exchange t) = -Finsupp.single (F.exchange s) d (F.exchange t) := by
   rcases F.unpaired s hs with hl | hh
   · left
-    have H : F.original.expansion cs μ (Finsupp.single s d) ≫ sameColourTargetCross (Sc := Sc) μ P Q i =
+    have H : F.unswapped.expansion cs μ (Finsupp.single s d) ≫ sameColourTargetCross (Sc := Sc) μ P Q i =
         F.swapped.expansion cs μ (Finsupp.single (F.exchange s) d) := by
-      rw [F.original.expansion_single, F.swapped.expansion_single, hl,
-        xev_append cs _ (F.original.layers_chain s), sameColourTargetCross_eval, Category.assoc]
+      rw [F.unswapped.expansion_single, F.swapped.expansion_single, hl,
+        xev_append cs _ (F.unswapped.layers_chain s), sameColourTargetCross_eval, Category.assoc]
     rw [H, F.swappedCoordinates_expansion]
   · right
-    have H : F.original.expansion cs μ (Finsupp.single s d) =
+    have H : F.unswapped.expansion cs μ (Finsupp.single s d) =
         F.swapped.expansion cs μ (Finsupp.single (F.exchange s) d) ≫ sameColourReverseCross (Sc := Sc) μ P Q i := by
-      rw [F.original.expansion_single, hh, xev_append cs _ (F.swapped.layers_chain (F.exchange s)),
+      rw [F.unswapped.expansion_single, hh, xev_append cs _ (F.swapped.layers_chain (F.exchange s)),
         sameColourReverseCross_eval, F.swapped.expansion_single, Category.assoc]
     rw [H, Category.assoc, F.swappedCoordinates_reverse_cross hG _ t ht,
       F.swappedCoordinates_expansion]

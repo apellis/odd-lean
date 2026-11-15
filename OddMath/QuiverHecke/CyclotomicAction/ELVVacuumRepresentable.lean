@@ -46,10 +46,5 @@ theorem wordObject_word (σ : List I) : (wordObject D Sc cutoff N σ).obj.word =
     change (wordObject D Sc cutoff N σ).obj.word ++ [i] = (i :: σ).reverse
     rw [ih, List.reverse_cons]
 
-/-- Iteration uses the actual balanced one-colour raising functors. -/
-def wordModule : (σ : List I) → ContentModules D Sc cutoff N (content σ)
-  | [] => vacuumModule D Sc cutoff N
-  | i :: σ => (contentE D Sc cutoff N (content σ) i).obj (wordModule σ)
-
 end VacuumRepresentable
 end OddMath.QuiverHecke.ELVOld

@@ -96,7 +96,7 @@ theorem tensorRowPullback_coefficient {b : Obj (SKM.sig D)}
     TensorEntryPullback.map (E) (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s p hup)
       (f ≫ ((P).pathFunctor p).map ((tensorVacuumCoefficientAction D Sc m cutoff L ΛP ΛR a).hom)) =
     pathHomCoefficientAction D Tw m cutoff L ΛP ΛR p hup
-      (tensorOriginalRowSource D Sc m cutoff ΛP ΛR L s) a
+      (tensorPullbackRowSource D Sc m cutoff ΛP ΛR L s) a
       (TensorEntryPullback.map (E) (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s p hup) f) :=
   TensorEntryPullback.map_square (E) _ _ f _ _
     (tensorRowTargetIso_coefficient D Sc m cutoff ΛP ΛR L hP hR s p hup a)
