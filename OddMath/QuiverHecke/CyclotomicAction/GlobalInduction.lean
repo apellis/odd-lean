@@ -1877,7 +1877,7 @@ def globalActionAdjunction :
     (SuperNatTrans.ofNatTrans_isHomogeneous _ _)
   left_triangle := by
     simp only [SCat.leftUnitor_inv, SCat.associator_hom, SCat.rightUnitor_hom]
-    erw [Category.id_comp, Category.id_comp, Category.comp_id]
+    simp only [Category.id_comp]
     apply Superfunctor.hom_ext_parity
     · intro M
       change _ = 𝟙 ((globalEFunctor D Sc a ha i Λ h).obj M)
@@ -1889,7 +1889,7 @@ def globalActionAdjunction :
       simp [globalActionUnit, globalActionCounit, SuperNatTrans.ofNatTrans]
   right_triangle := by
     simp only [SCat.rightUnitor_inv, SCat.associator_inv, SCat.leftUnitor_hom]
-    erw [Category.id_comp, Category.id_comp, Category.comp_id]
+    simp only [Category.id_comp]
     apply Superfunctor.hom_ext_parity
     · intro N
       change _ = 𝟙 ((globalF D Sc i a ha Λ h).toFunctor.obj N)
