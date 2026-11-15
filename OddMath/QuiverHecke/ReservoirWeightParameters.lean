@@ -61,7 +61,7 @@ def pairingExtensionCScalars {Sc : SKM.Scalars D k} (cs : SKM.CScalars Sc) :
     (cs : SKM.CScalars Sc) (ν : X × (I → ℤ)) (i : I) :
     (pairingExtensionCScalars D cs).c ν i = cs.c ν.1 i := rfl
 
-@[simp] theorem pairingExtension_ipar_original (i : I) (μ : X) :
+@[simp] theorem pairingExtension_ipar_fst (i : I) (μ : X) :
     SKM.ipar (pairingExtension D) i (μ, 0) = SKM.ipar D i μ := by
   simp only [SKM.ipar, pairingExtension_parity, pairingExtension_h, Pi.zero_apply, add_zero]
 

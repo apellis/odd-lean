@@ -78,33 +78,12 @@ theorem bwwPolynomials_evenNondegeneracy (D : Datum I X) (sy : Symmetrizer D)
   bwwGradedNondegeneracy D sy k 𝒜 h₂ (bwwPolynomialsEquiv hD P)
     ((P.gradedHomogeneous_toBWWScalars_iff sy 𝒜 hD).2 hP) cs
 
-/-- **The Brundan–Wang–Webster headline at parity zero, in the form of the all-even
-declarations**: for a purely even datum compatible with a symmetric Cartan datum `C`, with the
-symmetrizer `dᵢ = (i·i)/2` of `SKM.EvenBridge.symmetrizer` (so a dot on an `i`-strand has degree
-`i·i`), over every `ℕ`-graded commutative ring with `2` invertible, for every graded family of
-Brundan–Wang–Webster polynomials and every normalization, the conjecture holds. -/
-theorem bwwPolynomials_evenNondegeneracy_of_compatible (D : Datum I X)
-    (C : Categorification.QuantumGroup.CartanDatum I) (hc : EvenBridge.Compatible D C)
-    (hD : EvenBridge.IsEven D) (k : Type u) [CommRing k] {σ : Type u} [SetLike σ k]
-    [AddSubgroupClass σ k] (𝒜 : ℕ → σ) [GradedRing 𝒜] (h₂ : IsUnit (2 : k))
-    (P : BWWPolynomials D k) (hP : P.GradedHomogeneous (EvenBridge.symmetrizer D C hc) 𝒜)
-    (cs : CScalars (bwwPolynomialsEquiv hD P).toScalars) : NondegeneracyConjecture cs :=
-  bwwPolynomials_evenNondegeneracy D (EvenBridge.symmetrizer D C hc) hD k 𝒜 h₂ P hP cs
-
 /-- The coefficient boxes recover the polynomials: the headline for a coefficient box `Sc`
 on even data is the statement for the polynomials `Sc.toPolynomials`. -/
 theorem bwwPolynomialsEquiv_toPolynomials {D : Datum I X} (hD : EvenBridge.IsEven D)
     {k : Type u} [CommRing k] (Sc : BWWScalars D k) :
     bwwPolynomialsEquiv hD Sc.toPolynomials = Sc :=
   (bwwPolynomialsEquiv hD).apply_symm_apply Sc
-
-/-- The presentation with the Brundan–Wang–Webster parameters `P` is the presentation `SKM.pres`
-of the underlying Brundan–Ellis parameters, the one of the conclusion of
-`bwwPolynomials_evenNondegeneracy`. -/
-theorem presBWW_bwwPolynomials {D : Datum I X} (hD : EvenBridge.IsEven D) {k : Type u}
-    [CommRing k] (P : BWWPolynomials D k) :
-    SKM.presBWW D (bwwPolynomialsEquiv hD P) = SKM.pres D (bwwPolynomialsEquiv hD P).toScalars :=
-  presBWW_eq_pres _
 
 /-- The monomial `x^p y^q` pinned on `Eᵢ Eⱼ 1_ν`: `p` dots on the `i`-strand and `q` dots on
 the `j`-strand. -/

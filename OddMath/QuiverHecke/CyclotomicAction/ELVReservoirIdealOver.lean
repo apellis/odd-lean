@@ -14,10 +14,10 @@ through source coefficients of strictly positive degree in the truncated quotien
 their post-whiskering actions, with arbitrary morphisms on either side and after native
 Hom-sector charts, lie in level one of the jointly nilpotent coefficient ideal
 `ELVOld.contentModuleCoefficientIdealOver`
-(`ReservoirClosures.positiveNativeClosure_evaluate_memOver`,
-`ReservoirClosures.negativeNativeClosure_evaluate_memOver`,
-`ReservoirBoundaries.positiveNativeBoundary_evaluate_memOver`,
-`ReservoirBoundaries.negativeNativeBoundary_evaluate_memOver`).
+(`ReservoirClosures.positiveDirectClosure_evaluate_memOver`,
+`ReservoirClosures.negativeDirectClosure_evaluate_memOver`,
+`ReservoirBoundaries.positiveDirectBoundary_evaluate_memOver`,
+`ReservoirBoundaries.negativeDirectBoundary_evaluate_memOver`).
 
 For `K = R` with the trivial grading these are the statements of
 `OddMath.QuiverHecke.CyclotomicAction.ELVReservoirClosureIdeal` and
@@ -137,7 +137,7 @@ local notation "W" => elvRouquierFamily D Sc cutoff N Λ hcutoff
 
 /-- The native positive principal contraction, after output projection and arbitrary
 surrounding maps, lies in the coefficient ideal over a graded base. -/
-theorem positiveNativeClosure_evaluate_memOver
+theorem positiveDirectClosure_evaluate_memOver
     (TF : X → PiSCat.{u,u,u + 1} R) (betaP : I →₀ ℕ) (muP : X)
     (hh : 0 ≤ D.h i x₁) (r s : ℕ)
     {V Z Y : TF (-muP) ⟶ elvWeightSpace D Sc cutoff N Λ x₁}
@@ -155,7 +155,7 @@ theorem positiveNativeClosure_evaluate_memOver
 
 /-- The native negative principal contraction, after output projection and arbitrary
 surrounding maps, lies in the coefficient ideal over a graded base. -/
-theorem negativeNativeClosure_evaluate_memOver
+theorem negativeDirectClosure_evaluate_memOver
     (TF : X → PiSCat.{u,u,u + 1} R) (betaP : I →₀ ℕ) (muP : X)
     (hh : D.h i x₁ ≤ 0) (r s : ℕ)
     {V Z Y : TF (-muP) ⟶ elvWeightSpace D Sc cutoff N Λ x₁}
@@ -269,7 +269,7 @@ local notation "W" => elvRouquierFamily D Sc cutoff N Λ hcutoff
 
 /-- The native positive off-window contraction has the same ideal membership over a graded
 base. -/
-theorem positiveNativeBoundary_evaluate_memOver
+theorem positiveDirectBoundary_evaluate_memOver
     (TF : X → PiSCat.{u,u,u + 1} R) (betaP : I →₀ ℕ) (muP : X)
     (hh : 0 ≤ D.h i x₁) (j r : ℕ) (hj : j < (D.h i x₁).toNat) (hjr : j < r)
     {V Z Y : TF (-muP) ⟶ elvWeightSpace D Sc cutoff N Λ x₁} (a : V ⟶ Z) (c : Z ⟶ Y) :
@@ -285,7 +285,7 @@ theorem positiveNativeBoundary_evaluate_memOver
 
 /-- The native negative off-window contraction has the same ideal membership over a graded
 base. -/
-theorem negativeNativeBoundary_evaluate_memOver
+theorem negativeDirectBoundary_evaluate_memOver
     (TF : X → PiSCat.{u,u,u + 1} R) (betaP : I →₀ ℕ) (muP : X)
     (hh : D.h i x₁ ≤ 0) (j r : ℕ) (hj : j < (-D.h i x₁).toNat) (hjr : j < r)
     {V Z Y : TF (-muP) ⟶ elvWeightSpace D Sc cutoff N Λ x₁} (a : V ⟶ Z) (c : Z ⟶ Y) :

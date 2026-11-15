@@ -86,31 +86,4 @@ theorem probeMixedDots_slide (pre post : List I) (i j : I) :
     (p := pre.length) (q := pre.length+1) rfl (by simp [Shape.dom])
   simpa only [Shape.parity, PG.ofShape] using h
 
-/-- Moving a dot past a power of the other dot records the explicit sign. -/
-theorem probeMixedDots_pow_slide (pre post : List I) (i j : I) (p : ℕ) :
-    dotE D Sc (pre ++ [i,j] ++ post) pre.length ^ p *
-      dotE D Sc (pre ++ [i,j] ++ post) (pre.length+1) =
-      SKM.zsign k (D.parity i * D.parity j) ^ p •
-        (dotE D Sc (pre ++ [i,j] ++ post) (pre.length+1) *
-          dotE D Sc (pre ++ [i,j] ++ post) pre.length ^ p) := by
-  let u := dotE D Sc (pre ++ [i,j] ++ post) pre.length
-  let v := dotE D Sc (pre ++ [i,j] ++ post) (pre.length+1)
-  let ε := SKM.zsign k (D.parity i * D.parity j)
-  have h0 := probeMixedDots_slide D Sc pre post i j
-  change v * u = ε • (u * v) at h0
-  have he : ε * ε = 1 := zsign_mul_self _
-  have hb : u * v = ε • (v * u) := by
-    rw [h0, smul_smul, he, one_smul]
-  change u^p * v = ε^p • (v * u^p)
-  induction p with
-  | zero => simp only [pow_zero, one_mul, mul_one, one_smul]
-  | succ p ih =>
-    calc
-      u^(p+1) * v = u^p * (u*v) := by rw [pow_succ, mul_assoc]
-      _ = u^p * (ε • (v*u)) := by rw [hb]
-      _ = ε • ((u^p*v)*u) := by rw [mul_smul_comm, ← mul_assoc]
-      _ = ε • ((ε^p • (v*u^p))*u) := by rw [ih]
-      _ = ε^(p+1) • (v*u^(p+1)) := by
-        rw [smul_mul_assoc, smul_smul, ← pow_succ', mul_assoc, ← pow_succ]
-
 end OddMath.QuiverHecke

@@ -70,17 +70,17 @@ def normalizationComparison : ((F.residual.Labels × ℕ) →₀ SYM D k) →ₗ
 
 def pairedExpansion : ((F.residual.Labels × ℕ) →₀ SYM D k) →ₗ[k]
     ((pres D Sc).obj (ob D μ (P ++ dn i :: up i :: Q)) ⟶ (pres D Sc).obj (ob D μ Z)) :=
-  (F.original.expansion cs μ).comp F.originalPairedInclusion
+  (F.unswapped.expansion cs μ).comp F.unswappedPairedInclusion
 
 @[simp] theorem pairedExpansion_single (r : F.residual.Labels) (b : ℕ) (d : SYM D k) :
     F.pairedExpansion cs μ (Finsupp.single (r, b) d) =
-      F.original.expansion cs μ (Finsupp.single (F.paired (b, r)) d) := by
-  simp [pairedExpansion, originalPairedInclusion]
+      F.unswapped.expansion cs μ (Finsupp.single (F.paired (b, r)) d) := by
+  simp [pairedExpansion, unswappedPairedInclusion]
 
 theorem normalizationColumn_eval (b : ℕ) (r : F.residual.Labels) :
     F.upwardExpansion (cs := cs) (μ := μ) (F.normalizationColumn cs μ b r) =
-      xev cs μ (P ++ dn i :: up i :: Q) Z (F.original.layers (F.paired (b, r))) := by
-  rw [F.original_row, (normalization_spec (Q := Q) cs μ i b).2.2,
+      xev cs μ (P ++ dn i :: up i :: Q) Z (F.unswapped.layers (F.paired (b, r))) := by
+  rw [F.unswapped_row, (normalization_spec (Q := Q) cs μ i b).2.2,
     map_add, map_smul, Preadditive.add_comp, Linear.smul_comp, normalizationColumn, map_add, map_smul,
     F.upwardExpansion_single, MatchingBasisChoice.rightAction_one]
   congr 1
@@ -105,7 +105,7 @@ theorem normalizationComparison_eval (f : (F.residual.Labels × ℕ) →₀ SYM 
     obtain ⟨r, b⟩ := r
     rw [normalizationComparison, Finsupp.lsum_single, upwardExpansion,
       F.residual.preRowsExpansion_rightColumn, ← upwardExpansion,
-      F.normalizationColumn_eval, F.pairedExpansion_single, F.original.source_expansion_single]
+      F.normalizationColumn_eval, F.pairedExpansion_single, F.unswapped.source_expansion_single]
 
 theorem normalizationColumn_above (b m : ℕ) (r t : F.residual.Labels) (hm : b ≤ m) :
     F.normalizationColumn cs μ b r (t, m) =

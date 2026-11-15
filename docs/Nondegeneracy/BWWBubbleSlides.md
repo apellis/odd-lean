@@ -1,5 +1,9 @@
 # Bubble slides for Brundan–Wang–Webster parameters
 
+> Declarations named below that are not in the current library were removed in the
+> streamlining because the headline theorems do not use them; they remain in the history
+> at commit `9ceca1d9`.
+
 This note covers the bubble slides and related distinct-colour identities of the Phase 1
 proof, for Brundan–Wang–Webster parameters (arXiv:2505.22929v2, §2.2; see
 `BWWParameters.md`). It lists the sites that use `p > 0` or `q > 0` for the monomials

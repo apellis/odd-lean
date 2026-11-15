@@ -42,35 +42,11 @@ def wordEndpointDots {n : ℕ} (w : Word I n) (ps : List ℕ) : End (wordObj D S
 def wordPositionDot {n : ℕ} (w : Word I n) (p : ℕ) : End (wordObj D Sc w) :=
   dotE D Sc w.1 p
 
-/-- Explicit old coefficient, with every superinterchange sign retained by the
-parity automorphism. The list is chronological, hence multiplication reverses it. -/
-def sourceOldCoefficient (i : I) (ν : List I) : List ℕ → Hn D Sc ν.length
-  | [] => FiniteHomMatrix.single ⟨ν, rfl⟩ ⟨ν, rfl⟩ (𝟙 _)
-  | 0 :: ps => homMatrixTwist D Sc ν.length (D.parity i) (sourceOldCoefficient i ν ps)
-  | (p + 1) :: ps => sourceOldCoefficient i ν ps *
-      FiniteHomMatrix.single ⟨ν, rfl⟩ ⟨ν, rfl⟩ (wordPositionDot D Sc ⟨ν, rfl⟩ p)
-
-/-- Explicit finite producer for an ordered moving product. No basis inverse is
-used in this definition: each choice gives its moving degree and old dot entry. -/
-def leadingMoveOrderedCoefficients (i : I) (ν : List I) :
-    (PrependShuffle ν.length × ℕ) →₀ Hn D Sc ν.length :=
-  ∑ c : MoveChoices ν, leadingMoveCoeff D (k := k) i ν c •
-    Finsupp.single (longPrependShuffle ν.length,
-      sourceMovingDegree (leadingSourceDots D i 0 0 ν c))
-      (sourceOldCoefficient D Sc i ν (leadingSourceDots D i 0 0 ν c))
-
 /-- Delete moving dots and renumber every old source position. -/
 def sourceOldDots : List ℕ → List ℕ
   | [] => []
   | 0 :: ps => sourceOldDots ps
   | (p + 1) :: ps => p :: sourceOldDots ps
-
-/-- The unsigned old dot monomial, with no coordinate extraction. -/
-def sourceUnsignedCoefficient (ν : List I) : List ℕ → Hn D Sc ν.length
-  | [] => FiniteHomMatrix.single ⟨ν, rfl⟩ ⟨ν, rfl⟩ (𝟙 _)
-  | 0 :: ps => sourceUnsignedCoefficient ν ps
-  | (p + 1) :: ps => sourceUnsignedCoefficient ν ps *
-      FiniteHomMatrix.single ⟨ν, rfl⟩ ⟨ν, rfl⟩ (wordPositionDot D Sc ⟨ν, rfl⟩ p)
 
 theorem sourceMovingDegree_append (ps qs : List ℕ) :
     sourceMovingDegree (ps ++ qs) = sourceMovingDegree ps + sourceMovingDegree qs := by
@@ -134,17 +110,5 @@ theorem sourceOldDots_leadingSourceDots_ordered (i : I) (a : ℕ)
     · simp only [leadingSourceDots, leadingSourceBlockDots, hij, ↓reduceIte,
         List.nil_append]
       exact ⟨hs, hrange⟩
-
-private theorem canonicalWord_one (n : ℕ) : canWord n 1 = [] :=
-  List.length_eq_zero_iff.mp (by simp [length_canWord])
-
-/-- The old PBW index of an expansion choice has identity permutation. -/
-def leadingMoveOldNFIdx (i : I) (ν : List I) (c : MoveChoices ν) : NFIdx ν ν :=
-  ⟨(sourceOldDots (leadingSourceDots D i 0 0 ν c), 1),
-    (sourceOldDots_leadingSourceDots_ordered D i 0 ν c).1,
-    fun p hp => by
-      simpa using (sourceOldDots_leadingSourceDots_ordered D i 0 ν c).2 p hp |>.2,
-    by simpa [canonicalWord_one, cw, tgt_map_dot] using
-      sChain_pl ν ((sourceOldDots (leadingSourceDots D i 0 0 ν c)).map PG.dot)⟩
 
 end OddMath.QuiverHecke

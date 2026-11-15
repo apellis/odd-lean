@@ -1,5 +1,9 @@
 # Inverse column moments at positive height
 
+> Declarations named below that are not in the current library were removed in the
+> streamlining because the headline theorems do not use them; they remain in the history
+> at commit `9ceca1d9`.
+
 Toward `SwappedVacuumEvaluation.bubbles_eq` (critical chain item 2,
 derivation in `SwappedVacuumBubbles.md` §§2–4). Lean:
 `OddMath/QuiverHecke/SwappedVacuum/InverseColumnMoments.lean`.

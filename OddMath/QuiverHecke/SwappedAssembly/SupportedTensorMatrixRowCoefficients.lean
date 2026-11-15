@@ -120,18 +120,18 @@ theorem tensorVacuumRowProjection_coefficient (s : List I) {b : Obj (SKM.sig D)}
 
 /-- The specified original-weight whole-Hom entry intertwines the entire
 matrix coefficient action with the prescribed path-Hom coefficient action. -/
-theorem tensorOriginalWordEntry_coefficient (s : List I) {b : Obj (SKM.sig D)}
+theorem tensorPullbackWordEntry_coefficient (s : List I) {b : Obj (SKM.sig D)}
     (hEnd : (ΛP - contentWeight D (0 : I →₀ ℕ)) + (-ΛR + contentWeight D (0 : I →₀ ℕ)) = b.endR)
     (p : SPath b.word (0,tensorSourceContent D ΛP ΛR s) (0,0))
     (hup : ∀ c ∈ b.word, c.l.1 = true) (a : SYM D k)
     (x : matrixModule D Sc m cutoff N ΛP ΛR
       (tensorSourceFamily D Sc m cutoff ΛP ΛR L s)
       (tensorTargetFamily D Sc m cutoff ΛP ΛR L) b) :
-    tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s hEnd p hup
+    tensorPullbackWordEntry D Sc m cutoff ΛP ΛR L hP hR s hEnd p hup
       (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s b a x) =
     VacuumTensorCoefficientMaps.pathHomCoefficientAction D Tw m cutoff L ΛP ΛR p hup
-      (tensorOriginalRowSource D Sc m cutoff ΛP ΛR L s) a
-      (tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s hEnd p hup x) := by
+      (tensorPullbackRowSource D Sc m cutoff ΛP ΛR L s) a
+      (tensorPullbackWordEntry D Sc m cutoff ΛP ΛR L hP hR s hEnd p hup x) := by
   change TensorEntryPullback.map
     (tensorHomEquivalence D Sc m cutoff L ΛP ΛR
       (ReservoirWord.weight D ΛR (tensorSourceContent D ΛP ΛR s)))

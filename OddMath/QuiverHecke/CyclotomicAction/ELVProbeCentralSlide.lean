@@ -103,19 +103,5 @@ theorem evaluatedMixedBend_odd_slide_neg
   have hs := evaluatedMixedBend_odd_slideOf D Sc m reservoirCutoff bound hdot i hi hP H
   simpa only [hi, koszulSign_one_one, neg_one_zsmul, neg_one_smul] using hs
 
-include sy hc in
-/-- For homogeneous parameters: the signed mate slide on the actual regular-probe evaluated mixed
-bend. All its maps are the given raw dot, shifted cap and reservoir unit. -/
-theorem evaluatedMixedBend_odd_slide (i : I) (hi : D.parity i = 1)
-    (hP : 0 < probeCutoff D m i) (H : modulePiCategory D Sc m ⟶ R₀) :
-    evaluatedMixedBend D Sc m reservoirCutoff bound i hP H ≫
-        evaluatedPostDot D Sc m reservoirCutoff bound i H -
-      koszulSign (D.parity i) (D.parity i) •
-        (shiftedPreDot D Sc m R₀ i H ≫ evaluatedMixedBend D Sc m reservoirCutoff bound i hP H) =
-      shiftedPreCap D Sc m R₀ i hP H ≫
-        (adjunction (contentAppend D Sc reservoirCutoff bound (0 : Multiset I) [i])).unit.app (H.obj N₀) :=
-  evaluatedMixedBend_odd_slideOf D Sc m reservoirCutoff bound
-    (truncatedAppendDotNilpotent D Sc reservoirCutoff sy hc bound) i hi hP H
-
 end ProbeVacuumCap
 end OddMath.QuiverHecke.ELVOld

@@ -66,7 +66,7 @@ theorem probeOldBlockBraidSuffix_total (β : WeightBlocks D Λ x₀)
         ((probeOldBlockInd D Sc m i Λ h₁ β).obj M) := rfl
 
 /-- The first chosen block crossing whiskering retains its entire OLD module map. -/
-theorem probeOldBlockBraidPrefix_native_total (β : WeightBlocks D Λ x₀)
+theorem probeOldBlockBraidPrefix_direct_total (β : WeightBlocks D Λ x₀)
     (M : ProbeCanonicalModules D Sc m β.1) :
     ((probeOldBlockBraidPrefix D Sc m i Λ h₁ h₂ h₃ β).total M).hom =
       (induction (L β)).map ((inductionModuleCross (J β) (K β) (hγ β)).total M.obj) := by
@@ -75,7 +75,7 @@ theorem probeOldBlockBraidPrefix_native_total (β : WeightBlocks D Λ x₀)
   rw [probeOldBlockEqualCross_total]
 
 /-- The second chosen block crossing retains the exact OLD pair crossing at its true input. -/
-theorem probeOldBlockBraidSuffix_native_total (β : WeightBlocks D Λ x₀)
+theorem probeOldBlockBraidSuffix_direct_total (β : WeightBlocks D Λ x₀)
     (M : ProbeCanonicalModules D Sc m β.1) :
     ((probeOldBlockBraidSuffix D Sc m i Λ h₁ h₂ h₃ β).total M).hom =
       (inductionModuleCross (K β) (L β) (hδ β)).total ((induction (J β)).obj M.obj) := by
@@ -101,7 +101,7 @@ theorem probeOldBlockEqualCross_braid (β : WeightBlocks D Λ x₀) :
     ((probeOldBlockBraidPrefix D Sc m i Λ h₁ h₂ h₃ β).total M).hom ≫
       ((probeOldBlockBraidSuffix D Sc m i Λ h₁ h₂ h₃ β).total M).hom ≫
         ((probeOldBlockBraidPrefix D Sc m i Λ h₁ h₂ h₃ β).total M).hom
-  rw [probeOldBlockBraidPrefix_native_total, probeOldBlockBraidSuffix_native_total]
+  rw [probeOldBlockBraidPrefix_direct_total, probeOldBlockBraidSuffix_direct_total]
   exact (inductionModuleCross_braid (J β) (K β) (L β) (hγ β) (hδ β)
     (fun s => CyclotomicCrossingTensor.equalCrossComponent_braid D Sc (probeCutoff D m) i s.obj) M.obj).symm
 

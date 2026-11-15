@@ -123,7 +123,7 @@ private theorem native_tensor {p : ZMod 2}
     (PowerWordMorphisms.coefficientSourceNatural D Sc cutoff s t g hg)
       (liftedPowerRegular D cutoff L) (powerCoefficientStar D cutoff) w h a)
 /-- Native dot on the actual next-word module, using the literal old dot. -/
-def nativeDot : BalancedInduction.induced (powerWordCoefficientSource D Sc cutoff (ν ++ [i]))
+def directDot : BalancedInduction.induced (powerWordCoefficientSource D Sc cutoff (ν ++ [i]))
       (liftedPowerRegular D cutoff L) ⟶
     BalancedInduction.induced (powerWordCoefficientSource D Sc cutoff (ν ++ [i]))
       (liftedPowerRegular D cutoff L) :=
@@ -144,7 +144,7 @@ theorem appendLinear_dot_tensor (s w : OldCategory D Sc cutoff)
         (liftedPowerRegular D cutoff L)).toFunctor s g
           (BalancedInduction.tensor (powerWordCoefficientSource D Sc cutoff ν)
             (liftedPowerRegular D cutoff L).toFunctor (powerCoefficientStar D cutoff) h a))) =
-    (nativeDot D Sc cutoff L ν i).app (D.parity i) w
+    (directDot D Sc cutoff L ν i).app (D.parity i) w
       (appendLinear D Sc cutoff L ν i w
         (BalancedInduction.tensor (append D Sc cutoff i)
           (BalancedInduction.induced (powerWordCoefficientSource D Sc cutoff ν)
@@ -152,7 +152,7 @@ theorem appendLinear_dot_tensor (s w : OldCategory D Sc cutoff)
           (BalancedInduction.tensor (powerWordCoefficientSource D Sc cutoff ν)
             (liftedPowerRegular D cutoff L).toFunctor (powerCoefficientStar D cutoff) h a))) := by
   rw [inductionDot_tensor, appendLinear_tensor, appendLinear_tensor]
-  unfold nativeDot
+  unfold directDot
   erw [native_tensor D Sc cutoff L (s := ν ++ [i]) (t := ν ++ [i])
     (oldAppendDotComponent D Sc cutoff i (OldCategory.mk ν))
     ((oldAppendDot_supernatural D Sc cutoff i).mem (OldCategory.mk ν))]
@@ -173,7 +173,7 @@ theorem appendLinear_dot (w : OldCategory D Sc cutoff) :
     appendLinear D Sc cutoff L ν i w ∘ₗ
       inductionDot D Sc cutoff i (BalancedInduction.induced (powerWordCoefficientSource D Sc cutoff ν)
         (liftedPowerRegular D cutoff L)) w =
-    (nativeDot D Sc cutoff L ν i).app (D.parity i) w ∘ₗ
+    (directDot D Sc cutoff L ν i).app (D.parity i) w ∘ₗ
       appendLinear D Sc cutoff L ν i w := by
   apply BalancedInduction.nested_hom_ext (powerWordCoefficientSource D Sc cutoff ν)
     (append D Sc cutoff i) (liftedPowerRegular D cutoff L) w

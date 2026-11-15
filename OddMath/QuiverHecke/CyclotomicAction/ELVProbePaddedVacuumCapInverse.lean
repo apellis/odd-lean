@@ -70,41 +70,6 @@ variable (P : ProbeReservoir k B D Sc)
 variable {C : Type*} [Category C] [Preadditive C] [Limits.HasZeroObject C]
   {C' : Type*} [Category C'] [Preadditive C'] [Limits.HasZeroObject C']
 
-/-- A padded central cap inverse survives postcomposition of the evaluation with an
-additive functor: the padded principal map and cap rows of the composite evaluation
-have an entrywise inverse whenever those of the original evaluation do. -/
-theorem centralPadded_capInverse_comp (c : P.CrossCoeff) (i : I) (t : Sector I)
-    (Z Z' : P.H t) (hZ : Z = Z') (E : P.H t ⥤ C) (G : C ⥤ C') [G.Additive]
-    (E' : P.H t ⥤ C') (hE : E ⋙ G = E') {a b : Bool}
-    (ha : StepValid (up i) a t) (hb : StepValid (dn i) b t) {N : ℕ}
-    (hN : ∃ j A, ProbeWindow.IsCapInverse (P.centralPaddedSigma c i t Z E a b)
-      (fun n : Fin N => P.centralPaddedCap i t Z E a n) j A) :
-    ∃ j A, ProbeWindow.IsCapInverse (P.centralPaddedSigma c i t Z' E' a b)
-      (fun n : Fin N => P.centralPaddedCap i t Z' E' a n) j A := by
-  subst hZ
-  subst hE
-  obtain ⟨j, A, h⟩ := hN
-  let s := P.centralSourceCornerIso i t Z (E ⋙ G) ⟨a, ha⟩ ≪≫
-    (G.mapIso (P.centralSourceCornerIso i t Z E ⟨a, ha⟩)).symm
-  let r := P.centralTargetCornerIso i t Z (E ⋙ G) ⟨b, hb⟩ ≪≫
-    (G.mapIso (P.centralTargetCornerIso i t Z E ⟨b, hb⟩)).symm
-  have h' := (h.map G).coordinates s r
-  have hσ : s.hom ≫ G.map (P.centralPaddedSigma c i t Z E a b) ≫ r.inv =
-      P.centralPaddedSigma c i t Z (E ⋙ G) a b := by
-    simp only [centralPaddedSigma, dite_eq_left_of_eq_true (eq_true ha),
-      dite_eq_left_of_eq_true (eq_true hb), s, r, Iso.trans_hom, Iso.trans_inv,
-      Iso.symm_hom, Iso.symm_inv, Functor.mapIso_hom, Functor.mapIso_inv, Functor.map_comp,
-      Functor.comp_map, Category.assoc, Iso.map_inv_hom_id_assoc]
-  have hcap : ∀ n : Fin N, s.hom ≫ G.map (P.centralPaddedCap i t Z E a n) =
-      P.centralPaddedCap i t Z (E ⋙ G) a n := by
-    intro n
-    simp only [centralPaddedCap, dite_eq_left_of_eq_true (eq_true ha), s, Iso.trans_hom, Iso.symm_hom,
-      Functor.mapIso_inv, Functor.map_comp, Functor.comp_map, Category.assoc,
-      Iso.map_inv_hom_id_assoc]
-  rw [hσ] at h'
-  simp only [hcap] at h'
-  exact ⟨_, _, h'⟩
-
 end ProbeReservoir
 
 end OddMath.QuiverHecke.SwappedAssembly
@@ -131,81 +96,9 @@ private instance paddedVacuumCapInverseZero (β : Multiset I) :
 
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR
 
-/-- Evaluating the whole-output projection at the regular probe is the
-vacuum bend evaluation. -/
-theorem reservoirOutputEval_comp_total :
-    SupportedSectors.reservoirOutputEval D Sc m cutoff bound ΛP ΛR hcP hcR ((0, 0) : Sector I)
-        (sectorEmpty D Sc m cutoff bound ΛP ΛR hcP hcR) ⋙
-      homTotalEvaluation (k := k) (sectorRegular D Sc m cutoff bound ΛP ΛR hcP hcR) =
-    vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR := by
-  rw [vacuumSectorEvaluation_eq]
-  exact CategoryTheory.Functor.ext (fun _ => rfl) (fun _ _ _ => by
-    simp only [eqToHom_refl, Category.comp_id, Category.id_comp]
-    rfl)
-
 variable (H : ProbeVacuumCap.modulePiCategory D (parameterTwist D Sc) m ⟶
   elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR (-ΛR))
 variable (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
   (hwin : SupportedSectors.ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hcP hcR) (i : I)
-
-include hdot hwin in
-/-- **The chosen vacuum cap inverse in the native chart (odd colour).** If the
-supported vacuum input is the given tensor input, the actual positive factor
-matrix supplies an entrywise inverse of the native cap window
-`[bend; x ^ n ≫ v]_(n < h)` of the evaluated A6 bend, `h = h_i(wt)`. -/
-theorem vacuumCapInverse_odd [Fact Sc.PureNilpotent]
-    (Z : SupportedSectors.H D (parameterTwist D Sc) m cutoff bound ΛP ΛR ((0, 0) : Sector I))
-    (hZ : Z.obj = vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
-    (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1)
-    (hh : 0 ≤ D.h i ((P).wt ((0, 0) : Sector I))) :
-    ∃ (j : _) (A : Fin (D.h i ((P).wt ((0, 0) : Sector I))).toNat → _),
-      ProbeWindow.IsCapInverse
-        (ProbeVacuumCap.evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP
-          (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H))
-        (fun n => (ProbeVacuumCap.shiftedPreDot D (parameterTwist D Sc) m
-            (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i
-            (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) ^ (n : ℕ)) ≫
-          ProbeVacuumCap.shiftedPreCap D (parameterTwist D Sc) m
-            (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i hP
-            (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H)) j A := by
-  have : (homTotalEvaluation (k := k)
-      (B := ContentModules D (parameterTwist D Sc) cutoff bound (0 : Multiset I))
-      (sectorRegular D Sc m cutoff bound ΛP ΛR hcP hcR)).Additive := inferInstance
-  obtain ⟨j, A, h₁⟩ := (P).centralPadded_capInverse_comp
-    (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) i ((0, 0) : Sector I)
-    Z.obj _ hZ
-    (SupportedSectors.reservoirOutputEval D Sc m cutoff bound ΛP ΛR hcP hcR ((0, 0) : Sector I)
-      (sectorEmpty D Sc m cutoff bound ΛP ΛR hcP hcR))
-    (homTotalEvaluation (k := k) (sectorRegular D Sc m cutoff bound ΛP ΛR hcP hcR))
-    (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR)
-    (reservoirOutputEval_comp_total D Sc m cutoff bound ΛP ΛR hcP hcR)
-    (a := true) (b := false) trivial trivial
-    ⟨_, _, (SupportedSectors.vacuumCapInverseData D Sc m cutoff bound ΛP ΛR hcP hcR hdot hwin i Z
-      (sectorEmpty D Sc m cutoff bound ΛP ΛR hcP hcR) hh).isInverse⟩
-  have h₃ := (h₁.coordinates (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).symm
-    (paddedVacuumTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).symm).target
-      (paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H)
-  have hs : (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).inv ≫
-      (P).centralPaddedSigma (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hcP hcR hdot) i
-        ((0, 0) : Sector I) (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
-        (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) true false ≫
-      (paddedVacuumTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).hom =
-      ProbeVacuumCap.evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP
-        (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) :=
-    (Iso.inv_comp_eq _).2 (paddedVacuumDx_odd D Sc m cutoff bound ΛP ΛR hcP hcR H i hdot hP hi)
-  have hw : ∀ n : ℕ, (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).inv ≫
-      (P).centralPaddedCap i ((0, 0) : Sector I)
-        (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
-        (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) true n ≫
-      (paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H).hom =
-      (ProbeVacuumCap.shiftedPreDot D (parameterTwist D Sc) m
-          (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i
-          (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) ^ n) ≫
-        ProbeVacuumCap.shiftedPreCap D (parameterTwist D Sc) m
-          (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i hP
-          (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) := fun n =>
-    (Iso.inv_comp_eq _).2 (paddedVacuumCap_eq D Sc m cutoff bound ΛP ΛR hcP hcR H i hP n)
-  simp only [Iso.symm_hom, Iso.symm_inv, Category.assoc, hs, hw] at h₃
-  exact ⟨_, _, h₃⟩
 
 end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum

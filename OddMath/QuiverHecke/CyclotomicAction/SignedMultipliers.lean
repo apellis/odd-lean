@@ -36,9 +36,4 @@ theorem neg_oddRight_comp (σ : A →+* A) (hσ : Function.Involutive σ)
     -oddRight σ u (-oddRight σ v h) = -(h * (v * u)) := by
   simpa only [oddRight, map_neg, neg_mul, neg_neg] using oddRight_comp σ hσ u v hv h
 
-/-- The two word idempotents are the diagonal matrix units. -/
-abbrev TwoWordAlgebra := Matrix (Fin 2) (Fin 2) ℚ
-
-def parityMatrix : TwoWordAlgebra := !![1, 0; 0, -1]
-
 end OddMath.QuiverHecke.CyclotomicAction

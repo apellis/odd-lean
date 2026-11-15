@@ -3,7 +3,7 @@ import OddMath.SKM.PairedSorting
 import OddMath.SKM.SpanClosed
 import OddMath.SKM.SpanLocal2
 
-/-! Evaluation of the actual source serializers. On the original FE side
+/-! Evaluation of the actual source serializers. On the unswapped FE side
 completion puts the cap dots on the downward (left) leg, hence the native
 operator here is `dLM`, not `uRM`. -/
 noncomputable section
@@ -71,9 +71,9 @@ theorem sourceCapLayers_dn_eval (cs : CScalars Sc) (μ : X) (i : I) (b : ℕ) :
 namespace SameColourSourceFrame
 variable {P Q Z : List (Letter I)} {i : I} (F : SameColourSourceFrame P Q Z i)
 
-/-- Actual complete original rows: downward dots followed by the left cap. -/
-theorem original_row (cs : CScalars Sc) (μ : X) (b : ℕ) (r : F.residual.Labels) :
-    xev cs μ (P ++ dn i :: up i :: Q) Z (F.original.layers (F.paired (b, r))) =
+/-- Actual complete unswapped rows: downward dots followed by the left cap. -/
+theorem unswapped_row (cs : CScalars Sc) (μ : X) (b : ℕ) (r : F.residual.Labels) :
+    xev cs μ (P ++ dn i :: up i :: Q) Z (F.unswapped.layers (F.paired (b, r))) =
       plcW μ (P ++ dn i :: up i :: Q) (P ++ Q) P Q [dn i, up i] []
         (cpow (dLM D Sc i (wt D μ Q)) b ≫ epsP cs i (wt D μ Q)) ≫
           xev cs μ (P ++ Q) Z (F.residual.layers r) := by
@@ -84,7 +84,7 @@ theorem original_row (cs : CScalars Sc) (μ : X) (b : ℕ) (r : F.residual.Label
       ((sourceCapLayers true i b).map (xwhL P Q)) (P ++ Q) := by
     simpa [up, dn, List.append_assoc] using
       (sourceCapLayers_chain true i b).whisk P Q
-  rw [F.original_layers, ← hl]
+  rw [F.unswapped_layers, ← hl]
   rw [xev_append cs _ hc,
     xev_eq_plcW (cs := cs) μ P Q (sourceCapLayers_chain true i b)
       (by simp [sourceCapLayers, xCapL])]

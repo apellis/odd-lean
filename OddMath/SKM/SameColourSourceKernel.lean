@@ -13,15 +13,15 @@ variable {cs : CScalars Sc} {μ : X} {P Q Z : List (Letter I)} {i : I}
   (F : SameColourSourceFrame P Q Z i)
 
 def principalCoordinates (hG : Function.Injective (F.swapped.expansion cs μ)) :
-    (F.original.Labels →₀ SYM D k) →ₗ[k] (F.swapped.Labels →₀ SYM D k) where
+    (F.unswapped.Labels →₀ SYM D k) →ₗ[k] (F.swapped.Labels →₀ SYM D k) where
   toFun v := F.swappedCoordinates hG
-    (sameColourSourceCross (Sc := Sc) μ P Q i ≫ F.original.expansion cs μ v)
+    (sameColourSourceCross (Sc := Sc) μ P Q i ≫ F.unswapped.expansion cs μ v)
   map_add' v w := by rw [map_add, Preadditive.comp_add, map_add]
   map_smul' c v := by rw [map_smul, Linear.comp_smul, map_smul]; rfl
 
 private theorem principalCoordinates_off
     (hG : Function.Injective (F.swapped.expansion cs μ))
-    (s t : F.original.Labels) (ht : t ∉ Set.range F.paired) (hst : s ≠ t) (d : SYM D k) :
+    (s t : F.unswapped.Labels) (ht : t ∉ Set.range F.paired) (hst : s ≠ t) (d : SYM D k) :
     F.principalCoordinates hG (Finsupp.single s d) (F.exchange t) = 0 := by
   classical
   by_cases hs : s ∈ Set.range F.paired
@@ -33,22 +33,22 @@ private theorem principalCoordinates_off
 
 private theorem principalCoordinates_diagonal
     (hG : Function.Injective (F.swapped.expansion cs μ))
-    (t : F.original.Labels) (ht : t ∉ Set.range F.paired) (d : SYM D k) :
+    (t : F.unswapped.Labels) (ht : t ∉ Set.range F.paired) (d : SYM D k) :
     F.principalCoordinates hG (Finsupp.single t d) (F.exchange t) =
         SYM.parityTwist D k (D.parity i) d ∨
       F.principalCoordinates hG (Finsupp.single t d) (F.exchange t) =
         -SYM.parityTwist D k (D.parity i) d := by
   simpa [principalCoordinates] using F.swappedCoordinates_unpaired_cross hG t t ht ht d
 
-/-- A relation among the complete original source family has only paired
+/-- A relation among the complete unswapped source family has only paired
 support. The signed diagonal is a full coefficient involution, not a scalar
 sign on arbitrary inhomogeneous coefficients. -/
 theorem kernel_supported_paired
     (hG : Function.Injective (F.swapped.expansion cs μ))
-    (f : F.original.Labels →₀ SYM D k) (hf : F.original.expansion cs μ f = 0)
-    (t : F.original.Labels) (ht : t ∉ Set.range F.paired) : f t = 0 := by
+    (f : F.unswapped.Labels →₀ SYM D k) (hf : F.unswapped.expansion cs μ f = 0)
+    (t : F.unswapped.Labels) (ht : t ∉ Set.range F.paired) : f t = 0 := by
   classical
-  have proj (v : F.original.Labels →₀ SYM D k) :
+  have proj (v : F.unswapped.Labels →₀ SYM D k) :
       F.principalCoordinates hG v (F.exchange t) =
         F.principalCoordinates hG (Finsupp.single t (v t)) (F.exchange t) := by
     induction v using Finsupp.induction_linear with

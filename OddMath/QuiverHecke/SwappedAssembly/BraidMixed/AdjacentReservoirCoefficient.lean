@@ -95,7 +95,7 @@ private lemma negate_slide {C : Type*} [Category C] [Preadditive C]
     (h : a ≫ f ≫ J = f ≫ J ≫ b) : (-a) ≫ f ≫ J = f ≫ J ≫ (-b) := by
   simpa only [Preadditive.neg_comp, Preadditive.comp_neg] using congrArg Neg.neg h
 
-lemma native_entry (c : P.CrossCoeff Sc) (hc : c.IsInverse)
+lemma direct_entry (c : P.CrossCoeff Sc) (hc : c.IsInverse)
     (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     (-(RepeatedOuterPost.targetAlg P i j s hi hj (hs ▸ Y)
         (c.a i s hi (RepeatedOuterPre.rest P i j s hj (hs ▸ Y))))) ≫
@@ -138,7 +138,7 @@ lemma braid_entry (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
     (comp_common_grid_heq hn rfl rfl hF hJ) hE
   simp only [Category.assoc] at hl hr ⊢
   exact eq_of_heq (hl.trans ((heq_of_eq
-    (native_entry P i j s hi hj hj0 hi0 hs Y c hc h hij)).trans hr.symm))
+    (direct_entry P i j s hi hj hj0 hi0 hs Y c hc h hij)).trans hr.symm))
 lemma braid_entry_transport (ν : X) {t : Sector I}
     (e : nextSector (true, j) false (nextSector (true, i) false (nextSector (true, i) true s)) = t)
     (e' : nextSector (true, i) false (nextSector (true, j) false (nextSector (true, i) true s)) = t)

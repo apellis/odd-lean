@@ -13,13 +13,13 @@ namespace SameColourTargetFrame
 variable {cs : CScalars Sc} {μ : X} {a P Q : List (Letter I)} {i : I}
   (F : SameColourTargetFrame cs μ a P Q i)
 
-def originalPairedInclusion : ((F.residual.Labels × ℕ) →₀ SYM D k) →ₗ[k]
-    (F.original.Labels →₀ SYM D k) :=
+def unswappedPairedInclusion : ((F.residual.Labels × ℕ) →₀ SYM D k) →ₗ[k]
+    (F.unswapped.Labels →₀ SYM D k) :=
   Finsupp.lmapDomain (SYM D k) k (fun r => F.paired (r.2, r.1))
 
 def pairedExpansion : ((F.residual.Labels × ℕ) →₀ SYM D k) →ₗ[k]
     ((pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ (P ++ up i :: dn i :: Q))) :=
-  (F.original.expansion cs μ).comp F.originalPairedInclusion
+  (F.unswapped.expansion cs μ).comp F.unswappedPairedInclusion
 
 def nonpositiveComparison (N : ℕ) : ((F.residual.Labels × ℕ) →₀ SYM D k) →ₗ[k]
     ((F.residual.Labels × ℕ) →₀ SYM D k) :=
@@ -28,8 +28,8 @@ def nonpositiveComparison (N : ℕ) : ((F.residual.Labels × ℕ) →₀ SYM D k
 
 @[simp] theorem pairedExpansion_single (r : F.residual.Labels) (b : ℕ) (d : SYM D k) :
     F.pairedExpansion (Finsupp.single (r, b) d) =
-      F.original.expansion cs μ (Finsupp.single (F.paired (b, r)) d) := by
-  simp [pairedExpansion, originalPairedInclusion]
+      F.unswapped.expansion cs μ (Finsupp.single (F.paired (b, r)) d) := by
+  simp [pairedExpansion, unswappedPairedInclusion]
 
 theorem nonpositiveComparison_eval (N : ℕ) (hN : -D.h i (wt D μ Q) = (N : ℤ))
     (f : (F.residual.Labels × ℕ) →₀ SYM D k) :

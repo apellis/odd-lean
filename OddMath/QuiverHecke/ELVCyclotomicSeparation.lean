@@ -110,17 +110,4 @@ theorem elv_quotient_injective_on_extendedAtMost {cutoff : I → ℕ} {t t' : Li
     (weightedRelationSpan_le_extendedAtLeast D Sc t t' N
       (elvRelationSpan_le_weighted D Sc hN t t' hm))
 
-/-- Even cutoffs alone suffice to detect every finite affine relation with
-arbitrary abstract SYM coefficients. -/
-theorem even_elv_quotients_jointly_detect {t t' : List I}
-    (f : coefficientObj D Sc t ⟶ coefficientObj D Sc t')
-    (hf : ∀ m, (ELVRelationSpan D Sc (fun _ => 2 * m) t t').mkQ f = 0) : f = 0 := by
-  obtain ⟨d, hd⟩ := exists_mem_extendedAtMost D Sc t t' f
-  let m := d + 2 * t.length.choose 2 + 1
-  have hinj := elv_quotient_injective_on_extendedAtMost D Sc
-    (cutoff := fun _ => 2 * m) (t := t) (t' := t') (d := d) (N := 2 * m)
-    (fun _ => le_rfl) (by omega)
-  have h := hinj (a₁ := ⟨f, hd⟩) (a₂ := 0) (by simpa using hf m)
-  exact congrArg Subtype.val h
-
 end OddMath.QuiverHecke

@@ -137,16 +137,6 @@ theorem GradedHomogeneous.lowerDegree {σ : Type*} [SetLike σ k] {sy : Symmetri
 
 end BWWScalars
 
-/-- On Brundan–Ellis parameters the lower-degree condition is `ScalarData.LowerDegree`. -/
-theorem ScalarData.toBWW_lowerDegree_iff {k : Type w} [CommRing k] (sy : Symmetrizer D)
-    (Sc : Scalars D k) : Sc.toBWW.LowerDegree sy ↔ Sc.LowerDegree sy := by
-  constructor <;> intro h i j p q hij hp hq hs <;>
-  · have hc := ScalarData.toBWW_c_of_lt Sc hij (p := p) (q := q)
-      (by have := D.dn_cast hij; omega) (by have := D.dn_cast (Ne.symm hij); omega)
-    first
-    | (rw [← hc] at hs; exact h i j p q hij hp hq hs)
-    | (rw [hc] at hs; exact h i j p q hij hp hq hs)
-
 namespace BWWReesParameters
 
 open MvPolynomial
@@ -280,13 +270,6 @@ def LowerDegreeCase : Prop :=
   ∀ (k : Type w) [CommRing k], IsUnit (2 : k) → ∀ (Sc : BWWScalars D k), Sc.LowerDegree sy →
     ∀ cs : CScalars Sc.toScalars, P.holds Sc cs
 
-/-- **The graded case** of Brundan–Wang–Webster §2.2: over every `ℕ`-graded commutative ring
-with `2` invertible, for every graded-homogeneous parameter system and every normalization. -/
-def GradedCase : Prop :=
-  ∀ (k : Type w) [CommRing k] (σ : Type w) [SetLike σ k] [AddSubgroupClass σ k] (𝒜 : ℕ → σ)
-    [GradedRing 𝒜], IsUnit (2 : k) → ∀ Sc : BWWScalars D k, Sc.GradedHomogeneous sy 𝒜 →
-      ∀ cs : CScalars Sc.toScalars, P.holds Sc cs
-
 /-- **Reduction to truncated Rees parameters.** The truncated Rees case implies the
 lower-degree case: the truncations `k[h] → k[h]/(h^N)` jointly detect zero, and the Rees
 parameters specialize to the given ones at `h = 1`. -/
@@ -302,16 +285,6 @@ theorem lowerDegreeCase_of_truncatedReesCase (h : P.TruncatedReesCase sy) :
   have hS := P.map ReesParameters.specialize h₂' _ _ hR
   exact P.holds_congr (BWWReesParameters.map_specialize sy Sc) _ cs
     (fun μ i => by simp [BWWReesParameters.cScalars]) hS
-
-/-- The lower-degree case implies the graded case. -/
-theorem gradedCase_of_lowerDegreeCase (h : P.LowerDegreeCase sy) : P.GradedCase sy := by
-  intro k _ σ _ _ 𝒜 _ h₂ Sc hg cs
-  exact h k h₂ Sc hg.lowerDegree cs
-
-/-- **Reduction of the graded case.** The truncated Rees case implies the graded case of
-Brundan–Wang–Webster §2.2. -/
-theorem gradedCase_of_truncatedReesCase (h : P.TruncatedReesCase sy) : P.GradedCase sy :=
-  P.gradedCase_of_lowerDegreeCase sy (P.lowerDegreeCase_of_truncatedReesCase sy h)
 
 variable (D) in
 /-- The Nondegeneracy Conjecture for Brundan–Wang–Webster parameters: the conjecture for

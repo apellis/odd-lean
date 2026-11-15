@@ -13,14 +13,14 @@ variable {I : Type u}
 /-- A complete source frame, with a common strict residual serializer. -/
 structure SameColourSourceFrame (P Q Z : List (Letter I)) (i : I) where
   residual : MatchingBasisChoice (P ++ Q) Z
-  original : MatchingBasisChoice (P ++ dn i :: up i :: Q) Z
+  unswapped : MatchingBasisChoice (P ++ dn i :: up i :: Q) Z
   swapped : MatchingBasisChoice (P ++ up i :: dn i :: Q) Z
-  exchange : original.Labels ≃ swapped.Labels
-  paired : ℕ × residual.Labels ↪ original.Labels
+  exchange : unswapped.Labels ≃ swapped.Labels
+  paired : ℕ × residual.Labels ↪ unswapped.Labels
   unpaired : ∀ t, t ∉ Set.range paired →
-    swapped.layers (exchange t) = (xCrL (up i) (dn i)).map (xwhL P Q) ++ original.layers t ∨
-    original.layers t = (xCrL (dn i) (up i)).map (xwhL P Q) ++ swapped.layers (exchange t)
-  original_layers : ∀ b r, original.layers (paired (b, r)) =
+    swapped.layers (exchange t) = (xCrL (up i) (dn i)).map (xwhL P Q) ++ unswapped.layers t ∨
+    unswapped.layers t = (xCrL (dn i) (up i)).map (xwhL P Q) ++ swapped.layers (exchange t)
+  unswapped_layers : ∀ b r, unswapped.layers (paired (b, r)) =
     (List.replicate b (dotOn (P ++ dn i :: up i :: Q) P.length)).flatten ++
       (xCapL (up i)).map (xwhL P Q) ++ residual.layers r
   swapped_layers : ∀ b r, swapped.layers (exchange (paired (b, r))) =
@@ -63,9 +63,9 @@ variable {X : Type v} [AddCommGroup X] {D : Datum I X}
 def swappedPaired : ℕ × F.residual.Labels ↪ F.swapped.Labels :=
   F.paired.trans F.exchange.toEmbedding
 
-/-- Inclusion of the complete original paired sector. -/
-def originalPairedInclusion : ((F.residual.Labels × ℕ) →₀ SYM D k) →ₗ[k]
-    (F.original.Labels →₀ SYM D k) :=
+/-- Inclusion of the complete unswapped paired sector. -/
+def unswappedPairedInclusion : ((F.residual.Labels × ℕ) →₀ SYM D k) →ₗ[k]
+    (F.unswapped.Labels →₀ SYM D k) :=
   Finsupp.lmapDomain (SYM D k) k (fun r => F.paired (r.2, r.1))
 
 /-- The same inclusion in the complete swapped family. -/

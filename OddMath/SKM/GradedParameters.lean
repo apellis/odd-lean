@@ -193,12 +193,4 @@ theorem nondegeneracyConjecture_of_lowerDegree {sy : Symmetrizer D}
   ext
   simp [ScalarChange.cScalars, ReesParameters.cScalars]
 
-/-- Consistency with the homogeneous case: the graded-coefficient statement implies the
-conjecture for homogeneous parameters. -/
-theorem nondegeneracyConjecture_of_homogeneous_of_graded {sy : Symmetrizer D}
-    (hG : GradedCoefficientNondegeneracy.{u, v, w} D sy) (h₂ : IsUnit (2 : k))
-    {Sc : Scalars D k} (hh : Sc.Homogeneous) (cs : CScalars Sc) :
-    NondegeneracyConjecture cs :=
-  nondegeneracyConjecture_of_lowerDegree hG h₂ (hh.lowerDegree sy) cs
-
 end OddMath.SKM

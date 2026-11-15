@@ -62,15 +62,15 @@ def tensorMatrixQuotientObservationLinear {a : Obj (SKM.sig D)}
       (tensorSourceFamily D Sc m cutoff ΛP ΛR L s) (tensorTargetFamily D Sc m cutoff ΛP ΛR L) a →ₗ[k]
       ((coefficientObj D Sc s ⟶ coefficientObj D Sc (a.word.map (fun c : Col I X => c.l.2))) ⧸
         PowerWordQuotientCoordinates.kernel D Sc cutoff L s (a.word.map (fun c : Col I X => c.l.2))) := by
-  let row := tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s hEnd p hup
+  let row := tensorPullbackWordEntry D Sc m cutoff ΛP ΛR L hP hR s hEnd p hup
   let value := totalLinear (probeOldWeightSpace D Tw m ΛP (-ΛP))
     (elvWeightSpace D Tw cutoff N ΛR (ReservoirWord.weight D ΛR cS))
-    (tensorOriginalRowSource D Sc m cutoff ΛP ΛR L s)
+    (tensorPullbackRowSource D Sc m cutoff ΛP ΛR L s)
     (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hup) R
   let evaluate := moduleEvaluate
-    (((tensorOriginalRowSource D Sc m cutoff ΛP ΛR L s).obj R) β)
+    (((tensorPullbackRowSource D Sc m cutoff ΛP ΛR L s).obj R) β)
     (((TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hup).obj R) β) w
-    (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)
+    (tensorPullbackSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)
   let chart := ((tensorPathValueChart D Sc m cutoff ΛP ΛR L p hup).hom β).total w
   let coordinate := PowerWordQuotientCoordinates.coordinate D Sc cutoff L s (a.word.map (fun c : Col I X => c.l.2))
   let wordValue := (wordValueEquiv D Sc cutoff L

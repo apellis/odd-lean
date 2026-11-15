@@ -26,7 +26,7 @@ def swappedCoordinates (hG : Function.Injective (F.swapped.expansion cs μ)) :
     ⟨hG, F.swapped.expansion_surjective cs μ⟩).symm_apply_apply v
 
 theorem pairedRowsInclusion_off (v : (F.residual.Labels × ℕ) →₀ SYM D k)
-    (t : F.original.Labels) (ht : t ∉ Set.range F.paired) :
+    (t : F.unswapped.Labels) (ht : t ∉ Set.range F.paired) :
     F.residual.pairedRowsInclusion (D := D) (k := k) i F.swapped F.swappedPaired v (F.exchange t) = 0 := by
   apply Finsupp.mapDomain_of_notMem_range
   rintro ⟨⟨r, b⟩, he⟩
@@ -38,7 +38,7 @@ unpaired coordinate, including arbitrary residual SYM coefficients. -/
 theorem swappedCoordinates_cup_off
     (hG : Function.Injective (F.swapped.expansion cs μ))
     (f : (pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ (P ++ Q)))
-    (b : ℕ) (t : F.original.Labels) (ht : t ∉ Set.range F.paired) :
+    (b : ℕ) (t : F.unswapped.Labels) (ht : t ∉ Set.range F.paired) :
     F.swappedCoordinates hG
       (f ≫ MatchingBasisChoice.targetCupRows (Sc := Sc) μ P Q i b) (F.exchange t) = 0 := by
   obtain ⟨v, rfl⟩ := F.residual.expansion_surjective cs μ f
@@ -51,10 +51,10 @@ theorem swappedCoordinates_cup_off
 /-- Paired input columns have no unpaired principal coordinates at any height. -/
 theorem swappedCoordinates_paired_cross_off
     (hG : Function.Injective (F.swapped.expansion cs μ)) (b : ℕ)
-    (r : F.residual.Labels) (d : SYM D k) (t : F.original.Labels)
+    (r : F.residual.Labels) (d : SYM D k) (t : F.unswapped.Labels)
     (ht : t ∉ Set.range F.paired) :
     F.swappedCoordinates hG
-      (F.original.expansion cs μ (Finsupp.single (F.paired (b, r)) d) ≫
+      (F.unswapped.expansion cs μ (Finsupp.single (F.paired (b, r)) d) ≫
         sameColourTargetCross (Sc := Sc) μ P Q i) (F.exchange t) = 0 := by
   by_cases hh : 0 < D.h i (wt D μ Q)
   · let N := (D.h i (wt D μ Q)).toNat

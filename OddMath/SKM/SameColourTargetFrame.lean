@@ -14,15 +14,15 @@ occurring in the evaluated rows, not merely the same underlying matchings. -/
 structure SameColourTargetFrame (cs : CScalars Sc) (μ : X)
     (a P Q : List (Letter I)) (i : I) where
   residual : MatchingBasisChoice a (P ++ Q)
-  original : MatchingBasisChoice a (P ++ up i :: dn i :: Q)
+  unswapped : MatchingBasisChoice a (P ++ up i :: dn i :: Q)
   swapped : MatchingBasisChoice a (P ++ dn i :: up i :: Q)
-  exchange : original.Labels ≃ swapped.Labels
-  paired : ℕ × residual.Labels ↪ original.Labels
+  exchange : unswapped.Labels ≃ swapped.Labels
+  paired : ℕ × residual.Labels ↪ unswapped.Labels
   unpaired : ∀ t, t ∉ Set.range paired →
-    swapped.layers (exchange t) = original.layers t ++ (xCrL (up i) (dn i)).map (xwhL P Q) ∨
-    original.layers t = swapped.layers (exchange t) ++ (xCrL (dn i) (up i)).map (xwhL P Q)
-  original_row : ∀ b r,
-    xev cs μ a (P ++ up i :: dn i :: Q) (original.layers (paired (b, r))) =
+    swapped.layers (exchange t) = unswapped.layers t ++ (xCrL (up i) (dn i)).map (xwhL P Q) ∨
+    unswapped.layers t = swapped.layers (exchange t) ++ (xCrL (dn i) (up i)).map (xwhL P Q)
+  unswapped_row : ∀ b r,
+    xev cs μ a (P ++ up i :: dn i :: Q) (unswapped.layers (paired (b, r))) =
       xev cs μ a (P ++ Q) (residual.layers r) ≫
         plcW μ (P ++ Q) (P ++ up i :: dn i :: Q) P Q [] [up i, dn i]
           (etaP cs i (wt D μ Q) ≫ cpow (uLM D Sc i (wt D μ Q)) b)
@@ -51,15 +51,15 @@ variable {cs : CScalars Sc} {μ : X} {a P Q : List (Letter I)} {i : I}
 def swappedPaired : ℕ × F.residual.Labels ↪ F.swapped.Labels :=
   F.paired.trans F.exchange.toEmbedding
 
-private theorem original_cross (b : ℕ) (r : F.residual.Labels) (d : SYM D k) :
-    F.original.expansion cs μ (Finsupp.single (F.paired (b, r)) d) ≫
+private theorem unswapped_cross (b : ℕ) (r : F.residual.Labels) (d : SYM D k) :
+    F.unswapped.expansion cs μ (Finsupp.single (F.paired (b, r)) d) ≫
       sameColourTargetCross (Sc := Sc) μ P Q i =
     MatchingBasisChoice.rightAction cs μ
       (xev cs μ a (P ++ Q) (F.residual.layers r) ≫
         plcW μ (P ++ Q) (P ++ dn i :: up i :: Q) P Q [] [dn i, up i]
           (etaP cs i (wt D μ Q) ≫ cpow (uLM D Sc i (wt D μ Q)) b ≫
             sgM D Sc i (wt D μ Q))) d := by
-  rw [F.original.expansion_single, F.original_row]
+  rw [F.unswapped.expansion_single, F.unswapped_row]
   have C : cl D Sc μ (P ++ [up i, dn i] ++ Q) (P ++ up i :: dn i :: Q) [] ≫
       cl D Sc μ (P ++ up i :: dn i :: Q) (P ++ [up i, dn i] ++ Q) [] = 𝟙 _ := by
     rw [cl_comp (show SChain (P ++ [up i, dn i] ++ Q) [] (P ++ up i :: dn i :: Q) from by
@@ -78,9 +78,9 @@ theorem positive_column (N b : ℕ) (r : F.residual.Labels) (d : SYM D k)
       (F.residual.pairedRowsInclusion i F.swapped F.swappedPaired
         (MatchingTransition.rightColumn (k := k)
           (F.residual.targetPositiveColumn cs μ i N b r) d)) =
-    F.original.expansion cs μ (Finsupp.single (F.paired (b, r)) d) ≫
+    F.unswapped.expansion cs μ (Finsupp.single (F.paired (b, r)) d) ≫
       sameColourTargetCross (Sc := Sc) μ P Q i := by
-  rw [F.original_cross]
+  rw [F.unswapped_cross]
   exact F.residual.targetPositiveColumn_in_choice cs μ i F.swapped F.swappedPaired
     F.swapped_row N b r d hN hpos
 
@@ -91,9 +91,9 @@ theorem nonpositive_column (N b : ℕ) (r : F.residual.Labels) (d : SYM D k)
       (F.residual.pairedRowsInclusion i F.swapped F.swappedPaired
         (MatchingTransition.rightColumn (k := k)
           (F.residual.targetNonpositiveColumn cs μ i N b r) d)) =
-    F.original.expansion cs μ (Finsupp.single (F.paired (b, r)) d) ≫
+    F.unswapped.expansion cs μ (Finsupp.single (F.paired (b, r)) d) ≫
       sameColourTargetCross (Sc := Sc) μ P Q i := by
-  rw [F.original_cross]
+  rw [F.unswapped_cross]
   exact F.residual.targetNonpositiveColumn_in_choice cs μ i F.swapped F.swappedPaired
     F.swapped_row N b r d hN
 

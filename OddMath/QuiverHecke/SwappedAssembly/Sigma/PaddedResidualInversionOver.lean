@@ -61,28 +61,4 @@ theorem reservoirWindowIdealOver :
     exact reservoirCupInverseData_boundary_memOver D Sc m cutoff bound ΛP ΛR hP hR sy 𝒜 ht hs
       b h𝒜 i t Z β c hh j r hjr
 
-/-- Over a graded base, every output-content component of the padded
-central matrix is invertible, in both signs. -/
-theorem centralFactorMatrix_content_isIsoOver [Fact Sc.PureNilpotent] (i : I) (t : Sector I)
-    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
-    (β : WeightBlocks D ΛR ((P).muM t)) :
-    (0 ≤ D.h i ((P).wt t) → IsIso ((P).augPosFactorMatrix
-      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdotG) i ((P).wt t) t Z.obj
-        (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β))) ∧
-    (D.h i ((P).wt t) ≤ 0 → IsIso ((P).augNegFactorMatrix
-      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdotG) i ((P).wt t) t Z.obj
-        (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β))) :=
-  centralFactorMatrix_content_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR hdotG
-    (reservoirWindowIdealOver D Sc m cutoff bound ΛP ΛR hP hR sy 𝒜 ht hs b h𝒜) i t Z β
-
-/-- Over a graded base, the literal augmented central matrices are invertible. -/
-theorem centralAugmentedMatrix_isIsoOver [Fact Sc.PureNilpotent] (i : I) (t : Sector I)
-    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t) :
-    (0 ≤ D.h i ((P).wt t) → IsIso ((P).augPosMat
-      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdotG) i ((P).wt t) t t Z.obj)) ∧
-    (D.h i ((P).wt t) ≤ 0 → IsIso ((P).augNegMat
-      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdotG) i ((P).wt t) t t Z.obj)) :=
-  centralAugmentedMatrix_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR hdotG
-    (reservoirWindowIdealOver D Sc m cutoff bound ΛP ΛR hP hR sy 𝒜 ht hs b h𝒜) i t Z
-
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

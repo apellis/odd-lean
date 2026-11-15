@@ -1,5 +1,9 @@
 # Reductions for Brundan–Wang–Webster parameters
 
+> Declarations named below that are not in the current library were removed in the
+> streamlining because the headline theorems do not use them; they remain in the history
+> at commit `9ceca1d9`.
+
 This note records the reduction of the Brundan–Wang–Webster (BWW) Nondegeneracy Conjecture,
 over arbitrary commutative rings with `2` invertible, to truncated Rees parameters. It is the
 BWW analogue of `GradedParameters.lean`, `LowerDegreeParameters.lean` and

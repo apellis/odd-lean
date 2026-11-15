@@ -3,6 +3,10 @@
 > The Nondegeneracy Conjecture in the research scope is proved in Lean (`nondegeneracy_of_symmetrizer`; see
 > [STATUS](STATUS.md)). Steps described below as open, pending or conditional are either
 > proved among that theorem's dependencies or belong to routes it does not use.
+>
+> Declarations named below that are not in the current library were removed in the
+> streamlining because the headline theorems do not use them; they remain in the history
+> at commit `9ceca1d9`.
 
 The branch follows [FieldScopeBoundary](FieldScopeBoundary.md): symmetrizable
 homogeneous parameters first, inhomogeneous parameters second; no
@@ -102,15 +106,12 @@ OddMath.QuiverHecke.upward_independence_of_fused_sector_actions
      probe-cup–mate–reservoir-cap composite equals the fused bubble of `g`;
    * the vacuum values `probe`, `reservoirValue` and `normalize`.
 
-The mate projection formula is **not** a hypothesis. It is proved from the
-slide, the probe inverses and the reservoir nilpotence by
-`SKM.SuperRouquierLoc.MateProjectionFormula.of_sectors`, used in
-`VacuumSectorBubble.toSector_mateProjection`. The underlying algebra is
-`SKM.mate_signed_series`, `mate_series_probe_source` and
-`mate_series_probe_target` (`OddMath/SKM/RouquierMateSeries.lean`), with
-`MateProjectionFormula.of_coordinates`
-(`OddMath/SKM/RouquierMateCoordinates.lean`). §5.2 below gives the paper
-version.
+The mate projection formula is **not** a hypothesis: §5.2 below proves it from the
+slide, the probe inverses and the reservoir nilpotence. The headline Lean theorem
+no longer routes through this formula; its earlier formalization
+(`SKM.SuperRouquierLoc.MateProjectionFormula.of_sectors` and the mate-series
+modules) was removed in the streamlining and remains in the history at commit
+`9ceca1d9`.
 
 So the theorem follows once, for every `μ`, one constructs a
 2-representation carrying these data. The remaining sections do this:

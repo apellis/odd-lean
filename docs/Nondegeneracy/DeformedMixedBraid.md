@@ -1,5 +1,9 @@
 # Corrected mixed braid under signed right multiplication
 
+> Declarations named below that are not in the current library were removed in the
+> streamlining because the headline theorems do not use them; they remain in the history
+> at commit `9ceca1d9`.
+
 **Status: common-content operator braid checked in Lean.**
 `ELVContentMixedBraid.contentMixedBraid_source_linear` formalizes §2 on
 normalized common-content induction operators.

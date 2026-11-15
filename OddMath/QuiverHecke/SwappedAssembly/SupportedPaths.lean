@@ -17,12 +17,12 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (ΛP ΛR : X)
 
 /-- Compose the specified native steps along the literal formal path. -/
-def nativePathFunctor : {w : List (Col I X)} → {s t : Sector I} → SPath w s t →
+def directPathFunctor : {w : List (Col I X)} → {s t : Sector I} → SPath w s t →
     Superfunctor k (Ambient D Sc m cutoff bound ΛP ΛR t)
       (Ambient D Sc m cutoff bound ΛP ΛR s)
   | _, _, _, .nil _ => Superfunctor.id k _
   | _, _, _, .cons c side s hv p =>
-    (nativePathFunctor p).comp (nativeStep D Sc m cutoff bound ΛP ΛR c.l side s hv)
+    (directPathFunctor p).comp (directStep D Sc m cutoff bound ΛP ΛR c.l side s hv)
 
 /-- The same path in the exact-support categories, with every native arrow retained. -/
 def pathFunctor : {w : List (Col I X)} → {s t : Sector I} → SPath w s t →
@@ -35,7 +35,7 @@ def pathFunctor : {w : List (Col I X)} → {s t : Sector I} → SPath w s t →
 theorem pathFunctor_inclusion {w : List (Col I X)} {s t : Sector I} (p : SPath w s t) :
     (pathFunctor D Sc m cutoff bound ΛP ΛR p).toFunctor ⋙ inclusion D Sc m cutoff bound ΛP ΛR s =
       inclusion D Sc m cutoff bound ΛP ΛR t ⋙
-        (nativePathFunctor D Sc m cutoff bound ΛP ΛR p).toFunctor := by
+        (directPathFunctor D Sc m cutoff bound ΛP ΛR p).toFunctor := by
   induction p with
   | nil t => rfl
   | cons c side s hv p ih =>
@@ -45,7 +45,7 @@ theorem pathFunctor_inclusion {w : List (Col I X)} {s t : Sector I} (p : SPath w
     rw [step_inclusion]
     change ((pathFunctor D Sc m cutoff bound ΛP ΛR p).toFunctor ⋙
       inclusion D Sc m cutoff bound ΛP ΛR _) ⋙
-      (nativeStep D Sc m cutoff bound ΛP ΛR c.l side s hv).toFunctor = _
+      (directStep D Sc m cutoff bound ΛP ΛR c.l side s hv).toFunctor = _
     rw [ih]
     rfl
 

@@ -147,8 +147,8 @@ local notation "R₀" => WeightTensorVacuum.regularProbe D Tw m ΛP
 local notation "βS" => tensorSourceWordBlock D ΛP ΛR s
 local notation "wS" => PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl
 
-attribute [local irreducible] tensorPathValueChart tensorSourcePathValueChart tensorOriginalSourceUnit
-  tensorOriginalWordEntry tensorOriginalRowSourceIso tensorSourceWordUnit tensorMatrixVacuum
+attribute [local irreducible] tensorPathValueChart tensorSourcePathValueChart tensorPullbackSourceUnit
+  tensorPullbackWordEntry tensorPullbackRowSourceIso tensorSourceWordUnit tensorMatrixVacuum
   tensorMatrixCoefficientAction PowerWordQuotientCoordinates.coordinate
 
 /-- The vacuum observation, read through its literal row chart. -/
@@ -161,19 +161,19 @@ private theorem coefficient_vacuum_unfold (a : SYM D k) :
         ((tensorWordCoefficientArrow D Sc cutoff ΛR L (ReservoirWord.weight D ΛR cS)
           ((SKM.ob D (ΛP - ΛR) (upWord s)).word.map (fun d => d.l.2)).reverse a βS).total wS
           (((tensorPathValueChart D Sc m cutoff ΛP ΛR L (l := (SKM.ob D (ΛP - ΛR) (upWord s)).word) pS upS).hom βS).total wS
-            (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
-              (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))))) := by
+            (((tensorPullbackRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
+              (tensorPullbackSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))))) := by
   rw [tensorWordQuotientObservation_apply,tensorMatrixCoefficient_observation,
-    tensorOriginalWordEntry_vacuum]
+    tensorPullbackWordEntry_vacuum]
   rfl
 
 /-- The source chart sends the source unit to the source-word unit. -/
 private theorem source_unit_raw :
     (((tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s).hom βS).total wS
-      (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
-        (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))) =
+      (((tensorPullbackRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
+        (tensorPullbackSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))) =
       tensorSourceWordUnit D Sc cutoff ΛP ΛR L s :=
-  tensorOriginalSourceUnit_wordValue D Sc m cutoff ΛP ΛR L hP hR s
+  tensorPullbackSourceUnit_wordValue D Sc m cutoff ΛP ΛR L hP hR s
 
 /-- The source path-value chart is its unfolded composite. -/
 private theorem source_chart_unfold :
@@ -186,8 +186,8 @@ private theorem source_chart_unfold :
 /-- The raw value with the word unit unfolded. -/
 private theorem source_unit_raw_value :
     (((tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s).hom βS).total wS
-      (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
-        (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))) =
+      (((tensorPullbackRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
+        (tensorPullbackSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))) =
       PowerWordYoneda.unitVector D Tw cutoff L s.reverse :=
   (source_unit_raw D Sc cutoff L m ΛP ΛR hP hR s).trans
     (tensorSourceWordUnit_formula D Sc cutoff ΛP ΛR L s)
@@ -209,8 +209,8 @@ private theorem coefficient_vacuum_class_of_literal (a : SYM D k) (H :
         ((tensorWordCoefficientArrow D Sc cutoff ΛR L (ReservoirWord.weight D ΛR cS)
           ((tensorSourceLabels D ΛP ΛR s).map (fun d => d.l.2)).reverse a (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s) : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS))).total wS
           ((((tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS)).hom (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s) : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS))).total wS
-            (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s) : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS))).total wS
-        (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))))) =
+            (((tensorPullbackRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s) : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS))).total wS
+        (tensorPullbackSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))))) =
       (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
         (sourceCoefficientHom D Sc a (𝟙 _)) ) :
     tensorTargetWordQuotientEquiv D Sc cutoff L s (tensorSourceLabels_colors D ΛP ΛR s)
@@ -218,8 +218,8 @@ private theorem coefficient_vacuum_class_of_literal (a : SYM D k) (H :
         ((tensorWordCoefficientArrow D Sc cutoff ΛR L (ReservoirWord.weight D ΛR cS)
           ((SKM.ob D (ΛP - ΛR) (upWord s)).word.map (fun d => d.l.2)).reverse a βS).total wS
           (((tensorPathValueChart D Sc m cutoff ΛP ΛR L (l := (SKM.ob D (ΛP - ΛR) (upWord s)).word) pS upS).hom βS).total wS
-            (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
-              (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))))) =
+            (((tensorPullbackRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
+              (tensorPullbackSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))))) =
       (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
         (sourceCoefficientHom D Sc a (𝟙 _)) := H
 
@@ -230,8 +230,8 @@ private theorem coefficient_vacuum_class_literal (a : SYM D k) :
         ((tensorWordCoefficientArrow D Sc cutoff ΛR L (ReservoirWord.weight D ΛR cS)
           ((tensorSourceLabels D ΛP ΛR s).map (fun d => d.l.2)).reverse a (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s) : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS))).total wS
           ((((tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS)).hom (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s) : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS))).total wS
-            (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s) : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS))).total wS
-        (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))))) =
+            (((tensorPullbackRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s) : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS))).total wS
+        (tensorPullbackSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))))) =
       (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
         (sourceCoefficientHom D Sc a (𝟙 _)) :=
   coefficient_coordinate_unit_class_of_block D Sc cutoff L s _ (tensorSourceLabels_colors D ΛP ΛR s)
@@ -239,10 +239,10 @@ private theorem coefficient_vacuum_class_literal (a : SYM D k) :
     (tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS)
     (tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s)
     (source_chart_unfold D Sc cutoff L m ΛP ΛR s)
-    (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s) : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS))).total wS
-        (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)) a βS (source_block_literal D ΛP ΛR s) wS HEq.rfl
-    (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
-        (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)) HEq.rfl
+    (((tensorPullbackRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s) : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS))).total wS
+        (tensorPullbackSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)) a βS (source_block_literal D ΛP ΛR s) wS HEq.rfl
+    (((tensorPullbackRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
+        (tensorPullbackSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)) HEq.rfl
     (PowerWordYoneda.unitVector D Tw cutoff L s.reverse) HEq.rfl
     (source_unit_raw_value D Sc cutoff L m ΛP ΛR hP hR s)
 
@@ -253,8 +253,8 @@ private theorem coefficient_vacuum_class (a : SYM D k) :
         ((tensorWordCoefficientArrow D Sc cutoff ΛR L (ReservoirWord.weight D ΛR cS)
           ((SKM.ob D (ΛP - ΛR) (upWord s)).word.map (fun d => d.l.2)).reverse a βS).total wS
           (((tensorPathValueChart D Sc m cutoff ΛP ΛR L (l := (SKM.ob D (ΛP - ΛR) (upWord s)).word) pS upS).hom βS).total wS
-            (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
-              (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))))) =
+            (((tensorPullbackRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
+              (tensorPullbackSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))))) =
       (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
         (sourceCoefficientHom D Sc a (𝟙 _)) :=
   coefficient_vacuum_class_of_literal D Sc cutoff L m ΛP ΛR hP hR s a

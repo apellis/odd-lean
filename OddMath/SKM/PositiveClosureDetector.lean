@@ -42,40 +42,4 @@ theorem eq_zero_of_positive_corrections {A R : Type*} [AddCommMonoid R]
     have H := congrArg (fun g : A →₀ R => g i) hz
     simpa only [Finsupp.finsetSum_apply, Finsupp.zero_apply] using H
 
-/-- Injectivity descends through a linear closure with finite strictly
-positive-dot corrections. Correction lifts may depend on the entire input
-coefficient; no right-coefficient linearity is assumed. -/
-theorem injective_of_positive_closure
-    {k R A M N : Type*} [CommRing k] [AddCommGroup R] [Module k R]
-    [AddCommGroup M] [Module k M] [AddCommGroup N] [Module k N]
-    (dots : A → ℕ) (weak : (A →₀ R) →ₗ[k] M) (strong : (A →₀ R) →ₗ[k] N)
-    (closure : M →ₗ[k] N) (hinj : Function.Injective strong)
-    (h : ∀ i p, ∃ r : A →₀ R, (∀ j ∈ r.support, dots i < dots j) ∧
-      closure (weak (Finsupp.single i p)) = strong (Finsupp.single i p + r)) :
-    Function.Injective weak := by
-  classical
-  have hz : ∀ f, weak f = 0 → f = 0 := by
-    intro f hf
-    choose r hr he using fun i => h i (f i)
-    have H : strong (∑ i ∈ f.support, (Finsupp.single i (f i) + r i)) = 0 := by
-      calc
-        _ = ∑ i ∈ f.support, closure (weak (Finsupp.single i (f i))) := by
-          simp only [map_sum]
-          apply Finset.sum_congr rfl
-          intro i _
-          exact (he i).symm
-        _ = closure (weak (∑ i ∈ f.support, Finsupp.single i (f i))) := by
-          simp only [map_sum]
-        _ = closure (weak f) := by
-          change closure (weak (f.sum Finsupp.single)) = _
-          rw [Finsupp.sum_single]
-        _ = 0 := by rw [hf, map_zero]
-    have H0 : (∑ i ∈ f.support, (Finsupp.single i (f i) + r i)) = 0 :=
-      hinj (H.trans strong.map_zero.symm)
-    exact eq_zero_of_positive_corrections dots f r hr H0
-  intro f g hfg
-  apply sub_eq_zero.mp
-  apply hz
-  rw [map_sub, hfg, sub_self]
-
 end OddMath.SKM.OrientedReduction

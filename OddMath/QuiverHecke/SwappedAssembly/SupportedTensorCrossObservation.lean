@@ -14,9 +14,9 @@ stated for an arbitrary entry factoring through an equality-transport
 conjugate of a cell heterogeneously equal to the whiskered ELV crossing.
 It is instantiated with:
 
-* the literal layer entry `tensorOriginalWordEntry_layer`;
-* the coherence `tensorOriginalWordLayer_sameCross_transport` and
-  `tensorOriginalWordLayer_cross_transport`;
+* the literal layer entry `tensorPullbackWordEntry_layer`;
+* the coherence `tensorPullbackWordLayer_sameCross_transport` and
+  `tensorPullbackWordLayer_cross_transport`;
 * the chart identification `tensorPathValueChart_pair_heq`;
 * the contextual crossing class square `TensorLayerClasses.cross_class_square`.
 
@@ -244,17 +244,17 @@ theorem tensorMatrixQuotientObservation_sameCross
               (ContextualOldGenerators.layerDiagram D Sc (List.reverse ηL) (.cross i i)
                 (List.reverse νR)))) := by
   have hA := SKM.lay_valid D ν u (.cross i i) v
-  have hE := tensorOriginalWordEntry_layer D Sc m cutoff ΛP ΛR L hP hR s
+  have hE := tensorPullbackWordEntry_layer D Sc m cutoff ΛP ΛR L hP hR s
     ((P).swappedGens a leftward) (Aℓ) hA hEnd p p hp hp x
-  obtain ⟨h₁, h₂, hT⟩ := tensorOriginalWordLayer_sameCross_transport D Sc m cutoff ΛP ΛR L hP hR
+  obtain ⟨h₁, h₂, hT⟩ := tensorPullbackWordLayer_sameCross_transport D Sc m cutoff ΛP ΛR L hP hR
     ν u v i hv hw pL hl pR hr
     (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom) p hp)
     (tensorRowTargetIso_hom_eqToHom D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom) p hp) a leftward
-  have hout : tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).cod) hEnd p hp
+  have hout : tensorPullbackWordEntry D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).cod) hEnd p hp
         (((Q ((P).swappedGens a leftward)).res (Aℓ).cod)
           ((Q ((P).swappedGens a leftward)).op (Aℓ)
             ((Q ((P).swappedGens a leftward)).ext (Aℓ).dom x))) =
-      tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom)
+      tensorPullbackWordEntry D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom)
         (hEnd.trans hA.endR_eq) p hp x ≫ eqToHom h₁ ≫
         tensorLayerSameCrossRaw D Sc m cutoff L ΛP ΛR hP hR ν u v i hv hw pL hl pR hr a ≫
           eqToHom h₂.symm := by
@@ -274,7 +274,7 @@ theorem tensorMatrixQuotientObservation_sameCross
       ((samePathWord D ν u v i).trans (PowerWordContexts.extendedWord_eq _ _)))
     (tensorSameCrossLayer_domWord D ν u v i) (tensorSameCrossLayer_codWord D ν u v i)
     s (tensorSourceWordBlock D ΛP ΛR s) rfl
-    (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s) y hy
+    (tensorPullbackSourceUnit D Sc m cutoff ΛP ΛR L hP hR s) y hy
 
 end Same
 
@@ -365,20 +365,20 @@ theorem tensorMatrixQuotientObservation_cross (hij : i ≠ j)
               (ContextualOldGenerators.layerDiagram D Sc (List.reverse ηL) (.cross i j)
                 (List.reverse νR)))) := by
   have hA := SKM.lay_valid D ν u (.cross i j) v
-  have hE := tensorOriginalWordEntry_layer D Sc m cutoff ΛP ΛR L hP hR s
+  have hE := tensorPullbackWordEntry_layer D Sc m cutoff ΛP ΛR L hP hR s
     ((P).swappedGens a leftward) (Aℓ) hA hEnd p q hp hq x
-  obtain ⟨h₁, h₂, hT⟩ := tensorOriginalWordLayer_cross_transport D Sc m cutoff ΛP ΛR L hP hR
+  obtain ⟨h₁, h₂, hT⟩ := tensorPullbackWordLayer_cross_transport D Sc m cutoff ΛP ΛR L hP hR
     ν u v i j hv₁ hv₂ hw₁ hw₂ hs pL hl pR hr
     (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom) p hp)
     (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).cod) q hq)
     (tensorRowTargetIso_hom_eqToHom D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom) p hp)
     (tensorRowTargetIso_hom_eqToHom D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).cod) q hq)
     a leftward
-  have hout : tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).cod) hEnd q hq
+  have hout : tensorPullbackWordEntry D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).cod) hEnd q hq
         (((Q ((P).swappedGens a leftward)).res (Aℓ).cod)
           ((Q ((P).swappedGens a leftward)).op (Aℓ)
             ((Q ((P).swappedGens a leftward)).ext (Aℓ).dom x))) =
-      tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom)
+      tensorPullbackWordEntry D Sc m cutoff ΛP ΛR L hP hR s (a := (Aℓ).dom)
         (hEnd.trans hA.endR_eq) p hp x ≫ eqToHom h₁ ≫
         tensorLayerCrossRaw D Sc m cutoff L ΛP ΛR hP hR ν u v i j hv₁ hv₂ hw₁ hw₂ hs
           pL hl pR hr a ≫ eqToHom h₂.symm := by
@@ -398,7 +398,7 @@ theorem tensorMatrixQuotientObservation_cross (hij : i ≠ j)
       ((crossTargetPathWord D ν u v i j).trans (PowerWordContexts.extendedWord_eq _ _)))
     (tensorCrossLayer_domWord D ν u v i j) (tensorCrossLayer_codWord D ν u v i j)
     s (tensorSourceWordBlock D ΛP ΛR s) rfl
-    (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s) y hy
+    (tensorPullbackSourceUnit D Sc m cutoff ΛP ΛR L hP hR s) y hy
 
 end Distinct
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

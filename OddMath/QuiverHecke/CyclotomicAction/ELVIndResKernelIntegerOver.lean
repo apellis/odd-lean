@@ -297,19 +297,6 @@ theorem iSup_integerDegreeOver_eq_top (v t : D) :
     | of s y => exact hs s y
     | add x y hx hy => rw [Submodule.Quotient.mk_add]; exact add_mem hx hy
 
-include 𝒜 hJ hD in
-/-- The integer degrees form an internal direct sum on the represented balanced kernel. -/
-theorem integerDegreeOver_internal (v t : D) :
-    DirectSum.IsInternal (integerDegreeOver (K := K) (R := R) J v t) := by
-  apply DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top
-  · refine iSupIndep_of_projections _ (integerProjectionOver 𝒜 J hJ hD v t)
-      (fun n => ?_) (fun n m hmn => ?_)
-    · intro x hx
-      exact (integerProjectionOver_of_mem 𝒜 J hJ hD v t hx).trans (ite_eq_left rfl)
-    · intro x hx
-      exact (integerProjectionOver_of_mem 𝒜 J hJ hD v t hx).trans (ite_eq_right hmn)
-  · exact iSup_integerDegreeOver_eq_top (K := K) (R := R) J v t
-
 /-- Integer projection has its image in the prescribed part. -/
 theorem integerProjectionOver_mem (v t : D) (n : ℤ) (x : Component (k := R) J v t) :
     integerProjectionOver 𝒜 J hJ hD v t n x ∈ integerDegreeOver (K := K) (R := R) J v t n := by

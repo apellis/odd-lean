@@ -199,28 +199,6 @@ theorem centralFactorMatrix_content_isIsoOf [Fact Sc.PureNilpotent]
     rw [he]
     exact H'
 
-/-- Every output-content component of the padded central matrix with the
-coefficient chosen from homogeneous scalars is invertible. -/
-theorem centralFactorMatrix_content_isIso
-    (sy : Symmetrizer D) (hc : Sc.Homogeneous) (i : I) (t : Sector I)
-    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t)
-    (β : WeightBlocks D ΛR ((P).muM t)) :
-    (0 ≤ D.h i ((P).wt t) → IsIso ((P).augPosFactorMatrix
-      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
-    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-      (parameterTwist_homogeneous D Sc hc) bound)) i ((P).wt t) t Z.obj
-        (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β))) ∧
-    (D.h i ((P).wt t) ≤ 0 → IsIso ((P).augNegFactorMatrix
-      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
-    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-      (parameterTwist_homogeneous D Sc hc) bound)) i ((P).wt t) t Z.obj
-        (reservoirOutputEval D Sc m cutoff bound ΛP ΛR hP hR t β))) :=
-  have : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
-  centralFactorMatrix_content_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR
-    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-      (parameterTwist_homogeneous D Sc hc) bound)
-    (reservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR sy hc) i t Z β
-
 /-- Component inverses assemble on the literal augmented matrices. Each
 content may use its own coefficient-ideal bound and its own finite bend
 length; the entire input superfunctor is retained. -/
@@ -254,24 +232,5 @@ theorem centralAugmentedMatrix_isIsoOf [Fact Sc.PureNilpotent]
       ((P).augNegTargetIso i ((P).wt t) t Z.obj E).hom inferInstance
       ((centralFactorMatrix_content_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR hdot hwin i t Z β).2 hh)
       inferInstance ((P).augNegFactorMatrix_square c i ((P).wt t) t Z.obj E)
-
-/-- Component inverses assemble on the literal augmented matrices for the
-coefficient chosen from homogeneous scalars. -/
-theorem centralAugmentedMatrix_isIso
-    (sy : Symmetrizer D) (hc : Sc.Homogeneous) (i : I) (t : Sector I)
-    (Z : H D (parameterTwist D Sc) m cutoff bound ΛP ΛR t) :
-    (0 ≤ D.h i ((P).wt t) → IsIso ((P).augPosMat
-      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
-    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-      (parameterTwist_homogeneous D Sc hc) bound)) i ((P).wt t) t t Z.obj)) ∧
-    (D.h i ((P).wt t) ≤ 0 → IsIso ((P).augNegMat
-      (elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
-    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-      (parameterTwist_homogeneous D Sc hc) bound)) i ((P).wt t) t t Z.obj)) :=
-  have : Fact Sc.PureNilpotent := ⟨hc.noPure.pureNilpotent⟩
-  centralAugmentedMatrix_isIsoOf D Sc m cutoff bound ΛP ΛR hP hR
-    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-      (parameterTwist_homogeneous D Sc hc) bound)
-    (reservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR sy hc) i t Z
 
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

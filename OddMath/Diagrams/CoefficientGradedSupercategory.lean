@@ -106,11 +106,6 @@ theorem proj_eq_homogeneousComponent (hpar : P.IsParityHomogeneous) {X Y : P.Pre
     exact ((map_add _ g h).trans (congrArg₂ (· + ·) hg hh)).trans
       (map_add (Presentation.homogeneousComponent hpar p) g h).symm
 
-theorem toAddSubgroup_presentedSubmodule (a b : Obj S) (d : ℤ) :
-    (presentedSubmodule (𝒜 := 𝒜) (deg := deg) P a b d).toAddSubgroup =
-      presentedPart 𝒜 deg P a b d :=
-  rfl
-
 /-- The degree parts of a Hom group are a direct sum decomposition over `K`. -/
 theorem isInternal_presentedSubmodule (hP : IsHomogeneous 𝒜 deg P) (a b : Obj S) :
     letI := Linear.restrictScalars K R P.Presented

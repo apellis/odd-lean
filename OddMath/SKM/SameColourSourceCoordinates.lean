@@ -109,7 +109,7 @@ def swappedCoordinates (hG : Function.Injective (F.swapped.expansion cs μ)) :
     ⟨hG, F.swapped.expansion_surjective cs μ⟩).symm_apply_apply v
 
 theorem swappedPairedInclusion_off (v : (F.residual.Labels × ℕ) →₀ SYM D k)
-    (t : F.original.Labels) (ht : t ∉ Set.range F.paired) :
+    (t : F.unswapped.Labels) (ht : t ∉ Set.range F.paired) :
     F.swappedPairedInclusion v (F.exchange t) = 0 := by
   apply Finsupp.mapDomain_of_notMem_range
   rintro ⟨⟨r, b⟩, he⟩
@@ -118,7 +118,7 @@ theorem swappedPairedInclusion_off (v : (F.residual.Labels × ℕ) →₀ SYM D 
 theorem swappedCoordinates_cap_rightAction_off
     (hG : Function.Injective (F.swapped.expansion cs μ))
     (f : (pres D Sc).obj (ob D μ (P ++ Q)) ⟶ (pres D Sc).obj (ob D μ Z))
-    (m : ℕ) (d : SYM D k) (t : F.original.Labels) (ht : t ∉ Set.range F.paired) :
+    (m : ℕ) (d : SYM D k) (t : F.unswapped.Labels) (ht : t ∉ Set.range F.paired) :
     F.swappedCoordinates hG
       (MatchingBasisChoice.rightAction cs μ (sourceCapRows (Sc := Sc) μ P Q i m ≫ f) d)
         (F.exchange t) = 0 := by
@@ -131,7 +131,7 @@ theorem swappedCoordinates_cap_rightAction_off
 theorem swappedCoordinates_reverse_cross
     (hG : Function.Injective (F.swapped.expansion cs μ))
     (f : (pres D Sc).obj (ob D μ (P ++ up i :: dn i :: Q)) ⟶ (pres D Sc).obj (ob D μ Z))
-    (d : SYM D k) (t : F.original.Labels) (ht : t ∉ Set.range F.paired) :
+    (d : SYM D k) (t : F.unswapped.Labels) (ht : t ∉ Set.range F.paired) :
     F.swappedCoordinates hG (MatchingBasisChoice.rightAction cs μ
       (sameColourSourceCross (Sc := Sc) μ P Q i ≫ sameColourSourceReverseCross μ P Q i ≫ f) d)
         (F.exchange t) =
@@ -155,13 +155,13 @@ theorem swappedCoordinates_reverse_cross
 modulo the actual paired cap sector. -/
 theorem swappedCoordinates_unpaired_cross
     (hG : Function.Injective (F.swapped.expansion cs μ))
-    (s t : F.original.Labels) (hs : s ∉ Set.range F.paired) (ht : t ∉ Set.range F.paired)
+    (s t : F.unswapped.Labels) (hs : s ∉ Set.range F.paired) (ht : t ∉ Set.range F.paired)
     (d : SYM D k) :
     F.swappedCoordinates hG
-      (sameColourSourceCross (Sc := Sc) μ P Q i ≫ F.original.expansion cs μ (Finsupp.single s d))
+      (sameColourSourceCross (Sc := Sc) μ P Q i ≫ F.unswapped.expansion cs μ (Finsupp.single s d))
         (F.exchange t) = Finsupp.single (F.exchange s) (SYM.parityTwist D k (D.parity i) d) (F.exchange t) ∨
     F.swappedCoordinates hG
-      (sameColourSourceCross (Sc := Sc) μ P Q i ≫ F.original.expansion cs μ (Finsupp.single s d))
+      (sameColourSourceCross (Sc := Sc) μ P Q i ≫ F.unswapped.expansion cs μ (Finsupp.single s d))
         (F.exchange t) = -Finsupp.single (F.exchange s) (SYM.parityTwist D k (D.parity i) d) (F.exchange t) := by
   have hc : XChain (P ++ up i :: dn i :: Q)
       ((xCrL (up i) (dn i)).map (xwhL P Q)) (P ++ dn i :: up i :: Q) := by
@@ -172,14 +172,14 @@ theorem swappedCoordinates_unpaired_cross
   rcases F.unpaired s hs with hl | hh
   · left
     have H : sameColourSourceCross (Sc := Sc) μ P Q i ≫
-        F.original.expansion cs μ (Finsupp.single s d) =
+        F.unswapped.expansion cs μ (Finsupp.single s d) =
         F.swapped.expansion cs μ (Finsupp.single (F.exchange s)
           (SYM.parityTwist D k (D.parity i) d)) := by
-      rw [F.original.source_expansion_single, sameColourSourceCross_rightAction,
+      rw [F.unswapped.source_expansion_single, sameColourSourceCross_rightAction,
         F.swapped.source_expansion_single, hl, xev_append cs _ hc, sameColourSourceCross_eval]
     rw [H, F.swappedCoordinates_expansion]
   · right
-    rw [F.original.source_expansion_single, hh, xev_append cs _ hr, sameColourSourceReverseCross_eval,
+    rw [F.unswapped.source_expansion_single, hh, xev_append cs _ hr, sameColourSourceReverseCross_eval,
       sameColourSourceCross_rightAction, F.swappedCoordinates_reverse_cross hG _ _ t ht]
     rw [← F.swapped.source_expansion_single, F.swappedCoordinates_expansion]
 

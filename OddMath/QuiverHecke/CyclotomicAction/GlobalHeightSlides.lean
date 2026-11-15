@@ -30,12 +30,6 @@ universe u v
 variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
   [CommRing k] (Sc : SKM.Scalars D k) [Fintype I]
 
-theorem svec_hom_ext_homogeneous {V W : SVec k} {f g : V ⟶ W}
-    (h : ∀ (p : ZMod 2) (v : V), v ∈ V.part p → f v = g v) : f = g :=
-  SVec.hom_ext fun v => by
-    rw [← V.proj_apply_add v, SVec.hom_map_add, SVec.hom_map_add,
-      h 0 _ (V.proj_mem_part 0 v), h 1 _ (V.proj_mem_part 1 v)]
-
 section RightMul
 variable (i : I) (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
 
@@ -177,14 +171,6 @@ local notation "Dl" => heightCompositionRightMul D Sc i a ha n (cornerMulData_ap
 local notation "Cr" => heightCompositionSuperCrossing D Sc i i a ha n
 local notation "iso" => heightInductionCompositionIso D Sc i i a ha n
 local notation "e" => heightInductionFunctorComparison D Sc i i a ha n
-
-/-- The comparison component, written on tensor products. -/
-def heightComparisonHom (M : HeightModules D Sc a ha n) : tensor Pc (tensor Qc M) ⟶ tensor T M :=
-  (assoc Pc Qc M).inv ≫ whiskerRight (iso).hom M
-
-/-- Its inverse, written on tensor products. -/
-def heightComparisonInv (M : HeightModules D Sc a ha n) : tensor T M ⟶ tensor Pc (tensor Qc M) :=
-  whiskerRight (iso).inv M ≫ (assoc Pc Qc M).hom
 
 end Transport
 

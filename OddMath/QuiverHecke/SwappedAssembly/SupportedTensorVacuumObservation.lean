@@ -67,14 +67,14 @@ theorem tensorVacuumRowProjection_vacuum :
   simp only [fullSubcategory_eqToHom,eqToHom_trans]
 
 /-- The vacuum's original-weight row is its prescribed source chart. -/
-theorem tensorOriginalWordEntry_vacuum :
-    tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s endpt p up
+theorem tensorPullbackWordEntry_vacuum :
+    tensorPullbackWordEntry D Sc m cutoff ΛP ΛR L hP hR s endpt p up
       (tensorMatrixVacuum D Sc m cutoff ΛP ΛR L s) =
-      (tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom := by
-  dsimp only [tensorOriginalWordEntry,tensorOriginalRowEntry,LinearMap.comp_apply,
+      (tensorPullbackRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom := by
+  dsimp only [tensorPullbackWordEntry,tensorPullbackRowEntry,LinearMap.comp_apply,
     TensorEntryPullback.linear,LinearMap.coe_mk,AddHom.coe_mk]
   rw [tensorVacuumRowProjection_vacuum]
-  simp only [TensorEntryPullback.map,tensorOriginalRowSourceIso,Iso.trans_hom,Functor.mapIso_hom,
+  simp only [TensorEntryPullback.map,tensorPullbackRowSourceIso,Iso.trans_hom,Functor.mapIso_hom,
     Iso.symm_hom,eqToIso.hom,Category.assoc]
   rfl
 

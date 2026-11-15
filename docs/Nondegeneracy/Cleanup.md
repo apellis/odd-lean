@@ -315,6 +315,35 @@ declarations and were removed: `QuiverHecke.CyclotomicAction.ELVAppendSignedMovi
 `QuiverHecke.SpectatorSeparation`, `SKM.RouquierAdjacentLeftAdjunction` and
 `SKM.RouquierPiSCat`.
 
+## Streamlining before the merge
+
+After Phase 2 and the all-even specialization, the declaration graph was recomputed with
+the headline theorems as the only research roots: `nondegeneracy_of_symmetrizer`,
+`integral_nondegeneracy_of_symmetrizer`, the decategorification and Hom-basis theorems,
+the Phase 2 theorems `bwwLowerDegreeNondegeneracy`, `bwwGradedNondegeneracy`,
+`truncatedReesNondegeneracy` and `gradedCoefficientNondegeneracy`, the all-even
+specialization (`bwwPolynomials_evenNondegeneracy`, `quadSum_bwwPolynomials`,
+`bwwPolynomials_evenGradedNondegeneracy`, `bwwPolynomials_evenDirectSum`) and
+`nonempty_cScalars_iff`, together with every module on `master`, README, ERRATA and the
+headline non-vacuity checks. About 99% of the research code is reachable from these
+roots. The rest was removed:
+
+* 19 non-vacuity files that exercised intermediate statements of the Phase 2 and
+  all-even work (the headline checks `TruncatedReesNondegeneracy`, `BWWNondegeneracy`
+  and the all-even checks remain);
+* 240 unused declarations (about 3,500 lines) in 88 modules;
+* 15 modules: `Diagrams.OddNilHecke.ExteriorDeformation` (as on
+  `master`), `QuiverHecke.BWWGrading`, `BWWPresentation`, `VacuumRouteEvenComparison`,
+  `SwappedVacuumBasisEvaluation`, `SwappedAssembly.CentralInverse.PositiveVacuumWindow`,
+  `CyclotomicAction.ELVLowerDegreeOver`, `SKM.BWWBoxSums`, `BWWReesPureNilpotent`,
+  `CoupledBubbleEvaluation`, `ReservoirBubbleCoordinates` and the four `RouquierMate*` modules (the mate-series route to the mate projection
+  formula, which the headline proof no longer uses).
+
+Names with a process word were renamed: the unswapped frame of the same-colour inversion
+(`original` → `unswapped`), `native*` → `direct*`, `tensorOriginal` → `tensorPullback`.
+Topic notes that name removed declarations say so in their header; the removed code is in
+the history at commit `9ceca1d9`.
+
 ## Documentation
 
 The topic notes in `docs/Nondegeneracy/` went from 847 files to 84 (23,227 lines): notes of
@@ -328,7 +357,7 @@ which declarations prove them.
 * Names: the prefix "actual" was dropped from 67 declaration names, and "native" or
   "actual" was dropped from 66 more (a trailing `_native` became `_eq`, for statements
   that evaluate a construction). 15 names keep the word because dropping it would clash
-  with an existing name (for example `capRowNative`, `nativeStep`). Many module names in
+  with an existing name (for example `capRowNative`, `directStep`). Many module names in
   `QuiverHecke/CyclotomicAction/` carry the construction label `ELV`/`ELVOld`; renaming
   them touches several hundred files and conflicts with open pull requests.
 * Inlining single-use wrappers and merging duplicate statements inside the retained

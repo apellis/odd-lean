@@ -275,23 +275,6 @@ theorem weightedRelationSpan_le_extendedAtLeast (t t' : List I) (N : ℕ) :
   rw [he, Category.assoc] at hcomp
   exact extendedScore_le_extendedAtLeast D Sc t t' _ hcomp
 
-/-- Bounded weighted separation in the actual signed coefficient-extended
-category. No independence of an SKM image or existence of an SKM action is assumed. -/
-theorem weighted_quotient_injective_on_extendedAtMost {t t' : List I} {d N : ℕ}
-    (hN : d + 2 * t.length.choose 2 < N) :
-    Function.Injective (fun x : ExtendedAtMost D Sc t t' d =>
-      (WeightedRelationSpan D Sc t t' N).mkQ
-        (x : coefficientObj D Sc t ⟶ coefficientObj D Sc t')) := by
-  intro x y hxy
-  apply Subtype.ext
-  apply sub_eq_zero.mp
-  have hmem : (x : coefficientObj D Sc t ⟶ coefficientObj D Sc t') - y ∈
-      WeightedRelationSpan D Sc t t' N := (Submodule.Quotient.eq _).mp hxy
-  exact Submodule.disjoint_def.mp
-    (disjoint_extendedAtMost_extendedAtLeast D Sc (by omega)) _
-    (Submodule.sub_mem _ x.property y.property)
-    (weightedRelationSpan_le_extendedAtLeast D Sc t t' N hmem)
-
 @[simp] theorem sourceCoefficientHom_add_left {t t' : List I} (a b : SKM.SYM D k)
     (f : (pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D t')) :
     sourceCoefficientHom D Sc (a + b) f = sourceCoefficientHom D Sc a f + sourceCoefficientHom D Sc b f := by
@@ -356,17 +339,5 @@ theorem exists_mem_extendedAtMost (t t' : List I)
   intro i hi
   apply Submodule.smul_mem
   exact Submodule.subset_span ⟨i, Finset.le_sup (f := extensionDegree D) hi, rfl⟩
-
-/-- The weighted deformed quotient family detects every nonzero affine
-morphism with full abstract bubble coefficients. This is not yet an SKM action. -/
-theorem weighted_quotients_jointly_detect {t t' : List I}
-    (f : coefficientObj D Sc t ⟶ coefficientObj D Sc t')
-    (hf : ∀ N, (WeightedRelationSpan D Sc t t' N).mkQ f = 0) : f = 0 := by
-  obtain ⟨d, hd⟩ := exists_mem_extendedAtMost D Sc t t' f
-  let N := d + 2 * t.length.choose 2 + 1
-  have hinj := weighted_quotient_injective_on_extendedAtMost D Sc
-    (t := t) (t' := t') (d := d) (N := N) (by omega)
-  have h := hinj (a₁ := ⟨f, hd⟩) (a₂ := 0) (by simpa using hf N)
-  exact congrArg Subtype.val h
 
 end OddMath.QuiverHecke

@@ -155,9 +155,6 @@ def toBWWScalars (hD : ∀ i, D.parity i = 0) : BWWScalars D k where
 
 @[simp] theorem toBWWScalars_t (hD : ∀ i, D.parity i = 0) : (P.toBWWScalars hD).t = P.t := rfl
 
-theorem toBWWScalars_c (hD : ∀ i, D.parity i = 0) (i j : I) (p q : ℕ) :
-    (P.toBWWScalars hD).c i j p q = (P.Q i j).coeff (bwwExp p q) := rfl
-
 end BWWPolynomials
 
 namespace BWWScalars
@@ -235,57 +232,8 @@ theorem Q_eq_poly (hD : ∀ i, D.parity i = 0) (i j : I) :
   have := congrArg (fun P' => P'.Q i j) ((bwwPolynomialsEquiv (k := k) hD).left_inv P)
   exact this.symm
 
-/-- **(2.7).** For `i ≠ j` with `dᵢⱼ ≠ 0`,
-`Qᵢⱼ(x, y) = tᵢⱼ x^{dᵢⱼ} + Σ_{r < dᵢⱼ, s < dⱼᵢ} tᵢⱼ;ᵣₛ x^r y^s + tⱼᵢ y^{dⱼᵢ}`, where
-`tᵢⱼ;ᵣₛ` is the coefficient of `x^r y^s`. -/
-theorem eq_form {i j : I} (hij : i ≠ j) (hd : D.dn i j ≠ 0) :
-    P.Q i j = monomial (bwwExp (D.dn i j) 0) (P.t i j : k) +
-      ∑ r ∈ Finset.range (D.dn i j), ∑ s ∈ Finset.range (D.dn j i),
-        monomial (bwwExp r s) ((P.Q i j).coeff (bwwExp r s)) +
-      monomial (bwwExp 0 (D.dn j i)) (P.t j i : k) := by
-  ext m
-  rw [eq_bwwExp m]
-  generalize m 0 = a, m 1 = b
-  simp only [AddMonoidAlgebra.coeff_add, Finsupp.coe_add, Pi.add_apply]
-  rw [coeff_boxSum, coeff_monomial, coeff_monomial, P.t_of_ne hij,
-    P.t_of_ne (Ne.symm hij), ← P.coeff_symm i j 0 (D.dn j i)]
-  simp only [bwwExp_inj]
-  by_cases hab : a < D.dn i j ∧ b < D.dn j i
-  · have n1 : ¬(D.dn i j = a ∧ 0 = b) := by omega
-    have n2 : ¬(0 = a ∧ D.dn j i = b) := by omega
-    simp [hab, n1, n2]
-  by_cases h1 : D.dn i j = a ∧ 0 = b
-  · obtain ⟨rfl, rfl⟩ := h1
-    have n2 : ¬(0 = D.dn i j ∧ D.dn j i = 0) := by omega
-    simp [n2]
-  by_cases h2 : 0 = a ∧ D.dn j i = b
-  · obtain ⟨rfl, rfl⟩ := h2
-    simp [h1]
-  simp only [hab, h1, h2, ite_false, add_zero]
-  by_contra hc
-  have hs := P.support i j a b hc
-  omega
-
 /-- `x^0 y^0` is the zero exponent. -/
 @[simp] theorem _root_.OddMath.SKM.bwwExp_zero_zero : bwwExp 0 0 = 0 := by simp [bwwExp]
-
-/-- For `i ≠ j` with `dᵢⱼ = 0`, `Qᵢⱼ` is the constant `tᵢⱼ`. -/
-theorem eq_const {i j : I} (hij : i ≠ j) (hd : D.dn i j = 0) :
-    P.Q i j = C (P.t i j : k) := by
-  ext m
-  rw [eq_bwwExp m, coeff_C, P.t_of_ne hij, hd]
-  generalize m 0 = a, m 1 = b
-  rw [← bwwExp_zero_zero]
-  simp only [bwwExp_inj]
-  by_cases h : a = 0 ∧ b = 0
-  · obtain ⟨rfl, rfl⟩ := h
-    simp
-  · have h' : ¬(0 = a ∧ 0 = b) := by omega
-    simp only [h', ite_false]
-    by_contra hc
-    have hs := P.support i j a b hc
-    have hd' : D.dn j i = 0 := (ScalarData.dn_eq_zero_iff i j).mp hd
-    omega
 
 end BWWPolynomials
 

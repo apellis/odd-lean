@@ -74,22 +74,6 @@ theorem appendTensorRightDot_mem_fixed (t : T) (ht : t ∈ appendTensorFixed D S
 
 /-! ## Coordinate maps -/
 
-/-- Shift of the dot exponent of left-crossing coefficients, with the twist `θ`. -/
-def appendTensorLeftShift :
-    ((Fin (n + 1) × ℕ) →₀ M) →+ ((Fin (n + 1) × ℕ) →₀ M) :=
-  (Finsupp.mapDomain.addMonoidHom fun p : Fin (n + 1) × ℕ => (p.1, p.2 + 1)).comp
-    (Finsupp.mapRange.addMonoidHom θ)
-
-/-- Shift of the polynomial coefficients, with the twist `θ`. -/
-def appendTensorPolyShift : (ℕ →₀ M) →+ (ℕ →₀ M) :=
-  (Finsupp.mapDomain.addMonoidHom Nat.succ).comp (Finsupp.mapRange.addMonoidHom θ)
-
-/-- The degree-zero correction `Σ c'_j x^m ψ'(1) θ f_(j,m)`. -/
-def appendTensorLeftDegree : ((Fin (n + 1) × ℕ) →₀ M) →+ M :=
-  Finsupp.liftAddHom fun p =>
-    (DistribSMul.toAddMonoidHom M (appendShuffleElement D Sc i (appendRun n p.1) *
-      affineLastDot D Sc i n ^ p.2 * appendAlgebra D Sc i n 1)).comp θ
-
 /-! ## The slides -/
 
 end OddMath.QuiverHecke

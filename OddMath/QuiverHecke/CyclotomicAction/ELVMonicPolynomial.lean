@@ -102,7 +102,7 @@ theorem affineNormalizedEndpointNormPolynomial_eval (i : I) (v : List I) :
           ((((endpointOldDotEntries D Sc (v ++ [i]) 0 v).map fun z =>
             (endpointNormLeadingUnit D Sc z.1 i)⁻¹).prod : kˣ) : k) *
           endpointNorm D Sc i [] v) := by
-  have h := eval₂_actual_normalizedEndpointNormPolynomial D Sc i [] v
+  have h := eval₂_normalizedEndpointNormPolynomial_dotE D Sc i [] v
   simp only [List.nil_append, List.length_nil, zero_add] at h
   change Polynomial.eval₂ (RingHom.id _)
     (affineUnitEndHom D Sc cutoff _ (dotE D Sc (v ++ [i]) v.length))

@@ -81,10 +81,10 @@ private theorem inverseInput_linear {x y z : X} (h : x = y) :
   change (𝟭 _).Linear k
   infer_instance
 
-local instance originalInputInverse_additive (z : X) :
+local instance pullbackInputInverse_additive (z : X) :
     (tensorHomEquivalence D Sc m cutoff L ΛP ΛR z).inverse.Additive :=
   inverseInput_additive D Sc m cutoff ΛP ΛR L (probeWeight_vacuum D ΛP).symm
-local instance originalInputInverse_linear (z : X) :
+local instance pullbackInputInverse_linear (z : X) :
     (tensorHomEquivalence D Sc m cutoff L ΛP ΛR z).inverse.Linear k :=
   inverseInput_linear D Sc m cutoff ΛP ΛR L (probeWeight_vacuum D ΛP).symm
 
@@ -95,11 +95,11 @@ local notation "E" => tensorHomEquivalence D Sc m cutoff L ΛP ΛR (ReservoirWor
 local notation "P" => elvProbeReservoir D Sc m cutoff N ΛP ΛR hP hR
 
 /-- The specified source-word detector in its original input-weight presentation. -/
-def tensorOriginalRowSource :=
+def tensorPullbackRowSource :=
   (E).inverse.obj (tensorSourceFamily D Sc m cutoff ΛP ΛR L s (0,cS)).obj
 
 /-- Pull the actual supported matrix row through its proved selected tensor-Hom target chart. -/
-def tensorOriginalRowEntry {a : Obj (SKM.sig D)}
+def tensorPullbackRowEntry {a : Obj (SKM.sig D)}
     (hEnd : (ΛP - contentWeight D (0 : I →₀ ℕ)) + (-ΛR + contentWeight D (0 : I →₀ ℕ)) = a.endR)
     (p : SPath a.word (0,cS) (0,0))
     (A : probeOldWeightSpace D Tw m ΛP (-ΛP) ⟶
@@ -120,17 +120,17 @@ def tensorRowTargetIso {a : Obj (SKM.sig D)}
         (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hup))).symm
 
 /-- Original-weight observation uses the specified global word chart, without a supplied comparison. -/
-def tensorOriginalWordEntry {a : Obj (SKM.sig D)}
+def tensorPullbackWordEntry {a : Obj (SKM.sig D)}
     (hEnd : (ΛP - contentWeight D (0 : I →₀ ℕ)) + (-ΛR + contentWeight D (0 : I →₀ ℕ)) = a.endR)
     (p : SPath a.word (0,cS) (0,0)) (hup : ∀ c ∈ a.word, c.l.1 = true) :=
-  tensorOriginalRowEntry D Sc m cutoff ΛP ΛR L hP hR s (a := a) hEnd p
+  tensorPullbackRowEntry D Sc m cutoff ΛP ΛR L hP hR s (a := a) hEnd p
     (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hup)
     (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s (a := a) p hup)
 
 include hP hR in
 /-- The inverse input-weight transport retains the same actual source-word Hom. -/
-def tensorOriginalRowSourceIso :
-    tensorOriginalRowSource D Sc m cutoff ΛP ΛR L s ≅
+def tensorPullbackRowSourceIso :
+    tensorPullbackRowSource D Sc m cutoff ΛP ΛR L s ≅
       TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR
         (tensorSourcePath D ΛP ΛR s) (tensorSourceLabels_up D ΛP ΛR s) :=
   (E).inverse.mapIso

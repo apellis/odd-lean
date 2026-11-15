@@ -265,20 +265,6 @@ theorem nondegeneracyConjecture_of_universal
 
 variable (D)
 
-/-- **The graded-coefficient statement is one universal instance**: it holds if and only if
-the conjecture holds for the universal lower-degree parameters. -/
-theorem gradedCoefficientNondegeneracy_iff :
-    GradedCoefficientNondegeneracy.{u, v, max u v} D sy ↔
-      NondegeneracyConjecture (normalizations D sy) := by
-  constructor
-  · intro hG
-    let _ : GradedRing (grading D sy) := MvPolynomial.weightedGradedAlgebra _ (weight D sy)
-    exact hG (ParameterRing D sy)
-      (Submodule (UniversalCoefficientRing.UnitRing D) (ParameterRing D sy)) (grading D sy)
-      (two_isUnit D sy) (scalars D sy) (gradedHomogeneous D sy) (normalizations D sy)
-  · intro hU k _ σ _ _ 𝒜 _ h₂ Sc hSc cs
-    exact nondegeneracyConjecture_of_universal sy hU h₂ hSc.lowerDegree cs
-
 /-- The universal instance gives the graded-coefficient statement in every universe. -/
 theorem gradedCoefficientNondegeneracy_of_universal
     (hU : NondegeneracyConjecture (normalizations D sy)) :
