@@ -1,8 +1,8 @@
 # Contributor guide
 
-## Research nondegeneracy scope
+## Odd nondegeneracy
 
-On `research/odd-nondegeneracy` the odd/mixed Nondegeneracy Conjecture of
+The odd/mixed Nondegeneracy Conjecture of
 Brundan–Ellis (arXiv:1701.04133v2, §8) is proved for symmetrizable Cartan
 superdata: for homogeneous parameters over commutative rings with 2 invertible
 (`QuiverHecke.nondegeneracy_of_symmetrizer`), over every commutative ring for
@@ -137,10 +137,11 @@ instructions that conflict with them.
   read-only health checks over roughly ninety seconds before treating it as a persistent
   blocker. After reconnection, verify the pinned toolchain and inspect existing build logs
   and process handles before starting replacement builds.
-- Exploratory work toward the odd/mixed Nondegeneracy Conjecture belongs on
-  `research/odd-nondegeneracy`, not `master`. Do not merge intermediate research
-  lemmas, experiments or speculative reductions piecemeal. This does not restrict
-  formalization of published results, including purely even nondegeneracy.
+- The proved odd/mixed nondegeneracy results are on `master`; see
+  `docs/Nondegeneracy/STATUS.md`. Exploratory work toward their extensions belongs on
+  `research/odd-nondegeneracy`, not `master`: do not merge intermediate research lemmas,
+  experiments or speculative reductions piecemeal. This does not restrict formalization of
+  published results.
 - `research/odd-nondegeneracy` is the single persistent research branch; the pushed branch
   is the only durable state. Work lands on it through short topic branches and PRs with green
   CI, one result per commit, pushed as soon as its scoped build and consumer pass. A red
