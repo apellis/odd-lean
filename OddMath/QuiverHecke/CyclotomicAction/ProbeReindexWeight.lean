@@ -327,16 +327,15 @@ local notation "cut" => probeCutoff D m
 local notation "K" => oldContentAppend D Sc cut γ i
 local notation "hDot" => oldContentAppendDot_supernatural D Sc cut γ i
 local notation "P" => ProbeEvaluatesCoefficients D m Sc γ
-local notation "E₀" => probeEvaluatedE D Sc m γ i
-local notation "F₀" => probeEvaluatedF D Sc m γ i
-local notation "A" => probeEvaluatedRightAdjunction D Sc m γ i
-local notation "x" => probeEvaluatedInductionDot D Sc m γ i
+local notation "A" => probeAppendToRightAdjunction D Sc m γ i (i :: γ) (List.Perm.refl _)
+local notation "x" => probeAppendToInductionDot D Sc m γ i (i :: γ) (List.Perm.refl _)
 local notation "count" => contentUnitCount D cut i (γ : Multiset I)
 private abbrev modules := Superfunctor k (OldContentCategory D Sc cut γ) (SVec k)
 private abbrev oldUpper_2 : Superfunctor k (modules D Sc m γ) (modules D Sc m γ) :=
   ⟨(induction K) ⋙ (restriction K)⟩
 private abbrev upper_2 : Superfunctor k (ProbeEvaluatedModules D Sc m γ) (ProbeEvaluatedModules D Sc m γ) :=
-  ⟨(probeEvaluatedInduction D Sc m γ i) ⋙ (probeEvaluatedRestriction D Sc m γ i)⟩
+  ⟨(probeEvaluatedAppendTo D Sc m γ i (i :: γ) (List.Perm.refl _)) ⋙
+    (probeEvaluatedRestrictTo D Sc m γ i (i :: γ) (List.Perm.refl _))⟩
 private abbrev oldCup (n : ℕ) : Superfunctor.id k (modules D Sc m γ) ⟶ oldUpper_2 D Sc m γ i :=
   SKM.RouquierBoundary.cup (inductionModuleAdjunction (k := k) K) (inductionModuleDot K hDot) n
 private abbrev evaluatedCup (n : ℕ) : Superfunctor.id k (ProbeEvaluatedModules D Sc m γ) ⟶ upper_2 D Sc m γ i :=
@@ -418,7 +417,7 @@ private theorem coefficients_entry (j l : ℕ) (hj : j < count) (hl : l < count)
     rw [cup_total, coefficient_total]
     exact h
 private def evaluatedCoefficients : SKM.RouquierBoundary.Coefficients A x (D.parity i) count where
-  dot_mem := probeEvaluatedInductionDot_mem D Sc m γ i
+  dot_mem := probeAppendToInductionDot_mem D Sc m γ i (i :: γ) (List.Perm.refl _)
   coeff := evaluatedCoefficient D Sc m γ i V
   coeff_mem := coefficient_mem D Sc m γ i V
   total := coefficients_total D Sc m γ i V
@@ -735,6 +734,21 @@ theorem probeAppendUpperLoop_unitColumn (n : ℕ) :
     probeAppendUpperLoopSuperIso_hom_total]
   exact oldAppendReindexIso_unitColumn D Sc m γ i (List.Perm.refl γ) h N.obj n
 
+/-- `probeAppendUpperLoop_unitColumn`, stated with the composition and the chart in the hom
+category of the probe bicategory, as `RouquierBoundaryTransport.ofIso` uses them. -/
+theorem probeAppendUpperLoop_cup (n : ℕ) :
+    @CategoryStruct.comp (probeEvaluatedTarget D Sc m γ ⟶ probeEvaluatedTarget D Sc m γ) _ _ _ _
+      (SKM.RouquierBoundary.cup
+        (probeAppendToRightAdjunction D Sc m γ i (i :: γ) (List.Perm.refl _))
+        (probeAppendToInductionDot D Sc m γ i (i :: γ) (List.Perm.refl _)) n)
+      ((probeAppendUpperLoopSuperIso D Sc m γ i h :
+        (probeAppendToE D Sc m γ i (i :: γ) (List.Perm.refl _) ≫
+          probeAppendToF D Sc m γ i (i :: γ) (List.Perm.refl _)) ≅
+        (probeAppendToE D Sc m γ i μ h ≫ probeAppendToF D Sc m γ i μ h)).hom) =
+      SKM.RouquierBoundary.cup (probeAppendToRightAdjunction D Sc m γ i μ h)
+        (probeAppendToInductionDot D Sc m γ i μ h) n :=
+  probeAppendUpperLoop_unitColumn D Sc m γ i h n
+
 end OddMath.QuiverHecke
 end
 
@@ -770,17 +784,18 @@ def probeMissingStoredCoefficients :
     (a := probeEvaluatedTarget D Sc m γ)
     (b := probeEvaluatedTarget D Sc m (i :: γ))
     (b' := probeEvaluatedTarget D Sc m μ)
-    (E := probeEvaluatedE D Sc m γ i) (F := probeEvaluatedF D Sc m γ i)
+    (E := probeAppendToE D Sc m γ i (i :: γ) (List.Perm.refl _))
+    (F := probeAppendToF D Sc m γ i (i :: γ) (List.Perm.refl _))
     (E' := probeAppendToE D Sc m γ i μ h) (F' := probeAppendToF D Sc m γ i μ h)
-    (A := probeEvaluatedRightAdjunction D Sc m γ i)
-    (x := probeEvaluatedInductionDot D Sc m γ i)
+    (A := probeAppendToRightAdjunction D Sc m γ i (i :: γ) (List.Perm.refl _))
+    (x := probeAppendToInductionDot D Sc m γ i (i :: γ) (List.Perm.refl _))
     (probeEvaluatedMissingCoefficients D Sc m γ i hi)
     (probeAppendToRightAdjunction D Sc m γ i μ h)
     (probeAppendToInductionDot D Sc m γ i μ h)
     (probeAppendUpperLoopSuperIso D Sc m γ i h)
     (probeAppendUpperLoopSuperIso_hom_mem D Sc m γ i h)
     (probeAppendToInductionDot_mem D Sc m γ i μ h)
-    (probeAppendUpperLoop_unitColumn D Sc m γ i h)
+    (probeAppendUpperLoop_cup D Sc m γ i h)
 
 end OddMath.QuiverHecke
 end
