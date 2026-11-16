@@ -22,7 +22,7 @@ open CategoryTheory StringDiagrams Presentation
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k}
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo}
 
 theorem lin_idg (μ : X) (t : List (Letter I)) :
     (pres D Sc).lin (idg (k := k) D μ t) = cl D Sc μ t t [] := by
@@ -31,7 +31,6 @@ theorem lin_idg (μ : X) (t : List (Letter I)) :
 theorem lin_sum {a b : Obj (sig D)} {ι : Type*} (s : Finset ι) (f : ι → LinDiagram k a b) :
     (pres D Sc).lin (∑ i ∈ s, f i) = ∑ i ∈ s, (pres D Sc).lin (f i) :=
   (pres D Sc).linFunctor.map_sum _ _
-
 
 /-- Unfold a relation of `pres D Sc` into classes of normal-form diagrams. -/
 macro "skm_rel_simp " h:ident : tactic =>
@@ -82,7 +81,7 @@ theorem cl_quadNe (i j : I) (ν : X) (hij : i ≠ j) (hd : D.d i j ≠ 0) :
     cl D Sc ν [up i, up j] [up i, up j] (crossL [] i j [] ++ crossL [] j i []) =
       (Sc.t i j : k) • cl D Sc ν [up i, up j] [up i, up j] (dotsL [] i [up j] (D.dn i j)) +
       (Sc.t j i : k) • cl D Sc ν [up i, up j] [up i, up j] (dotsL [up i] j [] (D.dn j i)) +
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         Sc.s i j p q • cl D Sc ν [up i, up j] [up i, up j]
           (dotsL [up i] j [] q ++ dotsL [] i [up j] p) := by
   have := lin_relation Sc (.quadNe i j ν hij hd)

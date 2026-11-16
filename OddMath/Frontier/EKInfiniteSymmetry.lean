@@ -28,7 +28,6 @@ theorem conjugation : psi2*psi1*psi2 = psi1⁻¹ := by
   ext x
   exact EKAutomorphisms.psi2_psi1_psi2 x
 
-
 /-- Actual integral h-basis coordinate detects every multiple of h1². -/
 theorem square_smul_injective : Function.Injective (fun z : ℤ => z • (h 1*h 1)) := by
   intro a b hab

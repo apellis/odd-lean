@@ -362,6 +362,4 @@ theorem cl_interchange (l m v : List I) (g h : Shape I)
   exact (pres D Sc).diag_interchange_of_layers () l m v g h _ _
     (by simp only [layers_mkD, layList, e₁]; rfl) (by simp only [layers_mkD, layList, e₂]; rfl)
 
-
-
 end OddMath.QuiverHecke

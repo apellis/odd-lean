@@ -119,7 +119,7 @@ theorem crossing_braid_eq (t : k) (ht : t^2 = -1) (ν μ : X) (i j : I)
       zsign k (D.parity i * (D.parity j+s)) •
         (cpow (dotLast3 t ν μ i j i h) s ≫ cpow (dotMiddle3 t ν μ i j i h) 0 ≫
           cpow (dotFirst3 t ν μ i j i h) (D.dn i j-1-s)) +
-    ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+    ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
       Sc.s i j p q • ∑ s ∈ Finset.range p,
         zsign k (D.parity i * (D.parity j+s)) •
           (cpow (dotLast3 t ν μ i j i h) s ≫ cpow (dotMiddle3 t ν μ i j i h) q ≫

@@ -1,3 +1,113 @@
+import OddMath.QuiverHecke.CyclotomicAction.SignedIntertwiner
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTransport
+import OddMath.QuiverHecke.CyclotomicAction.GlobalHeight
+import OddMath.QuiverHecke.CyclotomicAction.AppendBalance
+import OddMath.SKM.ELVScalarSpecialization
+import OddMath.SKM.ELVScalarParity
+import OddMath.QuiverHecke.CoefficientGrading
+import OddMath.QuiverHecke.TruncatedReesGrading
+import OddMath.QuiverHecke.CyclotomicAction.PrefixScalarRelations
+import OddMath.QuiverHecke.CyclotomicAction.BoundaryNumerator
+import OddMath.QuiverHecke.CyclotomicAction.ContentBlockExtension
+import OddMath.QuiverHecke.CyclotomicAction.CyclotomicQuotientTop
+import OddMath.QuiverHecke.CyclotomicAction.ChronologicalTails
+import OddMath.QuiverHecke.CyclotomicAction.OffDiagonalLong
+import OddMath.QuiverHecke.CyclotomicAction.EvenBoundaryRecurrence
+import OddMath.QuiverHecke.CyclotomicAction.AppendContent
+import OddMath.QuiverHecke.CyclotomicAction.AppendSourceRows
+import OddMath.QuiverHecke.CyclotomicAction.ContentMatrix
+import OddMath.QuiverHecke.CyclotomicAction.ContentTriple
+import OddMath.QuiverHecke.CyclotomicAction.InductionGridMate
+import OddMath.QuiverHecke.CyclotomicAction.ContentModule
+import OddMath.QuiverHecke.CyclotomicAction.ParameterUntwist
+import OddMath.QuiverHecke.CyclotomicAction.ModuleInduction
+import OddMath.QuiverHecke.CyclotomicAction.ContentModules
+import OddMath.QuiverHecke.CyclotomicAction.CategoryGrading
+import OddMath.QuiverHecke.CyclotomicAction.InductionTripleBraid
+import OddMath.QuiverHecke.CyclotomicAction.KernelEntryDegrees
+import OddMath.QuiverHecke.CyclotomicAction.ProbeScalarModules
+import OddMath.QuiverHecke.CyclotomicAction.CapInputMatrices
+import OddMath.QuiverHecke.CyclotomicAction.EvenInputMatrix
+import OddMath.QuiverHecke.CyclotomicAction.KernelDegree
+import OddMath.QuiverHecke.CyclotomicAction.KernelMatrixEvaluation
+import OddMath.QuiverHecke.CyclotomicAction.IndRes
+import OddMath.QuiverHecke.CyclotomicAction.LeadingSourceTransport
+import OddMath.QuiverHecke.CyclotomicAction.OutputTransport
+import OddMath.QuiverHecke.CyclotomicAction.PrependCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.MovingShiftRelations
+import OddMath.QuiverHecke.CyclotomicAction.VacuumGrading
+import OddMath.QuiverHecke.CyclotomicAction.TruncatedAppend
+import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightRouquier
+import OddMath.QuiverHecke.CyclotomicAction.WeightedAppend
+import OddMath.QuiverHecke.CyclotomicAction.VacuumTensorFaithful
+import OddMath.QuiverHecke.CyclotomicAction.WeightedPower
+import OddMath.SKM.BubbleELVPolynomialGrading
+import OddMath.SKM.BubbleELVPolynomialGradingOver
+import OddMath.QuiverHecke.CyclotomicAction.CoefficientTransport
+import OddMath.QuiverHecke.CyclotomicAction.EndpointPolynomials
+import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwiner
+import OddMath.QuiverHecke.CyclotomicAction.ParabolicTransport
+
+import OddMath.QuiverHecke.OutputShuffle
+
+import OddMath.QuiverHecke.CyclotomicAction.AppendMackey
+import OddMath.QuiverHecke.CyclotomicAction.LeadingMove
+import OddMath.Algebra.DegreeShiftRowDivision
+import OddMath.QuiverHecke.CyclotomicAction.OffDiagonalInput
+import OddMath.Algebra.LowPolynomialCoordinates
+
+
+
+
+import OddMath.QuiverHecke.InputParabolic
+import OddMath.QuiverHecke.PrependBasis
+import OddMath.QuiverHecke.AppendParabolic
+import OddMath.QuiverHecke.AppendShuffleRuns
+import OddMath.QuiverHecke.AppendBasis
+import OddMath.SKM.FiniteColourRestriction
+import OddMath.SKM.FiniteColourContextRestriction
+import OddMath.SKM.FiniteColourIdealRestriction
+import OddMath.SKM.FiniteColourContextLift
+import OddMath.SKM.FiniteColourIdealDescent
+import OddMath.SKM.RouquierGrading
+import OddMath.SKM.RouquierMulticolour
+import OddMath.SKM.RouquierPrincipalWord
+import OddMath.SKM.RouquierHomMateCoordinates
+import OddMath.SKM.RouquierHomPrincipal
+import OddMath.SKM.RouquierHomPreCoordinates
+import OddMath.SKM.RouquierHomPreInverse
+import OddMath.SKM.RouquierHomPreSuperInverse
+import OddMath.SKM.RouquierHomPreNegativePowers
+import OddMath.SKM.RouquierHomPreMateSlide
+import OddMath.SKM.RouquierHomMixedInterchange
+import OddMath.SKM.RouquierHomDistinctMixed
+import OddMath.SKM.RouquierHomDistinctMixedPre
+import OddMath.SKM.RouquierHomDistinctMixedDots
+import OddMath.SKM.RouquierHomDistinctMixedPostDots
+import OddMath.SKM.RouquierHomDistinctMixedPostDotsIso
+import OddMath.SKM.RouquierHomDistinctPost
+import OddMath.SKM.RouquierHomDistinctPostShift
+import OddMath.SKM.RouquierHomDistinctPreMate
+import OddMath.SKM.RouquierHomMixedRational
+import OddMath.SKM.RouquierHomPostCoordinates
+import OddMath.SKM.RouquierHomPostPrincipal
+import OddMath.SKM.RouquierHomPostPowers
+import OddMath.SKM.RouquierHomPostCrossingSlide
+import OddMath.SKM.RouquierHomPostInverse
+import OddMath.SKM.RouquierHomPostNaturalInverse
+import OddMath.SKM.RouquierSupernaturalInverse
+import OddMath.SKM.RouquierHomReservoirPowers
+import OddMath.SKM.RouquierLeftWindowInverse
+import OddMath.SKM.RouquierFTriangle
+import OddMath.SKM.RouquierNormalizedHomAdjunction
+import OddMath.SKM.RouquierHomSuperAdjunction
+import OddMath.SKM.RouquierCompositeAdjunction
+import OddMath.SKM.DistinctSourceDescent
+import OddMath.SKM.SourceAdaptedChoices
+import OddMath.SKM.SourceAdaptedDistinctChoices
+import OddMath.SKM.StrictResidualChoice
+import OddMath.SKM.SameColourTargetDescent
+import OddMath.SKM.PairedTargetIndependence
 import OddMath.QuiverHecke.Spanning
 import OddMath.QuiverHecke.Basis
 import OddMath.QuiverHecke.HnBasis
@@ -5,6 +115,14 @@ import OddMath.QuiverHecke.Centre
 import OddMath.QuiverHecke.CentreFinite
 import OddMath.QuiverHecke.Realization.Functor
 import OddMath.QuiverHecke.Realization.SigmaRelations
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerRight
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerChains
+import OddMath.QuiverHecke.CyclotomicAbsentColour
+import OddMath.QuiverHecke.CyclotomicAction.GlobalInduction
+import OddMath.QuiverHecke.CyclotomicAction.BoundaryDivision
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
+import OddMath.QuiverHecke.CyclotomicAction.SuperAdjunction
+import OddMath.QuiverHecke.CyclotomicAction.LastStrand
 import OddMath.QuiverHecke.CliffordExchangeExamples
 import OddMath.QuiverHecke.SignedNilHecke
 import OddMath.QuiverHecke.SignedNilHeckeExamples
@@ -340,6 +458,13 @@ import OddMath.Diagrammatics.Even.Cancellation
 import OddMath.Diagrammatics.Even.Fixtures
 import OddMath.Diagrammatics.Even
 import OddMath.Diagrammatics.OddDots
+import OddMath.Diagrams.CoefficientGradedSupercategory
+import OddMath.Diagrams.BasisGrading
+import OddMath.Diagrams.BoxProductCoefficientGraded
+import OddMath.Diagrams.SuperalgebraGradedBase
+import OddMath.Diagrams.CoefficientGrading
+import OddMath.Diagrams.GradedTensor
+import OddMath.Diagrams.RestrictScalars
 import OddMath.Diagrams.OddNilHecke.Action
 import OddMath.Diagrams.OddNilHecke.Basic
 import OddMath.Diagrams.OddNilHecke.Comparison
@@ -832,8 +957,10 @@ import OddMath.PbwPresentation
 import OddMath.PbwSpanning
 import OddMath.QuiverHecke.Examples
 import OddMath.SKM.Basic
+import OddMath.SKM.PureMonomials
 import OddMath.SKM.Beta
 import OddMath.SKM.Bubbles
+import OddMath.SKM.BubblesNegativeHeight
 import OddMath.SKM.BubbleSeries
 import OddMath.SKM.BubbleSlideObstruction
 import OddMath.SKM.BubbleSlideRaw
@@ -975,6 +1102,9 @@ import OddMath.SKM.PsiRoundtrips
 import OddMath.SKM.PsiInverseLaws
 import OddMath.SKM.PsiFunctorInverses
 import OddMath.SKM.Grading
+import OddMath.SKM.BWWScalars
+import OddMath.SKM.BWWBoxSum
+import OddMath.SKM.BWWPresentation
 import OddMath.SKM.Grassmannian
 import OddMath.SKM.GrassmannianCor
 import OddMath.SKM.GrassmannianOdd
@@ -1057,6 +1187,25 @@ import OddMath.SKM.PitchforkCap
 import OddMath.SKM.PitchforkCup
 import OddMath.SKM.PitchforkRot
 import OddMath.SKM.MoreGenerators
+import OddMath.SKM.CScalarsExistence
+import OddMath.QuiverHecke.NondegeneracyIndependentRoots
+import OddMath.SKM.ScalarChange
+import OddMath.SKM.ScalarChangePresentation
+import OddMath.SKM.ScalarChangeBaseChange
+import OddMath.SKM.ScalarChangeBubbleFamily
+import OddMath.SKM.ScalarChangeMatchingFamily
+import OddMath.SKM.ScalarChangeCoefficientBasis
+import OddMath.SKM.ScalarChangeIntegral
+import OddMath.SKM.IntegralParameters
+import OddMath.SKM.GradedParameters
+import OddMath.SKM.BWWGradedParameters
+import OddMath.SKM.GradedImage
+import OddMath.SKM.LowerDegreeParameters
+import OddMath.SKM.TruncatedReesParameters
+import OddMath.SKM.BWWReesParameters
+import OddMath.SKM.GroundRingNondegeneracy
+import OddMath.SKM.IntegralNondegeneracy
+import OddMath.QuiverHecke.GrothendieckIsomorphism
 import OddMath.SKM.Presentation
 import OddMath.SKM.RelationsNF
 import OddMath.SKM.Rewriting
@@ -1079,4 +1228,662 @@ import OddMath.CoveringQuantum.FiniteWeightDualityExamples
 import OddMath.CoveringQuantum.UDot.FiniteWeightAlgebra
 import OddMath.CoveringQuantum.UDot.FiniteWeightAlgebraExamples
 import OddMath.CoveringQuantum.UDot.FiniteWeightForm
+import OddMath.CoveringQuantum.UDot.WindowForm
 import OddMath.CoveringQuantum.UDot.FiniteWeightFormExamples
+import OddMath.SKM.MatchingChoiceTransition
+import OddMath.SKM.RightClosure
+import OddMath.QuiverHecke.WeightedSeparation
+import OddMath.QuiverHecke.CyclotomicSeparation
+import OddMath.SKM.RightMateMatchings
+import OddMath.SKM.BubblePolynomialExterior
+import OddMath.SKM.RightCapAttachment
+import OddMath.SKM.PositiveDotTransport
+import OddMath.SKM.BubbleCoefficientBasis
+import OddMath.SKM.SymComponentBasis
+import OddMath.SKM.SymProductFormula
+import OddMath.SKM.BubbleCoefficientGrading
+import OddMath.SKM.BubbleCoefficientGradedBase
+import OddMath.QuiverHecke.CoefficientExtension
+import OddMath.SKM.UpwardWordTransport
+import OddMath.SKM.ClosureCoefficientExpansion
+import OddMath.QuiverHecke.WeightedCoefficientSeparation
+import OddMath.SKM.PairingRotation
+import OddMath.SKM.PositiveClosureDetector
+import OddMath.SKM.TwistedClosureDetector
+import OddMath.SKM.SYMLowerTwist
+import OddMath.SKM.UpwardTopDots
+import OddMath.SKM.WeakMatchingChoice
+import OddMath.SKM.WeakMateMatchings
+import OddMath.QuiverHecke.WeightedDeformationIdeal
+import OddMath.SKM.BubbleCoefficientGenerators
+import OddMath.SKM.TopMatchingChoice
+import OddMath.SKM.WeakMateChoice
+import OddMath.SKM.BubbleCoefficientParity
+import OddMath.SKM.MatchingCoefficientPlacement
+import OddMath.SKM.MatchingTargetExpansion
+import OddMath.SKM.TopClosureCoefficients
+import OddMath.SKM.WeakMateCoverage
+import OddMath.SKM.WeakMateLayers
+import OddMath.SKM.BubbleELVCoefficients
+import OddMath.SKM.BubbleELVSpecialization
+import OddMath.SKM.BubbleELVGrading
+import OddMath.QuiverHecke.ELVCyclotomicSeparation
+import OddMath.SKM.MatchingChoiceCast
+import OddMath.SKM.TopMatchingChoiceList
+import OddMath.SKM.WeakMatchingTargetExpansion
+import OddMath.SKM.PairedSorting
+import OddMath.SKM.WeakMateIndependence
+import OddMath.SKM.ContextualBoundaryInduction
+import OddMath.SKM.ContextualNondegeneracy
+import OddMath.QuiverHecke.UpwardCoefficientDetection
+import OddMath.QuiverHecke.BoundedCyclicRecovery
+import OddMath.QuiverHecke.AlphaPositional
+import OddMath.SKM.BottomMatchingChoice
+import OddMath.SKM.ContextualCrossDecorations
+import OddMath.SKM.ContextualCrossFamily
+import OddMath.SKM.ContextualCupFamily
+import OddMath.SKM.DistinctContextualCrossing
+import OddMath.SKM.DistinctExchangeIndependence
+import OddMath.SKM.ResidualCoefficientLift
+import OddMath.SKM.SeparatingFields
+import OddMath.SKM.NormalizationParameterGroup
+import OddMath.SKM.UniversalCoefficientRing
+import OddMath.SKM.UniversalPolynomialParameters
+import OddMath.SKM.UniversalCoefficientReduced
+import OddMath.SKM.UniversalCoefficientRationalization
+import OddMath.SKM.UniversalParameterFields
+import OddMath.QuiverHecke.CanonicalPBWChoiceComparison
+import OddMath.QuiverHecke.UpwardMatchingIndependence
+import OddMath.QuiverHecke.SpectatorDetection
+import OddMath.QuiverHecke.ReservoirVacuumDetection
+import OddMath.QuiverHecke.UpwardModuleAction
+import OddMath.QuiverHecke.SwappedAssembly.Interpretation
+import OddMath.QuiverHecke.SwappedAssembly.Sectors
+import OddMath.QuiverHecke.SwappedAssembly.VacuumPaths
+import OddMath.QuiverHecke.SwappedAssembly.VacuumPathSplit
+import OddMath.QuiverHecke.SwappedAssembly.ReservoirPaths
+import OddMath.QuiverHecke.SwappedAssembly.Matrices
+import OddMath.QuiverHecke.SwappedAssembly.Generators.Dot
+import OddMath.QuiverHecke.SwappedAssembly.Generators.CupCap
+import OddMath.QuiverHecke.SwappedAssembly.Generators.Cross
+import OddMath.QuiverHecke.SwappedAssembly.Generators.CrossCoeffExistence
+import OddMath.QuiverHecke.SwappedAssembly.Generators.Leftward
+import OddMath.QuiverHecke.SwappedAssembly.Generators
+import OddMath.QuiverHecke.SwappedAssembly.WhiskerReduction
+import OddMath.QuiverHecke.SwappedAssembly.WhiskerEvaluation
+import OddMath.QuiverHecke.SwappedAssembly.WindowZero
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.Windows
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.CapWindows
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.WindowCases
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.BlockMaps
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.MixedCases
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.NilpotentLifting
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.TwoSector
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.CoefficientIdeal
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ResidualComparison
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ReservoirCoefficients
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.RegularCoefficientBound
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ModuleCoefficients
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ProductCoefficients
+import OddMath.QuiverHecke.SwappedAssembly.Zigzag
+import OddMath.QuiverHecke.SwappedAssembly.CupCapZigzag
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Basic
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Cross
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.CrossCoeff
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Generators
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Leftward
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.MatrixInverse
+import OddMath.QuiverHecke.SwappedAssembly.SlideBlocks
+import OddMath.QuiverHecke.SwappedAssembly.LayerEntries
+import OddMath.QuiverHecke.SwappedAssembly.Interchange
+import OddMath.QuiverHecke.SwappedAssembly.Quad
+import OddMath.QuiverHecke.SwappedAssembly.Inversion
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.Permutation
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.Entry
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.MixedEntry
+import OddMath.QuiverHecke.SwappedAssembly.Slides
+import OddMath.QuiverHecke.SwappedAssembly.Braid
+import OddMath.QuiverHecke.SwappedAssembly.CrossEntries
+import OddMath.QuiverHecke.SwappedAssembly.BraidEntries
+import OddMath.QuiverHecke.SwappedAssembly.BraidEq.Algebra
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.InterchangePair
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.InterchangePostPair
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.InterchangePostPairTransport
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.ProbePairSector
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.DistinctProbeSector
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.DistinctReservoirSector
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.DistinctReservoirQ
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.DistinctReservoirQPair
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.ReverseDistinctReservoirSector
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.DistinctPureProbeSector
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.DistinctPureReservoirSector
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.PairwiseDistinct
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentPureProbe
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentPureReservoir
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentMixedProbe
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentMixedTransport
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentMixedCoefficient
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentMixedBraid
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentMixedRectangle
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentSplitMatrix
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentSplitReduction
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentSplitBraid
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentReverseTransport
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentReverseCoefficient
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentReverseRectangle
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentReverseReduction
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentReverseMatrix
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentReverseBraid
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.SignedCoefficientTransport
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterCoefficient
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterPolynomial
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterQCorrection
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterCoordinates
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterDiagonal
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterReduction
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterBraid
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterPureProbe
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterPureProbeMatrix
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterPureReservoir
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterPureReservoirMatrix
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterOtherPlacements
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterMixedDiagonal
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterMixedForward
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterWeightedSquare
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterSeparatedCoordinates
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterLiteralDiagonal
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterReservoirOffDiagonal
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentReservoirComparison
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterMiddleReservoir
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterMiddleProbe
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterPostCoordinates
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterPostTransport
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterPostRoutes
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterPostDiagonal
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterPreRoutes
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterPreCoordinates
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterPreTransport
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterPreDiagonal
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentReservoirCoefficient
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentReservoirPreCoefficient
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterReservoirReverse
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentReservoirSquareBlock
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentReservoirReverseCoefficient
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentReservoirReverseComparison
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentReservoirReverseBlock
+import OddMath.QuiverHecke.SwappedAssembly.BraidNonRepeated
+import OddMath.QuiverHecke.SwappedAssembly.BraidRepeatedDiagonal
+import OddMath.QuiverHecke.SwappedAssembly.BraidAssembly
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.MiddleDistinctReservoirSector
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.ReverseDistinctProbeSector
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.MiddleDistinctProbeSector
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.ProbePairDots
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.ProbePairQCentrality
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.QWeightedReverseSector
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.ReservoirPairSector
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.ReservoirPairDots
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.ReservoirPairQCentrality
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.ReverseReservoirSector
+import OddMath.QuiverHecke.SwappedAssembly.BraidSame.AllPaths
+import OddMath.QuiverHecke.SwappedAssembly.BraidSame.MixedBlock
+import OddMath.QuiverHecke.SwappedAssembly.BraidSame.MixedBlockPost
+import OddMath.QuiverHecke.SwappedAssembly.BraidSame.MixedInterchangePair
+import OddMath.QuiverHecke.SwappedAssembly.BraidSame.MixedInterchangePostPair
+import OddMath.QuiverHecke.SwappedAssembly.BraidSame.PureBlock
+import OddMath.QuiverHecke.SwappedAssembly.BraidSame.ReservoirBlock
+import OddMath.QuiverHecke.SwappedAssembly.BraidSame.SectorDots
+import OddMath.QuiverHecke.SwappedAssembly.BraidSame.SectorDotsPost
+import OddMath.QuiverHecke.SwappedAssembly.BraidSame.SectorAlgebra
+import OddMath.QuiverHecke.SwappedAssembly.QuadSame
+import OddMath.QuiverHecke.SwappedAssembly.SlideSame
+import OddMath.QuiverHecke.SwappedAssembly.SlideNe
+import OddMath.QuiverHecke.SwappedAssembly.SlideAssembly
+import OddMath.QuiverHecke.SwappedAssembly.QuadNe
+import OddMath.QuiverHecke.SwappedAssembly.LeftwardInverse
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.SameColourBlocks
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.AugmentedMatrix
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.SwappingEntries
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.SwappingMate
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.SwappingReservoir
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirProbeEntry
+import OddMath.QuiverHecke.UpwardPBWCoordinates
+import OddMath.SKM.AdaptedDistinctChoices
+import OddMath.SKM.AdaptedPointedPair
+import OddMath.SKM.CanonicalUpwardMatching
+import OddMath.SKM.ContextualCupDecorations
+import OddMath.SKM.DistinctTargetDescent
+import OddMath.SKM.IndexedMatchingChoice
+import OddMath.SKM.PairedCupEvaluation
+import OddMath.SKM.PointedCupMatching
+import OddMath.SKM.CupCompletedChoice
+import OddMath.SKM.AdaptedSameColourChoices
+import OddMath.SKM.PointedMatching
+import OddMath.SKM.SourceFrozenSwap
+import OddMath.QuiverHecke.SwappedVacuumRecovery
+import OddMath.SKM.BubbleSubstitution
+import OddMath.QuiverHecke.PlacementSign
+import OddMath.QuiverHecke.SwappedVacuumBlock
+import OddMath.QuiverHecke.SwappedVacuumBubbleSeries
+import OddMath.QuiverHecke.SwappedVacuumCornerEvaluation
+import OddMath.QuiverHecke.SwappedVacuumAdjunctionBubbles
+import OddMath.QuiverHecke.HalfTurn.Mirror
+import OddMath.QuiverHecke.HalfTurn.SuperFlip
+import OddMath.QuiverHecke.HalfTurn.Composite
+import OddMath.QuiverHecke.HalfTurn.CornerIdeal
+import OddMath.QuiverHecke.HalfTurn.Involution
+import OddMath.QuiverHecke.HalfTurn.IdealIdentification
+import OddMath.QuiverHecke.HalfTurn.CoefficientGenerators
+import OddMath.SKM.FiniteColourClassDetection
+import OddMath.SKM.FiniteColourBubbles
+import OddMath.QuiverHecke.FiniteColourUpward
+import OddMath.QuiverHecke.FiniteColourNondegeneracy
+import OddMath.QuiverHecke.SwappedVacuum.TransformedIdeal
+import OddMath.QuiverHecke.SwappedVacuum.CornerLayerSquare
+import OddMath.QuiverHecke.CyclotomicAction.FullyFaithfulInduction
+import OddMath.QuiverHecke.CyclotomicAction.ProbeMixed
+
+
+
+
+
+
+
+
+
+import OddMath.QuiverHecke.CyclotomicAction.WeightPair
+
+
+
+
+
+
+
+import OddMath.Algebra.FiniteSupermoduleFunctor
+import OddMath.Algebra.NilpotentPerturbation
+import OddMath.Algebra.NilpotentPerturbationRing
+import OddMath.Algebra.BoxPolynomialUnits
+import OddMath.SKM.BWWPureCoefficients
+import OddMath.SKM.BWWPureNilpotent
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.BWWMixedEntry
+
+
+
+
+
+import OddMath.QuiverHecke.CyclotomicAction.ContentAppend
+
+
+
+
+import OddMath.Algebra.FiniteSuperspace
+
+
+
+
+
+
+
+import OddMath.QuiverHecke.SwappedVacuum.InverseCapMoments
+import OddMath.QuiverHecke.SwappedVacuum.InverseCapSeries
+import OddMath.QuiverHecke.SwappedVacuum.InverseCapColourSeries
+import OddMath.QuiverHecke.SwappedVacuum.InverseColumnMoments
+import OddMath.QuiverHecke.SwappedVacuum.InverseColumnSeries
+import OddMath.QuiverHecke.SwappedVacuum.InverseColumnOddSeries
+import OddMath.QuiverHecke.SwappedVacuum.InverseColumnEvenSeries
+import OddMath.QuiverHecke.CyclotomicAction.ProbeCentral
+import OddMath.QuiverHecke.CyclotomicAction.TensorVacuumMoments
+
+import OddMath.QuiverHecke.SwappedVacuum.NegativeCapMoments
+
+import OddMath.QuiverHecke.CyclotomicAction.ProbeVacuumCharts
+
+import OddMath.QuiverHecke.CyclotomicAction.DistinctCrossing
+
+import OddMath.QuiverHecke.CyclotomicAction.WeightedMatrix
+
+
+
+
+
+
+
+import OddMath.QuiverHecke.CyclotomicAction.InductionMixed
+
+
+
+
+
+import OddMath.QuiverHecke.CyclotomicAction.CoefficientPowerAnnihilation
+
+import OddMath.SKM.ELVCoefficientPowers
+
+
+
+
+
+
+import OddMath.SKM.PolynomialExteriorSupercomm
+
+import OddMath.QuiverHecke.HalfTurn.Homogeneous
+
+
+
+
+
+
+import OddMath.QuiverHecke.CyclotomicAction.CoefficientPowerSeries
+
+import OddMath.QuiverHecke.HalfTurn.OldQuotient
+import OddMath.Algebra.HomogeneousSuperfunctorIso
+
+import OddMath.QuiverHecke.CyclotomicAction.PowerWordContent
+import OddMath.QuiverHecke.HalfTurn.PowerWordCoordinates
+
+
+import OddMath.QuiverHecke.CyclotomicAction.ContentHom
+
+
+
+
+import OddMath.Algebra.FiniteSupermoduleFamily
+
+
+import OddMath.QuiverHecke.CyclotomicAction.InductionGridMatrix
+import OddMath.QuiverHecke.CyclotomicAction.ProbeCap
+import OddMath.QuiverHecke.CyclotomicAction.FullInduction
+
+
+
+
+
+
+
+
+
+
+import OddMath.QuiverHecke.CyclotomicAction.RouquierPowerWords
+import OddMath.QuiverHecke.CyclotomicAction.PowerWordWhiskering
+import OddMath.Algebra.FiniteZeroCoordinate
+
+
+
+import OddMath.Algebra.SupermoduleIsoOfBijectiveTotals
+
+
+import OddMath.QuiverHecke.CyclotomicAction.ContentBlockMatrix
+
+
+
+
+
+import OddMath.Algebra.MatrixInverseTransport
+
+
+import OddMath.QuiverHecke.CyclotomicAction.WeightMixed
+
+
+
+import OddMath.QuiverHecke.CyclotomicAction.WeightTripleBraid
+
+import OddMath.QuiverHecke.CyclotomicAction.WeightedKernel
+
+
+
+
+
+import OddMath.Algebra.FiniteSupermoduleCoordinates
+
+
+import OddMath.Algebra.FiniteSupermoduleInverseRows
+import OddMath.Algebra.FiniteSupermoduleInverseColumns
+import OddMath.SKM.FiniteModuleLocalInverse
+
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightCap
+
+
+import OddMath.QuiverHecke.CyclotomicAction.WeightTripleComparison
+
+
+
+
+
+
+
+
+
+import OddMath.SKM.AugmentedInverseNaturality
+
+
+import OddMath.SKM.RouquierPreAdjunction
+
+
+
+import OddMath.QuiverHecke.CyclotomicAction.InductionGridRouquier
+
+
+
+
+
+import OddMath.SKM.AugmentedInverseProfile
+
+
+
+
+
+
+
+
+import OddMath.QuiverHecke.CyclotomicAction.TensorWord
+import OddMath.QuiverHecke.CyclotomicAction.WeightDenominators
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightDot
+import OddMath.QuiverHecke.CyclotomicAction.ProbeReindexWeight
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightQuadratic
+import OddMath.QuiverHecke.CyclotomicAction.ProbeReindexMate
+import OddMath.QuiverHecke.SwappedAssembly.ReservoirWordFunctor
+import OddMath.QuiverHecke.SwappedAssembly.ReservoirWordFunctorStrict
+import OddMath.QuiverHecke.CyclotomicAction.DistinctSlides
+import OddMath.QuiverHecke.SwappedAssembly.ReservoirVacuumDot
+import OddMath.QuiverHecke.SwappedAssembly.ReservoirDottedAdjunctionRows
+import OddMath.QuiverHecke.CyclotomicAction.TensorWords
+import OddMath.QuiverHecke.SwappedAssembly.ReservoirDottedFactorCoordinates
+import OddMath.QuiverHecke.SwappedAssembly.ReservoirLayerEntries
+import OddMath.QuiverHecke.HalfTurn.PowerWordQuotientCoordinates
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirPrincipal
+import OddMath.QuiverHecke.HalfTurn.ContextualOldGenerators
+import OddMath.SKM.RouquierZeroLocal
+import OddMath.SKM.RouquierBoundaryTransport
+import OddMath.QuiverHecke.HalfTurn.PowerWordLayerClasses
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightBraid
+import OddMath.QuiverHecke.SwappedAssembly.ReservoirLayerGenerators
+import OddMath.QuiverHecke.SwappedAssembly.ReservoirLayerCrossings
+import OddMath.QuiverHecke.SwappedAssembly.ReservoirVacuumCrossing
+import OddMath.QuiverHecke.SwappedAssembly.ReservoirLayerDistinctCrossings
+import OddMath.QuiverHecke.SwappedAssembly.ReservoirContextCoordinates
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.ProbeToReservoirBend
+import OddMath.QuiverHecke.CyclotomicAction.ProbeMixedBraid
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.ProbeFactorCoordinates
+import OddMath.QuiverHecke.SwappedAssembly.Generators.CrossCoeffExpansion
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.ProbePrincipal
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirToProbeBend
+import OddMath.SKM.AugmentedInverseEvaluation
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.CentralPaths
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.MatrixEmbedding
+import OddMath.QuiverHecke.SwappedAssembly.ProbeDottedFactorCoordinates
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.SectorFamilyChart
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.MatrixEmbeddingEntries
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.AugmentedSectorChart
+import OddMath.QuiverHecke.CyclotomicAction.ReservoirClosure
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.SectorFamilyEntries
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.AugmentedSectorEntries
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.AugmentedFactorMatrix
+import OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
+import OddMath.QuiverHecke.SwappedAssembly.SupportedRestriction
+import OddMath.QuiverHecke.SwappedAssembly.SupportedSteps
+import OddMath.QuiverHecke.CyclotomicAction.ReservoirLayers
+import OddMath.QuiverHecke.SwappedAssembly.SupportedPaths
+import OddMath.Algebra.IntegerMatrixGrading
+import OddMath.QuiverHecke.SwappedAssembly.SupportedFactorPaths
+import OddMath.QuiverHecke.SwappedAssembly.SupportedGeneratorEntries
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.FactorClosures
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.FactorWindowInverse
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseCapInverse
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseCupInverse
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseBubbleEntry
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseRightBubbleEntry
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.SupportedFactorWindowInverse
+import OddMath.SKM.RouquierHomBendMonomials
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.FiniteBendEvaluation
+import OddMath.QuiverHecke.SwappedAssembly.SupportedMatrixModules
+import OddMath.QuiverHecke.SwappedAssembly.SupportedPresentation
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendDotCoordinates
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowInverseData
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendSeriesAlgebra
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendWindowMonomials
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorVacuum
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorContexts
+import OddMath.SKM.RouquierHomPrePointwiseSlide
+import OddMath.SKM.RouquierHomPreAutWindows
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.ProbeSlideWindow
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.SupportedProbeSlideWindow
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.SeparatedBendSeries
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendWindowEquations
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorDotEntries
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.PaddedBendWindowEquations
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.SeparatedClosures
+import OddMath.QuiverHecke.SwappedVacuum.NegativeCapInverse
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowCoefficientIdeal
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowCoefficientIdealOver
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCrossEntries
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ResidualComparisonNegative
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.SignedResidualWindows
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorDotClasses
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorDotObservation
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCrossObservation
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorLayerSquares
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCornerEvaluation
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCrossClasses
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.PaddedResidualInversion
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.PaddedResidualInversionOver
+import OddMath.QuiverHecke.SwappedAssembly.SupportedWhiskerReduction
+import OddMath.QuiverHecke.SwappedAssembly.SupportedRelationLifting
+import OddMath.QuiverHecke.SwappedAssembly.PointwiseLeftwardInverse
+import OddMath.QuiverHecke.SwappedAssembly.SupportedPointwiseLeftwardInverse
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.VacuumWindow
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.VacuumInverseWindow
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.VacuumCapInverseWindow
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorFamilies
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.OffCentralAugmentedMatrix
+import OddMath.QuiverHecke.SwappedAssembly.SupportedAugmentedInverse
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorRows
+import OddMath.QuiverHecke.SwappedAssembly.SupportedMatrixLayers
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorRowLayers
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.RestrictedLeftward
+import OddMath.QuiverHecke.SwappedAssembly.SupportedInterchange
+import OddMath.QuiverHecke.SwappedAssembly.SupportedSupernaturality
+import OddMath.SKM.RouquierHomDistinctSourceUnits
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.MixedEntryPureNilpotent
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.MixedEntrySourceUnits
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorEntryPullback
+import OddMath.SKM.RouquierDistinctLeftRotation
+import OddMath.SKM.RouquierDistinctCapDetection
+import OddMath.SKM.RouquierRectangularComposition
+import OddMath.SKM.RouquierDistinctCupDetection
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorUnitObservation
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.DistinctReservoirShift
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCoefficientAction
+import OddMath.SKM.RouquierDistinctMixedBraid
+import OddMath.SKM.RouquierRectangularUnit
+import OddMath.SKM.RouquierRectangularMonomials
+import OddMath.SKM.RouquierDistinctCapTests
+import OddMath.SKM.RouquierDistinctCapMonomials
+import OddMath.SKM.RouquierDistinctCapPrincipal
+import OddMath.SKM.RouquierDistinctCapBoundary
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.DistinctPureReservoirEntry
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorObservationLinearity
+import OddMath.SKM.RouquierDistinctPowerSlide
+import OddMath.SKM.RouquierRectangularDottedUnit
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorPathChartCoherence
+import OddMath.SKM.RouquierDistinctDottedUnit
+import OddMath.SKM.RouquierDistinctConnectedCapBoundary
+import OddMath.QuiverHecke.CyclotomicAction.ProbeVacuumBends
+import OddMath.SKM.RouquierDistinctCapColumnReduction
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorWordObservation
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorMatrixCoefficients
+import OddMath.SKM.RouquierDistinctCapInverseChart
+import OddMath.SKM.RouquierDistinctCapMiddle
+import OddMath.SKM.RouquierDistinctCapColumns
+import OddMath.SKM.RouquierDistinctCapNonpositive
+import OddMath.SKM.RouquierDistinctCapMiddleIdentity
+import OddMath.SKM.RouquierDistinctCanonicalRotation
+import OddMath.SKM.RouquierDistinctLeftCupRotation
+import OddMath.SKM.RouquierDistinctCanonicalNonpositive
+import OddMath.SKM.RouquierDistinctCupRows
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorRowCoefficientAction
+import OddMath.SKM.RouquierDistinctCupTests
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCoefficientChart
+import OddMath.SKM.RouquierDistinctCanonicalCapRange
+import OddMath.SKM.RouquierHomWeightCoordinates
+import OddMath.SKM.RouquierDistinctCupInverseChart
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.PaddedBendWordSeries
+import OddMath.SKM.RouquierDistinctCupRowTests
+import OddMath.SKM.RouquierDistinctCupPitchfork
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorMatrixRowCoefficients
+import OddMath.SKM.RouquierDistinctCanonicalCupRotation
+import OddMath.SKM.RouquierDistinctCanonicalPositive
+import OddMath.SKM.RouquierCanonicalDistinctLeftMate
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.DistinctPureEntries
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCoefficientUnitObservation
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorMatrixCoefficientObservation
+import OddMath.QuiverHecke.SwappedAssembly.SupportedInversionRelations
+import OddMath.QuiverHecke.SwappedAssembly.SupportedAction
+import OddMath.QuiverHecke.SwappedAssembly.SupportedActionInputsOver
+import OddMath.QuiverHecke.SwappedVacuumParameters
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorEntryLayers
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorVacuumObservation
+import OddMath.SKM.PairingExtensionDiagrams
+import OddMath.SKM.PairingExtensionPresentation
+import OddMath.QuiverHecke.SwappedAssembly.SupportedActionAlphaLayers
+import OddMath.QuiverHecke.SwappedAssembly.SupportedActionLayers
+import OddMath.QuiverHecke.SwappedAssembly.SupportedClosedAction
+import OddMath.QuiverHecke.SwappedAssembly.SupportedClosedCoefficients
+import OddMath.QuiverHecke.SwappedAssembly.SupportedRightBubbleCoefficients
+import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumEntryLift
+import OddMath.SKM.PairingExtensionBubbles
+import OddMath.QuiverHecke.PairingExtensionAffine
+import OddMath.QuiverHecke.CyclotomicAction.ProbePaddedVacuum
+import OddMath.QuiverHecke.PairingExtensionPBW
+import OddMath.QuiverHecke.PairingExtensionRecovery
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorEntryLayerCharts
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorLayerChartTransport
+import OddMath.QuiverHecke.VacuumCornerChartCoherence
+import OddMath.QuiverHecke.VacuumRouteNondegeneracy
+import OddMath.QuiverHecke.VacuumRightBubbles
+import OddMath.QuiverHecke.VacuumRouteFields
+import OddMath.QuiverHecke.VacuumRouteSwappedBases
+import OddMath.QuiverHecke.VacuumRouteSwappedCharts
+import OddMath.QuiverHecke.VacuumRouteSwappedNonpositiveBubbles
+import OddMath.QuiverHecke.VacuumRouteSwappedPositiveBubbles
+import OddMath.QuiverHecke.VacuumRouteSwappedPositiveField
+import OddMath.QuiverHecke.VacuumRouteSwappedNonpositiveField
+import OddMath.QuiverHecke.VacuumRouteSwappedRightField
+import OddMath.QuiverHecke.VacuumRouteSwappedRightNegative
+import OddMath.QuiverHecke.TruncatedReesNondegeneracy
+import OddMath.QuiverHecke.BWWNondegeneracy
+import OddMath.QuiverHecke.BWWEvenSpecialization
+import OddMath.SKM.CoefficientGradedBasis
+import OddMath.QuiverHecke.BWWEvenGradedBasis
+import OddMath.QuiverHecke.IntegralNondegeneracy
+import OddMath.QuiverHecke.HomBases
+import OddMath.QuiverHecke.Decategorification
+import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumDecodeFaithful
+import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumZeroHeightEntries
+import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumRightEntriesEven
+import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumCoefficientDecode
+import OddMath.QuiverHecke.SwappedAssembly.SupportedLeftVacuumEntries
+import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumRightEntriesOdd
+import OddMath.SKM.BWWEvenDictionary
+import OddMath.SKM.BWWEvenGraded
+import OddMath.SKM.RootCover
+import OddMath.SKM.RootCoverUnits
+import OddMath.SKM.RootCoverPresentation
+import OddMath.Diagrams.OddNilHecke.DotTranslation

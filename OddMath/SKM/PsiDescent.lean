@@ -219,7 +219,6 @@ theorem psiRaw_whisk (t : k) (cs : CScalars Sc) (Ω ν ξ μ : X)
           (show (u ++ x.1) ++ x.2.1.cod ++ (x.2.2 ++ v) =
             u ++ (x.1 ++ x.2.1.cod ++ x.2.2) ++ v by simp [List.append_assoc]) rfl
 
-
 /-- Read the signed normal-form data of the existing diagram, forgetting redundant regions. -/
 def psiLayers {μ : X} {s r : List (Letter I)} (d : ob D μ s ⟶ ob D μ r) :
     List (LayerData I) :=
@@ -265,7 +264,6 @@ def psiLin (t : k) (cs : CScalars Sc) (ν μ : X) {s r : List (Letter I)}
       a • psiRaw t cs ν μ L hs hr h := by
   exact (Finsupp.linearCombination_single k (v := psiDiagram t cs ν μ hs hr) a
     (mkD D μ L h)).trans (congrArg (a • ·) (psiDiagram_mkD t cs ν μ hs hr L h))
-
 
 /-- On a single bare layer, the raw evaluation is exactly its seven-shape assignment. -/
 theorem psiRaw_gen (t : k) (cs : CScalars Sc) (ν μ : X) (g : Shape I)
@@ -346,7 +344,6 @@ theorem psiLin_quadEq (t : k) (ht : t ^ 2 = -1) (cs : CScalars Sc) (μ : X) (i :
         List.not_mem_nil, or_false, or_self] at hx; subst x; trivial)]
   exact psiPrimaryRaw_quadEq t ht cs _ μ [] [] i rfl
 
-
 /-- Actual source whiskering and boundary retyping evaluate to target placement. -/
 theorem psiDiagram_place (t : k) (cs : CScalars Sc) (μ : X) (u v s r : List (Letter I))
     (hst : wt D (wt D μ v) r = wt D (wt D μ v) s)
@@ -388,7 +385,6 @@ theorem psiLin_place (t : k) (cs : CScalars Sc) (μ : X) (u v s r : List (Letter
     rw [LinDiagram.whisker_single, LinDiagram.cast_single, psiLin_single, psiLin_single,
       map_smul, psiDiagram_place]
     rfl
-
 
 /-- The disconnected-colour quadratic defining relation is killed. -/
 theorem psiLin_quadZero (t : k) (ht : t ^ 2 = -1) (cs : CScalars Sc) (μ : X) (i j : I)
@@ -469,7 +465,6 @@ theorem psiRaw_dotRight (t : k) (cs : CScalars Sc) (ν μ : X) (i j : I)
   simp only [psiWhiskerLeft, eqToHom_refl, Category.id_comp, Category.comp_id]
   exact psiDot_whiskerLeft t μ i j
 
-
 /-- The raw upward crossing has its printed target image. -/
 theorem psiRaw_cross (t : k) (cs : CScalars Sc) (ν μ : X) (i j : I)
     (h : wt D μ [up i, up j] = ν) :
@@ -542,7 +537,6 @@ private theorem psiRaw_crossLeftDot (t : k) (cs : CScalars Sc) (ν μ : X) (i j 
       (congrArg₂ (· ≫ ·) (psiRaw_cross t cs ν μ i j h)
         (psiRaw_dotLeft t cs ν μ j i _))
 
-
 /-- The second distinct-colour dot-slide relation is killed by linear evaluation. -/
 theorem psiLin_slideR (t : k) (ht : t ^ 2 = -1) (cs : CScalars Sc) (μ : X) (i j : I)
     (hij : i ≠ j) :
@@ -572,7 +566,6 @@ theorem psiLin_slideREq (t : k) (ht : t ^ 2 = -1) (cs : CScalars Sc) (μ : X) (i
   erw [psiLin_idg]
   rw [psi_slideREq t ht]
   abel
-
 
 /-- Repeated source dots evaluate to powers of the actual placed dot. -/
 theorem psiRaw_dots (t : k) (cs : CScalars Sc) (ν μ : X)
@@ -643,7 +636,6 @@ private theorem psiDots_commute_of_even (t : k) (ν μ : X) (i j : I)
   have he := TwoSupercategory.super_interchange hx (psiDot_cpow_mem t μ j q)
   simpa only [koszulSign_zero_left, one_smul] using he.symm
 
-
 private theorem psiRaw_crossCross (t : k) (cs : CScalars Sc) (ν μ : X) (i j : I)
     (h : wt D μ [up i, up j] = ν) :
     psiRaw (sy := sy) (hc := hc) t cs ν μ (crossL [] i j [] ++ crossL [] j i []) h h
@@ -680,7 +672,6 @@ theorem psiLin_quadNe (t : k) (ht : t ^ 2 = -1) (cs : CScalars Sc) (μ : X) (i j
   simp_rw [psiRaw_quadMonomial]
   rw [psiCross_quadNe t ht _ μ i j rfl hij hd]
   abel
-
 
 private theorem psiRaw_cross₁ (t : k) (cs : CScalars Sc) (ν μ : X) (i j l : I)
     (h : wt D μ [up i, up j, up l] = ν) :
@@ -724,7 +715,6 @@ theorem psiRaw_append_three (t : k) (cs : CScalars Sc) (ν μ : X)
     ((congrArg₂ (· ≫ ·) (psiRaw_append t cs ν μ L M hs hr hq hL hM) rfl).trans
       (Category.assoc _ _ _))
 
-
 private theorem psiRaw_braidLeft (t : k) (cs : CScalars Sc) (ν μ : X) (i j l : I)
     (h : wt D μ [up i, up j, up l] = ν) :
     psiRaw (sy := sy) (hc := hc) t cs ν μ
@@ -767,7 +757,6 @@ theorem psiLin_braid (t : k) (ht : t ^ 2 = -1) (cs : CScalars Sc) (μ : X) (i j 
   simp only [relation, map_sub, psiLin_dg]
   rw [psiRaw_braidLeft, psiRaw_braidRight]
   exact sub_eq_zero.mpr (psi_braid t ht _ μ i j l rfl hij)
-
 
 private theorem psiRaw_dot₁ (t : k) (cs : CScalars Sc) (ν μ : X) (i j l : I)
     (h : wt D μ [up i, up j, up l] = ν) :
@@ -891,7 +880,6 @@ theorem psiLin_zigE (t : k) (cs : CScalars Sc) (μ : X) (i : I) :
   rw [psiRaw_cupRight, psiRaw_capLeft]
   exact psiAdjunction_up_whisker cs μ i
 
-
 private theorem psiRaw_cupLeft (t : k) (cs : CScalars Sc) (μ : X) (i : I) :
     psiRaw (sy := sy) (hc := hc) t cs (wt D μ [dn i]) μ
       [([], Shape.cup i, [dn i])] rfl
@@ -966,7 +954,6 @@ private theorem psiRaw_whisk_right (t : k) (cs : CScalars Sc) (ν ξ μ : X)
     Category.assoc, eqToHom_trans_assoc, eqToHom_trans,
     eqToHom_refl, Category.id_comp, Category.comp_id] using he
 
-
 /-- Disjoint source words satisfy super-interchange after evaluation. -/
 theorem psiRaw_exchange (t : k) (cs : CScalars Sc) (ν ξ μ : X)
     (L M : List (LayerData I)) {s r a b : List (Letter I)}
@@ -1004,7 +991,6 @@ theorem psiRaw_exchange (t : k) (cs : CScalars Sc) (ν ξ μ : X)
   have H := congrArg (fun f => eqToHom (psiAt_comp_eq ν ξ μ s a hs ha).symm ≫ f ≫
     eqToHom (psiAt_comp_eq ν ξ μ r b hr hb)) he
   simpa only [Category.assoc, Linear.smul_comp, Linear.comp_smul] using H
-
 
 private theorem psi_koszul_cast (p q : ZMod 2) :
     (koszulSign p q : k) = zsign k (p * q) := by

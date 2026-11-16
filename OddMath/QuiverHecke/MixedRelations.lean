@@ -92,7 +92,7 @@ strands. -/
 theorem cross_cross_ne {i j : I} (hij : i ≠ j) (hd : D.d i j ≠ 0)
     (h : SChain (l ++ [i, j] ++ r) (pl _ [.cross l.length, .cross l.length]) (l ++ [i, j] ++ r)) :
     cl D Sc _ _ [.cross l.length, .cross l.length] h =
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         Sc.s i j p q • (dotE D Sc (l ++ [i, j] ++ r) l.length ^ p *
           dotE D Sc (l ++ [i, j] ++ r) (l.length + 1) ^ q) +
       ((Sc.t i j : k) • dotE D Sc (l ++ [i, j] ++ r) l.length ^ D.dn i j +
@@ -136,7 +136,7 @@ theorem braid_iji {i j : I} (hij : i ≠ j)
           (zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
             (dotE D Sc (l ++ [i, j, i] ++ r) l.length ^ (D.dn i j - 1 - s) *
               dotE D Sc (l ++ [i, j, i] ++ r) (l.length + 2) ^ s) +
-        ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+        ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
           ∑ s ∈ Finset.range p, (zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p q) •
             (dotE D Sc (l ++ [i, j, i] ++ r) l.length ^ (p - 1 - s) *
               dotE D Sc (l ++ [i, j, i] ++ r) (l.length + 1) ^ q *

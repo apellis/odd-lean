@@ -16,7 +16,7 @@ at arbitrary weights. Placement in the rightmost region preserves degree, and
 extended diagram evaluation has the numerical degree computed by `tableDegree`.
 
 Membership in the image submodules `Presentation.homDeg` needs no homogeneity
-hypothesis on the relations. Under `Scalars.Homogeneous`, `isHomogeneous_gdeg`
+hypothesis on the relations. Under `ScalarData.Homogeneous`, `isHomogeneous_gdeg`
 identifies these submodules as the integer grading of the presented category.
 -/
 

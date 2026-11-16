@@ -298,7 +298,6 @@ theorem left_telescope {m : ℕ} (x : Fin (m+1) → R)
 
 end Words
 
-
 /-- `x̃_1 = x_1` as an element of `OPol_a`. -/
 abbrev x1 (n : ℕ) : SkewPolynomial (n+2) := generator 0
 

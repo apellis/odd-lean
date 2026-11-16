@@ -142,7 +142,6 @@ private theorem etaP_dots_sigma_top (cs : CScalars Sc) (i : I) (μ : X) (hh : 0 
     · intro h
       exact False.elim (h (mem_range.mpr (by omega)))
 
-
 open Supercategory BicategoryStruct
 variable {sy : Symmetrizer D} {hc : Sc.Homogeneous}
 private theorem left_ud (μ : X) (i : I) : wt D μ [up i, dn i] = μ := by simp [wt, sh]
@@ -222,7 +221,6 @@ private theorem raw_lcross (t : k) (cs : CScalars Sc) (μ : X) (i : I) :
   simp only [lcrossL]
   rw [psiRaw_gen]
   rfl
-
 
 /-- The free linear expression defining the left cup in Definition 2.2. -/
 def etaPDiagram (cs : CScalars Sc) (i : I) (μ : X) :

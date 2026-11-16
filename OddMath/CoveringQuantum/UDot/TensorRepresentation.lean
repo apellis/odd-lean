@@ -98,7 +98,6 @@ theorem tensorProject_F (withJ : Bool) (i : I) (η : X) :
     have h2 : η + (ν + D.α i) = η + D.α i + ν := by abel
     rw [h1, h2]
 
-
 /-- The actual two global tensor root operators, with positive part unchanged. -/
 def tensorChevalley (withJ positive : Bool) (i : I) : Module.End Coefficients.Ring
     (IntegrableQuotient D Λ ⊗[Coefficients.Ring] IntegrableQuotient D Μ) :=

@@ -47,7 +47,7 @@ def symmetrizer : SKM.Symmetrizer datum where
     intro i j
     cases i <;> cases j <;> simp [SKM.Datum.d, SKM.Datum.h, SKM.Datum.α, datum]
 
-theorem homogeneous : scalars.Homogeneous := fun _ _ _ _ _ _ _ _ h => absurd rfl h
+theorem homogeneous : scalars.Homogeneous := fun _ _ _ _ _ _ _ h => absurd rfl h
 
 /-- Even colour, `r = 3`. -/
 example := evenCornerProjector_mul_mul_mem datum scalars symmetrizer false (by decide) 3

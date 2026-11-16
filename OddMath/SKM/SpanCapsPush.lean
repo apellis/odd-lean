@@ -34,7 +34,7 @@ open CategoryTheory StringDiagrams Presentation
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k} {cs : CScalars Sc}
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo} {cs : CScalars Sc}
 
 /-! ## Positions of a move relative to the block -/
 
@@ -295,7 +295,6 @@ theorem push_dot (hS : BubbleSlideOut D Sc cs) {c : ℕ} {ms : List (Mv I)}
   · exact push_disjR hIH hms d R h₁ h₂ hc
 
 end PushDot
-
 
 /-! ## The cap push through a crossing -/
 

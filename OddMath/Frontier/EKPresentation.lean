@@ -144,7 +144,6 @@ theorem pair_mem (S : Submodule ℤ Presented) (L R : Presented) (a b : ℕ)
       · simpa [hs] using hm
       · simpa [hs] using S.neg_mem hm
 
-
 open EKPartitionSpanning (cost cost_replace sorted_or_ascent card_ofRowLens)
 
 /-- All words of a given weight lie in any submodule containing the sorted
@@ -202,7 +201,6 @@ theorem word_mem_degree_span (w : List ℕ) :
   obtain ⟨μ, hμ, he⟩ := sorted_is_partition v hv
   rw [← he]
   exact Submodule.subset_span ⟨⟨μ, hμ.trans hd⟩, rfl⟩
-
 
 /-- Global Presented-side partition span; its proof uses no injectivity claim. -/
 def partition (μ : YoungDiagram) : Presented := word μ.rowLens

@@ -36,7 +36,6 @@ variable (υ : ∀ S : {S // S ∈ N}, (MatchingStrand a S.val → ℕ) → List
 variable (hτ : ∀ R c, Decorates₂ ((false, i) :: a) R.val (q R) (strandCounts c) (τ R c))
 variable (hυ : ∀ S c, Decorates₂ a S.val (r S) (strandCounts c) (υ S c))
 
-
 include hM hN hq hr hτ hυ
 
 /-- Coefficientwise BE2 Theorem 10.3 Claim 3, including endpoint mismatch. Independent points and

@@ -34,7 +34,6 @@ open DG MulOpposite
 
 noncomputable section
 
-
 /-! ## Ranks `N ≤ 1` -/
 
 section Small

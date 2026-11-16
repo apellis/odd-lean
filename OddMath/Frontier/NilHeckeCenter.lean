@@ -96,7 +96,6 @@ theorem dotVolume_commutes_crossings (i : Fin 2) :
   simp only [action_mul_apply, dotVolume_action, action_crossing_apply,
     divided_mul, volume_kernel i, volume_signed_fixed, zero_mul, zero_add]
 
-
 /-- Ordinary centrality on every polynomial, by the genuine quotient/free generation. -/
 theorem volume_commutes (p : SkewPolynomial 3) : volume * p = p * volume := by
   obtain ⟨a, rfl⟩ := PbwRealization.Phi_surjective 3 p

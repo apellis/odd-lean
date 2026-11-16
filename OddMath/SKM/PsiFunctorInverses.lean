@@ -638,7 +638,6 @@ theorem psiUnsop_heq_of_endpoints
   subst g'
   exact heq_of_eq (SOp.hom_ext (eq_of_heq h))
 
-
 /-- The inverse-then-forward map returns every opposite-envelope 2-morphism. -/
 theorem psiInverseForward_map₂
     {a b : TwoSOp k (Uqπ D Sc sy hc)} {f g : a ⟶ b} (y : f ⟶ g) :

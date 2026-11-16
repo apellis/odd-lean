@@ -33,8 +33,6 @@ section Degrees
 
 variable {k : Type*} [Field k] {n : ℕ}
 
-
-
 /-- The indicator exponent of the first `j` variables: `x_0 x_1 ⋯ x_{j-1}`. -/
 def chi (n j : ℕ) : Fin n →₀ ℕ := ∑ i ∈ univ.filter (fun i : Fin n => (i : ℕ) < j), Finsupp.single i 1
 

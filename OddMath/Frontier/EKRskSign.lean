@@ -247,7 +247,6 @@ theorem twoLine_sorted (A : Raw r c) : (twoLine A).Pairwise LexLE := by
     rw [List.eq_of_mem_replicate hx, List.eq_of_mem_replicate hy]
     exact Or.inl hik
 
-
 /-! ## Row-reading cells: inserting an outer corner -/
 
 instance rowLE_antisymm : Std.Antisymm RowLE := ⟨by
@@ -798,7 +797,6 @@ theorem thm_3_7_sign_mat {β : Fin r → ℕ} {α : Fin c → ℕ} (A : Mat β �
       (-1 : ℤ) ^ shapeExp (rskShape A.val) * TableauDominance.tableauSign (rskP A.val) *
         TableauDominance.tableauSign (rskQ A.val) :=
   thm_3_7_sign A.val
-
 
 /-! ## Printed forms of the shape sign and reconciliation with the existing word insertion -/
 

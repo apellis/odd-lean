@@ -404,7 +404,6 @@ theorem table4_4_4 : form q (hWord k [4]) (hWord k [4]) = 1 := by
   rw [form_eval q _ _ [1] (by decide +kernel)]
   simp []
 
-
 /-! ## The printed tables as matrices, all entries (the `∗` entries by symmetry) -/
 
 /-- Printed degree-1 compositions, printed order. -/

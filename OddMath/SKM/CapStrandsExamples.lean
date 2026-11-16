@@ -40,7 +40,6 @@ private theorem cap (ε k : Bool) :
     Same (pairing₂ (A ε k) (R k)) (b k).length ((b k).length + 1) := by
   cases ε <;> cases k <;> unfold Same idAt <;> decide
 
-
 private theorem pair_iso {α : Type*} (m n : ℕ) (x y : α) :
     Iso [(m, x), (m, y)] [(n, x), (n, y)] := by
   refine ⟨rfl, fun i j => ?_⟩

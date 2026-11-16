@@ -122,5 +122,4 @@ theorem normalized_internal_cap_values :
   · rw [hp] at htp
     exact htp.trans (by decide)
 
-
 end OddMath.SKM.LeftCupNormalizationExamples

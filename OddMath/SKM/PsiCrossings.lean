@@ -468,7 +468,7 @@ theorem psiCross_quadNe (t : k) (ht : t ^ 2 = -1) (ν μ : X) (i j : I)
       psiCross t ν μ j i ((wt_swap μ i j).trans h) =
       (Sc.t i j : k) • cpow (psiDotLeft t ν μ i j h) (D.dn i j) +
       (Sc.t j i : k) • cpow (psiDotRight t ν μ i j h) (D.dn j i) +
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         Sc.s i j p q • (cpow (psiDotLeft t ν μ i j h) p ≫ cpow (psiDotRight t ν μ i j h) q) := by
   classical
   have hs (p q : ℕ) : Sc.s i j p q •
@@ -942,7 +942,7 @@ def psiBraidCorrection (t : k) (ν μ : X) (i j : I)
   (∑ s ∈ Finset.range (D.dn i j),
     (zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
       psiBraidMonomial (Sc := Sc) (sy := sy) (hc := hc) t ν μ i j h (D.dn i j - 1 - s) 0 s) +
-  ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i), ∑ s ∈ Finset.range p,
+  ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i), ∑ s ∈ Finset.range p,
     (zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p q) •
       psiBraidMonomial (Sc := Sc) (sy := sy) (hc := hc) t ν μ i j h (p - 1 - s) q s
 
@@ -996,7 +996,7 @@ theorem psi_braidEq (t : k) (ht : t ^ 2 = -1) (ν μ : X) (i j : I)
     simpa only [dotsL, List.replicate_zero, List.append_nil, List.nil_append] using
       (psiBraidMonomial_unsop t ht ν μ i j h (D.dn i j - 1 - s) 0 s (by simp)
         (hn _ _ (Finset.mem_range.mp hs) (by simpa [mul_comm] using parity_mul_dn D i j))).symm
-  have hPoly : ∀ p ∈ Finset.Ioo 0 (D.dn i j), ∀ q ∈ Finset.Ioo 0 (D.dn j i), ∀ s ∈ Finset.range p,
+  have hPoly : ∀ p ∈ Finset.range (D.dn i j), ∀ q ∈ Finset.range (D.dn j i), ∀ s ∈ Finset.range p,
       (zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p q) •
         L (cl D Sc μ [up i, up j, up i] [up i, up j, up i]
           (dotsL [up i, up j] i [] s ++ dotsL [up i] j [up i] q ++ dotsL [] i [up j, up i] (p - 1 - s))) =

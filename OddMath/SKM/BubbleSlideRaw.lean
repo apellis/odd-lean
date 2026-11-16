@@ -16,7 +16,7 @@ namespace OddMath.SKM
 open CategoryTheory StringDiagrams Presentation Finset
 universe u v w
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k} (cs : CScalars Sc)
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo} (cs : CScalars Sc)
 
 /-- A clockwise bubble placed to the left of an upward strand. -/
 abbrev bubbleR_left (i j : I) (μ : X) (n : ℤ) := lbub j μ (bubR cs i (wt D μ [up j]) n)
@@ -56,8 +56,6 @@ theorem bubbleR_slide_zero_raw (i j : I) (μ : X) (hij : i ≠ j) (hd : D.d i j 
   rw [bubR_nat, plcL_comp_of_mem μ [] [up j] (cl_mem_homPar (sChain_etaL i n) rfl)
     (epsP_mem cs i _), plcL_cl]
   rfl
-
-
 
 abbrev bubbleL_left (i j : I) (μ : X) (n : ℤ) := lbub j μ (bubL cs i (wt D μ [up j]) n)
 abbrev bubbleL_right (i j : I) (μ : X) (n : ℤ) := rbub j μ (bubL cs i (wt D μ []) n)

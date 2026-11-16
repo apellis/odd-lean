@@ -123,7 +123,6 @@ example : coroot h 38 (omega h coroots_independent 37) = 0 := by simp
 
 end OddMath.CoveringQuantum.SourceWeightLatticeConsumer
 
-
 /-! # Product-weight consumer with an infinite-support weight and central direction -/
 
 namespace OddMath.CoveringQuantum.FiniteWeightWindowConsumer

@@ -109,7 +109,6 @@ private theorem sigma_o (μ : X) : sigmaModified D Coefficients.q pi pi_sq (o D 
   apply Subtype.ext
   simp [o]
 
-
 /-- Direct psi pullback of the negative-normalized form. This is not BE2's normalized form. -/
 def psiPullback : modified D Coefficients.q pi →ₛₗ[bar]
     (modified D Coefficients.q pi →ₗ[Coefficients.Ring] Coefficients.Ring) :=

@@ -458,7 +458,6 @@ theorem psiPrimaryRaw_sigma_homogeneous (t : k) (cs : CScalars Sc) (μ : X) (i j
       psiPrimaryRaw_mem_degree (sy := sy) (hc := hc) t cs (wt D μ [up j, dn i]) μ (sigmaL i j)
         rfl ((sChain_sigmaL i j).wt_eq D μ) (sChain_sigmaL i j) (primaryLayers_sigmaL i j)
 
-
 /-- Horizontal placement is linear on the actual target hom module. -/
 def psiPlaceLinear (Ω ν ξ μ : X) (u v : List (Letter I)) {s r : List (Letter I)}
     (hu : wt D ν u = Ω) (hv : wt D μ v = ξ) (hs : wt D ξ s = ν) (hr : wt D ξ r = ν) :
@@ -506,7 +505,6 @@ theorem psiPrimaryRaw_quadEq (t : k) (ht : t ^ 2 = -1) (cs : CScalars Sc)
     (psiCross t _ _ i i rfl ≫ psiCross t _ _ i i rfl) = 0
   rw [psiCross_sq t ht, map_zero]
 
-
 private theorem psiAt_associator {Ω ν ξ μ : X}
     (a : psiObj (D := D) (Sc := Sc) (sy := sy) (hc := hc) ⟨Ω⟩ ⟶ psiObj ⟨ν⟩)
     (b : psiObj (D := D) (Sc := Sc) (sy := sy) (hc := hc) ⟨ν⟩ ⟶ psiObj ⟨ξ⟩)
@@ -516,8 +514,6 @@ private theorem psiAt_associator {Ω ν ξ μ : X}
   apply SOp.hom_ext
   rw [psiEq_underlying]
   rfl
-
-
 
 private theorem psiAt_assoc_eq (Ω ν ξ μ : X) (u v w : List (Letter I))
     (hu : wt D ν u = Ω) (hv : wt D ξ v = ν) (hw : wt D μ w = ξ) :
@@ -566,7 +562,6 @@ theorem psiWhiskerLeft_append (Ω ν ξ μ : X) (u v s r : List (Letter I))
   rw [psiAt_associator _ _ _ (psiAt_assoc_eq Ω ν ξ μ u v s hu hv hs),
     psiAt_associator_inv _ _ _ (psiAt_assoc_eq Ω ν ξ μ u v r hu hv hr)]
   simp [Category.assoc]
-
 
 private theorem psiWhiskerRight_congr {Ω ν μ : X}
     {a b : psiObj (D := D) (Sc := Sc) (sy := sy) (hc := hc) ⟨ν⟩ ⟶ psiObj ⟨μ⟩}
@@ -635,7 +630,6 @@ theorem psiPlace_place (Δ Ω ν ξ ζ μ : X) (a b u v : List (Letter I))
     psiAt_associator_inv _ _ _ (psiAssoc _ _ _),
     TwoSupercategory.whiskerLeft_comp (R := k), TwoSupercategory.whiskerLeft_eqToHom k,
     Category.assoc, eqToHom_trans_assoc, eqToHom_trans]
-
 
 /-- Primary layers stay primary after horizontal placement. -/
 theorem PrimaryLayers.whisk {L : List (LayerData I)} (hp : PrimaryLayers L)

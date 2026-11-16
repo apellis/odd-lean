@@ -101,5 +101,4 @@ theorem internal_cap_odd_shift :
   · have hpar : ipar oddDatum.toSKM () (wt oddDatum.toSKM 2 []) = 1 := by decide
     simpa only [hpar] using hp
 
-
 end OddMath.SKM.LeftCupAttachmentExamples

@@ -58,7 +58,7 @@ theorem crossing_braid_eq_raw (t : k) (ht : t^2 = -1) (ν : X) (i j : I) (hij : 
       (Sc.t i j : k) • ∑ s ∈ Finset.range (D.dn i j),
         zsign k (D.parity i * (D.parity j+s)) •
           braidMonomial (Sc := Sc) t ν i j (D.dn i j-1-s) 0 s +
-      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+      ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
         Sc.s i j p q • ∑ s ∈ Finset.range p,
           zsign k (D.parity i * (D.parity j+s)) •
             braidMonomial (Sc := Sc) t ν i j (p-1-s) q s := by

@@ -86,7 +86,6 @@ theorem homCohomologyMap_injective {N : ℕ} (hN : N ≤ 1)
     have hf : f = 0 := Subtype.ext hf0
     rw [hf, map_zero]
 
-
 section GeneralComparison
 variable {A : Type*} [Ring A] (H : HalfGradedDGRing A 2)
 

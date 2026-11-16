@@ -40,8 +40,6 @@ theorem unscaled_bubbleRs_zero_constraint (i j : I) (μ : X)
   rw [sub_smul, one_smul]
   erw [E, sub_self]
 
-
-
 /-- The unscaled degree-zero counterclockwise slide forces the same constraint. -/
 theorem unscaled_bubbleLs_zero_constraint (i j : I) (μ : X)
     (h : lbub j μ (bubLs cs i (wt D μ [up j]) 0) =

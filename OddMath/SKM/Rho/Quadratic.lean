@@ -67,7 +67,7 @@ theorem quadratic_raw (t : k) (ht : t ^ 2 = -1) (ν : X) (i j : I)
       cl D Sc ν [dn j,dn i] [dn j,dn i] ((ddotsL i (D.dn i j)).map (whL [dn j] [])) +
     ((Sc.t j i : k) * psiCoeff t (D.parity j) ^ D.dn j i) •
       cl D Sc ν [dn j,dn i] [dn j,dn i] ((ddotsL j (D.dn j i)).map (whL [] [dn i])) +
-    ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+    ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
       (Sc.s i j p q * (psiCoeff t (D.parity j) ^ q * psiCoeff t (D.parity i) ^ p)) •
       cl D Sc ν [dn j,dn i] [dn j,dn i]
         ((ddotsL j q).map (whL [] [dn i]) ++ (ddotsL i p).map (whL [dn j] [])) := by
@@ -105,7 +105,7 @@ theorem crossing_connected_quadratic (t : k) (ht : t ^ 2 = -1) (ν μ : X) (i j 
       correctedCrossing t ν μ j i (by simpa [ups, wt, sh, add_comm, add_left_comm, add_assoc] using h) =
     (Sc.t i j : k) • cpow (rhoDotLeft t ν μ i j h) (D.dn i j) +
     (Sc.t j i : k) • cpow (rhoDotRight t ν μ i j h) (D.dn j i) +
-    ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+    ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
       Sc.s i j p q • (cpow (rhoDotRight t ν μ i j h) q ≫ cpow (rhoDotLeft t ν μ i j h) p) := by
   apply (show Function.Injective (rhoForget2 (Sc := Sc) (sy := sy) (hc := hc) ν μ i j h)
     from fun _ _ e => e)

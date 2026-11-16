@@ -68,7 +68,6 @@ theorem vermaProbe_tendsto (S : Submodule Coefficients.Ring (D.serreF Coefficien
   rw [← hy, SuperCartanDatum.serreForm_toSerreF]
   exact hh
 
-
 omit [Finite I] in
 /-- A finite covering submodule is eventually faithfully projected into the
 original integrable quotient. No freeness over the split covering ring is assumed. -/

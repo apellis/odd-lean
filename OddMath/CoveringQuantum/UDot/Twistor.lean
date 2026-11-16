@@ -237,7 +237,6 @@ theorem serreCoeff_twist {i j : I} (hij : i ≠ j) (V Y c : ℤ) (r : ℕ)
 
 variable (D)
 
-
 /-- The rescaling by `twistE`, `twistF` respects the relations (9.2)–(9.4). -/
 theorem twist_gaugeCompatible :
     GaugeCompatible D q (-1) (t * q) 1 (twistE D β) (twistF D β t) where

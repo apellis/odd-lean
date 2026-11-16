@@ -38,7 +38,6 @@ open OddMath.Frontier.EQZab (inclX inclY osymAB par)
 open OddMath.Frontier.EQOnhDG (ONH)
 open DG MulOpposite TensorProductOver.RightAction
 
-
 /-! ### Moving `P^a` past polynomials -/
 
 section Chi

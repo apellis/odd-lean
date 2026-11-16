@@ -253,7 +253,6 @@ private theorem count_grading (k : Bool) (c : MatchingStrand (A k) (R k) → ℕ
     linarith
   · simpa only [p, D, twoOddDatum, RootDatum.toSKM, mul_one, add_assoc] using h.2
 
-
 private def noDot (k : Bool) : T k := ⟨⟨R k, Set.mem_singleton _⟩, fun _ => 0⟩
 
 private theorem noDot_values (k : Bool) : d k (noDot k) = 2 ∧

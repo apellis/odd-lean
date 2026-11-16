@@ -8,7 +8,6 @@ import OddMath.QuiverHecke.HomDimension
 import OddMath.QuiverHecke.Centre
 import OddMath.Frontier.OnhStructure
 
-
 /-!
 # Endomorphisms of the divided-power projectives in degrees `≤ 0`
 
@@ -127,7 +126,6 @@ theorem mem_span_singleton_of_mem_sup {b x : V} (hb : b ∈ N 0) {d : ℤ} (hd :
   · rw [DirectSum.decompose_of_mem_ne N hv0 (Ne.symm h0)]; exact zero_mem _
 
 end Generic
-
 
 /-! ## Even colours -/
 

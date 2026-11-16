@@ -151,7 +151,6 @@ abbrev tailV (d : ℕ) (p : ZMod 2) :
 
 variable {D Sc sy hc s i ε}
 
-
 theorem tailP_mem_homPiece {d : ℕ} {p : ZMod 2} {f : HEnd D Sc sy hc (s ++ List.replicate ε i)}
     (hf : f ∈ tailP D Sc sy hc s i ε d p) :
     f ∈ homPiece D Sc sy hc (s ++ List.replicate ε i) (s ++ List.replicate ε i) 0 p := by

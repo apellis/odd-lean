@@ -47,7 +47,7 @@ def symmetrizer : SKM.Symmetrizer datum where
     intro i j
     cases i <;> cases j <;> simp [SKM.Datum.d, SKM.Datum.h, SKM.Datum.α, datum]
 
-theorem homogeneous : scalars.Homogeneous := fun _ _ _ _ _ _ _ _ h => absurd rfl h
+theorem homogeneous : scalars.Homogeneous := fun _ _ _ _ _ _ _ h => absurd rfl h
 
 /-- `E_i^{(3)}`, `i` odd. -/
 example := cls_power_eq_dividedPower symmetrizer homogeneous true 3 (0 : Bool → ℤ)

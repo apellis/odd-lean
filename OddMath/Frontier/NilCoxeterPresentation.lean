@@ -290,7 +290,6 @@ theorem word_normalization {n : ℕ} (w : Word n) :
   · exact reduced_dividedElement w h
   · exact nonreduced_zero w h
 
-
 theorem reduced_global_sign {n : ℕ} (w v : Word n) (hw : Reduced w) (hv : Reduced v)
     (hp : permutation w = permutation v) :
     ∃ ε : ℤ, (ε = 1 ∨ ε = -1) ∧ product w = ε • product v ∧

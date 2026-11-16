@@ -80,7 +80,6 @@ theorem algebraWord_context_EF_ne (ζ : X) (a b : List (Bool × I))
     abel
   rw [hs, he, mul_smul_comm]
 
-
 end OddMath.CoveringQuantum.UDot.GenericVerma.MixedGram
 
 namespace OddMath.CoveringQuantum.UDot.GenericTensor
@@ -98,7 +97,6 @@ theorem sesquilinearForm_context_EF_ne (ζ : X) (a b : List (Bool × I))
           (algebraWord D ζ []) := by
   rw [algebraWord_context_EF_ne D ζ a b i j hij]
   simp only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, map_pow, bar_pi]
-
 
 /-- Formal Laurent coefficient exchange for Claim 4, specializing only π. -/
 theorem sesquilinearForm_context_EF_ne_coeff (σ : ℚ) (hσ : σ ^ 2 = 1)

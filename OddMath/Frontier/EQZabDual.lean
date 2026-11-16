@@ -270,7 +270,6 @@ theorem dual_expansion_unique (g : (Fin b → ℕ) → SkewPolynomial (a+b))
   rw [Finset.sum_ite_eq'] at this
   simpa [hν] using this
 
-
 /-! ## Corollary 4.11 -/
 
 open Classical in
@@ -339,7 +338,6 @@ theorem cor_4_11 (μ : Fin b → ℕ) :
   rw [dual_expansion (dualD_rightLinear (coeff_rightLinear μ)) F]
   refine Finset.sum_congr rfl fun ν hν => ?_
   rw [hk2 ν hν, smul_mul_assoc, one_mul]
-
 
 /-! ## Proposition 4.13 (1) as printed, for two blocks -/
 

@@ -18,11 +18,11 @@ inverses of (1.12)–(1.14); Definition 2.2 names them (2.6).
 * `Datum I X`: an index set `I` with a parity `I → ℤ/2`, a weight lattice `X` (any additive
   commutative group) with simple roots `αᵢ ∈ X` and simple coroots `⟨hᵢ, -⟩ : X → ℤ`
   (lie-lean's `CartanDatum I X`), such that `aᵢⱼ = ⟨hᵢ, αⱼ⟩` is a generalized Cartan matrix and
-  `dᵢⱼ := -aᵢⱼ` is even whenever `i` is odd (assumption (1.4)).
+  `dᵢⱼ := -aᵢⱼ` is even whenever `i` is odd (assumption (1.2)).
   The paper takes a complex vector space `𝔥` with linearly independent `αᵢ ∈ 𝔥*`, `hᵢ ∈ 𝔥` and
   the weight lattice `P = {λ ∈ 𝔥* | ⟨hᵢ, λ⟩ ∈ ℤ}`; that is a special case (`X = P`). Nothing in
   Definition 1.5 uses linear independence.
-* `Scalars D k`: the units `tᵢⱼ` with (1.5) and the scalars `sᵢⱼ^{pq}` with (1.6), over a
+* `Scalars D k`: the units `tᵢⱼ` with (1.3) and the scalars `sᵢⱼ^{pq}` with (1.4), over a
   commutative ring `k`, with `2` invertible if some `i` is odd. The paper allows a
   supercommutative ground ring `k = k₀ ⊕ k₁`; we work with `k` concentrated in even parity, the
   case of main interest in the paper (all scalars lie in `k₀` anyway).
@@ -39,10 +39,10 @@ A generator is a shape (`Shape`) together with the weight of its rightmost regio
 
 | shape         | 2-morphism (rightmost region `λ`)            | parity     | paper                     |
 |---------------|-----------------------------------------------|------------|---------------------------|
-| `dot i`       | `x : Eᵢ 1_λ → Eᵢ 1_λ`                         | `\|i\|`     | (1.7), upward dot          |
-| `cross i j`   | `τ : Eᵢ Eⱼ 1_λ → Eⱼ Eᵢ 1_λ`                   | `\|i\|\|j\|` | (1.7), upward crossing     |
-| `cup i`       | `η : 1_λ → Fᵢ Eᵢ 1_λ`                         | `0`        | (1.7), rightward cup       |
-| `cap i`       | `ε : Eᵢ Fᵢ 1_λ → 1_λ`                         | `0`        | (1.7), rightward cap       |
+| `dot i`       | `x : Eᵢ 1_λ → Eᵢ 1_λ`                         | `\|i\|`     | (1.5), upward dot          |
+| `cross i j`   | `τ : Eᵢ Eⱼ 1_λ → Eⱼ Eᵢ 1_λ`                   | `\|i\|\|j\|` | (1.5), upward crossing     |
+| `cup i`       | `η : 1_λ → Fᵢ Eᵢ 1_λ`                         | `0`        | (1.5), rightward cup       |
+| `cap i`       | `ε : Eᵢ Fᵢ 1_λ → 1_λ`                         | `0`        | (1.5), rightward cap       |
 | `lcross i j`  | leftward crossing `Fᵢ Eⱼ 1_λ → Eⱼ Fᵢ 1_λ`     | `\|i\|\|j\|` | (2.6)                      |
 | `dcup i n`    | `♦`-cup with label `n`: `1_λ → Eᵢ Fᵢ 1_λ`     | `\|i\|n`    | (2.6)                      |
 | `dcap i n`    | `♦`-cap with label `n`: `Fᵢ Eᵢ 1_λ → 1_λ`     | `\|i\|n`    | (2.6)                      |
@@ -74,7 +74,7 @@ universe u v
 /-- Super Kac–Moody data (Brundan–Ellis, §1, before Definition 1.5): a Cartan datum in
 lie-lean's sense (weights `X`, simple roots `αᵢ`, simple coroots `⟨hᵢ, -⟩`) whose Cartan matrix
 `aᵢⱼ = ⟨hᵢ, αⱼ⟩` is a generalized Cartan matrix, and a parity on `I` such that `dᵢⱼ = -aᵢⱼ` is
-even when `i` is odd (1.4). -/
+even when `i` is odd (1.2). -/
 structure Datum (I : Type u) (X : Type v) [AddCommGroup X] where
   /-- Simple roots and coroots. -/
   cd : CartanDatum I X
@@ -82,7 +82,7 @@ structure Datum (I : Type u) (X : Type v) [AddCommGroup X] where
   isGCM : cd.cartanMatrix.IsGeneralizedCartan
   /-- The parity `i ↦ |i|`. -/
   parity : I → ZMod 2
-  /-- Assumption (1.4): `|i| = 1 → dᵢⱼ` is even. -/
+  /-- Assumption (1.2): `|i| = 1 → dᵢⱼ` is even. -/
   even_of_odd : ∀ i j, parity i = 1 → Even (cd.coroot i (cd.root j))
 
 namespace Datum
@@ -122,12 +122,14 @@ theorem dn_cast {i j : I} (hij : i ≠ j) : (D.dn i j : ℤ) = D.d i j :=
 
 end Datum
 
-/-- The scalars of Brundan–Ellis §1: units `tᵢⱼ ∈ k^×` with `tᵢᵢ = 1` and `tᵢⱼ = tⱼᵢ` when
-`dᵢⱼ = 0` (1.5), and scalars `sᵢⱼ^{pq} ∈ k` (used for `0 < p < dᵢⱼ`, `0 < q < dⱼᵢ`) with
-`sᵢⱼ^{pq} = sⱼᵢ^{qp}` and `sᵢⱼ^{pq} = 0` if `p|i|` is odd (1.6). If some `i` is odd, `2` is
-invertible in `k`. -/
-structure Scalars {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X)
-    (k : Type*) [CommRing k] where
+/-- The scalars of Brundan–Ellis §1, with the condition on `2` given as a proposition `P`: units
+`tᵢⱼ ∈ k^×` with `tᵢᵢ = 1` and `tᵢⱼ = tⱼᵢ` when `dᵢⱼ = 0` (1.3), and scalars `sᵢⱼ^{pq} ∈ k` (used
+for `0 ≤ p < dᵢⱼ`, `0 ≤ q < dⱼᵢ`; Brundan–Ellis use only `0 < p`, `0 < q`, and the monomials
+with `p = 0` or `q = 0` are the Brundan–Wang–Webster generalization, see `ScalarData.NoPure`) with `sᵢⱼ^{pq} = sⱼᵢ^{qp}` and `sᵢⱼ^{pq} = 0` if `p|i|` is odd
+(1.4), and `P` if some `i` is odd. The two instances are `Scalars` (`P` is the invertibility of `2`)
+and `IntegralScalars` (`P` is `True`). -/
+structure ScalarData {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X)
+    (k : Type*) [CommRing k] (P : Prop) where
   /-- The units `tᵢⱼ`. -/
   t : I → I → kˣ
   t_self : ∀ i, t i i = 1
@@ -136,8 +138,25 @@ structure Scalars {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X)
   s : I → I → ℕ → ℕ → k
   s_symm : ∀ i j p q, s i j p q = s j i q p
   s_eq_zero : ∀ (i j : I) (p q : ℕ), (p : ZMod 2) * D.parity i = 1 → s i j p q = 0
-  /-- `2` is invertible if some element of `I` is odd. -/
-  two_isUnit : (∃ i, D.parity i = 1) → IsUnit (2 : k)
+  /-- The condition `P` holds if some element of `I` is odd. -/
+  two_isUnit : (∃ i, D.parity i = 1) → P
+
+/-- The scalars of Brundan–Ellis §1: the data of Definition 1.5, and if some `i` is odd, `2` is
+invertible in `k`. -/
+abbrev Scalars {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X)
+    (k : Type*) [CommRing k] :=
+  ScalarData D k (IsUnit (2 : k))
+
+/-- The scalars of Brundan–Ellis §1 without the invertibility of `2`. These are the parameters of
+the integral form of `𝔘(𝔤)`, which is defined over every commutative ring. -/
+abbrev IntegralScalars {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X)
+    (k : Type*) [CommRing k] :=
+  ScalarData D k True
+
+/-- Forget the condition on `2`. -/
+def ScalarData.toIntegralScalars {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X}
+    {k : Type*} [CommRing k] {Ptwo : Prop} (Sc : ScalarData D k Ptwo) : IntegralScalars D k :=
+  { Sc with two_isUnit := fun _ => trivial }
 
 /-! ## Signed letters and weights -/
 

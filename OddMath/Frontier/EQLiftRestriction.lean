@@ -124,8 +124,6 @@ theorem PwG_mem : PwG A B HN ∈ DG.grading (degPG A B) :=
 
 section Theta
 
-
-
 variable (A B) in
 /-- `OΛ_{a+b} → OΛ_a ⊗ OΛ_b`, `h ↦ h(y, x)`. -/
 def swapDGG : osymDG (A + B) →ᵈᵍ+* (LABg A B) :=
@@ -135,7 +133,6 @@ variable (A B) in
 /-- **`Z^♮_{a,b}`** (Definition 4.15): `OΛ_a ⊗ OΛ_b` as a dg `(OΛ_a ⊗ OΛ_b, OΛ_{a+b})`-bimodule, with
 `OΛ_{a+b}` acting on the right through `h ↦ h(y, x)`. -/
 abbrev ZNatG : Type := (swapDGG A B).Bimodule
-
 
 theorem rHat_swapDGG (h : osymDG (A + B)) :
     gRHat (swapDGG A B h) = swapPoly A B (EQFix.toSkew h) := by
@@ -253,12 +250,9 @@ theorem thetaCInv_thetaCG (t : TensorProductOver (LABg A B) (ZZg A B) (ZNatG A B
 theorem thetaC_injectiveG : Function.Injective (thetaCG (A := A) (B := B)) :=
   Function.LeftInverse.injective thetaCInv_thetaCG
 
-
 end Theta
 
 section ThetaP
-
-
 
 /-- `Θ(t) = Θ_c(t) P^a ∈ Z_{a+b}`. -/
 def thetaPG : TensorProductOver (LABg A B) (ZZg A B) (ZNatG A B) →+ Zn (A + B) :=
@@ -303,12 +297,9 @@ theorem thetaP_op_smulG {k : ℤ} {h : osymDG (A + B)} (hh : h ∈ DG.grading k)
     mul_smul_comm, smul_mul_assoc, EQBorel.sp_mul_assoc, mul_PAG_eq, chiG_chiG, ← EQBorel.sp_mul_assoc]
   rfl
 
-
 end ThetaP
 
 section Compare
-
-
 
 variable (A B) in
 /-- `(Z_a ⊠ Z_b) ⊗_{OΛ_a ⊗ OΛ_b} Z^♮_{a,b}`. -/
@@ -428,11 +419,9 @@ theorem gHom_dG (x : TensorProductOver (osymDG (A + B)) (TTG A B) (ZDG A B)) :
     | h_add t t' ht ht' => rw [TensorProductOver.add_tmul, d_add, map_add, ht, ht', map_add, d_add]
   | add x y hx hy => rw [d_add, map_add, hx, hy, map_add, d_add]
 
-
 end Compare
 
 section Bij
-
 
 /-- `Θ₁(t) = χ(Θ_c t)`, so that `Θ = P^a Θ₁` (`thetaP_eqG HN`). -/
 def theta1G : TTG A B →+ Zn (A + B) :=
@@ -574,7 +563,6 @@ theorem exists_gHom_eqG (g : EN) : ∃ x, gHomG HN x = PwG A B HN * g := by
   obtain ⟨y, hy⟩ := (HN).mulHom_surjective (znRightBasis (A + B)) g
   exact ⟨invHomG y, by rw [gHom_eqG HN, oneHom_invHomG, hy]⟩
 
-
 end Bij
 
 section GEquiv
@@ -657,8 +645,6 @@ variable (A B EA EB) in
 /-- **`ONH^♮_{A+B}`**: the right ideal `P^A E_{A+B}`, regraded so that `P^A` has degree `0`. -/
 abbrev ONHNatG : Type := Regrade (degPG A B) (natSubG A B EA EB HN)
 
-
-
 theorem gHom_mem_natSubG (x : TensorProductOver (osymDG (A + B)) (TTG A B) (ZDG A B)) :
     (show IONHG A B EA EB HN from gHomG HN x) ∈ natSubG A B EA EB HN :=
   ⟨_, gHom_eqG HN x⟩
@@ -716,7 +702,6 @@ theorem gEquiv_op_smulG (g : EN)
     rw [coe_gNatG HN, gHom_op_smulG HN g.2]
     rfl
   | h_add g g' hg hg' => rw [MulOpposite.op_add, add_smul, map_add, hg, hg', add_smul]
-
 
 end GEquiv
 

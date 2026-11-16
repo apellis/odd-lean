@@ -128,7 +128,6 @@ theorem adL_add_pow_of_commute (X E Y : S) (hXE : Commute X E) (hYE : Commute Y 
 
 end Ad
 
-
 /-! ## Extending one-variable operators to `n` variables -/
 
 section Ext

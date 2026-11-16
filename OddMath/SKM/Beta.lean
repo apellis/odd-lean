@@ -112,7 +112,7 @@ end SymD
 /-! ## `β_{λ;i}` -/
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k}
-  {Sc : Scalars D k} (cs : CScalars Sc)
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo} (cs : CScalars Sc)
 
 /-- Closed 2-morphisms of parity `0` commute with all homogeneous closed 2-morphisms. -/
 theorem commute_of_mem_zero {μ : X} {q : ZMod 2} {f g : End ((pres D Sc).obj (ob D μ []))}
@@ -223,7 +223,6 @@ theorem eq_5_2_even (i : I) (μ : X) (hi : D.parity i = 0) (n : ℕ) :
     rw [mul_assoc, ← mul_assoc ((-1 : k) ^ n), ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow,
       one_mul, Units.inv_mul]
   rw [e1, map_smul, beta_h, smul_smul, smul_smul, hc, one_smul]
-
 
 /-! ## `β_{λ;i}` for odd `i` -/
 

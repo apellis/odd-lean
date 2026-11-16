@@ -413,7 +413,6 @@ theorem sp_eq_schur_diagram_of_pieri310Bounded (n : ℕ) (h310 : Pieri310Bounded
     CompleteTableauExpansion.sp (n+2) μ = schur n (ofYoung μ) := by
   rw [← sp_eq_schur_of_pieri310Bounded n h310, toYoung_ofYoung μ hμ]
 
-
 /-! ## (c) The named hypothesis in all-shapes Young-diagram form, and the bridge
 
 `Pieri310 N` transcribes printed (3.10) in N variables for EVERY Young diagram λ and every k,

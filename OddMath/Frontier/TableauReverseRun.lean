@@ -67,7 +67,6 @@ private theorem split_last {n : ℕ} (w : List (Fin n)) (c : ℕ)
   refine ⟨w[c], by simp [hc], ?_⟩
   rw [List.take_concat_get', ← he, List.take_length]
 
-
 private theorem base_geometry (n : ℕ) (w : List (Fin n)) (ws : List (List (Fin n)))
     (c : ℕ) (hs : ∀ z ∈ w :: ws, z.Pairwise (· ≤ ·))
     (hc : ∀ j : ℕ, ColumnBelow ((w::ws)[j]?.getD []) ((w::ws)[j+1]?.getD []))
@@ -113,7 +112,6 @@ private theorem base_geometry (n : ℕ) (w : List (Fin n)) (ws : List (List (Fin
       · intro j
         cases j <;> simp [hl]
     · simpa [HeadWitness] using hw
-
 
 private theorem path_bound (cs : List ℕ) (j k : ℕ) (hs : cs.Pairwise (· ≥ ·))
     (hh : cs.head? = some j) (hjk : j ≤ k) : ∀ i ∈ cs, i ≤ k := by
@@ -203,7 +201,6 @@ private theorem reverse_geometry_aux (n : ℕ) (rs : List (List (Fin n))) (r c :
         · simp [List.getLast?_cons, hce]
         · simpa using hqt
       · exact ⟨q.letter,k,by simpa using hv,by simp⟩
-
 
 theorem reverseRows_geometry (n : ℕ) (rs : List (List (Fin n))) (r c : ℕ)
     (hs : ∀ w ∈ rs, w.Pairwise (· ≤ ·))

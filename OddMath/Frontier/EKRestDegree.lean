@@ -79,7 +79,6 @@ def Al (n : ℕ) : ℤ := ∑ l ∈ CompleteElementary.compositions n, (l.map fA
 theorem sumA_eq (n : ℕ) : sumA n = Al n := by
   unfold sumA Al; exact sum_composition_list n (fun l => (l.map fA).sum)
 
-
 theorem Al_zero : Al 0 = 0 := by simp [Al, CompleteElementary.compositions]
 
 def cc (k : ℕ) : ℤ := 2 ^ (k - 1)

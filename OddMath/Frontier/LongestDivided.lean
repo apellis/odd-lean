@@ -83,7 +83,6 @@ theorem D_right_kernel (n : ℕ) (f g : SkewPolynomial (n+2))
   funext i
   simp
 
-
 /-- Move a distinct generator through a power with every sign retained. -/
 theorem generator_mul_pow {N : ℕ} (i j : Fin N) (h : i ≠ j) (b : ℕ) :
     generator j * generator i ^ b = (-1 : ℤ)^b • (generator i ^ b * generator j) := by
@@ -171,7 +170,6 @@ noncomputable def sweep (n p : ℕ) : ℕ → SkewPolynomial (n+2) →ₗ[ℤ] S
   | 0 => LinearMap.id
   | k+1 => (sweep n (p+1) k).comp (cross n p)
 
-
 theorem cross_one (n j : ℕ) : cross n j 1 = 0 := by
   unfold cross
   split
@@ -233,7 +231,6 @@ theorem sweep_stairs (n p k : ℕ) (hb : p+(k+1) ≤ n+2) :
         ih (p+1) (by omega), mul_smul_comm, smul_smul]
       rw [← pow_add]
       rfl
-
 
 theorem square_sign (k : ℕ) : (-1 : ℤ)^(k*k) = (-1 : ℤ)^k := by
   rw [pow_mul]
@@ -368,6 +365,4 @@ theorem D_staircase (N : ℕ) : D N (staircase N) = (-1 : ℤ)^(N.choose 3) • 
     exact actNat_stairs n (n+2) le_rfl
 
 end OddMath.Frontier.LongestDivided
-
-
 

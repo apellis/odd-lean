@@ -29,7 +29,7 @@ open CategoryTheory StringDiagrams Presentation
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k}
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo}
 
 /-! ## Mates as a linear map -/
 
@@ -103,7 +103,7 @@ theorem zsign_mul_mul_self (p : ZMod 2) : zsign k p * zsign k (p * p) = 1 := by
   rw [zmod2_mul_self, zsign_mul_self]
 
 /-- The scalars `sⱼᵢ^{pq}` vanish unless `p|j|` is even. -/
-theorem Scalars.s_mul_zsign (i j : I) (p q : ℕ) (x : ZMod 2) :
+theorem ScalarData.s_mul_zsign (i j : I) (p q : ℕ) (x : ZMod 2) :
     Sc.s j i p q * zsign k ((p : ZMod 2) * D.parity j * x) = Sc.s j i p q := by
   by_cases hs : Sc.s j i p q = 0
   · rw [hs, zero_mul]
@@ -158,7 +158,7 @@ theorem lemma32_ne_aux (i j : I) (ν : X) (hij : i ≠ j) (hd : D.d i j ≠ 0) :
           cl D Sc ν (dns [j, i]) (dns [j, i]) ((ddotsL i (D.dn i j)).map (whL [] [dn j])) +
         (zsign k (D.parity j * ((D.dn j i / 2 : ℕ) : ZMod 2)) * Sc.t j i) •
           cl D Sc ν (dns [j, i]) (dns [j, i]) ((ddotsL j (D.dn j i)).map (whL [dn i] [])) +
-        ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+        ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
           (zsign k (D.parity i * ((p / 2 : ℕ) : ZMod 2) + D.parity j * ((q / 2 : ℕ) : ZMod 2)) *
               Sc.s i j p q) •
             cl D Sc ν (dns [j, i]) (dns [j, i])
@@ -170,7 +170,7 @@ theorem lemma32_ne_aux (i j : I) (ν : X) (hij : i ≠ j) (hd : D.d i j ≠ 0) :
           (dotsL [] j [up i] (D.dn j i)) +
         (Sc.t i j : k) • cl D Sc (wt D ν (dns [j, i])) (ups [j, i]) (ups [j, i])
           (dotsL [up j] i [] (D.dn i j)) +
-        ∑ p ∈ Finset.Ioo 0 (D.dn j i), ∑ q ∈ Finset.Ioo 0 (D.dn i j),
+        ∑ p ∈ Finset.range (D.dn j i), ∑ q ∈ Finset.range (D.dn i j),
           Sc.s j i p q • cl D Sc (wt D ν (dns [j, i])) (ups [j, i]) (ups [j, i])
             (dotsL [up j] i [] q ++ dotsL [] j [up i] p) :=
     cl_quadNe Sc j i _ (Ne.symm hij) hd'
@@ -237,7 +237,7 @@ theorem lemma32_ne (i j : I) (ν : X) (hij : i ≠ j) (hd : D.d i j ≠ 0) :
           cl D Sc ν [dn i, dn j] [dn i, dn j] ((ddotsL i (D.dn i j)).map (whL [] [dn j])) +
         (zsign k (D.parity j * ((D.dn j i / 2 : ℕ) : ZMod 2)) * Sc.t j i) •
           cl D Sc ν [dn i, dn j] [dn i, dn j] ((ddotsL j (D.dn j i)).map (whL [dn i] [])) +
-        ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+        ∑ p ∈ Finset.range (D.dn i j), ∑ q ∈ Finset.range (D.dn j i),
           (zsign k (D.parity i * ((p / 2 : ℕ) : ZMod 2) + D.parity j * ((q / 2 : ℕ) : ZMod 2)) *
               Sc.s i j p q) •
             cl D Sc ν [dn i, dn j] [dn i, dn j]

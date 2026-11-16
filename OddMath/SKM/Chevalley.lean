@@ -37,7 +37,7 @@ open CategoryTheory StringDiagrams Presentation Supercategory
 universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X) {k : Type w} [CommRing k]
-  (Sc : Scalars D k)
+  {Ptwo : Prop} (Sc : ScalarData D k Ptwo)
 
 /-- The supercategory structure on the presented category of `𝔘(𝔤)` (the parity of a diagram is
 the number of its odd generators). -/

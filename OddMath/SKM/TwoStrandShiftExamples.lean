@@ -39,14 +39,13 @@ def scalars : Scalars datum ℤ where
     rintro ⟨i, hi⟩
     exact (zero_ne_one hi).elim
 
-theorem homogeneous : scalars.Homogeneous := fun _ _ _ _ _ _ _ _ h => absurd rfl h
+theorem homogeneous : scalars.Homogeneous := fun _ _ _ _ _ _ _ h => absurd rfl h
 
 /-- Unit symmetrizer. -/
 def symmetrizer : Symmetrizer datum where
   d := fun _ => 1
   pos := fun _ => one_pos
   symm := fun _ _ => rfl
-
 
 /-- Positive exponent two in the existing Q equivalence. -/
 def positiveShift (ν : ℤ) :=

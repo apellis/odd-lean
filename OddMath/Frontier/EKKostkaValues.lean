@@ -235,7 +235,6 @@ theorem completePoly_apply (n k : ℕ) (b : Fin n → ℕ) :
     apply hb
     rw [← he, sum_exponents, List.length_ofFn]
 
-
 /-! ## Ordered complete products: coefficients are signed matrix counts -/
 
 /-- Ordered product of complete polynomials, factor `i` of degree `β i`. -/
@@ -309,7 +308,6 @@ theorem prodH_apply (n : ℕ) : ∀ {r : ℕ} (β : Fin r → ℕ) (e : Fin n �
     rw [OddMath.skewSign, crossingCount_eq_crossCols, ht]
     split_ifs <;> ring
 
-
 /-! ## Extraction of the `x^ν` coefficient on both sides of Theorem 3.8 -/
 
 open DegreeShapes TableauDominance TableauStripSigns CompleteTableauExpansion
@@ -366,7 +364,6 @@ theorem Mh_eq_sum_kostka (d : ℕ) (μ ρ : DegreeShape d) :
   intro lam _
   linear_combination (signedKostka lam.val ρ.val * (-1 : ℤ) ^ directNorth lam.val *
     signedKostka lam.val μ.val) * ht
-
 
 /-! ## The sign statistic: Σ_j C(λᵀ_j, 2), and its parity λ₂ + λ₄ + ⋯ -/
 

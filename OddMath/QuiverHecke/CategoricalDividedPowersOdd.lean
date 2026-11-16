@@ -179,6 +179,13 @@ theorem class_summands_odd :
     rw [oddProjector, ← alphaEnd_mul]
     exact congrArg _ (S.mul_lam j)
 
+theorem class_oddSummand_shift (m a : ℤ) (p : ZMod 2) :
+    letI := K₀.moduleLaurent k (HomCat D Sc sy hc i (n + 2) ν)
+    (T a : LaurentPolynomial Zπ) • K₀.mk (oddSummand D Sc sy hc i hi n ν m p) =
+      K₀.mk (oddSummand D Sc sy hc i hi n ν (m + a) p) :=
+  class_raw_shift (oddProjector_idem D Sc sy hc i hi n ν) (oddProjector_degree D Sc sy hc i hi n ν)
+    (oddProjector_even D Sc sy hc i hi n ν) m a p
+
 theorem class_oddSummand (m : ℤ) (s : ℕ) :
     letI := K₀.moduleLaurent k (HomCat D Sc sy hc i (n + 2) ν)
     K₀.mk (oddSummand D Sc sy hc i hi n ν m (s : ZMod 2)) =
@@ -192,7 +199,9 @@ theorem class_oddSummand (m : ℤ) (s : ℕ) :
     | zero => simp
     | succ s ih =>
       rw [pow_succ' piLP s, mul_smul, ih, class_raw_pi, Nat.cast_succ]
-  rw [hp, class_raw_shift, zero_add]
+  rw [hp]
+  exact ((class_oddSummand_shift D Sc sy hc i hi n ν 0 m (s : ZMod 2)).trans
+    (congrArg (fun z => K₀.mk (oddSummand D Sc sy hc i hi n ν z (s : ZMod 2))) (Int.zero_add m))).symm
 
 /-- **BE2 Lemma 11.5 for an odd colour, with the printed divided power**:
 `[E_i^{n+2} 1_ν] = q_i^C π^C [n+2]^!_{q_i,π} [E_i^{(n+2)} 1_ν]`, `C = (n+2)(n+1)/2`. -/
@@ -205,8 +214,11 @@ theorem class_printed_odd :
   let := K₀.moduleLaurent k (HomCat D Sc sy hc i (n + 2) ν)
   rw [class_summands_odd, ← sum_T_oddShift_mul, Finset.sum_smul]
   refine Finset.sum_congr rfl fun ℓ _ => ?_
-  rw [← class_oddSummand, ← complement_eq_shift, Int.toNat_natCast]
-  rfl
+  have hnn : (0 : ℤ) ≤ shift n ℓ := complement_eq_shift ℓ ▸ Int.natCast_nonneg _
+  have hz : (((shift n ℓ).toNat : ℕ) : ZMod 2) = ((shift n ℓ : ℤ) : ZMod 2) := by
+    rw [← Int.cast_natCast, Int.toNat_of_nonneg hnn]
+  exact (congrArg (fun p => K₀.mk (oddSummand D Sc sy hc i hi n ν (2 * sy.d i * shift n ℓ) p))
+    hz).symm.trans (class_oddSummand D Sc sy hc i hi n ν (2 * sy.d i * shift n ℓ) (shift n ℓ).toNat)
 
 theorem class_corrected_shift :
     letI := K₀.moduleLaurent k (HomCat D Sc sy hc i (n + 2) ν)
@@ -330,8 +342,14 @@ theorem defect_smul_printed
         qpFact (qUnitPi (sy.d i)) piLP (n + 2)) •
       K₀.mk (oddDividedPowerPrinted D Sc sy hc i hi n ν) = 0 := by
   let := K₀.moduleLaurent k (HomCat D Sc sy hc i (n + 2) ν)
-  rw [sub_mul, one_mul, sub_smul, sub_eq_zero]
-  exact (class_printed_odd D Sc sy hc i hi n ν).symm.trans h
+  have e := (class_printed_odd D Sc sy hc i hi n ν).symm.trans h
+  have hr : (T (((n + 2).choose 2 : ℤ) * sy.d i) * piLP ^ (n + 2).choose 2 - 1) *
+        qpFact (qUnitPi (sy.d i)) piLP (n + 2) =
+      T (((n + 2).choose 2 : ℤ) * sy.d i) * piLP ^ (n + 2).choose 2 *
+        qpFact (qUnitPi (sy.d i)) piLP (n + 2) - qpFact (qUnitPi (sy.d i)) piLP (n + 2) :=
+    by ring
+  rw [hr]
+  exact (sub_smul _ _ _).trans (sub_eq_zero.2 e)
 
 omit [CommRing k] in
 /-- **The printed normalization of Lemma 11.5 fails for odd colours.** Over a field, for finitely

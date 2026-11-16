@@ -78,7 +78,6 @@ def kEval (n : ℕ) (wl cl : List ℕ) : ℤ :=
   ∑ rs ∈ ((rowCands n 0 wl).filter (fun rs => decide (Valid n wl cl rs))).toFinset,
     (-1 : ℤ) ^ inversions ((readRows rs).map Fin.val)
 
-
 theorem mem_rowCands (n : ℕ) : ∀ (rs : List (List (Fin n))) (r : ℕ),
     (∀ w ∈ rs, w.Pairwise (· ≤ ·)) →
     (∀ k (hk : k < rs.length), ∀ a ∈ rs[k], r + k ≤ a.val) →
@@ -200,7 +199,6 @@ theorem fiber_sum (lam : YoungDiagram) (c : ℕ →₀ ℕ) (n : ℕ) (cl : List
           List.getD_eq_default _ _ (by omega)]
   · intro T hT
     exact sign_rows n T _
-
 
 theorem rowLen_eq_getD (μ : YoungDiagram) (i : ℕ) : μ.rowLen i = μ.rowLens.getD i 0 := by
   by_cases h : i < μ.colLen 0
@@ -388,7 +386,6 @@ theorem mat_sum {r c : ℕ} (β : Fin r → ℕ) (α : Fin c → ℕ) (F : List 
       exact h'
   · intro A _; rfl
 
-
 def crossL (L : List (List ℕ)) (r c : ℕ) : ℕ :=
   ∑ i ∈ Finset.range r, ∑ k ∈ Finset.range r, if i < k then
     ∑ j ∈ Finset.range c, ∑ l ∈ Finset.range c, if l < j then ent L i j * ent L k l else 0 else 0
@@ -409,7 +406,6 @@ open EKDualBases DegreeShapes in
 theorem Mh_eval (d : ℕ) (ν μ : DegreeShape d) : Mh d ν μ = mhEval ν.val.rowLens μ.val.rowLens := by
   rw [proposition_3_1_Mh, EKSemiorthogonality.rowLens_eq_ofFn, EKSemiorthogonality.rowLens_eq_ofFn]
   exact pairing_eval _ _
-
 
 open EKDualBases DegreeShapes in
 theorem Mh_ofRowLens (d : ℕ) (w v : List ℕ) (hw : w.Pairwise (· ≥ ·)) (hv : v.Pairwise (· ≥ ·))

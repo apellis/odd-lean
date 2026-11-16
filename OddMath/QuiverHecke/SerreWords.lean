@@ -387,7 +387,6 @@ theorem slides_idem_wp {w : List I} {x y : I} {ε : ℤˣ} {s n t m : ℕ} (ρ :
         (by rw [PG.pos_cross, PG.width_cross]; omega) (by rw [PG.pos_cross, PG.width_cross]; omega)
   rwa [one_pow] at h
 
-
 open SignedNilHecke in
 /-- A product of same-colour crossings passes through a generator at disjoint positions, up to a
 sign. -/
@@ -408,7 +407,6 @@ theorem slides_wp_gen {w w' : List I} {h : PG} (hσ : SChain w (pl w [h]) w') {x
       (by rw [PG.pos_cross, PG.width_cross]; omega) (by rw [PG.pos_cross, PG.width_cross]; omega)
       hhl (sChain_cross_of h₀ h₁) (sChain_cross_of h₀' h₁') hσ
     rwa [par_cross_of D h₀ h₁, parity_sq] at hT
-
 
 open SignedNilHecke in
 /-- Two endomorphism generators at disjoint positions of a word commute up to a sign. -/

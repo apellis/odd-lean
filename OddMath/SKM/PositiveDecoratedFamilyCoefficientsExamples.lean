@@ -150,7 +150,6 @@ theorem family_unique : ∀ R ∈ repeatedFamily, ∀ S ∈ repeatedFamily,
   · exact False.elim (identity_not_iso_swap h.symm)
   · rfl
 
-
 private abbrev word : Fin 2 → Unit := fun _ => ()
 
 /-- The identity contribution and the odd crossing of degree -2, in one family. -/

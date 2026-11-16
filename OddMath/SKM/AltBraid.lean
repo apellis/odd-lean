@@ -33,7 +33,7 @@ namespace OddMath.SKM
 open CategoryTheory StringDiagrams Presentation Finset
 universe u v w
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k}
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo}
 
 def altL (i j a : I) : List (LayerData I) :=
   (sigmaL i j).map (whL [] [up a]) ++ crossL [dn i] j a [] ++
@@ -893,7 +893,6 @@ theorem alt_equal (i : I) (μ : X) :
   rw [altInvCorrectionR_eq, altInvCorrectionL_eq, sub_neg_eq_add] at e
   rw [sub_eq_iff_eq_add] at e
   exact e.trans (by abel)
-
 
 theorem altInvCorrectionR_boundary (i : I) (μ : X) (hh : D.h i μ = -1) :
     altInvCorrectionR cs i μ = 0 := by

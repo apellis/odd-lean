@@ -28,7 +28,6 @@ universe w v u
 
 namespace OddMath.Frontier.EQZabREnd
 
-
 attribute [local instance] EQFix.zabOpModule EQFix.zabOpDGModule
 
 variable (a b : ℕ)

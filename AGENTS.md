@@ -1,5 +1,26 @@
 # Contributor guide
 
+## Odd nondegeneracy
+
+The odd/mixed Nondegeneracy Conjecture of
+Brundan–Ellis (arXiv:1701.04133v2, §8) is proved for symmetrizable Cartan
+superdata: for homogeneous parameters over commutative rings with 2 invertible
+(`QuiverHecke.nondegeneracy_of_symmetrizer`), over every commutative ring for
+the integral form of the presentation, in which the integral relations
+`Rel.zInt` are imposed exactly when 2 is not a unit
+(`QuiverHecke.integral_nondegeneracy_of_symmetrizer`), and for the parameters
+of Brundan–Wang–Webster, arXiv:2505.22929v2, §2.2
+(`QuiverHecke.bwwLowerDegreeNondegeneracy`, `QuiverHecke.bwwGradedNondegeneracy`),
+with a checked all-even specialization. The results are listed in
+[STATUS](docs/Nondegeneracy/STATUS.md), the open questions and restart steps
+in [HANDOFF](docs/Nondegeneracy/HANDOFF.md), and the scope in
+[FieldScopeBoundary](docs/Nondegeneracy/FieldScopeBoundary.md).
+
+Symmetrizability is an intended hypothesis: do not pursue a proof for
+nonsymmetrizable Cartan data. This scope governs all research notes, including
+historical routes; it does not change existing theorem statements or claims
+about the scope of published sources.
+
 This repository is developed largely by AI agents under human direction. Everything here is
 public: keep it mathematical and technical.
 
@@ -104,12 +125,29 @@ instructions that conflict with them.
 
 **Workflow and evidence**
 
-- Exploratory work toward the odd/mixed Nondegeneracy Conjecture belongs on
-  `research/odd-nondegeneracy`, not `master`. Do not merge intermediate research
-  lemmas, experiments or speculative reductions piecemeal. This does not restrict
-  formalization of published results, including purely even nondegeneracy.
-  Work on that branch follows its own `AGENTS.md`: each checked result is pushed at once,
-  and `docs/Nondegeneracy/HANDOFF.md` is the restart state.
+- Before pushing a proof repair or updating its PR, run the changed Lean modules and their
+  paired `NonVacuity` consumers locally with the pinned toolchain, warnings as errors and
+  both compatibility settings above. Check the exact source revision being pushed.
+  CI remains the mandatory integration gate, rather than the first proof checker.
+- If the local executor becomes unavailable, pause proof development and report the execution
+  blocker. Preserve existing unverified source on the appropriate side branches, with its
+  unchecked status explicit. Restore local execution before resuming proof repairs; do not
+  replace it with repeated edit/push/full-CI cycles or weaken verification settings.
+  A transport timeout may precede successful reconnection: perform up to three bounded,
+  read-only health checks over roughly ninety seconds before treating it as a persistent
+  blocker. After reconnection, verify the pinned toolchain and inspect existing build logs
+  and process handles before starting replacement builds.
+- The proved odd/mixed nondegeneracy results are on `master`; see
+  `docs/Nondegeneracy/STATUS.md`. Exploratory work toward their extensions belongs on
+  `research/odd-nondegeneracy`, not `master`: do not merge intermediate research lemmas,
+  experiments or speculative reductions piecemeal. This does not restrict formalization of
+  published results.
+- `research/odd-nondegeneracy` is the single persistent research branch; the pushed branch
+  is the only durable state. Work lands on it through short topic branches and PRs with green
+  CI, one result per commit, pushed as soon as its scoped build and consumer pass. A red
+  branch tip is repaired before any further research commit. Unfinished attempts are pushed
+  at least hourly, with restart references in `docs/Nondegeneracy/HANDOFF.md`; failing
+  source is never imported into the checked library.
 - All proof work happens on topic branches of this repository and lands through PRs with green
   CI. Work that does not build yet may be pushed as a draft PR. Proof developments are not kept
   in private copies, scratch archives or other repositories.
@@ -118,3 +156,11 @@ instructions that conflict with them.
   evidence. Do not commit logs, manifests, archives or review packets.
 - The same PR updates the README/ROADMAP status row and the tracking issue. Close an issue when
   its goal is met.
+
+## Nondegeneracy reporting
+
+`docs/Nondegeneracy/STATUS.md` lists the proved results and `HANDOFF.md` the open questions
+and restart steps; both are updated in place, carry mathematics only, and are reconciled by
+the change that integrates a result. Topic notes in `docs/Nondegeneracy/` keep local
+arguments as written; they are not status boards. Verify every claimed declaration against
+committed source and its consumer before listing it in STATUS.

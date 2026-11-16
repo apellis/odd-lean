@@ -48,7 +48,6 @@ theorem degreeFree_form (χ : Bichar Coefficients.Ring I) (nm : I → Coefficien
         simp only [degreeFree_word]
         split_ifs <;> simp [hz]
 
-
 omit [DecidableEq I] in
 /-- Formal-degree projection preserves the actual Serre ideal. -/
 theorem degreeFree_mem_serreIdeal (ν : I →₀ ℕ) {x : PreF Coefficients.Ring I}

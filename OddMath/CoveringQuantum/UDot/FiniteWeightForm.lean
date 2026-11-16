@@ -112,7 +112,6 @@ theorem modifiedEquiv_positiveHalf (μ : L) (x : D.serreF q π) :
   | add x y hx hy => simp only [map_add, hx, hy]
   | smul c x hx => simp only [map_smul, hx]
 
-
 /-- The fixed nonunital equivalence intertwines psi over the generic ring. -/
 theorem modifiedEquiv_psi (x : modified D Coefficients.q pi) :
     modifiedEquiv D Coefficients.q pi (psiModified D x) =

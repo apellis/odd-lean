@@ -295,8 +295,6 @@ theorem Valid.jn (hv : Valid s) (hr : r + 1 < s.length) (hx : idAt s r = some x)
     | exact hv.unique h1'.symm h2'.symm
     | exact hv.unique h2'.symm h1'.symm
 
-
-
 theorem xor_xor_comm (a b c d : Prop) :
     ((a ↔ ¬ b) ↔ ¬ (c ↔ ¬ d)) ↔ ((a ↔ ¬ c) ↔ ¬ (b ↔ ¬ d)) := by
   by_cases a <;> by_cases b <;> by_cases c <;> by_cases d <;> simp_all

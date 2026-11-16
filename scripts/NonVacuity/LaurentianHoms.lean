@@ -27,7 +27,7 @@ def cScalars : CScalars scalars where
   shift := fun _ _ _ => by simp [scalars]
 
 theorem homogeneous : scalars.Homogeneous :=
-  fun _ _ _ _ _ _ _ _ h => absurd rfl h
+  fun _ _ _ _ _ _ _ h => absurd rfl h
 
 theorem locallyFinite : sy.DegreeLocallyFinite := fun _ => Set.toFinite _
 

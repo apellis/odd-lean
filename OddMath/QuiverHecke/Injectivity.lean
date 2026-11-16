@@ -451,19 +451,27 @@ theorem form_algebraWord_eq_zero (hN : SKM.NondegeneracyConjecture cs) (μ ν : 
       have h1 := (mixed_word_physical_weight Q ν b).symm.trans hb
       have h2 := (mixed_word_physical_weight Q ν t.1).symm.trans (blockWord_wt Q t)
       rw [add_left_cancel (h1.trans h2.symm)]
-    erw [GSKar.pairing_smul]
-    rw [map_mul, evalSeries_laurentToSeries, evalSeries_pairing_blockClass,
-      SKM.hom_dimension_eq_form_mul_sym Q cs hS hf hN ν b t.1 hab, mul_assoc]
-    · rfl
-    · exact hf
+    have hsm : P (a t • blockClass S Q.skmSymmetrizer hS μ ν t.1 (blockWord_wt Q t) 0 0) =
+        laurentToSeries (a t) *
+          P (blockClass S Q.skmSymmetrizer hS μ ν t.1 (blockWord_wt Q t) 0 0) :=
+      GSKar.pairing_smul (k := k) _ _ (a t) _
+    rw [hsm, map_mul]
+    have e1 := evalSeries_laurentToSeries σ hσ (a t)
+    have e2 := (evalSeries_pairing_blockClass Q hS cs hf μ ν t.1 b (blockWord_wt Q t) hb σ hσ).trans
+      (SKM.hom_dimension_eq_form_mul_sym Q cs hS hf hN ν b t.1 hab (σ : ℚ)
+        (sq_eq_one_of_mul_self (by exact_mod_cast congrArg (fun z : ℤ => (z : ℚ)) hσ)))
+    exact (congrArg₂ (· * ·) e1 e2).trans (mul_assoc _ _ _).symm
   apply Coefficients.eq_zero_of_signLaurent
   intro σ hσ'
   have hσ : σ * σ = 1 := by
     have : ((σ * σ : ℤ) : ℚ) = 1 := by push_cast; rw [← pow_two]; exact hσ'
     exact_mod_cast this
-  have h := hP σ hσ
-  rw [hZ, map_zero, map_zero] at h
-  exact (mul_eq_zero.1 h.symm).resolve_right (symDimension_ne_zero _ k σ)
+  have h0 : evalSeries σ hσ (P (a.sum fun t r =>
+      r • blockClass S Q.skmSymmetrizer hS μ ν t.1 (blockWord_wt Q t) 0 0)) = 0 :=
+    (congrArg (fun x => evalSeries σ hσ (P x)) hZ).trans
+      ((congrArg (evalSeries σ hσ) (map_zero P)).trans (map_zero _))
+  have h := (hP σ hσ).symm.trans h0
+  exact (mul_eq_zero.1 h).resolve_right (symDimension_ne_zero _ k σ)
 
 omit [Finite I] [Module.Free ℤ X] [Module.Finite ℤ X] in
 /-- An element of a weight block of `U̇` that pairs trivially with every mixed word of the block
@@ -515,22 +523,35 @@ theorem form_eq_zero_of_mem_block (μ ν : X) (Y' : modified Q Coefficients.q Co
     push Not at hne
     exact hb (Prod.ext hne.1 hne.2)
 
-/-- An element of `U̇` pairing trivially with all of `U̇` vanishes (Theorem 10.1). -/
-theorem eq_zero_of_form_eq_zero
-    (hα : LinearIndependent ℤ Q.α) (hh : LinearIndependent ℤ Q.cd.coroot)
+omit [Finite I] [Module.Free ℤ X] [Module.Finite ℤ X] in
+/-- An element of `U̇` pairing trivially with all of `U̇` vanishes, given nondegeneracy of the
+form of Theorem 10.1 in its left variable. -/
+theorem eq_zero_of_form_eq_zero_of_nondegenerate
+    (hnd : ∀ x : modified Q Coefficients.q Coefficients.pi,
+      (∀ y, sesquilinearForm Q x y = 0) → x = 0)
     (Y' : modified Q Coefficients.q Coefficients.pi)
     (hall : ∀ z, sesquilinearForm Q z Y' = 0) : Y' = 0 := by
   have hψ : psiModified Q Y' = 0 := by
-    apply FiniteWeightForm.sesquilinearForm_nondegenerate Q hα hh
+    apply hnd
     intro w
     rw [sesquilinearForm_psi_comm, psiModified_psiModified]
     exact hall _
   rw [← psiModified_psiModified Q Y', hψ, map_zero]
 
-/-- The block step of Theorem 12.1. -/
-theorem blockProj_eq_zero (hN : SKM.NondegeneracyConjecture cs)
-    (hα : LinearIndependent ℤ Q.α)
-    (hh : LinearIndependent ℤ Q.cd.coroot) (x : Λ) (hx : gammaInt Q hS cs hf x = 0) (μ ν : X) :
+/-- An element of `U̇` pairing trivially with all of `U̇` vanishes (Theorem 10.1). -/
+theorem eq_zero_of_form_eq_zero
+    (hα : LinearIndependent ℤ Q.α) (hh : LinearIndependent ℤ Q.cd.coroot)
+    (Y' : modified Q Coefficients.q Coefficients.pi)
+    (hall : ∀ z, sesquilinearForm Q z Y' = 0) : Y' = 0 :=
+  eq_zero_of_form_eq_zero_of_nondegenerate Q
+    (FiniteWeightForm.sesquilinearForm_nondegenerate Q hα hh) Y' hall
+
+omit [Finite I] [Module.Free ℤ X] [Module.Finite ℤ X] in
+/-- The block step of Theorem 12.1, given nondegeneracy of the form of Theorem 10.1. -/
+theorem blockProj_eq_zero_of_nondegenerate (hN : SKM.NondegeneracyConjecture cs)
+    (hnd : ∀ x : modified Q Coefficients.q Coefficients.pi,
+      (∀ y, sesquilinearForm Q x y = 0) → x = 0)
+    (x : Λ) (hx : gammaInt Q hS cs hf x = 0) (μ ν : X) :
     blockProj Q Coefficients.q Coefficients.pi μ ν (x : 𝕌) = 0 := by
   obtain ⟨y, hy_def⟩ : ∃ y, y = blockProj Q Coefficients.q Coefficients.pi μ ν (x : 𝕌) :=
     ⟨_, rfl⟩
@@ -579,7 +600,8 @@ theorem blockProj_eq_zero (hN : SKM.NondegeneracyConjecture cs)
     exact Submodule.smul_mem _ _ hyB
   have hY' : (⟨(Y : 𝕌), block_le_modified _ _ _ μ ν hYm⟩ :
       modified Q Coefficients.q Coefficients.pi) = 0 := by
-    refine eq_zero_of_form_eq_zero Q hα hh _ (form_eq_zero_of_mem_block Q μ ν _ hYm ?_)
+    refine eq_zero_of_form_eq_zero_of_nondegenerate Q hnd _
+      (form_eq_zero_of_mem_block Q μ ν _ hYm ?_)
     refine form_algebraWord_eq_zero Q hS cs hf hN μ ν a hZ _ (Subtype.ext ?_)
     rw [hYval]
     simp only [Finsupp.sum, AddSubmonoidClass.coe_finsetSum, SetLike.val_smul]
@@ -589,15 +611,21 @@ theorem blockProj_eq_zero (hN : SKM.NondegeneracyConjecture cs)
     exact congrArg Subtype.val hY'
   exact (Coefficients.isUnit_ofLaurentHom hd).smul_left_cancel.1 (hdy.trans (smul_zero _).symm)
 
-/-- **BE2 Theorem 12.1** (Brundan–Ellis, arXiv:1701.04133v2): if the Nondegeneracy Conjecture
-holds, the homomorphism `γ : U̇_{q,π}(𝔤)_ℒ → K₀(𝔘̇(𝔤))` of Theorem 11.7 is injective.
-
-Route hypotheses (README): `DegreeLocallyFinite` (from Theorem 11.7), and for nondegeneracy of the
-form of Theorem 10.1, finitely many colours, a free finitely generated weight lattice, linearly
-independent roots and coroots. -/
-theorem theorem_12_1 (hN : SKM.NondegeneracyConjecture cs)
+/-- The block step of Theorem 12.1. -/
+theorem blockProj_eq_zero (hN : SKM.NondegeneracyConjecture cs)
     (hα : LinearIndependent ℤ Q.α)
-    (hh : LinearIndependent ℤ Q.cd.coroot) :
+    (hh : LinearIndependent ℤ Q.cd.coroot) (x : Λ) (hx : gammaInt Q hS cs hf x = 0) (μ ν : X) :
+    blockProj Q Coefficients.q Coefficients.pi μ ν (x : 𝕌) = 0 :=
+  blockProj_eq_zero_of_nondegenerate Q hS cs hf hN
+    (FiniteWeightForm.sesquilinearForm_nondegenerate Q hα hh) x hx μ ν
+
+omit [Finite I] [Module.Free ℤ X] [Module.Finite ℤ X] in
+/-- **BE2 Theorem 12.1, form version**: if the Nondegeneracy Conjecture holds and the form of
+Theorem 10.1 is nondegenerate, then `γ` is injective. No finiteness of the colour set or of the
+weight lattice is assumed. -/
+theorem theorem_12_1_of_nondegenerate (hN : SKM.NondegeneracyConjecture cs)
+    (hnd : ∀ x : modified Q Coefficients.q Coefficients.pi,
+      (∀ y, sesquilinearForm Q x y = 0) → x = 0) :
     Function.Injective (gammaInt Q hS cs hf) := by
   suffices h0 : ∀ x : Λ, gammaInt Q hS cs hf x = 0 → x = 0 by
     intro x y hxy
@@ -608,10 +636,23 @@ theorem theorem_12_1 (hN : SKM.NondegeneracyConjecture cs)
   have hf0 : f = 0 := by
     ext b
     rw [← blockProj_sum _ _ _ f hf' b, hfx]
-    exact blockProj_eq_zero Q hS cs hf hN hα hh x hx b.1 b.2
+    exact blockProj_eq_zero_of_nondegenerate Q hS cs hf hN hnd x hx b.1 b.2
   apply Subtype.ext
   rw [← hfx, hf0]
   simp
+
+/-- **BE2 Theorem 12.1** (Brundan–Ellis, arXiv:1701.04133v2): if the Nondegeneracy Conjecture
+holds, the homomorphism `γ : U̇_{q,π}(𝔤)_ℒ → K₀(𝔘̇(𝔤))` of Theorem 11.7 is injective.
+
+Route hypotheses (README): `DegreeLocallyFinite` (from Theorem 11.7), and for nondegeneracy of the
+form of Theorem 10.1, finitely many colours, a free finitely generated weight lattice, linearly
+independent roots and coroots. -/
+theorem theorem_12_1 (hN : SKM.NondegeneracyConjecture cs)
+    (hα : LinearIndependent ℤ Q.α)
+    (hh : LinearIndependent ℤ Q.cd.coroot) :
+    Function.Injective (gammaInt Q hS cs hf) :=
+  theorem_12_1_of_nondegenerate Q hS cs hf hN
+    (FiniteWeightForm.sesquilinearForm_nondegenerate Q hα hh)
 
 end Injectivity
 

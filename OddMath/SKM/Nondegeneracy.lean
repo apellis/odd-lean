@@ -5,6 +5,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 import OddMath.SKM.BubbleAlgebra
 import OddMath.SKM.MatchingFamilyChoice
 import Mathlib.LinearAlgebra.Finsupp.LSum
+import Mathlib.LinearAlgebra.Finsupp.Supported
 
 /-!
 # The Nondegeneracy Conjecture of BE2 §8
@@ -97,7 +98,7 @@ theorem decoratedFamily_eq (F : MatchingBasisChoice a b) :
     simp [layers, ambientSerializer, R.property]
 
 variable {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w} [CommRing k]
-  {Sc : Scalars D k} (cs : CScalars Sc) (μ : X)
+  {Ptwo : Prop} {Sc : ScalarData D k Ptwo} (cs : CScalars Sc) (μ : X)
 
 /-- Move a rightmost coefficient past a homogeneous diagram. This only asserts
 existence of the new coefficient, not faithfulness of the bubble map. -/
@@ -194,6 +195,48 @@ theorem expansion_surjective (F : MatchingBasisChoice a b) :
   obtain ⟨p, rfl⟩ := hγ'
   exact ⟨Finsupp.single t p, F.expansion_single cs μ t p⟩
 
+/-- A morphism below a crossing ceiling has a finite expansion supported on chosen matchings
+below the same ceiling. The coefficients lie in the abstract `SYM` and use source placement.
+No coefficient uniqueness or matching independence is asserted. -/
+theorem exists_expansion_of_mem_ltL (F : MatchingBasisChoice a b) {N : ℕ}
+    {f : (pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ b)}
+    (hf : f ∈ LtL D Sc cs μ a b N) :
+    ∃ z : F.Labels →₀ SYM D k, F.expansion cs μ z = f ∧
+      ∀ t ∈ z.support, ncr₂ t.1.val < N := by
+  classical
+  let S := Finsupp.supported (SYM D k) k {t : F.Labels | ncr₂ t.1.val < N}
+  have hspan : LtL D Sc cs μ a b N ≤ diagBubSpan D Sc cs μ a b
+      (decoratedFamily₂ a {R | R ∈ F.members ∧ ncr₂ R < N} F.ambientSerializer) :=
+    ltL_le_diagBubSpan_decoratedFamily₂ μ a b F.members
+      (fun R hR => ⟨(F.matching R hR).1, (F.matching R hR).2.1⟩)
+      (fun s hv hl hs => by
+        obtain ⟨R', hR', hred, hiso⟩ := exists_strictReduced_matching hv hl hs
+        obtain ⟨R, hRM, hR⟩ := F.complete R' hR' hred
+        exact ⟨R, hRM, hR.trans hiso⟩)
+      F.ambientPoints
+      (fun R hR j hj => by
+        simpa only [ambientPoints, dite_eq_left hR] using F.onStrand ⟨R, hR⟩ j hj)
+      F.ambientSerializer F.ambient_decorates N
+  have hmap : diagBubSpan D Sc cs μ a b
+      (decoratedFamily₂ a {R | R ∈ F.members ∧ ncr₂ R < N} F.ambientSerializer) ≤
+      S.map (F.expansion cs μ) := by
+    refine Submodule.span_le.2 ?_
+    rintro _ ⟨_, ⟨R, ⟨hRM, hRN⟩, n, rfl⟩, β, hβ, rfl⟩
+    let t : F.Labels := ⟨⟨R, hRM⟩, fun j => n j⟩
+    have heq : dLay a (F.ambientSerializer R n) = F.layers t := by
+      simp [t, layers, ambientSerializer, hRM]
+    rw [heq]
+    obtain ⟨γ, hγ, eγ⟩ := bubble_swap cs μ (xev_mem_homPar cs μ a b (F.layers t)) hβ
+    rw [eγ]
+    have hγ' : (γ : End _) ∈ (betaSYM cs μ).range := by
+      rw [betaSYM_range]
+      exact hγ
+    obtain ⟨p, rfl⟩ := hγ'
+    exact ⟨Finsupp.single t p, Finsupp.single_mem_supported k p hRN,
+      F.expansion_single cs μ t p⟩
+  obtain ⟨z, hz, heq⟩ := hmap (hspan hf)
+  exact ⟨z, heq, fun t ht => (Finsupp.mem_supported k z).1 hz ht⟩
+
 /-- The selected decorated family is a free coefficient basis: every Hom has a
 unique finite expansion with coefficients in the abstract all-colour `SYM`.
 This is a proposition, not a theorem asserting the conjecture. -/
@@ -209,7 +252,7 @@ theorem isBasis_iff_injective (F : MatchingBasisChoice a b) :
 end MatchingBasisChoice
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X}
-  {k : Type w} [CommRing k] {Sc : Scalars D k}
+  {k : Type w} [CommRing k] {Ptwo : Prop} {Sc : ScalarData D k Ptwo}
 
 /-- **The Nondegeneracy Conjecture, BE2 §8 after Theorem 8.1.** For every
 pair of equal-weight words, every external weight and every complete unique

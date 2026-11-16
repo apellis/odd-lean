@@ -289,9 +289,9 @@ theorem class_printed_down :
         Categorification.QuantumGroup.qfact (K := LaurentPolynomial ℤ) (qUnit (sy.d i)) r) •
         K₀.mk (dividedPowerDownPrinted D Sc sy hc i hi r ν) := by
   let := K₀.moduleLaurentInt k (HomCatDown D Sc sy hc i r ν)
-  rw [class_summands_down, ← sum_T_evenShift_down, Finset.sum_smul]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  rw [class_raw_shift_int, zero_add]
+  rw [class_summands_down, ← sum_T_evenShift_down r (sy.d i)]
+  refine (Finset.sum_congr rfl fun j _ => ?_).trans Finset.sum_smul.symm
+  exact (class_raw_shift_int' _ _ _ (zero_add _) 0).symm
 
 /-- **BE2 Lemma 11.5 for `F_i^{(r)}`, corrected** (even colour):
 `[F_i^r 1_{-ν}] = [r]^!_{q_i} [Q^{-d_i r(r-1)/2} F_i^{(r)} 1_{-ν}]`. -/
@@ -411,8 +411,10 @@ theorem class_printed_down_odd :
       (T (-(((n + 2).choose 2 : ℤ) * sy.d i)) * qpFact (qUnitPi (sy.d i)) piLP (n + 2)) •
         K₀.mk (oddDividedPowerDownPrinted D Sc sy hc i hi n ν) := by
   let := K₀.moduleLaurent k (HomCatDown D Sc sy hc i (n + 2) ν)
-  rw [class_summands_down_odd D Sc sy hc i hi n ν, ← sum_T_oddShift_down, Finset.sum_smul]
-  refine Finset.sum_congr rfl fun ℓ _ => ?_
+  refine (class_summands_down_odd D Sc sy hc i hi n ν).trans
+    (((Finset.sum_congr rfl fun ℓ _ => ?_).trans Finset.sum_smul.symm).trans
+      (congrArg (fun c => c • K₀.mk (oddDividedPowerDownPrinted D Sc sy hc i hi n ν))
+        (sum_T_oddShift_down n (sy.d i))))
   rw [← class_oddDownSummand, ← complement_eq_shift, Int.toNat_natCast]
   rfl
 
@@ -431,7 +433,12 @@ theorem class_corrected_down_odd :
     (betaEnd_mem_degree D Sc sy hc i (n + 2) ν (oddE_mem_degree D Sc sy i hi n))
     (betaEnd_mem_parity D Sc sy hc i (n + 2) ν (oddE_mem_parity D Sc i hi n))
     (zero_add (-(((n + 2).choose 2 : ℤ) * sy.d i))) 0
-  rw [← hs, ← mul_smul, hcomm, class_printed_down_odd D Sc sy hc i hi n ν]
+  exact (class_printed_down_odd D Sc sy hc i hi n ν).trans
+    ((congrArg (fun c => c • K₀.mk (oddDividedPowerDownPrinted D Sc sy hc i hi n ν))
+      hcomm.symm).trans ((mul_smul (qpFact (qUnitPi (sy.d i)) piLP (n + 2))
+        (T (-(((n + 2).choose 2 : ℤ) * sy.d i)))
+        (K₀.mk (oddDividedPowerDownPrinted D Sc sy hc i hi n ν))).trans
+      (congrArg (fun x => qpFact (qUnitPi (sy.d i)) piLP (n + 2) • x) hs)))
 
 omit [CommRing k] in
 theorem defect_smul_of_eq {R M : Type*} [Ring R] [AddCommGroup M] [Module R M] {a b : R}

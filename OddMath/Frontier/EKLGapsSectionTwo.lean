@@ -94,7 +94,6 @@ theorem rank218_factor (i : ℕ) :
   field_simp
   ring
 
-
 theorem rank218First_eq_middle (a : ℕ) : rank218First a = rank218Middle a := by
   rw [rank218First, rank218Middle, Finset.prod_congr rfl (fun i _ => rank218_factor i), Finset.prod_mul_distrib,
     Finset.prod_const, Finset.card_range, inv_pow]

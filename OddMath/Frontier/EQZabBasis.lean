@@ -154,7 +154,6 @@ theorem divided_dualQ {a b : ℕ} (h : a + b ≤ n+2) (β : Fin b → ℕ) (i : 
     rw [dualQ, hi, (ProjectorRank.place_divided_and_s h _ _).1,
       rev_mem_kernel (ThickDots.dualSchur_mem_kernel β) _, map_zero]
 
-
 /-! ## Spanning and independence -/
 
 section Decomposition
