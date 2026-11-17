@@ -22,9 +22,10 @@ of words.
 * `theorem_11_7_surjective`: every class of `K₀(𝔘̇(𝔤))` lies in the image of `γ`, since every
   indecomposable 1-morphism is a summand of a shifted word.
 
-Hypotheses: those of `theorem_11_7_existence` (a ground field, `CScalars`, homogeneous scalars,
-and the route hypothesis `Symmetrizer.DegreeLocallyFinite`, which gives finite-dimensional
-Hom-spaces for the Krull–Schmidt arguments). No bar-consistency or nondegeneracy hypothesis.
+Hypotheses: those of `theorem_11_7_existence` (a ground field, `CScalars` and homogeneous
+scalars), with an arbitrary index set. The Krull–Schmidt arguments work modulo the nil ideals of
+the bubble filtration (`nilFinite_weight`), so no finite-dimensionality of Hom-spaces is needed.
+No bar-consistency or nondegeneracy hypothesis.
 -/
 
 noncomputable section
@@ -130,17 +131,17 @@ theorem sum_topShifted {J J' : Type} [Fintype J] [Fintype J'] {z : J → End (hO
   change SKM.dnE Sc ν (upWord s) t 1 * SKM.upE Sc (-ν) s (SKM.dnWord t) 1 = 1
   rw [SKM.dnE_one, SKM.upE_one, one_mul]
 
-theorem homFinite_weight (cs : SKM.CScalars Sc) (hf : sy.DegreeLocallyFinite) (μ ν : X) :
-    HomFinite k (SKM.K0Relations.weight Sc sy hc μ ⟶ SKM.K0Relations.weight Sc sy hc ν) := by
+theorem nilFinite_weight (cs : SKM.CScalars Sc) (μ ν : X) :
+    KrullSchmidtNil.NilFinite k
+      (SKM.K0Relations.weight Sc sy hc μ ⟶ SKM.K0Relations.weight Sc sy hc ν) := by
   let a : SKM.UGr D Sc sy hc := ⟨μ⟩
   let b : SKM.UGr D Sc sy hc := ⟨ν⟩
-  have := SKM.UGr.degreeHomFinite sy cs hc hf a b
-  exact inferInstanceAs (HomFinite k (GSKar k (a ⟶ b)))
+  exact SKM.UGr.nilFinite sy cs hc a b
 
 /-- **An indecomposable summand of `Q^n Π^b E_s F_t 1_{-ν}` is a summand of one of the top
 summands** `E_{jl}` of the top idempotents `α′(z′_l) α(z_j)`, for decompositions `1 = ∑ z_j` and
 `1 = ∑ z′_l` into even degree-zero idempotents. -/
-theorem exists_top_retract (cs : SKM.CScalars Sc) (hf : sy.DegreeLocallyFinite) {J J' : Type}
+theorem exists_top_retract (cs : SKM.CScalars Sc) {J J' : Type}
     [Fintype J] [Fintype J'] {z : J → End (hObj D Sc sy hc s)}
     {z' : J' → End (hObj D Sc sy hc t)} (hz : ∀ j, z j ≫ z j = z j)
     (hz' : ∀ l, z' l ≫ z' l = z' l) (hz0 : ∀ j, z j ∈ homPiece D Sc sy hc s s 0 0)
@@ -151,7 +152,7 @@ theorem exists_top_retract (cs : SKM.CScalars Sc) (hf : sy.DegreeLocallyFinite) 
     (π : SKM.K0Relations.completed Sc sy hc μ (-ν) _ hw n b ⟶ Z) (h : ι ≫ π = 𝟙 Z) :
     ∃ x : J × J', ∃ v : topSummand ν s t hw (hz x.1) (hz' x.2) (hz0 x.1) (hz0' x.2) n b ⟶ Z,
       (ι ≫ topP ν s t hw (hz x.1) (hz' x.2) (hz0 x.1) (hz0' x.2) n b) ≫ v = 𝟙 Z := by
-  have := homFinite_weight (hc := hc) cs hf μ (-ν)
+  have := nilFinite_weight (sy := sy) (hc := hc) cs μ (-ν)
   obtain ⟨x, -, v, hv⟩ := SKM.Summands.exists_retract_of_sum k hZ Finset.univ
     (fun x : J × J' => ι ≫ topP ν s t hw (hz x.1) (hz' x.2) (hz0 x.1) (hz0' x.2) n b)
     (fun x => topI ν s t hw (hz x.1) (hz' x.2) (hz0 x.1) (hz0' x.2) n b ≫ π) (by
@@ -167,21 +168,21 @@ end TopSum
 section Image
 
 variable {k' : Type*} [Field k'] {Q : CoveringQuantum.RootDatum I X} {S : SKM.Scalars Q.toSKM k'}
-  {hS : S.Homogeneous} {cs : SKM.CScalars S} {hf : Q.skmSymmetrizer.DegreeLocallyFinite}
+  {hS : S.Homogeneous} {cs : SKM.CScalars S}
 
-variable (Q hS cs hf) in
+variable (Q hS cs) in
 /-- The image of `γ`, as an additive subgroup. -/
 def gammaSub : AddSubgroup (SKM.K0Relations.Grothendieck S Q.skmSymmetrizer hS) where
-  carrier := gammaRange Q hS cs hf
+  carrier := gammaRange Q hS cs
   add_mem' := gammaRange.add_mem
   zero_mem' := gammaRange.zero_mem
   neg_mem' := gammaRange.neg_mem
 
-variable (Q hS cs hf) in
+variable (Q hS cs) in
 /-- The classes of the completed hom category `μ → ν` whose image lies in the image of `γ`. -/
 def gammaPre (μ ν : X) : AddSubgroup (K₀ (SKM.K0Relations.weight S Q.skmSymmetrizer hS μ ⟶
     SKM.K0Relations.weight S Q.skmSymmetrizer hS ν)) :=
-  (gammaSub Q hS cs hf).comap ((MulOpposite.opAddEquiv.toAddMonoidHom).comp
+  (gammaSub Q hS cs).comap ((MulOpposite.opAddEquiv.toAddMonoidHom).comp
     (K₀Ring.of (SKM.K0Relations.weight S Q.skmSymmetrizer hS μ)
       (SKM.K0Relations.weight S Q.skmSymmetrizer hS ν)))
 
@@ -197,30 +198,30 @@ theorem top_mem_gammaPre (ν : X) (s t : List I) {μ : X}
     (π : SKM.K0Relations.completed S Q.skmSymmetrizer hS μ (-ν) _ hw n b ⟶ Z) (h : ι ≫ π = 𝟙 Z)
     (IH : ∀ Y, IsIndec Y →
       SKM.LowWidth Q.skmSymmetrizer hS μ (-ν) (upWord s ++ SKM.dnWord t).length Y →
-        K₀.mk Y ∈ gammaPre Q hS cs hf μ (-ν)) :
-    K₀.mk Z ∈ gammaPre Q hS cs hf μ (-ν) := by
+        K₀.mk Y ∈ gammaPre Q hS cs μ (-ν)) :
+    K₀.mk Z ∈ gammaPre Q hS cs μ (-ν) := by
   by_cases hlow : SKM.LowWidth Q.skmSymmetrizer hS μ (-ν) (upWord s ++ SKM.dnWord t).length Z
   · exact IH Z hZ hlow
   obtain ⟨J, _, z, hz, hz0, hind, hsz⟩ := exists_indec_idempotents (k := k') (Sc := S)
     (sy := Q.skmSymmetrizer) (hc := hS) s
   obtain ⟨J', _, z', hz', hz0', hind', hsz'⟩ := exists_indec_idempotents (k := k') (Sc := S)
     (sy := Q.skmSymmetrizer) (hc := hS) t
-  obtain ⟨x, v, hv⟩ := exists_top_retract ν s t hw n b cs hf hz hz' hz0 hz0' hsz hsz' hZ ι π h
+  obtain ⟨x, v, hv⟩ := exists_top_retract ν s t hw n b cs hz hz' hz0 hz0' hsz hsz' hZ ι π h
   obtain ⟨_, _, hE⟩ := localCorner_of_isIndec (hz x.1) (hz0 x.1) (hind x.1)
   obtain ⟨_, _, hE'⟩ := localCorner_of_isIndec (hz' x.2) (hz0' x.2) (hind' x.2)
-  have hcl := SKM.top_sub_mem_closure_low cs Q.skmSymmetrizer hS hf (hz x.1) (hz' x.2) (hz0 x.1)
+  have hcl := SKM.top_sub_mem_closure_low cs Q.skmSymmetrizer hS (hz x.1) (hz' x.2) (hz0 x.1)
     (hz0' x.2) hE hE' _ (sval_topShifted ν s t hw (hz x.1) (hz' x.2) (hz0 x.1) (hz0' x.2) n b)
     (topI ν s t hw (hz x.1) (hz' x.2) (hz0 x.1) (hz0' x.2) n b)
     (topP ν s t hw (hz x.1) (hz' x.2) (hz0 x.1) (hz0' x.2) n b)
     (topI_topP ν s t hw (hz x.1) (hz' x.2) (hz0 x.1) (hz0' x.2) n b)
     (topP_topI ν s t hw (hz x.1) (hz' x.2) (hz0 x.1) (hz0' x.2) n b) hZ _ v hv hlow
   have hlowE : K₀.mk (topSummand ν s t hw (hz x.1) (hz' x.2) (hz0 x.1) (hz0' x.2) n b) -
-      K₀.mk Z ∈ gammaPre Q hS cs hf μ (-ν) := by
-    refine (AddSubmonoid.closure_le (S := (gammaPre Q hS cs hf μ (-ν)).toAddSubmonoid)).2 ?_ hcl
+      K₀.mk Z ∈ gammaPre Q hS cs μ (-ν) := by
+    refine (AddSubmonoid.closure_le (S := (gammaPre Q hS cs μ (-ν)).toAddSubmonoid)).2 ?_ hcl
     rintro _ ⟨Y, hY, hYlow, rfl⟩
     exact IH Y hY hYlow
   have hE₀ : K₀.mk (topSummand ν s t hw (hz x.1) (hz' x.2) (hz0 x.1) (hz0' x.2) n b) ∈
-      gammaPre Q hS cs hf μ (-ν) :=
+      gammaPre Q hS cs μ (-ν) :=
     topProj_mem_gammaRange ν s t hw (hz x.1) (hz' x.2) (hz0 x.1) (hz0' x.2) n b
   have := sub_mem hE₀ hlowE
   rwa [sub_sub_cancel] at this
@@ -232,8 +233,8 @@ theorem top_mem_gammaPre' (ν : X) (s t : List I) {u : List (SKM.Letter I)}
     (ι : Z ⟶ SKM.K0Relations.completed S Q.skmSymmetrizer hS μ (-ν) u hu n b)
     (π : SKM.K0Relations.completed S Q.skmSymmetrizer hS μ (-ν) u hu n b ⟶ Z) (h : ι ≫ π = 𝟙 Z)
     (IH : ∀ Y, IsIndec Y → SKM.LowWidth Q.skmSymmetrizer hS μ (-ν) u.length Y →
-        K₀.mk Y ∈ gammaPre Q hS cs hf μ (-ν)) :
-    K₀.mk Z ∈ gammaPre Q hS cs hf μ (-ν) := by
+        K₀.mk Y ∈ gammaPre Q hS cs μ (-ν)) :
+    K₀.mk Z ∈ gammaPre Q hS cs μ (-ν) := by
   subst e
   exact top_mem_gammaPre ν s t hu n b hZ ι π h IH
 
@@ -246,12 +247,12 @@ theorem indec_mem_gammaPre {μ ν : X} (N : ℕ) :
         SKM.K0Relations.weight S Q.skmSymmetrizer hS ν), IsIndec Z →
       ∀ (ι : Z ⟶ SKM.K0Relations.completed S Q.skmSymmetrizer hS μ ν w hw m a)
         (π : SKM.K0Relations.completed S Q.skmSymmetrizer hS μ ν w hw m a ⟶ Z),
-        ι ≫ π = 𝟙 Z → K₀.mk Z ∈ gammaPre Q hS cs hf μ ν := by
+        ι ≫ π = 𝟙 Z → K₀.mk Z ∈ gammaPre Q hS cs μ ν := by
   induction N using Nat.strong_induction_on with
   | _ N ih =>
     intro w hw m a hN Z hZ ι π h
     obtain ⟨u, hu, n, b, ⟨s, t, rfl⟩, hlen, -, ι', π', h'⟩ :=
-      SKM.exists_retract_sorted (cs := cs) (hc := hS) (hf := hf) hZ ι π h
+      SKM.exists_retract_sorted (cs := cs) (hc := hS) hZ ι π h
     obtain ⟨ν₀, rfl⟩ : ∃ ν₀, ν = -ν₀ := ⟨-ν, (neg_neg ν).symm⟩
     refine top_mem_gammaPre' ν₀ s t (by rw [SKM.dnWord_eq_map]; rfl) hu n b hZ ι' π' h' ?_
     rintro Y hY ⟨v, hv, n', b', hv2, f, g, hfg⟩
@@ -271,13 +272,13 @@ theorem isRetract_unitRaw_completed {μ ν : X} (w : List (SKM.Letter I))
     rfl
   · exact Karoubi.hom_ext _ _ ((Category.id_comp _).trans (unitRaw_p (k := k') _ n p).symm)
 
-include cs hf in
+include cs in
 /-- Every indecomposable 1-morphism `μ → ν` of `𝔘̇(𝔤)` is a summand of a shifted word. -/
 theorem exists_word_retract {μ ν : X} {Y : SKM.K0Relations.weight S Q.skmSymmetrizer hS μ ⟶
       SKM.K0Relations.weight S Q.skmSymmetrizer hS ν} (hY : IsIndec Y) :
     ∃ (w : List (SKM.Letter I)) (hw : SKM.wt Q.toSKM ν w = μ) (n : ℤ) (p : ZMod 2),
       IsRetract Y (SKM.K0Relations.completed S Q.skmSymmetrizer hS μ ν w hw n p) := by
-  have := homFinite_weight (hc := hS) cs hf μ ν
+  have := nilFinite_weight (sy := Q.skmSymmetrizer) (hc := hS) cs μ ν
   obtain ⟨J, _, f, n, p, u, v, huv⟩ := sum_unitRaw (k := k') Y
   obtain ⟨j, -, v', hv'⟩ := exists_retract_of_sum k' hY Finset.univ u v huv
   have hR : IsRetract Y (unitRaw (k := k') (f j) (n j) (p j) :
@@ -291,31 +292,29 @@ theorem exists_word_retract {μ ν : X} {Y : SKM.K0Relations.weight S Q.skmSymme
   rw [hg] at hR
   exact ⟨_, hw, n j, p j, hR.trans (isRetract_unitRaw_completed _ hw _ _)⟩
 
-include cs hf in
+include cs in
 /-- Every class of the completed hom category `μ → ν` lies over the image of `γ`. -/
 theorem mem_gammaPre {μ ν : X} (x : K₀ (SKM.K0Relations.weight S Q.skmSymmetrizer hS μ ⟶
       SKM.K0Relations.weight S Q.skmSymmetrizer hS ν)) :
-    x ∈ gammaPre Q hS cs hf μ ν := by
-  have := homFinite_weight (hc := hS) cs hf μ ν
+    x ∈ gammaPre Q hS cs μ ν := by
+  have := nilFinite_weight (sy := Q.skmSymmetrizer) (hc := hS) cs μ ν
   induction x using K₀.induction_on with
   | mk X =>
     refine mk_mem_of_indec_retracts k' _ X fun Y hY _ _ _ => ?_
-    obtain ⟨w, hw, n, p, ι, π, h⟩ := exists_word_retract (cs := cs) (hf := hf) hY
+    obtain ⟨w, hw, n, p, ι, π, h⟩ := exists_word_retract (cs := cs) hY
     exact indec_mem_gammaPre w.length w hw n p le_rfl Y hY ι π h
   | zero => exact zero_mem _
   | add x y hx hy => exact add_mem hx hy
   | neg x hx => exact neg_mem hx
 
-variable (Q hS cs hf) in
-include cs hf in
+variable (Q hS cs) in
+include cs in
 /-- **BE2 Theorem 11.7, surjectivity** (arXiv:1701.04133v2): the homomorphism
 `γ : U̇_{q,π}(𝔤)_ℒ → K₀(𝔘̇(𝔤))` of `theorem_11_7_existence` is surjective. Hypotheses: a ground
-field, the scalar hypotheses of §9, and the route hypothesis `DegreeLocallyFinite` (finitely
-many colours in each degree; it gives the finite-dimensional Hom-spaces used for Krull–Schmidt),
-as for existence. -/
-theorem theorem_11_7_surjective : Function.Surjective (SerreComplex.gammaInt Q hS cs hf) := by
+field and the scalar hypotheses of §9, with an arbitrary index set, as for existence. -/
+theorem theorem_11_7_surjective : Function.Surjective (SerreComplex.gammaInt Q hS cs) := by
   intro y
-  change y ∈ gammaRange Q hS cs hf
+  change y ∈ gammaRange Q hS cs
   induction y using MulOpposite.rec' with
   | _ y =>
     induction y using K₀Ring.induction_on with
@@ -324,7 +323,7 @@ theorem theorem_11_7_surjective : Function.Surjective (SerreComplex.gammaInt Q h
     | of a b x =>
       obtain ⟨⟨⟨⟨⟨⟨⟨μ⟩⟩⟩⟩⟩⟩⟩ := a
       obtain ⟨⟨⟨⟨⟨⟨⟨ν⟩⟩⟩⟩⟩⟩⟩ := b
-      exact mem_gammaPre (cs := cs) (hf := hf) (μ := μ) (ν := ν) x
+      exact mem_gammaPre (cs := cs) (μ := μ) (ν := ν) x
 
 end Image
 

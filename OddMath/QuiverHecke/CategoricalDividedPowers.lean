@@ -268,12 +268,12 @@ theorem class_corrected :
   ring
 
 omit [CommRing k] in
-/-- **The printed normalization of Lemma 11.5 fails.** Over a field, for finitely many
-symmetrizer values in each degree (`UDot.k0_free_laurentInt`), the printed equation
+/-- **The printed normalization of Lemma 11.5 fails.** Over a field (`K₀` is free over
+`ℤ[q,q⁻¹]` by `UDot.k0_free_laurentInt`), the printed equation
 `[E_i^r 1_ν] = [r]^!_{q_i} [E_i^{(r)} 1_ν]` with `r ≥ 2` forces `[E_i^{(r)} 1_ν] = 0`, and then
 `[E_i^r 1_ν] = 0` by `class_printed`. -/
 theorem printed_forces_zero {k : Type w} [Field k] {Sc : SKM.Scalars D k} (cs : SKM.CScalars Sc)
-    (hc : Sc.Homogeneous) (hf : sy.DegreeLocallyFinite) (hr : 2 ≤ r)
+    (hc : Sc.Homogeneous) (hr : 2 ≤ r)
     (h : letI := K₀.moduleLaurentInt k (HomCat D Sc sy hc i r ν)
       K₀.mk (whole (upWordHom D Sc sy hc i r ν)) =
         QuantumGroup.qfact (K := LaurentPolynomial ℤ) (qUnit (sy.d i)) r •
@@ -281,7 +281,7 @@ theorem printed_forces_zero {k : Type w} [Field k] {Sc : SKM.Scalars D k} (cs : 
     K₀.mk (dividedPowerPrinted D Sc sy hc i hi r ν) = 0 := by
   let := K₀.moduleLaurentInt k (HomCat D Sc sy hc i r ν)
   have hfree : Module.Free (LaurentPolynomial ℤ) (K₀ (HomCat D Sc sy hc i r ν)) :=
-    SKM.UDot.k0_free_laurentInt sy cs hc hf _ _
+    SKM.UDot.k0_free_laurentInt sy cs hc _ _
   have hp := class_printed D Sc sy hc i hi r ν
   by_contra hx
   have heq := smul_left_injective (LaurentPolynomial ℤ) hx (hp.symm.trans h)

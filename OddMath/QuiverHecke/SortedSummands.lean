@@ -280,16 +280,15 @@ section Completed
 open K0Relations StringDiagrams.KrullSchmidt
 
 variable {k : Type w} [Field k] {Sc : Scalars D k} (cs : CScalars Sc) (hc : Sc.Homogeneous)
-  (hf : sy.DegreeLocallyFinite)
 
 theorem parity_add_self (a b : ZMod 2) : a + (a + b) = b := by
   rw [← add_assoc, ZModModule.add_self, zero_add]
 
-include cs hf in
+include cs in
 /-- **Sorting summands (BE2, proof of Theorem 11.7; KL III, Lemma 3.38)**: an indecomposable
 retract of `Q^m Π^a E_w 1_ν` in `𝔘̇(𝔤)` is a retract of some `Q^n Π^b E_u 1_ν` with `u` sorted,
-`|u| ≤ |w|` and `|u| ≡ |w| mod 2`. The hypothesis `sy.DegreeLocallyFinite` gives the
-finite-dimensional Hom-spaces of Krull–Schmidt; see `UGr.degreeHomFinite`. -/
+`|u| ≤ |w|` and `|u| ≡ |w| mod 2`, for every colour set: Krull–Schmidt holds modulo the
+nil ideals of the bubble filtration (`UGr.nilFinite`). -/
 theorem exists_retract_sorted {μ ν : X} {w : List (Letter I)} {hw : wt D ν w = μ} {m : ℤ}
     {a : ZMod 2} {Z : weight Sc sy hc μ ⟶ weight Sc sy hc ν} (hZ : IsIndec Z)
     (ι : Z ⟶ completed Sc sy hc μ ν w hw m a) (π : completed Sc sy hc μ ν w hw m a ⟶ Z)
@@ -298,11 +297,10 @@ theorem exists_retract_sorted {μ ν : X} {w : List (Letter I)} {hw : wt D ν w 
       Sorted u ∧ u.length ≤ w.length ∧ u.length % 2 = w.length % 2 ∧
       ∃ (ι' : Z ⟶ completed Sc sy hc μ ν u hu n b)
         (π' : completed Sc sy hc μ ν u hu n b ⟶ Z), ι' ≫ π' = 𝟙 Z := by
-  have : HomFinite k (weight Sc sy hc μ ⟶ weight Sc sy hc ν) := by
+  have : KrullSchmidtNil.NilFinite k (weight Sc sy hc μ ⟶ weight Sc sy hc ν) := by
     let a : UGr D Sc sy hc := ⟨μ⟩
     let b : UGr D Sc sy hc := ⟨ν⟩
-    have := UGr.degreeHomFinite sy cs hc hf a b
-    exact inferInstanceAs (HomFinite k (GSKar k (a ⟶ b)))
+    exact UGr.nilFinite sy cs hc a b
   have ht := thru_sorted (Sc := Sc) (sy := sy) ν w
   obtain ⟨N, c, g, hg⟩ := Submodule.mem_span_set'.mp ht
   choose u A B hP hA hB hd hp hfg using fun j => (g j).2

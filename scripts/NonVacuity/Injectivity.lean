@@ -27,8 +27,8 @@ theorem twoOdd_coroot_independent : LinearIndependent ℤ twoOddDatum.cd.coroot 
 
 /-- Injectivity of `γ`, given the Nondegeneracy Conjecture. -/
 example (hN : OddMath.SKM.NondegeneracyConjecture cScalars) :
-    Function.Injective (gammaInt twoOddDatum homogeneous cScalars locallyFinite) :=
-  theorem_12_1 twoOddDatum homogeneous cScalars locallyFinite hN
+    Function.Injective (gammaInt twoOddDatum homogeneous cScalars) :=
+  theorem_12_1 twoOddDatum homogeneous cScalars hN
     twoOdd_root_independent twoOdd_coroot_independent
 
 #print axioms OddMath.QuiverHecke.SerreComplex.theorem_12_1

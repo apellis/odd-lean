@@ -23,8 +23,7 @@ words. The class map `[α_ν] : K₀(Ḣ_{q,π}) → K₀(𝔘̇(𝔤))` (`upK0`
   `upK0_mem_gammaRange` for every class, since these products span `K₀(Ḣ_{q,π})` (Theorem 11.3,
   `dpSpan_eq_top`).
 
-Hypotheses as in `theorem_11_7_existence`: a ground field, `CScalars`, homogeneous scalars and
-the route hypothesis `DegreeLocallyFinite` (through the definition of `γ`).
+Hypotheses as in `theorem_11_7_existence`: a ground field, `CScalars` and homogeneous scalars.
 -/
 
 noncomputable section
@@ -125,40 +124,40 @@ section Image
 open LaurentPolynomial
 
 variable {k' : Type*} [Field k'] (Q : CoveringQuantum.RootDatum I X) {S : SKM.Scalars Q.toSKM k'}
-  (hS : S.Homogeneous) (cs : SKM.CScalars S) (hf : Q.skmSymmetrizer.DegreeLocallyFinite)
+  (hS : S.Homogeneous) (cs : SKM.CScalars S)
 
 /-- The image of `γ` (BE2 Theorem 11.7). -/
 abbrev gammaRange : Set (SKM.K0Relations.Grothendieck S Q.skmSymmetrizer hS) :=
-  Set.range (SerreComplex.gammaInt Q hS cs hf)
+  Set.range (SerreComplex.gammaInt Q hS cs)
 
-variable {Q hS cs hf}
+variable {Q hS cs}
 
 theorem gammaRange.smul_mem (r : LaurentPolynomial Zπ)
-    {x : SKM.K0Relations.Grothendieck S Q.skmSymmetrizer hS} (hx : x ∈ gammaRange Q hS cs hf) :
-    r • x ∈ gammaRange Q hS cs hf := by
+    {x : SKM.K0Relations.Grothendieck S Q.skmSymmetrizer hS} (hx : x ∈ gammaRange Q hS cs) :
+    r • x ∈ gammaRange Q hS cs := by
   obtain ⟨y, rfl⟩ := hx
   exact ⟨r • y, map_smul _ r y⟩
 
 theorem gammaRange.mul_mem {x y : SKM.K0Relations.Grothendieck S Q.skmSymmetrizer hS}
-    (hx : x ∈ gammaRange Q hS cs hf) (hy : y ∈ gammaRange Q hS cs hf) :
-    x * y ∈ gammaRange Q hS cs hf := by
+    (hx : x ∈ gammaRange Q hS cs) (hy : y ∈ gammaRange Q hS cs) :
+    x * y ∈ gammaRange Q hS cs := by
   obtain ⟨x, rfl⟩ := hx
   obtain ⟨y, rfl⟩ := hy
   exact ⟨x * y, map_mul _ x y⟩
 
 theorem gammaRange.add_mem {x y : SKM.K0Relations.Grothendieck S Q.skmSymmetrizer hS}
-    (hx : x ∈ gammaRange Q hS cs hf) (hy : y ∈ gammaRange Q hS cs hf) :
-    x + y ∈ gammaRange Q hS cs hf := by
+    (hx : x ∈ gammaRange Q hS cs) (hy : y ∈ gammaRange Q hS cs) :
+    x + y ∈ gammaRange Q hS cs := by
   obtain ⟨x, rfl⟩ := hx
   obtain ⟨y, rfl⟩ := hy
   exact ⟨x + y, map_add _ x y⟩
 
 theorem gammaRange.zero_mem : (0 : SKM.K0Relations.Grothendieck S Q.skmSymmetrizer hS) ∈
-    gammaRange Q hS cs hf :=
+    gammaRange Q hS cs :=
   ⟨0, map_zero _⟩
 
 theorem gammaRange.neg_mem {x : SKM.K0Relations.Grothendieck S Q.skmSymmetrizer hS}
-    (hx : x ∈ gammaRange Q hS cs hf) : -x ∈ gammaRange Q hS cs hf := by
+    (hx : x ∈ gammaRange Q hS cs) : -x ∈ gammaRange Q hS cs := by
   rw [← neg_one_smul (LaurentPolynomial Zπ) x]
   exact gammaRange.smul_mem _ hx
 
@@ -166,18 +165,18 @@ theorem rcls_mem_gammaRange {μ ν : X}
     {f : (show SKM.UGr Q.toSKM S Q.skmSymmetrizer hS from ⟨μ⟩) ⟶ ⟨ν⟩} {e : f ⟶ f}
     (he : e ≫ e = e) (hd : e ∈ GradedSupercategory.degree (R := k') f f 0)
     (hp : e ∈ Supercategory.parity (R := k') f f 0) {n₀ : ℤ} {p₀ : ZMod 2}
-    (h₀ : SerreComplex.rcls Q.skmSymmetrizer hS he hd hp n₀ p₀ ∈ gammaRange Q hS cs hf)
+    (h₀ : SerreComplex.rcls Q.skmSymmetrizer hS he hd hp n₀ p₀ ∈ gammaRange Q hS cs)
     (n : ℤ) (p : ZMod 2) :
-    SerreComplex.rcls Q.skmSymmetrizer hS he hd hp n p ∈ gammaRange Q hS cs hf := by
+    SerreComplex.rcls Q.skmSymmetrizer hS he hd hp n p ∈ gammaRange Q hS cs := by
   have hT : ∀ (m : ℤ) (q : ZMod 2),
-      SerreComplex.rcls Q.skmSymmetrizer hS he hd hp m q ∈ gammaRange Q hS cs hf →
-        ∀ z, SerreComplex.rcls Q.skmSymmetrizer hS he hd hp (m + z) q ∈ gammaRange Q hS cs hf :=
+      SerreComplex.rcls Q.skmSymmetrizer hS he hd hp m q ∈ gammaRange Q hS cs →
+        ∀ z, SerreComplex.rcls Q.skmSymmetrizer hS he hd hp (m + z) q ∈ gammaRange Q hS cs :=
     fun m q hm z => by
       rw [← SerreComplex.T_smul_rcls]
       exact gammaRange.smul_mem _ hm
   have hπ : ∀ (m : ℤ) (q : ZMod 2),
-      SerreComplex.rcls Q.skmSymmetrizer hS he hd hp m q ∈ gammaRange Q hS cs hf →
-        SerreComplex.rcls Q.skmSymmetrizer hS he hd hp m (q + 1) ∈ gammaRange Q hS cs hf :=
+      SerreComplex.rcls Q.skmSymmetrizer hS he hd hp m q ∈ gammaRange Q hS cs →
+        SerreComplex.rcls Q.skmSymmetrizer hS he hd hp m (q + 1) ∈ gammaRange Q hS cs :=
     fun m q hm => by
       rw [← SerreComplex.pi_smul_rcls]
       exact gammaRange.smul_mem _ hm
@@ -191,13 +190,13 @@ theorem rcls_mem_gammaRange {μ ν : X}
 
 theorem Edp_mem_gammaRange (i : I) (n : ℕ) {μ ν : X}
     (hs : SKM.wt Q.toSKM ν (upWord (List.replicate n i)) = μ) (m : ℤ) (p : ZMod 2) :
-    SerreComplex.Edp Q.skmSymmetrizer hS i n μ ν hs m p ∈ gammaRange Q hS cs hf := by
+    SerreComplex.Edp Q.skmSymmetrizer hS i n μ ν hs m p ∈ gammaRange Q hS cs := by
   subst hs
   have h₀ : SerreComplex.Edp Q.skmSymmetrizer hS i n _ ν rfl (Q.d i * (n.choose 2 : ℕ))
-      (((n.choose 2 : ℕ) : ZMod 2) * Q.parity i) ∈ gammaRange Q hS cs hf := by
+      (((n.choose 2 : ℕ) : ZMod 2) * Q.parity i) ∈ gammaRange Q hS cs := by
     rw [SerreComplex.Edp_congr Q.skmSymmetrizer hS (i := i) rfl (SerreComplex.wt_rep ν n) rfl
       rfl rfl rfl (SerreComplex.wt_rep ν n)]
-    exact ⟨_, SerreComplex.gammaInt_edp Q hS cs hf i n ν⟩
+    exact ⟨_, SerreComplex.gammaInt_edp Q hS cs i n ν⟩
   exact rcls_mem_gammaRange _ _ _ h₀ m p
 
 theorem one_rcls_mem_gammaRange {μ ν : X} (h : SKM.wt Q.toSKM ν (upWord ([] : List I)) = μ)
@@ -206,7 +205,7 @@ theorem one_rcls_mem_gammaRange {μ ν : X} (h : SKM.wt Q.toSKM ν (upWord ([] :
       GradedSupercategory.degree (R := k') _ _ 0)
     (hp : upProj (sy := Q.skmSymmetrizer) (hc := hS) h (𝟙 _) ∈
       Supercategory.parity (R := k') _ _ 0) (n : ℤ) (p : ZMod 2) :
-    SerreComplex.rcls Q.skmSymmetrizer hS he hd hp n p ∈ gammaRange Q hS cs hf := by
+    SerreComplex.rcls Q.skmSymmetrizer hS he hd hp n p ∈ gammaRange Q hS cs := by
   subst h
   refine rcls_mem_gammaRange _ _ _ (n₀ := 0) (p₀ := 0) ?_ n p
   have e : SerreComplex.rcls Q.skmSymmetrizer hS he hd hp 0 0 =
@@ -215,7 +214,7 @@ theorem one_rcls_mem_gammaRange {μ ν : X} (h : SKM.wt Q.toSKM ν (upWord ([] :
     congr 2
     exact (alpha Q.toSKM S ν).map_id _
   rw [e, SerreComplex.cls_nil]
-  exact ⟨_, SerreComplex.gammaInt_one Q hS cs hf ν⟩
+  exact ⟨_, SerreComplex.gammaInt_one Q hS cs ν⟩
 
 theorem dp_rcls_mem_gammaRange (i : I) (r : ℕ) (ν : X)
     (he : upProj (sy := Q.skmSymmetrizer) (hc := hS)
@@ -227,7 +226,7 @@ theorem dp_rcls_mem_gammaRange (i : I) (r : ℕ) (ν : X)
     (hp : upProj (sy := Q.skmSymmetrizer) (hc := hS)
       (rfl : SKM.wt Q.toSKM ν (upWord (List.replicate r i)) = _) (dpIdem Q.toSKM S _ hS i r) ∈
         Supercategory.parity (R := k') _ _ 0) (n : ℤ) (p : ZMod 2) :
-    SerreComplex.rcls Q.skmSymmetrizer hS he hd hp n p ∈ gammaRange Q hS cs hf := by
+    SerreComplex.rcls Q.skmSymmetrizer hS he hd hp n p ∈ gammaRange Q hS cs := by
   have e : SerreComplex.rcls Q.skmSymmetrizer hS he hd hp n p =
       SerreComplex.Edp Q.skmSymmetrizer hS i r _ ν rfl n p := by
     unfold SerreComplex.rcls SerreComplex.Edp
@@ -243,7 +242,7 @@ theorem upK0_mem_gammaRange_of_isDPProduct {t : List I} {e : HEnd Q.toSKM S Q.sk
     (h : IsDPProduct t e) (μ ν : X) (he : e ≫ e = e)
     (hd : e ∈ GradedSupercategory.degree (R := k') _ _ 0)
     (hp : e ∈ Supercategory.parity (R := k') _ _ 0) (n : ℤ) (p : ZMod 2) :
-    upK0 S Q.skmSymmetrizer hS μ ν (K₀.mk (raw he hd hp n p)) ∈ gammaRange Q hS cs hf := by
+    upK0 S Q.skmSymmetrizer hS μ ν (K₀.mk (raw he hd hp n p)) ∈ gammaRange Q hS cs := by
   induction h generalizing μ ν n p with
   | nil =>
     by_cases hw : SKM.wt Q.toSKM ν (upWord ([] : List I)) = μ
@@ -264,7 +263,7 @@ class of `K₀(Ḣ_{q,π})` lies in the image of `γ`. By Theorem 11.3 (`dpSpan_
 of shifted products of divided powers span `K₀(Ḣ_{q,π})`, and `α` sends such a product to a
 product of divided-power classes `[E_i^{(a)} 1_λ]`. -/
 theorem upK0_mem_gammaRange (μ ν : X) (x : K₀ (HKar Q.toSKM S Q.skmSymmetrizer hS)) :
-    upK0 S Q.skmSymmetrizer hS μ ν x ∈ gammaRange Q hS cs hf := by
+    upK0 S Q.skmSymmetrizer hS μ ν x ∈ gammaRange Q hS cs := by
   have hx : x ∈ dpSpan Q.toSKM S Q.skmSymmetrizer hS := by
     rw [dpSpan_eq_top]; trivial
   induction hx using AddSubgroup.closure_induction with

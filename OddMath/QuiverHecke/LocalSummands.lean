@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Alex Ellis
 -/
 import StringDiagrams.Karoubi.KrullSchmidt
+import OddMath.SKM.NilKrullSchmidt.Basic
 
 /-!
 # Summands of an idempotent which is local modulo an ideal
 
 Brundan–Ellis, arXiv:1701.04133v2, proof of Theorem 11.7, surjectivity, top step of the width
-induction. In a Hom-finite, idempotent complete `k`-linear category with binary biproducts, fix
+induction. In an idempotent complete `k`-linear category with binary biproducts whose
+endomorphism algebras are finite-dimensional modulo nil ideals (`KrullSchmidtNil.NilFinite`), fix
 an object `W`, a two-sided ideal `T` of `End W` (in the application: the endomorphisms that
 factor through shorter words) and a class `Low` of objects containing every indecomposable
 retract `Q` of `W` whose idempotent lies in `T`. Let `ε` be an idempotent of `W` which is
@@ -38,7 +40,7 @@ variable {𝒞 : Type u} [Category.{v} 𝒞] [Preadditive 𝒞]
 
 section Retracts
 
-variable (k : Type*) [Field k] [Linear k 𝒞] [HomFinite k 𝒞] [HasBinaryBiproducts 𝒞]
+variable (k : Type*) [Field k] [Linear k 𝒞] [KrullSchmidtNil.NilFinite k 𝒞] [HasBinaryBiproducts 𝒞]
   [IsIdempotentComplete 𝒞]
 
 /-- `Q` is a retract (direct summand) of `X`. -/
@@ -60,7 +62,7 @@ indecomposable retracts of `X`. -/
 theorem of_mem_closure_indec_retract (X : 𝒞) :
     K₀.mk X ∈ AddSubmonoid.closure
       {x | ∃ Z : 𝒞, IsIndec Z ∧ IsRetract Z X ∧ x = K₀.mk Z} := by
-  induction h : finrank k (X ⟶ X) using Nat.strong_induction_on generalizing X with
+  induction h : KrullSchmidtNil.nilRank k X using Nat.strong_induction_on generalizing X with
   | _ n ih =>
     by_cases h0 : IsZero X
     · rw [mk_isZero h0]; exact AddSubmonoid.zero_mem _
@@ -86,8 +88,8 @@ theorem of_mem_closure_indec_retract (X : 𝒞) :
       fun V hV => AddSubmonoid.closure_mono fun _ ⟨Q, hQ, hQV, hx⟩ => ⟨Q, hQ, hQV.trans hV, hx⟩
     refine AddSubmonoid.add_mem _ (hmono Y ⟨i, p, h₁⟩ (ih _ ?_ Y rfl))
       (hmono Z ⟨i', p', h₂⟩ (ih _ ?_ Z rfl))
-    · rw [← h]; exact finrank_end_lt k i p i' p' h₁ h₂ h₃ h₄ hZ
-    · rw [← h]; exact finrank_end_lt k i' p' i p h₂ h₁ h₄ h₃ hY
+    · rw [← h]; exact KrullSchmidtNil.nilRank_lt k i p i' p' h₁ h₂ h₃ h₄ hZ
+    · rw [← h]; exact KrullSchmidtNil.nilRank_lt k i' p' i p h₂ h₁ h₄ h₃ hY
 
 end Retracts
 
@@ -131,7 +133,7 @@ indecomposable `Q` with a retraction `f : Q ⟶ W`, `g : W ⟶ Q` such that `g �
 an idempotent of `W` which is local modulo `T`, with image `E` (`i ≫ p = 𝟙 E`, `p ≫ i = ε`). If
 an indecomposable `Z ∉ Low` is a retract of `E`, then `[E] - [Z]` is a sum of classes of
 indecomposables in `Low`. -/
-theorem of_sub_mem_closure_low [HomFinite k 𝒞] {W : 𝒞} {T : Submodule k (W ⟶ W)}
+theorem of_sub_mem_closure_low [KrullSchmidtNil.NilFinite k 𝒞] {W : 𝒞} {T : Submodule k (W ⟶ W)}
     (hT : IsIdealEnd T) (Low : 𝒞 → Prop)
     (hLow : ∀ (Q : 𝒞) (f : Q ⟶ W) (g : W ⟶ Q), f ≫ g = 𝟙 Q → g ≫ f ∈ T → IsIndec Q → Low Q)
     {ε : W ⟶ W} (hloc : LocalModT T ε) {E : 𝒞} (i : E ⟶ W) (p : W ⟶ E) (hip : i ≫ p = 𝟙 E)

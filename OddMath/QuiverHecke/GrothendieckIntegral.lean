@@ -25,10 +25,9 @@ localization of `ℒ` at nonzero elements of `ℤ[q, q⁻¹]` (`Coefficients.isL
   `e_i^{(n)} 1_λ`, `f_i^{(n)} 1_λ` to `[1_λ]`, `[E_i^{(n)} 1_λ]`, `[F_i^{(n)} 1_λ]`.
 
 As in `SKM.UDot.int_smul_eq_zero`, the ground field is a field (BE2 §11), the scalars satisfy
-the hypotheses of §9 (`CScalars`, homogeneous), and the symmetrizer has finitely many colours in
-each degree (`DegreeLocallyFinite`). The last hypothesis is needed by the current proof of the
-torsion-freeness of `K₀` (bounded-below graded hom spaces); BE2 allows any index set. The
-surjectivity in Theorem 11.7 is a separate step.
+the hypotheses of §9 (`CScalars`, homogeneous). The index set is arbitrary, as in BE2: the
+torsion-freeness of `K₀` uses Krull–Schmidt modulo the nil ideals of the bubble filtration, not
+finite-dimensionality of graded hom spaces. The surjectivity in Theorem 11.7 is a separate step.
 -/
 
 noncomputable section
@@ -71,9 +70,9 @@ theorem gammaL_fpow' (i : I) (n : ℕ) (μ : X) :
           (Fdp Q.skmSymmetrizer hS i n _ (-μ) (wt_rep (-μ) n) (-(Q.d i * (n.choose 2 : ℕ))) 0) :=
   (gammaL_fpow Q hS i n μ).trans (inr_smul' Q hS _ _).symm
 
-variable (cs : SKM.CScalars S) (hf : Q.skmSymmetrizer.DegreeLocallyFinite)
+variable (cs : SKM.CScalars S)
 
-include cs hf in
+include cs in
 /-- **Extension of scalars to `𝕃` is injective on `K₀(𝔘̇(𝔤))`**: `x ↦ 1 ⊗ x` from `K₀(𝔘̇(𝔤))`
 to `𝕃 ⊗_ℒ K₀(𝔘̇(𝔤))` (with an identity adjoined). -/
 theorem toBase_injective :
@@ -89,7 +88,7 @@ theorem toBase_injective :
     rintro rfl
     exact nonZeroDivisors.ne_zero (Submonoid.mem_comap.mp hp) (map_zero _)
   apply MulOpposite.unop_injective
-  exact SKM.UDot.int_smul_eq_zero Q.skmSymmetrizer cs hS hf p hp0 b.unop (congrArg MulOpposite.unop hb)
+  exact SKM.UDot.int_smul_eq_zero Q.skmSymmetrizer cs hS p hp0 b.unop (congrArg MulOpposite.unop hb)
 
 /-- **The homomorphism `γ : U̇_{q,π}(𝔤)_ℒ → K₀(𝔘̇(𝔤))` of BE2 Theorem 11.7.** -/
 def gammaInt : lForm Q Coefficients.q Coefficients.pi (LaurentPolynomial Zπ) →ₙₐ[LaurentPolynomial Zπ]
@@ -109,21 +108,21 @@ def gammaInt : lForm Q Coefficients.q Coefficients.pi (LaurentPolynomial Zπ) �
   · exact gammaL_one Q hS
   · exact gammaL_epow' Q hS
   · exact gammaL_fpow' Q hS
-  · exact toBase_injective Q hS cs hf
+  · exact toBase_injective Q hS cs
 
 theorem gammaInt_one (μ : X) :
-    gammaInt Q hS cs hf ⟨_, one_mem_lForm Q Coefficients.q Coefficients.pi _ μ⟩ =
+    gammaInt Q hS cs ⟨_, one_mem_lForm Q Coefficients.q Coefficients.pi _ μ⟩ =
       one S Q.skmSymmetrizer hS μ :=
   lFormHom_one _ _ _ _ _ _ _ _ _ _ μ
 
 theorem gammaInt_edp (i : I) (n : ℕ) (μ : X) :
-    gammaInt Q hS cs hf ⟨_, edp_mem_lForm Q Coefficients.q Coefficients.pi _ i n μ⟩ =
+    gammaInt Q hS cs ⟨_, edp_mem_lForm Q Coefficients.q Coefficients.pi _ i n μ⟩ =
       Edp Q.skmSymmetrizer hS i n _ μ (wt_rep μ n) (Q.d i * (n.choose 2 : ℕ))
         (((n.choose 2 : ℕ) : ZMod 2) * Q.parity i) :=
   lFormHom_edp _ _ _ _ _ _ _ _ _ _ i n μ
 
 theorem gammaInt_fdp (i : I) (n : ℕ) (μ : X) :
-    gammaInt Q hS cs hf ⟨_, fdp_mem_lForm Q Coefficients.q Coefficients.pi _ i n μ⟩ =
+    gammaInt Q hS cs ⟨_, fdp_mem_lForm Q Coefficients.q Coefficients.pi _ i n μ⟩ =
       Fdp Q.skmSymmetrizer hS i n _ (-μ) (wt_rep (-μ) n) (-(Q.d i * (n.choose 2 : ℕ))) 0 :=
   lFormHom_fdp _ _ _ _ _ _ _ _ _ _ i n μ
 
@@ -137,20 +136,19 @@ theorem gammaInt_unique
         (((n.choose 2 : ℕ) : ZMod 2) * Q.parity i))
     (h3 : ∀ i n μ, ψ ⟨_, fdp_mem_lForm Q Coefficients.q Coefficients.pi _ i n μ⟩ =
       Fdp Q.skmSymmetrizer hS i n _ (-μ) (wt_rep (-μ) n) (-(Q.d i * (n.choose 2 : ℕ))) 0) :
-    ψ = gammaInt Q hS cs hf := by
+    ψ = gammaInt Q hS cs := by
   refine lForm_hom_ext (k := LaurentPolynomial Zπ) (k' := Coefficients.Ring)
-    (B := Grothendieck S Q.skmSymmetrizer hS) (ψ := ψ) (ψ' := gammaInt Q hS cs hf) ?_ ?_ ?_
-  · exact fun μ ↦ (h1 μ).trans (gammaInt_one Q hS cs hf μ).symm
-  · exact fun i n μ ↦ (h2 i n μ).trans (gammaInt_edp Q hS cs hf i n μ).symm
-  · exact fun i n μ ↦ (h3 i n μ).trans (gammaInt_fdp Q hS cs hf i n μ).symm
+    (B := Grothendieck S Q.skmSymmetrizer hS) (ψ := ψ) (ψ' := gammaInt Q hS cs) ?_ ?_ ?_
+  · exact fun μ ↦ (h1 μ).trans (gammaInt_one Q hS cs μ).symm
+  · exact fun i n μ ↦ (h2 i n μ).trans (gammaInt_edp Q hS cs i n μ).symm
+  · exact fun i n μ ↦ (h3 i n μ).trans (gammaInt_fdp Q hS cs i n μ).symm
 
-include cs hf in
+include cs in
 /-- **BE2 Theorem 11.7, existence of `γ`** (arXiv:1701.04133v2). There is a unique
 `ℒ`-algebra homomorphism `γ : U̇_{q,π}(𝔤)_ℒ → K₀(𝔘̇(𝔤))` sending `1_λ`, `e_i^{(n)} 1_λ`,
 `f_i^{(n)} 1_λ` to the classes `[1_λ]`, `[E_i^{(n)} 1_λ]`, `[F_i^{(n)} 1_λ]` of the divided-power
 objects (with the grading shift of Lemma 11.5 as corrected in ERRATA [BE2] 13). Hypotheses: a
-ground field, the scalar hypotheses of §9, and the route hypothesis `DegreeLocallyFinite` (see
-the module docstring). -/
+ground field and the scalar hypotheses of §9, with an arbitrary index set, as in BE2. -/
 theorem theorem_11_7_existence :
     ∃! γ : lForm Q Coefficients.q Coefficients.pi (LaurentPolynomial Zπ) →ₙₐ[LaurentPolynomial Zπ]
         Grothendieck S Q.skmSymmetrizer hS,
@@ -161,8 +159,8 @@ theorem theorem_11_7_existence :
           (((n.choose 2 : ℕ) : ZMod 2) * Q.parity i)) ∧
       (∀ i n μ, γ ⟨_, fdp_mem_lForm Q Coefficients.q Coefficients.pi _ i n μ⟩ =
         Fdp Q.skmSymmetrizer hS i n _ (-μ) (wt_rep (-μ) n) (-(Q.d i * (n.choose 2 : ℕ))) 0) := by
-  exact ⟨gammaInt Q hS cs hf, ⟨gammaInt_one Q hS cs hf, gammaInt_edp Q hS cs hf,
-    gammaInt_fdp Q hS cs hf⟩, fun ψ h ↦ gammaInt_unique Q hS cs hf ψ h.1 h.2.1 h.2.2⟩
+  exact ⟨gammaInt Q hS cs, ⟨gammaInt_one Q hS cs, gammaInt_edp Q hS cs,
+    gammaInt_fdp Q hS cs⟩, fun ψ h ↦ gammaInt_unique Q hS cs ψ h.1 h.2.1 h.2.2⟩
 
 end SerreComplex
 end OddMath.QuiverHecke

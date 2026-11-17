@@ -16,9 +16,8 @@ open OddMath.SKM.LaurentianK0Examples OddMath.SKM.DimensionFormulaExamples
 open OddMath.SKM.Theorem103Examples
 
 /-- `γ` is bijective for the two-odd-colour datum over `ℚ`. -/
-example : Function.Bijective (gammaInt twoOddDatum homogeneous cScalars
-    (twoOddDatum.skmSymmetrizer.degreeLocallyFinite_of_finite)) :=
-  decategorification twoOddDatum homogeneous cScalars _ two_ne_zero
+example : Function.Bijective (gammaInt twoOddDatum homogeneous cScalars) :=
+  decategorification twoOddDatum homogeneous cScalars two_ne_zero
     NonVacuity.GroundRingNondegeneracy.twoOdd_root_independent
     NonVacuity.GroundRingNondegeneracy.twoOdd_coroot_independent
 

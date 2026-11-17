@@ -13,7 +13,7 @@ open OddMath.CoveringQuantum.UDot.ContextualExchangeExamples
 open OddMath.SKM.DimensionFormulaExamples
 
 /-- `γ` is surjective. -/
-example := QuiverHecke.theorem_11_7_surjective twoOddDatum homogeneous cScalars locallyFinite
+example := QuiverHecke.theorem_11_7_surjective twoOddDatum homogeneous cScalars
 
 #print axioms OddMath.QuiverHecke.theorem_11_7_surjective
 

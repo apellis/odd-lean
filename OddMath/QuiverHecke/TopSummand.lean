@@ -117,9 +117,7 @@ end Thru
 
 section Retract
 
-variable (hf : sy.DegreeLocallyFinite)
-
-include cs hf in
+include cs in
 /-- An indecomposable `Z` with `1_Z = ι t π`, where `t` is an endomorphism of
 `Q^m Π^a E_w 1_ν` given by composites of normal-form diagrams through words `u` with `P u`, is a
 retract of some `Q^n Π^b E_u 1_ν` with `P u`. -/
@@ -132,11 +130,10 @@ theorem exists_retract_thru {μ ν : X} {w : List (Letter I)} {hw : wt D ν w = 
     ∃ (u : List (Letter I)) (hu : wt D ν u = μ) (n : ℤ) (b : ZMod 2), P u ∧
       ∃ (ι' : Z ⟶ completed Sc sy hc μ ν u hu n b)
         (π' : completed Sc sy hc μ ν u hu n b ⟶ Z), ι' ≫ π' = 𝟙 Z := by
-  have : HomFinite k (weight Sc sy hc μ ⟶ weight Sc sy hc ν) := by
+  have : KrullSchmidtNil.NilFinite k (weight Sc sy hc μ ⟶ weight Sc sy hc ν) := by
     let a : UGr D Sc sy hc := ⟨μ⟩
     let b : UGr D Sc sy hc := ⟨ν⟩
-    have := UGr.degreeHomFinite sy cs hc hf a b
-    exact inferInstanceAs (HomFinite k (GSKar k (a ⟶ b)))
+    exact UGr.nilFinite sy cs hc a b
   obtain ⟨N, c, g, hg⟩ := Submodule.mem_span_set'.mp ht
   choose u A B hP hA hB hd hp hfg using fun j => (g j).2
   have hu : ∀ j, wt D ν (u j) = μ := fun j => ((hA j).wt_eq D ν).trans hw
@@ -391,12 +388,10 @@ section Low
 
 open QuiverHecke (IsRetract of_sub_mem_closure_low)
 
-variable (hf : sy.DegreeLocallyFinite)
-
 /-- An indecomposable retract `Q` of `W` whose idempotent lies in the span of `T` satisfies
 `1_Q = ι t π` for some `t ∈ T`. -/
 theorem exists_retract_of_mem_span {𝒞 : Type*} [Category 𝒞] [Preadditive 𝒞] (k : Type*) [Field k]
-    [Linear k 𝒞] [HomFinite k 𝒞] {Q W : 𝒞} (hQ : IsIndec Q) (fQ : Q ⟶ W) (gQ : W ⟶ Q)
+    [Linear k 𝒞] [KrullSchmidtNil.NilFinite k 𝒞] {Q W : 𝒞} (hQ : IsIndec Q) (fQ : Q ⟶ W) (gQ : W ⟶ Q)
     (hfg : fQ ≫ gQ = 𝟙 Q) {T : Set (W ⟶ W)} (hT : gQ ≫ fQ ∈ Submodule.span k T) :
     ∃ t ∈ T, ∃ (ι : Q ⟶ W) (π : W ⟶ Q), ι ≫ t ≫ π = 𝟙 Q := by
   have key : ∀ x ∈ Submodule.span k T,
@@ -425,7 +420,7 @@ def LowWidth (μ ν : X) (N : ℕ) (Q : weight Sc sy hc μ ⟶ weight Sc sy hc �
   ∃ (u : List (Letter I)) (hu : wt D ν u = μ) (n : ℤ) (b : ZMod 2), u.length + 2 ≤ N ∧
     IsRetract Q (completed Sc sy hc μ ν u hu n b)
 
-include cs hf in
+include cs in
 /-- **Indecomposable retracts through shorter words are low**: an indecomposable retract `Q` of
 `Q^m Π^a E_w 1_ν` whose idempotent factors through shorter words is a retract of a shifted word
 with at least two letters fewer. -/
@@ -434,17 +429,16 @@ theorem top_low {μ ν : X} {w : List (Letter I)} {hw : wt D ν w = μ} {m : ℤ
     (gQ : completed Sc sy hc μ ν w hw m a ⟶ Q) (hfg : fQ ≫ gQ = 𝟙 Q)
     (hT : gQ ≫ fQ ∈ topIdeal sy hc μ ν w hw m a) (hQ : IsIndec Q) :
     LowWidth sy hc μ ν w.length Q := by
-  have : HomFinite k (weight Sc sy hc μ ⟶ weight Sc sy hc ν) := by
+  have : KrullSchmidtNil.NilFinite k (weight Sc sy hc μ ⟶ weight Sc sy hc ν) := by
     let a : UGr D Sc sy hc := ⟨μ⟩
     let b : UGr D Sc sy hc := ⟨ν⟩
-    have := UGr.degreeHomFinite sy cs hc hf a b
-    exact inferInstanceAs (HomFinite k (GSKar k (a ⟶ b)))
+    exact UGr.nilFinite sy cs hc a b
   obtain ⟨_, ⟨ψ, hψ, rfl⟩, ι, π, h⟩ := exists_retract_of_mem_span k hQ fQ gQ hfg hT
-  obtain ⟨u, hu, n, b, hP, ι', π', h'⟩ := exists_retract_thru cs sy hc hf hQ ψ
+  obtain ⟨u, hu, n, b, hP, ι', π', h'⟩ := exists_retract_thru cs sy hc hQ ψ
     (mem_span_thru_of_short hc hψ (sval_mem ψ).1 (sval_mem ψ).2) ι π h
   exact ⟨u, hu, n, b, hP, ι', π', h'⟩
 
-include cs hf in
+include cs in
 /-- **The top summand (BE2, arXiv:1701.04133v2, proof of Theorem 11.7, surjectivity).** Let
 `z`, `z′` be even degree-zero idempotents of `E_s`, `E_t` with local corners, and `E` the image of
 the top idempotent `α′(z′) α(z)` of `W = Q^m Π^a E_s F_t 1_{-ν}`. Call an object low if it is a
@@ -469,13 +463,12 @@ theorem top_sub_mem_closure_low {μ ν : X} {s t : List I}
     K₀.mk E - K₀.mk Z ∈ AddSubmonoid.closure
       {x | ∃ Q, IsIndec Q ∧ LowWidth sy hc μ (-ν) (upWord s ++ dnWord t).length Q ∧
         x = K₀.mk Q} := by
-  have : HomFinite k (weight Sc sy hc μ ⟶ weight Sc sy hc (-ν)) := by
+  have : KrullSchmidtNil.NilFinite k (weight Sc sy hc μ ⟶ weight Sc sy hc (-ν)) := by
     let a : UGr D Sc sy hc := ⟨μ⟩
     let b : UGr D Sc sy hc := ⟨-ν⟩
-    have := UGr.degreeHomFinite sy cs hc hf a b
-    exact inferInstanceAs (HomFinite k (GSKar k (a ⟶ b)))
+    exact UGr.nilFinite sy cs hc a b
   exact of_sub_mem_closure_low (topIdeal_isIdeal μ (-ν) _ hw m a) _
-    (fun Q fQ gQ hfgQ hT hQ => top_low cs sy hc hf Q fQ gQ hfgQ hT hQ)
+    (fun Q fQ gQ hfgQ hT hQ => top_low cs sy hc Q fQ gQ hfgQ hT hQ)
     (top_localModT cs hz hz' hz0 hz0' hE hE' ε₀ hε₀) i p hip hpi hZ f g hfg hZlow
 
 end Low

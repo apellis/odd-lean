@@ -28,7 +28,7 @@ variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X}
 /-- The corrected ℒ-module decomposition for each completed SKM hom category. -/
 def UDot.laurentDecomposition (a b : UGr D Sc sy hc) :=
   letI := UGr.degreeHomFinite sy cs hc hf a b
-  GSKar.laurentDecomposition (UGr.homBoundedBelow sy cs hc hf a b)
+  GSKar.laurentDecomposition (UGr.homBoundedBelow sy cs hc a b)
 
 namespace CliffordK0
 variable (K : Type) [Field K]

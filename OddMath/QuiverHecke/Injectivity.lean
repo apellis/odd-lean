@@ -259,7 +259,7 @@ theorem choose_one_two : Nat.choose 1 2 = 0 := rfl
 
 /-- `γ(e_i 1_μ) = [E_i 1_μ]` and `γ(f_i 1_μ) = [F_i 1_μ]`. -/
 theorem gammaInt_halfGen (b : Bool) (i : I) (μ : X) :
-    gammaInt Q hS cs hf ⟨_, MixedWordSpan.halfGen_mem_lForm Q _ b i μ⟩ =
+    gammaInt Q hS cs ⟨_, MixedWordSpan.halfGen_mem_lForm Q _ b i μ⟩ =
       cls S Q.skmSymmetrizer hS (SKM.wt Q.toSKM μ [(b, i)]) μ [(b, i)] rfl 0 0 := by
   have hc : ((Nat.choose 1 2 : ℕ) : ℤ) = 0 := by rw [choose_one_two]; rfl
   cases b
@@ -280,10 +280,10 @@ theorem gammaInt_halfGen (b : Bool) (i : I) (μ : X) :
 
 /-- **`γ` on mixed words**: `γ(θ_a 1_ζ) = [E_a 1_ζ]`, the class of the word `a`. -/
 theorem gammaInt_algebraWord (ζ : X) (a : List (Bool × I)) :
-    gammaInt Q hS cs hf ⟨_, MixedWordSpan.algebraWord_mem_lForm Q _ ζ a⟩ =
+    gammaInt Q hS cs ⟨_, MixedWordSpan.algebraWord_mem_lForm Q _ ζ a⟩ =
       cls S Q.skmSymmetrizer hS (SKM.wt Q.toSKM ζ a) ζ a rfl 0 0 := by
   induction a with
-  | nil => exact (gammaInt_one Q hS cs hf ζ).trans (by rw [← cls_nil]; rfl)
+  | nil => exact (gammaInt_one Q hS cs ζ).trans (by rw [← cls_nil]; rfl)
   | cons g a ih =>
     obtain ⟨b, i⟩ := g
     have hmul : (⟨_, MixedWordSpan.algebraWord_mem_lForm Q _ ζ ((b, i) :: a)⟩ : Λ) =
@@ -296,10 +296,10 @@ theorem gammaInt_algebraWord (ζ : X) (a : List (Bool × I)) :
     exact cls_congr _ _ (SKM.wt_append _ ζ [(b, i)] a).symm rfl rfl _ _ _ _
 
 theorem gammaInt_algebraWord_of_eq (ζ μ : X) (a : List (Bool × I)) (h : SKM.wt Q.toSKM ζ a = μ) :
-    gammaInt Q hS cs hf ⟨_, MixedWordSpan.algebraWord_mem_lForm Q _ ζ a⟩ =
+    gammaInt Q hS cs ⟨_, MixedWordSpan.algebraWord_mem_lForm Q _ ζ a⟩ =
       cls S Q.skmSymmetrizer hS μ ζ a h 0 0 := by
   subst h
-  exact gammaInt_algebraWord Q hS cs hf ζ a
+  exact gammaInt_algebraWord Q hS cs ζ a
 
 /-! ### The pairing of word classes is a Hom dimension -/
 
@@ -312,7 +312,7 @@ theorem evalSeries_pairing_blockClass (μ ν : X) (a b : List (SKM.Letter I))
     (ha : SKM.wt Q.toSKM ν a = μ) (hb : SKM.wt Q.toSKM ν b = μ) (σ : ℤ) (hσ : σ * σ = 1) :
     let _ := SKM.UGr.degreeHomFinite Q.skmSymmetrizer cs hS hf (weightObj Q hS μ) (weightObj Q hS ν)
     evalSeries σ hσ (GSKar.pairing k
-      (SKM.UGr.homBoundedBelow Q.skmSymmetrizer cs hS hf (weightObj Q hS μ) (weightObj Q hS ν))
+      (SKM.UGr.homBoundedBelow Q.skmSymmetrizer cs hS (weightObj Q hS μ) (weightObj Q hS ν))
       (GSKar.of k (SKM.K0Relations.word S Q.skmSymmetrizer hS μ ν b hb) 0 0)
       (blockClass S Q.skmSymmetrizer hS μ ν a ha 0 0)) =
       SKM.homDimension Q.skmSymmetrizer cs hS hf ν b a σ := by
@@ -436,7 +436,7 @@ theorem form_algebraWord_eq_zero (hN : SKM.NondegeneracyConjecture cs) (μ ν : 
   have hb : SKM.wt Q.toSKM ν b = μ := (mixed_word_physical_weight Q ν b).trans hbμ
   let _ := SKM.UGr.degreeHomFinite Q.skmSymmetrizer cs hS hf (weightObj Q hS μ) (weightObj Q hS ν)
   set P := GSKar.pairing k
-    (SKM.UGr.homBoundedBelow Q.skmSymmetrizer cs hS hf (weightObj Q hS μ) (weightObj Q hS ν))
+    (SKM.UGr.homBoundedBelow Q.skmSymmetrizer cs hS (weightObj Q hS μ) (weightObj Q hS ν))
     (GSKar.of k (SKM.K0Relations.word S Q.skmSymmetrizer hS μ ν b hb) 0 0)
   have hP : ∀ σ : ℤ, ∀ hσ : σ * σ = 1, evalSeries σ hσ (P (a.sum fun t r =>
       r • blockClass S Q.skmSymmetrizer hS μ ν t.1 (blockWord_wt Q t) 0 0)) =
@@ -547,11 +547,12 @@ theorem eq_zero_of_form_eq_zero
     (FiniteWeightForm.sesquilinearForm_nondegenerate Q hα hh) Y' hall
 
 omit [Finite I] [Module.Free ℤ X] [Module.Finite ℤ X] in
+include hf in
 /-- The block step of Theorem 12.1, given nondegeneracy of the form of Theorem 10.1. -/
 theorem blockProj_eq_zero_of_nondegenerate (hN : SKM.NondegeneracyConjecture cs)
     (hnd : ∀ x : modified Q Coefficients.q Coefficients.pi,
       (∀ y, sesquilinearForm Q x y = 0) → x = 0)
-    (x : Λ) (hx : gammaInt Q hS cs hf x = 0) (μ ν : X) :
+    (x : Λ) (hx : gammaInt Q hS cs x = 0) (μ ν : X) :
     blockProj Q Coefficients.q Coefficients.pi μ ν (x : 𝕌) = 0 := by
   obtain ⟨y, hy_def⟩ : ∃ y, y = blockProj Q Coefficients.q Coefficients.pi μ ν (x : 𝕌) :=
     ⟨_, rfl⟩
@@ -559,7 +560,7 @@ theorem blockProj_eq_zero_of_nondegenerate (hN : SKM.NondegeneracyConjecture cs)
   have hyL : y ∈ Λ := by
     rw [hy_def, blockProj_apply]
     exact mul_mem (mul_mem (one_mem_lForm _ _ _ _ μ) x.2) (one_mem_lForm _ _ _ _ ν)
-  have hγy : gammaInt Q hS cs hf ⟨y, hyL⟩ = 0 := by
+  have hγy : gammaInt Q hS cs ⟨y, hyL⟩ = 0 := by
     have : (⟨y, hyL⟩ : Λ) = ⟨_, one_mem_lForm Q Coefficients.q Coefficients.pi _ μ⟩ * x *
         ⟨_, one_mem_lForm Q Coefficients.q Coefficients.pi _ ν⟩ :=
       Subtype.ext (by simp [hy_def, blockProj_apply])
@@ -580,7 +581,7 @@ theorem blockProj_eq_zero_of_nondegenerate (hN : SKM.NondegeneracyConjecture cs)
     simp only [hYdef, Finsupp.sum, AddSubmonoidClass.coe_finsetSum, SetLike.val_smul]
     refine Finset.sum_congr rfl fun t _ => ?_
     exact (algebraMap_smul CoveringQuantum.Coefficients.Ring (a t) _).symm
-  have hY0 : gammaInt Q hS cs hf Y = 0 := by
+  have hY0 : gammaInt Q hS cs Y = 0 := by
     have : Y = d • (⟨y, hyL⟩ : Λ) := Subtype.ext (by
       rw [hYval, had, SetLike.val_smul]
       exact algebraMap_smul CoveringQuantum.Coefficients.Ring d y)
@@ -593,7 +594,7 @@ theorem blockProj_eq_zero_of_nondegenerate (hN : SKM.NondegeneracyConjecture cs)
     simp only [Finsupp.sum, map_sum, map_smul, toGrBlock_smul]
     refine Finset.sum_congr rfl fun t _ => ?_
     congr 1
-    exact (gammaInt_algebraWord_of_eq Q hS cs hf ν μ t.1 (blockWord_wt Q t)).symm
+    exact (gammaInt_algebraWord_of_eq Q hS cs ν μ t.1 (blockWord_wt Q t)).symm
   -- the form vanishes on the element of `U̇`, so it vanishes
   have hYm : (Y : 𝕌) ∈ block Q Coefficients.q Coefficients.pi μ ν := by
     rw [hYval, had]
@@ -614,20 +615,21 @@ theorem blockProj_eq_zero_of_nondegenerate (hN : SKM.NondegeneracyConjecture cs)
 /-- The block step of Theorem 12.1. -/
 theorem blockProj_eq_zero (hN : SKM.NondegeneracyConjecture cs)
     (hα : LinearIndependent ℤ Q.α)
-    (hh : LinearIndependent ℤ Q.cd.coroot) (x : Λ) (hx : gammaInt Q hS cs hf x = 0) (μ ν : X) :
+    (hh : LinearIndependent ℤ Q.cd.coroot) (x : Λ) (hx : gammaInt Q hS cs x = 0) (μ ν : X) :
     blockProj Q Coefficients.q Coefficients.pi μ ν (x : 𝕌) = 0 :=
-  blockProj_eq_zero_of_nondegenerate Q hS cs hf hN
+  blockProj_eq_zero_of_nondegenerate Q hS cs (fun _ => Set.toFinite _) hN
     (FiniteWeightForm.sesquilinearForm_nondegenerate Q hα hh) x hx μ ν
 
 omit [Finite I] [Module.Free ℤ X] [Module.Finite ℤ X] in
+include hf in
 /-- **BE2 Theorem 12.1, form version**: if the Nondegeneracy Conjecture holds and the form of
 Theorem 10.1 is nondegenerate, then `γ` is injective. No finiteness of the colour set or of the
 weight lattice is assumed. -/
 theorem theorem_12_1_of_nondegenerate (hN : SKM.NondegeneracyConjecture cs)
     (hnd : ∀ x : modified Q Coefficients.q Coefficients.pi,
       (∀ y, sesquilinearForm Q x y = 0) → x = 0) :
-    Function.Injective (gammaInt Q hS cs hf) := by
-  suffices h0 : ∀ x : Λ, gammaInt Q hS cs hf x = 0 → x = 0 by
+    Function.Injective (gammaInt Q hS cs) := by
+  suffices h0 : ∀ x : Λ, gammaInt Q hS cs x = 0 → x = 0 by
     intro x y hxy
     exact sub_eq_zero.1 (h0 _ (by rw [map_sub, hxy, sub_self]))
   intro x hx
@@ -644,14 +646,14 @@ theorem theorem_12_1_of_nondegenerate (hN : SKM.NondegeneracyConjecture cs)
 /-- **BE2 Theorem 12.1** (Brundan–Ellis, arXiv:1701.04133v2): if the Nondegeneracy Conjecture
 holds, the homomorphism `γ : U̇_{q,π}(𝔤)_ℒ → K₀(𝔘̇(𝔤))` of Theorem 11.7 is injective.
 
-Route hypotheses (README): `DegreeLocallyFinite` (from Theorem 11.7), and for nondegeneracy of the
-form of Theorem 10.1, finitely many colours, a free finitely generated weight lattice, linearly
-independent roots and coroots. -/
+Route hypotheses (README): for nondegeneracy of the form of Theorem 10.1, finitely many colours,
+a free finitely generated weight lattice, linearly independent roots and coroots. Finitely many
+colours give the finite-dimensional graded Hom-spaces used for the pairing. -/
 theorem theorem_12_1 (hN : SKM.NondegeneracyConjecture cs)
     (hα : LinearIndependent ℤ Q.α)
     (hh : LinearIndependent ℤ Q.cd.coroot) :
-    Function.Injective (gammaInt Q hS cs hf) :=
-  theorem_12_1_of_nondegenerate Q hS cs hf hN
+    Function.Injective (gammaInt Q hS cs) :=
+  theorem_12_1_of_nondegenerate Q hS cs (fun _ => Set.toFinite _) hN
     (FiniteWeightForm.sesquilinearForm_nondegenerate Q hα hh)
 
 end Injectivity
