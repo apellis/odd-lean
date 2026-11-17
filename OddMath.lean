@@ -134,7 +134,9 @@ import OddMath.QuiverHecke.SerreComplex
 import OddMath.QuiverHecke.SplitComplexK0
 import OddMath.QuiverHecke.SplitComplexShifted
 import OddMath.QuiverHecke.SplitComplexOpposite
+import OddMath.QuiverHecke.SplitComplexIso
 import OddMath.QuiverHecke.SerreClass
+import OddMath.QuiverHecke.SerreIsomorphism
 import OddMath.QuiverHecke.SerreClassUp
 import OddMath.QuiverHecke.CornerProjectors
 import OddMath.SKM.KarSummandProducts
