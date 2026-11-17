@@ -413,6 +413,3 @@ theorem degree_parity_mkD (μ : X) {t t' : List (Letter I)} (ls : List (LayerDat
   exact parityDeg_sig D _
 
 end OddMath.SKM
-
-/-- A constant added to exercise the sharded CI build; removed before merge. -/
-def ciShardingTestConstant : Nat := 0
