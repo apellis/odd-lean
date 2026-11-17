@@ -30,6 +30,22 @@ namespace OddMath.QuiverHecke
 open ELV ELV.BalancedInduction ELV.CyclotomicCrossingTensor CyclotomicAction
 universe u
 
+/-- The positive crossing component of `probeAppendToCrossComponent`, with its source and
+target written as iterated objects `G.obj (F.obj N)` rather than `(F ⋙ G).obj N`, so that
+every composite built from it carries one form of each object. -/
+abbrev probeAppendToCrossIterated
+    {I X k : Type u} [AddCommGroup X] [CommRing k]
+    (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
+    (ν : List I) (i j : I) {νj νi ν₂ : List I}
+    (hj : (j :: ν).Perm νj) (hi : (i :: ν).Perm νi)
+    (hL : (i :: νj).Perm ν₂) (hM : (j :: νi).Perm ν₂)
+    (N : ProbeEvaluatedModules D Sc m ν) :
+    (probeEvaluatedAppendTo D Sc m νi j ν₂ hM).obj
+        ((probeEvaluatedAppendTo D Sc m ν i νi hi).obj N) ⟶
+      (probeEvaluatedAppendTo D Sc m νj i ν₂ hL).obj
+        ((probeEvaluatedAppendTo D Sc m ν j νj hj).obj N) :=
+  probeAppendToCrossComponent D Sc m ν i j hj hi hL hM N
+
 private theorem equal_rectangle_grid
     {k C A E : Type u} [CommRing k]
     [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
@@ -52,7 +68,7 @@ theorem probeOldBlockEqualCross_stored_total (i : I) (Λ : X) {a b c : X}
     (h₁ : a + D.α i = b) (h₂ : b + D.α i = c) (β : WeightBlocks D Λ a)
     (N : ProbeCanonicalModules D Sc m β.1) :
     (probeOldBlockEqualCross D Sc m i Λ h₁ h₂ β).total N =
-      -probeAppendToCrossComponent D Sc m β.1.toList i i
+      -probeAppendToCrossIterated D Sc m β.1.toList i i
         (probeOldBlockTarget_perm D i Λ h₁ β _ rfl)
         (probeOldBlockTarget_perm D i Λ h₁ β _ rfl)
         (probeOldPairUpper_perm D i i Λ h₁ h₂ β _ rfl)
@@ -82,7 +98,7 @@ theorem probeOldBlockDistinctCross_stored_total (β : WeightBlocks D Λ a)
     (ε : WeightBlocks D Λ d) (hε : blockSucc₂ D i j Λ h₁ h₂ β = ε)
     (N : ProbeCanonicalModules D Sc m β.1) :
     (probeOldBlockDistinctCross D Sc m i j Λ h₁ h₂ h₃ h₄ β ε hε).total N =
-      probeAppendToCrossComponent D Sc m β.1.toList j i
+      probeAppendToCrossIterated D Sc m β.1.toList j i
         (hi β _ rfl) (hj β _ rfl) (hL β ε (sw hε)) (hU β ε hε) N := by
   subst ε
   rw [probeOldBlockDistinctCross_mixed_eq D Sc m j i Λ h₃ h₄ h₁ h₂ β]
@@ -144,7 +160,7 @@ theorem probeOldActionCross_stored_total (β : WeightBlocks D Λ a)
     (M : ProbeOldWeightProduct D Sc m Λ a) :
     (probeOldActionCross D Sc m Λ i j h₁ h₂ h₃ h₄).total M ε =
       eqToHom (Functor.congr_obj (probeOldEFunctor_comp₂_to D Sc m i j Λ h₁ h₂ β ε hε) M) ≫
-        ((if i = j then (-1 : k) else 1) • probeAppendToCrossComponent D Sc m β.1.toList j i
+        ((if i = j then (-1 : k) else 1) • probeAppendToCrossIterated D Sc m β.1.toList j i
           (hi β _ rfl) (hj β _ rfl) (hL β ε (sw hε)) (hU β ε hε) (M β)) ≫
       eqToHom (Functor.congr_obj
         (probeOldEFunctor_comp₂_to D Sc m j i Λ h₃ h₄ β ε (sw hε)) M).symm := by
@@ -315,7 +331,7 @@ theorem probeOldActionCross_via_total (M : ProbeOldWeightProduct D Sc m Λ a) :
         (probeOldInductionComponent D Sc m j Λ h₄ ε).toFunctor).obj M)
       ((probeOldActionCross D Sc m Λ i j h₁ h₂ h₃ h₄).total M ε)
       (eqToHom (probeOldWeightPairVia_obj_eq D Sc m i j Λ h₁ h₂ β δj ε hj hU M) ≫
-        ((if i = j then (-1 : k) else 1) • probeAppendToCrossComponent D Sc m β.1.toList j i
+        ((if i = j then (-1 : k) else 1) • probeAppendToCrossIterated D Sc m β.1.toList j i
           (probeOldBlockTarget_perm D i Λ h₃ β δi hi)
           (probeOldBlockTarget_perm D j Λ h₁ β δj hj)
           (probeOldBlockTarget_perm D j Λ h₄ δi ε hL)
@@ -437,8 +453,9 @@ theorem probeOldWeightCrossPrefix_via_total (β : WeightBlocks D Λ a)
     (hε : blockSucc D Λ i hd δ = ε) (M : ProbeOldWeightProduct D Sc m Λ a) :
     (probeOldWeightCrossPrefix D Sc m i j l Λ hal haj hlj hjl hd).total M ε =
       eqToHom (probeOldWeightTripleVia_obj_eq D Sc m i j l Λ hal hlj hd β δl δ ε hδl hδs hε M) ≫
-        (probeOldBlockIndTo D Sc m i Λ hd δ ε hε).map
-          ((if j = l then (-1 : k) else 1) • probeAppendToCrossComponent D Sc m β.1.toList l j
+        (probeEvaluatedAppendTo D Sc m δ.1.toList i ε.1.toList
+            (probeOldBlockTarget_perm D i Λ hd δ ε hε)).map
+          ((if j = l then (-1 : k) else 1) • probeAppendToCrossIterated D Sc m β.1.toList l j
             (probeOldBlockTarget_perm D j Λ haj β δj hδj)
             (probeOldBlockTarget_perm D l Λ hal β δl hδl)
             (probeOldBlockTarget_perm D l Λ hjl δj δ hδt)
@@ -483,12 +500,13 @@ theorem probeOldWeightCrossSuffix_via_total (β : WeightBlocks D Λ a)
     (M : ProbeOldWeightProduct D Sc m Λ a) :
     (probeOldWeightCrossSuffix D Sc m i j l Λ hal hlj hli hji hij).total M ε =
       eqToHom (probeOldWeightTripleVia_obj_eq D Sc m i j l Λ hal hlj hji β δl δj ε hδl hδj hεs M) ≫
-        ((if i = j then (-1 : k) else 1) • probeAppendToCrossComponent D Sc m δl.1.toList j i
+        ((if i = j then (-1 : k) else 1) • probeAppendToCrossIterated D Sc m δl.1.toList j i
           (probeOldBlockTarget_perm D i Λ hli δl δi hδi)
           (probeOldBlockTarget_perm D j Λ hlj δl δj hδj)
           (probeOldBlockTarget_perm D j Λ hij δi ε hεt)
           (probeOldBlockTarget_perm D i Λ hji δj ε hεs)
-          ((probeOldBlockIndTo D Sc m l Λ hal β δl hδl).obj (M β))) ≫
+          ((probeEvaluatedAppendTo D Sc m β.1.toList l δl.1.toList
+            (probeOldBlockTarget_perm D l Λ hal β δl hδl)).obj (M β))) ≫
       eqToHom (probeOldWeightTripleVia_obj_eq D Sc m j i l Λ hal hli hij β δl δi ε hδl hδi hεt M).symm := by
   rw [probeOldWeightCrossSuffix_total,
     probeOldActionCross_via_total D Sc m i j Λ hlj hji hli hij δl δj δi ε hδj hδi hεs hεt]
@@ -501,7 +519,7 @@ theorem probeOldWeightCrossSuffix_via_total (β : WeightBlocks D Λ a)
     (probeOldWeightTripleVia_obj_eq D Sc m i j l Λ hal hlj hji β δl δj ε hδl hδj hεs M)
     (probeOldWeightTripleVia_obj_eq D Sc m j i l Λ hal hli hij β δl δi ε hδl hδi hεt M)
   exact dependent_apply_heq
-    (probeAppendToCrossComponent D Sc m δl.1.toList j i
+    (probeAppendToCrossIterated D Sc m δl.1.toList j i
       (probeOldBlockTarget_perm D i Λ hli δl δi hδi)
       (probeOldBlockTarget_perm D j Λ hlj δl δj hδj)
       (probeOldBlockTarget_perm D j Λ hij δi ε hεt)
@@ -714,21 +732,21 @@ local notation "ECi" => probeEvaluatedAppendTo D Sc' m νjl i νt hTopI
 def probeStoredBraidLeft (N : ProbeEvaluatedModules D Sc' m ν) :
     (ECi).obj ((EBjl_l).obj ((EAl).obj N)) ⟶ (ECl).obj ((EBij_i).obj ((EAi).obj N)) :=
   ((if j = l then (-1 : k) else 1) • (ECi).map
-    (probeAppendToCrossComponent D Sc' m ν l j hJ hL hJL hLJ N)) ≫
+    (probeAppendToCrossIterated D Sc' m ν l j hJ hL hJL hLJ N)) ≫
   ((if i = l then (-1 : k) else 1) •
-    probeAppendToCrossComponent D Sc' m νj l i hJI hJL hTopL hTopI ((EAj).obj N)) ≫
+    probeAppendToCrossIterated D Sc' m νj l i hJI hJL hTopL hTopI ((EAj).obj N)) ≫
   ((if i = j then (-1 : k) else 1) • (ECl).map
-    (probeAppendToCrossComponent D Sc' m ν j i hI hJ hIJ hJI N))
+    (probeAppendToCrossIterated D Sc' m ν j i hI hJ hIJ hJI N))
 
 /-- The second path has independent intermediate representatives at the other cube vertices. -/
 def probeStoredBraidRight (N : ProbeEvaluatedModules D Sc' m ν) :
     (ECi).obj ((EBjl_l).obj ((EAl).obj N)) ⟶ (ECl).obj ((EBij_i).obj ((EAi).obj N)) :=
   ((if i = j then (-1 : k) else 1) •
-    probeAppendToCrossComponent D Sc' m νl j i hLI hLJ hTopJ hTopI ((EAl).obj N)) ≫
+    probeAppendToCrossIterated D Sc' m νl j i hLI hLJ hTopJ hTopI ((EAl).obj N)) ≫
   ((if i = l then (-1 : k) else 1) • (ECj).map
-    (probeAppendToCrossComponent D Sc' m ν l i hI hL hIL hLI N)) ≫
+    (probeAppendToCrossIterated D Sc' m ν l i hI hL hIL hLI N)) ≫
   ((if j = l then (-1 : k) else 1) •
-    probeAppendToCrossComponent D Sc' m νi l j hIJ hIL hTopL hTopJ ((EAi).obj N))
+    probeAppendToCrossIterated D Sc' m νi l j hIJ hIL hTopL hTopJ ((EAi).obj N))
 
 /-- The first evaluated path retains the entire OLD module map. -/
 theorem probeStoredBraidLeft_eq (N : ProbeEvaluatedModules D Sc' m ν) :
@@ -1401,13 +1419,13 @@ local notation "hγ" => probeAppendToDot_supernatural D Sc' m νij i νt hTopI
 def probeStoredMixedBraid (N : ProbeEvaluatedModules D Sc' m ν) :
     End ((EM).obj ((EV).obj ((EJ).obj N))) :=
   (show End ((EM).obj ((EV).obj ((EJ).obj N))) from
-    probeAppendToCrossComponent D Sc' m νi j i hII hIJ hTopJ hTopI ((EJ).obj N) ≫
-      (-(EL).map (probeAppendToCrossComponent D Sc' m ν i i hI hI hII hII N)) ≫
-        probeAppendToCrossComponent D Sc' m νi i j hIJ hII hTopI hTopJ ((EJ).obj N)) -
+    probeAppendToCrossIterated D Sc' m νi j i hII hIJ hTopJ hTopI ((EJ).obj N) ≫
+      (-(EL).map (probeAppendToCrossIterated D Sc' m ν i i hI hI hII hII N)) ≫
+        probeAppendToCrossIterated D Sc' m νi i j hIJ hII hTopI hTopJ ((EJ).obj N)) -
   (show End ((EM).obj ((EV).obj ((EJ).obj N))) from
-    (EM).map (probeAppendToCrossComponent D Sc' m ν i j hJ hI hJI hIJ N) ≫
-      (-probeAppendToCrossComponent D Sc' m νj i i hJI hJI hTopI hTopI ((EK).obj N)) ≫
-        (EM).map (probeAppendToCrossComponent D Sc' m ν j i hI hJ hIJ hJI N))
+    (EM).map (probeAppendToCrossIterated D Sc' m ν i j hJ hI hJI hIJ N) ≫
+      (-probeAppendToCrossIterated D Sc' m νj i i hJI hJI hTopI hTopI ((EK).obj N)) ≫
+        (EM).map (probeAppendToCrossIterated D Sc' m ν j i hI hJ hIJ hJI N))
 
 /-- The independently whiskered first evaluated dot. -/
 def probeStoredFirstDot (N : ProbeEvaluatedModules D Sc' m ν) :
@@ -1634,42 +1652,42 @@ local notation "EM" => probeEvaluatedAppendTo D Sc' m νij i νt hTopI
 
 private def stored_mapped_right (N : ProbeEvaluatedModules D Sc' m ν) :
     End ((EM).obj ((EV).obj ((EJ).obj N))) :=
-  probeAppendToCrossComponent D Sc' m νi j i hII hIJ hTopJ hTopI ((EJ).obj N) ≫
-    (-(EL).map (probeAppendToCrossComponent D Sc' m ν i i hI hI hII hII N)) ≫
-      probeAppendToCrossComponent D Sc' m νi i j hIJ hII hTopI hTopJ ((EJ).obj N)
+  probeAppendToCrossIterated D Sc' m νi j i hII hIJ hTopJ hTopI ((EJ).obj N) ≫
+    (-(EL).map (probeAppendToCrossIterated D Sc' m ν i i hI hI hII hII N)) ≫
+      probeAppendToCrossIterated D Sc' m νi i j hIJ hII hTopI hTopJ ((EJ).obj N)
 
 private def stored_mapped_left (N : ProbeEvaluatedModules D Sc' m ν) :
     End ((EM).obj ((EV).obj ((EJ).obj N))) :=
-  (EM).map (probeAppendToCrossComponent D Sc' m ν i j hJ hI hJI hIJ N) ≫
-    (-probeAppendToCrossComponent D Sc' m νj i i hJI hJI hTopI hTopI ((EK).obj N)) ≫
-      (EM).map (probeAppendToCrossComponent D Sc' m ν j i hI hJ hIJ hJI N)
+  (EM).map (probeAppendToCrossIterated D Sc' m ν i j hJ hI hJI hIJ N) ≫
+    (-probeAppendToCrossIterated D Sc' m νj i i hJI hJI hTopI hTopI ((EK).obj N)) ≫
+      (EM).map (probeAppendToCrossIterated D Sc' m ν j i hI hJ hIJ hJI N)
 
 private def stored_raw_right (N : ProbeEvaluatedModules D Sc' m ν) :
     End ((EM).obj ((EV).obj ((EJ).obj N))) :=
   ((if i = j then (-1 : k) else 1) •
-    probeAppendToCrossComponent D Sc' m νi j i hII hIJ hTopJ hTopI ((EJ).obj N)) ≫
+    probeAppendToCrossIterated D Sc' m νi j i hII hIJ hTopJ hTopI ((EJ).obj N)) ≫
     (EL).map ((if i = i then (-1 : k) else 1) •
-      probeAppendToCrossComponent D Sc' m ν i i hI hI hII hII N) ≫
+      probeAppendToCrossIterated D Sc' m ν i i hI hI hII hII N) ≫
       ((if j = i then (-1 : k) else 1) •
-        probeAppendToCrossComponent D Sc' m νi i j hIJ hII hTopI hTopJ ((EJ).obj N))
+        probeAppendToCrossIterated D Sc' m νi i j hIJ hII hTopI hTopJ ((EJ).obj N))
 
 private def stored_raw_left (N : ProbeEvaluatedModules D Sc' m ν) :
     End ((EM).obj ((EV).obj ((EJ).obj N))) :=
   (EM).map ((if j = i then (-1 : k) else 1) •
-    probeAppendToCrossComponent D Sc' m ν i j hJ hI hJI hIJ N) ≫
+    probeAppendToCrossIterated D Sc' m ν i j hJ hI hJI hIJ N) ≫
     ((if i = i then (-1 : k) else 1) •
-      probeAppendToCrossComponent D Sc' m νj i i hJI hJI hTopI hTopI ((EK).obj N)) ≫
+      probeAppendToCrossIterated D Sc' m νj i i hJI hJI hTopI hTopI ((EK).obj N)) ≫
       (EM).map ((if i = j then (-1 : k) else 1) •
-        probeAppendToCrossComponent D Sc' m ν j i hI hJ hIJ hJI N)
+        probeAppendToCrossIterated D Sc' m ν j i hI hJ hIJ hJI N)
 
 private theorem stored_right_normalization (hne : i ≠ j)
     (N : ProbeEvaluatedModules D Sc' m ν) :
     stored_raw_right D Sc m ν i j hI hII hIJ hTopJ hTopI N =
       stored_mapped_right D Sc m ν i j hI hII hIJ hTopJ hTopI N := by
   exact middle_path_normalization (EL)
-    (probeAppendToCrossComponent D Sc' m νi j i hII hIJ hTopJ hTopI ((EJ).obj N))
-    (probeAppendToCrossComponent D Sc' m ν i i hI hI hII hII N)
-    (probeAppendToCrossComponent D Sc' m νi i j hIJ hII hTopI hTopJ ((EJ).obj N))
+    (probeAppendToCrossIterated D Sc' m νi j i hII hIJ hTopJ hTopI ((EJ).obj N))
+    (probeAppendToCrossIterated D Sc' m ν i i hI hI hII hII N)
+    (probeAppendToCrossIterated D Sc' m νi i j hIJ hII hTopI hTopJ ((EJ).obj N))
     (if i = j then (-1 : k) else 1) (if i = i then (-1 : k) else 1)
     (if j = i then (-1 : k) else 1)
     (ite_eq_right hne) (ite_eq_left rfl) (ite_eq_right hne.symm)
@@ -1679,9 +1697,9 @@ private theorem stored_left_normalization (hne : i ≠ j)
     stored_raw_left D Sc m ν i j hI hJ hIJ hJI hTopI N =
       stored_mapped_left D Sc m ν i j hI hJ hIJ hJI hTopI N := by
   exact outer_path_normalization (EM) (EM)
-    (probeAppendToCrossComponent D Sc' m ν i j hJ hI hJI hIJ N)
-    (probeAppendToCrossComponent D Sc' m νj i i hJI hJI hTopI hTopI ((EK).obj N))
-    (probeAppendToCrossComponent D Sc' m ν j i hI hJ hIJ hJI N)
+    (probeAppendToCrossIterated D Sc' m ν i j hJ hI hJI hIJ N)
+    (probeAppendToCrossIterated D Sc' m νj i i hJI hJI hTopI hTopI ((EK).obj N))
+    (probeAppendToCrossIterated D Sc' m ν j i hI hJ hIJ hJI N)
     (if j = i then (-1 : k) else 1) (if i = i then (-1 : k) else 1)
     (if i = j then (-1 : k) else 1)
     (ite_eq_right hne.symm) (ite_eq_left rfl) (ite_eq_right hne)
@@ -1813,7 +1831,7 @@ private theorem mixed_right_first_coordinate
     (M : ProbeOldWeightProduct D Sc' m Λ a) :
     (a₀).total M ε = eqToHom (mixedStored_obj_eq D Sc m i j Λ hab hbc hcd β M) ≫
       ((if i = j then (-1 : k) else 1) •
-        probeAppendToCrossComponent D Sc' m (Multiset.toList (Subtype.val δi)) j i (probeOldBlockTarget_perm D i Λ hbe δi δii rfl) hIJ (probeOldBlockTarget_perm D j Λ hed δii ε
+        probeAppendToCrossIterated D Sc' m (Multiset.toList (Subtype.val δi)) j i (probeOldBlockTarget_perm D i Λ hbe δi δii rfl) hIJ (probeOldBlockTarget_perm D j Λ hed δii ε
   (mixed_top_support D i j Λ hab hbc hbe hcd hed β)) hTopI (((probeEvaluatedAppendTo D Sc' m (Multiset.toList (Subtype.val β)) i (Multiset.toList (Subtype.val δi)) hI)).obj (M β))) ≫
       eqToHom ((probeOldWeightTripleVia_obj_eq D Sc' m j i i Λ hab hbe hed
   β δi δii ε rfl rfl (mixed_top_support D i j Λ hab hbc hbe hcd hed β) M)).symm :=
@@ -1826,7 +1844,7 @@ private theorem mixed_right_middle_coordinate
   β δi δii ε rfl rfl (mixed_top_support D i j Λ hab hbc hbe hcd hed β) M) ≫
       ((probeEvaluatedAppendTo D Sc' m (Multiset.toList (Subtype.val δii)) j (Multiset.toList (Subtype.val ε)) (probeOldBlockTarget_perm D j Λ hed δii ε
   (mixed_top_support D i j Λ hab hbc hbe hcd hed β)))).map ((if i = i then (-1 : k) else 1) •
-        probeAppendToCrossComponent D Sc' m (Multiset.toList (Subtype.val β)) i i hI hI (probeOldBlockTarget_perm D i Λ hbe δi δii rfl) (probeOldBlockTarget_perm D i Λ hbe δi δii rfl) (M β)) ≫
+        probeAppendToCrossIterated D Sc' m (Multiset.toList (Subtype.val β)) i i hI hI (probeOldBlockTarget_perm D i Λ hbe δi δii rfl) (probeOldBlockTarget_perm D i Λ hbe δi δii rfl) (M β)) ≫
       eqToHom ((probeOldWeightTripleVia_obj_eq D Sc' m j i i Λ hab hbe hed
   β δi δii ε rfl rfl (mixed_top_support D i j Λ hab hbc hbe hcd hed β) M)).symm :=
   probeOldWeightCrossPrefix_via_total D Sc' m j i i Λ hab hab hbe hbe hed
@@ -1837,7 +1855,7 @@ private theorem mixed_right_last_coordinate
     (a₂).total M ε = eqToHom (probeOldWeightTripleVia_obj_eq D Sc' m j i i Λ hab hbe hed
   β δi δii ε rfl rfl (mixed_top_support D i j Λ hab hbc hbe hcd hed β) M) ≫
       ((if j = i then (-1 : k) else 1) •
-        probeAppendToCrossComponent D Sc' m (Multiset.toList (Subtype.val δi)) i j hIJ (probeOldBlockTarget_perm D i Λ hbe δi δii rfl) hTopI (probeOldBlockTarget_perm D j Λ hed δii ε
+        probeAppendToCrossIterated D Sc' m (Multiset.toList (Subtype.val δi)) i j hIJ (probeOldBlockTarget_perm D i Λ hbe δi δii rfl) hTopI (probeOldBlockTarget_perm D j Λ hed δii ε
   (mixed_top_support D i j Λ hab hbc hbe hcd hed β)) (((probeEvaluatedAppendTo D Sc' m (Multiset.toList (Subtype.val β)) i (Multiset.toList (Subtype.val δi)) hI)).obj (M β))) ≫
       eqToHom ((mixedStored_obj_eq D Sc m i j Λ hab hbc hcd β M)).symm :=
   probeOldWeightCrossSuffix_via_total D Sc' m j i i Λ hab hbe hbc hed hcd
@@ -1847,7 +1865,7 @@ private theorem mixed_left_first_coordinate
     (M : ProbeOldWeightProduct D Sc' m Λ a) :
     (b₀).total M ε = eqToHom (mixedStored_obj_eq D Sc m i j Λ hab hbc hcd β M) ≫
       ((probeEvaluatedAppendTo D Sc' m (Multiset.toList (Subtype.val δij)) i (Multiset.toList (Subtype.val ε)) hTopI)).map ((if j = i then (-1 : k) else 1) •
-        probeAppendToCrossComponent D Sc' m (Multiset.toList (Subtype.val β)) i j (probeOldBlockTarget_perm D j Λ haf β δj rfl) hI (probeOldBlockTarget_perm D i Λ hfc δj δij
+        probeAppendToCrossIterated D Sc' m (Multiset.toList (Subtype.val β)) i j (probeOldBlockTarget_perm D j Λ haf β δj rfl) hI (probeOldBlockTarget_perm D i Λ hfc δj δij
   (mixed_middle_support D i j Λ hab haf hbc hfc β)) hIJ (M β)) ≫
       eqToHom ((probeOldWeightTripleVia_obj_eq D Sc' m i i j Λ haf hfc hcd
   β δj δij ε rfl (mixed_middle_support D i j Λ hab haf hbc hfc β) rfl M)).symm :=
@@ -1859,7 +1877,7 @@ private theorem mixed_left_middle_coordinate
     (b₁).total M ε = eqToHom (probeOldWeightTripleVia_obj_eq D Sc' m i i j Λ haf hfc hcd
   β δj δij ε rfl (mixed_middle_support D i j Λ hab haf hbc hfc β) rfl M) ≫
       ((if i = i then (-1 : k) else 1) •
-        probeAppendToCrossComponent D Sc' m (Multiset.toList (Subtype.val δj)) i i (probeOldBlockTarget_perm D i Λ hfc δj δij
+        probeAppendToCrossIterated D Sc' m (Multiset.toList (Subtype.val δj)) i i (probeOldBlockTarget_perm D i Λ hfc δj δij
   (mixed_middle_support D i j Λ hab haf hbc hfc β)) (probeOldBlockTarget_perm D i Λ hfc δj δij
   (mixed_middle_support D i j Λ hab haf hbc hfc β)) hTopI hTopI (((probeEvaluatedAppendTo D Sc' m (Multiset.toList (Subtype.val β)) j (Multiset.toList (Subtype.val δj)) (probeOldBlockTarget_perm D j Λ haf β δj rfl))).obj (M β))) ≫
       eqToHom ((probeOldWeightTripleVia_obj_eq D Sc' m i i j Λ haf hfc hcd
@@ -1873,7 +1891,7 @@ private theorem mixed_left_last_coordinate
     (b₂).total M ε = eqToHom (probeOldWeightTripleVia_obj_eq D Sc' m i i j Λ haf hfc hcd
   β δj δij ε rfl (mixed_middle_support D i j Λ hab haf hbc hfc β) rfl M) ≫
       ((probeEvaluatedAppendTo D Sc' m (Multiset.toList (Subtype.val δij)) i (Multiset.toList (Subtype.val ε)) hTopI)).map ((if i = j then (-1 : k) else 1) •
-        probeAppendToCrossComponent D Sc' m (Multiset.toList (Subtype.val β)) j i hI (probeOldBlockTarget_perm D j Λ haf β δj rfl) hIJ (probeOldBlockTarget_perm D i Λ hfc δj δij
+        probeAppendToCrossIterated D Sc' m (Multiset.toList (Subtype.val β)) j i hI (probeOldBlockTarget_perm D j Λ haf β δj rfl) hIJ (probeOldBlockTarget_perm D i Λ hfc δj δij
   (mixed_middle_support D i j Λ hab haf hbc hfc β)) (M β)) ≫
       eqToHom ((mixedStored_obj_eq D Sc m i j Λ hab hbc hcd β M)).symm :=
   probeOldWeightCrossPrefix_via_total D Sc' m i i j Λ haf hab hfc hbc hcd
