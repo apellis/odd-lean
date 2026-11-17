@@ -255,12 +255,13 @@ open CategoryTheory StringDiagrams LaurentPolynomial
 universe u' v' w'
 variable {I : Type u'} {X : Type v'} [AddCommGroup X] {D : Datum I X}
   {k : Type w'} [Field k] {Sc : Scalars D k} (sy : Symmetrizer D)
-  (cs : CScalars Sc) (hc : Sc.Homogeneous) (hf : sy.DegreeLocallyFinite)
+  (cs : CScalars Sc) (hc : Sc.Homogeneous)
 
-include cs hf in
+include cs in
 /-- **The Grothendieck ring has no `ℤ[q, q⁻¹]`-torsion.** In the completed super Kac–Moody
 2-category, a nonzero `p ∈ ℤ[q, q⁻¹]` acts injectively on `K₀(U̇)` with its `ℤ[q, q⁻¹, π]`-module
-structure of BE2 §6. -/
+structure of BE2 §6. This holds for every colour set: the Laurent bases come from the bubble
+filtration (`SKM.UGr.nilFiltration`). -/
 theorem UDot.int_smul_eq_zero (p : LaurentPolynomial ℤ) (hp : p ≠ 0)
     (x : K₀Ring (UDot D Sc sy hc))
     (h : (letI := GSKAR.moduleLaurent k (UGr D Sc sy hc)
@@ -272,7 +273,7 @@ theorem UDot.int_smul_eq_zero (p : LaurentPolynomial ℤ) (hp : p ≠ 0)
   change K₀Ring.laurentEnd k _ x _ = 0 at h'
   rw [K₀Ring.laurentEnd_apply, GrothendieckShift.laurentEnd_int_eq] at h'
   let := K₀.moduleLaurentInt k (GSKAR.mkObj k (UGr D Sc sy hc) a ⟶ GSKAR.mkObj k (UGr D Sc sy hc) b)
-  have := UDot.k0_free_laurentInt sy cs hc hf a b
+  have := UDot.k0_free_laurentInt sy cs hc a b
   have h'' : p • x (GSKAR.mkObj k _ a, GSKAR.mkObj k _ b) = 0 := h'
   exact (smul_eq_zero.mp h'').resolve_left hp
 

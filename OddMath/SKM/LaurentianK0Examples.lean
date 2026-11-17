@@ -28,11 +28,11 @@ abbrev B := UGr twoOddDatum.toSKM scalars twoOddDatum.skmSymmetrizer homogeneous
 theorem k0_free (a b : B) :
     letI := K₀.moduleLaurentInt ℚ (GSKAR.mkObj ℚ B a ⟶ GSKAR.mkObj ℚ B b)
     Module.Free (LaurentPolynomial ℤ) (K₀ (GSKAR.mkObj ℚ B a ⟶ GSKAR.mkObj ℚ B b)) :=
-  UDot.k0_free_laurentInt twoOddDatum.skmSymmetrizer cScalars homogeneous locallyFinite a b
+  UDot.k0_free_laurentInt twoOddDatum.skmSymmetrizer cScalars homogeneous a b
 
 /-- The concrete Laurent orbit basis, not only an existential freeness proposition. -/
 def basis (a b : B) :=
-  UDot.laurentBasis twoOddDatum.skmSymmetrizer cScalars homogeneous locallyFinite a b
+  UDot.laurentBasis twoOddDatum.skmSymmetrizer cScalars homogeneous a b
 
 /-- The generic theorem also applies to a provably nonzero rank-one projective. -/
 example : K₀.mk KrullSchmidtLaurentExamples.line ≠ 0 :=

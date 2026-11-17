@@ -27,7 +27,7 @@ example
     (π : K0Relations.completed scalars twoOddDatum.skmSymmetrizer homogeneous _ 0
       [dn false, up true] rfl 0 0 ⟶ Z)
     (h : ι ≫ π = 𝟙 Z) :=
-  exists_retract_sorted cScalars homogeneous locallyFinite hZ ι π h
+  exists_retract_sorted cScalars homogeneous hZ ι π h
 
 #print axioms OddMath.SKM.thru_sorted
 #print axioms OddMath.SKM.exists_retract_sorted

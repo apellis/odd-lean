@@ -175,7 +175,7 @@ theorem cls_topProj (ν : X) (s t : List I) {μ : X}
 section Image
 
 variable {k' : Type*} [Field k'] {Q : CoveringQuantum.RootDatum I X} {S : SKM.Scalars Q.toSKM k'}
-  {hS : S.Homogeneous} {cs : SKM.CScalars S} {hf : Q.skmSymmetrizer.DegreeLocallyFinite}
+  {hS : S.Homogeneous} {cs : SKM.CScalars S}
 
 /-- The class of the top summand lies in the image of `γ`. -/
 theorem topProj_mem_gammaRange (ν : X) (s t : List I) {μ : X}
@@ -186,7 +186,7 @@ theorem topProj_mem_gammaRange (ν : X) (s t : List I) {μ : X}
     (hz0' : z' ∈ homPiece Q.toSKM S Q.skmSymmetrizer hS t t 0 0) (m : ℤ) (a : ZMod 2) :
     SerreComplex.rcls Q.skmSymmetrizer hS (topProj_props ν s t hw hz hz' hz0 hz0').1
         (topProj_props ν s t hw hz hz' hz0 hz0').2.1
-        (topProj_props ν s t hw hz hz' hz0 hz0').2.2 m a ∈ gammaRange Q hS cs hf := by
+        (topProj_props ν s t hw hz hz' hz0 hz0').2.2 m a ∈ gammaRange Q hS cs := by
   rw [cls_topProj ν s t hw hz hz' hz0 hz0']
   exact gammaRange.mul_mem (upK0_mem_gammaRange _ _ _) (downK0_mem_gammaRange _ _ _)
 

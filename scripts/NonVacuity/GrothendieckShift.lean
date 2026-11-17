@@ -20,7 +20,7 @@ theorem q_add_one_ne_zero : (T 1 + 1 : LaurentPolynomial ℤ) ≠ 0 := by
 example (x : K₀Ring (UDot twoOddDatum.toSKM scalars twoOddDatum.skmSymmetrizer homogeneous))
     (h : (letI := GSKAR.moduleLaurent ℚ B
       AddMonoidAlgebra.mapRingHom ℤ (Int.castRingHom Zπ) (T 1 + 1) • x) = 0) : x = 0 :=
-  UDot.int_smul_eq_zero twoOddDatum.skmSymmetrizer cScalars homogeneous locallyFinite _
+  UDot.int_smul_eq_zero twoOddDatum.skmSymmetrizer cScalars homogeneous _
     q_add_one_ne_zero x h
 
 #print axioms OddMath.SKM.UDot.int_smul_eq_zero

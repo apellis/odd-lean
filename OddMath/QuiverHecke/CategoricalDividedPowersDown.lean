@@ -316,10 +316,10 @@ theorem class_corrected_down :
   rw [← hs, ← mul_smul, hcomm, class_printed_down D Sc sy hc i hi r ν]
 
 omit [CommRing k] in
-/-- **The printed normalization fails for `F_i^{(r)}`** (even colour, `r ≥ 2`, over a field
-with locally finite symmetrizer). -/
+/-- **The printed normalization fails for `F_i^{(r)}`** (even colour, `r ≥ 2`, over a
+field). -/
 theorem printed_forces_zero_down {k : Type w} [Field k] {Sc : SKM.Scalars D k}
-    (cs : SKM.CScalars Sc) (hc : Sc.Homogeneous) (hf : sy.DegreeLocallyFinite) (hr : 2 ≤ r)
+    (cs : SKM.CScalars Sc) (hc : Sc.Homogeneous) (hr : 2 ≤ r)
     (h : letI := K₀.moduleLaurentInt k (HomCatDown D Sc sy hc i r ν)
       K₀.mk (whole (downWordHom D Sc sy hc i r ν)) =
         Categorification.QuantumGroup.qfact (K := LaurentPolynomial ℤ) (qUnit (sy.d i)) r •
@@ -327,7 +327,7 @@ theorem printed_forces_zero_down {k : Type w} [Field k] {Sc : SKM.Scalars D k}
     K₀.mk (dividedPowerDownPrinted D Sc sy hc i hi r ν) = 0 := by
   let := K₀.moduleLaurentInt k (HomCatDown D Sc sy hc i r ν)
   have hfree : Module.Free (LaurentPolynomial ℤ) (K₀ (HomCatDown D Sc sy hc i r ν)) :=
-    SKM.UDot.k0_free_laurentInt sy cs hc hf _ _
+    SKM.UDot.k0_free_laurentInt sy cs hc _ _
   have hp := class_printed_down D Sc sy hc i hi r ν
   by_contra hx
   have heq := smul_left_injective (LaurentPolynomial ℤ) hx (hp.symm.trans h)
@@ -474,10 +474,9 @@ theorem int_smul_eq_down (r : LaurentPolynomial ℤ)
         CoveringLaurent.inclusion r • x) := rfl
 
 omit [CommRing k] in
-/-- **The printed normalization fails for `F_i^{(n+2)}`** (odd colour, over a field with
-locally finite symmetrizer). -/
+/-- **The printed normalization fails for `F_i^{(n+2)}`** (odd colour, over a field). -/
 theorem printed_forces_zero_down_odd {k : Type w} [Field k] {Sc : SKM.Scalars D k}
-    (cs : SKM.CScalars Sc) (hc : Sc.Homogeneous) (hf : sy.DegreeLocallyFinite)
+    (cs : SKM.CScalars Sc) (hc : Sc.Homogeneous)
     (h : letI := K₀.moduleLaurent k (HomCatDown D Sc sy hc i (n + 2) ν)
       K₀.mk (whole (downWordHom D Sc sy hc i (n + 2) ν)) =
         qpFact (qUnitPi (sy.d i)) piLP (n + 2) •
@@ -486,7 +485,7 @@ theorem printed_forces_zero_down_odd {k : Type w} [Field k] {Sc : SKM.Scalars D 
   let := K₀.moduleLaurent k (HomCatDown D Sc sy hc i (n + 2) ν)
   let := K₀.moduleLaurentInt k (HomCatDown D Sc sy hc i (n + 2) ν)
   have hfree : Module.Free (LaurentPolynomial ℤ) (K₀ (HomCatDown D Sc sy hc i (n + 2) ν)) :=
-    SKM.UDot.k0_free_laurentInt sy cs hc hf _ _
+    SKM.UDot.k0_free_laurentInt sy cs hc _ _
   have hm : -(((n + 2).choose 2 : ℤ) * sy.d i) ≠ 0 := by
     have hC : 0 < (n + 2).choose 2 := Nat.choose_pos (by omega)
     have hd := sy.pos i

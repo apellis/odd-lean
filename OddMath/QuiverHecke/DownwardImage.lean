@@ -70,18 +70,18 @@ theorem downK0_tailT {s : List I} {i : I} {ε : ℕ} {b : HEnd D Sc sy hc (List.
 section Image
 
 variable {k' : Type*} [Field k'] {Q : CoveringQuantum.RootDatum I X} {S : SKM.Scalars Q.toSKM k'}
-  {hS : S.Homogeneous} {cs : SKM.CScalars S} {hf : Q.skmSymmetrizer.DegreeLocallyFinite}
+  {hS : S.Homogeneous} {cs : SKM.CScalars S}
 
 theorem Fdp_mem_gammaRange (i : I) (n : ℕ) {μ ν : X}
     (hs : SKM.wt Q.toSKM ν (upWord (List.replicate n i)) = μ) (m : ℤ) (p : ZMod 2) :
-    SerreComplex.Fdp Q.skmSymmetrizer hS i n μ ν hs m p ∈ gammaRange Q hS cs hf := by
+    SerreComplex.Fdp Q.skmSymmetrizer hS i n μ ν hs m p ∈ gammaRange Q hS cs := by
   subst hs
   have h₀ : SerreComplex.Fdp Q.skmSymmetrizer hS i n _ ν rfl (-(Q.d i * (n.choose 2 : ℕ))) 0 ∈
-      gammaRange Q hS cs hf := by
+      gammaRange Q hS cs := by
     rw [SerreComplex.Fdp_congr Q.skmSymmetrizer hS (i := i) rfl
       (by rw [neg_neg, SerreComplex.wt_rep]) (neg_neg ν).symm rfl rfl rfl
       (SerreComplex.wt_rep (-(-ν)) n)]
-    exact ⟨_, SerreComplex.gammaInt_fdp Q hS cs hf i n (-ν)⟩
+    exact ⟨_, SerreComplex.gammaInt_fdp Q hS cs i n (-ν)⟩
   exact rcls_mem_gammaRange _ _ _ h₀ m p
 
 theorem dp_chev_mem_gammaRange (i : I) (r : ℕ) (ν : X)
@@ -94,7 +94,7 @@ theorem dp_chev_mem_gammaRange (i : I) (r : ℕ) (ν : X)
       (b := SKM.K0Relations.weight S Q.skmSymmetrizer hS (-ν))
       (SerreComplex.chevSummand Q.skmSymmetrizer hS (upProj_idem rfl (dpIdem_idem _ _ _ _ i r))
         (alpha_mem_degree Q.toSKM S Q.skmSymmetrizer ν hb0.1)
-        (alpha_mem_parity Q.toSKM S ν hb0.2) m p)) ∈ gammaRange Q hS cs hf := by
+        (alpha_mem_parity Q.toSKM S ν hb0.2) m p)) ∈ gammaRange Q hS cs := by
   have e : MulOpposite.op (K₀Ring.mk (B := SKM.UDot Q.toSKM S Q.skmSymmetrizer hS)
       (a := SKM.K0Relations.weight S Q.skmSymmetrizer hS
         (-SKM.wt Q.toSKM ν (upWord (List.replicate r i))))
@@ -121,7 +121,7 @@ theorem one_chev_mem_gammaRange {μ ν : X} (h : SKM.wt Q.toSKM ν (upWord ([] :
     MulOpposite.op (K₀Ring.mk (B := SKM.UDot Q.toSKM S Q.skmSymmetrizer hS)
       (a := SKM.K0Relations.weight S Q.skmSymmetrizer hS (-μ))
       (b := SKM.K0Relations.weight S Q.skmSymmetrizer hS (-ν))
-      (SerreComplex.chevSummand Q.skmSymmetrizer hS he hd hp n p)) ∈ gammaRange Q hS cs hf := by
+      (SerreComplex.chevSummand Q.skmSymmetrizer hS he hd hp n p)) ∈ gammaRange Q hS cs := by
   subst h
   refine rcls_mem_gammaRange _ _ _ (n₀ := 0) (p₀ := 0) ?_ n p
   have hy : SOp.unsop ((SKM.chevHom (sy := Q.skmSymmetrizer) (hc := hS) _ _).map
@@ -131,9 +131,9 @@ theorem one_chev_mem_gammaRange {μ ν : X} (h : SKM.wt Q.toSKM ν (upWord ([] :
     erw [CategoryTheory.Functor.map_id (alpha Q.toSKM S ν)]
     exact congrArg SOp.unsop ((SKM.chevHom _ _).map_id _)
   have key : ∀ x, x = SKM.K0Relations.cls S Q.skmSymmetrizer hS (-ν) (-ν) [] rfl 0 0 →
-      x ∈ gammaRange Q hS cs hf := fun x hx => by
+      x ∈ gammaRange Q hS cs := fun x hx => by
     rw [hx, SerreComplex.cls_nil]
-    exact ⟨_, SerreComplex.gammaInt_one Q hS cs hf (-ν)⟩
+    exact ⟨_, SerreComplex.gammaInt_one Q hS cs (-ν)⟩
   apply key
   rw [SerreComplex.cls_eq_raw]
   refine SerreComplex.rcls_transport Q.skmSymmetrizer hS rfl
@@ -145,7 +145,7 @@ theorem downK0_mem_gammaRange_of_isDPProduct {t : List I}
     {e : HEnd Q.toSKM S Q.skmSymmetrizer hS t} (h : IsDPProduct t e) (μ ν : X) (he : e ≫ e = e)
     (hd : e ∈ GradedSupercategory.degree (R := k') _ _ 0)
     (hp : e ∈ Supercategory.parity (R := k') _ _ 0) (n : ℤ) (p : ZMod 2) :
-    downK0 S Q.skmSymmetrizer hS μ ν (K₀.mk (raw he hd hp n p)) ∈ gammaRange Q hS cs hf := by
+    downK0 S Q.skmSymmetrizer hS μ ν (K₀.mk (raw he hd hp n p)) ∈ gammaRange Q hS cs := by
   induction h generalizing μ ν n p with
   | nil =>
     by_cases hw : SKM.wt Q.toSKM ν (upWord ([] : List I)) = μ
@@ -167,7 +167,7 @@ class of `K₀(Ḣ_{q,π})` lies in the image of `γ`. By Theorem 11.3 (`dpSpan_
 of shifted products of divided powers span `K₀(Ḣ_{q,π})`, and `α' = ω ∘ α` sends such a product
 to a product of divided-power classes `[F_i^{(a)} 1_λ]`. -/
 theorem downK0_mem_gammaRange (μ ν : X) (x : K₀ (HKar Q.toSKM S Q.skmSymmetrizer hS)) :
-    downK0 S Q.skmSymmetrizer hS μ ν x ∈ gammaRange Q hS cs hf := by
+    downK0 S Q.skmSymmetrizer hS μ ν x ∈ gammaRange Q hS cs := by
   have hx : x ∈ dpSpan Q.toSKM S Q.skmSymmetrizer hS := by
     rw [dpSpan_eq_top]; trivial
   induction hx using AddSubgroup.closure_induction with

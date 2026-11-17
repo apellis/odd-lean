@@ -3,6 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.SKM.IdempotentSummands
+import OddMath.SKM.NilKrullSchmidt.Basic
 
 /-!
 # Retracts and maps between shifted summands
@@ -10,7 +11,8 @@ import OddMath.SKM.IdempotentSummands
 Two pieces of Krull–Schmidt bookkeeping used in the surjectivity half of Brundan–Ellis,
 arXiv:1701.04133v2, Theorem 11.3 (Khovanov–Lauda, arXiv:0803.4121v2, §3.2, in the even case).
 
-* In a `k`-linear Hom-finite category over a field: if `1_Y = ∑_j u_j v_j` with `Y`
+* In a `k`-linear category over a field whose endomorphism algebras are finite-dimensional
+  modulo nil ideals (`KrullSchmidtNil.NilFinite`, e.g. Hom-finite): if `1_Y = ∑_j u_j v_j` with `Y`
   indecomposable, then `Y` is a retract of one of the objects the sum passes through
   (`exists_retract_of_sum`, the endomorphism ring of `Y` being local); every object is a finite
   direct sum of indecomposable retracts (`exists_decomposition`); so a subgroup of `K₀`
@@ -39,12 +41,12 @@ variable {C : Type*} [Category C] [Preadditive C]
 
 /-- **Indecomposables are retracts of a summand.** If `Y` is indecomposable and
 `1_Y = ∑_{j ∈ s} u_j v_j`, then `Y` is a retract of one of the `X_j`, through `u_j`. -/
-theorem exists_retract_of_sum (k : Type*) [Field k] [Linear k C] [HomFinite k C] {Y : C}
+theorem exists_retract_of_sum (k : Type*) [Field k] [Linear k C] [KrullSchmidtNil.NilFinite k C] {Y : C}
     (hY : IsIndec Y) {J : Type*} (s : Finset J) {X : J → C} (u : ∀ j, Y ⟶ X j)
     (v : ∀ j, X j ⟶ Y) (h : ∑ j ∈ s, u j ≫ v j = 𝟙 Y) :
     ∃ j ∈ s, ∃ v' : X j ⟶ Y, u j ≫ v' = 𝟙 Y := by
   classical
-  have := hY.isLocalRing k
+  have := KrullSchmidtNil.isLocalRing_of_isIndec k hY
   have := hY.nontrivial
   by_contra hne
   let α : J → End Y := fun j => u j ≫ v j
@@ -66,12 +68,12 @@ theorem exists_retract_of_sum (k : Type*) [Field k] [Linear k C] [HomFinite k C]
   exact key s le_rfl (h ▸ isUnit_one)
 
 /-- **Krull–Schmidt decompositions as orthogonal families of retractions.** -/
-theorem exists_decomposition (k : Type*) [Field k] [Linear k C] [HomFinite k C]
+theorem exists_decomposition (k : Type*) [Field k] [Linear k C] [KrullSchmidtNil.NilFinite k C]
     [IsIdempotentComplete C] (X : C) :
     ∃ (J : Type) (_ : Fintype J) (Z : J → C) (ι : ∀ a, Z a ⟶ X) (π : ∀ a, X ⟶ Z a),
       (∀ a, IsIndec (Z a)) ∧ (∀ a, ι a ≫ π a = 𝟙 (Z a)) ∧
       (∀ a b, a ≠ b → ι a ≫ π b = 0) ∧ ∑ a, π a ≫ ι a = 𝟙 X := by
-  induction h : Module.finrank k (X ⟶ X) using Nat.strong_induction_on generalizing X with
+  induction h : KrullSchmidtNil.nilRank k X using Nat.strong_induction_on generalizing X with
   | _ n ih =>
     by_cases h0 : IsZero X
     · refine ⟨Empty, inferInstance, Empty.elim, fun a => a.elim, fun a => a.elim,
@@ -96,9 +98,9 @@ theorem exists_decomposition (k : Type*) [Field k] [Linear k C] [HomFinite k C]
       have : 𝟙 X - e = 0 := by rw [← h₆, hZ.eq_of_src i', Limits.comp_zero]
       exact (sub_eq_zero.1 this).symm)
     obtain ⟨J₁, _, Z₁, ι₁, π₁, hi₁, hs₁, ho₁, ht₁⟩ :=
-      ih _ (by rw [← h]; exact finrank_end_lt k i p i' p' h₁ h₂ h₃ h₄ hZ) Y rfl
+      ih _ (by rw [← h]; exact KrullSchmidtNil.nilRank_lt k i p i' p' h₁ h₂ h₃ h₄ hZ) Y rfl
     obtain ⟨J₂, _, Z₂, ι₂, π₂, hi₂, hs₂, ho₂, ht₂⟩ :=
-      ih _ (by rw [← h]; exact finrank_end_lt k i' p' i p h₂ h₁ h₄ h₃ hY) Z rfl
+      ih _ (by rw [← h]; exact KrullSchmidtNil.nilRank_lt k i' p' i p h₂ h₁ h₄ h₃ hY) Z rfl
     refine ⟨J₁ ⊕ J₂, inferInstance, Sum.elim Z₁ Z₂,
       fun a => match a with
         | .inl a => ι₁ a ≫ i
@@ -145,7 +147,7 @@ theorem IsIndec.of_iso {Y Y' : C} (φ : Y ≅ Y') (h : IsIndec Y) : IsIndec Y' :
 
 /-- A subgroup of `K₀` containing the classes of the indecomposable retracts of `X` contains
 `[X]`. -/
-theorem mk_mem_of_indec_retracts (k : Type*) [Field k] [Linear k C] [HomFinite k C]
+theorem mk_mem_of_indec_retracts (k : Type*) [Field k] [Linear k C] [KrullSchmidtNil.NilFinite k C]
     [IsIdempotentComplete C] [HasFiniteBiproducts C] [HasBinaryBiproducts C]
     (S : AddSubgroup (K₀ C)) (X : C)
     (h : ∀ Y : C, IsIndec Y → ∀ (u : Y ⟶ X) (v : X ⟶ Y), u ≫ v = 𝟙 Y → K₀.mk Y ∈ S) :

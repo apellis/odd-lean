@@ -20,7 +20,7 @@ open OddMath.CoveringQuantum.UDot.ContextualExchangeExamples
 open OddMath.SKM.DimensionFormulaExamples
 
 /-- `γ` is bijective for the two-odd-colour datum over `ℚ`, from separating weights. -/
-example : Function.Bijective (gammaInt twoOddDatum homogeneous cScalars locallyFinite) :=
+example : Function.Bijective (gammaInt twoOddDatum homogeneous cScalars) :=
   decategorification_of_separating twoOddDatum homogeneous cScalars locallyFinite two_ne_zero
     (fun j ↦ Pi.single j 1) (fun i j ↦ by
       change (Pi.single j (1 : ℤ) : Bool → ℤ) i = _
@@ -93,7 +93,7 @@ theorem locallyFiniteP : datumP.skmSymmetrizer.DegreeLocallyFinite := fun N ↦
     omega
 
 /-- `γ` is bijective on BE2's weight lattice with infinitely many odd colours over `ℚ`. -/
-example : Function.Bijective (gammaInt datumP homogeneousP cScalarsP locallyFiniteP) :=
+example : Function.Bijective (gammaInt datumP homogeneousP cScalarsP) :=
   decategorification_sourceWeightLattice h cartan alpha cartan_eval homogeneousP cScalarsP
     locallyFiniteP two_ne_zero coroots_independent roots_independent
 

@@ -352,11 +352,11 @@ theorem defect_smul_printed
   exact (sub_smul _ _ _).trans (sub_eq_zero.2 e)
 
 omit [CommRing k] in
-/-- **The printed normalization of Lemma 11.5 fails for odd colours.** Over a field, for finitely
-many symmetrizer values in each degree (`UDot.k0_free_laurentInt`), the printed equation
+/-- **The printed normalization of Lemma 11.5 fails for odd colours.** Over a field (`K₀` is free
+over `ℤ[q,q⁻¹]` by `UDot.k0_free_laurentInt`), the printed equation
 `[E_i^{n+2} 1_ν] = [n+2]^!_{q_i,π} [E_i^{(n+2)} 1_ν]` forces `[E_i^{(n+2)} 1_ν] = 0`. -/
 theorem printed_forces_zero_odd {k : Type w} [Field k] {Sc : SKM.Scalars D k}
-    (cs : SKM.CScalars Sc) (hc : Sc.Homogeneous) (hf : sy.DegreeLocallyFinite)
+    (cs : SKM.CScalars Sc) (hc : Sc.Homogeneous)
     (h : letI := K₀.moduleLaurent k (HomCat D Sc sy hc i (n + 2) ν)
       K₀.mk (whole (upWordHom D Sc sy hc i (n + 2) ν)) =
         qpFact (qUnitPi (sy.d i)) piLP (n + 2) •
@@ -365,7 +365,7 @@ theorem printed_forces_zero_odd {k : Type w} [Field k] {Sc : SKM.Scalars D k}
   let := K₀.moduleLaurent k (HomCat D Sc sy hc i (n + 2) ν)
   let := K₀.moduleLaurentInt k (HomCat D Sc sy hc i (n + 2) ν)
   have hfree : Module.Free (LaurentPolynomial ℤ) (K₀ (HomCat D Sc sy hc i (n + 2) ν)) :=
-    SKM.UDot.k0_free_laurentInt sy cs hc hf _ _
+    SKM.UDot.k0_free_laurentInt sy cs hc _ _
   have hC : 0 < (n + 2).choose 2 := Nat.choose_pos (by omega)
   exact eq_zero_of_smul_eq_zero (int_smul_eq D Sc sy hc i n ν)
     (defect_smul_printed D Sc sy hc i hi n ν h)

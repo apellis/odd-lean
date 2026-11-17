@@ -56,8 +56,8 @@ example (hK : CharZeroFieldNondegeneracy twoOddDatum.toSKM) (ε : Bool) (μ : Bo
 
 /-- `γ` is bijective, given the field case. -/
 example (hK : CharZeroFieldNondegeneracy twoOddDatum.toSKM) :
-    Function.Bijective (gammaInt twoOddDatum homogeneous cScalars locallyFinite) :=
-  gammaInt_bijective_of_charZeroField twoOddDatum homogeneous cScalars locallyFinite hK
+    Function.Bijective (gammaInt twoOddDatum homogeneous cScalars) :=
+  gammaInt_bijective_of_charZeroField twoOddDatum homogeneous cScalars hK
     two_ne_zero twoOdd_root_independent twoOdd_coroot_independent
 
 #print axioms OddMath.SKM.nondegeneracyConjecture_of_charZeroField

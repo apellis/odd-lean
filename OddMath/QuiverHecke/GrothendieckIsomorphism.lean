@@ -32,9 +32,10 @@ the envelope itself (`SKM.K0Relations.Grothendieck`).
 ## Hypotheses
 
 The hypotheses are those of `theorem_11_7_surjective` and `theorem_12_1`: a ground field, the
-scalar hypotheses of §9 (`Homogeneous`), the route hypothesis `DegreeLocallyFinite` of
-Theorem 11.7, and, for nondegeneracy of the form of Theorem 10.1, finitely many colours, a
-finitely generated free weight lattice and linearly independent roots and coroots. The
+scalar hypotheses of §9 (`Homogeneous`), and, for nondegeneracy of the form of Theorem 10.1,
+finitely many colours, a finitely generated free weight lattice and linearly independent roots
+and coroots. The form version `gammaInt_bijective_of_nondegenerate` allows infinitely many
+colours and keeps `DegreeLocallyFinite` for the Hom-dimension pairing of Theorem 12.1. The
 Nondegeneracy Conjecture (or its characteristic-zero field case) is a hypothesis; it is not
 proved here.
 -/
@@ -55,18 +56,19 @@ variable [Finite I] [Module.Free ℤ X] [Module.Finite ℤ X]
 /-- **BE2 Theorems 11.7 and 12.1**: given the Nondegeneracy Conjecture, `γ` is bijective. -/
 theorem gammaInt_bijective (hN : SKM.NondegeneracyConjecture cs)
     (hα : LinearIndependent ℤ Q.α) (hh : LinearIndependent ℤ Q.cd.coroot) :
-    Function.Bijective (gammaInt Q hS cs hf) :=
-  ⟨theorem_12_1 Q hS cs hf hN hα hh, theorem_11_7_surjective Q hS cs hf⟩
+    Function.Bijective (gammaInt Q hS cs) :=
+  ⟨theorem_12_1 Q hS cs hN hα hh, theorem_11_7_surjective Q hS cs⟩
 
 omit [Finite I] [Module.Free ℤ X] [Module.Finite ℤ X] in
+include hf in
 /-- **BE2 Theorems 11.7 and 12.1, form version**: given the Nondegeneracy Conjecture and
 nondegeneracy of the form of Theorem 10.1, `γ` is bijective. No finiteness of the colour set or
 of the weight lattice is assumed. -/
 theorem gammaInt_bijective_of_nondegenerate (hN : SKM.NondegeneracyConjecture cs)
     (hnd : ∀ x : modified Q Coefficients.q Coefficients.pi,
       (∀ y, GenericTensor.sesquilinearForm Q x y = 0) → x = 0) :
-    Function.Bijective (gammaInt Q hS cs hf) :=
-  ⟨theorem_12_1_of_nondegenerate Q hS cs hf hN hnd, theorem_11_7_surjective Q hS cs hf⟩
+    Function.Bijective (gammaInt Q hS cs) :=
+  ⟨theorem_12_1_of_nondegenerate Q hS cs hf hN hnd, theorem_11_7_surjective Q hS cs⟩
 
 /-- **`K₀(𝔘̇(𝔤)) ≅ U̇_{q,π}(𝔤)_ℒ`** (BE2 Theorems 11.7 and 12.1), as a ring isomorphism,
 given the Nondegeneracy Conjecture. It is `ℒ`-linear (`gammaIntEquiv_smul`). -/
@@ -74,12 +76,12 @@ def gammaIntEquiv (hN : SKM.NondegeneracyConjecture cs)
     (hα : LinearIndependent ℤ Q.α) (hh : LinearIndependent ℤ Q.cd.coroot) :
     lForm Q Coefficients.q Coefficients.pi (LaurentPolynomial Zπ) ≃+*
       SKM.K0Relations.Grothendieck S Q.skmSymmetrizer hS :=
-  RingEquiv.ofBijective (gammaInt Q hS cs hf) (gammaInt_bijective Q hS cs hf hN hα hh)
+  RingEquiv.ofBijective (gammaInt Q hS cs) (gammaInt_bijective Q hS cs hN hα hh)
 
 @[simp] theorem gammaIntEquiv_apply (hN : SKM.NondegeneracyConjecture cs)
     (hα : LinearIndependent ℤ Q.α) (hh : LinearIndependent ℤ Q.cd.coroot)
     (x : lForm Q Coefficients.q Coefficients.pi (LaurentPolynomial Zπ)) :
-    gammaIntEquiv Q hS cs hf hN hα hh x = gammaInt Q hS cs hf x :=
+    gammaIntEquiv Q hS cs hN hα hh x = gammaInt Q hS cs x :=
   rfl
 
 /-- **BE2 Theorems 11.7 and 12.1, conditional on the field case.** If the Nondegeneracy
@@ -88,8 +90,8 @@ over every ground field in which `2 ≠ 0`. -/
 theorem gammaInt_bijective_of_charZeroField
     (hK : SKM.CharZeroFieldNondegeneracy Q.toSKM) (h₂ : (2 : k) ≠ 0)
     (hα : LinearIndependent ℤ Q.α) (hh : LinearIndependent ℤ Q.cd.coroot) :
-    Function.Bijective (gammaInt Q hS cs hf) :=
-  gammaInt_bijective Q hS cs hf
+    Function.Bijective (gammaInt Q hS cs) :=
+  gammaInt_bijective Q hS cs
     (SKM.nondegeneracyConjecture_of_charZeroField hK (IsUnit.mk0 _ h₂) hS cs) hα hh
 
 end OddMath.QuiverHecke.SerreComplex

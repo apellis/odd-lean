@@ -13,13 +13,13 @@ open OddMath.SKM.LaurentianK0Examples OddMath.CoveringQuantum.UDot.ContextualExc
 open OddMath.SKM.DimensionFormulaExamples
 
 /-- The homomorphism `γ` on the `ℒ`-form. -/
-example := gammaInt twoOddDatum homogeneous cScalars locallyFinite
+example := gammaInt twoOddDatum homogeneous cScalars
 
 /-- Existence and uniqueness. -/
-example := theorem_11_7_existence twoOddDatum homogeneous cScalars locallyFinite
+example := theorem_11_7_existence twoOddDatum homogeneous cScalars
 
 /-- `e_i^{(2)} 1_0 ↦ [E_i^{(2)} 1_0]`. -/
-example := gammaInt_edp twoOddDatum homogeneous cScalars locallyFinite true 2 0
+example := gammaInt_edp twoOddDatum homogeneous cScalars true 2 0
 
 /-- `ℚ(q)[π]/(π² - 1)` is a localization of `ℤ[q, q⁻¹, π]/(π² - 1)`. -/
 example := OddMath.CoveringQuantum.Coefficients.isLocalization
