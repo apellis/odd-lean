@@ -76,8 +76,43 @@ jobs:
       # Restores fall back to the newest entry for the same toolchain and manifest, then to the
       # newest entry for the toolchain (oleans of modules unaffected by a dependency bump stay
       # valid; Lake rebuilds the rest).
+      # A push that merges a pull request reuses that pull request's finished build (uploaded as an
+      # artifact by its last successful run on the same head commit), since branch runs cannot read
+      # caches saved by pull request runs. Lake checks every module against its source hash, so
+      # modules that differ from the pull request's merge ref are rebuilt as usual. Without such an
+      # artifact the build cache is restored instead.
+      - name: Fetch the merged pull request's build
+        id: handoff
+        if: github.event_name == 'push' && steps.scope.outputs.docs_only != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          head=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls" \
+              --jq '[.[] | select(.merged_at != null)][0].head.sha // empty' 2>/dev/null || true)
+          if [ -z "$head" ]; then
+            echo "No merged pull request for this commit; using the build cache."
+            exit 0
+          fi
+          run=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow build.yml --event pull_request \
+              --commit "$head" --status success --limit 1 --json databaseId \
+              --jq '.[0].databaseId // empty' 2>/dev/null || true)
+          if [ -z "$run" ]; then
+            echo "No successful pull request build of $head; using the build cache."
+            exit 0
+          fi
+          if gh run download "$run" --repo "$GITHUB_REPOSITORY" --name lake-build \
+                --dir "$RUNNER_TEMP/handoff" \
+              && zstd -dc "$RUNNER_TEMP/handoff/lake-build.tar.zst" | tar -xf -; then
+            rm -rf "$RUNNER_TEMP/handoff"
+            echo "Restored the build of pull request run $run (head $head)."
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Could not restore the build of run $run; using the build cache."
+            rm -rf "$RUNNER_TEMP/handoff" .lake/build \
+              .lake/packages/{DG,StringDiagrams,LieLean,Categorification}/.lake/build
+          fi
       - name: Restore build cache
-        if: steps.scope.outputs.docs_only != 'true'
+        if: steps.scope.outputs.docs_only != 'true' && steps.handoff.outputs.found != 'true'
         uses: actions/cache/restore@v4
         with:
           path: |
@@ -93,7 +128,7 @@ jobs:
       # Keep this dependency separate: changing the paths of the main cache invalidates
       # its cache version, including entries selected by restore-keys.
       - name: Restore Categorification cache
-        if: steps.scope.outputs.docs_only != 'true'
+        if: steps.scope.outputs.docs_only != 'true' && steps.handoff.outputs.found != 'true'
         uses: actions/cache/restore@v4
         with:
           path: |
@@ -180,6 +215,23 @@ jobs:
               find "$build/ir" -type f -name '*.setup.json' -delete
             fi
           done
+      # Hand the finished build to the push that merges this pull request (see the fetch step).
+      - name: Package the build for the merge
+        if: success() && github.event_name == 'pull_request' && steps.scope.outputs.docs_only != 'true'
+        run: |
+          tar --posix -cf - .lake/build \
+              .lake/packages/{DG,StringDiagrams,LieLean,Categorification}/.lake/build \
+            | zstd -T0 -3 -q -o "$RUNNER_TEMP/lake-build.tar.zst"
+          ls -lh "$RUNNER_TEMP/lake-build.tar.zst"
+      - name: Upload the build for the merge
+        if: success() && github.event_name == 'pull_request' && steps.scope.outputs.docs_only != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: lake-build
+          path: ${{ runner.temp }}/lake-build.tar.zst
+          compression-level: 0
+          retention-days: 3
+          if-no-files-found: error
       - name: Save Categorification cache
         if: always() && github.event_name != 'pull_request' && steps.scope.outputs.docs_only != 'true'
         uses: actions/cache/save@v4
