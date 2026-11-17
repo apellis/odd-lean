@@ -13,21 +13,20 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  build:
+  # Decide whether this run needs a sharded build: when a change forces many modules to recompile
+  # (a cold build, or an edit to a module that most of the library imports), runners build parts
+  # of the first stage in parallel and the `build` job below finishes the rest.
+  plan:
     runs-on: ubuntu-latest
-    # `actions: write` lets the job delete superseded build caches of its own branch or pull
-    # request (see the last step).
+    timeout-minutes: 10
     permissions:
       contents: read
-      actions: write
-    # A cold build takes a few hours; Lean uses all four runner cores; the build cache saved at the end
-    # makes later runs incremental.
-    timeout-minutes: 340
-    # Pull requests stop at the first Lean error instead of compiling the rest of the library:
-    # the awk filter exits on the first error line, which ends Lake through the closed pipe.
-    # Branch builds always run to completion.
-    env:
-      FAIL_FAST: '{ print } /^error: / { print "::error::First Lean error above; stopping this pull request build early."; exit 1 }'
+      actions: read
+      pull-requests: read
+    outputs:
+      docs_only: ${{ steps.scope.outputs.docs_only }}
+      sharded: ${{ steps.plan.outputs.sharded }}
+      shards: ${{ steps.plan.outputs.shards }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -48,10 +47,169 @@ jobs:
           else
             echo "docs_only=false" >> "$GITHUB_OUTPUT"
           fi
+      # The modules to rebuild are estimated against the commit whose build the cache holds: the
+      # last successful build of this pull request, otherwise its base; for a push, the merged
+      # pull request's head (whose build is handed over), otherwise the previous branch head.
+      - name: Plan the build
+        id: plan
+        if: steps.scope.outputs.docs_only != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          base=
+          if [ "${{ github.event_name }}" = pull_request ]; then
+            last=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow build.yml \
+                --branch "${{ github.head_ref }}" --event pull_request --status success --limit 1 \
+                --json headSha --jq '.[0].headSha // empty' 2>/dev/null || true)
+            if [ -n "$last" ] && git merge-base --is-ancestor "$last" HEAD 2>/dev/null; then
+              base="$last"
+            else
+              base="${{ github.event.pull_request.base.sha }}"
+            fi
+          elif [ "${{ github.event_name }}" = push ]; then
+            base=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls" \
+                --jq '[.[] | select(.merged_at != null)][0].head.sha // empty' 2>/dev/null || true)
+            [ -n "$base" ] || base="${{ github.event.before }}"
+          fi
+          if [ -z "$base" ] || ! git cat-file -e "$base^{commit}" 2>/dev/null; then
+            base=HEAD
+          fi
+          python3 scripts/ci/plan_shards.py "$base" "$RUNNER_TEMP/shard-plan.json"
+      - name: Upload the plan
+        if: steps.plan.outputs.sharded == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: shard-plan
+          path: ${{ runner.temp }}/shard-plan.json
+          retention-days: 1
+          if-no-files-found: error
+
+  # One part of the first stage of a sharded build, on top of the build cache. Parts overlap where
+  # their modules share imports; each uploads the build outputs it wrote.
+  shard:
+    needs: plan
+    if: needs.plan.outputs.sharded == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: true
+      matrix:
+        shard: ${{ fromJSON(needs.plan.outputs.shards) }}
+    env:
+      FAIL_FAST: '{ print } /^error: / { print "::error::First Lean error above; stopping this build early."; exit 1 }'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add swap space
+        run: |
+          sudo swapoff -a || true
+          sudo fallocate -l 12G /mnt/lean-swap
+          sudo chmod 600 /mnt/lean-swap
+          sudo mkswap /mnt/lean-swap
+          sudo swapon /mnt/lean-swap
+      - name: Set up Lean and fetch the Mathlib cache
+        uses: leanprover/lean-action@v1
+        with:
+          build: false
+          test: false
+          lint: false
+          use-mathlib-cache: true
+          use-github-cache: false
+      - name: Restore build cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            .lake/build
+            .lake/packages/DG/.lake/build
+            .lake/packages/StringDiagrams/.lake/build
+            .lake/packages/LieLean/.lake/build
+          key: lake-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            lake-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
+            lake-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-
+      - name: Restore Categorification cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            .lake/packages/Categorification/.lake/build
+          key: categorification-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            categorification-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
+            categorification-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-
+      - name: Remove restored Lean setup metadata
+        run: |
+          for build in .lake/build .lake/packages/{DG,StringDiagrams,LieLean,Categorification}/.lake/build; do
+            if [ -d "$build/ir" ]; then
+              find "$build/ir" -type f -name '*.setup.json' -delete
+            fi
+          done
+          touch "$RUNNER_TEMP/build-start"
+      - name: Fetch the plan
+        uses: actions/download-artifact@v4
+        with:
+          name: shard-plan
+          path: ${{ runner.temp }}
+      - name: Build this part
+        env:
+          LEAN_NUM_THREADS: 4
+        run: |
+          mapfile -t targets < <(python3 -c 'import json, sys
+          for m in json.load(open(sys.argv[1]))["shards"][int(sys.argv[2])]:
+              print("+" + m)' "$RUNNER_TEMP/shard-plan.json" "${{ matrix.shard }}")
+          echo "Building ${#targets[@]} modules."
+          set -o pipefail
+          lake build --wfail "${targets[@]}" < /dev/null 2>&1 | awk "$FAIL_FAST"
+      - name: Package the outputs of this part
+        run: |
+          for build in .lake/build .lake/packages/{DG,StringDiagrams,LieLean,Categorification}/.lake/build; do
+            if [ -d "$build" ]; then
+              find "$build" -type f -newer "$RUNNER_TEMP/build-start" ! -name '*.setup.json' -print0
+            fi
+          done > "$RUNNER_TEMP/outputs"
+          tar --posix --null -cf - -T "$RUNNER_TEMP/outputs" | zstd -T0 -3 -q -o "$RUNNER_TEMP/shard.tar.zst"
+          ls -lh "$RUNNER_TEMP/shard.tar.zst"
+      - name: Upload the outputs of this part
+        uses: actions/upload-artifact@v4
+        with:
+          name: shard-${{ matrix.shard }}
+          path: ${{ runner.temp }}/shard.tar.zst
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+
+  build:
+    needs: [plan, shard]
+    # Runs after the parts of a sharded build, or alone; stops early if a part failed.
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    # `actions: write` lets the job delete superseded build caches of its own branch or pull
+    # request (see the last step).
+    permissions:
+      contents: read
+      actions: write
+    # A cold build takes a few hours; Lean uses all four runner cores; the build cache saved at the end
+    # makes later runs incremental.
+    timeout-minutes: 340
+    # Pull requests stop at the first Lean error instead of compiling the rest of the library:
+    # the awk filter exits on the first error line, which ends Lake through the closed pipe.
+    # Branch builds always run to completion.
+    env:
+      FAIL_FAST: '{ print } /^error: / { print "::error::First Lean error above; stopping this pull request build early."; exit 1 }'
+    steps:
+      - name: Stop if a part of the sharded build failed
+        id: gate
+        if: needs.plan.result != 'success' || (needs.shard.result != 'success' && needs.shard.result != 'skipped')
+        run: |
+          echo "::error::The plan or a part of the sharded build did not succeed; see those jobs."
+          exit 1
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       # Four Lean threads on the largest modules can exceed the runner's 16 GB of memory, and the
       # runner is then killed with a shutdown signal. Extra swap lets such peaks page instead.
       - name: Add swap space
-        if: steps.scope.outputs.docs_only != 'true'
+        if: needs.plan.outputs.docs_only != 'true'
         run: |
           sudo swapoff -a || true
           sudo fallocate -l 12G /mnt/lean-swap
@@ -61,7 +219,7 @@ jobs:
           free -h
           df -h .
       - name: Set up Lean and fetch the Mathlib cache
-        if: steps.scope.outputs.docs_only != 'true'
+        if: needs.plan.outputs.docs_only != 'true'
         uses: leanprover/lean-action@v1
         with:
           build: false
@@ -83,7 +241,7 @@ jobs:
       # artifact the build cache is restored instead.
       - name: Fetch the merged pull request's build
         id: handoff
-        if: github.event_name == 'push' && steps.scope.outputs.docs_only != 'true'
+        if: github.event_name == 'push' && needs.plan.outputs.docs_only != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -112,7 +270,7 @@ jobs:
               .lake/packages/{DG,StringDiagrams,LieLean,Categorification}/.lake/build
           fi
       - name: Restore build cache
-        if: steps.scope.outputs.docs_only != 'true' && steps.handoff.outputs.found != 'true'
+        if: needs.plan.outputs.docs_only != 'true' && steps.handoff.outputs.found != 'true'
         uses: actions/cache/restore@v4
         with:
           path: |
@@ -128,7 +286,7 @@ jobs:
       # Keep this dependency separate: changing the paths of the main cache invalidates
       # its cache version, including entries selected by restore-keys.
       - name: Restore Categorification cache
-        if: steps.scope.outputs.docs_only != 'true' && steps.handoff.outputs.found != 'true'
+        if: needs.plan.outputs.docs_only != 'true' && steps.handoff.outputs.found != 'true'
         uses: actions/cache/restore@v4
         with:
           path: |
@@ -142,17 +300,31 @@ jobs:
       # Runner space was freed before restoration; discard regenerated setup metadata
       # immediately, while keeping the compiled proof artifacts for the strict checks.
       - name: Remove restored Lean setup metadata
-        if: steps.scope.outputs.docs_only != 'true'
+        if: needs.plan.outputs.docs_only != 'true'
         run: |
           for build in .lake/build .lake/packages/{DG,StringDiagrams,LieLean,Categorification}/.lake/build; do
             if [ -d "$build/ir" ]; then
               find "$build/ir" -type f -name '*.setup.json' -delete
             fi
           done
+      # Collect the outputs of the parts of a sharded build on top of the restored cache.
+      - name: Fetch the parts of the sharded build
+        if: needs.plan.outputs.sharded == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          pattern: shard-[0-9]*
+          path: ${{ runner.temp }}/shards
+      - name: Unpack the parts of the sharded build
+        if: needs.plan.outputs.sharded == 'true'
+        run: |
+          for part in "$RUNNER_TEMP"/shards/*/shard.tar.zst; do
+            zstd -dc "$part" | tar -xf -
+          done
+          rm -rf "$RUNNER_TEMP/shards"
       # Fail on a changed producer or its consumer before building unrelated modules.
       # Lake reuses these outputs in the mandatory full build and NonVacuity gate below.
       - name: Check changed Lean modules and paired consumers
-        if: github.event_name == 'pull_request' && steps.scope.outputs.docs_only != 'true'
+        if: github.event_name == 'pull_request' && needs.plan.outputs.docs_only != 'true'
         env:
           LEAN_NUM_THREADS: 4
           SCOPED_BASE: ${{ github.event.pull_request.base.sha }}
@@ -185,7 +357,7 @@ jobs:
       # The largest modules need up to about 6 GB and the runner has 16 GB: two concurrent Lean
       # processes.
       - name: Build
-        if: steps.scope.outputs.docs_only != 'true'
+        if: needs.plan.outputs.docs_only != 'true'
         env:
           LEAN_NUM_THREADS: 4
         run: |
@@ -198,14 +370,14 @@ jobs:
             lake build --wfail OddMath NonVacuity < /dev/null
           fi
       - name: Axiom audit
-        if: steps.scope.outputs.docs_only != 'true'
+        if: needs.plan.outputs.docs_only != 'true'
         run: lake env lean -DwarningAsError=true scripts/AxiomAudit.lean
       # The checks form the library `NonVacuity` (see `lakefile.lean`); the Build step above
       # compiles them, and their `.olean` files are cached with the build.
       # Cache directory inputs are archived recursively; nested negative globs do not
       # reliably omit these files. All Lean processes have finished before this cleanup.
       - name: Remove regenerated Lean setup metadata
-        if: always() && steps.scope.outputs.docs_only != 'true'
+        if: always() && steps.gate.outcome != 'failure' && needs.plan.outputs.docs_only != 'true'
         run: |
           for build in .lake/build .lake/packages/{DG,StringDiagrams,LieLean,Categorification}/.lake/build; do
             if [ -d "$build/ir" ]; then
@@ -214,14 +386,14 @@ jobs:
           done
       # Hand the finished build to the push that merges this pull request (see the fetch step).
       - name: Package the build for the merge
-        if: success() && github.event_name == 'pull_request' && steps.scope.outputs.docs_only != 'true'
+        if: success() && github.event_name == 'pull_request' && needs.plan.outputs.docs_only != 'true'
         run: |
           tar --posix -cf - .lake/build \
               .lake/packages/{DG,StringDiagrams,LieLean,Categorification}/.lake/build \
             | zstd -T0 -3 -q -o "$RUNNER_TEMP/lake-build.tar.zst"
           ls -lh "$RUNNER_TEMP/lake-build.tar.zst"
       - name: Upload the build for the merge
-        if: success() && github.event_name == 'pull_request' && steps.scope.outputs.docs_only != 'true'
+        if: success() && github.event_name == 'pull_request' && needs.plan.outputs.docs_only != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: lake-build
@@ -230,14 +402,14 @@ jobs:
           retention-days: 3
           if-no-files-found: error
       - name: Save Categorification cache
-        if: always() && github.event_name != 'pull_request' && steps.scope.outputs.docs_only != 'true'
+        if: always() && github.event_name != 'pull_request' && needs.plan.outputs.docs_only != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
             .lake/packages/Categorification/.lake/build
           key: categorification-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Save build cache
-        if: always() && steps.scope.outputs.docs_only != 'true'
+        if: always() && steps.gate.outcome != 'failure' && needs.plan.outputs.docs_only != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
@@ -251,7 +423,7 @@ jobs:
       # request pushes evicts the research branch cache and the next build of the branch starts
       # cold. Keep only the newest entry of each cache for this ref.
       - name: Delete superseded caches of this ref
-        if: always() && steps.scope.outputs.docs_only != 'true'
+        if: always() && steps.gate.outcome != 'failure' && needs.plan.outputs.docs_only != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
