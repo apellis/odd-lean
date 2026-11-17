@@ -1,8 +1,6 @@
-import OddMath.QuiverHecke.HalfTurn.CoefficientGenerators
 import Mathlib.LinearAlgebra.Quotient.Basic
+import OddMath.QuiverHecke.CyclotomicAction.AppendSourceRows.SourcePowerComparison
 import OddMath.QuiverHecke.HalfTurn.Homogeneous
-import OddMath.QuiverHecke.CyclotomicAction.AppendSourceRows
-import OddMath.QuiverHecke.CyclotomicAction.EndpointPolynomials
 
 /-! # The half-turn in literal old cyclotomic Homs
 

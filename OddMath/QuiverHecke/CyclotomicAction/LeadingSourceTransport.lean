@@ -1,5 +1,5 @@
-import OddMath.QuiverHecke.CyclotomicAction.OutputTransport
-import OddMath.QuiverHecke.CyclotomicAction.LeadingMove
+import OddMath.QuiverHecke.CyclotomicAction.OutputTransport.OutputBalancedComparison
+import OddMath.QuiverHecke.CyclotomicAction.OutputTransport.OutputChronological
 
 /-!
 # Leading source transport

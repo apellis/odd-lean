@@ -1,10 +1,5 @@
-import OddMath.QuiverHecke.CyclotomicAction.DistinctCrossing
-import OddMath.QuiverHecke.CyclotomicAction.ContentAppend
-import OddMath.QuiverHecke.CyclotomicAction.AppendMackey
-import OddMath.QuiverHecke.CyclotomicAction.ContentModule
-import OddMath.QuiverHecke.CyclotomicAction.InductionGridRouquier
-import OddMath.QuiverHecke.CyclotomicAction.SuperAdjunction
-import OddMath.QuiverHecke.CyclotomicAction.InductionTripleBraid
+import OddMath.QuiverHecke.CyclotomicAction.DistinctCrossing.DistinctModuleMate
+import OddMath.QuiverHecke.CyclotomicAction.ParameterUntwist
 
 /-!
 # Distinct slides

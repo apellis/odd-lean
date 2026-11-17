@@ -1,5 +1,4 @@
-import OddMath.QuiverHecke.CyclotomicAction.CyclotomicQuotientTop
-import OddMath.QuiverHecke.CyclotomicAction.ContentModules
+import OddMath.QuiverHecke.CyclotomicAction.ContentModules.ContentCategory
 
 /-!
 # Fully faithful induction

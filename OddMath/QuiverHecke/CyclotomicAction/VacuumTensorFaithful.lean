@@ -1,15 +1,11 @@
-import OddMath.QuiverHecke.CyclotomicAction.WeightMixed
-import OddMath.QuiverHecke.CyclotomicAction.RouquierPowerWords
-import OddMath.QuiverHecke.CyclotomicAction.TensorWords
-import OddMath.QuiverHecke.CyclotomicAction.InductionTripleBraid
-import OddMath.SKM.BubbleCoefficientGradedBase
-import OddMath.Diagrams.SuperalgebraGradedBase
+import OddMath.Diagrams.BasisGrading
+import OddMath.Diagrams.BoxProductCoefficientGraded
 import OddMath.Diagrams.CoefficientGradedSupercategory
+import OddMath.Diagrams.SuperalgebraGradedBase
 import OddMath.QuiverHecke.CoefficientGrading
-import OddMath.QuiverHecke.CyclotomicAction.CoefficientTransport
+import OddMath.QuiverHecke.CyclotomicAction.TensorWords
+import OddMath.SKM.BubbleCoefficientGradedBase
 import OddMath.SKM.BubbleELVPolynomialGradingOver
-import OddMath.QuiverHecke.CyclotomicAction.VacuumGrading
-import OddMath.QuiverHecke.CyclotomicAction.TruncatedAppend
 
 /-!
 # Vacuum tensor faithful

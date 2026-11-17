@@ -1,9 +1,6 @@
-import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
 import StringDiagrams.Super.MonoidalEnvelope
-import OddMath.QuiverHecke.CyclotomicAction.SignedIntertwiner
-import OddMath.QuiverHecke.ShuffleBasis
-import OddMath.QuiverHecke.CyclotomicAction.IntertwinerChains
-import OddMath.QuiverHecke.MixedRelations
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerChains.IntertwinerMeet
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
 
 /-!
 # Last strand

@@ -1,10 +1,7 @@
-import OddMath.QuiverHecke.CyclotomicAction.ContentTriple
-import OddMath.QuiverHecke.CyclotomicAction.CategoryGrading
-import OddMath.QuiverHecke.CyclotomicAction.AppendContent
-import OddMath.QuiverHecke.CyclotomicAction.ContentModules
-import OddMath.QuiverHecke.CyclotomicAction.IndRes
-import OddMath.QuiverHecke.CyclotomicAction.KernelMatrixEvaluation
 import OddMath.Algebra.IntegerMatrixGrading
+import OddMath.QuiverHecke.CyclotomicAction.ContentTriple.TriplePolynomial
+import OddMath.QuiverHecke.CyclotomicAction.IndRes
+import OddMath.QuiverHecke.CyclotomicAction.KernelMatrixEvaluation.KernelTensorGrading
 
 /-!
 # Kernel entry degrees

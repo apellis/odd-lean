@@ -1,18 +1,13 @@
-import OddMath.QuiverHecke.CyclotomicAction.RouquierPowerWords
-import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightBraid
-import OddMath.QuiverHecke.CyclotomicAction.ProbeReindexMate
-import OddMath.Algebra.HomogeneousSuperfunctorIso
-import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightQuadratic
-import OddMath.QuiverHecke.CyclotomicAction.WeightDenominators
-import OddMath.QuiverHecke.SwappedAssembly.Sectors
-import OddMath.SKM.RouquierFTriangle
-import OddMath.QuiverHecke.CyclotomicAction.ParameterUntwist
-import OddMath.QuiverHecke.SwappedAssembly.Sigma.ProbeToReservoirBend
-import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirToProbeBend
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightBraid.ProbeWeightGeneralBraid
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightQuadratic.ProbeAppendToMateReindex
+import OddMath.QuiverHecke.CyclotomicAction.WeightDenominators.RouquierMulticolour
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ProductCoefficients
-import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightDot
-import OddMath.QuiverHecke.SwappedAssembly.Supernatural.CrossCoeff
+import OddMath.QuiverHecke.SwappedAssembly.Generators.Cross
+import OddMath.QuiverHecke.SwappedAssembly.Generators.CupCap
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.FiniteBendEvaluation
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.SameColourBlocks
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Cross
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.CrossCoeff
 
 /-!
 # Probe mixed braid
@@ -1140,15 +1135,6 @@ theorem elvProbeDxOuterDot_isNilpotent [Finite I]
 end ProbeToReservoir
 
 section ReservoirToProbe
-local notation "cFP" "[" i "," t "," hb "]" =>
-  SKM.homContentPreF (P).T (P).W.obj i ((P).muM t) ((P).muP_preF i hb)
-local notation "cFR" "[" i "," t "," hv "]" =>
-  SKM.homContentPostF (P).T.obj (P).W i (Prod.fst t) ((P).muP t) ((P).muM_postE i hv)
-local notation "cs" "[" i "," t "]" => nextSector (false, i) true t
-local notation "cU" "[" i "," t "," hb "," hv "," Z "]" =>
-  ((congrArg (nextSector (true, i) false) (SPath.next_dnUp_true_true hb)).symm ▸ (cFR[i,t,hv]).obj Z)
-local notation "cφ" "[" i "," t "," hb "," hv "," Z "," M "," δ "]" =>
-  reservoirToProbeBendCoefficientEvaluation (P) i t hb hv Z (out[t,M,δ])
 
 end ReservoirToProbe
 end OddMath.QuiverHecke

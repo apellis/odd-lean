@@ -1,9 +1,6 @@
-import OddMath.QuiverHecke.CyclotomicAction.InductionGridMate
-import OddMath.QuiverHecke.CyclotomicAction.ContentModule
-import OddMath.QuiverHecke.CyclotomicAction.InductionMixed
-import OddMath.QuiverHecke.CyclotomicAction.ModuleInduction
-import OddMath.QuiverHecke.CyclotomicAction.WeightedAppend
-import OddMath.Algebra.HomogeneousSuperfunctorIso
+import OddMath.QuiverHecke.CyclotomicAction.ContentModule.ContentSupportedExtension
+import OddMath.QuiverHecke.CyclotomicAction.InductionMixed.InductionMixedCrossTensor
+import OddMath.QuiverHecke.CyclotomicAction.WeightedAppend.WeightedMatrixRows
 
 /-!
 # Full induction

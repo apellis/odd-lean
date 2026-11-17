@@ -1,5 +1,6 @@
-import OddMath.QuiverHecke.SwappedAssembly.SupportedGeneratorEntries
+import OddMath.QuiverHecke.CyclotomicAction.ContentHom.ContentHomVacuum
 import OddMath.QuiverHecke.CyclotomicAction.TensorWords
+import OddMath.QuiverHecke.SwappedAssembly.SupportedGeneratorEntries
 
 /-! # The selected tensor vacuum in the supported path action
 

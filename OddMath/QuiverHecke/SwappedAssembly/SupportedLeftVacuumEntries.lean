@@ -1,12 +1,10 @@
 import OddMath.QuiverHecke.CyclotomicAction.ProbePaddedVacuum
 import OddMath.QuiverHecke.CyclotomicAction.TensorVacuumMoments
-import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorFamilies
 import OddMath.QuiverHecke.SwappedAssembly.SupportedPointwiseLeftwardInverse
-import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumEntryLift
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorFamilies
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumCoefficientDecode
 import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumDecodeFaithful
-import OddMath.QuiverHecke.SwappedAssembly.Sigma.PointwiseBubbleEntry
-import OddMath.QuiverHecke.SwappedAssembly.Sigma.VacuumInverseWindow
+import OddMath.QuiverHecke.SwappedAssembly.SupportedVacuumEntryLift
 
 /-!
 # Left bubble entries of the vacuum sector

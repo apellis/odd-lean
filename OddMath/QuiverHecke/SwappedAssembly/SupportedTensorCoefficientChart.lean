@@ -1,4 +1,3 @@
-import OddMath.QuiverHecke.CyclotomicAction.TensorWord
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorUnitObservation
 
 /-! # Full coefficients in the supported path chart

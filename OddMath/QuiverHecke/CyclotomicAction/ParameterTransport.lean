@@ -1,6 +1,5 @@
-import OddMath.QuiverHecke.CyclotomicAction.SuperAdjunction
-import OddMath.QuiverHecke.CoefficientGrading
-import OddMath.QuiverHecke.CyclotomicAction.WeightedPower
+import OddMath.QuiverHecke.CyclotomicAction.WeightedPower.WeightedCoefficientMaps
+import OddMath.SKM.GradedParameters
 
 /-!
 # Parameter transport

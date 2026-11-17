@@ -1,4 +1,4 @@
-import OddMath.QuiverHecke.CyclotomicAction.PowerWordContent
+import OddMath.QuiverHecke.CyclotomicAction.PowerWordContent.PowerWordCoordinates
 import OddMath.QuiverHecke.HalfTurn.OldQuotient
 
 /-! # Bounded half-turn coordinates in actual regular-power word values

@@ -1,10 +1,11 @@
-import OddMath.QuiverHecke.InputParabolic
-import OddMath.QuiverHecke.CyclotomicAction.IntertwinerRight
-import OddMath.QuiverHecke.ShuffleBasis
-import OddMath.QuiverHecke.PrependBasis
-import OddMath.QuiverHecke.CyclotomicAction.CoefficientTransport
-import OddMath.QuiverHecke.HomDimension
 import Mathlib.LinearAlgebra.DirectSum.Finsupp
+import OddMath.QuiverHecke.Basis
+import OddMath.QuiverHecke.CyclotomicAction.CoefficientTransport.CyclotomicTarget
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerRight.IntertwinerRightDot
+import OddMath.QuiverHecke.HomDimension
+import OddMath.QuiverHecke.InputParabolic
+import OddMath.QuiverHecke.PrependBasis
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
 
 /-!
 # Prepend coordinates
@@ -667,10 +668,6 @@ variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
   [CommRing k] (Sc : SKM.Scalars D k) [Fintype I]
 variable (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
   (ha : CyclotomicPolynomialParity D a) (r : ℕ)
-local notation "C" => InductionAlong.Corner (prependAlgebra D Sc i (r+1) :
-  Hn D Sc (r+1) →ₙ+* Hn D Sc (r+1+1))
-local notation "T" => InductionAlong.Ind (StringDiagrams.SuperBimodule.toSVec (qCoefficient D Sc i β a ha r)) (prependAlgebra D Sc i (r+1) :
-  Hn D Sc (r+1) →ₙ+* Hn D Sc (r+1+1))
 
 end OddMath.QuiverHecke
 end
@@ -716,9 +713,6 @@ variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
 
 variable (i : I) (β : Multiset I) (a : I → _root_.Polynomial k)
   (ha : CyclotomicPolynomialParity D a) (r : ℕ)
-local notation "M" => (StringDiagrams.SuperBimodule.toSVec (qCoefficient D Sc i β a ha r))
-local notation "T" => InductionAlong.Ind M (prependAlgebra D Sc i (r+1) :
-  Hn D Sc (r+1) →ₙ+* Hn D Sc (r+1+1))
 
 end OddMath.QuiverHecke
 end

@@ -1,10 +1,5 @@
+import OddMath.QuiverHecke.CyclotomicAction.ReservoirClosure.ReservoirClosures
 import OddMath.QuiverHecke.CyclotomicAction.TensorWord
-import OddMath.QuiverHecke.CyclotomicAction.TensorWords
-import OddMath.QuiverHecke.CyclotomicAction.ReservoirClosure
-import OddMath.QuiverHecke.CyclotomicAction.WeightDenominators
-import OddMath.SKM.RouquierHomPostPowers
-import OddMath.QuiverHecke.CyclotomicAction.ProbeVacuumCharts
-import OddMath.QuiverHecke.CyclotomicAction.WeightedPower
 
 /-!
 # Reservoir layers

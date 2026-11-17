@@ -1,5 +1,4 @@
-import OddMath.QuiverHecke.CyclotomicAction.IntertwinerChains
-import OddMath.QuiverHecke.CyclotomicAction.PrefixScalarRelations
+import OddMath.QuiverHecke.CyclotomicAction.PrefixScalarRelations.PrefixQPDistinct
 
 /-!
 # Reverse intertwiner

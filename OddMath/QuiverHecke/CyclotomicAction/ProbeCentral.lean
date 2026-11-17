@@ -1,18 +1,17 @@
-import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightCap
-import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightRouquier
-import OddMath.SKM.RouquierFTriangle
-import OddMath.SKM.RouquierPreAdjunction
-import OddMath.QuiverHecke.CyclotomicAction.ContentMatrix
 import Mathlib.RingTheory.Nilpotent.Basic
-import OddMath.SKM.RouquierHomMixedRational
 import Mathlib.Tactic.Abel
-import OddMath.QuiverHecke.CyclotomicAction.TensorWord
-import OddMath.QuiverHecke.SwappedVacuum.NegativeCapMoments
 import Mathlib.Algebra.Polynomial.Expand
-import OddMath.QuiverHecke.SwappedVacuum.InverseColumnOddSeries
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightCap.ProbeCapPreDotSigns
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightCap.ProbeWeightPreCap
+import OddMath.QuiverHecke.CyclotomicAction.TensorWord
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.CapWindows
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorVacuum
+import OddMath.QuiverHecke.SwappedVacuum.InverseColumnMoments
+import OddMath.QuiverHecke.SwappedVacuum.InverseColumnOddSeries
+import OddMath.QuiverHecke.SwappedVacuum.NegativeCapMoments
+import OddMath.QuiverHecke.SwappedVacuumBubbleSeries
 import OddMath.SKM.RouquierHomWeightCoordinates
+import OddMath.SKM.RouquierPreAdjunction
 
 /-!
 # Probe central

@@ -1,10 +1,13 @@
-import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
+import StringDiagrams.Super.BoxProductGraded
+import OddMath.QuiverHecke.Basis
+import OddMath.QuiverHecke.CyclotomicAbsentColour
+import OddMath.QuiverHecke.CyclotomicAction.CoefficientTransport.CyclotomicTarget
+import OddMath.QuiverHecke.Grading
+import OddMath.SKM.BubbleCoefficientBasis
+import OddMath.SKM.BubbleCoefficientGrading
 import OddMath.SKM.BubbleELVGrading
 import OddMath.SKM.BubbleELVPolynomialGrading
-import OddMath.QuiverHecke.Grading
-import OddMath.QuiverHecke.CyclotomicAction.CoefficientTransport
-import StringDiagrams.Super.BoxProductGraded
-import OddMath.QuiverHecke.CyclotomicAbsentColour
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
 
 /-!
 # Vacuum grading

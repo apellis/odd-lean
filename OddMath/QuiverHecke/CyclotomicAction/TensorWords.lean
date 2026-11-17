@@ -1,5 +1,5 @@
-import OddMath.QuiverHecke.CyclotomicAction.WeightMixed
-import OddMath.QuiverHecke.CyclotomicAction.RouquierPowerWords
+import OddMath.QuiverHecke.CyclotomicAction.RouquierPowerWords.PowerWordEvaluation
+import OddMath.QuiverHecke.CyclotomicAction.WeightMixed.WeightTensorVacuum
 
 /-!
 # Tensor words

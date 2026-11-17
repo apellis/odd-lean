@@ -1,12 +1,9 @@
+import OddMath.QuiverHecke.SwappedAssembly.BraidAssembly
 import OddMath.QuiverHecke.SwappedAssembly.QuadNe
 import OddMath.QuiverHecke.SwappedAssembly.SlideAssembly
-import OddMath.QuiverHecke.SwappedAssembly.BraidAssembly
-import OddMath.QuiverHecke.SwappedAssembly.CupCapZigzag
-import OddMath.QuiverHecke.SwappedAssembly.SupportedAugmentedInverse
 import OddMath.QuiverHecke.SwappedAssembly.SupportedInversionRelations
-import OddMath.QuiverHecke.SwappedAssembly.SupportedSupernaturality
 import OddMath.QuiverHecke.SwappedAssembly.SupportedPresentation
-import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightCap
+import OddMath.QuiverHecke.SwappedAssembly.SupportedSupernaturality
 
 /-! # The native presentation obligations on supported inputs
 

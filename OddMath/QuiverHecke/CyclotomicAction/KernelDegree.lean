@@ -1,9 +1,4 @@
-import OddMath.QuiverHecke.HomDimension
-import OddMath.QuiverHecke.CyclotomicAction.VacuumGrading
-import OddMath.QuiverHecke.CyclotomicAction.ContentModules
-import OddMath.QuiverHecke.CentreFinite
-import OddMath.QuiverHecke.CyclotomicAction.ModuleInduction
-import OddMath.QuiverHecke.CyclotomicAction.CyclotomicQuotientTop
+import OddMath.QuiverHecke.CyclotomicAction.CyclotomicQuotientTop.CyclotomicCrossingTensor
 
 /-!
 # Kernel degree

@@ -1,12 +1,12 @@
-import OddMath.QuiverHecke.Algebra
-import OddMath.QuiverHecke.MixedRelations
 import Mathlib.Data.Fintype.Vector
 import Mathlib.RingTheory.Ideal.Quotient.Operations
-import OddMath.QuiverHecke.ShuffleBasis
 import Categorification.Algebra.InductionAlong
 import Mathlib.RingTheory.GradedAlgebra.Homogeneous.Ideal
 import StringDiagrams.Super.BalancedTensor
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
+import OddMath.QuiverHecke.Algebra
+import OddMath.QuiverHecke.MixedRelations
+import OddMath.QuiverHecke.ShuffleBasis
 
 /-!
 # Super quotient
