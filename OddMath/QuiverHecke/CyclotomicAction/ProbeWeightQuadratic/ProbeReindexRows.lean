@@ -925,4 +925,3 @@ end OddMath.QuiverHecke
 end
 
 end
--- CI timing probe (removed before merge)
