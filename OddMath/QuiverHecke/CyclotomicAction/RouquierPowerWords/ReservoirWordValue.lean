@@ -125,7 +125,6 @@ theorem coefficient_fromArrow (ν : List I)
 
 section Weight
 variable [Fintype I] (Λ : X)
-local notation "N" => PowerWordContent.powerBound D cutoff L
 
 end Weight
 end OddMath.QuiverHecke.ELV.PowerWordCoefficients

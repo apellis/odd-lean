@@ -147,21 +147,11 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (i : I) (Λ : X) {x₀ x₁ x₂ : X}
   (h₁ : x₀ + D.α i = x₁) (h₂ : x₁ + D.α i = x₂)
   (δ : WeightBlocks D Λ x₁)
-local notation "E₁" => elvE D Sc cutoff N i Λ h₁
-local notation "F₁" => elvF D Sc cutoff N i Λ h₁
-local notation "E₂" => elvE D Sc cutoff N i Λ h₂
-local notation "F₂" => elvF D Sc cutoff N i Λ h₂
-local notation "Ev" => CategoryTheory.Pi.eval (fun ε : WeightBlocks D Λ x₁ =>
   ContentModules D Sc cutoff N (Subtype.val ε)) δ
-local notation "FE" => Superfunctor.comp (E₂ ≫ F₂) (Superfunctor.mk Ev)
-local notation "EF" => Superfunctor.comp (F₁ ≫ E₁) (Superfunctor.mk Ev)
-local notation "IdEv" => Superfunctor.comp
   (Superfunctor.id k (ELVWeightProduct D Sc cutoff N Λ x₁)) (Superfunctor.mk Ev)
-local notation "φ" => SKM.rouquierMate
   (elvActionAdjunction D Sc cutoff N i Λ h₁)
   (elvActionAdjunction D Sc cutoff N i Λ h₂)
   (elvActionCross D Sc cutoff N i i Λ h₁ h₂ h₁ h₂)
-local notation "τ" n => elvActionUnit D Sc cutoff N i Λ h₂ ≫
   SKM.rouquierPower (elvActionDot D Sc cutoff N i Λ h₂) n ▷ F₂
 
 end OddMath.QuiverHecke.ELV

@@ -575,7 +575,6 @@ variable {k : Type u} [CommRing k]
   (hJ : J ⋙ Q₁ = Q₀ ⋙ T) (hK : K ⋙ Q₂ = Q₁ ⋙ S)
   (M : Superfunctor k D₀ (SVec k))
 private abbrev coendPullback : Superfunctor k C₀ (SVec k) := ⟨Q₀ ⋙ M.toFunctor⟩
-local notation "RM" => coendPullback (k := k) Q₀ M
 
 end Nested
 end OddMath.QuiverHecke.ELV.BalancedInduction

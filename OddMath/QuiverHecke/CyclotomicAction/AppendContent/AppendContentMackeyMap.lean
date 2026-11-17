@@ -450,8 +450,6 @@ variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
   [CommRing k] (Sc : SKM.Scalars D k) [Fintype I]
 
 variable (a : I → _root_.Polynomial k) (n : ℕ) (β : Multiset I) (i : I)
-local notation "B" => CyclotomicContentCorner D Sc a n β
-local notation "eps" => appendContentParity D a β i
 
 end OddMath.QuiverHecke
 

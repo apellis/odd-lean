@@ -351,11 +351,6 @@ end Additive
 section CornerSlides
 variable (i : I) (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
 
-local notation "T" => heightCompositionCorner D Sc i i a ha n
-local notation "d" => D.parity i
-local notation "Dr" => heightCompositionRightMul D Sc i a ha n (cornerMulData_lastDot D Sc i a ha n)
-local notation "Dl" => heightCompositionRightMul D Sc i a ha n (cornerMulData_appendDot D Sc i a ha n)
-local notation "Cr" => heightCompositionSuperCrossing D Sc i i a ha n
 
 end CornerSlides
 
@@ -364,15 +359,6 @@ end CornerSlides
 section Transport
 variable (i : I) (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
 
-local notation "T" => heightCompositionCorner D Sc i i a ha n
-local notation "Pc" => heightInductionCorner D Sc i a ha (n + 1)
-local notation "Qc" => heightInductionCorner D Sc i a ha n
-local notation "d" => D.parity i
-local notation "Dr" => heightCompositionRightMul D Sc i a ha n (cornerMulData_lastDot D Sc i a ha n)
-local notation "Dl" => heightCompositionRightMul D Sc i a ha n (cornerMulData_appendDot D Sc i a ha n)
-local notation "Cr" => heightCompositionSuperCrossing D Sc i i a ha n
-local notation "iso" => heightInductionCompositionIso D Sc i i a ha n
-local notation "e" => heightInductionFunctorComparison D Sc i i a ha n
 
 end Transport
 
@@ -529,16 +515,9 @@ variable {i j : I} (hij : i ≠ j) (a : I → _root_.Polynomial k)
   (ha : CyclotomicPolynomialParity D a) (n : ℕ)
 include hij
 
-local notation "d" => D.parity i * D.parity j
-local notation "ε" => koszulSign (D.parity i) (D.parity j)
-local notation "Cr" => heightCompositionSuperCrossing D Sc i j a ha n
-local notation "Dr" => heightTwoColourRightMul D Sc i j i a ha n
   (twoColourCornerMulData_lastDot D Sc i j a ha n)
-local notation "Dl" => heightTwoColourRightMul D Sc j i i a ha n
   (twoColourCornerMulData_appendDot D Sc j i a ha n)
-local notation "Er" => heightTwoColourRightMul D Sc j i j a ha n
   (twoColourCornerMulData_lastDot D Sc j i a ha n)
-local notation "El" => heightTwoColourRightMul D Sc i j j a ha n
   (twoColourCornerMulData_appendDot D Sc i j a ha n)
 
 end CornerSlides
@@ -574,11 +553,6 @@ end Transport
 section InductionSlides
 variable {i j : I} (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
 
-local notation "Hij" => heightTwoColourComparisonHom D Sc i j a ha n
-local notation "Hji" => heightTwoColourComparisonHom D Sc j i a ha n
-local notation "Iji" => heightTwoColourComparisonInv D Sc j i a ha n
-local notation "Tij" => heightCompositionCorner D Sc i j a ha n
-local notation "Tji" => heightCompositionCorner D Sc j i a ha n
 
 end InductionSlides
 

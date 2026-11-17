@@ -317,11 +317,6 @@ namespace PowerVacuumCoefficient
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
   [Fintype I] (L : I × ℕ → ℕ)
-local notation "bound" => SKM.SYM.elvPowerWeightBound D cutoff L + 1
-local notation "WM" => weightedVacuum D Sc cutoff L
-local notation "Q" => oldTruncateFunctor D Sc cutoff bound
-local notation "Q₀" => contentInclusion D Sc cutoff bound (0 : Multiset I)
-local notation "AQ" => CoefficientPowerQuotient (k := k) D cutoff L
 
 end PowerVacuumCoefficient
 end OddMath.QuiverHecke.ELV

@@ -104,7 +104,6 @@ private instance paddedVacuumCapInverseZero (β : Multiset I) :
   ⟨⟨elvZeroModule D (parameterTwist D Sc) cutoff bound β,
     elvZeroModule_isZero D (parameterTwist D Sc) cutoff bound β⟩⟩
 
-local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR
 
 variable (H : ProbeVacuumCap.modulePiCategory D (parameterTwist D Sc) m ⟶
   elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR (-ΛR))

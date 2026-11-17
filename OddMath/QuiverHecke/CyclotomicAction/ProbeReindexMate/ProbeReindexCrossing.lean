@@ -72,9 +72,6 @@ local notation "T" => oldAppendPairReindexLinear D Sc cutoff r₀ j i rj hj hj r
 attribute [local irreducible] oldAppendToCrossLinear oldAppendPairReindexLinear
   oldAppendReindexIso oldAppendPairReindexIso
 
-local notation "eS" => oldAppendPairReindexIso D Sc cutoff r₀ i j ri hi hi rM hM h₂
-local notation "eT" => oldAppendPairReindexIso D Sc cutoff r₀ j i rj hj hj rL hL h₂
-local notation "hc₀" => oldAppendToCross_supernatural D Sc cutoff ν i j rj ri rL rM
 
 end OddMath.QuiverHecke
 
@@ -140,22 +137,6 @@ theorem probeAppendToCross_total (N : ProbeEvaluatedModules D Sc m ν) :
       probeAppendToCrossComponent D Sc m ν i j hj hi hL hM N :=
   InducedCategory.hom_ext (probeAppendToCross_direct_total D Sc m ν i j hj hi hL hM N)
 
-local notation "r₀" => List.Perm.refl ν
-local notation "rj" => List.Perm.refl (j :: ν)
-local notation "ri" => List.Perm.refl (i :: ν)
-local notation "rL" => List.Perm.refl (i :: j :: ν)
-local notation "rM" => List.Perm.swap i j ν
-local notation "h₂" => List.Perm.trans (List.Perm.cons i hj) hL
-local notation "Q₂inv" => oldContentReindex D Sc cut (List.Perm.symm h₂)
-local notation "J₀" => oldContentAppendTo D Sc cut ν j (j :: ν) rj
-local notation "K₀" => oldContentAppendTo D Sc cut ν i (i :: ν) ri
-local notation "L₀" => oldContentAppendTo D Sc cut (j :: ν) i (i :: j :: ν) rL
-local notation "M₀" => oldContentAppendTo D Sc cut (i :: ν) j (i :: j :: ν) rM
-local notation "eS" => oldAppendPairReindexIso D Sc cut r₀ i j ri hi hi rM hM h₂
-local notation "eT" => oldAppendPairReindexIso D Sc cut r₀ j i rj hj hj rL hL h₂
-local notation "ES" => probeAppendPairReindexIso D Sc m r₀ i j ri hi hi rM hM h₂
-local notation "ET" => probeAppendPairReindexIso D Sc m r₀ j i rj hj hj rL hL h₂
-local notation "hc₀" => oldAppendToCross_supernatural D Sc cut ν i j rj ri rL rM
 
 end OddMath.QuiverHecke
 end

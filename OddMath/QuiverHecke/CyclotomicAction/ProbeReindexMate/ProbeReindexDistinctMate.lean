@@ -325,10 +325,6 @@ theorem probeAppendToDistinctMateModuleIso_hom (hij : i ≠ j) (N : ProbeEvaluat
   apply InducedCategory.hom_ext
   exact oldAppendToDistinctMateModuleIso_hom D Sc cut ν i j hj hi hL hM hij N.obj
 
-local notation "Ei" => probeAppendToE D Sc m ν i νi hi
-local notation "V" => probeAppendToE D Sc m νj i ν₂ hL
-local notation "A" => probeAppendToRightAdjunction D Sc m ν j νj hj
-local notation "B" => probeAppendToRightAdjunction D Sc m νi j ν₂ hM
 
 end OddMath.QuiverHecke
 end

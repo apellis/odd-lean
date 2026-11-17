@@ -76,11 +76,7 @@ theorem elvWeightAbsentCapInverse_nonempty
     (fun n => (elvWeightCapPower_block_supernatural D Sc cutoff N i Λ h₁ δ n).mem M)
   exact ⟨by simpa only [hz, Int.toNat_zero] using H⟩
 
-local notation "Ev" => CategoryTheory.Pi.eval (fun ε : WeightBlocks D Λ x₁ =>
   ContentModules D Sc cutoff N (Subtype.val ε)) δ
-local notation "FE" => Superfunctor.comp (E₂ ≫ F₂) (Superfunctor.mk Ev)
-local notation "EF" => Superfunctor.comp (F₁ ≫ E₁) (Superfunctor.mk Ev)
-local notation "IdEv" => Superfunctor.comp
   (Superfunctor.id k (ELVWeightProduct D Sc cutoff N Λ x₁)) (Superfunctor.mk Ev)
 
 end OddMath.QuiverHecke.ELV

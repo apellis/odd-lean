@@ -1135,14 +1135,9 @@ theorem elvProbeDxOuterDot_isNilpotent [Finite I]
 end ProbeToReservoir
 
 section ReservoirToProbe
-local notation "cFP" "[" i "," t "," hb "]" =>
   SKM.homContentPreF (P).T (P).W.obj i ((P).muM t) ((P).muP_preF i hb)
-local notation "cFR" "[" i "," t "," hv "]" =>
   SKM.homContentPostF (P).T.obj (P).W i (Prod.fst t) ((P).muP t) ((P).muM_postE i hv)
-local notation "cs" "[" i "," t "]" => nextSector (false, i) true t
-local notation "cU" "[" i "," t "," hb "," hv "," Z "]" =>
   ((congrArg (nextSector (true, i) false) (SPath.next_dnUp_true_true hb)).symm ▸ (cFR[i,t,hv]).obj Z)
-local notation "cφ" "[" i "," t "," hb "," hv "," Z "," M "," δ "]" =>
   reservoirToProbeBendCoefficientEvaluation (P) i t hb hv Z (out[t,M,δ])
 
 end ReservoirToProbe

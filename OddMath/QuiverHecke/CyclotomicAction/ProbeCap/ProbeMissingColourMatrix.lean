@@ -420,11 +420,6 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
   (N : Superfunctor k (OldContentCategory D Sc (probeCutoff D m) []) (SVec k))
   (hN : ProbeEvaluatesCoefficients D m Sc [] N) (i : I)
-local notation "cut" => probeCutoff D m
-local notation "v" => (OldContentCategory.mk (OldCategory.mk []) (List.Perm.refl []) : OldContentCategory D Sc cut [])
-local notation "G₀" => induced (oldContentInclusion D Sc cut []) N
-local notation "hi₀" => (by simp : i ∉ ([] : List I))
-local notation "hh₀" => contentCrossingHeight_nonneg_of_not_mem D cut [] i hi₀
 
 end OddMath.QuiverHecke
 end

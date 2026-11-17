@@ -516,15 +516,10 @@ section Content
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
 variable (β : Multiset I) (i j : I)
-local notation "δ₁" => (β + ([i] : Multiset I))
-local notation "δ₂" => ((β + ([i] : Multiset I)) + ([j] : Multiset I))
-local notation "J" => contentAppend D Sc cutoff N β [i]
-local notation "K" => contentAppend D Sc cutoff N δ₁ [j]
 variable (τ : List I) (γ : Multiset I)
   (hγ : ((β + ([i] : Multiset I)) + ([j] : Multiset I)) + (τ : Multiset I) = γ)
   (hs : (β + ([i] : Multiset I)) + (([j] ++ τ : List I) : Multiset I) = γ)
   (h : β + (([i,j] ++ τ : List I) : Multiset I) = γ)
-local notation "L" => contentAppendTo D Sc cutoff N δ₂ τ γ hγ
 
 end Content
 end OddMath.QuiverHecke.ELV

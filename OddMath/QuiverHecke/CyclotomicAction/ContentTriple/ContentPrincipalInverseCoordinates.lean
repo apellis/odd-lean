@@ -180,16 +180,8 @@ section Targets
 variable (β : Multiset I) (i : I) (γ δ : Multiset I)
   (hγ : β + ([i] : Multiset I) = γ) (hδ : γ + ([i] : Multiset I) = δ)
   (M : ContentModules D Sc cutoff N γ)
-local notation "J" => contentAppendTo D Sc cutoff N β [i] γ hγ
-local notation "K" => contentAppendTo D Sc cutoff N γ [i] δ hδ
-local notation "hCross" => contentTargetsGridCross_supernatural D Sc cutoff N β γ δ i hγ hδ
-local notation "hDotJ" => contentAppendTo_supernatural D Sc cutoff N hγ hγ
   (principalSingletonDot_mem D Sc i)
-local notation "hDotK" => contentAppendTo_supernatural D Sc cutoff N hδ hδ
   (principalSingletonDot_mem D Sc i)
-local notation "P" => induced (contentInclusion D Sc cutoff N γ) M
-local notation "Source" => contentPrincipalSourceIso D Sc cutoff N β γ i hγ M
-local notation "Target" => contentPrincipalTargetIso D Sc cutoff N γ δ i hδ M
 
 end Targets
 

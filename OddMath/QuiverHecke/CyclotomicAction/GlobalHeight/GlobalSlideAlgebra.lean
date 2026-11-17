@@ -378,35 +378,18 @@ variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
 section Corner
 variable (n : ℕ)
 
-local notation "P" => heightInductionCorner D Sc i a ha n
-local notation "e" => heightInductionCornerIdempotent D Sc i a ha n
-local notation "φ" => heightAppend D Sc a i n
 
 end Corner
 
 section Crossing
 variable (n : ℕ)
 
-local notation "P₀" => heightInductionCorner D Sc i a ha n
-local notation "P₁" => heightInductionCorner D Sc i a ha (n + 1)
-local notation "e₀" => heightInductionCornerIdempotent D Sc i a ha n
-local notation "e₁" => heightInductionCornerIdempotent D Sc i a ha (n + 1)
-local notation "d" => D.parity i * D.parity i
 
 end Crossing
 
 section Braid
 variable (n : ℕ)
 
-local notation "P₀" => heightInductionCorner D Sc i a ha n
-local notation "P₁" => heightInductionCorner D Sc i a ha (n + 1)
-local notation "P₂" => heightInductionCorner D Sc i a ha (n + 1 + 1)
-local notation "e₀" => heightInductionCornerIdempotent D Sc i a ha n
-local notation "e₁" => heightInductionCornerIdempotent D Sc i a ha (n + 1)
-local notation "e₂" => heightInductionCornerIdempotent D Sc i a ha (n + 1 + 1)
-local notation "d" => D.parity i * D.parity i
-local notation "φ₁" => heightAppend D Sc a i (n + 1)
-local notation "φ₂" => heightAppend D Sc a i (n + 1 + 1)
 
 end Braid
 

@@ -121,8 +121,6 @@ theorem inductionLastCrossing_eq_cl (i j : I) {n : ℕ} (w : Word I n) :
 variable [Fintype I]
 
 variable (i : I) (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
-local notation "P" => compositionCorner D Sc i i a ha n
-local notation "f" => compositionSuperCrossing D Sc i i a ha n
 
 end OddMath.QuiverHecke
 end
@@ -318,11 +316,6 @@ universe u v
 variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
   [CommRing k] (Sc : SKM.Scalars D k) [Fintype I]
 variable (i : I) (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
-local notation "φ" => cyclotomicAppend D Sc i a n
-local notation "P" => inductionCorner D Sc i a ha n
-local notation "Q" => restrictionCorner D Sc i a ha n
-local notation "F" => cyclotomicSuperInduction D Sc i a ha n
-local notation "E" => cyclotomicSuperRestriction D Sc i a ha n
 
 end OddMath.QuiverHecke
 end
@@ -371,8 +364,6 @@ def cyclotomicActionRestriction :
     cyclotomicActionObject D Sc a ha (n + 1) ⟶ cyclotomicActionObject D Sc a ha n :=
   ⟨cyclotomicSuperRestriction D Sc i a ha n⟩
 
-local notation "F" => cyclotomicActionInduction D Sc a ha n i
-local notation "E" => cyclotomicActionRestriction D Sc a ha n i
 
 end OddMath.QuiverHecke
 end

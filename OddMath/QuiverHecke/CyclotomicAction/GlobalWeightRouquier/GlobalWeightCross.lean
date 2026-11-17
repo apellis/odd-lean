@@ -343,7 +343,6 @@ variable (i : I)
 
 attribute [local irreducible] ContentSupported
 
-local notation "d" => D.parity i * D.parity i
 
 end Content
 
@@ -351,7 +350,6 @@ section Weight
 variable (i : I) (Λ : X) {x₀ x₁ x₂ x₃ : X} (h₁ : x₀ + D.α i = x₁) (h₂ : x₁ + D.α i = x₂)
   (h₃ : x₂ + D.α i = x₃)
 
-local notation "d" => D.parity i * D.parity i
 
 end Weight
 

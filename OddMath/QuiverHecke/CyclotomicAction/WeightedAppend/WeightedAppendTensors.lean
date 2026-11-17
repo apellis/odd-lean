@@ -319,7 +319,6 @@ local notation "hFP" => pairInduced_killsWeightedCoefficients D Sc cutoff N i j 
 private def pairQuotientCounit : (BalancedInduction.induction Q).obj RM ⟶ M :=
   (quotientInductionCounitIso D Sc cutoff N M).hom
 
-local notation "P" => BalancedInduction.squareLinear JP Q Q TP
   (pairAppend_truncate D Sc cutoff N i j) RM M (pairQuotientCounit D Sc cutoff N M)
 
 end Comparison
@@ -380,7 +379,6 @@ theorem truncatedEqualCross_supernatural :
     exact h
 
 variable (M : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k))
-local notation "RM" => weightedRestriction D Sc cutoff N M
 
 end OddMath.QuiverHecke.ELV
 end
@@ -473,7 +471,6 @@ theorem doubleInduced_killsWeightedCoefficients :
   induced_killsWeightedCoefficients D Sc cutoff N j _
     (induced_killsWeightedCoefficients D Sc cutoff N i RM
       (weightedRestriction_kills D Sc cutoff N M))
-local notation "hFI" => doubleInduced_killsWeightedCoefficients D Sc cutoff N i j M
 
 end OddMath.QuiverHecke.ELV
 end

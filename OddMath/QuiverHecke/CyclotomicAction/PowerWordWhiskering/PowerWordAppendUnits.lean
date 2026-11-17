@@ -1160,8 +1160,6 @@ theorem selected_pair_cross :
     exact hr.trans hWord.symm
   have hh := congrArg (fun f => (ES).hom ≫ f) hconj
   simpa only [Category.assoc, Iso.hom_inv_id_assoc] using hh
-local notation "HJI" => pairContentEq β δj γ i j hj hSource
-local notation "HIJ" => pairContentEq β δi γ j i hi hTarget
 
 end UnitWord
 

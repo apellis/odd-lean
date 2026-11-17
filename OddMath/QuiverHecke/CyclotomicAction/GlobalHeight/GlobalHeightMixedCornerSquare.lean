@@ -93,8 +93,6 @@ section Power
 variable {i j c : I} {a : I → _root_.Polynomial k} {ha : CyclotomicPolynomialParity D a}
   {n : ℕ}
 
-local notation "C" => heightAlgebra D Sc a (n + 1 + 1)
-local notation "T" => heightCompositionCorner D Sc i j a ha n
 
 end Power
 
@@ -105,15 +103,8 @@ variable {i j : I} (hij : i ≠ j) (a : I → _root_.Polynomial k)
   (ha : CyclotomicPolynomialParity D a) (n : ℕ)
 include hij
 
-local notation "T" => heightCompositionCorner D Sc i j a ha n
-local notation "Cr" => heightCompositionSuperCrossing D Sc i j a ha n
-local notation "Cr'" => heightCompositionSuperCrossing D Sc j i a ha n
-local notation "Dr" => heightTwoColourRightMul D Sc i j i a ha n
   (twoColourCornerMulData_lastDot D Sc i j a ha n)
-local notation "Dl" => heightTwoColourRightMul D Sc i j j a ha n
   (twoColourCornerMulData_appendDot D Sc i j a ha n)
-local notation "A" => heightAppend D Sc a i (n + 1) (heightLastDot D Sc a j n)
-local notation "B" => heightLastDot D Sc a i (n + 1)
 
 end CornerSquare
 
