@@ -103,8 +103,6 @@ variable {i j : I} (hij : i ≠ j) (a : I → _root_.Polynomial k)
   (ha : CyclotomicPolynomialParity D a) (n : ℕ)
 include hij
 
-  (twoColourCornerMulData_lastDot D Sc i j a ha n)
-  (twoColourCornerMulData_appendDot D Sc i j a ha n)
 
 end CornerSquare
 

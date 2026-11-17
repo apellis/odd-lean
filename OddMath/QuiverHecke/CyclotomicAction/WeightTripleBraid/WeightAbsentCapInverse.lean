@@ -76,8 +76,6 @@ theorem elvWeightAbsentCapInverse_nonempty
     (fun n => (elvWeightCapPower_block_supernatural D Sc cutoff N i Λ h₁ δ n).mem M)
   exact ⟨by simpa only [hz, Int.toNat_zero] using H⟩
 
-  ContentModules D Sc cutoff N (Subtype.val ε)) δ
-  (Superfunctor.id k (ELVWeightProduct D Sc cutoff N Λ x₁)) (Superfunctor.mk Ev)
 
 end OddMath.QuiverHecke.ELV
 end

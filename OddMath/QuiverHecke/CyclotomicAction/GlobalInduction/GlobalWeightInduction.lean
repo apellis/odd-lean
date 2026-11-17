@@ -2,6 +2,7 @@ import Mathlib.Algebra.BigOperators.Group.Multiset.Basic
 import Categorification.TwoRep.BlockSum
 import OddMath.QuiverHecke.CyclotomicAction.GlobalInduction.GlobalRestriction
 import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
+import OddMath.QuiverHecke.CyclotomicAction.SuperAdjunction.Braid
 
 /-!
 # Global induction

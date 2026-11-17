@@ -238,7 +238,6 @@ section Vanishing
 variable [Fintype I] {a : I → _root_.Polynomial k} {i : I} {n : ℕ} {ε : ZMod 2}
   {N : Type w} [AddCommGroup N] [Module (Hn D Sc (n + 1)) N]
 
-  (appendAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))
 
 end Vanishing
 

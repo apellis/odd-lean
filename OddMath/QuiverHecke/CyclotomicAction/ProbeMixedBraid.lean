@@ -1135,10 +1135,6 @@ theorem elvProbeDxOuterDot_isNilpotent [Finite I]
 end ProbeToReservoir
 
 section ReservoirToProbe
-  SKM.homContentPreF (P).T (P).W.obj i ((P).muM t) ((P).muP_preF i hb)
-  SKM.homContentPostF (P).T.obj (P).W i (Prod.fst t) ((P).muP t) ((P).muM_postE i hv)
-  ((congrArg (nextSector (true, i) false) (SPath.next_dnUp_true_true hb)).symm ▸ (cFR[i,t,hv]).obj Z)
-  reservoirToProbeBendCoefficientEvaluation (P) i t hb hv Z (out[t,M,δ])
 
 end ReservoirToProbe
 end OddMath.QuiverHecke

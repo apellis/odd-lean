@@ -180,8 +180,6 @@ section Targets
 variable (β : Multiset I) (i : I) (γ δ : Multiset I)
   (hγ : β + ([i] : Multiset I) = γ) (hδ : γ + ([i] : Multiset I) = δ)
   (M : ContentModules D Sc cutoff N γ)
-  (principalSingletonDot_mem D Sc i)
-  (principalSingletonDot_mem D Sc i)
 
 end Targets
 

@@ -147,12 +147,6 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (i : I) (Λ : X) {x₀ x₁ x₂ : X}
   (h₁ : x₀ + D.α i = x₁) (h₂ : x₁ + D.α i = x₂)
   (δ : WeightBlocks D Λ x₁)
-  ContentModules D Sc cutoff N (Subtype.val ε)) δ
-  (Superfunctor.id k (ELVWeightProduct D Sc cutoff N Λ x₁)) (Superfunctor.mk Ev)
-  (elvActionAdjunction D Sc cutoff N i Λ h₁)
-  (elvActionAdjunction D Sc cutoff N i Λ h₂)
-  (elvActionCross D Sc cutoff N i i Λ h₁ h₂ h₁ h₂)
-  SKM.rouquierPower (elvActionDot D Sc cutoff N i Λ h₂) n ▷ F₂
 
 end OddMath.QuiverHecke.ELV
 end

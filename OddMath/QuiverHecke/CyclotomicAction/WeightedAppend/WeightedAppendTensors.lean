@@ -319,7 +319,6 @@ local notation "hFP" => pairInduced_killsWeightedCoefficients D Sc cutoff N i j 
 private def pairQuotientCounit : (BalancedInduction.induction Q).obj RM ⟶ M :=
   (quotientInductionCounitIso D Sc cutoff N M).hom
 
-  (pairAppend_truncate D Sc cutoff N i j) RM M (pairQuotientCounit D Sc cutoff N M)
 
 end Comparison
 
