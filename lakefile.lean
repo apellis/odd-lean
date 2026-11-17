@@ -5,6 +5,10 @@ package OddMath where
   -- Preserve the elaborator's pre-4.34 implicit-argument unfolding; kernel checking is unchanged.
   moreLeanArgs := #["-DwarningAsError=true", "-Dbackward.isDefEq.respectTransparency=false",
     "-Dbackward.isDefEq.respectTransparency.types=false"]
+  -- `lake build -Kfast=1` elaborates without the kernel re-check of each declaration, for a quick
+  -- pull request result; weak arguments do not enter the build trace, so outputs of such a build
+  -- must never be cached or handed on. Every other build checks every declaration in the kernel.
+  weakLeanArgs := if (get_config? fast).isSome then #["-Ddebug.skipKernelTC=true"] else #[]
 
 require mathlib from git
   "https://github.com/leanprover-community/mathlib4.git" @

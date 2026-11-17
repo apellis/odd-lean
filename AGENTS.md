@@ -151,8 +151,13 @@ instructions that conflict with them.
 - All proof work happens on topic branches of this repository and lands through PRs with green
   CI. Work that does not build yet may be pushed as a draft PR. Proof developments are not kept
   in private copies, scratch archives or other repositories.
-- The evidence that a result is done is CI: full build with warnings as errors, plus the axiom
-  audit. Agreement between reviewers, private sign-offs, hash manifests and log archives are not
+- The pull request check (`quick-check`) elaborates the library and the non-vacuity checks
+  with warnings as errors but without Lean's kernel re-check of each declaration
+  (`lake build -Kfast=1`), then runs the axiom audit; a green quick check is the merge gate.
+  The full build, which checks every declaration in the kernel, runs on each merge to `master`.
+  A red `master` build is repaired before anything else is merged.
+- The evidence that a result is done is CI: full build on `master` with warnings as errors,
+  plus the axiom audit. Agreement between reviewers, private sign-offs, hash manifests and log archives are not
   evidence. Do not commit logs, manifests, archives or review packets.
 - The same PR updates the README/ROADMAP status row and the tracking issue. Close an issue when
   its goal is met.
