@@ -189,22 +189,19 @@ jobs:
         env:
           LEAN_NUM_THREADS: 4
         run: |
+          # The non-vacuity checks are built in the same invocation, so checks whose imports are
+          # ready compile while the long serial chain of the library is still building.
           if [ "${{ github.event_name }}" = pull_request ]; then
             set -o pipefail
-            lake build --wfail < /dev/null 2>&1 | awk "$FAIL_FAST"
+            lake build --wfail OddMath NonVacuity < /dev/null 2>&1 | awk "$FAIL_FAST"
           else
-            lake build --wfail < /dev/null
+            lake build --wfail OddMath NonVacuity < /dev/null
           fi
       - name: Axiom audit
         if: steps.scope.outputs.docs_only != 'true'
         run: lake env lean -DwarningAsError=true scripts/AxiomAudit.lean
-      # The checks form the library `NonVacuity` (see `lakefile.lean`), so their `.olean` files are
-      # cached with the build and only checks whose imports changed are elaborated again.
-      - name: Non-vacuity checks
-        if: steps.scope.outputs.docs_only != 'true'
-        env:
-          LEAN_NUM_THREADS: 4
-        run: lake build --wfail NonVacuity < /dev/null
+      # The checks form the library `NonVacuity` (see `lakefile.lean`); the Build step above
+      # compiles them, and their `.olean` files are cached with the build.
       # Cache directory inputs are archived recursively; nested negative globs do not
       # reliably omit these files. All Lean processes have finished before this cleanup.
       - name: Remove regenerated Lean setup metadata
