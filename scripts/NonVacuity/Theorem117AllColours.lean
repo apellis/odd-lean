@@ -63,10 +63,9 @@ theorem homogeneous : scalars.Homogeneous :=
 /-- Infinitely many colours have degree `1`, so `DegreeLocallyFinite` fails. -/
 theorem not_degreeLocallyFinite : ¬ datum.skmSymmetrizer.DegreeLocallyFinite := by
   intro hf
-  apply Set.infinite_univ (α := ℕ)
-  convert hf 1 using 1
-  ext i
-  simp [Symmetrizer.DegreeLocallyFinite, cartan]
+  have h1 : {i | datum.skmSymmetrizer.d i ≤ ((1 : ℕ) : ℤ)} = Set.univ :=
+    Set.eq_univ_of_forall fun _ ↦ show ((1 : ℕ) : ℤ) ≤ ((1 : ℕ) : ℤ) from le_rfl
+  exact Set.infinite_univ (α := ℕ) (h1 ▸ hf 1)
 
 /-- Existence and uniqueness of `γ`. -/
 example := theorem_11_7_existence datum homogeneous cScalars
