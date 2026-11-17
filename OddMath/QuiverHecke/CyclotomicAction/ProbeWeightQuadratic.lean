@@ -24,6 +24,32 @@ Brundan–Ellis (1.13)–(1.14): the even loop comparisons retain the chosen
 negative mate on evaluated modules. Component calculations keep the
 selected ordinary adjunctions and all super parities.
 -/
+section
+/-! Total components of an even superadjunction lifted from an ordinary adjunction. -/
+noncomputable section
+open CategoryTheory StringDiagrams Supercategory
+namespace OddMath.QuiverHecke
+universe u
+variable {k : Type u} [CommRing k]
+
+private theorem ordinaryEvenSuperAdjunction_unit_total {A B : PiSCat.{u, u, u + 1} k}
+    (E : A ⟶ B) (F : B ⟶ A) (adj : E.toFunctor ⊣ F.toFunctor)
+    (hη : ∀ M, adj.unit.app M ∈ parity (R := k) _ _ 0)
+    (hε : ∀ N, adj.counit.app N ∈ parity (R := k) _ _ 0) (M : A) :
+    (ELV.ordinaryEvenSuperAdjunction E F adj hη hε).unit.total M = adj.unit.app M := by
+  simp [ELV.ordinaryEvenSuperAdjunction, SuperNatTrans.total, SuperNatTrans.ofNatTrans]
+
+private theorem ordinaryEvenSuperAdjunction_counit_total {A B : PiSCat.{u, u, u + 1} k}
+    (E : A ⟶ B) (F : B ⟶ A) (adj : E.toFunctor ⊣ F.toFunctor)
+    (hη : ∀ M, adj.unit.app M ∈ parity (R := k) _ _ 0)
+    (hε : ∀ N, adj.counit.app N ∈ parity (R := k) _ _ 0) (N : B) :
+    (ELV.ordinaryEvenSuperAdjunction E F adj hη hε).counit.total N = adj.counit.app N := by
+  simp [ELV.ordinaryEvenSuperAdjunction, SuperNatTrans.total, SuperNatTrans.ofNatTrans]
+
+end OddMath.QuiverHecke
+end
+end
+
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
@@ -409,28 +435,43 @@ local notation "E₀" => probeEvaluatedE D Sc m ν i
 local notation "F₀" => probeEvaluatedF D Sc m ν i
 local notation "x₀" => probeEvaluatedInductionDot D Sc m ν i
 
+/- The `standard_*` comparisons go through total components, so that the kernel only
+compares small module maps instead of the two whole superfunctor morphisms. -/
+
+private theorem standard_dotComponent (N : ProbeEvaluatedModules D Sc m ν) :
+    transformComponent (probeAppendToDot_supernatural D Sc m ν i (i :: ν) (List.Perm.refl _))
+        N.obj =
+      transformComponent (probeOldContentAppendDot_supernatural D Sc m ν i) N.obj := rfl
+
 private theorem standard_dot :
     probeAppendToInductionDot D Sc m ν i (i :: ν) (List.Perm.refl _) = x₀ := by
-  apply Superfunctor.hom_ext
-  intro q N
-  apply InducedCategory.hom_ext
-  rfl
+  apply HomogeneousSuperfunctorIso.total_ext
+  intro N
+  rw [probeAppendToInductionDot_total, probeEvaluatedInductionDot_total]
+  exact InducedCategory.hom_ext (standard_dotComponent D Sc m ν i N)
+
+private theorem standard_unitComponent (N : ProbeEvaluatedModules D Sc m ν) :
+    (adjunction (oldContentAppendTo D Sc (probeCutoff D m) ν i (i :: ν)
+        (List.Perm.refl _))).unit.app N.obj =
+      (adjunction (oldContentAppend D Sc (probeCutoff D m) ν i)).unit.app N.obj := rfl
 
 private theorem standard_counit :
     (probeAppendToRightAdjunction D Sc m ν i (i :: ν) (List.Perm.refl _)).counit =
       (probeEvaluatedRightAdjunction D Sc m ν i).counit := by
-  apply Superfunctor.hom_ext
-  intro q N
-  apply InducedCategory.hom_ext
-  fin_cases q <;> rfl
+  apply HomogeneousSuperfunctorIso.total_ext
+  intro N
+  rw [probeAppendToRightAdjunction, probeEvaluatedRightAdjunction,
+    ordinaryEvenSuperAdjunction_counit_total, ordinaryEvenSuperAdjunction_counit_total]
+  exact InducedCategory.hom_ext rfl
 
 private theorem standard_unit :
     (probeAppendToRightAdjunction D Sc m ν i (i :: ν) (List.Perm.refl _)).unit =
       (probeEvaluatedRightAdjunction D Sc m ν i).unit := by
-  apply Superfunctor.hom_ext
-  intro q N
-  apply InducedCategory.hom_ext
-  fin_cases q <;> rfl
+  apply HomogeneousSuperfunctorIso.total_ext
+  intro N
+  rw [probeAppendToRightAdjunction, probeEvaluatedRightAdjunction,
+    ordinaryEvenSuperAdjunction_unit_total, ordinaryEvenSuperAdjunction_unit_total]
+  exact InducedCategory.hom_ext (standard_unitComponent D Sc m ν i N)
 
 /-- The source cap row uses the original evaluated adjunction and dot. -/
 theorem probeAppendToCapRow_standard (n : ℕ) :
@@ -1074,6 +1115,21 @@ theorem probeOldOuterDot_total (β : WeightBlocks D Λ x₀)
   rw [Preadditive.add_comp, Preadditive.comp_add]
   simp only [probeOldBlockOuterDot, Superfunctor.whiskerLeft_app]
 
+private theorem blockInnerDot_app (β : WeightBlocks D Λ x₀) (p : ZMod 2)
+    (N : ProbeCanonicalModules D Sc m β.1) :
+    (probeOldBlockInnerDot D Sc m i Λ h₁ h₂ β).app p N =
+      (probeOldBlockInd D Sc m i Λ h₂ (blockSucc D Λ i h₁ β)).map
+        ((probeOldBlockDot D Sc m i Λ h₁ β).app p N) := rfl
+
+private theorem blockInnerDot_total (β : WeightBlocks D Λ x₀)
+    (N : ProbeCanonicalModules D Sc m β.1) :
+    (probeOldBlockInnerDot D Sc m i Λ h₁ h₂ β).total N =
+      (probeOldBlockInd D Sc m i Λ h₂ (blockSucc D Λ i h₁ β)).map
+        ((probeOldBlockDot D Sc m i Λ h₁ β).app 0 N) +
+      (probeOldBlockInd D Sc m i Λ h₂ (blockSucc D Λ i h₁ β)).map
+        ((probeOldBlockDot D Sc m i Λ h₁ β).app 1 N) := by
+  rw [SuperNatTrans.total, blockInnerDot_app, blockInnerDot_app]
+
 /-- The entire independently chosen inner dot uses that identical coordinate. -/
 theorem probeOldInnerDot_total (β : WeightBlocks D Λ x₀)
     (M : ProbeOldWeightProduct D Sc m Λ x₀) :
@@ -1086,12 +1142,8 @@ theorem probeOldInnerDot_total (β : WeightBlocks D Λ x₀)
       (blockSucc₂ D i i Λ h₁ h₂ β) +
     ((probeOldActionDot D Sc m i Λ h₁ ▷ probeOldE D Sc m i Λ h₂).app 1 M)
       (blockSucc₂ D i i Λ h₁ h₂ β) = _
-  rw [probeOldInnerDot_component, probeOldInnerDot_component]
-  change _ = eqToHom _ ≫
-    ((probeOldBlockInnerDot D Sc m i Λ h₁ h₂ β).app 0 (M β) +
-      (probeOldBlockInnerDot D Sc m i Λ h₁ h₂ β).app 1 (M β)) ≫ eqToHom _
-  rw [Preadditive.add_comp, Preadditive.comp_add]
-  simp only [probeOldBlockInnerDot, Superfunctor.whiskerRight_app]
+  rw [probeOldInnerDot_component, probeOldInnerDot_component,
+    ← Preadditive.comp_add, ← Preadditive.add_comp, blockInnerDot_total]
 
 local notation "rawF" β => Superfunctor.comp (inductionModuleCell (k := k) (J β))
   (inductionModuleCell (k := k) (K β))
@@ -1593,6 +1645,40 @@ section Pair
 variable (i j : I) (Λ : X) {x₀ x₁ xu : X}
   (h₁ : x₀ + D.α j = x₁) (h₂ : x₁ + D.α i = xu)
 
+private theorem pairUpperDot_eq (β : WeightBlocks D Λ x₀) :
+    probeOldPairUpperDot D Sc m i j Λ h₁ h₂ β _ rfl =
+      probeOldBlockDot D Sc m i Λ h₂ (blockSucc D Λ j h₁ β) := rfl
+
+private theorem pairOuterDotTo_app (β : WeightBlocks D Λ x₀) (p : ZMod 2)
+    (N : ProbeCanonicalModules D Sc m β.1) :
+    (probeOldBlockPairOuterDotTo D Sc m i j Λ h₁ h₂ β _ rfl).app p N =
+      (probeOldBlockDot D Sc m i Λ h₂ (blockSucc D Λ j h₁ β)).app p
+        ((probeOldBlockInd D Sc m j Λ h₁ β).obj N) := by
+  rw [← pairUpperDot_eq]
+  rfl
+
+private theorem pairOuterDotTo_total (β : WeightBlocks D Λ x₀)
+    (N : ProbeCanonicalModules D Sc m β.1) :
+    (probeOldBlockPairOuterDotTo D Sc m i j Λ h₁ h₂ β _ rfl).total N =
+      (probeOldBlockDot D Sc m i Λ h₂ (blockSucc D Λ j h₁ β)).total
+        ((probeOldBlockInd D Sc m j Λ h₁ β).obj N) := by
+  rw [SuperNatTrans.total, SuperNatTrans.total, pairOuterDotTo_app, pairOuterDotTo_app]
+
+private theorem pairInnerDotTo_app (β : WeightBlocks D Λ x₀) (p : ZMod 2)
+    (N : ProbeCanonicalModules D Sc m β.1) :
+    (probeOldBlockPairInnerDotTo D Sc m i j Λ h₁ h₂ β _ rfl).app p N =
+      (probeOldBlockInd D Sc m i Λ h₂ (blockSucc D Λ j h₁ β)).map
+        ((probeOldBlockDot D Sc m j Λ h₁ β).app p N) := rfl
+
+private theorem pairInnerDotTo_total (β : WeightBlocks D Λ x₀)
+    (N : ProbeCanonicalModules D Sc m β.1) :
+    (probeOldBlockPairInnerDotTo D Sc m i j Λ h₁ h₂ β _ rfl).total N =
+      (probeOldBlockInd D Sc m i Λ h₂ (blockSucc D Λ j h₁ β)).map
+        ((probeOldBlockDot D Sc m j Λ h₁ β).app 0 N) +
+      (probeOldBlockInd D Sc m i Λ h₂ (blockSucc D Λ j h₁ β)).map
+        ((probeOldBlockDot D Sc m j Λ h₁ β).app 1 N) := by
+  rw [SuperNatTrans.total, pairInnerDotTo_app, pairInnerDotTo_app]
+
 theorem probeOldPairOuterDotTo_total (β : WeightBlocks D Λ x₀) (ε : WeightBlocks D Λ xu)
     (hε : blockSucc₂ D i j Λ h₁ h₂ β = ε) (M : ProbeOldWeightProduct D Sc m Λ x₀) :
     (probeOldE D Sc m j Λ h₁ ◁ probeOldActionDot D Sc m i Λ h₂).total M ε =
@@ -1600,12 +1686,10 @@ theorem probeOldPairOuterDotTo_total (β : WeightBlocks D Λ x₀) (ε : WeightB
         (probeOldBlockPairOuterDotTo D Sc m i j Λ h₁ h₂ β ε hε).total (M β) ≫
       eqToHom (Functor.congr_obj (probeOldEFunctor_comp₂_to D Sc m i j Λ h₁ h₂ β ε hε) M).symm := by
   subst ε
-  change (probeOldE D Sc m j Λ h₁ ◁ probeOldActionDot D Sc m i Λ h₂).app 0 M _ + (probeOldE D Sc m j Λ h₁ ◁ probeOldActionDot D Sc m i Λ h₂).app 1 M _ = _
-  rw [probeOldPairOuterDot_component, probeOldPairOuterDot_component]
-  change _ = eqToHom _ ≫
-    ((probeOldBlockPairOuterDotTo D Sc m i j Λ h₁ h₂ β _ rfl).app 0 (M β) +
-     (probeOldBlockPairOuterDotTo D Sc m i j Λ h₁ h₂ β _ rfl).app 1 (M β)) ≫ eqToHom _
-  rw [Preadditive.add_comp, Preadditive.comp_add]
+  change (probeOldE D Sc m j Λ h₁ ◁ probeOldActionDot D Sc m i Λ h₂).app 0 M _ +
+    (probeOldE D Sc m j Λ h₁ ◁ probeOldActionDot D Sc m i Λ h₂).app 1 M _ = _
+  rw [probeOldPairOuterDot_component, probeOldPairOuterDot_component,
+    ← Preadditive.comp_add, ← Preadditive.add_comp, pairOuterDotTo_total]
   rfl
 
 theorem probeOldPairInnerDotTo_total (β : WeightBlocks D Λ x₀) (ε : WeightBlocks D Λ xu)
@@ -1615,13 +1699,10 @@ theorem probeOldPairInnerDotTo_total (β : WeightBlocks D Λ x₀) (ε : WeightB
         (probeOldBlockPairInnerDotTo D Sc m i j Λ h₁ h₂ β ε hε).total (M β) ≫
       eqToHom (Functor.congr_obj (probeOldEFunctor_comp₂_to D Sc m i j Λ h₁ h₂ β ε hε) M).symm := by
   subst ε
-  change (probeOldActionDot D Sc m j Λ h₁ ▷ probeOldE D Sc m i Λ h₂).app 0 M _ + (probeOldActionDot D Sc m j Λ h₁ ▷ probeOldE D Sc m i Λ h₂).app 1 M _ = _
-  rw [probeOldPairInnerDot_component, probeOldPairInnerDot_component]
-  change _ = eqToHom _ ≫
-    ((probeOldBlockPairInnerDotTo D Sc m i j Λ h₁ h₂ β _ rfl).app 0 (M β) +
-     (probeOldBlockPairInnerDotTo D Sc m i j Λ h₁ h₂ β _ rfl).app 1 (M β)) ≫ eqToHom _
-  rw [Preadditive.add_comp, Preadditive.comp_add]
-  simp only [probeOldBlockPairInnerDotTo, Superfunctor.whiskerRight_app]
+  change (probeOldActionDot D Sc m j Λ h₁ ▷ probeOldE D Sc m i Λ h₂).app 0 M _ +
+    (probeOldActionDot D Sc m j Λ h₁ ▷ probeOldE D Sc m i Λ h₂).app 1 M _ = _
+  rw [probeOldPairInnerDot_component, probeOldPairInnerDot_component,
+    ← Preadditive.comp_add, ← Preadditive.add_comp, pairInnerDotTo_total]
 end Pair
 section Crossing
 variable (i j : I) (Λ : X) {x₀ xj xi xu : X}
