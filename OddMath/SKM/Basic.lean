@@ -413,3 +413,5 @@ theorem degree_parity_mkD (μ : X) {t t' : List (Letter I)} (ls : List (LayerDat
   exact parityDeg_sig D _
 
 end OddMath.SKM
+
+-- CI sharding test; reverted before merge.
