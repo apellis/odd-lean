@@ -243,7 +243,7 @@ def oldAppendReindexModuleHom
 local notation "c₁" => oldAppendReindexModuleHom D Sc cutoff q₀ i a₁ b₁ q₁
 local notation "c₂" => oldAppendReindexModuleHom D Sc cutoff q₁ j a₂ b₂ q₂
 
-attribute [local irreducible] oldAppendReindexLinear oldAppendReindexModuleHom oldAppendReindexIso
+attribute [local irreducible] oldAppendReindexModuleHom oldAppendReindexIso
 
 /-- Compose the chosen upper and lower adjunction comparisons, without a new gauge. -/
 def oldAppendPairReindexIso :
