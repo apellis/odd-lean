@@ -1123,18 +1123,6 @@ variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
   [CommRing k] (Sc : SKM.Scalars D k) [Fintype I]
 variable (i : I) (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
 
-local notation "A₀" => heightAlgebra D Sc a n
-local notation "B₁" => heightAlgebra D Sc a (n + 1)
-local notation "GA" => heightParity D Sc a ha n
-local notation "GB" => heightParity D Sc a ha (n + 1)
-local notation "φ₁" => heightAppend D Sc a i n
-local notation "φ₂" => heightAppend D Sc a i (n + 1)
-local notation "x₁" => heightLastDot D Sc a i n
-local notation "P₁" => heightInductionCorner D Sc i a ha n
-local notation "Q₁" => heightRestrictionCorner D Sc i a ha n
-local notation "P₂" => heightInductionCorner D Sc i a ha (n + 1)
-local notation "Q₂" => heightRestrictionCorner D Sc i a ha (n + 1)
-local notation "p" => D.parity i
 
 /-! ### Powers of the dot on the induction corner -/
 
