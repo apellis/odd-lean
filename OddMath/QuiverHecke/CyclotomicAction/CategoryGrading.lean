@@ -1,7 +1,7 @@
-import OddMath.QuiverHecke.CyclotomicAction.ContentModules
+import OddMath.QuiverHecke.CyclotomicAction.ContentModules.ContentCategory
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.CoefficientIdeal
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ModuleCoefficients
-import OddMath.QuiverHecke.CyclotomicAction.CyclotomicQuotientTop
-import OddMath.QuiverHecke.CyclotomicAction.VacuumGrading
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ReservoirCoefficients
 
 /-!
 # Category grading

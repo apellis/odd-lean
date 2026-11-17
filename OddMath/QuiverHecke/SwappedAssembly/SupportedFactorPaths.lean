@@ -1,5 +1,5 @@
-import OddMath.QuiverHecke.SwappedAssembly.SupportedPaths
 import OddMath.QuiverHecke.CyclotomicAction.ProbeMixedBraid
+import OddMath.QuiverHecke.SwappedAssembly.SupportedPaths
 
 /-! # The chosen factor paths on exact-support sectors
 

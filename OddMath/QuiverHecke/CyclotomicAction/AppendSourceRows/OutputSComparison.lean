@@ -1,0 +1,341 @@
+import Mathlib.Algebra.Polynomial.Div
+import Mathlib.LinearAlgebra.TensorProduct.RightExactness
+import OddMath.QuiverHecke.CyclotomicAction.LeadingSourceTransport
+import OddMath.QuiverHecke.HalfTurn.CoefficientGenerators
+
+/-!
+# Append source rows
+
+Part of the categorical action of the quiver Hecke 2-supercategory on deformed
+cyclotomic quotients. Each section below was a separate file; its docstring describes it.
+-/
+
+section
+
+/-!
+# The independent ordered-product boundary coefficients
+
+The polynomial below is defined by the independent ordered-product choices,
+not by an extractor. The genuine source expansion and termwise transport identify
+its coefficients with output extraction, with the library's fixed global sign.
+This is the fixed-word polynomial comparison for `DeformedBoundaryDivision.md`
+§§1, 4 in the library crossing convention of `MackeyCrossingConventions.md`.
+It is not the corrected-rho iterate comparison, boundary division or prescribed inverse.
+-/
+noncomputable section
+namespace OddMath.QuiverHecke.ELV
+open CategoryTheory StringDiagrams Supercategory
+open scoped Classical
+universe u
+variable {I X k : Type u} [AddCommGroup X] [CommRing k]
+  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
+
+/-- The signed independent ordered-product coefficient row. -/
+def orderedOutputCoefficients (i : I) (v : List I) : ℕ →₀ Old D Sc cutoff v v :=
+  ∑ c : MoveChoices v, leadingMoveCoeff D (k := k) i v c •
+    Finsupp.single (sourceMovingDegree (leadingSourceDots D i 0 0 v c))
+      ((ideal D Sc cutoff v v).mkQ (leadingSourceOldArrow D Sc cutoff i v c))
+
+/-- The unsigned ordered S polynomial, specified by explicit independent
+monomials and coefficients. The global sign removes the signed local factors. -/
+def independentOutputS (i : I) (v : List I) : ℕ →₀ Old D Sc cutoff v v :=
+  SKM.zsign k (D.parity i) ^ v.count i • orderedOutputCoefficients D Sc cutoff i v
+
+/-- Fully explicit independent coefficient formula. The finite choices and old
+dot monomials come from the ordered square product, not from extraction. -/
+theorem independentOutputS_apply (i : I) (v : List I) (n : ℕ) :
+    independentOutputS D Sc cutoff i v n =
+      SKM.zsign k (D.parity i) ^ v.count i •
+        ∑ c : MoveChoices v,
+          if sourceMovingDegree (leadingSourceDots D i 0 0 v c) = n then
+            leadingMoveCoeff D (k := k) i v c •
+              (ideal D Sc cutoff v v).mkQ (leadingSourceOldArrow D Sc cutoff i v c)
+          else 0 := by
+  simp only [independentOutputS, orderedOutputCoefficients, Finsupp.smul_apply,
+    Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.single_apply]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro c _
+  split_ifs <;> simp
+
+private theorem global_sign_square (i : I) (v : List I) :
+    (SKM.zsign k (D.parity i) ^ v.count i) *
+      (SKM.zsign k (D.parity i) ^ v.count i) = 1 := by
+  rw [← mul_pow]
+  by_cases hi : D.parity i = 1 <;> simp [SKM.zsign, hi]
+
+/-- Extraction of the independent source expansion, evaluated term by term. -/
+theorem outputLongExtraction_source_expansion (p : ZMod 2) (i : I) (v : List I) :
+    outputLongExtraction D Sc cutoff p i v
+      (projection D Sc cutoff i v (v ++ [i])
+        (affineUnit D Sc cutoff (i :: v) (v ++ [i])
+          ((∑ c : MoveChoices v, leadingMoveCoeff D (k := k) i v c •
+            endpointDotMonomial D Sc (i :: v) (leadingSourceDots D i 0 0 v c)) ≫
+            OutputOldComposite.bareU D Sc i v))) =
+      orderedOutputCoefficients D Sc cutoff i v := by
+  simp only [Preadditive.sum_comp, Linear.smul_comp, map_sum, map_smul,
+    leading_source_output_extraction, orderedOutputCoefficients]
+
+/-- The independent unsigned ordered square product extracts to the explicit S
+coefficient row; S is not defined by this equation. -/
+theorem outputLongExtraction_squareProduct (p : ZMod 2) (i : I) (v : List I) :
+    outputLongExtraction D Sc cutoff p i v
+      (projection D Sc cutoff i v (v ++ [i])
+        (affineUnit D Sc cutoff (i :: v) (v ++ [i])
+          (leadingMoveSquareProduct D Sc i [] v ≫ OutputOldComposite.bareU D Sc i v))) =
+      independentOutputS D Sc cutoff i v := by
+  have h := outputLongExtraction_source_expansion D Sc cutoff p i v
+  rw [leadingSource_expansion_eq_sign_smul] at h
+  change outputLongExtraction D Sc cutoff p i v
+    (projection D Sc cutoff i v (v ++ [i])
+      (affineUnit D Sc cutoff (i :: v) (v ++ [i])
+        ((SKM.zsign k (D.parity i) ^ v.count i • leadingMoveSquareProduct D Sc i [] v) ≫
+          OutputOldComposite.bareU D Sc i v))) = _ at h
+  rw [Linear.smul_comp, map_smul, map_smul, map_smul] at h
+  rw [independentOutputS, ← h, smul_smul, global_sign_square, one_smul]
+
+/-- The actual moving intertwiner extracts to the independent S polynomial with
+the fixed global library sign, for arbitrary words and both moving parities. -/
+theorem outputLongExtraction_move_independentS (p : ZMod 2) (i : I) (v : List I) :
+    outputLongExtraction D Sc cutoff p i v
+      (projection D Sc cutoff i v (v ++ [i])
+        (affineUnit D Sc cutoff (i :: v) (v ++ [i]) (moveHom D Sc i [] v))) =
+      SKM.zsign k (D.parity i) ^ v.count i • independentOutputS D Sc cutoff i v := by
+  have h := outputLongExtraction_move_endpointPolynomial D Sc cutoff p i v 1
+  change outputLongExtraction D Sc cutoff p i v
+    (projection D Sc cutoff i v (v ++ [i])
+      (affineUnit D Sc cutoff (i :: v) (v ++ [i]) (moveHom D Sc i [] v))) =
+    outputLongExtraction D Sc cutoff p i v
+      (projection D Sc cutoff i v (v ++ [i])
+        (affineUnit D Sc cutoff (i :: v) (v ++ [i])
+          (leadingMoveEndpointPolynomial D Sc i [] v ≫ OutputOldComposite.bareU D Sc i v))) at h
+  rw [h, leadingMoveEndpointPolynomial_eq_sign_smul_squareProduct,
+    Linear.smul_comp, map_smul, map_smul, map_smul, outputLongExtraction_squareProduct]
+
+end OddMath.QuiverHecke.ELV
+end
+
+end
+
+section
+
+/-!
+# Corrected rho iterates of the independent output polynomial
+
+`outputLongExtraction_boundaryRho_move_independentS` identifies every corrected
+source iterate with the finite sum of the prescribed corrected long coordinates.
+The coefficients are the independently defined ordered square product, not an
+extraction-defined polynomial. Their even support and total-twist invariance are
+proved before using the corrected even/odd lift formulas.
+`outputLongExtraction_boundaryRho_move_polynomial` further gives the literal
+finite operator sum S(rhobar) w_d, where w_d is the actual corrected lift of
+the old identity. Chronological coefficient postcomposition intertwines
+rhobar by `outputCoefficientRho_postcomp`; centrality is not assumed.
+
+`reverseBoundary_sub_correctedS_mem` couples this extraction to the ordered
+reverse-QP P-image modulo the chronological crossing image. This is the input
+from `DeformedBoundaryDivision.md` §4 for the augmented boundary matrix; it does
+not assume or construct C₀, S-division, or a matrix inverse. The global library
+sign is retained, rather than replaced by the source-convention sign.
+-/
+noncomputable section
+namespace OddMath.QuiverHecke.ELV
+open CategoryTheory StringDiagrams Supercategory
+open scoped Classical
+universe u
+variable {I X k : Type u} [AddCommGroup X] [CommRing k]
+  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
+
+theorem independentOutputS_oldTwist (i : I) (v : List I) (n : ℕ) (q : ZMod 2) :
+    oldTwist D Sc cutoff q v v (independentOutputS D Sc cutoff i v n) =
+      independentOutputS D Sc cutoff i v n := by
+  rw [independentOutputS_apply, map_smul, map_sum]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro c _
+  split_ifs
+  · rw [map_smul]
+    congr 1
+    change (ideal D Sc cutoff v v).mkQ (twist k q _) = _
+    rw [leadingSourceOldArrow_twist]
+  · exact map_zero _
+
+theorem independentOutputS_support_even (i : I) (hi : D.parity i = 1)
+    (v : List I) {n : ℕ} (hn : n ∈ (independentOutputS D Sc cutoff i v).support) :
+    Even n := by
+  by_contra he
+  have hz : independentOutputS D Sc cutoff i v n = 0 := by
+    rw [independentOutputS_apply]
+    have hsum : (∑ c : MoveChoices v,
+        if sourceMovingDegree (leadingSourceDots D i 0 0 v c) = n then
+          leadingMoveCoeff D (k := k) i v c •
+            (ideal D Sc cutoff v v).mkQ (leadingSourceOldArrow D Sc cutoff i v c)
+        else 0) = 0 := by
+      apply Finset.sum_eq_zero
+      intro c _
+      rw [ite_eq_right]
+      intro h
+      apply he
+      rw [← h]
+      exact Nat.even_iff.mpr (sourceMovingDegree_leadingSourceDots_even D i hi 0 v c)
+    rw [hsum, smul_zero]
+  exact (Finsupp.mem_support_iff.mp hn) hz
+
+theorem outputLongExtraction_boundaryRho_iterate (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I) (d : ℕ)
+    (z : Target D Sc cutoff j.1 v (v ++ [j.1])) :
+    outputLongExtraction D Sc cutoff p j.1 v
+      ((boundaryRho D Sc cutoff j v (v ++ [j.1]))^[d] z) =
+      (outputCoefficientRho D Sc cutoff p j v)^[d]
+        (outputLongExtraction D Sc cutoff p j.1 v z) := by
+  induction d with
+  | zero => rfl
+  | succ d ih =>
+    rw [Function.iterate_succ_apply', outputLongExtraction_boundaryRho, ih,
+      Function.iterate_succ_apply']
+
+theorem outputCoefficientRho_iterate_even_single (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I) (n : ℕ) (hn : Even n)
+    (b : Old D Sc cutoff v v) :
+    (outputCoefficientRho D Sc cutoff p j v)^[n] (Finsupp.single 0 b) =
+      Finsupp.single n b := by
+  obtain ⟨q, hq⟩ := hn
+  have h : n = 2 * q := by omega
+  rw [h]
+  rw [← outputLongExtraction_correctedLift, outputCorrectedLift_even,
+    outputLongExtraction_lift]
+
+theorem outputCoefficientRho_iterate_independentS (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I) (d : ℕ) :
+    (outputCoefficientRho D Sc cutoff p j v)^[d] (independentOutputS D Sc cutoff j.1 v) =
+      ∑ n ∈ (independentOutputS D Sc cutoff j.1 v).support,
+        outputLongExtraction D Sc cutoff p j.1 v
+          (outputCorrectedLift D Sc cutoff p j v (d + n)
+            (independentOutputS D Sc cutoff j.1 v n)) := by
+  conv_lhs => rw [← Finsupp.sum_single (independentOutputS D Sc cutoff j.1 v)]
+  rw [← Module.End.coe_pow]
+  change (outputCoefficientRho D Sc cutoff p j v ^ d)
+    (∑ n ∈ (independentOutputS D Sc cutoff j.1 v).support,
+      Finsupp.single n (independentOutputS D Sc cutoff j.1 v n)) = _
+  rw [map_sum]
+  apply Finset.sum_congr rfl
+  intro n hn
+  rw [Module.End.pow_apply, outputLongExtraction_correctedLift,
+    Function.iterate_add_apply,
+    outputCoefficientRho_iterate_even_single D Sc cutoff p j v n
+      (independentOutputS_support_even D Sc cutoff j.1 j.2 v hn)]
+
+theorem outputLongExtraction_boundaryRho_move_independentS (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I) (d : ℕ) :
+    outputLongExtraction D Sc cutoff p j.1 v
+      ((boundaryRho D Sc cutoff j v (v ++ [j.1]))^[d]
+        (projection D Sc cutoff j.1 v (v ++ [j.1])
+          (affineUnit D Sc cutoff (j.1 :: v) (v ++ [j.1]) (moveHom D Sc j.1 [] v)))) =
+      SKM.zsign k (D.parity j.1) ^ v.count j.1 •
+        ∑ n ∈ (independentOutputS D Sc cutoff j.1 v).support,
+          outputLongExtraction D Sc cutoff p j.1 v
+            (outputCorrectedLift D Sc cutoff p j v (d + n)
+              (independentOutputS D Sc cutoff j.1 v n)) := by
+  rw [outputLongExtraction_boundaryRho_iterate, outputLongExtraction_move_independentS,
+    ← Module.End.coe_pow, map_smul, Module.End.pow_apply,
+    outputCoefficientRho_iterate_independentS]
+
+private theorem twist_oldComp (p : ZMod 2) (v : List I) (b c : Old D Sc cutoff v v) :
+    oldTwist D Sc cutoff p v v (oldComp D Sc cutoff v v v b c) =
+      oldComp D Sc cutoff v v v (oldTwist D Sc cutoff p v v b)
+        (oldTwist D Sc cutoff p v v c) := by
+  obtain ⟨b, rfl⟩ := (ideal D Sc cutoff v v).mkQ_surjective b
+  obtain ⟨c, rfl⟩ := (ideal D Sc cutoff v v).mkQ_surjective c
+  change (ideal D Sc cutoff v v).mkQ (twist k p (b ≫ c)) =
+    (ideal D Sc cutoff v v).mkQ (twist k p b ≫ twist k p c)
+  rw [twist_comp]
+
+private theorem precomp_oldComp (v : List I) (a : hom D Sc cutoff v v)
+    (b c : Old D Sc cutoff v v) :
+    oldPrecomp D Sc cutoff v v a (oldComp D Sc cutoff v v v b c) =
+      oldComp D Sc cutoff v v v (oldPrecomp D Sc cutoff v v a b) c := by
+  obtain ⟨b, rfl⟩ := (ideal D Sc cutoff v v).mkQ_surjective b
+  obtain ⟨c, rfl⟩ := (ideal D Sc cutoff v v).mkQ_surjective c
+  change (ideal D Sc cutoff v v).mkQ (a ≫ (b ≫ c)) =
+    (ideal D Sc cutoff v v).mkQ ((a ≫ b) ≫ c)
+  rw [Category.assoc]
+
+/-- Coefficient-operator intertwining in chronological composition order.
+No commutation or centrality of the old coefficient is assumed. -/
+theorem outputCoefficientRho_postcomp (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I)
+    (c : Old D Sc cutoff v v)
+    (hc : oldTwist D Sc cutoff (D.parity j.1) v v c = c)
+    (f : ℕ →₀ Old D Sc cutoff v v) :
+    outputCoefficientRho D Sc cutoff p j v
+      (Finsupp.mapRange.linearMap ((oldComp D Sc cutoff v v v).flip c) f) =
+      Finsupp.mapRange.linearMap ((oldComp D Sc cutoff v v v).flip c)
+        (outputCoefficientRho D Sc cutoff p j v f) := by
+  induction f using Finsupp.induction_linear with
+  | zero => simp only [map_zero]
+  | add f g hf hg => simp only [map_add, hf, hg]
+  | single m b =>
+    simp only [Finsupp.mapRange.linearMap_apply, Finsupp.mapRange_single,
+      LinearMap.flip_apply, outputCoefficientRho_single, map_add, map_smul]
+    rw [twist_oldComp, hc, precomp_oldComp]
+
+theorem outputCoefficientRho_iterate_postcomp (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I)
+    (c : Old D Sc cutoff v v)
+    (hc : oldTwist D Sc cutoff (D.parity j.1) v v c = c)
+    (d : ℕ) (f : ℕ →₀ Old D Sc cutoff v v) :
+    (outputCoefficientRho D Sc cutoff p j v)^[d]
+      (Finsupp.mapRange.linearMap ((oldComp D Sc cutoff v v v).flip c) f) =
+      Finsupp.mapRange.linearMap ((oldComp D Sc cutoff v v v).flip c)
+        ((outputCoefficientRho D Sc cutoff p j v)^[d] f) := by
+  induction d with
+  | zero => rfl
+  | succ d ih =>
+    rw [Function.iterate_succ_apply', ih, outputCoefficientRho_postcomp D Sc cutoff p j v c hc,
+      Function.iterate_succ_apply']
+
+theorem outputCorrectedLift_coefficient (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I) (d : ℕ)
+    (c : Old D Sc cutoff v v)
+    (hc : oldTwist D Sc cutoff (D.parity j.1) v v c = c) :
+    outputLongExtraction D Sc cutoff p j.1 v (outputCorrectedLift D Sc cutoff p j v d c) =
+      Finsupp.mapRange.linearMap ((oldComp D Sc cutoff v v v).flip c)
+        (outputLongExtraction D Sc cutoff p j.1 v
+          (outputCorrectedLift D Sc cutoff p j v d ((ideal D Sc cutoff v v).mkQ (𝟙 _)))) := by
+  rw [outputLongExtraction_correctedLift, outputLongExtraction_correctedLift,
+    ← outputCoefficientRho_iterate_postcomp D Sc cutoff p j v c hc]
+  congr 1
+  simp only [Finsupp.mapRange.linearMap_apply, Finsupp.mapRange_single, LinearMap.flip_apply]
+  congr 1
+  obtain ⟨c, rfl⟩ := (ideal D Sc cutoff v v).mkQ_surjective c
+  rw [oldComp_mk, Category.id_comp]
+
+/-- The independent polynomial evaluated at the actual coefficient rho on the
+prescribed corrected unit vector. Coefficient action is chronological
+postcomposition, and its intertwining is proved, not stipulated. -/
+theorem outputLongExtraction_boundaryRho_move_polynomial (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I) (d : ℕ) :
+    outputLongExtraction D Sc cutoff p j.1 v
+      ((boundaryRho D Sc cutoff j v (v ++ [j.1]))^[d]
+        (projection D Sc cutoff j.1 v (v ++ [j.1])
+          (affineUnit D Sc cutoff (j.1 :: v) (v ++ [j.1]) (moveHom D Sc j.1 [] v)))) =
+      SKM.zsign k (D.parity j.1) ^ v.count j.1 •
+        ∑ n ∈ (independentOutputS D Sc cutoff j.1 v).support,
+          Finsupp.mapRange.linearMap
+            ((oldComp D Sc cutoff v v v).flip (independentOutputS D Sc cutoff j.1 v n))
+            ((outputCoefficientRho D Sc cutoff p j v)^[n]
+              (outputLongExtraction D Sc cutoff p j.1 v
+                (outputCorrectedLift D Sc cutoff p j v d
+                  ((ideal D Sc cutoff v v).mkQ (𝟙 _))))) := by
+  rw [outputLongExtraction_boundaryRho_move_independentS]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro n _
+  rw [outputCorrectedLift_coefficient D Sc cutoff p j v (d + n) _
+    (independentOutputS_oldTwist D Sc cutoff j.1 v n (D.parity j.1)),
+    outputLongExtraction_correctedLift, outputLongExtraction_correctedLift,
+    Nat.add_comm d n, Function.iterate_add_apply]
+end OddMath.QuiverHecke.ELV
+end
+
+end

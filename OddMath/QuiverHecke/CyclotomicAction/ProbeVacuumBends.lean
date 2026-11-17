@@ -1,7 +1,5 @@
-import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightCap
 import Mathlib.RingTheory.Nilpotent.Basic
-import OddMath.QuiverHecke.SwappedAssembly.Supernatural.CrossCoeff
-import OddMath.SKM.RouquierHomPreNegativePowers
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightCap.ProbeContentBends
 import OddMath.QuiverHecke.CyclotomicAction.ReservoirLayers
 
 /-!

@@ -1,12 +1,4 @@
-import OddMath.QuiverHecke.CyclotomicAction.ProbeReindexMate
-import OddMath.QuiverHecke.CyclotomicAction.WeightedAppend
-import OddMath.QuiverHecke.CyclotomicAction.WeightMixed
-import OddMath.SKM.AugmentedInverseNaturality
-import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightDot
-import OddMath.QuiverHecke.CyclotomicAction.InductionGridRouquier
-import OddMath.QuiverHecke.CyclotomicAction.RouquierPowerWords
-import OddMath.QuiverHecke.CyclotomicAction.DistinctSlides
-import OddMath.QuiverHecke.CyclotomicAction.ParameterUntwist
+import OddMath.QuiverHecke.CyclotomicAction.ProbeReindexMate.ProbeBlockDistinctSlides
 
 /-!
 # Probe weight pair dots

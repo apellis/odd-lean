@@ -1,8 +1,7 @@
-import OddMath.QuiverHecke.CyclotomicAction.KernelDegree
-import OddMath.QuiverHecke.CyclotomicAction.KernelMatrixEvaluation
 import StringDiagrams.Super.GSVecMonoidal
 import StringDiagrams.Super.BoxProductGraded
 import OddMath.Diagrams.GradedTensor
+import OddMath.QuiverHecke.CyclotomicAction.KernelDegree
 
 /-!
 # Ind res

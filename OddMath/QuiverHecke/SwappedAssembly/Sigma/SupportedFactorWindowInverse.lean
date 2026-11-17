@@ -1,6 +1,6 @@
+import OddMath.QuiverHecke.CyclotomicAction.ProbeMixedBraid
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.FactorWindowInverse
 import OddMath.QuiverHecke.SwappedAssembly.SupportedPaths
-import OddMath.QuiverHecke.CyclotomicAction.ProbeMixedBraid
 
 /-! # Prescribed factor inverses on supported OLD/ELV objects
 

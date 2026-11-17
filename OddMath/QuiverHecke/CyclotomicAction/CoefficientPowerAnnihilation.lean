@@ -1,10 +1,8 @@
-import OddMath.QuiverHecke.CyclotomicAction.CyclotomicQuotientTop
-import OddMath.QuiverHecke.CyclotomicAction.VacuumGrading
-import OddMath.QuiverHecke.CyclotomicAction.ParabolicTransport
-import OddMath.QuiverHecke.CyclotomicAction.AppendContent
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import OddMath.SKM.ELVCoefficientPowers
 import Mathlib.RingTheory.Congruence.Hom
+import OddMath.QuiverHecke.CyclotomicAction.AppendContent.AppendDot
+import OddMath.QuiverHecke.CyclotomicAction.GlobalInduction.GlobalSupport
+import OddMath.SKM.ELVCoefficientPowers
 
 /-!
 # Coefficient power annihilation

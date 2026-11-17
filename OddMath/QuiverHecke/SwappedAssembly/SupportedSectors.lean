@@ -1,5 +1,5 @@
-import OddMath.QuiverHecke.CyclotomicAction.ContentHom
 import Mathlib.Data.Finsupp.Multiset
+import OddMath.QuiverHecke.CyclotomicAction.ContentHom.ContentHomSupport
 
 /-! # Formal sectors of the replete supported Hom action
 

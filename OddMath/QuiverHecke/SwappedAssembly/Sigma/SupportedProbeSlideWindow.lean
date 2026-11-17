@@ -1,6 +1,5 @@
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.ProbeSlideWindow
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SupportedFactorWindowInverse
-import OddMath.QuiverHecke.CyclotomicAction.ParameterUntwist
 
 /-! # Actual OLD probe slide and windows on supported padded sectors
 

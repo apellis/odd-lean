@@ -1,8 +1,6 @@
-import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowInverseData
-import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ProductCoefficients
+import OddMath.QuiverHecke.CyclotomicAction.ReservoirClosure.ReservoirClosureIdeal
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ResidualComparison
-import OddMath.QuiverHecke.CyclotomicAction.ContentTriple
-import OddMath.QuiverHecke.CyclotomicAction.ReservoirClosure
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowInverseData
 
 /-! # Padded chosen reservoir contractions in the fixed-output coefficient ideal
 

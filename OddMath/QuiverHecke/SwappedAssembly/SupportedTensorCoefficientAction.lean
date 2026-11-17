@@ -1,5 +1,5 @@
-import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorFamilies
 import OddMath.QuiverHecke.CyclotomicAction.VacuumTensorFaithful
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorFamilies
 
 /-! # Source coefficients on the supported tensor-vacuum words
 

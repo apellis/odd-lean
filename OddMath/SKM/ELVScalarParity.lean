@@ -1,7 +1,6 @@
-import OddMath.SKM.ELVScalarSpecialization
-import OddMath.SKM.BubbleSubstitution
 import OddMath.SKM.BubbleCoefficientGrading
-import OddMath.QuiverHecke.CyclotomicAction.CoefficientTransport
+import OddMath.SKM.BubbleSubstitution
+import OddMath.SKM.ELVScalarSpecialization
 
 /-! # Parity of ordinary ELV coefficient specialization
 

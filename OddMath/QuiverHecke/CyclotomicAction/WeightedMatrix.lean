@@ -1,11 +1,7 @@
-import OddMath.QuiverHecke.CyclotomicAction.WeightedAppend
-import OddMath.QuiverHecke.CyclotomicAction.KernelMatrixEvaluation
 import Mathlib.LinearAlgebra.Pi
-import OddMath.QuiverHecke.CyclotomicAction.ProbeVacuumCharts
 import Mathlib.CategoryTheory.Comma.Arrow
-import OddMath.QuiverHecke.CyclotomicAction.ContentBlockExtension
-import OddMath.Algebra.FiniteSupermoduleFunctor
-import OddMath.Algebra.SupermoduleIsoOfBijectiveTotals
+import OddMath.QuiverHecke.CyclotomicAction.ContentBlockExtension.ContentComparisonParity
+import OddMath.QuiverHecke.CyclotomicAction.ProbeVacuumCharts.ProbeUpperCharts
 
 /-!
 # Weighted matrix

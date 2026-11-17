@@ -1,8 +1,5 @@
+import OddMath.QuiverHecke.CyclotomicAction.WeightedPower.ContentVacuumCoefficientRows
 import OddMath.QuiverHecke.HalfTurn.PowerWordLayerClasses
-import OddMath.QuiverHecke.CyclotomicAction.TensorWords
-import OddMath.QuiverHecke.CyclotomicAction.VacuumTensorFaithful
-import OddMath.QuiverHecke.CyclotomicAction.WeightedPower
-import OddMath.QuiverHecke.CyclotomicAction.InductionTripleBraid
 
 /-!
 # Tensor word

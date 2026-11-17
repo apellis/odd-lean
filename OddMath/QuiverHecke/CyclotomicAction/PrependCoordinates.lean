@@ -1,10 +1,11 @@
-import OddMath.QuiverHecke.InputParabolic
-import OddMath.QuiverHecke.CyclotomicAction.IntertwinerRight
-import OddMath.QuiverHecke.ShuffleBasis
-import OddMath.QuiverHecke.PrependBasis
-import OddMath.QuiverHecke.CyclotomicAction.CoefficientTransport
-import OddMath.QuiverHecke.HomDimension
 import Mathlib.LinearAlgebra.DirectSum.Finsupp
+import OddMath.QuiverHecke.Basis
+import OddMath.QuiverHecke.CyclotomicAction.CoefficientTransport.CyclotomicTarget
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerRight.IntertwinerRightDot
+import OddMath.QuiverHecke.HomDimension
+import OddMath.QuiverHecke.InputParabolic
+import OddMath.QuiverHecke.PrependBasis
+import OddMath.QuiverHecke.CyclotomicAction.SuperQuotient
 
 /-!
 # Prepend coordinates

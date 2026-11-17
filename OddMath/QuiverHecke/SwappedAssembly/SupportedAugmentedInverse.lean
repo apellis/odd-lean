@@ -1,6 +1,6 @@
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightCap
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.OffCentralAugmentedMatrix
 import OddMath.QuiverHecke.SwappedAssembly.SupportedPointwiseLeftwardInverse
-import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightCap
 
 /-! # Augmented inverse equations on every supported input
 

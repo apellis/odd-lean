@@ -1,18 +1,13 @@
-import OddMath.QuiverHecke.CyclotomicAction.RouquierPowerWords
-import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightBraid
-import OddMath.QuiverHecke.CyclotomicAction.ProbeReindexMate
-import OddMath.Algebra.HomogeneousSuperfunctorIso
-import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightQuadratic
-import OddMath.QuiverHecke.CyclotomicAction.WeightDenominators
-import OddMath.QuiverHecke.SwappedAssembly.Sectors
-import OddMath.SKM.RouquierFTriangle
-import OddMath.QuiverHecke.CyclotomicAction.ParameterUntwist
-import OddMath.QuiverHecke.SwappedAssembly.Sigma.ProbeToReservoirBend
-import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirToProbeBend
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightBraid.ProbeWeightGeneralBraid
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightQuadratic.ProbeAppendToMateReindex
+import OddMath.QuiverHecke.CyclotomicAction.WeightDenominators.RouquierMulticolour
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ProductCoefficients
-import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightDot
-import OddMath.QuiverHecke.SwappedAssembly.Supernatural.CrossCoeff
+import OddMath.QuiverHecke.SwappedAssembly.Generators.Cross
+import OddMath.QuiverHecke.SwappedAssembly.Generators.CupCap
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.FiniteBendEvaluation
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.SameColourBlocks
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Cross
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.CrossCoeff
 
 /-!
 # Probe mixed braid
