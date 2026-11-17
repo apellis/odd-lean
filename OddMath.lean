@@ -1679,6 +1679,7 @@ import OddMath.QuiverHecke.CyclotomicAction.TensorWord
 import OddMath.QuiverHecke.CyclotomicAction.WeightDenominators
 import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightDot
 import OddMath.QuiverHecke.CyclotomicAction.ProbeReindexWeight
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightPairDots
 import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightQuadratic
 import OddMath.QuiverHecke.CyclotomicAction.ProbeReindexMate
 import OddMath.QuiverHecke.SwappedAssembly.ReservoirWordFunctor

@@ -1,5 +1,5 @@
 import OddMath.QuiverHecke.CyclotomicAction.ProbeReindexMate
-import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightQuadratic
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightPairDots
 import OddMath.QuiverHecke.CyclotomicAction.ProbeCap
 import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightDot
 import OddMath.QuiverHecke.CyclotomicAction.InductionTripleBraid
