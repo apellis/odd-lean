@@ -1766,12 +1766,18 @@ local notation "Fc₀" => probeEvaluatedRestrictTo D Sc m ν i ν₁ h₁
 local notation "Ec₁" => probeEvaluatedAppendTo D Sc m ν₁ i ν₂ h₂
 local notation "Fc₁" => probeEvaluatedRestrictTo D Sc m ν₁ i ν₂ h₂
 
+/-- The trivial permutation of `i :: ν`, as a named proof. Definitions below use it in
+place of the literal `List.Perm.refl (i :: ν)`: Lean abstracts that literal into an auxiliary
+proof constant inside a definition, and the kernel then unfolds whole module categories
+before it can identify the two spellings by proof irrelevance. -/
+theorem probeConsPermSelf : (i :: ν).Perm (i :: ν) := List.Perm.refl _
+
 /-- The lower local loop comparison is the selected lower append comparison. -/
 def probeReindexLowerLoopIso :
     reindexInv ⋙ (F₀ ⋙ E₀) ⋙ reindex ≅ Fc₀ ⋙ Ec₀ :=
   Functor.isoWhiskerLeft Fc₀
     (probeAppendReindexIso D Sc m (List.Perm.refl ν) i
-      (List.Perm.refl (i :: ν)) h₁ h₁)
+      (probeConsPermSelf ν i) h₁ h₁)
 
 /-- The upper local loop comparison is the selected upper append comparison. -/
 def probeReindexUpperLoopIso :
@@ -1780,11 +1786,6 @@ def probeReindexUpperLoopIso :
     (Functor.isoWhiskerLeft reindexInv
       (probeAppendReindexIso D Sc m h₁ i (List.Perm.refl (i :: i :: ν)) h₂
         ((h₁.cons i).trans h₂))) Fc₁
-
-theorem probeReindexLowerLoopIso_hom_mem (N : ProbeEvaluatedModules D Sc m ν₁) :
-    (probeReindexLowerLoopIso D Sc m ν i h₁).hom.app N ∈ parity (R := k) _ _ 0 :=
-  probeAppendReindexIso_hom_mem D Sc m (List.Perm.refl ν) i
-    (List.Perm.refl (i :: ν)) h₁ h₁ ((Fc₀).obj N)
 
 theorem probeReindexUpperLoopIso_hom_mem (N : ProbeEvaluatedModules D Sc m ν₁) :
     (probeReindexUpperLoopIso D Sc m ν i h₁ h₂).hom.app N ∈ parity (R := k) _ _ 0 :=
@@ -1849,6 +1850,30 @@ private theorem evenNaturalIso_hom_total_2 {F G : Superfunctor k C A}
     (evenNaturalIso_2 e he).hom.total N = e.hom.app N :=
   OddMath.HomogeneousSuperfunctorIso.ofComponents_hom_total e.app _ N
 
+section Whisker
+variable {B : Type*} [Category B] {H : C ⥤ B} {P Q : B ⥤ A}
+  [(H ⋙ P).Additive] [(H ⋙ P).Linear k] [IsSuperfunctor k (H ⋙ P)]
+  [(H ⋙ Q).Additive] [(H ⋙ Q).Linear k] [IsSuperfunctor k (H ⋙ Q)]
+
+/-- An even isomorphism `P ≅ Q`, whiskered on the left by `H`, as an even superfunctor
+isomorphism. Parity is checked on the components of `P ≅ Q`, so the superfunctor types are
+compared only up to the composite `H ⋙ P`. -/
+private def evenWhiskerLeftIso_2 (φ : P ≅ Q) (he : ∀ M, φ.hom.app M ∈ parity (R := k) _ _ 0) :
+    (⟨H ⋙ P⟩ : Superfunctor k C A) ≅ ⟨H ⋙ Q⟩ :=
+  evenNaturalIso_2 (F := ⟨H ⋙ P⟩) (G := ⟨H ⋙ Q⟩) (Functor.isoWhiskerLeft H φ)
+    (fun N => he (H.obj N))
+
+private theorem evenWhiskerLeftIso_hom_mem_2 (φ : P ≅ Q)
+    (he : ∀ M, φ.hom.app M ∈ parity (R := k) _ _ 0) :
+    (evenWhiskerLeftIso_2 (H := H) φ he).hom ∈ parity (R := k) _ _ 0 :=
+  evenNaturalIso_hom_mem_2 (F := ⟨H ⋙ P⟩) (G := ⟨H ⋙ Q⟩) _ _
+
+private theorem evenWhiskerLeftIso_hom_total_2 (φ : P ≅ Q)
+    (he : ∀ M, φ.hom.app M ∈ parity (R := k) _ _ 0) (N : C) :
+    (evenWhiskerLeftIso_2 (H := H) φ he).hom.total N = φ.hom.app (H.obj N) :=
+  evenNaturalIso_hom_total_2 (F := ⟨H ⋙ P⟩) (G := ⟨H ⋙ Q⟩) _ _ N
+end Whisker
+
 end Generic
 open ELV ELV.BalancedInduction CyclotomicAction
 section Probe
@@ -1882,9 +1907,12 @@ abbrev probeReindexLoopFunctor :
 /-- The selected lower loop comparison as an even superfunctor isomorphism. -/
 def probeReindexLowerLoopSuperIso :
     (probeReindexLoopFunctor D Sc m ν i h₁).obj oldLower ≅ newLower :=
-  evenNaturalIso_2 (F := (probeReindexLoopFunctor D Sc m ν i h₁).obj oldLower)
-    (G := newLower) (probeReindexLowerLoopIso D Sc m ν i h₁)
-    (probeReindexLowerLoopIso_hom_mem D Sc m ν i h₁)
+  evenWhiskerLeftIso_2 (H := probeEvaluatedRestrictTo D Sc m ν i ν₁ h₁)
+    (P := probeEvaluatedAppendTo D Sc m ν i (i :: ν) (probeConsPermSelf ν i) ⋙ reindex)
+    (Q := probeEvaluatedReindex D Sc m (List.Perm.refl ν) ⋙
+      probeEvaluatedAppendTo D Sc m ν i ν₁ h₁)
+    (probeAppendReindexIso D Sc m (List.Perm.refl ν) i (probeConsPermSelf ν i) h₁ h₁)
+    (probeAppendReindexIso_hom_mem D Sc m (List.Perm.refl ν) i (probeConsPermSelf ν i) h₁ h₁)
 
 /-- The selected upper loop comparison as an even superfunctor isomorphism. -/
 def probeReindexUpperLoopSuperIso :
@@ -1900,9 +1928,7 @@ def probeReindexIdentityLoopIso :
 
 theorem probeReindexLowerLoopSuperIso_hom_mem :
     (probeReindexLowerLoopSuperIso D Sc m ν i h₁).hom ∈ parity (R := k) _ _ 0 :=
-  evenNaturalIso_hom_mem_2 (F := (probeReindexLoopFunctor D Sc m ν i h₁).obj oldLower)
-    (G := newLower) (probeReindexLowerLoopIso D Sc m ν i h₁)
-    (probeReindexLowerLoopIso_hom_mem D Sc m ν i h₁)
+  evenWhiskerLeftIso_hom_mem_2 _ _
 
 theorem probeReindexUpperLoopSuperIso_hom_mem :
     (probeReindexUpperLoopSuperIso D Sc m ν i h₁ h₂).hom ∈ parity (R := k) _ _ 0 :=
@@ -1913,9 +1939,7 @@ theorem probeReindexUpperLoopSuperIso_hom_mem :
 theorem probeReindexLowerLoopSuperIso_hom_total (N : targetCategory) :
     (probeReindexLowerLoopSuperIso D Sc m ν i h₁).hom.total N =
       (probeReindexLowerLoopIso D Sc m ν i h₁).hom.app N :=
-  evenNaturalIso_hom_total_2 (F := (probeReindexLoopFunctor D Sc m ν i h₁).obj oldLower)
-    (G := newLower) (probeReindexLowerLoopIso D Sc m ν i h₁)
-    (probeReindexLowerLoopIso_hom_mem D Sc m ν i h₁) N
+  evenWhiskerLeftIso_hom_total_2 _ _ N
 
 theorem probeReindexUpperLoopSuperIso_hom_total (N : targetCategory) :
     (probeReindexUpperLoopSuperIso D Sc m ν i h₁ h₂).hom.total N =
