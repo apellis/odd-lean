@@ -48,8 +48,8 @@ jobs:
             echo "docs_only=false" >> "$GITHUB_OUTPUT"
           fi
       # The modules to rebuild are estimated against the commit whose build the cache holds: the
-      # last successful build of this pull request, otherwise its base; for a push, the merged
-      # pull request's head (whose build is handed over), otherwise the previous branch head.
+      # last successful build of this pull request, otherwise its base; for a push, the previous
+      # branch head.
       - name: Plan the build
         id: plan
         if: steps.scope.outputs.docs_only != 'true'
@@ -67,9 +67,7 @@ jobs:
               base="${{ github.event.pull_request.base.sha }}"
             fi
           elif [ "${{ github.event_name }}" = push ]; then
-            base=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls" \
-                --jq '[.[] | select(.merged_at != null)][0].head.sha // empty' 2>/dev/null || true)
-            [ -n "$base" ] || base="${{ github.event.before }}"
+            base="${{ github.event.before }}"
           fi
           if [ -z "$base" ] || ! git cat-file -e "$base^{commit}" 2>/dev/null; then
             base=HEAD
@@ -88,7 +86,7 @@ jobs:
   # their modules share imports; each uploads the build outputs it wrote.
   shard:
     needs: plan
-    if: needs.plan.outputs.sharded == 'true'
+    if: github.event_name != 'pull_request' && needs.plan.outputs.sharded == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 340
     permissions:
@@ -178,9 +176,11 @@ jobs:
           retention-days: 1
           if-no-files-found: error
 
-  # A quick result for pull requests: the library and the non-vacuity checks are elaborated without
-  # the kernel re-check of each declaration (`-Kfast=1`, see `lakefile.lean`), on top of the build
-  # cache. Its outputs are never cached or handed on; the `build` job below remains the full check.
+  # The pull request check: the library and the non-vacuity checks are elaborated without the
+  # kernel re-check of each declaration (`-Kfast=1`, see `lakefile.lean`), on top of the build
+  # cache of the base branch, followed by the axiom audit. Its outputs are never cached. The
+  # `build` job below checks every declaration in the kernel on each merge to master; a red
+  # master build is repaired before anything else is merged.
   quick-check:
     needs: plan
     if: github.event_name == 'pull_request' && needs.plan.outputs.docs_only != 'true'
@@ -246,8 +246,10 @@ jobs:
 
   build:
     needs: [plan, shard]
-    # Runs after the parts of a sharded build, or alone; stops early if a part failed.
-    if: ${{ !cancelled() }}
+    # The full build, with every declaration checked in the kernel, runs on branch pushes (every
+    # merge to master); pull requests are gated by `quick-check` (maintainer decision). Runs after
+    # the parts of a sharded build, or alone; stops early if a part failed.
+    if: ${{ !cancelled() && github.event_name != 'pull_request' }}
     runs-on: ubuntu-latest
     # `actions: write` lets the job delete superseded build caches of its own branch or pull
     # request (see the last step).
@@ -293,50 +295,12 @@ jobs:
           lint: false
           use-mathlib-cache: true
           use-github-cache: false
-      # Branch builds write caches; pull requests save their own build cache too (scoped to the
-      # pull request), so a later push to the same pull request recompiles only what changed. Exclude generated Lean
-      # setup JSON before saving: Lake writes it before compilation, and import metadata can
-      # otherwise consume many GB when restoring a cache. Retain proof artifacts and traces.
-      # Restores fall back to the newest entry for the same toolchain and manifest, then to the
-      # newest entry for the toolchain (oleans of modules unaffected by a dependency bump stay
-      # valid; Lake rebuilds the rest).
-      # A push that merges a pull request reuses that pull request's finished build (uploaded as an
-      # artifact by its last successful run on the same head commit), since branch runs cannot read
-      # caches saved by pull request runs. Lake checks every module against its source hash, so
-      # modules that differ from the pull request's merge ref are rebuilt as usual. Without such an
-      # artifact the build cache is restored instead.
-      - name: Fetch the merged pull request's build
-        id: handoff
-        if: github.event_name == 'push' && needs.plan.outputs.docs_only != 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          head=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls" \
-              --jq '[.[] | select(.merged_at != null)][0].head.sha // empty' 2>/dev/null || true)
-          if [ -z "$head" ]; then
-            echo "No merged pull request for this commit; using the build cache."
-            exit 0
-          fi
-          run=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow build.yml --event pull_request \
-              --commit "$head" --status success --limit 1 --json databaseId \
-              --jq '.[0].databaseId // empty' 2>/dev/null || true)
-          if [ -z "$run" ]; then
-            echo "No successful pull request build of $head; using the build cache."
-            exit 0
-          fi
-          if gh run download "$run" --repo "$GITHUB_REPOSITORY" --name lake-build \
-                --dir "$RUNNER_TEMP/handoff" \
-              && zstd -dc "$RUNNER_TEMP/handoff/lake-build.tar.zst" | tar -xf -; then
-            rm -rf "$RUNNER_TEMP/handoff"
-            echo "Restored the build of pull request run $run (head $head)."
-            echo "found=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "Could not restore the build of run $run; using the build cache."
-            rm -rf "$RUNNER_TEMP/handoff" .lake/build \
-              .lake/packages/{DG,StringDiagrams,LieLean,Categorification}/.lake/build
-          fi
+      # Branch builds save the build cache. Exclude generated Lean setup JSON before saving: Lake
+      # writes it before compilation, and import metadata can otherwise consume many GB when
+      # restoring a cache. Restores fall back to the newest entry for the same toolchain and
+      # manifest, then to the newest entry for the toolchain (Lake rebuilds what changed).
       - name: Restore build cache
-        if: needs.plan.outputs.docs_only != 'true' && steps.handoff.outputs.found != 'true'
+        if: needs.plan.outputs.docs_only != 'true'
         uses: actions/cache/restore@v4
         with:
           path: |
@@ -352,7 +316,7 @@ jobs:
       # Keep this dependency separate: changing the paths of the main cache invalidates
       # its cache version, including entries selected by restore-keys.
       - name: Restore Categorification cache
-        if: needs.plan.outputs.docs_only != 'true' && steps.handoff.outputs.found != 'true'
+        if: needs.plan.outputs.docs_only != 'true'
         uses: actions/cache/restore@v4
         with:
           path: |
@@ -387,39 +351,6 @@ jobs:
             zstd -dc "$part" | tar -xf -
           done
           rm -rf "$RUNNER_TEMP/shards"
-      # Fail on a changed producer or its consumer before building unrelated modules.
-      # Lake reuses these outputs in the mandatory full build and NonVacuity gate below.
-      - name: Check changed Lean modules and paired consumers
-        if: github.event_name == 'pull_request' && needs.plan.outputs.docs_only != 'true'
-        env:
-          LEAN_NUM_THREADS: 4
-          SCOPED_BASE: ${{ github.event.pull_request.base.sha }}
-        run: |
-          targets=()
-          while IFS= read -r -d '' path; do
-            case "$path" in
-              OddMath/*.lean)
-                module="${path%.lean}"
-                targets+=("+${module//\//.}")
-                consumer="scripts/NonVacuity/${path##*/}"
-                if [ -f "$consumer" ]; then
-                  module="${consumer#scripts/}"
-                  module="${module%.lean}"
-                  targets+=("+${module//\//.}")
-                fi
-                ;;
-              scripts/NonVacuity/*.lean)
-                module="${path#scripts/}"
-                module="${module%.lean}"
-                targets+=("+${module//\//.}")
-                ;;
-            esac
-          done < <(git diff --diff-filter=AM --name-only -z "$SCOPED_BASE" HEAD -- OddMath scripts/NonVacuity)
-          if [ "${#targets[@]}" -gt 0 ]; then
-            mapfile -t targets < <(printf '%s\n' "${targets[@]}" | sort -u)
-            set -o pipefail
-            lake build --wfail "${targets[@]}" < /dev/null 2>&1 | awk "$FAIL_FAST"
-          fi
       # The largest modules need up to about 6 GB and the runner has 16 GB: two concurrent Lean
       # processes.
       - name: Build
@@ -450,23 +381,6 @@ jobs:
               find "$build/ir" -type f -name '*.setup.json' -delete
             fi
           done
-      # Hand the finished build to the push that merges this pull request (see the fetch step).
-      - name: Package the build for the merge
-        if: success() && github.event_name == 'pull_request' && needs.plan.outputs.docs_only != 'true'
-        run: |
-          tar --posix -cf - .lake/build \
-              .lake/packages/{DG,StringDiagrams,LieLean,Categorification}/.lake/build \
-            | zstd -T0 -3 -q -o "$RUNNER_TEMP/lake-build.tar.zst"
-          ls -lh "$RUNNER_TEMP/lake-build.tar.zst"
-      - name: Upload the build for the merge
-        if: success() && github.event_name == 'pull_request' && needs.plan.outputs.docs_only != 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: lake-build
-          path: ${{ runner.temp }}/lake-build.tar.zst
-          compression-level: 0
-          retention-days: 3
-          if-no-files-found: error
       - name: Save Categorification cache
         if: always() && github.event_name != 'pull_request' && needs.plan.outputs.docs_only != 'true'
         uses: actions/cache/save@v4
