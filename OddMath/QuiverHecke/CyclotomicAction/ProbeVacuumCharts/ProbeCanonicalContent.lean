@@ -508,7 +508,7 @@ noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 open OddMath.QuiverHecke.ELV OddMath.QuiverHecke.ELV.BalancedInduction
 open OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor
-open OddMath.QuiverHecke.ELV.CyclotomicCrossingTensor.TensorMatrixCoordinates
+
 namespace OddMath.QuiverHecke
 universe u
 

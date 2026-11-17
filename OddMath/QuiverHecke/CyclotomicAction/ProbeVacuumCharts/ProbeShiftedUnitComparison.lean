@@ -213,7 +213,6 @@ theorem probeAppendComparisonLinear_unitDotColumn
     O n ((Q).obj w)
   exact h.trans he.symm
 
-local notation "e" => eqToIso (probeOrdinaryModuleSuperfunctor_restrict D Sc m ν N hN)
 local instance scalarShiftedUnitOldPi : PiSupercategory k
     (Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k)) :=
   supermodulePiSupercategory

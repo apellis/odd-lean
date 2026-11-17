@@ -102,14 +102,6 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ) (ν : List I) (i : I)
   (N : Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) (i :: ν)) (SVec k))
   (hN : ProbeEvaluatesCoefficients D m Sc (i :: ν) N)
-local notation "J" => ELV.oldContentAppend D Sc (probeCutoff D m) ν i
-local notation "T" => probeOrdinaryAppend D Sc m ν i
-local notation "U" => probeOldOrdinaryFunctor D Sc m (i :: ν)
-local notation "O" => probeOrdinaryModuleSuperfunctor D Sc m (i :: ν) N hN
-local notation "R" => Functor.obj (restriction J) N
-local notation "hR" => probeOldRestriction_evaluatesCoefficients D Sc m ν i N hN
-local notation "c" => eqToIso (probeOrdinaryRestrictionModule_eq D Sc m ν i N hN)
-local notation "e" => eqToIso (probeOrdinaryModuleSuperfunctor_restrict D Sc m (i :: ν) N hN)
 local instance scalarShiftedCapOldPi : PiSupercategory k
     (Superfunctor k (ELV.OldContentCategory D Sc (probeCutoff D m) (i :: ν)) (SVec k)) :=
   supermodulePiSupercategory
