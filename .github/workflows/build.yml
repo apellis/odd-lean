@@ -178,6 +178,72 @@ jobs:
           retention-days: 1
           if-no-files-found: error
 
+  # A quick result for pull requests: the library and the non-vacuity checks are elaborated without
+  # the kernel re-check of each declaration (`-Kfast=1`, see `lakefile.lean`), on top of the build
+  # cache. Its outputs are never cached or handed on; the `build` job below remains the full check.
+  quick-check:
+    needs: plan
+    if: github.event_name == 'pull_request' && needs.plan.outputs.docs_only != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    permissions:
+      contents: read
+    env:
+      FAIL_FAST: '{ print } /^error: / { print "::error::First Lean error above; stopping this build early."; exit 1 }'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add swap space
+        run: |
+          sudo swapoff -a || true
+          sudo fallocate -l 12G /mnt/lean-swap
+          sudo chmod 600 /mnt/lean-swap
+          sudo mkswap /mnt/lean-swap
+          sudo swapon /mnt/lean-swap
+      - name: Set up Lean and fetch the Mathlib cache
+        uses: leanprover/lean-action@v1
+        with:
+          build: false
+          test: false
+          lint: false
+          use-mathlib-cache: true
+          use-github-cache: false
+      - name: Restore build cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            .lake/build
+            .lake/packages/DG/.lake/build
+            .lake/packages/StringDiagrams/.lake/build
+            .lake/packages/LieLean/.lake/build
+          key: lake-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            lake-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
+            lake-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-
+      - name: Restore Categorification cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            .lake/packages/Categorification/.lake/build
+          key: categorification-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            categorification-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
+            categorification-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-
+      - name: Remove restored Lean setup metadata
+        run: |
+          for build in .lake/build .lake/packages/{DG,StringDiagrams,LieLean,Categorification}/.lake/build; do
+            if [ -d "$build/ir" ]; then
+              find "$build/ir" -type f -name '*.setup.json' -delete
+            fi
+          done
+      - name: Elaborate without the kernel re-check
+        env:
+          LEAN_NUM_THREADS: 4
+        run: |
+          set -o pipefail
+          lake -R -Kfast=1 build --wfail OddMath NonVacuity < /dev/null 2>&1 | awk "$FAIL_FAST"
+      - name: Axiom audit
+        run: lake env lean -DwarningAsError=true scripts/AxiomAudit.lean
+
   build:
     needs: [plan, shard]
     # Runs after the parts of a sharded build, or alone; stops early if a part failed.
