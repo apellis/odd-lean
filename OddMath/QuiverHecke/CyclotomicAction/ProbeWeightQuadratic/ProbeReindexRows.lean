@@ -925,4 +925,6 @@ end OddMath.QuiverHecke
 end
 
 end
--- CI timing probe (removed before merge)
+
+/-- Timing probe for CI (removed before merge). -/
+theorem ciTimingProbe1173 : True := trivial
