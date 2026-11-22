@@ -499,14 +499,6 @@ from `0` in Lean.
    formalized as printed, over `ℤ[√−1]`, with this definition of `K₀`.
    The literal even group over a field is free abelian on `[k⟨j⟩]`, `0 ≤ j < 4` (dg-lean
    `DG.HalfGradedDGRing.Field.K0Basis`).
-   **For the authors.** In §2.2.4 the morphisms of §2.2 are even, and with them the classes of `k` and of `k`
-   placed in bidegree `(2, 1̄)` are not related by `q²`, so the relation `(1 + q²)[k] = 0` does not hold and
-   `⟨1⟩ ∘ ⟨1⟩` is not isomorphic to the translation. Both statements become correct once `K₀` of the dg
-   supercategory is defined using isomorphisms of either parity (equivalently, by imposing `[ΠX] = [X]` on the
-   usual Grothendieck group) and the isomorphism `⟨1⟩ ∘ ⟨1⟩ ≅ [1]` is read as an odd natural isomorphism, with
-   `[1]` the translation of the half-graded derived category; that translation is the parity shift combined with
-   the `q`-shift by 2, not the parity shift alone as in §2.2. The
-   later results, in particular Theorems 3.18 and 4.17, hold with this convention as stated.
 
 ## [HW] D. Hill, W. Wang, *Categorification of quantum Kac–Moody superalgebras*, arXiv:1202.2769v2
 
@@ -551,16 +543,6 @@ from `0` in Lean.
    compatible with BE2's coefficient assumptions whenever odd colours occur.
    No square root of `−1` is needed for this embedding or PBW transfer.
 
-   **For the authors.** Proposition 4.5, as written with (4.22), fails (4.8)
-   already for two disconnected odd vertices and content `2a+2b`: the two
-   distant unequal-colour crossings both fix the coefficient constant, so
-   their composites cannot anticommute in characteristic different from two.
-   The Clifford factor in KKT Theorem 3.13 supplies the required sign and
-   gives a valid route through their Theorem 3.8 and Corollary 3.15. A
-   corrected statement must include this enlarged representation, or provide
-   additional operators and prove the distant relation on its proposed
-   polynomial module. The PBW theorem itself is not contradicted.
-
 ## [EL] A. P. Ellis, A. D. Lauda, *An odd categorification of U_q(sl₂)*, arXiv:1307.7816v2
 
 [EL]'s 2-category `U_π` is not formalized separately: for a single odd colour it is the
@@ -595,14 +577,6 @@ dots; it has q-degree `2(m − λ + 1)`, `B_m = 0` for `m < λ − 1`, `B_{λ−
 
    **Declarations.** `eq_1_27`, from `lemma41_eq3_odd`, `lemma41_eq4_odd`, with
    `oddBubble_consistent` for the odd bubble at `⟨hᵢ,λ⟩ = 0`.
-
-   **For the authors.** In (3.15) and in Lemma 5.1 (5.5), the case `λ = 0` should have the
-   same form as the case `λ > 0`: the right-oriented dot equals `(−1)^0` times the
-   left-oriented dot plus twice the strand next to the degree-2 bubble, as in Brundan–Ellis
-   (1.27). With the printed `λ = 0` case, closing off with an odd number of dots as in the
-   proof of Lemma 5.1 gives `2 z_{2i} = 0` in `End(1_1)`, so the printed presentation is not
-   equivalent to the intended one in weight 1. The last sentence of the proof of Lemma 5.1,
-   which concludes `γ₁ = 0`, needs to be redone.
 
 2. **Conjectures 3.11 and 3.12: the bubble algebra is smaller than `Ξ` [false as printed].**
    Conjecture 3.11 (first bullet) asserts that over a field of characteristic `≠ 2` the
@@ -652,18 +626,6 @@ dots; it has q-degree `2(m − λ + 1)`, `B_m = 0` for `m < λ − 1`, `B_{λ−
    research branch `research/odd-nondegeneracy`, for symmetrizable data, homogeneous
    parameters and 2 invertible. The counterexample in `U_π` itself is not formalized.
 
-   **For the authors.** In weights `λ ≥ 2`, closing off the odd dot-cyclicity relation (3.15)
-   with `j + λ − 1` dots, as in the proof of Lemma 5.1, gives `(1 + (−1)^j) z_{j+1} = ±2 z_j z₁`;
-   for `j = 2` this is `2(z₃ ∓ z₁z₂) = 0`. So in characteristic `≠ 2` the two conjectured basis
-   elements `z₃` and `z₁z₂` of `HOM(1_λ, Π1_λ⟨6⟩)` are proportional, contradicting the first
-   bullet of Conjecture 3.11, and over `ℤ` the nonzero element `2(z₃ ∓ z₁z₂)` of `Ξ` lies in the
-   kernel of (3.56), contradicting the second bullet and Conjecture 3.12. Every odd generator
-   `z_{2i+1}` is `±z₁z_{2i}`, so the bubble algebra in characteristic `≠ 2` is
-   `k[z₂, z₄, …] ⊗ Λ[z₁]`, of graded dimension `∏_{a≥1} (1 − q^{4a})^{−1} (1 + πq²)` rather than
-   `ξ₀`. This matches Brundan–Ellis's `Sym[d]` and the theorem of Brundan–Kleshchev
-   (arXiv:2203.14149v3, Theorem 13.5, over algebraically closed fields of characteristic
-   `≠ 2`) that `Sym[d]` is the full endomorphism algebra of `1_λ` in odd `sl₂`.
-
 ## [BE2] J. Brundan, A. P. Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2
 
 Names in this section are in `OddMath.SKM` unless otherwise indicated.
@@ -694,17 +656,6 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    defining presentation. Parts (i)–(iii) of Proposition 7.3 and the consistency of
    subsequent main results are not covered by this correction.
 
-   **For the authors.** In Proposition 7.3(iv), for `i ≠ j` with `dᵢⱼ = 0`, the right-hand
-   side of each of (7.13) and (7.14) should carry a factor `tᵢⱼ`. Degree zero shows why:
-   by (5.3)–(5.4) the two dotless bubbles in a region of weight `λ` are `c_{λ;i}⁻¹` and
-   `c_{λ;i}`, the regions on the two sides of an upward `j`-strand have weights `λ` and
-   `λ + αⱼ`, and `c_{λ+αⱼ;i} = tᵢⱼ c_{λ;i}` by (1.17). So moving a bubble across the strand
-   rescales it by `tᵢⱼ^{±1}`, and the printed equations force `(tᵢⱼ − 1) · 1_{Eⱼ1_λ} = 0`,
-   whereas the conditions on the scalars in §1 only ask `tᵢⱼ = tⱼᵢ` when `dᵢⱼ = 0`. With the factor `tᵢⱼ` both
-   identities hold for every weight and every degree, fake bubbles included; the proof uses
-   only the quadratic and pitchfork relations and the infinite Grassmannian relation. Parts
-   (i)–(iii) hold as printed, with the scalars unchanged.
-
 2. **Proposition 7.6, the alternative braid relation for `i = j = k`: sign of the second sum
    [corrected identity proved].** Write `h = ⟨hᵢ, μ⟩` for the weight `μ` of the rightmost
    region. The second triple sum on the right-hand side (the one with the clockwise bubble,
@@ -726,16 +677,6 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    Thm 13.2, whose relation (13.21) is the corrected form above in the odd rank-one case
    (they credit the correction to Dupont–Ebert–Lauda).
 
-   **For the authors.** In Proposition 7.6 with `i = j = k`, the sign in the second sum (the
-   terms with the clockwise bubble, `r + s + t ≤ -⟨hᵢ,λ⟩ - 2`) should be
-   `(-1)^{|i|(⟨hᵢ,λ⟩ + r + s)}`, without `t`. Both sums come out of
-   the proof by expanding the ♦-cup and ♦-cap of the inversion relation with (5.11) and (5.12)
-   and moving the dots with the pitchfork relations. For odd `i` and `⟨hᵢ,λ⟩ = -3` the printed
-   sign changes the relation by `2 · (term at r = s = 0, t = 1)`, which vanishes only if the
-   identity of `1_λ` does; in the odd Grassmannian 2-representation of Brundan–Kleshchev it is
-   nonzero, and their (13.21) has the corrected sign. The other colour configurations
-   hold as printed.
-
 3. **(1.28), the cyclicity of crossings: missing sign [F→T; corrected identity proved].**
    As printed, for all `i, j ∈ I` the downward crossing `Fᵢ Fⱼ 1_λ → Fⱼ Fᵢ 1_λ` obtained from
    the upward crossing `τ : Eᵢ Eⱼ → Eⱼ Eᵢ` with the rightward cups and caps (the right mate,
@@ -756,16 +697,6 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    it forces the downward crossing on `Fᵢ Fⱼ 1_λ` to vanish (`eq_1_28_printed_odd`). That these
    2-morphisms are nonzero in a nontrivial example is not proved here; for `i = j` it follows
    from the odd Grassmannian 2-representation of Brundan–Kleshchev, Thm 13.2.
-
-   **For the authors.** In (1.28) the right-hand side should carry the sign
-   `(-1)^{|i||j|(⟨hᵢ,λ⟩ + ⟨hⱼ,λ⟩ + 1)}`, with the leftward cups nested as drawn (outer cup lowest,
-   outer cap highest). Rotating `τ` by the inner leftward cup and cap gives
-   `(-1)^{|i||j||j,λ|}` times the leftward crossing, because the cup of parity `|j,λ|` passes
-   the leftward crossing of parity `|i||j|` before (7.5) and the zigzag (6.6) apply; the
-   pitchfork relation (7.6) contributes `(-1)^{|i||j|}`, and moving the downward crossing past
-   the outer leftward cap contributes `(-1)^{|i||j||i,λ|}`. The product is the sign above. For
-   `i = j` odd the printed relation forces the downward crossing on `Fᵢ Fᵢ 1_λ`, and hence the
-   identity of that 1-morphism by (3.5), to be zero. (1.26) and (1.27) are correct as printed.
 
 4. **Proposition 9.8, proof, p. 38: the parity of the image of `Fᵢ` and the odd–odd crossing coefficient [M for the parity exponent; constraint proved and corrected construction proved for the crossing sign].** Put `t = √−1`, with `t² = −1`. The proposition's statement preserves the external parity shift on both generating 1-morphisms:
    $$
@@ -792,8 +723,6 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    while the image of (1.8) requires the same equation with `+id`. Consequently, satisfaction of that source relation by the literal printed assignments forces `id + id = 0` (`RhoCoefficients.odd_printed_relation_forces_two_id`). No nonzero identity witness is supplied by this calculation, so it is not a counterexample to Proposition 9.8. Changing only the odd–odd crossing coefficient as above changes the local identity coefficient to the required one. More importantly, the corrected construction respects all 25 constructors of the existing defining presentation and its contextual linear ideal, not just this local slide (`RhoEvaluator.rhoLin_ideal`). No defining relation is added and no parameter specialization is imposed.
 
    **Corrected construction.** Over a purely even commutative ground ring, with the existing `Datum`, `Scalars`, `Symmetrizer`, and `Sc.Homogeneous` hypotheses and an element `t` satisfying `t² = −1`, the corrected assignments give a graded 2-superfunctor on the full `(Q,Π)`-envelope (`RhoExtension.rhoEnvelope`, `RhoExtension.rhoEnvelope_isGraded`). The reverse-direction functor uses `−t` and is graded (`RhoInverse.rhoInverse`, `RhoInverse.rhoInverse_isGraded`). Both composites equal the identity 2-superfunctor, including their composition and unit comparison maps (`RhoFunctorLaws.rhoEnvelope_comp_inverse`, `RhoFunctorLaws.rhoInverse_comp_envelope`). The maps and inverse laws apply to arbitrary 2-morphisms and arbitrary external integer/parity shifts. Thus they prove the graded-isomorphism assertion with the displayed 1-morphism images in this coefficient setting. The scalar homogeneity hypothesis is (1.31), not a restriction to homogeneous 2-morphisms. `Scalars` includes invertibility of `2` when an odd colour exists. The additive weight realization encompasses the paper's complex realization; no field hypothesis is imposed in §9. General supercommutative coefficient rings are outside this formalization. The subsequent assertion about the induced antiautomorphism of the Grothendieck ring and its compatibility with `γ` is a separate decategorification statement.
-
-   **For the authors.** In arXiv:1701.04133v2, Proposition 9.8, p. 38, the proof's image of `Fᵢ1_λ` has parity shift `|i,λ|`, although the statement preserves the external parity shift. We obtain the stated 1-morphism formulas by using zero intrinsic parity shift for both `Eᵢ` and `Fᵢ`. With the right-mate downward diagrams of Definition 2.1 and the super-reverse of Definition 9.5, the odd dot coefficient `t` and printed odd–odd crossing coefficient `−t` give the equal-colour slide with `−id` instead of `+id`. The literal assignments therefore force `2 id = 0` if they preserve this relation; this observation alone does not prove that the relevant identity is nonzero. Keeping the dot coefficient and replacing the odd–odd crossing coefficient by `+t` yields a relation-preserving graded construction over purely even commutative ground rings, with inverse obtained using `−t` and both whole-functor inverse laws. This corrects the proof's assignments while retaining the proposition's stated object and 1-morphism formulas.
 
 5. **Theorem 10.3, proof of Claim 1, p. 41: permutation index direction
    [M; corrected algebraic identity and rational-parameter diagnostic proved].**
@@ -846,17 +775,6 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    the generic covering ring, without a bar-consistency hypothesis; additive
    weights and decidable colour and weight equality provide the realization.
 
-   **For the authors.** In arXiv:1701.04133v2, the unnumbered expansion in Claim 1
-   of the proof of Theorem 10.3 combines `i_{w(r)} = jᵣ` with source-colour factors
-   indexed by inversions of `w`. Those factors instead require `iᵣ = j_{w(r)}`;
-   alternatively keep the printed condition and take inversions of `w⁻¹`, or use
-   target colours in the inversion factors. For even A₃ with `dᵢ = 2` and colour
-   sequences `(2,1,3)` and `(1,3,2)`, the printed sum gives `q²/(1−q⁴)³`, while
-   the defining twisted-coproduct form gives `q⁴/(1−q⁴)³`. The explicit rational
-   values at `q = 2` and the corrected general free-form expansion are proved in
-   the declarations above. This is a local indexing correction to the proof,
-   not a defect in (10.5). The citation to 10.1 “(iv)” should also refer to (3).
-
 6. **Theorem 10.3, proof of Claim 5, equation (10.7) and the following cap expansion
    [local bar corrections; graphical comparison proved].** Put
    `n = ⟨hᵢ,μ⟩`, where `μ` is the left endpoint of the suffix word. Replace the
@@ -898,15 +816,6 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    colours nor bar consistency is assumed. The local repair itself introduces no
    restriction to even colours or to `π = 1`.
 
-   **For the authors.** In the proof of Claim 5 of Theorem 10.3 in
-   arXiv:1701.04133v2, the quantum integer on the right of (10.7) must be barred
-   because the form is antilinear in its first argument. The direct cap series
-   already equals that barred quantum integer, so the outer bar in the following
-   display must be removed. The odd rank-one weight-two example distinguishes
-   the two coefficients. These corrections preserve the stated form convention
-   and the proposed matching identity (10.5); they do not by themselves establish
-   the remaining general cancellation argument.
-
 7. **§11, the definition of `D_r` before Lemma 11.1: odd sign.**
    **Printed statement.** With strands numbered from right to left and ordinary
    composition multiplication, `D_r = -T_r X_r` is asserted to be an idempotent
@@ -936,14 +845,6 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    unchanged (`Consumer.even_twoStrand`). The all-rank graded-supermodule
    decomposition and its normalization remain separate obligations.
 
-   **For the authors.** In §11 of arXiv:1701.04133v2, the definition preceding
-   Lemma 11.1 should read `D_r = (-1)^(|i|+1) T_r X_r`. For odd `i`, (1.8)
-   makes `T_r X_r` idempotent and its negative square to its negative; the
-   polynomial action over ℚ rules out the zero exception. The same sign
-   omission occurs in Hill–Wang (5.20). The even formula is unchanged. The
-   longest products differ only by the scalar `(-1)^length(w₀)`, so their
-   principal left ideals agree; this repair adds no degree or parity shift.
-
 8. **Theorem 12.1, the displayed product for `S = dim_{q,π} SYM`
    [odd-colour factor correction].** The proof prints
    `∏_{i∈I} ∏_{r≥1} (1 − (π_i q_i²)^r)⁻¹`. For an odd colour, (1.20)–(1.21)
@@ -965,14 +866,6 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    scope (see entry 15). It is
    not a reason to assume the Nondegeneracy Conjecture.
 
-   **For the authors.** In the proof of Theorem 12.1, the factor assigned to an
-   odd colour in the displayed series for `S` does not match the algebra
-   `Sym[δ]` of (1.20)–(1.21). Its elementary generators are even in degrees
-   `4rd_i`, and its one odd square-zero generator has degree `2d_i`. Replacing
-   that factor by `(1 + π_i q_i²) ∏_{r≥1}(1 − q_i^{4r})⁻¹` gives its graded-super
-   dimension. The coefficient in degree `4d_i` already distinguishes the two
-   formulas. The normalized Hom identity can still use `S = dim_{q,π} SYM`.
-
 11. **Equation (11.8), the weight of the downward map [index correction].**
     The printed formula `α′_{n,λ} := ω ∘ α_{n,λ}` has rightmost weight `−λ`,
     whereas its displayed codomain consists of downward words at `λ`.
@@ -988,14 +881,6 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     a weight-index correction, not a claim that the two Hom spaces are
     nonisomorphic or that a particular 2-morphism is nonzero. The construction
     uses the existing Chevalley involution and its super-opposite signs.
-
-    **For the authors.** In (11.8), composing (11.7) at weight `λ` with the
-    isomorphism of Proposition 3.5 produces downward diagrams with rightmost
-    region `−λ`. To obtain the displayed target at `λ`, the subscript on the
-    upward map in the composite should therefore be `−λ`. This change is only
-    a reindexing of the external weight and leaves the source `H_n^sop` and
-    the graded-superalgebra homomorphism assertion unchanged.
-
 
 10. **§11, first introductory bullet: parity-fixed projectives
     [F→T; Clifford obstruction, Laurentian R-freeness and mixed ℒ decomposition proved].**
@@ -1074,18 +959,6 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     input of Corollary 11.4. The §12 Hom pairing descends by split additivity,
     without a free `ℒ`-basis assumption.
 
-    **For the authors.** The first bullet of §11 in arXiv:1701.04133v2 needs a
-    parity qualification: the degree-zero one-generator Clifford superalgebra
-    has nonzero split projective `K₀` with trivial parity action, and hence
-    does not have free `ℒ`-module `K₀`. The integral indecomposable basis and
-    freeness over `ℤ[q,q⁻¹]` remain valid. Over `ℒ`, paired parity orbits give
-    free summands and parity-fixed orbits give `ℒ/(π−1)` summands; freeness
-    holds exactly when there are no parity-self-associate indecomposables.
-    The type-M input for `H_n` can be placed after Hill–Wang's weightwise rank
-    comparison and before the integral isomorphism. The tensor comparison
-    already includes the needed type-M hypothesis; the generic width and
-    localization arguments do not require the stronger blanket freeness claim.
-
 12. **Lemma 11.6, negative-weight proof displays [degree and scalar correction].**
     Put `h = ⟨hᵢ,λ⟩ ≤ 0`. The isomorphism display in the proof assigns the
     identity summands degrees `dᵢ(-h-1-2n)` and parities `n|i|`, for
@@ -1113,15 +986,6 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     distinguish the printed scalar assertion at `h = -2`, `qᵢ = 2`,
     `πᵢ = -1`: its left side is `-3/2`, but its right side is `3/2`.
     This is a counterexample to a proof assertion, not to the lemma.
-
-    **For the authors.** In the proof of Lemma 11.6 of arXiv:1701.04133v2,
-    the identity summands in the negative-coroot-weight case should carry
-    `Q^{dᵢ(h+1+2n)} Π^{n|i|}`. This is forced by the cup degrees in the
-    negative-weight inversion map in §1. The following scalar sum needs the same
-    reversal of the `qᵢ` exponent; with it, the quantum-integer definition
-    in §9 yields precisely `[h]_{qᵢ,πᵢ}`.
-    The printed scalar equality already fails at `h=-2`, `qᵢ=2`, `πᵢ=-1`.
-    These local proof corrections preserve every relation in Lemma 11.6.
 
 13. **§11, the divided powers `Eᵢ^{(n)}1_λ`, `Fᵢ^{(n)}1_λ` before Lemma 11.5: missing degree
     and parity shift [constraint proved and corrected statement proved for `Eᵢ^{(n)}1_λ` and
@@ -1181,16 +1045,6 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     for instance, from Theorem 11.7. The shifts do not affect Theorem 11.7 provided `γ` sends the divided powers to
     the shifted objects.
 
-    **For the authors.** Before Lemma 11.5, define `Eᵢ^{(n)}1_λ` with the shift
-    `Q^{dᵢ n(n-1)/2} Π^{|i| n(n-1)/2}` (the degree part matches (11.3)) and `Fᵢ^{(n)}1_λ` with the
-    shift `Q^{-dᵢ n(n-1)/2}` and no parity shift. As printed, the units in the proof of
-    Lemma 11.5 have degrees and parities whose generating function is
-    `qᵢ^{n(n-1)/2} πᵢ^{n(n-1)/2} [n]^!_{qᵢ,πᵢ}` for `Eᵢⁿ` and `qᵢ^{-n(n-1)/2} [n]^!_{qᵢ,πᵢ}`
-    for `Fᵢⁿ`, not `[n]^!_{qᵢ,πᵢ}`, so the lemma's equations would force `[Eᵢⁿ1_λ] = 0` and
-    `[Fᵢⁿ1_λ] = 0` for `n ≥ 2`. Already for `n = 2` and even `i`, the
-    two summands of `Eᵢ²1_λ` are `Eᵢ^{(2)}1_λ` and `Q^{2dᵢ}Eᵢ^{(2)}1_λ`, cut out by `−τx` and
-    split off by the crossing.
-
 14. **Proposition 11.2: index misprints [M, *textual*].** With `n = d_ij + 1`, the projectives
     `P(i^{(n-r)} j i^{(r)})` of the sequence have `n + 1` strands, so they are graded
     `H_{n+1}`-supermodules; the printed `H_{r+s+1}` carries over the letters `r, s` of the
@@ -1202,9 +1056,6 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
 
     **Declarations.** `QuiverHecke.SerreComplex.isSplit`, `serreEquiv` (on underlying modules,
     words `i^a j i^{n-a}` indexed by `a = n − r`; the index sets are `SplitComplex.terms`).
-
-    **For the authors.** In Proposition 11.2, read `H_{n+1}` for `H_{r+s+1}`, and take the two
-    sums of the final isomorphism over `0 ≤ k ≤ ⌊n/2⌋` and `0 ≤ k ≤ ⌊(n-1)/2⌋`.
 
 15. **Theorem 11.7 and §12: local finiteness of the graded pieces [G].** The proof of Theorem 11.7
     applies the Krull–Schmidt facts for Laurentian graded superalgebras, recalled at the start of §11,
@@ -1242,13 +1093,6 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     with `Symmetrizer.DegreeLocallyFinite`: `hom_laurentian`, `hom_dimension_eq_form_mul_sym`,
     `QuiverHecke.SerreComplex.theorem_12_1_of_nondegenerate`.
 
-    **For the authors.** For infinitely many colours of the same degree the algebras of
-    2-morphisms are not Laurentian, so the Krull–Schmidt facts recalled at the start of §11 do not
-    apply as stated. Theorem 11.7 still holds: it suffices to apply Krull–Schmidt modulo the nil
-    ideal generated by positive-degree bubbles, whose quotients are finite-dimensional in each
-    degree by Theorem 8.1. Equation (dum) in the proof of Theorem 12.1 needs finitely many colours
-    in each degree; it is worth stating this assumption there.
-
 16. **Example 12.3: direction of `γ` [M, *textual*].** The example says that `γ` maps the classes
     of the listed indecomposable 1-morphisms to the canonical basis of `U̇_{q,π}(𝔟₁)`. Since
     `γ : U̇_{q,π}(𝔤)_ℒ → K₀(𝔘̇_{q,π}(𝔤))` (Theorem 11.7), the intended statement is the reverse:
@@ -1256,7 +1100,3 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     `γ⁻¹` maps the classes to the canonical basis. The example is not formalized (see the README):
     it rests on the Ellis–Lauda classification of indecomposables and on nondegeneracy for odd
     `𝔰𝔩₂`, which are outside the library.
-
-    **For the authors.** In Example 12.3, read "`γ⁻¹` maps the classes of the indecomposable
-    1-morphisms listed above to the canonical basis", or "`γ` maps the canonical basis to the
-    classes of the indecomposable 1-morphisms listed above".
