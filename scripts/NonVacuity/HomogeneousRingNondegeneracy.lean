@@ -68,7 +68,8 @@ private def sy : Symmetrizer D where
   symm := by intro i j; cases i <;> cases j <;> rfl
 
 private theorem two_isUnit_polynomial : IsUnit (2 : Polynomial ℚ) := by
-  simpa using (isUnit_of_invertible (2 : ℚ)).map Polynomial.C
+  have h : IsUnit (Polynomial.C (2 : ℚ)) := Polynomial.isUnit_C.mpr (by norm_num)
+  rwa [map_ofNat Polynomial.C 2] at h
 
 /-- Homogeneous parameters over the polynomial ring `ℚ[X]`, which is not a field. -/
 private def Sc : Scalars D (Polynomial ℚ) where
