@@ -20,8 +20,9 @@ proved for a fixed choice of bases:
 * `VacuumRouteIndex D` and `VacuumRouteBase`: the route indices and the base of a
   sector. A route index is over a commutative ring and carries the two inputs of the
   supported action (`SwappedAssembly.SupportedSectors.ProbeActionInputs`) for the sector
-  datum and scalars; over a field with homogeneous scalars they come from a symmetrizer
-  (`sectorActionInputs_of_homogeneous`), and over a graded base from the coefficient grading;
+  datum and scalars; over a commutative ring with homogeneous scalars they come from a
+  symmetrizer (`sectorActionInputs_of_homogeneous`), and over a graded base from the
+  coefficient grading;
 * `PositiveBubbleField`, `NonpositiveBubbleField`, `CoordinateField` and
   `ChartField`: the four inputs at every index, for a fixed choice of bases;
 * `VacuumRouteHypotheses.of_fields` and `nondegeneracy_of_vacuum_route_fields`: the
@@ -108,8 +109,9 @@ def SectorActionInputs {K : Type u} [CommRing K] (D : SKM.Datum I X) (Sc : SKM.S
       (ReservoirWeights.pairingExtensionScalars (D.restrictColours J) (Sc.restrictColours D J))
       m cutoff bound ΛP ΛR hP hR
 
-/-- Over a field with homogeneous scalars, a symmetrizer supplies the sector inputs. -/
-theorem sectorActionInputs_of_homogeneous {K : Type u} [Field K] {D : SKM.Datum I X}
+/-- Over a commutative ring with homogeneous scalars, a symmetrizer supplies the sector
+inputs. -/
+theorem sectorActionInputs_of_homogeneous {K : Type u} [CommRing K] {D : SKM.Datum I X}
     (sy : SKM.Symmetrizer D) {Sc : SKM.Scalars D K} (hh : Sc.Homogeneous) (J : Finset I) :
     SectorActionInputs D Sc J := fun m cutoff bound ΛP ΛR hP hR =>
   SwappedAssembly.SupportedSectors.probeActionInputs _ _ m cutoff bound ΛP ΛR hP hR

@@ -1871,6 +1871,7 @@ import OddMath.QuiverHecke.VacuumRouteSwappedNonpositiveField
 import OddMath.QuiverHecke.VacuumRouteSwappedRightField
 import OddMath.QuiverHecke.VacuumRouteSwappedRightNegative
 import OddMath.QuiverHecke.TruncatedReesNondegeneracy
+import OddMath.QuiverHecke.HomogeneousRingNondegeneracy
 import OddMath.QuiverHecke.BWWNondegeneracy
 import OddMath.QuiverHecke.BWWEvenSpecialization
 import OddMath.SKM.CoefficientGradedBasis
