@@ -1,6 +1,7 @@
 # Odd nondegeneracy: results
 
-This page lists what is proved on `research/odd-nondegeneracy`. The written
+This page lists the proved results, all on `master`; exploratory work toward extensions
+belongs on `research/odd-nondegeneracy`. The written
 proof is [SwappedNondegeneracy](SwappedNondegeneracy.md), the audit of the
 formal statement against Brundan–Ellis is [StatementAudit](StatementAudit.md),
 and the scope is [FieldScopeBoundary](FieldScopeBoundary.md). Open questions
