@@ -39,8 +39,6 @@ sha256 3dfc4c9023ef6c999a8e12b1e9debf5bf3bfb55814c4de50828952b421eb0024:
 Everything after "New" is new.
 -/
 noncomputable section
-set_option maxHeartbeats 800000
-set_option synthInstance.maxHeartbeats 200000
 open scoped BigOperators
 namespace OddMath.Frontier.EKLemma311Cond
 open EKRadicalQuotient EKIntegralBases DegreeShapes EKDualBases TableauDominance

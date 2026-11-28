@@ -28,7 +28,6 @@ statements by the base change `Λ_k = k ⊗_ℤ Λ_ℤ` (Corollary 2.12) of `EKO
 -/
 
 noncomputable section
-set_option synthInstance.maxHeartbeats 400000
 open scoped TensorProduct BigOperators
 
 namespace OddMath.Frontier.EKOverK

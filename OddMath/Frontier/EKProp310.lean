@@ -50,8 +50,6 @@ equality is refuted by the existing `EKRestrictedPairing`): no Lemma 2.15 is use
   `(s_κ, y) = 0` for every κ, hence `y = 0`.
 -/
 noncomputable section
-set_option maxHeartbeats 800000
-set_option synthInstance.maxHeartbeats 200000
 open scoped BigOperators
 namespace OddMath.Frontier.EKProp310
 open EKRadicalQuotient EKIntegralBases DegreeShapes EKDualBases TableauDominance

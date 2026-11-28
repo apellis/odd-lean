@@ -55,7 +55,6 @@ theorem directNorth_rowShape (k : ℕ) :
   rw [Finset.mem_product, Finset.mem_singleton] at hp hq
   omega
 
-set_option synthInstance.maxHeartbeats 200000 in
 /-- `h_k = s_{(k)}` in `OΛ`. -/
 theorem h_eq_sK_row (k : ℕ) :
     EKElementaryQuotient.h k = sK (OddLRVerticalPieri.column k).transpose := by
@@ -320,7 +319,6 @@ theorem sum_degreeShape_congr {M : Type*} [AddCommMonoid M] {d d' : ℕ} (h : d 
     ∑ x : DegreeShape d, f x.val = ∑ x : DegreeShape d', f x.val := by
   subst h; rfl
 
-set_option synthInstance.maxHeartbeats 200000 in
 /-- The odd horizontal Pieri rule of `OΛ`, solved for `s_α h_k`. -/
 theorem pieri_Q (α : YoungDiagram) (k d : ℕ) (hd : α.card + k = d) :
     sK α * EKElementaryQuotient.h k = ∑ w : DegreeShape d,

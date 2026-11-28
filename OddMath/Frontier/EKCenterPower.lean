@@ -18,8 +18,6 @@ Proof route (not the source's route):
 * odd `k ≥ 3`: `⟨h_k h_1, p*h_1⟩ = 1 ≠ -1 = ⟨h_k h_1, h_1*p⟩`.
 * `k = 1`: control `p1 * h2 ≠ h2 * p1`. -/
 noncomputable section
-set_option maxHeartbeats 4000000
-set_option synthInstance.maxHeartbeats 400000
 open scoped BigOperators TensorProduct
 namespace OddMath.Frontier.EKCenterPower
 open CompleteElementary EKFreeCoproduct EKPairingAdjoint EKRadicalQuotient EKPairingMatrices

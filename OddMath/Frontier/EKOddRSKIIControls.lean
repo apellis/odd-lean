@@ -28,7 +28,6 @@ Bridge C's single-row and zero-row lemmas reproduce private proofs of the inheri
 -/
 noncomputable section
 set_option maxRecDepth 10000
-set_option maxHeartbeats 4000000
 open scoped BigOperators
 namespace OddMath.Frontier.EKOddRSKIIControls
 open EKPairingMatrices EKRadicalQuotient EKIntegralBases DegreeShapes EKDualBases

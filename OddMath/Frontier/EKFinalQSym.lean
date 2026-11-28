@@ -24,7 +24,6 @@ Associativity and the compatibility are obtained by transposition through the pe
 -/
 
 noncomputable section
-set_option synthInstance.maxHeartbeats 400000
 open scoped BigOperators TensorProduct
 
 namespace OddMath.Frontier.EKFinal

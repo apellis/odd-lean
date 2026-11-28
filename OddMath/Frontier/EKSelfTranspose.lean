@@ -3,7 +3,6 @@ import OddMath.Frontier.EKSemiorthogonality
 /-! EK 1107.5610v2 pp.23–24: diagonal hooks, independently of (3.4).
 A frame stores the endpoints of the diagonal rows, not a surrogate diagram. -/
 noncomputable section
-set_option maxHeartbeats 2000000
 open scoped BigOperators
 namespace OddMath.Frontier.EKSelfTranspose
 

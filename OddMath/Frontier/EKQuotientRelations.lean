@@ -4,7 +4,6 @@ import OddMath.Frontier.CompleteChangeOfGenerators
 /-! EK 1107.5610v2 pp14–15, Props 2.9–2.11.
 All equalities concern the actual integer radical quotient. -/
 noncomputable section
-set_option maxHeartbeats 2000000
 open scoped BigOperators TensorProduct
 namespace OddMath.Frontier.EKQuotientRelations
 open CompleteElementary EKFreeCoproduct EKPairingAdjoint EKRadicalQuotient

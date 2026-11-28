@@ -31,7 +31,6 @@ Part II (this module, pre-registered BEFORE production): Proposition 3.10 contro
 -/
 noncomputable section
 set_option maxRecDepth 10000
-set_option maxHeartbeats 1000000
 open scoped BigOperators
 namespace OddMath.Frontier.EKProp310Controls
 open EKPairingMatrices EKRadicalQuotient EKIntegralBases DegreeShapes EKDualBases

@@ -20,7 +20,6 @@ Source: Ellis–Khovanov, arXiv:1107.5610v2.  `k` is an arbitrary commutative ri
 -/
 
 noncomputable section
-set_option synthInstance.maxHeartbeats 400000
 open scoped TensorProduct BigOperators
 
 namespace OddMath.Frontier.EKOverK

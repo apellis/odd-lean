@@ -26,7 +26,6 @@ algebra on `h₁, h₂, …` (`h₀ = 1`), `π : Λ′ → Λ` the quotient map.
 -/
 
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 open scoped BigOperators TensorProduct
 
 namespace OddMath.Frontier.EKMore

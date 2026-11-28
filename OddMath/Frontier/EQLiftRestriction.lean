@@ -350,7 +350,6 @@ theorem gHom_tmulG (t : TTG A B) (f : ZDG A B) :
     gHomG HN (TensorProductOver.tmul _ t f) = (HN).rho (thetaPG t) (signTwist (ZDG A B) (degPG A B) f) :=
   rfl
 
-set_option maxHeartbeats 1600000 in
 theorem gHom_smulG (s : EAB EA EB) (x : TensorProductOver (osymDG (A + B)) (TTG A B) (ZDG A B)) :
     gHomG HN (s • x) = gIota EA EB HN s * gHomG HN x := by
   induction x using TensorProductOver.induction_on with
@@ -359,7 +358,6 @@ theorem gHom_smulG (s : EAB EA EB) (x : TensorProductOver (osymDG (A + B)) (TTG 
   | add x y hx hy =>
     rw [show s • (x + y) = s • x + s • y from smul_add s x y, map_add, map_add, hx, hy, mul_add]
 
-set_option maxHeartbeats 1600000 in
 theorem gHom_op_smulG {i : ℤ} {g : EN} (hg : g ∈ DG.grading i)
     (x : TensorProductOver (osymDG (A + B)) (TTG A B) (ZDG A B)) :
     gHomG HN (op g • x) = koszulSign (degPG A B * i) • (gHomG HN x * g) := by
@@ -370,7 +368,6 @@ theorem gHom_op_smulG {i : ℤ} {g : EN} (hg : g ∈ DG.grading i)
       rho_units_smul_rightG HN, (HN).rho_op_smul, Units.smul_def]
   | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, add_mul, smul_add]
 
-set_option maxHeartbeats 1600000 in
 theorem gHom_memG {k : ℤ} {x : TensorProductOver (osymDG (A + B)) (TTG A B) (ZDG A B)}
     (hx : x ∈ DG.grading k) : gHomG HN x ∈ DG.grading (k + degPG A B) := by
   refine TensorProductOver.induction_on_mem_grading (P := fun x => gHomG HN x ∈ DG.grading (k + degPG A B))
@@ -382,7 +379,6 @@ theorem gHom_memG {k : ℤ} {x : TensorProductOver (osymDG (A + B)) (TTG A B) (Z
   · intro x y hx hy; rw [map_add]; exact add_mem hx hy
   · intro x hx; rw [map_neg]; exact neg_mem hx
 
-set_option maxHeartbeats 1600000 in
 theorem gHom_tmul_dG {i j : ℤ} {t : TTG A B} (ht : t ∈ DG.grading i) {f : ZDG A B} (hf : f ∈ DG.grading j) :
     gHomG HN (DG.d (TensorProductOver.tmul _ t f)) = DG.d (gHomG HN (TensorProductOver.tmul _ t f)) := by
   have h1 := TensorProductOver.d_tmul_of_mem (A := osymDG (A + B)) (N := ZDG A B) ht f
@@ -403,7 +399,6 @@ theorem gHom_tmul_dG {i j : ℤ} {t : TTG A B} (ht : t ∈ DG.grading i) {f : ZD
       mul_one]
   rw [e]
 
-set_option maxHeartbeats 1600000 in
 theorem gHom_dG (x : TensorProductOver (osymDG (A + B)) (TTG A B) (ZDG A B)) :
     gHomG HN (DG.d x) = DG.d (gHomG HN x) := by
   induction x using TensorProductOver.induction_on with
@@ -541,7 +536,6 @@ theorem oneHom_invHomG (y : TensorProductOver (osymDG (A + B)) (Zn (A + B)) (ZDG
     rw [theta1_theta1InvG, signTwist_signTwist]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
-set_option maxHeartbeats 800000 in
 theorem gHom_eqG (x : TensorProductOver (osymDG (A + B)) (TTG A B) (ZDG A B)) :
     gHomG HN x = PwG A B HN * (HN).mulHom (oneHomG x) := by
   induction x using TensorProductOver.induction_on with
@@ -689,7 +683,6 @@ def gEquivG : TensorProductOver (osymDG (A + B)) (TTG A B) (ZDG A B) ≃ᵈᵍ[E
 theorem gEquiv_applyG (x : TensorProductOver (osymDG (A + B)) (TTG A B) (ZDG A B)) :
     gEquivG EA EB HN x = Regrade.mk (degPG A B) (gNatG EA EB HN x) := rfl
 
-set_option maxHeartbeats 800000 in
 theorem gEquiv_op_smulG (g : EN)
     (x : TensorProductOver (osymDG (A + B)) (TTG A B) (ZDG A B)) :
     gEquivG EA EB HN (op g • x) = op g • gEquivG EA EB HN x := by

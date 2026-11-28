@@ -132,7 +132,6 @@ theorem sK_mul_sK (mu nu : YoungDiagram) :
     (fun β : DegreeShape d => sK mu * EKPartitionSpanning.hPartition β.val)).unique hG hF
   exact congrFun hu ⟨nu, rfl⟩
 
-set_option synthInstance.maxHeartbeats 200000 in
 /-- **E Theorem 4.8 (4.6), the odd Littlewood–Richardson rule**: for all partitions
 `λ, μ, ν`, `c^λ_{μν} = (-1)^{N(μ)+N(λ)} Σ_{S LR tableau of shape λ/μ and content ν} (-1)^{N^<(S)}`. -/
 theorem thm_4_8 (lam mu nu : YoungDiagram) : oddLR lam mu nu = lrSignedCount lam mu nu := by

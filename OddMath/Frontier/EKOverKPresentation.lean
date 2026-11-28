@@ -21,7 +21,6 @@ Here `k` is an arbitrary commutative ring and `q = -1`.
 -/
 
 noncomputable section
-set_option synthInstance.maxHeartbeats 400000
 open scoped TensorProduct BigOperators
 
 namespace OddMath.Frontier.EKOverK

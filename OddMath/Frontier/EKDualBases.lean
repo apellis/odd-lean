@@ -8,7 +8,6 @@ import Mathlib.LinearAlgebra.Determinant
 inherited quotient form, not a new dot product. Unimodularity is proved
 from Prop2.14 before dual vectors are constructed. -/
 noncomputable section
-set_option maxHeartbeats 800000
 open scoped BigOperators
 namespace OddMath.Frontier.EKDualBases
 open EKRadicalQuotient EKIntegralBases DegreeShapes

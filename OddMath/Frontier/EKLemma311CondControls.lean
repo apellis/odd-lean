@@ -25,7 +25,6 @@ Compiled BEFORE `EKLemma311Cond`; nothing here mentions a production theorem.
     `ell_1` likewise (line 716-717).  Everything else is new.
 -/
 noncomputable section
-set_option maxHeartbeats 800000
 open scoped BigOperators
 namespace OddMath.Frontier.EKLemma311CondControls
 open EKRadicalQuotient EKIntegralBases DegreeShapes EKDualBases TableauDominance

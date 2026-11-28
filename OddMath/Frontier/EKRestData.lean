@@ -217,7 +217,6 @@ theorem e_four : e 4 = -h 4 + h 2 * h 2 - h 2 * h 1 * h 1 + h 1 * h 1 * h 1 * h 
         rw [degree_one, degree_two, degree_three]; noncomm_ring
     _ = 0 := by rw [recurrence_four, h1_h3, h11_h2]; simp
 
-set_option maxHeartbeats 2000000 in
 /-- **EK p. 10:** `e₅ = h₅ - 2h₄h₁ - h₃h₁² + h₂²h₁ + h₁⁵`. -/
 theorem e_five : e 5 = h 5 - (2 : ℤ) • (h 4 * h 1) - h 3 * h 1 * h 1 + h 2 * h 2 * h 1 +
     h 1 * h 1 * h 1 * h 1 * h 1 := by

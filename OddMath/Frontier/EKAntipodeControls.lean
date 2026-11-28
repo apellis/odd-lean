@@ -3,7 +3,6 @@ import OddMath.Frontier.EKAntipode
 /-! Postproduction controls on the actual maps. Preproduction conditional
 contractions and composition controls are preserved in an unpublished script -/
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 open scoped BigOperators TensorProduct
 namespace OddMath.Frontier.EKAntipodeControls
 open EKRadicalQuotient (Q quotientCounit)
