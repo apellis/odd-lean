@@ -13,7 +13,6 @@ h-word all of whose parts are ≤ 3 (in particular every degree ≤ 3 h-word).
 The two-letter product expansion below is the source coproduct (2.10) plus
 adjointness; it is reused by production. -/
 noncomputable section
-set_option maxHeartbeats 4000000
 open scoped BigOperators TensorProduct
 namespace OddMath.Frontier.EKCenterPowerControls
 open CompleteElementary EKFreeCoproduct EKPairingAdjoint EKRadicalQuotient

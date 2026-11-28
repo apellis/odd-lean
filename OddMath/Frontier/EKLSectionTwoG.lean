@@ -26,7 +26,6 @@ open EKElementaryQuotient (h e)
 open EKAutomorphisms (reverseLinear psi12 s)
 open scoped BigOperators
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 
 /-- Applying `reverseLinear` to the inverse relation gives `Σ_i s_i h_{n-i} R(e_i) = δ_{n0}`. -/
 theorem reverse_generator (n : ℕ) :

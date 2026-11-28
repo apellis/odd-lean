@@ -31,7 +31,6 @@ theorem this forces the characteristic of `k` to be a power of `2`.  Conversely
 -/
 
 noncomputable section
-set_option synthInstance.maxHeartbeats 400000
 open scoped TensorProduct BigOperators
 
 namespace OddMath.Frontier.EKOverK

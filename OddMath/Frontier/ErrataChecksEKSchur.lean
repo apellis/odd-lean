@@ -33,7 +33,6 @@ arXiv:1107.5610v2, pp. 29–30. Objects: the integral quotient `Λ = Q`, its deg
 -/
 
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 open scoped BigOperators
 namespace OddMath.Frontier.ErrataChecks
 open EKRadicalQuotient EKIntegralBases DegreeShapes EKDualBases

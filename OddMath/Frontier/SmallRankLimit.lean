@@ -26,7 +26,6 @@ open OddLREKIdentification (piN sK)
 open OddSymmetricLimit (elemIdeal)
 open scoped BigOperators
 
-set_option synthInstance.maxHeartbeats 200000
 
 noncomputable section
 

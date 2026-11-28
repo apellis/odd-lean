@@ -29,7 +29,6 @@ Over a `ℚ`-algebra `k`, `Λ_k = k ⊗_ℚ Λ_ℚ` (`thetaEquivK`), and the cen
 -/
 
 noncomputable section
-set_option synthInstance.maxHeartbeats 400000
 open scoped TensorProduct BigOperators
 
 namespace OddMath.Frontier.EKOverK
@@ -337,7 +336,6 @@ theorem map_id_injective {B C : Type*} [Ring B] [Ring C] [Algebra ℚ B] [Algebr
   rw [he]
   exact Module.Flat.lTensor_preserves_injective_linearMap _ hf
 
-set_option maxHeartbeats 1000000 in
 theorem map_center_central (x : k ⊗[ℚ] Subalgebra.center ℚ (LamK ℚ)) (y : k ⊗[ℚ] LamK ℚ) :
     Algebra.TensorProduct.map (AlgHom.id k k) (Subalgebra.center ℚ (LamK ℚ)).val x * y =
       y * Algebra.TensorProduct.map (AlgHom.id k k) (Subalgebra.center ℚ (LamK ℚ)).val x := by

@@ -6,7 +6,6 @@ subgroup of the actual integral quotient. Composition is pointwise; reflections
 are psi2 after integer powers of psi1. S remains the inherited LINEAR antipode.
 No claim is made in positive characteristic or about the larger SAut group. -/
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 namespace OddMath.Frontier.EKInfiniteSymmetry
 open EKRadicalQuotient (Q)
 open EKElementaryQuotient (h)

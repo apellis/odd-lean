@@ -11,7 +11,6 @@ import OddMath.Frontier.EKPrimitivesControls
   helpers) is checked to depend only on `propext`, `Classical.choice`, `Quot.sound`.
 -/
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 open scoped TensorProduct BigOperators
 open OddMath.Frontier EKRadicalQuotient EKCoideal EKElementaryQuotient EKDualBases
   EKIntegralBases DegreeShapes EKPrimitives

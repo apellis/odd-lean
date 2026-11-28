@@ -23,7 +23,6 @@ open OddMath.SkewPolynomial (SkewPolynomial generator monomial)
 open EKLSectionTwo PowerSeries
 open scoped BigOperators
 
-set_option synthInstance.maxHeartbeats 200000
 
 noncomputable section
 

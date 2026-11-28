@@ -329,7 +329,6 @@ theorem pcu_pair_zero (i j : I) (μ : X) (n m q : ℕ) (hm : (m + n : ℕ) < D.h
     ite_eq_right (show ¬ ((m + n : ℕ) : ℤ) = D.h i (wt D μ []) - 1 by simp only [wt_nil]; omega),
     map_zero, Limits.zero_comp, smul_zero]
 
-set_option maxHeartbeats 800000 in
 theorem pcu_b (i j : I) (μ : X) (hij : i ≠ j) (n : ℕ)
     (hn : (n : ℤ) < D.h i (wt D μ [up j])) :
     pcuL cs i j μ ≫ pcuS i j μ ≫ pcuB i j μ n =
@@ -462,7 +461,6 @@ theorem pcu_lhs8_h0 (i j : I) (μ : X) (hij : i ≠ j) (hd0 : D.d i j = 0) (hh :
   congr 1
   ring
 
-set_option maxHeartbeats 800000 in
 theorem pcu_a_eq (i j : I) (μ : X) (hij : i ≠ j) (hh : D.h i μ = D.d i j) :
     pcuL cs i j μ ≫ pcuS i j μ ≫ pcuA i j μ =
       pcuR cs i j μ ≫ pcuS i j μ ≫ pcuA i j μ := by

@@ -226,7 +226,6 @@ theorem sE_mul_sE (mu nu : YoungDiagram) :
       ring)
   exact congrFun h ⟨nu, rfl⟩
 
-set_option synthInstance.maxHeartbeats 200000 in
 /-- **E Theorem 4.1 (the even Littlewood–Richardson rule)**: for all partitions `λ, μ, ν`, the
 coefficient `c^λ_{μν}` of `s_λ` in `s_μ s_ν` equals the number of Littlewood–Richardson
 tableaux of shape `λ/μ` and content `ν`. -/

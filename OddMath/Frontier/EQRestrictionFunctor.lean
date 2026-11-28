@@ -584,7 +584,6 @@ theorem gHom_op_smul {i : ℤ} {g : ONH (a + 2 + b)} (hg : g ∈ DG.grading i)
       rho_units_smul_right, (hFull a b).rho_op_smul, Units.smul_def]
   | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, add_mul, smul_add]
 
-set_option maxHeartbeats 1600000 in
 theorem gHom_mem {k : ℤ} {x : TensorProductOver (osymDG ((a + 2) + (b + 2))) (TT a b) (ZD a b)}
     (hx : x ∈ DG.grading k) : gHom x ∈ DG.grading (k + degP a b) := by
   refine TensorProductOver.induction_on_mem_grading (P := fun x => gHom x ∈ DG.grading (k + degP a b))

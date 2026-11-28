@@ -6,7 +6,6 @@ Both convolution identities below use the actual signed coproduct.
 Inherited source discrepancies are not silently repaired.
 -/
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 open scoped BigOperators TensorProduct
 namespace OddMath.Frontier.EKAntipode
 open EKRadicalQuotient (Q pi quotientCounit)

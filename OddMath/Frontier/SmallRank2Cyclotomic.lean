@@ -29,7 +29,6 @@ open EKRadicalQuotient (Q)
 open OddLREKIdentification (piN sK)
 open scoped BigOperators
 
-set_option synthInstance.maxHeartbeats 200000
 
 noncomputable section
 

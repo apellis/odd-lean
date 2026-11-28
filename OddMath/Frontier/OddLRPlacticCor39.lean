@@ -33,7 +33,6 @@ open OddSymmetrizer (PartitionExponent)
 open OddLRElimination (toYoung)
 
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 
 /-! ## Elimination as a membership statement -/
 

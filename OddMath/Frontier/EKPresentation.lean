@@ -6,7 +6,6 @@ The defining ideal is the two-sided span of precisely (2.11),(2.12).
 Straightening is proved in this quotient BEFORE its map to Q is injective.
 Every helper below discharges this presentation or h-to-e automorphism consumer. -/
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 open scoped BigOperators
 namespace OddMath.Frontier.EKPresentation
 open CompleteElementary (A)

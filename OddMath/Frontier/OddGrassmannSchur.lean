@@ -26,7 +26,6 @@ Carriers: `Q = EKRadicalQuotient.Q` is OΛ; `piN N` is OΛ → OΛ_N; `sK λ` is
 -/
 
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 open scoped BigOperators
 
 namespace OddMath.Frontier.OddGrassmannSchur

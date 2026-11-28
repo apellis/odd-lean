@@ -27,7 +27,6 @@ matrices `M_{λμ} = (e_λ, h_μ)`, `M′_{λμ} = (h_λ, h_μ)`, `M″_{λμ} =
 
 noncomputable section
 set_option maxRecDepth 100000
-set_option synthInstance.maxHeartbeats 200000
 open scoped BigOperators
 
 namespace OddMath.Frontier.EKMore

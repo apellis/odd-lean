@@ -24,7 +24,6 @@ Ellis, "The odd Littlewood–Richardson rule", arXiv:1111.3932v1 ("E"), §2.1, p
 -/
 
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 open scoped BigOperators TensorProduct
 
 namespace OddMath.Frontier.OddLRGaps

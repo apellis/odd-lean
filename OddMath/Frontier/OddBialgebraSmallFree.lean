@@ -365,7 +365,6 @@ theorem rho_mem {d : ℤ} {x : Presented n} (hx : x ∈ onhGrading n d) :
 def resIdem (P : GIdem (onhGrading n)) : GIdem D.gradS :=
   (GIdem.mapHom (B := matGrading D.gradS sShift) D.rho D.rho_mem P).flatten
 
-set_option maxHeartbeats 1000000 in
 /-- **Restriction** `K₀(ONH_{n+2}) → K₀(B)`. -/
 def res : K0 (onhGrading n) →ₗ[L] K0 D.gradS :=
   (K0.morita (A := D.gradS) (d := sShift)).toLinearMap ∘ₗ

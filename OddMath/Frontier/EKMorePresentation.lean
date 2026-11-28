@@ -30,7 +30,6 @@ those with `1 ≤ i, j ≤ n`, since the odd relation for `(i, j)` coincides wit
 -/
 
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 open scoped BigOperators
 
 namespace OddMath.Frontier.EKMore

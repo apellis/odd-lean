@@ -14,7 +14,6 @@ p. 15, for the odd Littlewood–Richardson coefficient `c^λ_{μν} = OddLRTable
 Also `c^λ_{μν} = 0` unless `|λ| = |μ| + |ν|` (E Definition 4.6, `oddLR_eq_zero_of_card`). -/
 
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 open scoped BigOperators
 
 namespace OddMath.Frontier.OddLRMisc

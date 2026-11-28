@@ -34,7 +34,6 @@ open scoped BigOperators
 open TableauStripSigns TableauEvaluation TableauSign DegreeShapes
 
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 attribute [local instance] Classical.propDecidable
 
 /-- `η(λ) = dN(λ) + N(λ)`, the exponent of the normalization (3.3)/(3.4). -/

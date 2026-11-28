@@ -26,7 +26,6 @@ associativity and unitality of the twisted product, and the super anti-multiplic
 Everything is over `ℤ` at `q = −1`.
 -/
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 open scoped TensorProduct BigOperators
 namespace OddMath.Frontier.EKComplete
 

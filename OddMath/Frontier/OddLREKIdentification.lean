@@ -24,7 +24,6 @@ import OddMath.Frontier.OddSymmetrizer
 * `thm38_conditional`: labelled CONDITIONAL on `EliminationC` (discharged in `OddLRThm38`).
 -/
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 open scoped BigOperators
 namespace OddMath.Frontier.OddLREKIdentification
 open OddMath.SkewPolynomial FiniteCompleteElementary DegreeShapes

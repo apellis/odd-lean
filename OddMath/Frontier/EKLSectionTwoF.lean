@@ -23,7 +23,6 @@ open TableauStripCorners (Horizontal)
 open EKSemiorthogonality (ell)
 open scoped BigOperators
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 attribute [local instance] Classical.propDecidable
 
 /-- An element of `OΛ` vanishing in every `OΛ_N` is zero. -/

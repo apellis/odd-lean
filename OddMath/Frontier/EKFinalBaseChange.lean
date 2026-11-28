@@ -35,7 +35,6 @@ Throughout `q = -1`, `k` is a commutative ring, `Λ_k = Lam (-1 : k)` is the quo
 -/
 
 noncomputable section
-set_option synthInstance.maxHeartbeats 400000
 open scoped TensorProduct BigOperators
 
 namespace OddMath.Frontier.EKFinal

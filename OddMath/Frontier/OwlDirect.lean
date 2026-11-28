@@ -98,7 +98,6 @@ theorem witness_has_true_mark : ¬ ∀ a ∈ witness, a.2 = false := by
   intro h
   exact absurd (h (0,true) (by simp [witness])) (by decide)
 
-set_option maxHeartbeats 8000000 in
 /-- The generalized action s₀ s₁ ∂₀ ∂₃ ∂₂ ∂₁ s₀ s₃ s₂ s₁ on the kernel element e₃e₁. -/
 theorem witness_value : hybrid witness input = 4 := by
   simp only [witness, hybrid, Bool.false_eq_true, ite_false, ite_true, input, e3, e1]
@@ -173,14 +172,12 @@ theorem after_longest : permutation wordAfter = LongestElementary.longest 5 := b
 theorem omission_before_nonreduced : ¬ Reduced (omission (marksOn wordBefore)) := by decide
 theorem omission_after_reduced : Reduced (omission (marksOn wordAfter)) := by decide
 
-set_option maxHeartbeats 16000000 in
 theorem value_before : hybrid (marksOn wordBefore) input₂ = 4 := by
   simp only [marksOn, wordBefore, List.zip_cons_cons, List.zip_nil_right, hybrid,
     Bool.false_eq_true, ite_false, ite_true, input₂, e3, e2]
   owl_direct_expand
   norm_num
 
-set_option maxHeartbeats 16000000 in
 theorem value_after : hybrid (marksOn wordAfter) input₂ = 4 := by
   simp only [marksOn, wordAfter, List.zip_cons_cons, List.zip_nil_right, hybrid,
     Bool.false_eq_true, ite_false, ite_true, input₂, e3, e2]

@@ -34,7 +34,6 @@ arXiv:1107.5610v2. All statements concern the integral radical quotient `Λ = Q`
 -/
 
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 open scoped BigOperators
 namespace OddMath.Frontier.ErrataChecks
 open EKRadicalQuotient EKMixedPairing EKPairingAdjoint EKQuotientRelations

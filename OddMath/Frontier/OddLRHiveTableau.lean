@@ -1147,7 +1147,6 @@ end sums
 /-! ## The printed Definition 4.11 (3) and (4.14): `λ = (2,2)`, `μ = (2)`, `ν = (1,1)` -/
 
 section printed
-set_option synthInstance.maxHeartbeats 200000
 
 /-- The diagram `(2, 2)`. -/
 def shape22 : YoungDiagram := YoungDiagram.ofRowLens [2, 2] (by decide)

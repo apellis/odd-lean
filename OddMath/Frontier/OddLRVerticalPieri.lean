@@ -623,7 +623,6 @@ theorem belowCount_insert (mu nu : YoungDiagram) (p : ℕ × ℕ)
   rw [he]
   simp [Finset.filter_insert, show ¬ r < p.1 by omega]
 
-set_option maxHeartbeats 1600000 in
 /-- Telescoped sign bookkeeping for a strictly decreasing inserted word. -/
 theorem run_parity (n : ℕ) (S : State n) (w : List (Fin n)) (hw : w.Pairwise (· > ·)) :
     ∃ X : ℕ, northWest S.1 + northEast (TableauWordInsertion.run n S w).1.1 + crossings n S w =

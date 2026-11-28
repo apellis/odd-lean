@@ -19,7 +19,6 @@ Compiled BEFORE `EKSchurOrthonormal`; nothing here mentions the production `s_λ
 -/
 noncomputable section
 set_option maxRecDepth 10000
-set_option maxHeartbeats 1000000
 open scoped BigOperators
 namespace OddMath.Frontier.EKSchurOrthonormalControls
 open EKPairingMatrices EKRadicalQuotient EKIntegralBases DegreeShapes EKDualBases

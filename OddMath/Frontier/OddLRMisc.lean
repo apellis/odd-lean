@@ -24,7 +24,6 @@ import OddMath.Frontier.EKClosureCompositionControls
   (`reverse_not_coalgebra`). -/
 
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 open scoped BigOperators TensorProduct
 
 namespace OddMath.Frontier.OddLRMisc

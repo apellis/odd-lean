@@ -8,7 +8,6 @@ printed exponent at [2,1]. No claim to prove that misprinted equation.
 The elementary psi12 proof uses inverse-series uniqueness, not the unsupported
 direct psi3-to-(2.26) transformation described on p21. -/
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 open scoped BigOperators TensorProduct
 namespace OddMath.Frontier.EKAutomorphisms
 open CompleteElementary (A)

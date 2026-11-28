@@ -612,7 +612,6 @@ theorem etaL_dots (i : I) (n m : ℕ) (w : List (Letter I)) :
     (etaL i n).map (whL [] w) ++ dotsL [dn i] i w m = (etaL i (n + m)).map (whL [] w) := by
   simp [etaL, dotsL, whL, List.map_replicate]
 
-set_option maxHeartbeats 1000000 in
 theorem pfL_b (i j : I) (μ : X) (hij : i ≠ j) (_hh : D.h i μ ≤ 0) (n : ℕ)
     (hn : (n : ℤ) < -D.h i μ) :
     cl D Sc μ [up j] [up j, dn i, up i] ((etaL i n).map (whL [up j] [])) ≫

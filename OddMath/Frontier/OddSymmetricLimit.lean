@@ -26,7 +26,6 @@ map OΛ → OΛ_N (`h_k ↦ h_k`, `ε_k ↦ ε_k`); OΛ_a for `a = n+2` is
 -/
 
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 open scoped BigOperators
 
 namespace OddMath.Frontier.OddSymmetricLimit

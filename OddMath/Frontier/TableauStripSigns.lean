@@ -110,7 +110,6 @@ private theorem above_card (μ : YoungDiagram) (r : ℕ) :
   have h := Finset.sum_card_fiberwise_eq_card_filter μ.cells (Finset.range r) Prod.fst
   simpa only [Finset.mem_range, YoungDiagram.rowLen_eq_card, YoungDiagram.row] using h.symm
 
-set_option maxHeartbeats 1600000 in
 private theorem crossing_above (n : ℕ) (S : State n) (a : Fin n) :
     let I := TableauInsertion.insert n S.1 S.2.1 S.2.2 a
     I.crossings + I.newCell.1 = (S.1.cells.filter (fun q => q.1 < I.newCell.1)).card := by
@@ -182,7 +181,6 @@ private theorem rightCount_insert (μ ν : YoungDiagram) (p : ℕ × ℕ)
   rw [he]
   simp [Finset.filter_insert, show ¬ c < p.2 by omega]
 
-set_option maxHeartbeats 1600000 in
 theorem run_crossings_shape (n : ℕ) (S : State n) (w : List (Fin n))
     (hw : w.Pairwise (· ≤ ·)) :
     let R := TableauWordInsertion.run n S w

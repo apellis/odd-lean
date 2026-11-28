@@ -32,7 +32,6 @@ which by adjointness and integral tensor separation is exactly primitivity.
 This is the concrete, proved-here content of the source's `P = (I²)^⊥` step.
 -/
 noncomputable section
-set_option synthInstance.maxHeartbeats 200000
 open scoped TensorProduct BigOperators DualNumber
 namespace OddMath.Frontier.EKPrimitives
 open EKRadicalQuotient EKCoideal EKElementaryQuotient EKDualBases EKIntegralBases
